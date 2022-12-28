@@ -22,6 +22,8 @@ class Url {
     }
     
   }
+  
+  static encode(url = String) 
 }
 
 module.exports = Url;
