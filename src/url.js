@@ -2,7 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-blue; icon-glyph: magic;
 class Url {
-  constructor(scheme, base = String, path = String, fragment = String, queryMap = new Map) {
+  constructor(scheme = String, base = String, path = String, fragment = String, queryMap = new Map) {
     this.scheme = scheme;
     this.base = base;
     this.path = path;
