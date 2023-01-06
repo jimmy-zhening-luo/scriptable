@@ -48,8 +48,7 @@ try {
   
   const nextParams = {
     repo: "https://jimmy-zhening-luo@github.com/jimmy-zhening-luo/iOS-scriptable-ecosystem.git",
-    path: subpathSrc,
-    mode: "content"
+    path: subpathSrc
   };
   
   Object.entries(nextParams).map(([key, value]) => next.addParameter(key, value));
