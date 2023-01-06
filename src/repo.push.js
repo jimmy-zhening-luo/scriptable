@@ -3,25 +3,19 @@
 // always-run-in-app: true; icon-color: deep-gray;
 // icon-glyph: magic;
 // import helper Scriptable modules
-const filepath = importModule("filepath");
 
 const bookmarks = {
   local: "iCloud/Scriptable",
   repo: "Repositories/Scriptable"
 };
 
-let dirs = new Map;
+let dirs = new Map();
 
 // For each bookmark, get real file path
 try {
-  dirs = filepath.bookmarkedPaths(bookmarks);
+  const fm = FileManager.local();
   
-  if (!dirs) {
-    throw new ReferenceError(`repo.push: 'dirs' is undefined, because filepath.bookmarkedPaths either did not return an object or returned 'undefined'.`);
-  }
-  else if (dirs == false) {
-    throw new ReferenceError(`repo.push: 'dirs' evaluates to false, meaning filepath.bookmarkedPaths returned an object, but it was a falsey object.`);
-  }
+  dirs = new Map(Object.entries(bookmarks).map(([key, value]) => [key, fm.bookmarkedPath(value)]));
   
 } catch (e) {
   console.error(e);

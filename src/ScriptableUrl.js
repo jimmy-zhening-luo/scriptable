@@ -6,8 +6,8 @@
 class ScriptableUrl {
   
   
-  #callbackUrl = new CallbackURL(String);
-  #urlBag = new this.constructor.#UrlBag(String);
+  #callbackUrl = new CallbackURL;
+  #urlBag = new this.constructor.#UrlBag;
   
   constructor(url) {
     const callbackUrlWithoutQuery = new CallbackURL(url);

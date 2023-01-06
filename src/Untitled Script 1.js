@@ -17,3 +17,7 @@ cu.addParameter("joe", "foo.com/vingus?shxh=10");
 const cuStr = cu.getURL();
 
 console.log(cuStr);
+
+let gu = String();
+
+console.log("Empty string: " + gu);
