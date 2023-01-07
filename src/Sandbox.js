@@ -1,23 +1,8 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: yellow; icon-glyph: magic;
-const baseUrl = [
-  "foo.com",
-  "/path",
-  "/path2",
-  "?a=b&c=d"
-].join("");
+const Schemes = importModule("Schemes.js");
+const ScriptableUrl = importModule("ScriptableUrl.js");
 
-console.log(baseUrl);
+console.log(Schemes.Apple.Bear.Default.Scheme);
 
-let cu = new CallbackURL(baseUrl);
-
-cu.addParameter("joe", "foo.com/vingus?shxh=10");
-
-const cuStr = cu.getURL();
-
-console.log(cuStr);
-
-let gu = String();
-
-console.log("Empty string: " + gu);
