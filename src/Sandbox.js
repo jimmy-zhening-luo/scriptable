@@ -6,3 +6,4 @@ const ScriptableUrl = importModule("ScriptableUrl.js");
 
 console.log(Schemes.Apple.Bear.Default.Scheme);
 
+const url = new ScriptableUrl("");

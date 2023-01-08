@@ -49,11 +49,24 @@ class ScriptableUrl {
   }
   
   set url(url = String()) {
-    const urlBag = new this.constructor.#UrlBag(url);
     
+    try {
+      if (url === null) {
+        throw new TypeError("input is null when expecting a non-empty string");
+      } else if (url === undefined) {
+        throw new TypeError("input is undefined when expecting a non-empty string");
+      } else if (String(url) === String()) {
+        throw new TypeError("input is an empty string when expecting a non-empty string")
+      } else {
+            const urlBag = new this.constructor.#UrlBag(url);
+                
     this.#callbackUrl = new CallbackURL(urlBag.urlWithoutQuery);
     
     this.query = urlBag.query;
+      }
+    } catch (e) {
+      console.error("ScriptableUrl: set url(): " + e);
+    }
   }
   
   get urlWithoutQuery() {
