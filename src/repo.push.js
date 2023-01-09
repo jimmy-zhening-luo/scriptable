@@ -2,7 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // always-run-in-app: true; icon-color: deep-gray;
 // icon-glyph: magic;
-// import helper Scriptable modules
+const File = importModule("File");
 
 const bookmarks = {
   local: "iCloud/Scriptable",
