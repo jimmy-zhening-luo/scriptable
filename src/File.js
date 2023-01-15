@@ -68,42 +68,39 @@ class File {
   }
   
   get descendants() {
-    if (!(this.exists)) {
-      if (this.self.exists)
-        return [this.self];
-      else return [];
-    }
-    else {
-      const subpaths = this.ls.map(
-        (item) => (
-          this.self.constructor.joinPaths(
-            this.subpath,
-            item
-          )
+    if (this.isFile)
+      return [this];
+    else if (this.isBottom)
+      return new Array();
+    else if (this.isDirectory) {
+      const children = this.ls?.map(
+        (leaf) => (
+          this.constructor.joinPaths(
+            this.subpath ?? String(),
+            leaf ?? String()
+          ) ?? String()
         )
-      );
-      
-      const folders = subpaths.map(
-        (subpath) => (
+      )?.map((subpath) => (
           new this.constructor(
-            new this.self.constructor(
-              subpath
-            )
+            subpath ?? String()
+          )
+          ?? new this.constructor()
+        )
+      )?.filter((file) => (
+          !this.path?.startsWith(
+            file?.path ?? String()
           )
         )
       );
       
-      const desc = new Array();
-      for (const folder of folders) {
-        const fDesc = folder.descendants;
-        if (fDesc !== undefined
-          && fDesc !== null
-          && Array.isArray(fDesc)
-          && fDesc.length > 0
-        ) desc.push(...fDesc);
-      }
-      return desc;
+      return children?.map((file) => (
+          file?.descendants
+          ?? new Array()
+        )
+      ) ?? new Array();
     }
+    else
+      return new Array();
   }
   
   get exists() {
@@ -114,7 +111,12 @@ class File {
   }
   
   get isBottom() {
-    return !!this.isFile;
+    return (
+      this.isFile
+      || (Array.isArray(this.ls)
+        && this.ls.length === 0
+      )
+    );
   }
   
   get isDirectory() {
@@ -144,6 +146,13 @@ class File {
     );
   }
   
+  get leaf() {
+    return (
+      this.subpath?.split("/")?.slice(-1)
+      ?? String()
+    );
+  }
+  
   get ls() {
     return this.isDirectory?
       (
@@ -163,19 +172,27 @@ class File {
     return !!this.parent?.isDirectory;
   }
   
+  get parentIsSelf() {
+    return !!this.isTop;
+  }
+  
   get parentPath() {
     return this.parent?.path ?? String();
   }
   
   get parentSubpath() {
-    return this.subpath.split("/").slice(0, -1).join("/") ?? String();
+    return this.subpath?.split("/")?.slice(0, -1)?.join("/") ?? String();
   }
   
   get path() {
     return this.constructor.joinPaths(
-      this.bookmarkedPath,
-      this.subpath
+      this.bookmarkedPath ?? String(),
+      this.subpath ?? String ()
     ) ?? String();
+  }
+  
+  get root() {
+    return this.bookmarkedPath ?? String();
   }
   
   get subpath() {
@@ -191,7 +208,7 @@ class File {
   }
   
   toString() {
-    return this.path ?? String();
+    return this.subpath ?? String();
   }
   
   write(
@@ -334,7 +351,7 @@ class ConfigFile extends File {
   }
   
   get settingUserOverrideAllowed() {
-    return this.config?.settingUserOverrideAllowed?? new Object;
+    return this.config?.settingUserOverrideAllowed ?? new Object();
   }
   
   get user() {
@@ -377,7 +394,7 @@ class ScriptableConfigFile extends ConfigFile {
 }
 
 class ScriptableRepoFile extends RepoFile {
-  constructor(
+  constructor (
     subpath = String(),
     repo = new Repository()
   ) {
