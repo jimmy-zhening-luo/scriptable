@@ -1,6 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: gray; icon-glyph: magic; share-sheet-inputs: plain-text;
+const File = importModule("File");
 
 class App {
   #name = String();
@@ -105,10 +106,9 @@ class AppEngine extends Engine {
 
 const query = new Query(args.plainTexts.shift());
 
-const fm = FileManager.local();
-const config = JSON.parse(fm.readString(fm.joinPath(fm.bookmarkedPath("Repositories/Shortcuts/config"), "Search/search.json")));
+const config = new File.ShortcutsConfigFile("Search/search.json");
 
-const querytag = config.app.queryTag? config.app.queryTag : config.user.queryTag;
+const querytag = config.setting.queryTag;
 
 const appToEngine = {
   mail: MailApp,
@@ -116,7 +116,7 @@ const appToEngine = {
   shortcuts: ShortcutsApp
 };
 
-const engines = config.user.engineKeys.map((engine) => (engine.urls? new WebEngine(engine.keys, engine.urls, querytag, engine.webview) : new AppEngine(engine.keys, new appToEngine[engine.app]())));
+const engines = config.setting.engineKeys.map((engine) => (engine.urls? new WebEngine(engine.keys, engine.urls, querytag, engine.webview) : new AppEngine(engine.keys, new appToEngine[engine.app]())));
 
 const engine = engines.find((engine) => (engine.keys.includes(query.key)));
 
