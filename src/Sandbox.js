@@ -1,9 +1,12 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: yellow; icon-glyph: magic;
-const Schemes = importModule("Schemes.js");
-const ScriptableUrl = importModule("ScriptableUrl.js");
+// const Test = importModule("Test");
+const File = importModule("File");
 
-console.log(Schemes.Apple.Bear.Default.Scheme);
+const files = new Array();
 
-const url = new ScriptableUrl("");
+const fa = new File.ShortcutsConfigFile("Search/search.json");
+files.push(fa);
+
+console.log(fa.data.app)

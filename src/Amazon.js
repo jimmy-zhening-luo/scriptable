@@ -2,28 +2,60 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: teal; icon-glyph: magic;
 const File = importModule("File");
+// const Folder = importModule("Folder");
 
-const f = new File.ShortcutsDataFile("Amazon", "order-last-opened.txt");
+const data = Object.freeze({
+  files: {
+    latestRun: new File.ShortcutsDataFile(
+      "Amazon/last-run.txt"
+    )
+  }
+});
 
-const lastRunTime = new Date(f.data);
+console.log(data.files.latestRun.data)
 
-f.write((new Date()).toISOString(), true);
+const latestRun = (
+  (data.files.latestRun instanceof File)?
+    data.files.latestRun.data :
+    String()
+);
 
-console.log(lastRunTime);
-console.log(f.path);
-console.log(f.bookmark)
-console.log(f.bookmarkedPath)
-console.log(f.parent)
-console.log(f.file)
-console.log(f.fileExists)
-console.log(f.parentExists)
-console.log(f.subpath)
-f.shortcut = "Apple";
-console.log(f.path);
-console.log(f.parent);
-console.log(f.file)
-console.log(f.fileExists);
-console.log(f.parentExists);
-console.log(f.subpath)
+console.log("latestRun string: " + latestRun)
 
-return ((Date.now() - lastRunTime.getTime()) > 300000);
+const latestRunTime = (
+  (latestRun === String())?
+    new Date() :
+    new Date(latestRun)
+);
+
+data.files.latestRun.write(
+  (new Date()).toISOString(),
+  true
+);
+
+console.log(
+  "lastRun: "
+  + latestRunTime
+);
+console.log(
+  "min since last: "
+  + (
+      (
+        Date.now()
+        -
+        latestRunTime
+      )
+      /
+      60000
+    )  
+);
+
+return (
+  (
+    Date.now()
+    -
+    latestRunTime.getTime()
+  )
+  >
+  300000
+);
