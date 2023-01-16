@@ -1,0 +1,26 @@
+{
+  "app": {
+    "global": {
+      "bookmarks": {
+        "secrets": "Local/Secrets"
+      }
+    },
+    "apps": {
+      "Scriptable": {
+        "bookmarks": {
+          "config": "Repositories/Scriptable/config",
+          "repo": "Repositories/Scriptable/src"
+        }
+      }
+    }
+  },
+  "user": {
+    "apps": {
+      "Shortcuts": {
+        "bookmarks": {
+          "config": "Repositories/Shortcuts/config"
+        }
+      }
+    }
+  }
+}
