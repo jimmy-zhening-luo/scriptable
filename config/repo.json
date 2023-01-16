@@ -5,7 +5,6 @@
     },
     "apps": {
       "Scriptable": {
-        "bookmarkRoot": "Scriptable",
         "repos": {
           "source": {
             "js": {
