@@ -1,7 +1,39 @@
 {
   "app": {
     "global": {
-      "client": "working-copy://"
+      "clients": {
+        "workingCopy": {
+          "scheme": "working-copy://",
+          "xCallbackPath": "x-callback-url",
+          "paramNames": {
+            "remote": "repo",
+            "branch": "branch",
+            "sourceDir": "path",
+            "apiKey": "key"
+          },
+          "keyDir": "api/workingcopy/callbackUrl.txt",
+          "actions": {
+            "checkout": {
+              "endpoint": "checkout",
+              "specialParams": {
+                "mode": "ensure"
+              }
+            },
+            "commit": {
+              "endpoint": "commit",
+              "specialParams": {
+                "limit": "999"
+              }
+            },
+            "pull": {
+              "endpoint": "pull"
+            },
+            "status": {
+              "endpoint": "status"
+            }
+          }
+        }
+      }
     },
     "apps": {
       "Scriptable": {
