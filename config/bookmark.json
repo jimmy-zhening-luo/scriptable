@@ -9,7 +9,8 @@
       "Scriptable": {
         "bookmarks": {
           "config": "Repositories/Scriptable/config",
-          "repo": "Repositories/Scriptable/src"
+          "repo": "Repositories/Scriptable/src",
+          "clone": "iCloud/Scriptable"
         }
       }
     }

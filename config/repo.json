@@ -9,16 +9,10 @@
           "source": {
             "js": {
               "remote": "https://jimmy-zhening-luo@github.com/jimmy-zhening-luo/iOS-scriptable-ecosystem.git",
-              "root": "src",
+              "sourceDir": "src",
               "branches": {
-                "push": {
-                  "from": "#this",
-                  "to": "dev"
-                },
-                "pull": {
-                  "from": "dev",
-                  "to": "#this"
-                }
+                "mergeFromClone": "dev",
+                "mergeToClone": "dev"
               }
             }
           }
