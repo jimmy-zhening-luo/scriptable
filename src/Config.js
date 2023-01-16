@@ -9,6 +9,8 @@ class Config {
     data = String(),
     source = undefined
   ) {
+    this.#parsed = false;
+    this.#source = source;
     try {
       if (data?.constructor !== String)
         throw new TypeError(
@@ -24,7 +26,7 @@ class Config {
           this.#parsed = true;
         else 
           throw new SyntaxError(
-            "Json parser did not throw error when parsing the data, but returned parses results that were not an Object"
+            "Json parser did not throw error when parsing the data, but returned parsed results that were not an Object"
           );
       }
     } catch (e) {
@@ -32,7 +34,6 @@ class Config {
       this.#parsed = false;
       this.#data = new Object();
     }
-    this.#source = source;
   }
   
   get app() {
@@ -41,6 +42,10 @@ class Config {
   
   get data() {
     return this.#data ?? new Object();
+  }
+  
+  get parsed() {
+    return this.#parsed === true;
   }
   
   get setting() {
@@ -73,6 +78,13 @@ class Config {
     winners = new Object(),
     losers = new Object()
   ) {
+    const mergePrimitives = function(
+      winner = String(),
+      loser = String()
+    ) {
+      return (winner ?? loser) ?? String();
+    };
+    
     const mergeArrays = function(
       winner = new Array(),
       loser =  new Array()
@@ -150,7 +162,11 @@ class Config {
       ) merger.set(i, winners[i]);
       else if (primitive(winners[i])
         && primitive(losers[i])
-      ) merger.set(i, winners[i]);
+      ) merger.set(i, mergePrimitives(
+          winners[i],
+          losers[i]
+        )
+      );
       else if (Array.isArray(winners[i])
         && Array.isArray(losers[i])
       ) merger.set(i, mergeArrays(

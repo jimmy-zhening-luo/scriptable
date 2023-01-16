@@ -1,7 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-blue; icon-glyph: magic;
-class ScriptableUrl {
+class Url {
   #callbackUrl = new CallbackURL();
   
   constructor(url = String()) {
@@ -182,4 +182,5 @@ class ScriptableUrl {
   };
 }
 
-module.exports = ScriptableUrl;
+module.exports = Url;
+module.exports.Url = Url;

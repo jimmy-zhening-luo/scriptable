@@ -9,7 +9,7 @@
             "remote": "repo",
             "branch": "branch",
             "sourceDir": "path",
-            "apiKey": "key"
+            "key": "key"
           },
           "keyDir": "api/workingcopy/callbackUrl.txt",
           "actions": {

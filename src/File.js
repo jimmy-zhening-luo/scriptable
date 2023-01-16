@@ -1,7 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: gray; icon-glyph: magic;
-// const Repository = importModule("Repository");
 class File {
   #subpath = String();
   #bookmark = String();
@@ -10,18 +9,14 @@ class File {
     subpath = String(),
     bookmark = String()
   ) {
-    const isString = function (obj) {
-      return obj?.constructor === String;
-    };
-    
-    this.subpath = isString(subpath)?
-      subpath
-      :String();
-      
-    this.#bookmark = isString(bookmark)?
-      bookmark
-      :String();
-      
+    this.subpath = subpath
+      ?.constructor === String?
+        subpath
+        :String();
+    this.#bookmark = bookmark
+      ?.constructor === String?
+        bookmark
+        :String();
     this.#m = this.constructor.Manager;
   }
   
@@ -30,39 +25,55 @@ class File {
   } 
   
   get bookmarkedPath() {
-    const path = this.#m.bookmarkedPath(
-      this.bookmark
+    return (
+      this
+      .constructor
+      .trimPath(
+        this
+        .constructor
+        .bookmarkToPath(
+          this.bookmark
+          ?? String()
+        ) ?? String()
+      ) ?? String()
     );
-    return path ?? String();
   }
   
   get data() {
     try {
       if (!this.isReadable) {
-        const e = new ReferenceError(
-          "(unhandled reason)",
-          this.path
-        );
         if (!this.exists)
-          e.message = "path resolves to neither an existing file nor folder";
+          throw new ReferenceError(
+            "path resolves to neither an existing file nor folder"
+          );
         else if (this.isDirectory)
-          e.message = "path resolves to a folder, not to a file";
-        
-        throw e;
-      } else {
-        const data = this.#m.readString(
-          this.path
-        );
+          throw new ReferenceError(
+            "path resolves to a folder, not to a file"
+          );
+        else
+          throw new ReferenceError(
+            "(unhandled reason)"
+          );
+      }
+      else {
+        const data = this
+          .#m
+          .readString(
+            this.path
+            ?? String()
+          );
         if (data?.constructor !== String)
           throw new ReferenceError(
             "Scriptable native FileManager object returned a non-String value when expecting a string"
           );
-        else {
+        else
           return data ?? String();
-        }
       }
     } catch (e) {
-      console.warn("File:data: Cannot read data because " + e);
+      console.warn(
+        "File:data: Cannot read data from file. See caught error "
+        + e
+      );
       return String();
     }
   }
@@ -76,24 +87,31 @@ class File {
       const children = this.ls?.map(
         (leaf) => (
           this.constructor.joinPaths(
-            this.subpath ?? String(),
-            leaf ?? String()
+            this.subpath
+              ?? String(),
+            this.constructor.trimPath(
+              leaf
+              ?? String()
+            ) ?? String()
           ) ?? String()
         )
-      )?.map((subpath) => (
+      )?.map(
+        (subpath) => (
           new this.constructor(
             subpath ?? String()
           )
           ?? new this.constructor()
         )
-      )?.filter((file) => (
+      )?.filter(
+        (file) => (
           !this.path?.startsWith(
             file?.path ?? String()
           )
         )
       );
       
-      return children?.map((file) => (
+      return children?.map(
+        (file) => (
           file?.descendants
           ?? new Array()
         )
@@ -105,14 +123,14 @@ class File {
   
   get exists() {
     return (
-      this.parentExists
-      && this.#m.fileExists(this.path)
+      this.parentExists === true
+      && this.#m.fileExists(this.path) === true
     );
   }
   
   get isBottom() {
     return (
-      this.isFile
+      this.isFile === true
       || (Array.isArray(this.ls)
         && this.ls.length === 0
       )
@@ -120,13 +138,13 @@ class File {
   }
   
   get isDirectory() {
-    return !!this.#m.isDirectory(
+    return this.#m.isDirectory(
       this.path
-    );
+    ) === true;
   }
   
   get isEnumerable() {
-    return !!this.isDirectory;
+    return this.isDirectory === true;
   }
   
   get isFile() {
@@ -137,7 +155,7 @@ class File {
   }
   
   get isReadable() {
-    return !!this.isFile;
+    return this.isFile === true;
   }
   
   get isTop() {
@@ -147,10 +165,15 @@ class File {
   }
   
   get leaf() {
-    return (
-      this.subpath?.split("/")?.slice(-1)
+    return this
+    .constructor
+    .trimPath(
+      this
+      .subpath
+      ?.split("/")
+      ?.slice(-1)
       ?? String()
-    );
+    ) ?? String();
   }
   
   get ls() {
@@ -165,15 +188,16 @@ class File {
   get parent() {
     return new this.constructor(
       this.parentSubpath
+      ?? String()
     ) ?? new this.constructor();
   }
   
   get parentExists() {
-    return !!this.parent?.isDirectory;
+    return this.parent?.isDirectory === true;
   }
   
   get parentIsSelf() {
-    return !!this.isTop;
+    return this.isTop === true;
   }
   
   get parentPath() {
@@ -181,14 +205,31 @@ class File {
   }
   
   get parentSubpath() {
-    return this.subpath?.split("/")?.slice(0, -1)?.join("/") ?? String();
+    return this.constructor.trimPath(
+      this.subpath
+      ?.split("/")
+      ?.slice(0, -1)
+      ?.join("/")
+      ?? String()
+    ) ?? String();
   }
   
   get path() {
     return this.constructor.joinPaths(
-      this.bookmarkedPath ?? String(),
-      this.subpath ?? String ()
+      this.bookmarkedPath
+        ?? String(),
+      this.subpath 
+        ?? String()
     ) ?? String();
+  }
+  
+  get pathTree() {
+    return this
+    .constructor
+    .pathToTree(
+      this.path
+      ?? String()
+    ) ?? new Array();
   }
   
   get root() {
@@ -196,15 +237,103 @@ class File {
   }
   
   get subpath() {
-    return this.#subpath ?? String();
+    return this.constructor.trimPath(
+      this.#subpath
+      ?? String()
+    ) ?? String();
+  }
+  
+  get subpathTree() {
+    return this.constructor
+      .pathToTree(
+        this.subpath
+        ?? String()
+        ) ?? new Array();
   }
   
   set subpath(path = String()) {
-    this.#subpath =  this.constructor.trimPath(path) ?? String();
+    path = path?.constructor === String?
+      path
+      :String();
+    
+    this.#subpath = this
+    .constructor
+    .trimPath(
+      path
+      ?? String()
+    ) ?? String();
+  }
+  
+  cd(
+    relativePath = String()
+  ) {
+    relativePath = relativePath
+      ?.constructor === String?
+        relativePath
+        :String();
+    
+    this.subpath = this
+      .constructor
+      .trimPath(
+        this.subpathRelativeTo(
+          this
+          .constructor
+          .trimPath(
+            relativePath
+            ?? String()
+          ) ?? String()
+        ) ?? String()
+      ) ?? String();
+  }
+  
+  pathRelativeTo(
+    relativePath = String()
+  ) {
+    relativePath = relativePath
+      ?.constructor === String?
+        relativePath
+        :String();
+    
+    return this
+      .constructor
+      .trimPath(
+        this.walkPath(
+          this.path ?? String(),
+          this
+          .constructor
+          .trimPath(
+            relativePath
+            ?? String()
+          ) ?? String()
+        ) ?? String()
+      ) ?? String();
   }
   
   read() {
     return this.data ?? String();
+  }
+  
+  subpathRelativeTo(
+    relativePath = String()
+  ) {
+    relativePath = relativePath
+      ?.constructor === String?
+        relativePath
+        :String();
+    
+    return this
+      .constructor
+      .trimPath(
+        this.walkPath(
+          this.subpath ?? String(),
+          this
+          .constructor
+          .trimPath(
+            relativePath
+            ?? String()
+          ) ?? String()
+        ) ?? String()
+      ) ?? String();
   }
   
   toString() {
@@ -244,9 +373,22 @@ class File {
       const m = FileManager?.local() ?? null;
       return m;
     } catch (e) {
-      console.error("Fatal: File:Manager: Failed to get a FileManager instance from the Scriptable  native library FileManager. See. caught error: " + e);
+      console.error("Fatal: File:Manager: Failed to get a FileManager.local() instance from the Scriptable  native library FileManager. See. caught error: " + e);
       return null;
     }
+  }
+  
+  static bookmarkToPath(
+    bookmark = String()
+  ) {
+    return (
+      this.trimPath(
+        this.Manager.bookmarkedPath(
+          bookmark
+          ?? String()
+        ) ?? String()
+      ) ?? String()
+    );
   }
   
   static joinPaths(
@@ -263,6 +405,90 @@ class File {
         :this.Manager.joinPath(l, r);
   }
   
+  static pathToBookmark(
+    path = String()
+  ) {
+    return new Map(
+      this.Manager
+      .allFileBookmarks()?.filter(
+        (bmObject) => (
+          bmObject?.source === "host"
+        )
+      )?.map(
+        (bmObject) => (
+          [
+            this.trimPath(
+              this.bookmarkToPath(
+                bmObject?.name
+                ?? String()
+              ) ?? String()
+            ),
+            bmObject.name
+            ?? String
+          ]
+        )
+      )
+    )?.get(
+      this.trimPath(
+        path
+        ?? String()
+      ) ?? String()
+    ) ?? String();
+  }
+  
+  static pathToTree(
+    path = String()
+  ) {
+    return this.trimPath(
+      path
+      ?? String()
+    )?.slice(
+      "/"
+    )?.map((node) => (
+        this.trimPath(
+          node
+          ?? String()
+        )
+      )
+    )?.filter((node) => (
+        node?.constructor === String
+      )
+    )?.filter((node) => (
+        node?.trim() !== String()
+      )
+    ) ?? new Array();
+  }
+  
+  static treeToPath(
+    tree = new Array()
+  ) {
+    tree = Array.isArray(tree)?
+      tree
+      :new Array();
+      
+    const path = tree
+    ?.filter((node) => (
+        node?.constructor === String
+      )
+    )?.map((node) => (
+        this.trimPath(
+          node
+          ?? String()
+        )
+      )
+    )?.filter((node) => (
+        node?.trim() !== String()
+      )
+    )?.join(
+      "/"
+    )?.trim();
+    
+    return this.trimPath(
+      path
+      ?? String()
+    ) ?? String();
+  }
+  
   static trimPath(
     path = String()
   ) {
@@ -274,24 +500,63 @@ class File {
         path = p1?.constructor === String?
           first
           :String()
-      }
-      else path = String();
+      } else path = String();
     }
-    
     path = path?.trim() ?? String();
     while (path.startsWith("/"))
       path = path.slice(1);
     while (path.endsWith("/"))
       path = path.slice(0, -1);
     path = path?.trim() ?? String();
-    
     return path ?? String();
+  }
+  
+  static walkPath(
+    path = String(),
+    relativePath = String()
+  ) {
+    const pathTree = this.pathToTree(
+      this.trimPath(
+        path
+        ?? String()
+      )
+      ?? String()
+    ) ?? new Array();
+    const relPathTree = this.pathToTree(
+      this.trimPath(
+        relativePath
+        ?? String()
+      )
+      ?? String()
+      ) ?? new Array();
+    
+    for (const node of relPathTree) {
+      if (node.trim() === ".")
+        pathTree.pop();
+      else if (
+        node?.constructor === String
+        && node?.trim() !== String()
+      )
+        pathTree.push();
+    }
+    return this.trimPath(
+      this.treeToPath(
+        pathTree
+        ?? new Array()
+      ) ?? String()
+    ) ?? String();
   }
 }
 
 class CloudFile extends File {
   static get Manager() {
-    return FileManager.iCloud();
+    try {
+      const m = FileManager?.iCloud() ?? null;
+      return m;
+    } catch (e) {
+      console.error("Fatal: File:Manager: Failed to get a FileManager.iCloud() instance from the Scriptable  native library FileManager. See. caught error: " + e);
+      return null;
+    }
   }
 }
 
@@ -310,7 +575,7 @@ class ConfigFile extends File {
         );
       else if (data === String())
         throw new SyntaxError(
-          "super.data returned empty string when string contIning parsable JSON was expected"
+          "super.data returned empty string when string containing parsable JSON was expected"
         );
       else {
         const config = new Config(
@@ -363,18 +628,87 @@ class ConfigFile extends File {
   }
 }
 
-class RepoFile extends File {
-  #repo = new Repository();
+class SecretsFile extends File {
   constructor(
-    subpath = String(),
-    bookmark = new String(),
-    repo = new Repository()
+    subpath = String()
   ) {
     super(
-      subpath,
-      bookmark
+      subpath ?? String(),
+      "Local/Secrets"
     );
-    this.#repo = repo;
+  }
+  
+  get key() {
+    return this.secret ?? String();
+  }
+  
+  get secret() {
+    return this.data ?? String();
+  }
+  
+  write() {
+    throw new ReferenceError("File::SecretsFile:write: Cannot overwrite a protected secrets file.");
+  }
+}
+
+class RepoFile extends File {
+  #repo;
+  constructor(
+    subpath = String(),
+    bookmark = String(),
+    remote = String(),
+    branch = String(),
+    sourceDir = String(),
+    clone = new File(subpath, bookmark)
+  ) {
+    super(
+      subpath ?? String(),
+      bookmark ?? String()
+    );
+    const Repository = importModule(
+      "Repository"
+      );
+    this.#repo = new Repository(
+      remote ?? String(),
+      branch ?? String(),
+      sourceDir ?? String(),
+      clone instanceof File?
+        clone
+        :null
+    ) ?? null;
+  }
+  
+  get branch() {
+    return this.repo?.branch ?? String();
+  }
+  
+  get clone() {
+    return this.repo?.clone ?? String();
+  }
+  
+  get remote() {
+    return this.repo?.remote ?? String();
+  }
+  
+  get repo() {
+    const Repository = importModule(
+      "Repository"
+    );
+    return this.#repo ?? null;
+  }
+  
+  get sourceDir() {
+    return this.repo?.sourceDir
+      ?? String();
+  }
+  
+  mergeFromClone() {
+    return this.repo
+      ?.mergeFromClone(this) === true;
+  }
+  
+  write() {
+    throw new ReferenceError("File::RepoFile:write: Cannot directly write to a repo file. Use mergeFromClone if you want to write files from your clone to your repo.");
   }
 }
 
@@ -383,25 +717,74 @@ class ScriptableFile extends CloudFile {
     script = String()
   ) {
     super(
-      script,
+      script ?? String(),
       "iCloud/Scriptable"
     );
   }
 }
 
 class ScriptableConfigFile extends ConfigFile {
-  
+  constructor (
+    subpath = String()
+  ) {
+    super(
+      subpath ?? String(),
+      "Repositories/Scriptable/config"
+    );
+  }
 }
 
 class ScriptableRepoFile extends RepoFile {
   constructor (
-    subpath = String(),
-    repo = new Repository()
+    subpath = String()
   ) {
+    const repoConfig = new File
+      .ScriptableConfigFile(
+        "repo.json"
+      );
+    const scriptableRepoConfig = repoConfig
+      ?.setting
+      ?.apps
+      ?.Scriptable
+      ?.repos
+      ?.source
+      ?.js;
+      
+    const bookmarkConfig = new File
+      .ScriptableConfigFile(
+        "bookmark.json"
+      );
+    const scriptableBookmarkConfig = bookmarkConfig
+      ?.setting
+      ?.apps
+      ?.Scriptable
+      ?.bookmarks;
+    
     super(
-      subpath,
-      "Repositories/Scriptable",
-      repo
+      subpath ?? String(),
+      scriptableBookmarkConfig
+        ?.repo
+        ?? String(),
+      scriptableRepoConfig
+        ?.remote
+        ?? String(),
+      scriptableRepoConfig
+        ?.branches
+        ?.mergeFromClone
+        ?? String(),
+      scriptableRepoConfig
+        ?.sourceDir
+        ?? String(),
+      clone = new ScriptableFile(
+        subpath ?? String()
+      ) ?? null
+    );
+    
+    
+    super(
+      subpath ?? String(),
+      "Repositories/Scriptable/src",
+      new ScriptableFile(subpath ?? String())
     );
   }
 }
@@ -432,6 +815,7 @@ module.exports = File;
 module.exports.File = File;
 module.exports.CloudFile = CloudFile;
 module.exports.ConfigFile = ConfigFile;
+module.exports.SecretsFile = SecretsFile;
 module.exports.RepoFile = RepoFile;
 module.exports.ScriptableFile = ScriptableFile;
 module.exports.ScriptableConfigFile = ScriptableConfigFile;
