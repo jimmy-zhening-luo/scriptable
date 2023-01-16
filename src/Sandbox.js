@@ -3,6 +3,10 @@
 // icon-color: yellow; icon-glyph: magic;
 const File = importModule("File");
 
-const config = new File.ScriptableConfigFile("repo.json");
+const config = new File.ShortcutsConfigFile("Search/search.json");
 
-console.log(config.setting.global.clients)
+const p = "././././././Foo/./Bar/Bing";
+
+config.cd(p);
+
+console.log(config.path)

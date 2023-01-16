@@ -297,7 +297,7 @@ class File {
     return this
       .constructor
       .trimPath(
-        this.walkPath(
+        this.constructor.walkPath(
           this.path ?? String(),
           this
           .constructor
@@ -324,7 +324,7 @@ class File {
     return this
       .constructor
       .trimPath(
-        this.walkPath(
+        this.constructor.walkPath(
           this.subpath ?? String(),
           this
           .constructor
@@ -442,7 +442,7 @@ class File {
     return this.trimPath(
       path
       ?? String()
-    )?.slice(
+    )?.split(
       "/"
     )?.map((node) => (
         this.trimPath(
@@ -537,7 +537,7 @@ class File {
         node?.constructor === String
         && node?.trim() !== String()
       )
-        pathTree.push();
+        pathTree.push(String(node));
     }
     return this.trimPath(
       this.treeToPath(
