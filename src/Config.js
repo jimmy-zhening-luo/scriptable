@@ -187,7 +187,7 @@ class Config {
         )
       );
       else
-        merger.set(i, mergeObjects(
+        merger.set(i, this.mergeObjects(
           winners[i],
           losers[i]
         )

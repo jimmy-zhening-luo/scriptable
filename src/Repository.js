@@ -2,28 +2,16 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-brown; icon-glyph: magic;
 class Repository {
-  #client = String();
   #remote = String();
   #branch = String();
   #sourceDir = String();
-  #clone = undefined;
+  #client = new Object();
   constructor(
     remote = String(),
     branch = String(),
     sourceDir = String(),
-    clone = undefined
+    client = new Object()
   ) {
-    const File = importModule("File");
-    const config = new File
-      .ScriptableConfigFile(
-        "repo.json"
-      );
-    this.#client = config
-      ?.setting
-      ?.global
-      ?.clients
-      ?.workingCopy
-      ?? new Object();
     this.#remote = remote
       ?.constructor === String?
         remote
@@ -36,9 +24,12 @@ class Repository {
       ?.constructor === String?
         sourceDir
         :String();
-    this.#clone = clone instanceof File?
-      clone
-      :null;
+    this.#client = config
+      ?.setting
+      ?.global
+      ?.clients
+      ?.workingCopy
+      ?? new Object();
   }
   
   get branch() {
@@ -147,8 +138,7 @@ class Repository {
       ?? String();
       
     const actionObject = client
-      ?.actions
-      ?[action ?? String()]
+      ?.actions[action ?? String()]
       ?? new Object();
     const actionPath = actionObject
       ?.endpoint
@@ -209,7 +199,7 @@ class Repository {
         xCallbackPath ?? String(),
         "/",
         action ?? String(),
-        "?"
+        "?",
         params?.filter(
           ([name, value]) => (
             name?.constructor === String
@@ -230,5 +220,5 @@ class Repository {
   }
 }
 
-module.exports = Reppsitory;
+module.exports = Repository;
 module.exports.Repository = Repository;

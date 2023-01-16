@@ -255,7 +255,6 @@ class File {
     path = path?.constructor === String?
       path
       :String();
-    
     this.#subpath = this
     .constructor
     .trimPath(
@@ -271,7 +270,6 @@ class File {
       ?.constructor === String?
         relativePath
         :String();
-    
     this.subpath = this
       .constructor
       .trimPath(
@@ -293,7 +291,6 @@ class File {
       ?.constructor === String?
         relativePath
         :String();
-    
     return this
       .constructor
       .trimPath(
@@ -320,7 +317,6 @@ class File {
       ?.constructor === String?
         relativePath
         :String();
-    
     return this
       .constructor
       .trimPath(
@@ -397,7 +393,6 @@ class File {
   ) {
     l = this.trimPath(l) ?? String();
     r = this.trimPath(r) ?? String();
-    
     return l === String()?
       r
       :r === String()?
@@ -465,7 +460,6 @@ class File {
     tree = Array.isArray(tree)?
       tree
       :new Array();
-      
     const path = tree
     ?.filter((node) => (
         node?.constructor === String
@@ -653,12 +647,12 @@ class SecretsFile extends File {
 
 class RepoFile extends File {
   #repo;
-  constructor(
+  #client;
+  constructor (
     subpath = String(),
     bookmark = String(),
-    remote = String(),
-    branch = String(),
-    sourceDir = String(),
+    appId = String(),
+    repoId = String(),
     clone = new File(subpath, bookmark)
   ) {
     super(
@@ -668,13 +662,15 @@ class RepoFile extends File {
     const Repository = importModule(
       "Repository"
       );
+    const config = new ScriptableConfigFile("repo.json");
     this.#repo = new Repository(
       remote ?? String(),
       branch ?? String(),
       sourceDir ?? String(),
       clone instanceof File?
         clone
-        :null
+        :null,
+      config ?? new Object()
     ) ?? null;
   }
   
@@ -693,7 +689,7 @@ class RepoFile extends File {
   get repo() {
     const Repository = importModule(
       "Repository"
-    );
+    ); 
     return this.#repo ?? null;
   }
   
@@ -710,6 +706,22 @@ class RepoFile extends File {
   write() {
     throw new ReferenceError("File::RepoFile:write: Cannot directly write to a repo file. Use mergeFromClone if you want to write files from your clone to your repo.");
   }
+}
+
+class SourceRepoFile extends RepoFile {
+  constructor (
+    subpath,
+    bookmark,
+    appId,
+    repoId
+    clone
+  ) {
+    
+  }
+}
+
+class DistRepoFile extends RepoFile {
+  
 }
 
 class ScriptableFile extends CloudFile {
@@ -734,7 +746,7 @@ class ScriptableConfigFile extends ConfigFile {
   }
 }
 
-class ScriptableRepoFile extends RepoFile {
+class ScriptableSourceRepoFile extends SourceRepoFile {
   constructor (
     subpath = String()
   ) {
@@ -775,16 +787,9 @@ class ScriptableRepoFile extends RepoFile {
       scriptableRepoConfig
         ?.sourceDir
         ?? String(),
-      clone = new ScriptableFile(
+      new ScriptableFile(
         subpath ?? String()
       ) ?? null
-    );
-    
-    
-    super(
-      subpath ?? String(),
-      "Repositories/Scriptable/src",
-      new ScriptableFile(subpath ?? String())
     );
   }
 }
@@ -817,8 +822,10 @@ module.exports.CloudFile = CloudFile;
 module.exports.ConfigFile = ConfigFile;
 module.exports.SecretsFile = SecretsFile;
 module.exports.RepoFile = RepoFile;
+module.exports.SourceRepoFile = SourceRepoFile;
+module.exports.DistRepoFile = DistRepoFile;
 module.exports.ScriptableFile = ScriptableFile;
 module.exports.ScriptableConfigFile = ScriptableConfigFile;
-module.exports.ScriptableRepoFile = ScriptableRepoFile;
+module.exports.ScriptableSourceRepoFile = ScriptableRepoFile;
 module.exports.ShortcutsConfigFile = ShortcutsConfigFile;
 module.exports.ShortcutsDataFile = ShortcutsDataFile;

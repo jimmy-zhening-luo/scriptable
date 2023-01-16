@@ -1,6 +1,9 @@
 {
   "app": {
     "global": {
+      "defaults": {
+        "client": "workingCopy"
+      },
       "clients": {
         "workingCopy": {
           "scheme": "working-copy://",
