@@ -4,10 +4,10 @@ This file must be manually copied from the repository into the boot dir.
 When run, it loads the core system files from the repository.
 */
 
-// v1.0.1
+// v1.0.2
 
-class Loader {
-  static bootstrap() {
+class Boot {
+  static installSystem() {
     const iFm = FileManager.iCloud();
     const lFm = FileManager.local();
     const here = iFm.joinPath(
@@ -29,5 +29,5 @@ class Loader {
   }
 }
 
-module.exports = Loader;
-module.exports.Loader = Loader;
+module.exports = Boot;
+module.exports.Boot = Boot;
