@@ -4,13 +4,15 @@ This file must be manually copied from the repository into the boot dir.
 When run, it loads the core system files from the repository.
 */
 
+// v1.0.1
+
 class Loader {
   static bootstrap() {
     const iFm = FileManager.iCloud();
     const lFm = FileManager.local();
     const here = iFm.joinPath(
       iFm.bookmarkedPath(
-        "iCloud/Scriptable"
+        "!HERE"
       ),
       "system"
     );

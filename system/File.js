@@ -1175,7 +1175,7 @@ class ScriptableFile extends CloudFile {
   ) {
     super(
       script ?? String(),
-      "iCloud/Scriptable"
+      "!HERE"
     );
   }
 }

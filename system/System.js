@@ -15,7 +15,7 @@ class System {
     const lFm = FileManager.local();
     const here = iFm.joinPath(
       iFm.bookmarkedPath(
-        "iCloud/Scriptable"
+        "!HERE"
       ),
       "lib"
     );
@@ -61,7 +61,7 @@ class System {
           const lFm = FileManager.local();
           const here = 
             iFm.bookmarkedPath(
-              "iCloud/Scriptable"
+              "!HERE"
             );
           const destination = here;
             

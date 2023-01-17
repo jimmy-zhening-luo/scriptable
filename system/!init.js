@@ -9,7 +9,6 @@ class Init {
       const Boot = importModule("!boot");
       Boot.boot();
     }
-
     
     // Use system files to initialize system.
     // Set arg1=true to load libraries from repo.
