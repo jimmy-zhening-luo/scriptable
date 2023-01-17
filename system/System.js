@@ -53,7 +53,7 @@ class System {
       confirm.message = "Initializing scripts will delete all scripts in this Are you sure you want to override current production files?";
       confirm.addDestructiveAction("Yes, DELETE prod");
       confirm.addCancelAction("No, cancel");
-      confirm.present().then((value) => (handle(value)));
+      confirm.present().then((value) => (pull(value)));
       
       function pull(value = -1) {
         if (value === 0) {
@@ -71,9 +71,49 @@ class System {
             );
           const source = there;
           
-          const scripts = iFm.listContents(here).filter((item) => (!item.startsWith("!") && !item === "lib"));
+          const dScripts = iFm
+            .listContents(
+              destination
+            ).filter((leaf) => (
+              !leaf.startsWith("!")
+              && !(leaf === "lib")
+              && !(leaf === "boot")
+              && !(leaf === "system")
+              && !(leaf === ".Trash")
+            ));
+            
+          const sScripts = lFm
+            .listContents(
+              source
+            ).filter((leaf) => (
+              !leaf.startsWith("!")
+              && !(leaf === "lib")
+              && !(leaf === "boot")
+              && !(leaf === "system")
+              && !(leaf === ".Trash")
+            ));
+            
+          for (const leaf of dScripts) {
+            const dFile = iFm.joinPath(
+              destination,
+              leaf
+            );
+            console.log(dFile);
+            iFm.remove(dFile);
+          }
           
-          console.log(scripts);
+          for (const leaf of sScripts) {
+            const sFile = iFm.joinPath(
+              source,
+              leaf
+            );
+            const dFile = iFm.joinPath(
+              destination,
+              leaf
+            );
+            console.log([sFile, dFile]);
+            iFm.copy(sFile, dFile);
+          }
         }
       }
     }
