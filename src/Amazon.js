@@ -1,8 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: teal; icon-glyph: magic;
-const File = importModule("File");
-// const Folder = importModule("Folder");
+const File = importModule("lib/File");
 
 const data = Object.freeze({
   files: {
