@@ -8,7 +8,7 @@
       "boot": "boot",
       "system": "system",
       "libraries": "lib",
-      "scripts": ""
+      "applications": ""
     },
     "filePrefixes": {
       "protectedFile": "!"
