@@ -16,12 +16,8 @@ class Loader {
     );
     const destination = here;
       
-    const there = lFm.joinPath(
-      lFm.bookmarkedPath(
-        "Repositories/Scriptable"
-      ),
-      "system"
-    );
+    const there = lFm.bookmarkedPath(
+      "!SYSTEM");
     const source = there;
     
     if (iFm.isDirectory(destination))

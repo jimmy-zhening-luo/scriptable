@@ -1,12 +1,9 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// always-run-in-app: true; icon-color: deep-gray;
-// icon-glyph: magic;
-//const File = importModule("File");
-
+// icon-color: deep-blue; icon-glyph: magic;
 const bookmarks = {
   local: "iCloud/Scriptable",
-  repo: "Repositories/Scriptable"
+  repo: "Repositories/Scriptable/src"
 };
 
 let dirs = new Map();
@@ -21,11 +18,9 @@ try {
   console.error(e);
 }
 
-const subpathSrc = "src";
-
 try {
   const fm = FileManager.local();
-  const pathRepoSrc = fm.joinPath(dirs.get("repo"), subpathSrc);
+  const pathRepoSrc = dirs.get("repo");
   
   if (fm.isDirectory(pathRepoSrc)) {
     fm.remove(pathRepoSrc);
@@ -41,8 +36,7 @@ try {
   let next = new CallbackURL("working-copy://open");
   
   const nextParams = {
-    repo: "https://jimmy-zhening-luo@github.com/jimmy-zhening-luo/iOS-scriptable-ecosystem.git",
-    path: subpathSrc
+    repo: "https://jimmy-zhening-luo@github.com/jimmy-zhening-luo/iOS-scriptable-ecosystem.git"
   };
   
   Object.entries(nextParams).map(([key, value]) => next.addParameter(key, value));

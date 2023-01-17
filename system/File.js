@@ -1,6 +1,431 @@
-// Variables used by Scriptable.
-// These must be at the very top of the file. Do not edit.
-// icon-color: gray; icon-glyph: magic;
+class Config {
+  #data = new Object();
+  #source = undefined;
+  #parsed = false;
+  constructor(
+    data = String(),
+    source = undefined
+  ) {
+    this.#parsed = false;
+    this.#source = source;
+    try {
+      if (data?.constructor !== String)
+        throw new TypeError(
+          "non-string data passed to setter when expecting string"
+        );
+      if (data === String())
+        throw new SyntaxError(
+          "empty string data when expected non-empty string"
+        );
+      else {
+        this.#data = JSON.parse(data);
+        if (this.#data instanceof Object)
+          this.#parsed = true;
+        else 
+          throw new SyntaxError(
+            "Json parser did not throw error when parsing the data, but returned parsed results that were not an Object"
+          );
+      }
+    } catch (e) {
+      console.warn("Config:set data: data string could not be parsed into an Object. See caught error: " + e);
+      this.#parsed = false;
+      this.#data = new Object();
+    }
+  }
+  
+  get app() {
+    return this.data?.app ?? new Object();
+  }
+  
+  get data() {
+    return this.#data ?? new Object();
+  }
+  
+  get parsed() {
+    return this.#parsed === true;
+  }
+  
+  get setting() {
+    return this.settingUserOverrideAllowed ?? new Object();
+  }
+  
+  get settingAppEnforced() {
+    return this.constructor.mergeObjects(
+      this.app ?? new Object(),
+      this.user ?? new Object()
+    ) ?? new Object();
+  }
+  
+  get settingUserOverrideAllowed() {
+    return this.constructor.mergeObjects(
+      this.user ?? new Object(),
+      this.app ?? new Object()
+      ) ?? new Object();
+  }
+  
+  get source() {
+    return this.#source;
+  }
+  
+  get user() {
+    return this.data?.user ?? new Object();
+  }
+  
+  static mergeObjects(
+    winners = new Object(),
+    losers = new Object()
+  ) {
+    const mergePrimitives = function(
+      winner = String(),
+      loser = String()
+    ) {
+      return (winner ?? loser) ?? String();
+    };
+    
+    const mergeArrays = function(
+      winner = new Array(),
+      loser =  new Array()
+    ) {
+      return (
+        (Array.isArray(winner)?
+          winner
+          :new Array()
+        )?.concat(
+          (Array.isArray(loser)?
+            loser
+            :new Array()
+          )
+        )
+      ) ?? new Array();
+    };
+    
+    const primitive = function(
+      obj = new Object()
+    ) {
+      return (
+        obj?.constructor === String
+        || obj?.constructor === Number
+        || obj?.constructor === Boolean
+      );
+    };
+    
+    const intersectKeys = function(
+      a = new Object(),
+      b = new Object()
+    ) {
+      return Object.keys(a)?.filter(
+        (aKey) => (
+          Object.keys(b)?.includes(aKey)
+        )
+      ) ?? new Array();
+    };
+    
+    const uniqueKeysOf = function(
+      obj = new Object(),
+      intersection = new Array()
+    ) {
+      return Object.keys(obj)?.filter(
+        (objKey) => (
+          !intersection?.includes(objKey)
+        )
+      ) ?? new Array();
+    };
+    
+    const intersection = intersectKeys(
+      winners ?? new Object(),
+      losers ?? new Object()
+    ) ?? new Array(); 
+    
+    const uniqueWinners = uniqueKeysOf(
+      winners ?? new Object(),
+      intersection ?? new Array()
+    ) ?? new Array();
+    const uniqueLosers = uniqueKeysOf(
+      losers ?? new Object(),
+      intersection ?? new Array()
+      ) ?? new Array();
+      
+    const merger = new Map();
+    for (const l of uniqueLosers)
+      merger.set(l, losers[l]);
+    for (const w of uniqueWinners)
+      merger.set(w, winners[w]);
+    for (const i of intersection) {
+      if (winners[i] === undefined
+        || winners[i] === null
+      ) merger.set(i, losers[i]);
+      else if (losers[i] === undefined
+        || losers[i] === null
+      ) merger.set(i, winners[i]);
+      else if (primitive(winners[i])
+        && primitive(losers[i])
+      ) merger.set(i, mergePrimitives(
+          winners[i],
+          losers[i]
+        )
+      );
+      else if (Array.isArray(winners[i])
+        && Array.isArray(losers[i])
+      ) merger.set(i, mergeArrays(
+          winners[i],
+          losers[i]
+        )
+      );
+      else if (Array.isArray(winners[i]))
+        merger.set(i, mergeArrays(
+          winners[i],
+          [losers[i]]
+        )
+      );
+      else if (Array.isArray(losers[i]))
+        merger.set(i, mergeArrays(
+          [winners[i]],
+          losers[i]
+        )
+      );
+      else
+        merger.set(i, this.mergeObjects(
+          winners[i],
+          losers[i]
+        )
+      );
+    }
+    return (
+      Object.fromEntries(merger)
+      ?? new Object()
+    );
+  }
+  
+  toString() {
+    return JSON.stringify(
+      this.data ?? new Object()
+    ) ?? String();
+  }
+}
+
+module.exports = Config;
+module.exports.Config = Config;
+
+
+class Repository {
+  #remote = String();
+  #branch = String();
+  #sourceDir = String();
+  #client = new Object();
+  constructor(
+    remote = String(),
+    branch = String(),
+    sourceDir = String(),
+    client = new Object()
+  ) {
+    this.#remote = remote
+      ?.constructor === String?
+        remote
+        :String();
+    this.#branch = branch
+      ?.constructor === String?
+        branch
+        :String();
+    this.#sourceDir = sourceDir
+      ?.constructor === String?
+        sourceDir
+        :String();
+    this.#client = config
+      ?.setting
+      ?.global
+      ?.clients
+      ?.workingCopy
+      ?? new Object();
+  }
+  
+  get branch() {
+    return this.#branch ?? String();
+  }
+  
+  get client() {
+    return this.#client ?? new Object();
+  }
+  
+  get clone() {
+    return this.#clone;
+  }
+  
+  get key() {
+    const File = importModule("File");
+    return new File.SecretsFile(
+      this.client?.keyDir ?? String()
+      ?? String()
+    )?.key;
+  }
+  
+  get remote() {
+    return this.#remote ?? String();
+  }
+  
+  get sourceDir() {
+    return this.#sourceDir ?? String();
+  }
+  
+  checkout() {
+    const url = this.#buildRepoClientUrl(
+      "checkout",
+      this.remote ?? String(),
+      this.branch ?? String(),
+      String()
+    ) ?? String();
+  }
+  
+  commit() {
+    const url = this.#buildRepoClientUrl(
+      "commit",
+      this.remote ?? String(),
+      String(),
+      this.sourceDir ?? String()
+      ) ?? String();
+  }
+  
+  mergeFromClone(
+    repoFile
+  ) {
+    // check status, if changed commit and end.
+    // else pull from remote.
+    
+    //   if error cannot merge, end
+    //.  else check status, if changed commit and end. 
+    //.      else checkout mergeFromClone branch (dev)
+    // pull from remote again
+    //   if error cannot merge, end
+    //   else check status, if changed commit and end
+    //  else delete dir & copy files
+    //.   prompt commit & return true
+    const success = false;
+    return success;
+  }
+  
+  pull() {
+    const url = this.#buildRepoClientUrl(
+      "pull",
+      this.remote ?? String(),
+      String(),
+      String()
+      ) ?? String();
+  }
+  
+  status() {
+    const url = this.#buildRepoClientUrl(
+      "status",
+      this.remote ?? String(),
+      String(),
+      String()
+      ) ?? String();
+  }
+  
+  toString() {
+    return [
+      this.#remote ?? String(),
+      this.#branch ?? String()
+    ]?.join(":") ?? String();
+  }
+  
+  #buildRepoClientUrl(
+    action = String(),
+    remote = String(),
+    branch = String(),
+    sourceDir = String()
+  ) {
+    const client = this
+      .client
+      ?? new Object();
+    const scheme = client
+      ?.scheme
+      ?? String();
+    const xCallbackPath = client
+      ?.xCallbackPath
+      ?? String();
+      
+    const actionObject = client
+      ?.actions[action ?? String()]
+      ?? new Object();
+    const actionPath = actionObject
+      ?.endpoint
+      ?? String();
+    
+    const params = new Map();
+    const paramNames = client
+      ?.paramNames
+      ?? new Object();
+    params.set(
+      paramNames?.key ?? String(),
+      this.key ?? String()
+    );
+    if (remote?.constructor === String
+      && remote !== String()
+    ) params.set(
+        paramNames?.remote ?? String(),
+        remote ?? String()
+    );
+    if (branch?.constructor === String
+      && branch !== String()
+    ) params.set(
+        paramNames?.branch ?? String(),
+        branch ?? String()
+    );
+    if (sourceDir?.constructor === String
+      && sourceDir !== String()
+    ) params.set(
+        paramNames?.sourceDir ?? String(),
+        sourceDir ?? String()
+    );
+    const specialParams = actionObject
+      ?.specialParams;
+    if (specialParams instanceof Object)
+      for (const [name, value] of Object.entries(
+        specialParams
+        )
+      ) params.set(
+          name ?? String(),
+          value ?? String()
+      );
+      
+    return buildUrl(
+      scheme ?? String(),
+      xCallbackPath ?? String(),
+      actionPath ?? String(),
+      params ?? new Map()
+    ) ?? String();
+      
+    const buildUrl = function (
+      scheme = String(),
+      xCallbackPath = String(),
+      actionPath = String(),
+      params = new Map()
+    ) {
+      return [
+        scheme ?? String(),
+        xCallbackPath ?? String(),
+        "/",
+        action ?? String(),
+        "?",
+        params?.filter(
+          ([name, value]) => (
+            name?.constructor === String
+            && name !== String()
+            && value?.constructor === String
+            && value !== String()
+          )
+        )?.map(
+          ([name, value]) => (
+            String(name)?.concat(
+              "=",
+              String(value)
+            )
+          )
+        )?.join("&") ?? String()
+      ].join("") ?? String();
+    };
+  }
+}
+
 class File {
   #subpath = String();
   #bookmark = String();
@@ -560,7 +985,6 @@ class ConfigFile extends File {
   }
   
   get config() {
-    const Config = importModule("Config");
     try {
       const data = super.data;
       if (data?.constructor !== String)
@@ -646,23 +1070,44 @@ class SecretsFile extends File {
 }
 
 class RepoFile extends File {
-  #repo;
   #client;
+  #repo;
+  #clone;
   constructor (
-    subpath = String(),
-    bookmark = String(),
+    repoSubpath = String(),
+    repoBookmark = String(),
+    cloneSubpath = String(),
+    cloneBookmark = String()
     appId = String(),
+    repoType = String(),
     repoId = String(),
-    clone = new File(subpath, bookmark)
+    clientId = String()
   ) {
     super(
       subpath ?? String(),
       bookmark ?? String()
     );
-    const Repository = importModule(
-      "Repository"
-      );
-    const config = new ScriptableConfigFile("repo.json");
+    
+    const config = (new ScriptableConfigFile("repo.json"))
+      ?.setting;
+    
+    clientId = (clientId?
+      .constructor !== String
+      || clientId === String)?
+        config
+          ?.setting
+          ?.global
+          ?.defaults
+          ?.client
+        :clientId;
+    
+    this.#client = config
+      ?.setting
+      ?.global
+      ?.clients[clientId];
+    
+    
+
     this.#repo = new Repository(
       remote ?? String(),
       branch ?? String(),
@@ -817,6 +1262,7 @@ class ShortcutsDataFile extends CloudFile {
 }
 
 module.exports = File;
+module.exports.Repository = Repository;
 module.exports.File = File;
 module.exports.CloudFile = CloudFile;
 module.exports.ConfigFile = ConfigFile;
