@@ -1,18 +1,5 @@
 class System {
-  static init() {
-    this.installLibraries();
-    this.installApplications();
-  }
-  
   static installLibraries() {
-    this.#pullLibFromRepoSource();
-  }
-  
-  static installApplications() {
-    this.#pullRootFromRepoSource(false);
-  }
-  
-  static #pullLibFromRepoSource() {
     const iFm = FileManager.iCloud();
     const lFm = FileManager.local();
     const here = iFm.joinPath(
@@ -37,9 +24,8 @@ class System {
       iFm.copy(source, destination);
   }
   
-  static #pullRootFromRepoSource(
-    force = false
-  ) {
+  static installApplications() {
+    const force = false;
     if (force === true)
       pull(0);
     else {
@@ -107,12 +93,12 @@ class System {
             );
             console.log([sFile, dFile]);
             iFm.copy(sFile, dFile);
-          }
-        }
-      }
-    }
-  }
-}
+          } // pull.for
+        } // pull
+      } // if user prompt yes
+    } // installApplications.if(force)
+  } // installApplications
+} // class System
 
 module.exports = System;
 module.exports.System = System;
