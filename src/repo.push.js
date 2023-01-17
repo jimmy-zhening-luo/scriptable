@@ -4,7 +4,7 @@
 // icon-glyph: magic;
 const bookmarks = {
   local: "iCloud/Scriptable",
-  repo: "Repositories/Scriptable"
+  repo: "Repositories/Scriptable/src"
 };
 
 let dirs = new Map();
@@ -23,7 +23,7 @@ const subpathSrc = "src";
 
 try {
   const fm = FileManager.local();
-  const pathRepoSrc = fm.joinPath(dirs.get("repo"), subpathSrc);
+  const pathRepoSrc = dirs.get("repo");
   
   if (fm.isDirectory(pathRepoSrc)) {
     fm.remove(pathRepoSrc);
