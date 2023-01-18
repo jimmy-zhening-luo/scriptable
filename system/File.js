@@ -203,15 +203,11 @@ class Config {
   }
 }
 
-module.exports = Config;
-module.exports.Config = Config;
-
-
 class Repository {
   #remote = String();
   #branch = String();
   #sourceDir = String();
-  #client = new Object();
+  #clientId = String();
   constructor(
     remote = String(),
     branch = String(),
@@ -282,24 +278,6 @@ class Repository {
       String(),
       this.sourceDir ?? String()
       ) ?? String();
-  }
-  
-  mergeFromClone(
-    repoFile
-  ) {
-    // check status, if changed commit and end.
-    // else pull from remote.
-    
-    //   if error cannot merge, end
-    //.  else check status, if changed commit and end. 
-    //.      else checkout mergeFromClone branch (dev)
-    // pull from remote again
-    //   if error cannot merge, end
-    //   else check status, if changed commit and end
-    //  else delete dir & copy files
-    //.   prompt commit & return true
-    const success = false;
-    return success;
   }
   
   pull() {
@@ -424,6 +402,10 @@ class Repository {
       ].join("") ?? String();
     };
   }
+}
+
+class WorkingCopyRepository extends Repository {
+  
 }
 
 class File {
@@ -1132,9 +1114,6 @@ class RepoFile extends File {
   }
   
   get repo() {
-    const Repository = importModule(
-      "Repository"
-    ); 
     return this.#repo ?? null;
   }
   
@@ -1143,9 +1122,22 @@ class RepoFile extends File {
       ?? String();
   }
   
-  mergeFromClone() {
-    return this.repo
-      ?.mergeFromClone(this) === true;
+  mergeFromClone(
+    repoFile
+  ) {
+    // check status, if changed commit and end.
+    // else pull from remote.
+    
+    //   if error cannot merge, end
+    //.  else check status, if changed commit and end. 
+    //.      else checkout mergeFromClone branch (dev)
+    // pull from remote again
+    //   if error cannot merge, end
+    //   else check status, if changed commit and end
+    //  else delete dir & copy files
+    //.   prompt commit & return true
+    const success = false;
+    return success;
   }
   
   write() {
@@ -1163,10 +1155,6 @@ class SourceRepoFile extends RepoFile {
   ) {
     
   }
-}
-
-class DistRepoFile extends RepoFile {
-  
 }
 
 class ScriptableFile extends CloudFile {
@@ -1262,7 +1250,9 @@ class ShortcutsDataFile extends CloudFile {
 }
 
 module.exports = File;
+module.exports.Config = Config;
 module.exports.Repository = Repository;
+module.exports.WorkingCopyRepository = WorkingCopyRepository;
 module.exports.File = File;
 module.exports.CloudFile = CloudFile;
 module.exports.ConfigFile = ConfigFile;
