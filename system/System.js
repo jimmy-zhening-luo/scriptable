@@ -98,6 +98,10 @@ class System {
       } // if user prompt yes
     } // installApplications.if(force)
   } // installApplications
+  
+  static backupApplications() {
+    // TBD
+  }
 } // class System
 
 module.exports = System;
