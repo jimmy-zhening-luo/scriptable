@@ -3,7 +3,7 @@ const Bookmark = importModule("Bookmark");
 class File {
   #subpath = String();
   #bookmark = new Bookmark();
-  #m = FileManager.local();
+  #m = FileManager.iCloud();
   constructor (
     bookmark = new Bookmark(),
     subpath = String()
@@ -381,10 +381,10 @@ class File {
   
   static get Manager() {
     try {
-      const m = FileManager?.local() ?? null;
+      const m = FileManager?.iCloud() ?? null;
       return m;
     } catch (e) {
-      console.error("Fatal: File:Manager: Failed to get a FileManager.local() instance from the Scriptable  native library FileManager. See. caught error: " + e);
+      console.error("Fatal: File:Manager: Failed to get a FileManager.iCloud() instance from the Scriptable  native library FileManager. See. caught error: " + e);
       return null;
     }
   }
@@ -513,18 +513,6 @@ class File {
   }
 }
 
-class CloudFile extends File {
-  static get Manager() {
-    try {
-      const m = FileManager?.iCloud() ?? null;
-      return m;
-    } catch (e) {
-      console.error("Fatal: File:Manager: Failed to get a FileManager.iCloud() instance from the Scriptable  native library FileManager. See. caught error: " + e);
-      return null;
-    }
-  }
-}
-
 class SecretsFile extends File {
   constructor(
     subpath = String()
@@ -551,5 +539,4 @@ class SecretsFile extends File {
 module.exports = File;
 module.exports.Bookmark = Bookmark;
 module.exports.File = File;
-module.exports.CloudFile = CloudFile;
 module.exports.SecretsFile = SecretsFile;
