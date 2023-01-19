@@ -23,10 +23,7 @@ class Data {
             programName
             ?.constructor === String
           )?
-          [
-            programName ?? String(),
-            String("txt")
-          ].join(".")
+          programName
           :String()
         ) ?? String(),
         (
@@ -39,15 +36,19 @@ class Data {
     ) ?? new File();
   }
   
+  get path() {
+    return this.#file?.path ?? String();
+  }
+  
   get data() {
     return this.#file?.data ?? String();
   }
   
-  load() {
+  read() {
     return this.data ?? String();
   }
   
-  save(
+  write(
     text = String()
   ) {
     const overwrite = true;
@@ -57,6 +58,10 @@ class Data {
       :String(),
       overwrite
     );
+  }
+  
+  toString() {
+    return this.data ?? String();
   }
 }
 

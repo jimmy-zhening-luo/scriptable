@@ -22,10 +22,10 @@ class Program {
   }
   
   static get dataRoot() {
-    return this.configRoot();
+    return this.configRoot;
   }
   
-  static getData(
+  static loadData(
     subpath = String()
   ) {
     return new Data(
@@ -34,7 +34,18 @@ class Program {
       (subpath?.constructor === String)?
         subpath
         :String()
-      ) ?? new Data();
+      );
+  }
+  
+  static saveData(
+    subpath = String(),
+    data = String()
+  ) {
+    this.loadData(subpath)?.write(
+      (data?.constructor === String)?
+      data
+      :String()
+    );
   }
 }
 

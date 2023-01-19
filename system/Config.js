@@ -30,6 +30,10 @@ class Config {
     ) ?? new ReadOnlyFile();
   }
   
+  get path() {
+    return this.#file?.path ?? String();
+  }
+  
   get isParseable() {
     try {
       JSON.parse(this.#file?.data);

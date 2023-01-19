@@ -4,64 +4,33 @@
 const Shortcut = importModule("lib/Shortcut");
 
 class Amazon extends Shortcut {
-  
-}
-
-
-const File = importModule("system/File");
-
-const data = Object.freeze({
-  files: {
-    latestRun: new File.ShortcutsDataFile(
-      "Amazon/last-run.txt"
+  static run() {
+    const dataPath = "last-run.txt";
+    const latestRunData = this
+      .loadData(
+        dataPath
+      )
+      ?.toString()
+    ?? String();
+    const latestRun = (
+      (latestRunData === String())?
+        new Date()
+        :new Date(latestRunData)
     )
-  }
-});
-
-console.log(data.files.latestRun.data)
-
-const latestRun = (
-  (data.files.latestRun instanceof File)?
-    data.files.latestRun.data :
-    String()
-);
-
-console.log("latestRun string: " + latestRun)
-
-const latestRunTime = (
-  (latestRun === String())?
-    new Date() :
-    new Date(latestRun)
-);
-
-data.files.latestRun.write(
-  (new Date()).toISOString(),
-  true
-);
-
-console.log(
-  "lastRun: "
-  + latestRunTime
-);
-console.log(
-  "min since last: "
-  + (
+    ?? new Date();
+    this
+    .saveData(
+      dataPath,
+      (new Date()).toISOString()
+    )
+    return (
       (
         Date.now()
-        -
-        latestRunTime
+        - latestRun.getTime()
       )
-      /
-      60000
-    )  
-);
+      > 300000
+    );
+  }
+}
 
-return (
-  (
-    Date.now()
-    -
-    latestRunTime.getTime()
-  )
-  >
-  300000
-);
+return Amazon.run();
