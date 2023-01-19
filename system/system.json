@@ -1,0 +1,28 @@
+{
+  "system": {
+    "prod": {
+      "dirs": {
+        "config": "config",
+        "lib": "lib",
+        "program": ""
+      },
+      "protected": {
+        "filePrefix": "!"
+      }
+    },
+    "source": {
+      "config": {
+        "bookmark": "Repositories/Scriptable/config",
+        "subpath": ""
+      },
+      "lib": {
+        "bookmark": "Repositories/Scriptable/src",
+        "subpath": "lib"
+      },
+      "program": {
+        "bookmark": "Repositories/Scriptable/src",
+        "subpath": ""
+      }
+    }
+  }
+}

@@ -1,6 +1,15 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: teal; icon-glyph: magic;
+const Application = importModule("system/Application");
+
+const Shortcut = Application.Shortcut;
+
+class Amazon extends Shortcut {
+  
+}
+
+
 const File = importModule("system/File");
 
 const data = Object.freeze({
