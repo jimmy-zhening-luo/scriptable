@@ -8,7 +8,6 @@ class Config {
     programName = String()
   ) {
     const configDir = System.configDir;
-    console.log(configDir.bookmark);
     this.#file = ReadOnlyFile.fromFile(
       configDir,
       ReadOnlyFile.joinPaths(

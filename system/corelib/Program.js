@@ -6,7 +6,6 @@ class Program {
   }
   
   static get config() {
-    console.log(this.configRoot);
     return new Config(
       this.configRoot,
       this.name
