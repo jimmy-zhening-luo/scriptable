@@ -186,7 +186,7 @@ class File {
     .constructor
     .trimPath(
       this
-      .subpath
+      .path
       ?.split("/")
       ?.slice(-1)
       ?? String()
@@ -463,7 +463,7 @@ class File {
           Infinity
         )?.shift() ?? String();
         path = p1?.constructor === String?
-          first
+          p1
           :String()
       } else path = String();
     }
