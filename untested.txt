@@ -1,0 +1,11 @@
+code complete:
+data
+file.delete
+
+WIP:
+system.clean
+system: use file to clean/install
+url
+repository(url, file)
+system: use repository to clean/install
+system: use repository to push to local repo

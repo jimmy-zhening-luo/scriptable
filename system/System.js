@@ -7,10 +7,10 @@ const BOOT_MODULE = [
 
 const Boot = importModule(BOOT_MODULE);
 const ReadOnlyFile = importModule(
-  "core/file/ReadOnlyFile"
+  "file/ReadOnlyFile"
 );
 const Bookmark = importModule(
-  "core/file/Bookmark"
+  "file/Bookmark"
 );
 
 class System {
@@ -279,14 +279,14 @@ class System {
           );
           console.log([sFile, dFile]);
           iFm.copy(sFile, dFile);
-        } // pull.for
-      } // pull
-    } // if user prompt yes
-  } // installApplications
-} // class System
+        }
+      }
+    }
+  }
+}
 
 const File = importModule(
-  "core/file/File"
+  "file/File"
 );
 module.exports = System;
 module.exports.File = File;
