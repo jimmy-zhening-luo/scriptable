@@ -1,9 +1,11 @@
-const System = importModule("./system/System");
+const System = importModule("System");
 const ReadOnlyFile = System.ReadOnlyFile;
 
 class Secret {
   #file = new ReadOnlyFile();
-  constructor (secretSubpath = String()) {
+  constructor (
+    secretSubpath = String()
+  ) {
     this.#file = ReadOnlyFile.fromFile(
       System.externalSecretsDir,
       (
@@ -25,4 +27,3 @@ class Secret {
 }
 
 module.exports = Secret;
-module.exports.Secret = Secret;

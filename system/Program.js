@@ -1,4 +1,5 @@
 const Config = importModule("Config");
+const Data = importModule("Data");
 
 class Program {
   constructor() {
@@ -11,33 +12,30 @@ class Program {
   
   static get config() {
     return new Config(
-      this.configRoot,
-      this.name
+      this.configRoot ?? String(),
+      this.name ?? String()
     ) ?? new Config();
   }
   
   static get configRoot() {
     return String("Program");
   }
-}
-
-class Shortcut extends Program {
-  static get configRoot() {
-    return [
-      (
-        (super.configRoot
-          ?.constructor === String
-        )?
-          super.configRoot
-          :String()
-      ) ?? String(),
-      String("Shortcut")
-    ].join("/")
-    ?? String();
+  
+  static get dataRoot() {
+    return this.configRoot();
+  }
+  
+  static getData(
+    subpath = String()
+  ) {
+    return new Data(
+      this.dataRoot ?? String(),
+      this.name ?? String(),
+      (subpath?.constructor === String)?
+        subpath
+        :String()
+      ) ?? new Data();
   }
 }
 
 module.exports = Program;
-module.exports.Config = Config;
-module.exports.Program = Program;
-module.exports.Shortcut = Shortcut;

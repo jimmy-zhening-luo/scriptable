@@ -297,6 +297,28 @@ class File {
       ) ?? String();
   }
   
+  delete(
+    force = false
+  ) {
+    if (this.exists) {
+      if (force === true)
+        this.#m.remove(this.path);
+      else {
+        const confirm = new Alert();
+        confirm.message = "Are you sure you want to delete this file or folder (including all descendants)? Path: " + this.path;
+        confirm.addDestructiveAction("Yes, DELETE this file");
+        confirm.addCancelAction("Cancel");
+        confirm.present().then(
+          (userChoice) => (
+            (userChoice === 0)?
+            this.#m.remove(this.path)
+            :console.log("User canceled file deletion.")
+          )
+        );
+      }
+    }
+  }
+  
   pathRelativeTo(
     relativePath = String()
   ) {
@@ -511,37 +533,4 @@ class File {
   }
 }
 
-class ReadOnlyFile extends File {
-  write() {
-    throw new ReferenceError("File::ReadOnlyFile:write(): Cannot write to or overwrite a read-only file.");
-  }
-}
-
-class SecretsFile extends File {
-  constructor(
-    subpath = String()
-  ) {
-    super(
-      new Bookmark("Local/Secrets"),
-      subpath ?? String()
-    );
-  }
-  
-  get key() {
-    return this.secret ?? String();
-  }
-  
-  get secret() {
-    return this.data ?? String();
-  }
-  
-  write() {
-    throw new ReferenceError("File::SecretsFile:write: Cannot overwrite a protected secrets file.");
-  }
-}
-
 module.exports = File;
-module.exports.Bookmark = Bookmark;
-module.exports.File = File;
-module.exports.ReadOnlyFile = ReadOnlyFile;
-module.exports.SecretsFile = SecretsFile;

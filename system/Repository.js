@@ -1,4 +1,5 @@
-const File = importModule("file/File");
+const System = importModule("System");
+const ReadOnlyFile = System.ReadOnlyFile;
 
 class RepoFile extends File {
   #client;
@@ -361,5 +362,4 @@ class WorkingCopyRepository extends Repository {
 }
 
 module.exports = Repository;
-module.exports.Repository = Repository;
 module.exports.WorkingCopyRepository = WorkingCopyRepository;

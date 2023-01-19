@@ -1,11 +1,17 @@
-const BOOT_FILE = String("./boot/Boot");
-const FILE_MODULE = String(
-  "core/file/File"
-);
+const BOOT_DIR = "!boot";
+const BOOT_MODULE = [
+  ".",
+  BOOT_DIR,
+  "Boot"
+].join("/");
 
-const Boot = importModule(BOOT_FILE);
-const ReadOnlyFile = (importModule(FILE_MODULE)).ReadOnlyFile;
-const Bookmark = (importModule(FILE_MODULE)).Bookmark;
+const Boot = importModule(BOOT_MODULE);
+const ReadOnlyFile = importModule(
+  "core/file/ReadOnlyFile"
+);
+const Bookmark = importModule(
+  "core/file/Bookmark"
+);
 
 class System {
   static get config() {
@@ -32,7 +38,7 @@ class System {
   static get bootDir() {
     return ReadOnlyFile.fromFile(
       this.root,
-      Boot.BOOT_DIR
+      BOOT_DIR
     );
   }
   
@@ -153,7 +159,25 @@ class System {
     );
   }
   
+  static clean() {
+    this.cleanConfigs();
+    this.cleanLibraries();
+    this.cleanPrograms();
+  }
+  
+  static install() {
+    this.clean();
+    this.installConfigs();
+    this.installLibraries();
+    this.installPrograms();
+  }
+  
+  static cleanConfigs() {
+    
+  }
+  
   static installConfigs() {
+    this.cleanConfigs();
     const iFm = FileManager.iCloud();
     const lFm = FileManager.local();
     
@@ -169,7 +193,12 @@ class System {
     iFm.copy(source, destination);
   }
   
+  static cleanLibraries() {
+    
+  }
+  
   static installLibraries() {
+    this.cleanLibraries();
     const iFm = FileManager.iCloud();
     const lFm = FileManager.local();
     
@@ -185,7 +214,12 @@ class System {
     iFm.copy(source, destination);
   }
   
+  static cleanPrograms() {
+    
+  }
+  
   static installPrograms() {
+    this.cleanPrograms();
     const confirm = new Alert();
     confirm.message = "Initializing scripts will delete all scripts currently shown. Are you sure you want to override current production files?";
     confirm.addDestructiveAction("Yes, DELETE prod");
@@ -251,9 +285,10 @@ class System {
   } // installApplications
 } // class System
 
-const File = importModule(FILE_MODULE);
+const File = importModule(
+  "core/file/File"
+);
 module.exports = System;
 module.exports.File = File;
 module.exports.ReadOnlyFile = ReadOnlyFile;
 module.exports.Bookmark = Bookmark;
-module.exports.System = System;

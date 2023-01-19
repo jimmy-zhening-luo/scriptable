@@ -1,4 +1,4 @@
-const System = importModule("./system/System");
+const System = importModule("System");
 const ReadOnlyFile = System.ReadOnlyFile;
 
 class Config {
@@ -201,4 +201,3 @@ class Config {
 }
 
 module.exports = Config;
-module.exports.Config = Config;

@@ -37,4 +37,3 @@ class Bookmark {
 }
 
 module.exports = Bookmark;
-module.exports.Bookmark = Bookmark;
