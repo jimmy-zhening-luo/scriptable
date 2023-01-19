@@ -1,6 +1,11 @@
-const Boot = importModule("./boot/Boot");
-const ReadOnlyFile = (importModule("corelib/file/File")).ReadOnlyFile;
-const Bookmark = (importModule("corelib/file/File")).Bookmark;
+const BOOT_FILE = String("./boot/Boot");
+const FILE_MODULE = String(
+  "core/file/File"
+);
+
+const Boot = importModule(BOOT_FILE);
+const ReadOnlyFile = (importModule(FILE_MODULE)).ReadOnlyFile;
+const Bookmark = (importModule(FILE_MODULE)).Bookmark;
 
 class System {
   static get config() {
@@ -246,7 +251,7 @@ class System {
   } // installApplications
 } // class System
 
-const File = importModule("corelib/file/File");
+const File = importModule(FILE_MODULE);
 module.exports = System;
 module.exports.File = File;
 module.exports.ReadOnlyFile = ReadOnlyFile;

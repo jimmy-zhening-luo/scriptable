@@ -5,6 +5,10 @@ class Program {
     throw new TypeError("class Program::" + this.constructor.name + ":constructor(): Program is an abstract class that is meant to be inherited, not instantiated.");
   }
   
+  static run() {
+    throw new TypeError("class Program::" + this.constructor.name + ":run(): Program:run() is an abstract function. It should be implemented by the inheriting class.");
+  }
+  
   static get config() {
     return new Config(
       this.configRoot,

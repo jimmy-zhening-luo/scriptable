@@ -1,7 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: gray; icon-glyph: magic; share-sheet-inputs: plain-text;
-const File = importModule("File");
+const Shortcut = (importModule("system/core/Program")).Shortcut;
 
 class App {
   #name = String();
@@ -104,24 +104,29 @@ class AppEngine extends Engine {
   }
 }
 
-const query = new Query(args.plainTexts.shift());
-
-const config = new File.ShortcutsConfigFile("Search/search.json");
-
-const querytag = config.setting.queryTag;
-
-const appToEngine = {
-  mail: MailApp,
-  files: FilesApp,
-  shortcuts: ShortcutsApp
-};
-
-const engines = config.setting.engineKeys.map((engine) => (engine.urls? new WebEngine(engine.keys, engine.urls, querytag, engine.webview) : new AppEngine(engine.keys, new appToEngine[engine.app]())));
-
-const engine = engines.find((engine) => (engine.keys.includes(query.key)));
-
-if (engine !== undefined && engine !== null && engine !== []) {
-  return engine.run(query);
-} else {
-  return null;
+class Search extends Shortcut {
+  static run(query) {
+    const config = this.config.merged;
+    
+    const querytag = config.queryTag;
+    
+    const appToEngine = {
+      mail: MailApp,
+      files: FilesApp,
+      shortcuts: ShortcutsApp
+    };
+    
+    const engines = config.engineKeys.map((engine) => (engine.urls? new WebEngine(engine.keys, engine.urls, querytag, engine.webview) : new AppEngine(engine.keys, new appToEngine[engine.app]())));
+    
+    const engine = engines.find((engine) => (engine.keys.includes(query.key)));
+    
+    if (engine !== undefined && engine !== null && engine !== []) {
+      return engine.run(query);
+    } else {
+      return null;
+    }
   }
+}
+
+return Search.run(new Query(args.plainTexts.shift()));
+
