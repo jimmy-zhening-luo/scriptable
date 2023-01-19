@@ -215,10 +215,6 @@ class System {
       } // pull
     } // if user prompt yes
   } // installApplications
-  
-  static backupPrograms() {
-    // TBD
-  }
 } // class System
 
 module.exports = System;
