@@ -21,8 +21,6 @@ class File {
     file = new this(),
     relativePath = String()
   ) {
-    if (!(file instanceof this))
-      file = new this();
     if (relativePath
       ?.constructor !== String
     ) relativePath = String();
@@ -513,6 +511,12 @@ class File {
   }
 }
 
+class ReadOnlyFile extends File {
+  write() {
+    throw new ReferenceError("File::ReadOnlyFile:write(): Cannot write to or overwrite a read-only file.");
+  }
+}
+
 class SecretsFile extends File {
   constructor(
     subpath = String()
@@ -539,4 +543,5 @@ class SecretsFile extends File {
 module.exports = File;
 module.exports.Bookmark = Bookmark;
 module.exports.File = File;
+module.exports.ReadOnlyFile = ReadOnlyFile;
 module.exports.SecretsFile = SecretsFile;

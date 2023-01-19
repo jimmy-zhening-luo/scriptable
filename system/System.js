@@ -1,12 +1,13 @@
 const Boot = importModule("./boot/Boot");
 const File = importModule("corelib/file/File");
+const ReadOnlyFile = File.ReadOnlyFile;
 const Bookmark = File.Bookmark;
 
 class System {
   static get config() {
     return JSON
     .parse(
-      File
+      ReadOnlyFile
       .fromFile(
         this.systemDir,
         Boot.SYSTEM_CONFIG_FILE
@@ -17,7 +18,7 @@ class System {
   }
   
   static get root() {
-    return new File(
+    return new ReadOnlyFile(
       new Bookmark(
         Boot.ROOT_BOOKMARK
       )
@@ -25,21 +26,21 @@ class System {
   }
   
   static get bootDir() {
-    return File.fromFile(
+    return ReadOnlyFile.fromFile(
       this.root,
       Boot.BOOT_DIR
     );
   }
   
   static get systemDir() {
-    return File.fromFile(
+    return ReadOnlyFile.fromFile(
       this.root,
       Boot.SYSTEM_DIR
     );
   }
   
   static get configDir() {
-    return File.fromFile(
+    return ReadOnlyFile.fromFile(
       this.root,
       this
       .config
@@ -53,17 +54,18 @@ class System {
     const source = this
       .config
       .source
-      .config;
-    return new File(
+      .config
+      .dir;
+    return new ReadOnlyFile(
       new Bookmark(
-        source.bookmark
+        source?.bookmark ?? String()
       ),
-      source.subpath
+      source?.subpath ?? String()
     );
   }
   
   static get libDir() {
-    return File.fromFile(
+    return ReadOnlyFile.fromFile(
       this.root,
       this
       .config
@@ -77,17 +79,18 @@ class System {
     const source = this
       .config
       .source
-      .lib;
-    return new File(
+      .lib
+      .dir;
+    return new ReadOnlyFile(
       new Bookmark(
-        source.bookmark
+        source?.bookmark ?? String()
       ),
-      source.subpath
+      source?.subpath ?? String()
     );
   }
   
   static get dataDir() {
-    return File.fromFile(
+    return ReadOnlyFile.fromFile(
       this.root,
       this
       .config
@@ -98,7 +101,7 @@ class System {
   }
   
   static get programDir() {
-    return File.fromFile(
+    return ReadOnlyFile.fromFile(
       this.root,
       this
       .config
@@ -112,12 +115,13 @@ class System {
     const source = this
       .config
       .source
-      .program;
-    return new File(
+      .program
+      .dir;
+    return new ReadOnlyFile(
       new Bookmark(
-        source.bookmark
+        source?.bookmark ?? String()
       ),
-      source.subpath
+      source?.subpath ?? String()
     );
   }
   
@@ -128,6 +132,20 @@ class System {
       .prod
       .protected
       .filePrefix
+    );
+  }
+  
+  static get externalSecretsDir() {
+    const ext = this
+      .config
+      .external
+      .secrets
+      .dir;
+    return new ReadOnlyFile(
+      new Bookmark(
+        ext?.bookmark ?? String()
+      ),
+      ext?.subpath ?? String()
     );
   }
   
@@ -231,5 +249,6 @@ class System {
 
 module.exports = System;
 module.exports.File = File;
+module.exports.ReadOnlyFile = ReadOnlyFile;
 module.exports.Bookmark = Bookmark;
 module.exports.System = System;

@@ -13,16 +13,27 @@
     },
     "source": {
       "config": {
-        "bookmark": "Repositories/Scriptable/config",
-        "subpath": ""
+        "dir": {
+          "bookmark": "Repositories/Scriptable/config"
+        }
       },
       "lib": {
-        "bookmark": "Repositories/Scriptable/src",
-        "subpath": "lib"
+        "dir": {
+          "bookmark": "Repositories/Scriptable/src",
+          "subpath": "lib"
+        }
       },
       "program": {
-        "bookmark": "Repositories/Scriptable/src",
-        "subpath": ""
+        "dir": {
+          "bookmark": "Repositories/Scriptable/src"
+        }
+      }
+    },
+    "external": {
+      "secrets": {
+        "dir": {
+          "bookmark": "Local/Secrets"
+        }
       }
     }
   }
