@@ -4,6 +4,7 @@
       "dirs": {
         "config": "config",
         "lib": "lib",
+        "data": "data",
         "program": ""
       },
       "protected": {

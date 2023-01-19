@@ -86,6 +86,17 @@ class System {
     );
   }
   
+  static get dataDir() {
+    return File.fromFile(
+      this.root,
+      this
+      .config
+      .prod
+      .dirs
+      .data
+    );
+  }
+  
   static get programDir() {
     return File.fromFile(
       this.root,
@@ -179,6 +190,7 @@ class System {
             !leaf.startsWith(system.protectedFilePrefix)
             && !(leaf === system.libDir.leaf)
             && !(leaf === system.bootDir.leaf)
+            && !(leaf === system.dataDir.leaf)
             && !(leaf === system.configDir.leaf)
             && !(leaf === system.systemDir.leaf)
             && !(leaf === ".Trash")

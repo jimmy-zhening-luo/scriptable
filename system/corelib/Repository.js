@@ -1,5 +1,4 @@
 const File = importModule("file/File");
-const Config = importModule("Config");
 
 class RepoFile extends File {
   #client;
@@ -20,7 +19,7 @@ class RepoFile extends File {
       bookmark ?? String()
     );
     
-    const config = (new ScriptableConfigFile("repo.json"))
+    const config = (new ScriptableConfigFile("Repository.json"))
       ?.setting;
     
     clientId = (clientId?
