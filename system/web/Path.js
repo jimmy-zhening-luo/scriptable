@@ -1,0 +1,7 @@
+class PathPart {
+  
+}
+
+class Path {
+  
+}
