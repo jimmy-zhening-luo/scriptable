@@ -1,3 +1,4 @@
+"use strict";
 const System = importModule("System");
 const File = System.File;
 

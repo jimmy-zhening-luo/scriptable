@@ -1,3 +1,4 @@
+"use strict";
 const Program = importModule("./system/Program");
 
 class Shortcut extends Program {

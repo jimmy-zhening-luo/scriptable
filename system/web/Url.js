@@ -1,3 +1,4 @@
+"use strict";
 const Scheme = importModule("Scheme");
 const Host = importModule("host/Host");
 const Path = importModule("Path");

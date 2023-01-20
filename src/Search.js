@@ -1,6 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: gray; icon-glyph: magic; share-sheet-inputs: plain-text;
+"use strict";
 const Shortcut = importModule("lib/Shortcut");
 
 class App {

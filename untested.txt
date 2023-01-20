@@ -2,6 +2,7 @@ code complete:
 file.delete
 
 WIP:
+override instanceof for File and Url
 system.clean
 system: use file to clean/install
 url

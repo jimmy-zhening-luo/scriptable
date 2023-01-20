@@ -1,3 +1,4 @@
+"use strict";
 const File = importModule("File");
 
 class ReadOnlyFile extends File {

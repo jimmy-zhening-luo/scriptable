@@ -1,3 +1,4 @@
+"use strict";
 const Bookmark = importModule("Bookmark");
 
 class File {

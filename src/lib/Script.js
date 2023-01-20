@@ -1,3 +1,4 @@
+"use strict";
 const Program = importModule("./system/Program");
 
 class Script extends Program {

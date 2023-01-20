@@ -1,3 +1,4 @@
+"use strict";
 const Config = importModule("Config");
 const Data = importModule("Data");
 

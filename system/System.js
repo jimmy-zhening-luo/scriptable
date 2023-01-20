@@ -1,3 +1,4 @@
+"use strict";
 const BOOT_DIR = "!boot";
 const BOOT_MODULE = [
   ".",

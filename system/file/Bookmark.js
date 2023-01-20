@@ -1,3 +1,4 @@
+"use strict";
 class Bookmark {
   #bookmark = String();
   #path = String();
