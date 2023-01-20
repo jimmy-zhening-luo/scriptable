@@ -1,206 +1,92 @@
-// Variables used by Scriptable.
-// These must be at the very top of the file. Do not edit.
-// icon-color: deep-blue; icon-glyph: magic;
+const Scheme = importModule("Scheme");
+const Host = importModule("host/Host");
+const Path = importModule("Path");
+const Query = importModule("Query");
+const Fragment = importModule("Fragment");
+
 class Url {
-  #scheme;
-  #host;
-  #port;
-  #path;
-  #query;
-  #fragment;
-  
-  
-  #callbackUrl = new CallbackURL();
-  
-  constructor(
-    protocol,
+  #scheme = new Scheme();
+  #host = new Host();
+  #path = new Path();
+  #query = new Query();
+  #fragment = new Fragment();
+  constructor (
+    scheme = new Scheme(),
     host = new Host(),
-    port,
-    path,
-    query,
-    fragment
+    path = new Path(),
+    query = new Query(),
+    fragment = new Fragment()
   ) {
     
   }
   
-  static fromString(
+  static fromParts (
+    scheme = new Scheme(),
+    host = new Host(),
+    path = new Path(),
+    query = new Query(),
+    fragment = new Fragment()
+  ) {
+    
+  }
+  
+  static fromStringParts (
+    scheme = String(),
+    host = String(),
+    path = String(),
+    query = String(),
+    fragment = String()
+  ) {
+    
+  }
+  
+  static fromUrl (
+    url = new this()
+  ) {
+    url = (typeof url 
+    
+    const scheme = url
+      ?.scheme
+      ?? new Scheme();
+    const host = url
+      ?.host
+      ?? new Host();
+    const path = url
+      ?.path
+      ?? new Path();
+    const query = url
+      ?.query
+      ?? new Query();
+    const fragment = url
+      ?.fragment
+      ?? new Fragment();
+    
+    return new this(
+      
+    );
+  }
+  
+  static fromString (
     url = String()
   ) {
-    url = url.trim();
-    return new this();
-  }
-  
-  static fromCallbackUrl(
-    callbackUrl = new CallbackURL(String())
-  ) {
-    // dont decode or re-encode
-    return this.fromString(callbackUrl.getURL());
-  }
-  
-  static fromUrl(url = new Url(String())) {
-    return this.fromString(scriptableUrl.url);
-  }
-  
-  get base() {
-    return (new this.constructor.#UrlBag(this.urlWithoutQuery)).base;
-  }
-  
-  get query() {
-    return this.queryMap.entries().map((q) => (q.join("="))).join("&");
-  }
-  
-  set query(query = String()) {
-    this.queryMap = (new this.constructor.#UrlBag(query)).queryMap;
-  }
-  
-  get queryMap() {
-    return this.constructor.#deleteCallbackParameters((new this.constructor.#UrlBag(this.urlWithCallback)).queryMap);
-  }
-  
-  set queryMap(map = new Map()) {
-    this.constructor.#deleteCallbackParameters(map).entries().map(([name, value]) => (this.addParameter(name, value)));
+    /*
+    first, parse the query.
+      split by ?
+        if one part:
+          possible:
+            url without q
+            q without prepended ?
+          split by 
+    */
   }
   
   get scheme() {
-    return (new this.constructor.#UrlBag(this.urlWithoutQuery)).scheme;
+    
   }
   
-  get url() {
-    return [this.urlWithoutQuery, this.query].join("?");
+  set scheme(scheme = String()) {
+    
   }
-  
-  set url(url = String()) {
-    
-    try {
-      if (url === null) {
-        throw new TypeError("input is null when expecting a non-empty string");
-      } else if (url === undefined) {
-        throw new TypeError("input is undefined when expecting a non-empty string");
-      } else if (String(url) === String()) {
-        throw new TypeError("input is an empty string when expecting a non-empty string")
-      } else {
-            const urlBag = new this.constructor.#UrlBag(url);
-                
-    this.#callbackUrl = new CallbackURL(urlBag.urlWithoutQuery);
-    
-    this.query = urlBag.query;
-      }
-    } catch (e) {
-      console.error("ScriptableUrl: set url(): " + e);
-    }
-  }
-  
-  get urlWithoutQuery() {
-    return (new this.constructor.#UrlBag(this.urlWithCallback)).urlWithoutQuery;
-  }
-  
-  get urlWithCallback() {
-    return this.#callbackUrl.getURL();
-  }
-  
-  addParameter(name = String(), value = String()) {
-    this.#callbackUrl().addParameter(name, value);
-  }
-  
-  open() {
-    Safari.open(this.url);
-  }
-  
-  openCallback() {
-    this.#callbackUrl.open();
-  }
-  
-  openWebview() {
-    Safari.openInApp(this.url, false);
-  }
-  
-  toString() {
-    return this.url;
-  }
-  
-  static #deleteCallbackParameters(map = new Map()) {
-    const queryMapKeyToLowerMap = new Map(map.keys().map((key) => ([key, key.toLowerCase()])));
-    
-    const xCallbackParamNames = [
-      "x-source",
-      "x-success",
-      "x-error",
-      "x-cancel"
-    ];
-    
-    xCallbackParamNames.map((name) => (queryMapKeyToLowerMap.entries().filter(([key, lower]) => (lower === name.toLowerCase())).map(([key, lower]) => (map.delete(key)))));
-    
-    return map;
-  }
-  
-  static #UrlBag = class {
-    #base = String();
-    #query = String();
-    #scheme = String();
-    #url = String();
-    #urlWithoutQuery = String();
-    
-    constructor(url = String()) {   
-      this.#url = url.trim();
-      
-      const urlQuerySplitter = new this.constructor.#Splitter(this.url, "?", "=");
-      this.#urlWithoutQuery = urlQuerySplitter.left;
-      this.#query = urlQuerySplitter.right;
-      
-      const schemeBaseSplitter = new this.constructor.#Splitter(this.urlWithoutQuery, "://");
-      this.#scheme = schemeBaseSplitter.left;
-      this.#base = schemeBaseSplitter.right;
-    }
-    
-    get base() {
-      return this.#base;
-    }
-    
-    get query() {
-      return this.#query;
-    }
-    
-    get queryMap() {
-      return new Map(this.query.split("&").map((q) => (q.split("="))));
-    }
-    
-    get scheme() {
-      return this.#scheme;
-    }
-    
-    get url() {
-      return this.#url;
-    }
-    
-    get urlWithoutQuery() {
-      return this.#urlWithoutQuery;
-    }
-    
-    static #Splitter = class {
-      #left = String();
-      #right = String();
-      
-      constructor (url = String(), separator = String(), rightOnly = String()) {
-        const tokens = url.split(separator);
-        
-        this.#left = tokens.shift();
-        if (rightOnly !== String() && this.#left.includes(rightOnly)) {
-          tokens.unshift(this.#left);
-          this.#left = String();
-        }
-        
-        this.#right = tokens.join(separator);
-      }
-      
-      get left() {
-        return this.#left;
-      }
-      
-      get right() {
-        return this.#right;
-      }
-    }
-  };
 }
 
 module.exports = Url;

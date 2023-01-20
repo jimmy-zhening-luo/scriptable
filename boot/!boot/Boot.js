@@ -5,7 +5,7 @@ When run, it loads the core system files from the repository.
 */
 
 // v1.0.8
-
+"use strict";
 const ROOT_BOOKMARK = "!ROOT";
 const SYSTEM_DIR = "system";
 const SYSTEM_CONFIG_FILE = "system.json";
