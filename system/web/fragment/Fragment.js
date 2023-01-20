@@ -2,3 +2,5 @@
 class Fragment {
   
 }
+
+module.exports = Fragment;

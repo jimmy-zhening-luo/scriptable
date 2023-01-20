@@ -1,72 +1,93 @@
+// WIP
 "use strict";
+const IP = importModule("IP");
+const IPv4 = importModule("IPv4");
+const IPv6 = importModule("IPv6");
+const RegName = importModule("RegName");
 class Host {
-  
-}
-
-class IPHost extends Host {
-  
-}
-
-class IPv4Host extends IPHost {
-  #ip = new Array()
-  constructor (
-    part1,
-    part2,
-    part3,
-    part4
+  #host = undefined;
+  constructor(
+    host = String()
+      ?? new this()
+      ?? new IP()
+      ?? new RegName()
   ) {
-    
+    this.#host = parseHost(host)
+      ?? null;
   }
   
-  get ip() {
-    
+  get host() {
+    return this.#host ?? String();
   }
   
-  get isIp() {
-    return this.ip
-      this.constructor.isIpPart()
-    );
+  get string() {
+    return this.host ?? String();
   }
   
-  static fromString(host = String()) {
-    
+  toString() {
+    return this.host ?? String();
   }
   
-  static isIpPart(part = String()) {
-    return part?.constructor === String
-    && part.trim() !== String()
-    && !isNaN(+(part?.trim()));
+  static parseHost(
+    host = String()
+  ) {
+    return this.parseIP(host)
+    ?? this.parseRegName(host)
+    ?? null;
   }
   
-  static parse(host = String()) {
-    host = host?.constructor === String?
-      host.trim() : String();
-      
-    const parts = host
-      .split(".")
-      .filter((part) => (
-        part?.constructor === String
-        && part.trim() !== String()
-      )).map((part) => (
-        part.trim()
-      ));
-      
-    if (parts.length === 4) {
-      
-    } else {
-      return false;
-    }
-      && (parts[3].split(":")
-        && 
-        )
-      && parts.slice(0, 3)
+  static parseIP(
+    host = String()
+  ) {
+    return this.parseIPv4(host)
+    ?? this.parseIPv6(host)
+    ?? null;
+  }
+  
+  static parseIPv4(
+    host = String()
+  ) {
+    const ip = new IPv4(host) ?? null;
+    return (
+      (
+        ip
+        ?.string
+        ?? String()
+      ) === String()
+    )?
+    null
+    :(ip ?? null)
+  }
+  
+  static parseIPv6(
+    host = String()
+  ) {
+    const ip = new IPv6(host) ?? null;
+    return (
+      (
+        ip
+        ?.string
+        ?? String()
+      ) === String()
+    )?
+    null
+    :(ip ?? null)
+  }
+  
+  static parseRegName(
+    host = String()
+  ) {
+    const reg = new RegName(host) ?? null;
+    return (
+      (
+        reg
+        ?.string
+        ?? String()
+      ) === String()
+    )?
+    null
+    :(reg ?? null)
   }
 }
 
-class IPv6Host extends IPHost {
-  
-}
-
-class RegNameHost extends Host {
-  
-}
+module.exports = Host;

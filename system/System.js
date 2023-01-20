@@ -13,6 +13,10 @@ const ReadOnlyFile = importModule(
 const Bookmark = importModule(
   "file/Bookmark"
 );
+const Url = String("Url class WIP");
+// const Url = importModule(
+//   "web/Url"
+// );
 
 class System {
   static get config() {
@@ -290,6 +294,7 @@ const File = importModule(
   "file/File"
 );
 module.exports = System;
+module.exports.Url = Url;
 module.exports.File = File;
 module.exports.ReadOnlyFile = ReadOnlyFile;
 module.exports.Bookmark = Bookmark;

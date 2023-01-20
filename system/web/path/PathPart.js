@@ -3,6 +3,4 @@ class PathPart {
   
 }
 
-class Path {
-  
-}
+module.exports = PathPart;

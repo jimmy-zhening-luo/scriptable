@@ -30,18 +30,4 @@ class QueryParam {
   }
 }
 
-class Query {
-  #queryParams = QueryParam[];
-  constructor(
-  
-  )
-  
-  static fromObjectEntries() {
-    
-  }
-  
-  static fromQueryString() {
-    
-  }
-  
-}
+module.exports = QueryParam;
