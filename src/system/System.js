@@ -183,8 +183,7 @@ class System {
   
   static installConfigs() {
     this.cleanConfigs();
-    const iFm = FileManager.iCloud();
-    const lFm = FileManager.local();
+    const fm = FileManager.iCloud();
     
     const here = this.configDir.path;
     const destination = here;
@@ -192,10 +191,10 @@ class System {
     const there = this.configSource.path;
     const source = there;
     
-    if (iFm.isDirectory(destination))
-      iFm.remove(destination);
+    if (fm.isDirectory(destination))
+      fm.remove(destination);
       
-    iFm.copy(source, destination);
+    fm.copy(source, destination);
   }
   
   static cleanLibraries() {
@@ -204,8 +203,7 @@ class System {
   
   static installLibraries() {
     this.cleanLibraries();
-    const iFm = FileManager.iCloud();
-    const lFm = FileManager.local();
+    const fm = FileManager.iCloud();
     
     const here = this.libDir.path;
     const destination = here;
@@ -213,10 +211,10 @@ class System {
     const there = this.libSource.path;
     const source = there;
     
-    if (iFm.isDirectory(destination))
-      iFm.remove(destination);
+    if (fm.isDirectory(destination))
+      fm.remove(destination);
       
-    iFm.copy(source, destination);
+    fm.copy(source, destination);
   }
   
   static cleanPrograms() {
@@ -236,15 +234,14 @@ class System {
       value = -1
     ) {
       if (value === 0) {
-        const iFm = FileManager.iCloud();
-        const lFm = FileManager.local();
+        const fm = FileManager.iCloud();
         const here = system.programDir.path;
         const destination = here;
           
         const there = system.programSource.path;
         const source = there;
         
-        const dScripts = iFm
+        const dScripts = fm
           .listContents(
             destination
           ).filter((leaf) => (
@@ -256,38 +253,32 @@ class System {
             && !(leaf === system.systemDir.leaf)
             && !(leaf === ".Trash")
           ));
-          
-        const sScripts = lFm
-          .listContents(
-            source
-          ).filter((leaf) => (
-            !(leaf === system.libDir.leaf)
-            && !(leaf === system
-              .systemDir
-              .leaf
-            )
-          ));
-          
+        
         for (const leaf of dScripts) {
-          const dFile = iFm.joinPath(
+          const dFile = fm.joinPath(
             destination,
             leaf
           );
           console.log(dFile);
-          iFm.remove(dFile);
+          fm.remove(dFile);
         }
         
+        const sScripts = fm
+          .listContents(
+            source
+          );
+        
         for (const leaf of sScripts) {
-          const sFile = iFm.joinPath(
+          const sFile = fm.joinPath(
             source,
             leaf
           );
-          const dFile = iFm.joinPath(
+          const dFile = fm.joinPath(
             destination,
             leaf
           );
           console.log([sFile, dFile]);
-          iFm.copy(sFile, dFile);
+          fm.copy(sFile, dFile);
         }
       }
     }
