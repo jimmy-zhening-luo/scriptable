@@ -4,10 +4,15 @@ secret
 url.port
 
 WIP:
-override instanceof for File and Url
 system.clean
-system: use file to clean/install
+url.fragment
+urlpart
+urlparser / parser
 url
 repository(url, file)
-system: use repository to clean/install
+
+Not started:
+override instanceof for File and Url
+system: use file to clean/install
+system: use repository to clean/install -- make sure main branch before pulling
 system: use repository to push to local repo

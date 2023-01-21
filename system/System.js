@@ -262,6 +262,10 @@ class System {
             source
           ).filter((leaf) => (
             !(leaf === system.libDir.leaf)
+            && !(leaf === system
+              .systemDir
+              .leaf
+            )
           ));
           
         for (const leaf of dScripts) {
