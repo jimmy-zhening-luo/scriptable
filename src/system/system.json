@@ -25,7 +25,8 @@
       },
       "program": {
         "dir": {
-          "bookmark": "Repositories/Scriptable/src"
+          "bookmark": "Repositories/Scriptable/src",
+          "subpath": "program"
         }
       }
     },
