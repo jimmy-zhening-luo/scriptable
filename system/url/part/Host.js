@@ -1,9 +1,12 @@
 // WIP
 "use strict";
-const IP = importModule("IP");
-const IPv4 = importModule("IPv4");
-const IPv6 = importModule("IPv6");
-const RegName = importModule("RegName");
+const IP = importModule("host/IP");
+const IPv4 = importModule("host/IPv4");
+const IPv6 = importModule("host/IPv6");
+const RegName = importModule(
+  "host/RegName"
+);
+
 class Host {
   #host = undefined;
   constructor(

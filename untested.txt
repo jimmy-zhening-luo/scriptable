@@ -1,5 +1,7 @@
 code complete:
 file.delete
+secret
+url.port
 
 WIP:
 override instanceof for File and Url

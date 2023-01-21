@@ -1,6 +1,6 @@
 "use strict";
 const QueryParam = importModule(
-  "QueryParam"
+  "query/QueryParam"
 );
 class Query {
   #params = new Array(new QueryParam());
@@ -13,6 +13,14 @@ class Query {
   }
   
   static fromQueryString() {
+    
+  }
+  
+  get string() {
+    
+  }
+  
+  toString() {
     
   }
 }

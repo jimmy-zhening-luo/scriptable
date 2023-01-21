@@ -1,21 +1,21 @@
 "use strict";
 const Scheme = importModule(
-  "scheme/Scheme"
+  "part/Scheme"
 );
 const Host = importModule(
-  "host/Host"
+  "part/Host"
 );
 const Port = importModule(
-  "port/Port"
+  "part/Port"
 );
 const Path = importModule(
-  "path/Path"
+  "part/Path"
 );
 const Query = importModule(
-  "query/Query"
+  "part/Query"
 );
 const Fragment = importModule(
-  "fragment/Fragment"
+  "part/Fragment"
 );
 
 class Url {
@@ -75,16 +75,24 @@ class Url {
       (fragment?.constructor === String)?
         fragment
         :null
-    ) ?? new this();
+    )
+    ?? new this();
   }
   
   static fromParts (
-    scheme = new Scheme(),
-    host = new Host(),
-    port = new Port(),
-    path = new Path(),
-    query = new Query(),
-    fragment = new Fragment()
+    scheme = String()
+      ?? new Scheme(),
+    host = String()
+      ?? new Host(),
+    port = Number()
+      ?? String()
+      ?? new Port(),
+    path = String()
+      ?? new Path(),
+    query = String()
+      ?? new Query(),
+    fragment = String()
+    ?? new Fragment()
   ) {
     return new this(
       scheme,
@@ -93,7 +101,8 @@ class Url {
       path,
       query,
       fragment
-    ) ?? new this();
+    )
+    ?? new this();
   }
   
   static fromUrl (
@@ -106,9 +115,11 @@ class Url {
       url?.path ?? new Path(),
       url?.query ?? new Query(),
       url?.fragment ?? new Fragment()
-    ) ?? new this();
+    )
+    ?? new this();
   }
   
+  /*
   static fromString (
     url = String()
   ) {
@@ -116,11 +127,14 @@ class Url {
       (url?.constructor === String)?
       url
       :String()
-    ) ?? new this();
+    )
+    ?? new this();
   }
+  */
   
   get scheme() {
-    return this.#scheme ?? new Scheme();
+    return this.#scheme?.string
+      ?? String();
   }
   
   set scheme(
@@ -132,7 +146,8 @@ class Url {
   }
   
   get host() {
-    return this.#host ?? new Host();
+    return this.#host?.string
+      ?? String();
   }
   
   set host(
@@ -144,7 +159,8 @@ class Url {
   }
   
   get port() {
-    return this.#port ?? new Port();
+    return this.#port?.string
+      ?? String();
   }
   
   set port(
@@ -157,7 +173,8 @@ class Url {
   }
   
   get path() {
-    return this.#path ?? new Path();
+    return this.#path?.string
+      ?? String();
   }
   
   set path(
@@ -169,7 +186,8 @@ class Url {
   }
   
   get query() {
-    return this.#query ?? new Query();
+    return this.#query?.string
+      ?? String();
   }
   
   set query(
@@ -181,8 +199,8 @@ class Url {
   }
   
   get fragment() {
-    return this.#fragment
-      ?? new Fragment();
+    return this.#fragment?.string
+      ?? String();
   }
   
   set fragment(
