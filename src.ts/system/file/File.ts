@@ -174,7 +174,7 @@ class File {
   }
   
   set subpath (
-    path: string = String()
+    path: string
   ) {
     this.subpath = File.trimPath(
         path
