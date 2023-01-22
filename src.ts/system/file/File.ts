@@ -63,7 +63,7 @@ class File {
   }
   
   get descendants(): (
-    Array<this.constructor>
+    this.constructor[]
   ) {
     if (this.isFile)
       return [this];
