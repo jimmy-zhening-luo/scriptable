@@ -5,9 +5,8 @@
   "main": "",
   "scripts": {
     "clean": "rimraf dist/*",
-    "lint": "",
     "tsc": "tsc",
-    "build": "npm-run-all clean lint tsc",
+    "build": "npm-run-all clean tsc",
     "start": "node .",
     "dev:start": "npm-run-all build start",
     "dev": "npm run dev:start",
