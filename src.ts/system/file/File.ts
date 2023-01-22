@@ -1,9 +1,9 @@
 class File {
   #subpath: string = String();
-  constructor(subpath = String()) {
-    this.subpath = (subpath !== null && subpath!== undefined && subpath.constructor === String)?
-    subpath
-    :String();
+  readonly bookmark: string = String();
+  constructor(subpath: string = String()) {
+    this.bookmark = bookmark;
+    this.subpath = subpath;
   }
   
   static fromFile(
@@ -17,7 +17,9 @@ class File {
   }
   
   get bookmarkedPath(): string {
-    return String();
+    return FileManager.iCloud().bookmarkedPath(
+    this.bookmark
+    );
   }
   
   get data(): string {
@@ -134,6 +136,7 @@ class File {
   
   get parent(): File {
     return new File(
+      this.bookmark,
       this.parentSubpath
     );
   }
