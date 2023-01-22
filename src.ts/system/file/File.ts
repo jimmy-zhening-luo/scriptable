@@ -7,7 +7,7 @@ class File {
     // bookmark: Bookmark = new Bookmark(),
     subpath: string = String()
   ) {
-    this.m = this.constructor.Manager;
+    this.m = this.Manager;
     this.subpath = subpath;
     // this.bookmark = bookmark;
   }
