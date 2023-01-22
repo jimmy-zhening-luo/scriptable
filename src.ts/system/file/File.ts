@@ -1,25 +1,24 @@
 "use strict";
-type Bookmark = importModule("Bookmark");
+// type Bookmark = importModule("Bookmark");
 
 class File {
   subpath: string = String();
-  readonly bookmark: Bookmark = new Bookmark();
-  protected m: FileManager = FileManager
-    .iCloud();
+  // readonly bookmark: Bookmark = new Bookmark();
+  protected m: FileManager = FileManager.iCloud();
   constructor (
-    bookmark: Bookmark = new Bookmark(),
+    // bookmark: Bookmark = new Bookmark(),
     subpath: string = String()
   ) {
     this.m = this.constructor.Manager;
     this.subpath = subpath;
-    this.bookmark = bookmark;
+    // this.bookmark = bookmark;
   }
   
   constructor (
     file: this,
     relativePath: string = String()
   ) {
-    this.bookmark = file.bookmark,
+    // this.bookmark = file.bookmark,
     this.subpath = this.walkPath(
       file.subpath,
       relativePath
@@ -27,13 +26,12 @@ class File {
   }
   
   get bookmarkedPath(): string {
-    return this
-      .constructor
-      .trimPath(
-        this
-        .bookmark
-        .path
-      );
+    /*
+    return this.constructor.trimPath(
+      this.bookmark.path
+    );
+    */
+    return String();
   }
   
   get data(): string {
@@ -53,16 +51,14 @@ class File {
           );
       }
       else {
-        return this
-          .m
-          .readString(
-            this.path
-          );
+        return this.m.readString(
+          this.path
+        );
       }
     } catch (e: Error) {
       console.warn(
         "File:data: Cannot read data from file. See caught error "
-        + e
+        + e.toString()
       );
       return String();
     }
@@ -78,20 +74,13 @@ class File {
         new Array<this.constructor>()
       );
     else if (this.isDirectory) {
-      return this
-      .ls
-      .map(
+      return this.ls.map(
         (leaf: string): string => (
-          this
-          .constructor
-          .joinPaths(
-            this
-              .subpath,
-            this
-              .constructor
-              .trimPath(
-                leaf
-              )
+          this.constructor.joinPaths(
+            this.subpath,
+            this.constructor.trimPath(
+              leaf
+            )
           )
         )
       ).map(
@@ -142,11 +131,9 @@ class File {
   }
   
   get isDirectory(): boolean {
-    return this
-      .m
-      .isDirectory(
-        this.path
-      );
+    return this.m.isDirectory(
+      this.path
+    );
   }
   
   get isEnumerable(): boolean {
@@ -171,30 +158,22 @@ class File {
   }
   
   get leaf(): string {
-    return this
-      .constructor
-      .trimPath(
-        this
-        .path
-        .split("/")
-        .slice(-1)
-      );
+    return this.constructor.trimPath(
+      this.path.split("/").slice(-1)
+    );
   }
   
   get ls(): string[] {
     return this.isDirectory?
-      this
-      .m
-      .listContents(
+      this.m.listContents(
         this.path
       )
       :new Array<string>();
   }
   
   get parent(): this.constructor {
-    return new this
-    .constructor(
-      this.bookmark,
+    return new this.constructor(
+      // this.bookmark,
       this.parentSubpath
     );
   }
@@ -212,30 +191,20 @@ class File {
   }
   
   get parentSubpath(): string {
-    return this
-    .constructor
-    .trimPath(
-      this
-      .subpath
-      .split("/")
-      .slice(0, -1)
-      .join("/")
+    return this.constructor.trimPath(
+      this.subpath.split("/").slice(0, -1).join("/")
     );
   }
   
   get path(): string {
-    return this
-    .constructor
-    .joinPaths(
+    return this.constructor.joinPaths(
       this.bookmarkedPath,
       this.subpath 
     );
   }
   
   get pathTree(): string[] {
-    return this
-    .constructor
-    .pathToTree(
+    return this.constructor.pathToTree(
       this.path
     );
   }
@@ -245,9 +214,7 @@ class File {
   }
   
   get subpath(): string {
-    return this
-    .constructor
-    .trimPath(
+    return this.constructor.trimPath(
       this.subpath
     );
   }
@@ -255,17 +222,13 @@ class File {
   set subpath (
     path: string = String()
   ): void {
-    this.subpath = this
-      .constructor
-      .trimPath(
+    this.subpath = this.constructor.trimPath(
         path
-      );
+    );
   }
   
   get subpathTree(): string[] {
-    return this
-    .constructor
-    .pathToTree(
+    return this.constructor.pathToTree(
       this.subpath
     );
   }
@@ -273,18 +236,13 @@ class File {
   cd (
     relativePath: string = String()
   ): void {
-    this.subpath = this
-      .constructor
-      .trimPath(
-        this
-        .subpathRelativeTo(
-          this
-          .constructor
-          .trimPath(
+    this.subpath = this.constructor.trimPath(
+        this.subpathRelativeTo(
+          this.constructor.trimPath(
             relativePath
           )
         )
-      );
+    );
   }
   
   delete (
@@ -292,38 +250,30 @@ class File {
   ): void {
     if (this.exists) {
       if (force)
-        this
-        .m
-        .remove(
+        this.m.remove(
           this.path
         );
       else {
-        const confirm:Alert = new Alert();
+        const confirm: Alert = new Alert();
         confirm.message = String(
           "Are you sure you want to delete this file or folder (including all descendants)? Path: "
           + this.path
         );
-        confirm
-        .addDestructiveAction(
+        confirm.addDestructiveAction(
           "Yes, DELETE this file"
         );
-        confirm
-        .addCancelAction(
+        confirm.addCancelAction(
           "Cancel"
         );
-        confirm
-        .present()
-        .then(
+        confirm.present().then(
           (userChoice: number) => (
             (userChoice === 0)?
-            this
-              .m
-              .remove(
-                this.path
-              )
-            : console.log(
-                "User canceled file deletion."
-              )
+            this.m.remove(
+              this.path
+            )
+            :console.log(
+              "User canceled file deletion."
+            )
           )
         );
       }
@@ -333,19 +283,12 @@ class File {
   pathRelativeTo (
     relativePath: string = String()
   ): string {
-    return this
-    .constructor
-    .trimPath(
-      this
-      .constructor
-      .walkPath(
-        this
-          .path,
-        this
-          .constructor
-          .trimPath(
-            relativePath
-          )
+    return this.constructor.trimPath(
+      this.constructor.walkPath(
+        this.path,
+        this.constructor.trimPath(
+          relativePath
+        )
       )
     );
   }
@@ -357,19 +300,12 @@ class File {
   subpathRelativeTo (
     relativePath: string = String()
   ): string {
-    return this
-    .constructor
-    .trimPath(
-      this
-      .constructor
-      .walkPath(
-        this
-          .subpath,
-        this
-          .constructor
-          .trimPath(
-            relativePath
-          )
+    return this.constructor.trimPath(
+      this.constructor.walkPath(
+        this.subpath,
+        this.constructor.trimPath(
+          relativePath
+        )
       )
     );
   }
@@ -395,15 +331,11 @@ class File {
       );
     else {
       if (!this.parentExists)
-        this
-        .m
-        .createDirectory(
+        this.m.createDirectory(
           this.parentPath,
           true
         );
-      this
-      .m
-      .writeString(
+      this.m.writeString(
         this.path,
         data
       );
@@ -420,15 +352,12 @@ class File {
   ): string {
     left = this.trimPath(left);
     right = this.trimPath(right);
-    return this
-      .trimPath(
-        this
-        .Manager
-        .joinPath(
-          left,
-          right
-        )
-      );
+    return this.trimPath(
+      this.Manager.joinPath(
+        left,
+        right
+      )
+    );
   }
   
   static pathToTree (
@@ -456,8 +385,7 @@ class File {
     tree: string[] = new Array<string>()
   ): string {
     return this.trimPath(
-      tree
-      .map(
+      tree.map(
         (node: string): string => (
           this.trimPath(
             node
@@ -490,21 +418,19 @@ class File {
     path: string = String(),
     relativePath: string = String()
   ): string {
-    const pathTree: string[] = this
-      .pathToTree(
+    const pathTree: string[] = this.pathToTree(
         this.trimPath(
           path
         )
       );
-    const relPathTree = this
-      .pathToTree(
+    const relPathTree = this.pathToTree(
         this.trimPath(
           relativePath
         )
       );
     
     for (
-      const node: string of relPathTree
+      const node of relPathTree
     ) {
       if (node.trim() === ".")
         pathTree.pop();
