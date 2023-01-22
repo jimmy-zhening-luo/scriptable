@@ -1,6 +1,4 @@
-"use strict";
 // type Bookmark = importModule("Bookmark");
-
 class File {
   subpath: string = String();
   // readonly bookmark: Bookmark = new Bookmark();
