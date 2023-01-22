@@ -7,6 +7,7 @@
     "clean": "rimraf built",
     "tsc": "tsc",
     "build": "npm-run-all clean tsc",
+    "b": "npm run build",
     "test": ""
   },
   "repository": {
