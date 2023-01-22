@@ -11,7 +11,7 @@ module.exports = class {
       :FileManager.iCloud().bookmarkedPath(bookmark) as string;
   }
   
-  toString(): String {
+  toString(): string {
     return this.path;
   }
 }
