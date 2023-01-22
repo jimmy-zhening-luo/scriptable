@@ -10,12 +10,12 @@ class File {
     // this.bookmark = bookmark;
   }
   
-  constructor (
+  static fromFile (
     file: this,
     relativePath: string = String()
-  ) {
+  ): this {
     // this.bookmark = file.bookmark,
-    this.subpath = this.constructor.walkPath(
+    this.subpath = this.walkPath(
       file.subpath,
       relativePath
     );
