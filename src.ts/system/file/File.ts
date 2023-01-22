@@ -2,12 +2,10 @@
 class File {
   subpath: string = String();
   // readonly bookmark: Bookmark = new Bookmark();
-  protected m: FileManager = FileManager.iCloud();
   constructor (
     // bookmark: Bookmark = new Bookmark(),
     subpath: string = String()
   ) {
-    this.m = this.Manager;
     this.subpath = subpath;
     // this.bookmark = bookmark;
   }
@@ -17,7 +15,7 @@ class File {
     relativePath: string = String()
   ) {
     // this.bookmark = file.bookmark,
-    this.subpath = this.walkPath(
+    this.subpath = this.constructor.walkPath(
       file.subpath,
       relativePath
     );
@@ -33,38 +31,15 @@ class File {
   }
   
   get data(): string {
-    try {
-      if (!this.isReadable) {
-        if (!this.exists)
-          throw new ReferenceError(
-            "path resolves to neither an existing file nor folder"
-          );
-        else if (this.isDirectory)
-          throw new ReferenceError(
-            "path resolves to a folder, not to a file"
-          );
-        else
-          throw new ReferenceError(
-            "(unhandled reason)"
-          );
-      }
-      else {
-        return this.m.readString(
-          this.path
-        );
-      }
-    } catch (e: Error) {
-      console.warn(
-        "File:data: Cannot read data from file. See caught error "
-        + e.toString()
+    if (this.isReadable)
+      return FileManager.iCloud().readString(
+        this.path
       );
+    else
       return String();
-    }
   }
   
-  get descendants(): (
-    this.constructor[]
-  ) {
+  get descendants(): this.constructor[] {
     if (this.isFile)
       return [this];
     else if (this.isBottom)
@@ -112,7 +87,7 @@ class File {
   get exists(): boolean {
     return (
       this.parentExists
-      && this.m.fileExists(
+      && FileManager.iCloud().fileExists(
         this.path
       )
     );
@@ -129,7 +104,7 @@ class File {
   }
   
   get isDirectory(): boolean {
-    return this.m.isDirectory(
+    return FileManager.iCloud().isDirectory(
       this.path
     );
   }
@@ -163,7 +138,7 @@ class File {
   
   get ls(): string[] {
     return this.isDirectory?
-      this.m.listContents(
+      FileManager.iCloud().listContents(
         this.path
       )
       :new Array<string>();
@@ -248,7 +223,7 @@ class File {
   ): void {
     if (this.exists) {
       if (force)
-        this.m.remove(
+        FileManager.iCloud().remove(
           this.path
         );
       else {
@@ -266,7 +241,7 @@ class File {
         confirm.present().then(
           (userChoice: number) => (
             (userChoice === 0)?
-            this.m.remove(
+            FileManager.iCloud().remove(
               this.path
             )
             :console.log(
@@ -329,19 +304,15 @@ class File {
       );
     else {
       if (!this.parentExists)
-        this.m.createDirectory(
+        FileManager.iCloud().createDirectory(
           this.parentPath,
           true
         );
-      this.m.writeString(
+      FileManager.iCloud().writeString(
         this.path,
         data
       );
     }
-  }
-  
-  static get Manager(): FileManager {
-    return FileManager.iCloud();
   }
   
   static joinPaths (
@@ -351,7 +322,7 @@ class File {
     left = this.trimPath(left);
     right = this.trimPath(right);
     return this.trimPath(
-      this.Manager.joinPath(
+      FileManager.iCloud().joinPath(
         left,
         right
       )
