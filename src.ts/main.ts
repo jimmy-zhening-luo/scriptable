@@ -1,6 +1,11 @@
-function hello(compiler: string) {
-  console.log(`Hello from ${compiler}`);
+function hello(compiler: string): string {
+  return (compiler?.constructor === String)?
+    String(compiler)
+    :String()
 }
-hello("TypeScript");
 
+
+
+console.log(hello("TypeScript"));
+  
 export {}
