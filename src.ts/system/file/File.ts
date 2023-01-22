@@ -173,15 +173,9 @@ class File {
     return this.bookmarkedPath;
   }
   
-  get subpath(): string {
-    return File.trimPath(
-      this.subpath
-    );
-  }
-  
   set subpath (
     path: string = String()
-  ): void {
+  ) {
     this.subpath = File.trimPath(
         path
     );
