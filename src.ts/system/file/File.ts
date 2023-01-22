@@ -1,14 +1,16 @@
 class File {
   subpath: string = String();
-  constructor(subpath: string = String()) {
-    this.subpath = subpath;
+  constructor(subpath = String()) {
+    this.subpath = (subpath !== null && subpath!== undefined && subpath.constructor === String)?
+    subpath
+    :String();
   }
   
   static fromFile(
-    file: this,
+    file: File,
     relativePath: string = String()
-  ): this {
-    return new this(this.walkPath(
+  ): File {
+    return new File(File.walkPath(
       file.subpath,
       relativePath
     ));
@@ -27,12 +29,12 @@ class File {
       return String();
   }
   
-  get descendants(): this.constructor[] {
+  get descendants(): File[] {
     if (this.isFile)
       return [this];
     else if (this.isBottom)
       return (
-        new Array<this.constructor>()
+        new Array<File>()
       );
     else if (this.isDirectory) {
       return this.ls.map(
@@ -45,22 +47,20 @@ class File {
           )
         )
       ).map(
-        (subpath: string): (
-          this.constructor
-        ) => (
-          new this.constructor(
+        (subpath: string): File => (
+          new File(
             subpath
           )
         )
       ).filter(
-        (file: this.constructor) => (
+        (file: File) => (
           !this.path.startsWith(
             file.path
           )
         )
       ).map(
-        (file: this.constructor): (
-          Array<this.constructor>
+        (file: File): (
+          Array<File>
         ) => (
           file.descendants
         )
@@ -68,7 +68,7 @@ class File {
     }
     else
       return (
-        new Array<this.constructor>()
+        new Array<File>()
       );
   }
   
@@ -132,8 +132,8 @@ class File {
       :new Array<string>();
   }
   
-  get parent(): this.constructor {
-    return new this.constructor(
+  get parent(): File {
+    return new File(
       this.parentSubpath
     );
   }
@@ -306,9 +306,9 @@ class File {
     left: string = String(),
     right: string = String()
   ): string {
-    left = this.trimPath(left);
-    right = this.trimPath(right);
-    return this.trimPath(
+    left = File.trimPath(left);
+    right = File.trimPath(right);
+    return File.trimPath(
       FileManager.iCloud().joinPath(
         left,
         right
@@ -319,13 +319,13 @@ class File {
   static pathToTree (
     path: string = String()
   ): string[] {
-    return this.trimPath(
+    return File.trimPath(
       path
     )
     .split("/")
     .map(
       (node: string): string => (
-        this.trimPath(
+        File.trimPath(
           node
         )
       )
@@ -340,10 +340,10 @@ class File {
   static treeToPath (
     tree: string[] = new Array<string>()
   ): string {
-    return this.trimPath(
+    return File.trimPath(
       tree.map(
         (node: string): string => (
-          this.trimPath(
+          File.trimPath(
             node
           )
         )
@@ -374,13 +374,13 @@ class File {
     path: string = String(),
     relativePath: string = String()
   ): string {
-    const pathTree: string[] = this.pathToTree(
-        this.trimPath(
+    const pathTree: string[] = File.pathToTree(
+        File.trimPath(
           path
         )
       );
-    const relPathTree = this.pathToTree(
-        this.trimPath(
+    const relPathTree = File.pathToTree(
+        File.trimPath(
           relativePath
         )
       );
@@ -395,10 +395,8 @@ class File {
           node
         );
     }
-    return this
-    .trimPath(
-      this
-      .treeToPath(
+    return File.trimPath(
+      File.treeToPath(
         pathTree
       )
     );
