@@ -2,9 +2,9 @@ importModule("Bookmark");
 
 class File {
   #subpath: string = String();
-  readonly bookmark: string = String();
+  readonly bookmark: Bookmark = new Bookmark();
   constructor(
-  bookmark: string = String(),
+  bookmark: Bookmark = new Bookmark(),
   subpath: string = String()
   ) {
     this.bookmark = bookmark;
@@ -22,9 +22,7 @@ class File {
   }
   
   get bookmarkedPath(): string {
-    return FileManager.iCloud().bookmarkedPath(
-    this.bookmark
-    );
+    return this.bookmark.path;
   }
   
   get data(): string {
