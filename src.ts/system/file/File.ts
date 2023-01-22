@@ -39,9 +39,9 @@ class File {
     else if (this.isDirectory) {
       return this.ls.map(
         (leaf: string): string => (
-          this.constructor.joinPaths(
+          File.joinPaths(
             this.subpath,
-            this.constructor.trimPath(
+            File.trimPath(
               leaf
             )
           )
@@ -119,7 +119,7 @@ class File {
   }
   
   get leaf(): string {
-    return this.constructor.trimPath(
+    return File.trimPath(
       this.path.split("/").slice(-1)
     );
   }
@@ -151,20 +151,20 @@ class File {
   }
   
   get parentSubpath(): string {
-    return this.constructor.trimPath(
+    return File.trimPath(
       this.subpath.split("/").slice(0, -1).join("/")
     );
   }
   
   get path(): string {
-    return this.constructor.joinPaths(
+    return File.joinPaths(
       this.bookmarkedPath,
       this.subpath 
     );
   }
   
   get pathTree(): string[] {
-    return this.constructor.pathToTree(
+    return File.pathToTree(
       this.path
     );
   }
@@ -174,7 +174,7 @@ class File {
   }
   
   get subpath(): string {
-    return this.constructor.trimPath(
+    return File.trimPath(
       this.subpath
     );
   }
@@ -182,13 +182,13 @@ class File {
   set subpath (
     path: string = String()
   ): void {
-    this.subpath = this.constructor.trimPath(
+    this.subpath = File.trimPath(
         path
     );
   }
   
   get subpathTree(): string[] {
-    return this.constructor.pathToTree(
+    return File.pathToTree(
       this.subpath
     );
   }
@@ -196,9 +196,9 @@ class File {
   cd (
     relativePath: string = String()
   ): void {
-    this.subpath = this.constructor.trimPath(
+    this.subpath = File.trimPath(
         this.subpathRelativeTo(
-          this.constructor.trimPath(
+          File.trimPath(
             relativePath
           )
         )
@@ -243,10 +243,10 @@ class File {
   pathRelativeTo (
     relativePath: string = String()
   ): string {
-    return this.constructor.trimPath(
-      this.constructor.walkPath(
+    return File.trimPath(
+      File.walkPath(
         this.path,
-        this.constructor.trimPath(
+        File.trimPath(
           relativePath
         )
       )
@@ -260,10 +260,10 @@ class File {
   subpathRelativeTo (
     relativePath: string = String()
   ): string {
-    return this.constructor.trimPath(
-      this.constructor.walkPath(
+    return File.trimPath(
+      File.walkPath(
         this.subpath,
-        this.constructor.trimPath(
+        File.trimPath(
           relativePath
         )
       )
