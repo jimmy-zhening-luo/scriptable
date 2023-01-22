@@ -1,5 +1,5 @@
 class File {
-  protected #subpath: string = String();
+  #subpath: string = String();
   constructor(subpath = String()) {
     this.subpath = (subpath !== null && subpath!== undefined && subpath.constructor === String)?
     subpath
