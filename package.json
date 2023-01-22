@@ -4,7 +4,7 @@
   "description": "Building block classes and scripts to do complex automation on iOS.",
   "main": "",
   "scripts": {
-    "clean": "rimraf dist/*",
+    "clean": "rimraf dist",
     "tsc": "tsc",
     "build": "npm-run-all clean tsc",
     "test": ""
