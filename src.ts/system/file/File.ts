@@ -1,20 +1,15 @@
-// type Bookmark = importModule("Bookmark");
 class File {
   subpath: string = String();
-  // readonly bookmark: Bookmark = new Bookmark();
   constructor (
-    // bookmark: Bookmark = new Bookmark(),
     subpath: string = String()
   ) {
     this.subpath = subpath;
-    // this.bookmark = bookmark;
   }
   
   static fromFile (
     file: this,
     relativePath: string = String()
   ): this {
-    // this.bookmark = file.bookmark,
     this.subpath = this.walkPath(
       file.subpath,
       relativePath
@@ -22,11 +17,6 @@ class File {
   }
   
   get bookmarkedPath(): string {
-    /*
-    return this.constructor.trimPath(
-      this.bookmark.path
-    );
-    */
     return String();
   }
   
@@ -146,7 +136,6 @@ class File {
   
   get parent(): this.constructor {
     return new this.constructor(
-      // this.bookmark,
       this.parentSubpath
     );
   }
