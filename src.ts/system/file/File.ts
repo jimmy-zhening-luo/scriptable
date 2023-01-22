@@ -1,5 +1,5 @@
 class File {
-  subpath: string = String();
+  protected #subpath: string = String();
   constructor(subpath = String()) {
     this.subpath = (subpath !== null && subpath!== undefined && subpath.constructor === String)?
     subpath
@@ -173,10 +173,14 @@ class File {
     return this.bookmarkedPath;
   }
   
+  get subpath(): string {
+    return this.#subpath;
+  }
+  
   set subpath (
     path: string
   ) {
-    this.subpath = File.trimPath(
+    this.#subpath = File.trimPath(
         path
     );
   }
