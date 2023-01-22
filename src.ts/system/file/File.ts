@@ -1,7 +1,7 @@
 "use strict";
 const Bookmark = importModule("Bookmark");
 
-class File {
+module.exports = class {
   #subpath = String();
   #bookmark = new Bookmark();
   #m = FileManager.iCloud();
@@ -534,4 +534,3 @@ class File {
   }
 }
 
-module.exports = File;
