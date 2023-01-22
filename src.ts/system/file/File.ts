@@ -64,7 +64,7 @@ class File {
         ) => (
           file.descendants
         )
-      ).flat(Infinity);
+      ).flat(1);
     }
     else
       return (
