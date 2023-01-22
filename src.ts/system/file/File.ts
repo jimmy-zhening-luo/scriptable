@@ -1,4 +1,4 @@
-type Bookmark = importModule("Bookmark");
+importModule("Bookmark");
 
 class File {
   #subpath: string = String();
