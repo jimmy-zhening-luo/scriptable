@@ -4,14 +4,14 @@ class File {
     this.subpath = subpath;
   }
   
-  static fromFile (
+  static fromFile() (
     file: this,
     relativePath: string = String()
   ): this {
-    this.subpath = this.walkPath(
+    return new this(this.walkPath(
       file.subpath,
       relativePath
-    );
+    ));
   }
   
   get bookmarkedPath(): string {
