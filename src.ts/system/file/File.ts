@@ -1,7 +1,10 @@
 class File {
   #subpath: string = String();
   readonly bookmark: string = String();
-  constructor(subpath: string = String()) {
+  constructor(
+  bookmark: string = String(),
+  subpath: string = String()
+  ) {
     this.bookmark = bookmark;
     this.subpath = subpath;
   }
