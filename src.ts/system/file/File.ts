@@ -1,8 +1,6 @@
 class File {
   subpath: string = String();
-  constructor (
-    subpath: string = String()
-  ) {
+  constructor(subpath: string = String()) {
     this.subpath = subpath;
   }
   
