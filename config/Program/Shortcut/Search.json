@@ -30,6 +30,10 @@
         "urls": "https://google.com/search?q=site%3Atypescriptlang.org+%s"
       },
       {
+        "keys": ["tsc", "tsx", "tsconfig"],
+        "urls": "https://www.typescriptlang.org/tsconfig#%s"
+      },
+      {
         "keys": ["m", "mail", "em", "email", "mails", "emails", "gmail"],
         "app": "mail"
       },
