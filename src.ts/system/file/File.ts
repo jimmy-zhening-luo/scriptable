@@ -1,7 +1,7 @@
 "use strict";
 type Bookmark = importModule("Bookmark");
 
-module.exports = class {
+class File {
   subpath: string = String();
   readonly bookmark: Bookmark = new Bookmark();
   protected m: FileManager = FileManager
@@ -522,3 +522,5 @@ module.exports = class {
     );
   }
 }
+
+module.exports = File;

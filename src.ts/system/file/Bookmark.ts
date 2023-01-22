@@ -1,4 +1,4 @@
-module.exports = class {
+class Bookmark {
   readonly bookmark: string;
   readonly path: string = String();
   
@@ -15,3 +15,5 @@ module.exports = class {
     return this.path;
   }
 }
+
+module.exports = Bookmark;
