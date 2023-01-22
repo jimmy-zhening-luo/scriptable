@@ -52,7 +52,7 @@
     "emitDeclarationOnly": false,                      /* Only output d.ts files and not JavaScript files. */
     "sourceMap": false,                                /* Create source map files for emitted JavaScript files. */
     // "outFile": "./",                                  /* Specify a file that bundles all outputs into one JavaScript file. If 'declaration' is true, also designates a file that bundles all .d.ts output. */
-    "outDir": "./transpiled/",                                   /* Specify an output folder for all emitted files. */
+    "outDir": "./built/",                                   /* Specify an output folder for all emitted files. */
     "removeComments": false,                           /* Disable emitting comments. */
     "noEmit": false,                                   /* Disable emitting files from a compilation. */
     // "importHelpers": true,                            /* Allow importing helper functions from tslib once per project, instead of including them per-file. */
