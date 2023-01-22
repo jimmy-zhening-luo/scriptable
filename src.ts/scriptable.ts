@@ -1,5 +1,5 @@
 const fm: FileManager = FileManager.iCloud();
 
-console.log(fm?.name ?? String());
+console.log(fm?.bookmarkedPath("Yes") ?? String());
 
 export {}
