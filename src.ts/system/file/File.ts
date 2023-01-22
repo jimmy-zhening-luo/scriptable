@@ -4,7 +4,7 @@ class File {
     this.subpath = subpath;
   }
   
-  static fromFile() (
+  static fromFile(
     file: this,
     relativePath: string = String()
   ): this {
