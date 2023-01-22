@@ -120,7 +120,7 @@ class File {
   
   get leaf(): string {
     return File.trimPath(
-      this.path.split("/").slice(-1)
+      this.path.split("/").slice(-1).shift()
     );
   }
   
