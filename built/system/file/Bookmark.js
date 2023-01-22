@@ -1,5 +1,5 @@
 "use strict";
-module.exports = class {
+class Bookmark {
     constructor(bookmark) {
         this.path = String();
         this.bookmark = bookmark;
@@ -10,4 +10,5 @@ module.exports = class {
     toString() {
         return this.path;
     }
-};
+}
+module.exports = Bookmark;
