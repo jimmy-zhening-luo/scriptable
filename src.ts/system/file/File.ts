@@ -15,7 +15,9 @@ class File {
     file: File,
     relativePath: string = String()
   ): File {
-    return new File(File.walkPath(
+    return new File(
+    file.bookmark,
+    File.walkPath(
       file.subpath,
       relativePath
     ));
