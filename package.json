@@ -7,9 +7,6 @@
     "clean": "rimraf dist/*",
     "tsc": "tsc",
     "build": "npm-run-all clean tsc",
-    "start": "node .",
-    "dev:start": "npm-run-all build start",
-    "dev": "npm run dev:start",
     "test": ""
   },
   "repository": {
