@@ -1,3 +1,5 @@
+type Bookmark = importModule("Bookmark");
+
 class File {
   #subpath: string = String();
   readonly bookmark: string = String();
