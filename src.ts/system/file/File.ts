@@ -43,7 +43,7 @@ class _File {
           subpath
         );
     }
-    else if (base.constructor===String) {
+    else {
       this.bookmark = new _File.Bookmark();
       this.subpath = base;
     }
