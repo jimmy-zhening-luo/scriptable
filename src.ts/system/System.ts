@@ -212,30 +212,29 @@ class System {
     confirm.message = "Initializing scripts will delete all scripts currently shown. Are you sure you want to override current production files?";
     confirm.addDestructiveAction("Yes, DELETE prod");
     confirm.addCancelAction("No, cancel");
-    confirm.present().then((value: number) => (pull(System, value)));
+    confirm.present().then((value: number) => (pull(value)));
     
     function pull(
-      system: System,
       value: number = -1
     ): void {
       if (value === 0) {
         const fm: FileManager = FileManager.iCloud();
-        const here: string = system.programDir.path;
+        const here: string = System.programDir.path;
         const destination: string = here;
           
-        const there: string = system.programSource.path;
+        const there: string = System.programSource.path;
         const source: string = there;
         
         const dScripts: string[] = fm
           .listContents(
             destination
           ).filter((leaf: string) => (
-            !leaf.startsWith(system.protectedFilePrefix)
-            && !(leaf === system.libDir.leaf)
-            && !(leaf === system.bootDir.leaf)
-            && !(leaf === system.dataDir.leaf)
-            && !(leaf === system.configDir.leaf)
-            && !(leaf === system.systemDir.leaf)
+            !leaf.startsWith(System.protectedFilePrefix)
+            && !(leaf === System.libDir.leaf)
+            && !(leaf === System.bootDir.leaf)
+            && !(leaf === System.dataDir.leaf)
+            && !(leaf === System.configDir.leaf)
+            && !(leaf === System.systemDir.leaf)
             && !(leaf === ".Trash")
           ));
         
