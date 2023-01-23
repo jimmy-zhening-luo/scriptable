@@ -22,13 +22,13 @@ class _Bookmark {
 }
 class _File {
   #subpath: string = String();
-  readonly bookmark: typeof _File.Bookmark = new _File.Bookmark();
+  readonly bookmark: _Bookmark = new _Bookmark();
   constructor();
   constructor(
     subpath: string
   );
   constructor(
-    bookmark: typeof _File.Bookmark,
+    bookmark: _Bookmark,
     subpath?: (string | undefined)
   );
   constructor(
@@ -38,17 +38,17 @@ class _File {
   constructor(
     base?: (
       undefined
-      | typeof _File.Bookmark
+      | _Bookmark
       | _File
       | string
     ),
     subpath?: (string | undefined)
   ) {
     if (base === undefined) {
-      this.bookmark = new _File.Bookmark();
+      this.bookmark = new _Bookmark();
       this.subpath = String();
     }
-    else if (base instanceof _File.Bookmark) {
+    else if (base instanceof _Bookmark) {
       this.bookmark = base;
       if (subpath === undefined)
         this.subpath = String();
@@ -66,7 +66,7 @@ class _File {
         );
     }
     else {
-      this.bookmark = new _File.Bookmark();
+      this.bookmark = new _Bookmark();
       this.subpath = base;
     }
   }
@@ -478,6 +478,3 @@ class _ReadOnlyFile extends _File {
 
 
 module.exports = _File;
-module.exports.Bookmark = _Bookmark;
-module.exports.File = _File;
-module.exports.ReadOnlyFile = _ReadOnlyFile;

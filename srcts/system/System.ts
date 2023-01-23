@@ -283,7 +283,3 @@ class _System {
 }
 
 module.exports = _System;
-module.exports.System = _System;
-module.exports.Bookmark = _System.Bookmark;
-module.exports.File = _System.File;
-module.exports.ReadOnlyFile = _System.ReadOnlyFile;
