@@ -6,8 +6,9 @@
   "scripts": {
     "clean": "rimraf built",
     "tsc": "tsc",
-    "build": "npm-run-all clean tsc",
-    "b": "npm run build",
+    "prebuild": "npm run clean",
+    "build": "npm run tsc",
+    "dev": "npm run build -- --pretty",
     "test": ""
   },
   "repository": {
