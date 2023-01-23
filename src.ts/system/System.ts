@@ -13,7 +13,7 @@ importModule(
   "file/Bookmark"
   );
 
-type SystemConfig = typeof import("system.json");
+type SystemConfig = typeof import("./system.json");
 
 class System {
   static get config(): SystemConfig {
