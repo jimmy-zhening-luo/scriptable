@@ -52,9 +52,9 @@ class System {
     return new ReadOnlyFile(
       System.root as ReadOnlyFile,
       System.config
-        .prod
-        .dirs
-        .config as string
+        [prod]
+        [dirs]
+        [config] as string
     );
   }
   
