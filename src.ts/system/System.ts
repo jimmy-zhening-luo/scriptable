@@ -4,19 +4,6 @@ const BOOT_MODULE: string = [
   BOOT_DIR,
   "Boot"
 ].join("/");
-
-const Boot = importModule(BOOT_MODULE);
-const ReadOnlyFile = importModule(
-  "file/ReadOnlyFile"
-);
-
-type ReadOnlyFile = typeof ReadOnlyFile;
-
-const Bookmark = importModule(
-  "file/Bookmark"
-  );
-type Bookmark = typeof Bookmark;
-  
   
 type SystemConfig = typeof import("./system.json");
 
@@ -26,111 +13,125 @@ type DirAddress = {
 }
 
 class System {
+  static get Boot() {
+    return importModule(BOOT_MODULE);
+  }
+  
+  static get Bookmark() {
+    return System.ReadOnlyFile.Bookmark;
+  }
+  
+  static get ReadOnlyFile() {
+    return importModule(
+  "file/ReadOnlyFile"
+  );
+  }
+  
   static get config(): SystemConfig {
     return JSON.parse(
-      new ReadOnlyFile(
+      new System.ReadOnlyFile(
         System.systemDir,
-        Boot.SYSTEM_CONFIG_FILE
+        System.Boot.SYSTEM_CONFIG_FILE
       )
       .data
     ) as SystemConfig;
   }
   
-  static get root(): ReadOnlyFile {
-    return new ReadOnlyFile(
-      new Bookmark(
-        Boot.ROOT_BOOKMARK
+  static get root(): typeof System.ReadOnlyFile {
+    return new System.ReadOnlyFile(
+      new System.Bookmark(
+        System.Boot.ROOT_BOOKMARK
       )
     );
   }
   
-  static get bootDir(): ReadOnlyFile {
-    return new ReadOnlyFile(
-      System.root as ReadOnlyFile,
-      BOOT_DIR as string
+  static get bootDir(): typeof System.ReadOnlyFile {
+    return new System.ReadOnlyFile(
+      System.root,
+      BOOT_DIR
     );
   }
   
-  static get systemDir(): ReadOnlyFile {
-    return new ReadOnlyFile(
-      System.root as ReadOnlyFile,
-      Boot.SYSTEM_DIR as string
+  static get systemDir(): typeof System.ReadOnlyFile {
+    return new System.ReadOnlyFile(
+      System.root,
+      System.Boot.SYSTEM_DIR
     );
   }
   
-  static get configDir(): ReadOnlyFile {
-    return new ReadOnlyFile(
-      System.root as ReadOnlyFile,
+  static get configDir(): typeof System.ReadOnlyFile {
+    return new System.ReadOnlyFile(
+      System.root,
       System.config.system
         ["prod"]
         ["dirs"]
-        ["config"] as string
+        ["config"]
     );
   }
   
-  static get configSource(): ReadOnlyFile {
+  static get configSource(): typeof System.ReadOnlyFile {
     const source: DirAddress = System.config.system
       .source
       .config
       .dir as DirAddress;
-    return new ReadOnlyFile(
-      new Bookmark(
+    return new System.ReadOnlyFile(
+      new System.Bookmark(
         source.bookmark as (string|undefined) ?? String()
       ),
       source.subpath as (string|undefined) ?? String()
     );
   }
   
-  static get libDir(): ReadOnlyFile {
-    return new ReadOnlyFile(
-      System.root as ReadOnlyFile,
+  static get libDir(): typeof System.ReadOnlyFile {
+    return new System.ReadOnlyFile(
+      System.root,
       System.config.system
         .prod
         .dirs
-        .lib as string
+        .lib
     );
   }
   
-  static get libSource(): ReadOnlyFile {
+  static get libSource(): typeof System.ReadOnlyFile {
     const source: DirAddress = System.config.system
       .source
       .lib
       .dir as DirAddress;
-    return new ReadOnlyFile(
-      new Bookmark(
+    return new System.ReadOnlyFile(
+      new System.Bookmark(
         source.bookmark as (string|undefined) ?? String()
       ),
       source.subpath as (string|undefined) ?? String()
       );
   }
   
-  static get dataDir(): ReadOnlyFile {
-    return new ReadOnlyFile(
-      System.root as ReadOnlyFile,
+  static get dataDir(): typeof System.ReadOnlyFile {
+    return new System.ReadOnlyFile(
+      System.root,
       System.config.system
         .prod
         .dirs
-        .data as string
+        .data
     );
   }
   
-  static get programDir(): ReadOnlyFile {
-    return new ReadOnlyFile(
-      System.root as ReadOnlyFile,
+  static get programDir(): typeof System.ReadOnlyFile {
+    return new System.ReadOnlyFile(
+      System.root,
       System.config.system
         .prod
         .dirs
-        .program as string
+        .program
     );
   }
   
-  static get programSource(): ReadOnlyFile {
+  static get programSource(): typeof System.ReadOnlyFile {
     const source: DirAddress = System.config.system
       .source
       .program
       .dir as DirAddress;
-    return new ReadOnlyFile(
-      new Bookmark(
+    return new System.ReadOnlyFile(
+      new System.Bookmark(
         source.bookmark as (string|undefined) ?? String()
       ),
       source.subpath as (string|undefined) ?? String()
@@ -146,13 +147,13 @@ class System {
     );
   }
   
-  static get externalSecretsDir(): ReadOnlyFile {
+  static get externalSecretsDir(): typeof System.ReadOnlyFile {
     const ext: DirAddress = System.config.system
       .external
       .secrets
       .dir as DirAddress;
-    return new ReadOnlyFile(
-      new Bookmark(
+    return new System.ReadOnlyFile(
+      new System.Bookmark(
         ext.bookmark as (string|undefined) ?? String()
       ),
       ext.subpath as (string|undefined) ?? String()

@@ -1,16 +1,12 @@
-const Bookmark = importModule("Bookmark");
-
-type Bookmark = typeof Bookmark;
-
 class File {
   #subpath: string = String();
-  readonly bookmark: Bookmark = new Bookmark();
+  readonly bookmark: typeof File.Bookmark = new File.Bookmark();
   constructor();
   constructor(
     subpath: string
   );
   constructor(
-    bookmark: Bookmark,
+    bookmark: typeof File.Bookmark,
     subpath?: (string | undefined)
   );
   constructor(
@@ -20,14 +16,14 @@ class File {
   constructor(
     base?: (
       undefined
-      | Bookmark
+      | typeof File.Bookmark
       | File
       | string
     ),
     subpath?: (string | undefined)
   ) {
     if (base === undefined) {
-      this.bookmark = new Bookmark();
+      this.bookmark = new File.Bookmark();
       this.subpath = String();
     }
     else if (base instanceof Bookmark) {
@@ -48,9 +44,14 @@ class File {
         );
     }
     else if (base.constructor===String) {
-      this.bookmark = new Bookmark();
+      this.bookmark = new File.Bookmark();
       this.subpath = base;
     }
+  }
+  
+  
+  static get Bookmark() {
+    return importModule("Bookmark");
   }
 
   get bookmarkedPath(): string {
