@@ -13,17 +13,17 @@ importModule(
   "file/Bookmark"
   );
 
+type SystemConfig = typeof import("system.json");
 
 class System {
-  static get config(): Object {
+  static get config(): SystemConfig {
     return JSON.parse(
       new ReadOnlyFile(
         System.systemDir,
         Boot.SYSTEM_CONFIG_FILE
       )
       .data
-    )
-    .system as (Object|undefined) ?? new Object();
+    ) as SystemConfig;
   }
   
   static get root(): ReadOnlyFile {
@@ -51,7 +51,7 @@ class System {
   static get configDir(): ReadOnlyFile {
     return new ReadOnlyFile(
       System.root as ReadOnlyFile,
-      System.config
+      System.config.system
         ["prod"]
         ["dirs"]
         ["config"] as string
@@ -59,7 +59,7 @@ class System {
   }
   
   static get configSource(): ReadOnlyFile {
-    const source: Object = System.config
+    const source: Object = System.config.system
       .source
       .config
       .dir as Object;
@@ -74,7 +74,7 @@ class System {
   static get libDir(): ReadOnlyFile {
     return new ReadOnlyFile(
       System.root as ReadOnlyFile,
-      System.config
+      System.config.system
         .prod
         .dirs
         .lib as string
@@ -82,7 +82,7 @@ class System {
   }
   
   static get libSource(): ReadOnlyFile {
-    const source: Object = System.config
+    const source: Object = System.config.system
       .source
       .lib
       .dir as Object;
@@ -97,7 +97,7 @@ class System {
   static get dataDir(): ReadOnlyFile {
     return new ReadOnlyFile(
       System.root as ReadOnlyFile,
-      System.config
+      System.config.system
         .prod
         .dirs
         .data as string
@@ -107,7 +107,7 @@ class System {
   static get programDir(): ReadOnlyFile {
     return new ReadOnlyFile(
       System.root as ReadOnlyFile,
-      System.config
+      System.config.system
         .prod
         .dirs
         .program as string
@@ -115,7 +115,7 @@ class System {
   }
   
   static get programSource(): ReadOnlyFile {
-    const source: Object = System.config
+    const source: Object = System.config.system
       .source
       .program
       .dir as Object;
@@ -129,7 +129,7 @@ class System {
   
   static get protectedFilePrefix(): string {
     return String(
-      System.config
+      System.config.system
         .prod
         .protected
         .filePrefix
@@ -137,7 +137,7 @@ class System {
   }
   
   static get externalSecretsDir(): ReadOnlyFile {
-    const ext: Object = System.config
+    const ext: Object = System.config.system
       .external
       .secrets
       .dir as Object;
