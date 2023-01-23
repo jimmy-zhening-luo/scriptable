@@ -26,14 +26,11 @@
     "npm": ">=9.3.1"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
     "@types/scriptable-ios": "^1.7.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "dotenv": "^16.0.3",
-    "npm-run-all": "^4.1.5",
     "rimraf": "^4.1.1"
   }
 }
