@@ -26,7 +26,7 @@ class _File {
       this.bookmark = new _File.Bookmark();
       this.subpath = String();
     }
-    else if (base instanceof Bookmark) {
+    else if (base instanceof _File.Bookmark) {
       this.bookmark = base;
       if (subpath === undefined)
         this.subpath = String();
