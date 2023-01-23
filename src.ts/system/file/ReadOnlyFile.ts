@@ -1,4 +1,4 @@
-const File = importModule("File");
+const File = importModule("File") as File;
 
 class _ReadOnlyFile extends File {
   override delete() {
