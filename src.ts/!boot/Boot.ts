@@ -11,7 +11,7 @@ const SYSTEM_CONFIG_FILE: string = "system.json";
 
 const REPO_SYSTEM_SRC_BOOKMARK: string = "!REPO_SYSTEM";
 
-class Boot {
+class _Boot {
   static get ROOT_BOOKMARK(): string {
     return ROOT_BOOKMARK;
   }
@@ -65,4 +65,4 @@ class Boot {
   }
 }
 
-module.exports = Boot;
+module.exports = _Boot;
