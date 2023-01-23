@@ -1,11 +1,13 @@
 "use strict";
 class Bookmark {
-    constructor(bookmark) {
+    constructor(bookmark = String()) {
         this.path = String();
-        this.bookmark = bookmark;
-        this.path = (bookmark === String()) ?
+        this.bookmark = bookmark.trim();
+        this.path = ((this.bookmark === String()) ?
             String()
-            : FileManager.iCloud().bookmarkedPath(bookmark);
+            : FileManager
+                .iCloud()
+                .bookmarkedPath(bookmark));
     }
     toString() {
         return this.path;

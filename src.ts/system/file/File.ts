@@ -50,20 +50,20 @@ class File {
       this.subpath = base;
     }
   }
-  
+
   get bookmarkedPath(): string {
     return this.bookmark.path;
   }
-  
+
   get data(): string {
     if (this.isReadable)
-      return FileManager.iCloud().readString(
+      return File.m.readString(
         this.path
       );
     else
       return String();
   }
-  
+
   get descendants(): File[] {
     if (this.isFile)
       return [this];
@@ -106,16 +106,16 @@ class File {
         new Array<File>()
       );
   }
-  
+
   get exists(): boolean {
     return (
       this.parentExists
-      && FileManager.iCloud().fileExists(
+      && File.m.fileExists(
         this.path
       )
     );
   }
-  
+
   get isBottom(): boolean {
     return (
       this.isFile
@@ -125,94 +125,94 @@ class File {
       )
     );
   }
-  
+
   get isDirectory(): boolean {
-    return FileManager.iCloud().isDirectory(
+    return File.m.isDirectory(
       this.path
     );
   }
-  
+
   get isEnumerable(): boolean {
     return this.isDirectory;
   }
-  
+
   get isFile(): boolean {
     return (
       this.exists
       && !this.isDirectory
     );
   }
-  
+
   get isReadable(): boolean {
     return this.isFile;
   }
-  
+
   get isTop(): boolean {
     return (
       this.subpath === this.parentSubpath
     );
   }
-  
+
   get leaf(): string {
     return File.trimPath(
       this.path.split("/").slice(-1).shift()
     );
   }
-  
+
   get ls(): string[] {
     return this.isDirectory?
-      FileManager.iCloud().listContents(
+      File.m.listContents(
         this.path
       )
       :new Array<string>();
   }
-  
+
   get parent(): File {
     return new File(
       this.bookmark,
       this.parentSubpath
     );
   }
-  
+
   get parentExists(): boolean {
     return this.parent.isDirectory;
   }
-  
+
   get parentIsSelf(): boolean {
     return this.isTop;
   }
-  
+
   get parentPath(): string {
     return this.parent.path;
   }
-  
+
   get parentSubpath(): string {
     return File.trimPath(
       this.subpath.split("/").slice(0, -1).join("/")
     );
   }
-  
+
   get path(): string {
     return File.joinPaths(
       this.bookmarkedPath,
-      this.subpath 
+      this.subpath
     );
   }
-  
+
   get pathTree(): string[] {
     return File.pathToTree(
       this.path
     );
   }
-  
+
   get root(): string {
     return this.bookmarkedPath;
   }
-  
+
   get subpath(): string {
     return this.#subpath;
   }
-  
+
   set subpath (
     path: string
   ) {
@@ -220,13 +220,13 @@ class File {
         path
     );
   }
-  
+
   get subpathTree(): string[] {
     return File.pathToTree(
       this.subpath
     );
   }
-  
+
   cd (
     relativePath: string = String()
   ): void {
@@ -238,13 +238,13 @@ class File {
         )
     );
   }
-  
+
   delete (
     force: boolean = false
   ): void {
     if (this.exists) {
       if (force)
-        FileManager.iCloud().remove(
+        File.m.remove(
           this.path
         );
       else {
@@ -262,7 +262,7 @@ class File {
         confirm.present().then(
           (userChoice: number) => (
             (userChoice === 0)?
-            FileManager.iCloud().remove(
+            File.m.remove(
               this.path
             )
             :console.log(
@@ -273,7 +273,7 @@ class File {
       }
     }
   }
-  
+
   pathRelativeTo (
     relativePath: string = String()
   ): string {
@@ -286,11 +286,11 @@ class File {
       )
     );
   }
-  
+
   read(): string {
     return this.data;
   }
-  
+
   subpathRelativeTo (
     relativePath: string = String()
   ): string {
@@ -303,11 +303,11 @@ class File {
       )
     );
   }
-  
+
   toString(): string {
     return this.path;
   }
-  
+
   write (
     data: string,
     overwrite: boolean = false
@@ -325,17 +325,21 @@ class File {
       );
     else {
       if (!this.parentExists)
-        FileManager.iCloud().createDirectory(
+        File.m.createDirectory(
           this.parentPath,
           true
         );
-      FileManager.iCloud().writeString(
+      File.m.writeString(
         this.path,
         data
       );
     }
   }
-  
+
+  static get m(): FileManager {
+    return FileManager.iCloud();
+  }
+
   static joinPaths (
     left: string = String(),
     right: string = String()
@@ -343,13 +347,13 @@ class File {
     left = File.trimPath(left);
     right = File.trimPath(right);
     return File.trimPath(
-      FileManager.iCloud().joinPath(
+      File.m.joinPath(
         left,
         right
       )
     );
   }
-  
+
   static pathToTree (
     path: string = String()
   ): string[] {
@@ -370,7 +374,7 @@ class File {
       )
     );
   }
-  
+
   static treeToPath (
     tree: string[] = new Array<string>()
   ): string {
@@ -391,7 +395,7 @@ class File {
       .trim()
     );
   }
-  
+
   static trimPath (
     path: string = String()
   ): string {
@@ -403,7 +407,7 @@ class File {
     path = path.trim();
     return path;
   }
-  
+
   static walkPath (
     path: string = String(),
     relativePath: string = String()
@@ -418,7 +422,7 @@ class File {
           relativePath
         )
       );
-    
+
     for (
       const node of relPathTree
     ) {

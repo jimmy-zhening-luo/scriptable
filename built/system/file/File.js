@@ -11,22 +11,40 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _File_subpath;
+importModule("Bookmark");
 class File {
-    constructor(subpath = String()) {
+    constructor(base, subpath) {
         _File_subpath.set(this, String());
-        this.subpath = (subpath !== null && subpath !== undefined && subpath.constructor === String) ?
-            subpath
-            : String();
-    }
-    static fromFile(file, relativePath = String()) {
-        return new File(File.walkPath(file.subpath, relativePath));
+        this.bookmark = new Bookmark();
+        if (base === undefined) {
+            this.bookmark = new Bookmark();
+            this.subpath = String();
+        }
+        else if (base instanceof Bookmark) {
+            this.bookmark = base;
+            if (subpath === undefined)
+                this.subpath = String();
+            else
+                this.subpath = subpath;
+        }
+        else if (base instanceof File) {
+            this.bookmark = base.bookmark;
+            if (subpath === undefined)
+                this.subpath = base.subpath;
+            else
+                this.subpath = File.walkPath(base.subpath, subpath);
+        }
+        else if (base.constructor === String) {
+            this.bookmark = new Bookmark();
+            this.subpath = base;
+        }
     }
     get bookmarkedPath() {
-        return String();
+        return this.bookmark.path;
     }
     get data() {
         if (this.isReadable)
-            return FileManager.iCloud().readString(this.path);
+            return File.m.readString(this.path);
         else
             return String();
     }
@@ -43,7 +61,7 @@ class File {
     }
     get exists() {
         return (this.parentExists
-            && FileManager.iCloud().fileExists(this.path));
+            && File.m.fileExists(this.path));
     }
     get isBottom() {
         return (this.isFile
@@ -51,7 +69,7 @@ class File {
                 && this.ls.length === 0));
     }
     get isDirectory() {
-        return FileManager.iCloud().isDirectory(this.path);
+        return File.m.isDirectory(this.path);
     }
     get isEnumerable() {
         return this.isDirectory;
@@ -71,11 +89,11 @@ class File {
     }
     get ls() {
         return this.isDirectory ?
-            FileManager.iCloud().listContents(this.path)
+            File.m.listContents(this.path)
             : new Array();
     }
     get parent() {
-        return new File(this.parentSubpath);
+        return new File(this.bookmark, this.parentSubpath);
     }
     get parentExists() {
         return this.parent.isDirectory;
@@ -113,7 +131,7 @@ class File {
     delete(force = false) {
         if (this.exists) {
             if (force)
-                FileManager.iCloud().remove(this.path);
+                File.m.remove(this.path);
             else {
                 const confirm = new Alert();
                 confirm.message = String("Are you sure you want to delete this file or folder (including all descendants)? Path: "
@@ -121,7 +139,7 @@ class File {
                 confirm.addDestructiveAction("Yes, DELETE this file");
                 confirm.addCancelAction("Cancel");
                 confirm.present().then((userChoice) => ((userChoice === 0) ?
-                    FileManager.iCloud().remove(this.path)
+                    File.m.remove(this.path)
                     : console.log("User canceled file deletion.")));
             }
         }
@@ -146,14 +164,17 @@ class File {
             throw new ReferenceError("File:write: File already exists. To overwrite existing data, write must be called with overwrite === true.");
         else {
             if (!this.parentExists)
-                FileManager.iCloud().createDirectory(this.parentPath, true);
-            FileManager.iCloud().writeString(this.path, data);
+                File.m.createDirectory(this.parentPath, true);
+            File.m.writeString(this.path, data);
         }
+    }
+    static get m() {
+        return FileManager.iCloud();
     }
     static joinPaths(left = String(), right = String()) {
         left = File.trimPath(left);
         right = File.trimPath(right);
-        return File.trimPath(FileManager.iCloud().joinPath(left, right));
+        return File.trimPath(File.m.joinPath(left, right));
     }
     static pathToTree(path = String()) {
         return File.trimPath(path)
