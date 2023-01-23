@@ -1,5 +1,3 @@
-[![NodeJS with Gulp](https://github.com/jimmy-zhening-luo/iOS-scriptable-ecosystem/actions/workflows/npm-gulp.yml/badge.svg?branch=dev)](https://github.com/jimmy-zhening-luo/iOS-scriptable-ecosystem/actions/workflows/npm-gulp.yml)
-
 A compelling use of Scriptable is using JavaScript to control custom iOS actions (see iOS Shortcuts), device-side and home automation, and on-screen Widgets.
 
 Scriptable provides all the classes needed to interact with the above native iOS features and with the user.
