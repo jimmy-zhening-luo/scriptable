@@ -2,6 +2,9 @@
   "include" : [
     "srcts/**/*"
   ],
+  "exclude": [
+    "**/@types/node/globals.d.ts"
+  ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
