@@ -1,6 +1,4 @@
-const File = importModule("File");
-
-class ReadOnlyFile extends File {
+class ReadOnlyFile extends importModule("File") {
   override delete() {
     throw new ReferenceError("File::ReadOnlyFile:delete(): Cannot delete a read-only file or folder.");
   }
