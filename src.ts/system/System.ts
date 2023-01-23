@@ -5,11 +5,11 @@ const BOOT_MODULE: string = [
   "Boot"
 ].join("/");
 
-importModule(BOOT_MODULE);
-importModule(
+const Boot = importModule(BOOT_MODULE);
+const ReadOnlyFile = importModule(
   "file/ReadOnlyFile"
 );
-importModule(
+const Bookmark = importModule(
   "file/Bookmark"
   );
 
@@ -20,7 +20,7 @@ type DirAddress = {
   readonly subpath?: string | undefined;
 }
 
-class System {
+class _System {
   static get config(): SystemConfig {
     return JSON.parse(
       new ReadOnlyFile(
@@ -274,10 +274,10 @@ class System {
   }
 }
 
-importModule(
+const File = importModule(
   "file/File"
 );
-module.exports = System;
+module.exports = _System;
 module.exports.File = File;
 module.exports.ReadOnlyFile = ReadOnlyFile;
 module.exports.Bookmark = Bookmark;

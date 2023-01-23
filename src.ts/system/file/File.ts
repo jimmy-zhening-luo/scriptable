@@ -1,6 +1,6 @@
-importModule("Bookmark");
+const Bookmark = importModule("Bookmark");
 
-class File {
+class _File {
   #subpath: string = String();
   readonly bookmark: Bookmark = new Bookmark();
   constructor();
@@ -441,4 +441,4 @@ class File {
   }
 }
 
-module.exports = File;
+module.exports = _File;

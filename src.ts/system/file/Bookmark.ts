@@ -1,4 +1,4 @@
-class Bookmark {
+class _Bookmark {
   readonly bookmark: string;
   readonly path: string = String();
   constructor (
@@ -21,4 +21,4 @@ class Bookmark {
   }
 }
 
-module.exports = Bookmark;
+module.exports = _Bookmark;
