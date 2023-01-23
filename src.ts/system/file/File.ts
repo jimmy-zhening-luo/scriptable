@@ -3,24 +3,52 @@ importModule("Bookmark");
 class File {
   #subpath: string = String();
   readonly bookmark: Bookmark = new Bookmark();
+  constructor();
   constructor(
-  bookmark: Bookmark = new Bookmark(),
-  subpath: string = String()
-  ) {
-    this.bookmark = bookmark;
-    this.subpath = subpath;
-  }
-  
-  static fromFile(
+    subpath: string
+  );
+  constructor(
+    bookmark: Bookmark,
+    subpath?: (string | undefined)
+  );
+  constructor(
     file: File,
-    relativePath: string = String()
-  ): File {
-    return new File(
-    file.bookmark,
-    File.walkPath(
-      file.subpath,
-      relativePath
-    ));
+    relativePath?: (string | undefined)
+  );
+  constructor(
+    base?: (
+      undefined
+      | Bookmark
+      | File
+      | string
+    ),
+    subpath?: (string | undefined)
+  ) {
+    if (base === undefined) {
+      this.bookmark = new Bookmark();
+      this.subpath = String();
+    }
+    else if (base instanceof Bookmark) {
+      this.bookmark = base;
+      if (subpath === undefined)
+        this.subpath = String();
+      else
+        this.subpath = subpath;
+    }
+    else if (base instanceof File) {
+      this.bookmark = base.bookmark;
+      if (subpath === undefined)
+        this.subpath = base.subpath;
+      else
+        this.subpath = File.walkPath(
+          base.subpath,
+          subpath
+        );
+    }
+    else if (base.constructor===String) {
+      this.bookmark = new Bookmark();
+      this.subpath = base;
+    }
   }
   
   get bookmarkedPath(): string {
