@@ -1,3 +1,25 @@
+class _Bookmark {
+  readonly bookmark: string;
+  readonly path: string = String();
+  constructor(
+    bookmark: string = String()
+  ) {
+    this.bookmark = bookmark.trim();
+    this.path = (
+      (this.bookmark === String()) ?
+        String()
+        : FileManager
+          .iCloud()
+          .bookmarkedPath(
+            bookmark
+          )
+    );
+  }
+
+  toString(): string {
+    return this.path;
+  }
+}
 class _File {
   #subpath: string = String();
   readonly bookmark: typeof _File.Bookmark = new _File.Bookmark();
@@ -48,8 +70,8 @@ class _File {
       this.subpath = base;
     }
   }
-  
-  
+
+
   static get Bookmark() {
     return importModule("Bookmark");
   }
@@ -444,4 +466,18 @@ class _File {
   }
 }
 
+class _ReadOnlyFile extends _File {
+  override delete() {
+    throw new ReferenceError("File::ReadOnlyFile:delete(): Cannot delete a read-only file or folder.");
+  }
+
+  override write() {
+    throw new ReferenceError("File::ReadOnlyFile:write(): Cannot write to or overwrite a read-only file.");
+  }
+}
+
+
 module.exports = _File;
+module.exports.Bookmark = _Bookmark;
+module.exports.File = _File;
+module.exports.ReadOnlyFile = _ReadOnlyFile;

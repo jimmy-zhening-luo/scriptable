@@ -5,101 +5,110 @@ const BOOT_MODULE = [
     BOOT_DIR,
     "Boot"
 ].join("/");
-importModule(BOOT_MODULE);
-importModule("file/ReadOnlyFile");
-importModule("file/Bookmark");
-class System {
+class _System {
+    static get Boot() {
+        return importModule(BOOT_MODULE);
+    }
+    static get Bookmark() {
+        return _System.File.Bookmark;
+    }
+    static get File() {
+        return importModule("file/File");
+    }
+    static get ReadOnlyFile() {
+        return _System.File.ReadOnlyFile;
+    }
     static get config() {
-        return JSON.parse(new ReadOnlyFile(System.systemDir, Boot.SYSTEM_CONFIG_FILE)
+        return JSON.parse(new _System.ReadOnlyFile(_System.systemDir, _System.Boot.SYSTEM_CONFIG_FILE)
             .data);
     }
     static get root() {
-        return new ReadOnlyFile(new Bookmark(Boot.ROOT_BOOKMARK));
+        return new _System.ReadOnlyFile(new _System.Bookmark(_System.Boot.ROOT_BOOKMARK));
     }
     static get bootDir() {
-        return new ReadOnlyFile(System.root, BOOT_DIR);
+        return new _System.ReadOnlyFile(_System.root, BOOT_DIR);
     }
     static get systemDir() {
-        return new ReadOnlyFile(System.root, Boot.SYSTEM_DIR);
+        return new _System.ReadOnlyFile(_System.root, _System.Boot.SYSTEM_DIR);
     }
     static get configDir() {
-        return new ReadOnlyFile(System.root, System.config.system["prod"]["dirs"]["config"]);
+        return new _System.ReadOnlyFile(_System.root, _System.config.system["prod"]["dirs"]["config"]);
     }
     static get configSource() {
         var _a, _b;
-        const source = System.config.system
+        const source = _System.config.system
             .source
             .config
             .dir;
-        return new ReadOnlyFile(new Bookmark((_a = source.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = source.subpath) !== null && _b !== void 0 ? _b : String());
+        return new _System.ReadOnlyFile(new _System.Bookmark((_a = source.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = source.subpath) !== null && _b !== void 0 ? _b : String());
     }
     static get libDir() {
-        return new ReadOnlyFile(System.root, System.config.system
+        return new _System.ReadOnlyFile(_System.root, _System.config.system
             .prod
             .dirs
             .lib);
     }
     static get libSource() {
         var _a, _b;
-        const source = System.config.system
+        const source = _System.config.system
             .source
             .lib
             .dir;
-        return new ReadOnlyFile(new Bookmark((_a = source.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = source.subpath) !== null && _b !== void 0 ? _b : String());
+        return new _System.ReadOnlyFile(new _System.Bookmark((_a = source.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = source.subpath) !== null && _b !== void 0 ? _b : String());
     }
     static get dataDir() {
-        return new ReadOnlyFile(System.root, System.config.system
+        return new _System.ReadOnlyFile(_System.root, _System.config.system
             .prod
             .dirs
             .data);
     }
     static get programDir() {
-        return new ReadOnlyFile(System.root, System.config.system
+        return new _System.ReadOnlyFile(_System.root, _System.config.system
             .prod
             .dirs
             .program);
     }
     static get programSource() {
         var _a, _b;
-        const source = System.config.system
+        const source = _System.config.system
             .source
             .program
             .dir;
-        return new ReadOnlyFile(new Bookmark((_a = source.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = source.subpath) !== null && _b !== void 0 ? _b : String());
+        return new _System.ReadOnlyFile(new _System.Bookmark((_a = source.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = source.subpath) !== null && _b !== void 0 ? _b : String());
     }
     static get protectedFilePrefix() {
-        return String(System.config.system
+        return String(_System.config.system
             .prod
             .protected
             .filePrefix);
     }
     static get externalSecretsDir() {
         var _a, _b;
-        const ext = System.config.system
+        const ext = _System.config.system
             .external
             .secrets
             .dir;
-        return new ReadOnlyFile(new Bookmark((_a = ext.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = ext.subpath) !== null && _b !== void 0 ? _b : String());
+        return new _System.ReadOnlyFile(new _System.Bookmark((_a = ext.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = ext.subpath) !== null && _b !== void 0 ? _b : String());
     }
     static clean() {
-        System.cleanConfigs();
-        System.cleanLibraries();
-        System.cleanPrograms();
+        _System.cleanConfigs();
+        _System.cleanLibraries();
+        _System.cleanPrograms();
     }
     static install() {
-        System.clean();
-        System.installConfigs();
-        System.installLibraries();
-        System.installPrograms();
+        _System.clean();
+        _System.installConfigs();
+        _System.installLibraries();
+        _System.installPrograms();
     }
     static cleanConfigs() {
     }
     static installConfigs() {
-        System.cleanConfigs();
+        _System.cleanConfigs();
         const fm = FileManager.iCloud();
-        const here = System.configDir.path;
+        const here = _System.configDir.path;
         const destination = here;
-        const there = System.configSource.path;
+        const there = _System.configSource.path;
         const source = there;
         if (fm.isDirectory(destination))
             fm.remove(destination);
@@ -108,11 +117,11 @@ class System {
     static cleanLibraries() {
     }
     static installLibraries() {
-        System.cleanLibraries();
+        _System.cleanLibraries();
         const fm = FileManager.iCloud();
-        const here = System.libDir.path;
+        const here = _System.libDir.path;
         const destination = here;
-        const there = System.libSource.path;
+        const there = _System.libSource.path;
         const source = there;
         if (fm.isDirectory(destination))
             fm.remove(destination);
@@ -121,7 +130,7 @@ class System {
     static cleanPrograms() {
     }
     static installPrograms() {
-        System.cleanPrograms();
+        _System.cleanPrograms();
         const confirm = new Alert();
         confirm.message = "Initializing scripts will delete all scripts currently shown. Are you sure you want to override current production files?";
         confirm.addDestructiveAction("Yes, DELETE prod");
@@ -130,17 +139,17 @@ class System {
         function pull(value = -1) {
             if (value === 0) {
                 const fm = FileManager.iCloud();
-                const here = System.programDir.path;
+                const here = _System.programDir.path;
                 const destination = here;
-                const there = System.programSource.path;
+                const there = _System.programSource.path;
                 const source = there;
                 const dScripts = fm
-                    .listContents(destination).filter((leaf) => (!leaf.startsWith(System.protectedFilePrefix)
-                    && !(leaf === System.libDir.leaf)
-                    && !(leaf === System.bootDir.leaf)
-                    && !(leaf === System.dataDir.leaf)
-                    && !(leaf === System.configDir.leaf)
-                    && !(leaf === System.systemDir.leaf)
+                    .listContents(destination).filter((leaf) => (!leaf.startsWith(_System.protectedFilePrefix)
+                    && !(leaf === _System.libDir.leaf)
+                    && !(leaf === _System.bootDir.leaf)
+                    && !(leaf === _System.dataDir.leaf)
+                    && !(leaf === _System.configDir.leaf)
+                    && !(leaf === _System.systemDir.leaf)
                     && !(leaf === ".Trash")));
                 for (const leaf of dScripts) {
                     const dFile = fm.joinPath(destination, leaf);
@@ -159,8 +168,8 @@ class System {
         }
     }
 }
-importModule("file/File");
-module.exports = System;
-module.exports.File = File;
-module.exports.ReadOnlyFile = ReadOnlyFile;
-module.exports.Bookmark = Bookmark;
+module.exports = _System;
+module.exports.System = _System;
+module.exports.Bookmark = _System.Bookmark;
+module.exports.File = _System.File;
+module.exports.ReadOnlyFile = _System.ReadOnlyFile;

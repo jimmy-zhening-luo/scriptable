@@ -4,7 +4,7 @@ const BOOT_MODULE: string = [
   BOOT_DIR,
   "Boot"
 ].join("/");
-  
+
 type _SystemConfig = typeof import("./system.json");
 
 type _DirAddress = {
@@ -16,17 +16,19 @@ class _System {
   static get Boot() {
     return importModule(BOOT_MODULE);
   }
-  
+
   static get Bookmark() {
-    return _System.ReadOnlyFile.Bookmark;
+    return _System.File.Bookmark;
   }
-  
+
+  static get File() {
+    return importModule("file/File");
+  }
+
   static get ReadOnlyFile() {
-    return importModule(
-  "file/ReadOnlyFile"
-  );
+    return _System.File.ReadOnlyFile;
   }
-  
+
   static get config(): _SystemConfig {
     return JSON.parse(
       new _System.ReadOnlyFile(
@@ -36,7 +38,7 @@ class _System {
       .data
     ) as _SystemConfig;
   }
-  
+
   static get root(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
       new _System.Bookmark(
@@ -44,21 +46,21 @@ class _System {
       )
     );
   }
-  
+
   static get bootDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
       _System.root,
       BOOT_DIR
     );
   }
-  
+
   static get systemDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
       _System.root,
       _System.Boot.SYSTEM_DIR
     );
   }
-  
+
   static get configDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
       _System.root,
@@ -68,7 +70,7 @@ class _System {
         ["config"]
     );
   }
-  
+
   static get configSource(): typeof _System.ReadOnlyFile {
     const source: _DirAddress = _System.config.system
       .source
@@ -81,7 +83,7 @@ class _System {
       source.subpath as (string|undefined) ?? String()
     );
   }
-  
+
   static get libDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
       _System.root,
@@ -91,7 +93,7 @@ class _System {
         .lib
     );
   }
-  
+
   static get libSource(): typeof _System.ReadOnlyFile {
     const source: _DirAddress = _System.config.system
       .source
@@ -104,7 +106,7 @@ class _System {
       source.subpath as (string|undefined) ?? String()
       );
   }
-  
+
   static get dataDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
       _System.root,
@@ -114,7 +116,7 @@ class _System {
         .data
     );
   }
-  
+
   static get programDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
       _System.root,
@@ -124,7 +126,7 @@ class _System {
         .program
     );
   }
-  
+
   static get programSource(): typeof _System.ReadOnlyFile {
     const source: _DirAddress = _System.config.system
       .source
@@ -137,7 +139,7 @@ class _System {
       source.subpath as (string|undefined) ?? String()
       );
   }
-  
+
   static get protectedFilePrefix(): string {
     return String(
       _System.config.system
@@ -146,7 +148,7 @@ class _System {
         .filePrefix
     );
   }
-  
+
   static get externalSecretsDir(): typeof _System.ReadOnlyFile {
     const ext: _DirAddress = _System.config.system
       .external
@@ -159,64 +161,64 @@ class _System {
       ext.subpath as (string|undefined) ?? String()
     );
   }
-  
+
   static clean(): void {
     _System.cleanConfigs();
     _System.cleanLibraries();
     _System.cleanPrograms();
   }
-  
+
   static install(): void {
     _System.clean();
     _System.installConfigs();
     _System.installLibraries();
     _System.installPrograms();
   }
-  
+
   static cleanConfigs(): void {
-    
+
   }
-  
+
   static installConfigs(): void {
     _System.cleanConfigs();
     const fm: FileManager = FileManager.iCloud();
-    
+
     const here: string = _System.configDir.path;
     const destination: string = here;
-      
+
     const there: string = _System.configSource.path;
     const source: string = there;
-    
+
     if (fm.isDirectory(destination))
       fm.remove(destination);
-    
+
     fm.copy(source, destination);
   }
-  
+
   static cleanLibraries(): void {
-    
+
   }
-  
+
   static installLibraries(): void {
     _System.cleanLibraries();
     const fm: FileManager = FileManager.iCloud();
-    
+
     const here: string = _System.libDir.path;
     const destination: string = here;
-      
+
     const there: string = _System.libSource.path;
     const source: string = there;
-    
+
     if (fm.isDirectory(destination))
       fm.remove(destination);
-      
+
     fm.copy(source, destination);
   }
-  
+
   static cleanPrograms(): void {
-    
+
   }
-  
+
   static installPrograms(): void {
     _System.cleanPrograms();
     const confirm: Alert = new Alert();
@@ -224,7 +226,7 @@ class _System {
     confirm.addDestructiveAction("Yes, DELETE prod");
     confirm.addCancelAction("No, cancel");
     confirm.present().then((value: number) => (pull(value)));
-    
+
     function pull(
       value: number = -1
     ): void {
@@ -232,10 +234,10 @@ class _System {
         const fm: FileManager = FileManager.iCloud();
         const here: string = _System.programDir.path;
         const destination: string = here;
-          
+
         const there: string = _System.programSource.path;
         const source: string = there;
-        
+
         const dScripts: string[] = fm
           .listContents(
             destination
@@ -248,7 +250,7 @@ class _System {
             && !(leaf === _System.systemDir.leaf)
             && !(leaf === ".Trash")
           ));
-        
+
         for (const leaf of dScripts) {
           const dFile: string = fm.joinPath(
             destination,
@@ -257,12 +259,12 @@ class _System {
           console.log(dFile);
           fm.remove(dFile);
         }
-        
+
         const sScripts: string[] = fm
           .listContents(
             source
           );
-        
+
         for (const leaf of sScripts) {
           const sFile: string = fm.joinPath(
             source,
@@ -281,3 +283,7 @@ class _System {
 }
 
 module.exports = _System;
+module.exports.System = _System;
+module.exports.Bookmark = _System.Bookmark;
+module.exports.File = _System.File;
+module.exports.ReadOnlyFile = _System.ReadOnlyFile;
