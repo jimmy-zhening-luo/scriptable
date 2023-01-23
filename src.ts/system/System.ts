@@ -15,6 +15,11 @@ importModule(
 
 type SystemConfig = typeof import("./system.json");
 
+type DirAddress = {
+  readonly bookmark?: string | undefined;
+  readonly subpath?: string | undefined;
+}
+
 class System {
   static get config(): SystemConfig {
     return JSON.parse(
@@ -59,10 +64,10 @@ class System {
   }
   
   static get configSource(): ReadOnlyFile {
-    const source: Object = System.config.system
+    const source: DirAddress = System.config.system
       .source
       .config
-      .dir as Object;
+      .dir as DirAddress;
     return new ReadOnlyFile(
       new Bookmark(
         source.bookmark as (string|undefined) ?? String()
@@ -82,10 +87,10 @@ class System {
   }
   
   static get libSource(): ReadOnlyFile {
-    const source: Object = System.config.system
+    const source: DirAddress = System.config.system
       .source
       .lib
-      .dir as Object;
+      .dir as DirAddress;
     return new ReadOnlyFile(
       new Bookmark(
         source.bookmark as (string|undefined) ?? String()
@@ -115,10 +120,10 @@ class System {
   }
   
   static get programSource(): ReadOnlyFile {
-    const source: Object = System.config.system
+    const source: DirAddress = System.config.system
       .source
       .program
-      .dir as Object;
+      .dir as DirAddress;
     return new ReadOnlyFile(
       new Bookmark(
         source.bookmark as (string|undefined) ?? String()
@@ -137,10 +142,10 @@ class System {
   }
   
   static get externalSecretsDir(): ReadOnlyFile {
-    const ext: Object = System.config.system
+    const ext: DirAddress = System.config.system
       .external
       .secrets
-      .dir as Object;
+      .dir as DirAddress;
     return new ReadOnlyFile(
       new Bookmark(
         ext.bookmark as (string|undefined) ?? String()
