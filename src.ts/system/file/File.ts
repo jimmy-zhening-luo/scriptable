@@ -1,5 +1,7 @@
 const Bookmark = importModule("Bookmark");
 
+type Bookmark = typeof Bookmark;
+
 class File {
   #subpath: string = String();
   readonly bookmark: Bookmark = new Bookmark();
