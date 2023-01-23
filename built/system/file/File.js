@@ -52,9 +52,6 @@ class _File {
             this.subpath = base;
         }
     }
-    static get Bookmark() {
-        return importModule("Bookmark");
-    }
     get bookmarkedPath() {
         return this.bookmark.path;
     }
@@ -235,3 +232,6 @@ class _ReadOnlyFile extends _File {
     }
 }
 module.exports = _File;
+module.exports.File = _File;
+module.exports.ReadOnlyFile = _ReadOnlyFile;
+module.exports.Bookmark = _Bookmark;

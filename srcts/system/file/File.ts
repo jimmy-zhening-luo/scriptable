@@ -71,11 +71,6 @@ class _File {
     }
   }
 
-
-  static get Bookmark() {
-    return importModule("Bookmark");
-  }
-
   get bookmarkedPath(): string {
     return this.bookmark.path;
   }
@@ -478,3 +473,6 @@ class _ReadOnlyFile extends _File {
 
 
 module.exports = _File;
+module.exports.File = _File;
+module.exports.ReadOnlyFile = _ReadOnlyFile;
+module.exports.Bookmark = _Bookmark;
