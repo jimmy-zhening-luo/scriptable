@@ -1,8 +1,8 @@
 type primitive = string | number | boolean;
-type nullablePrimitive = primitive | unknown;
+type nullablePrimitive = primitive | undefined;
 type SettingValue = nullablePrimitive | Array<any> | Setting;
 
-class Setting<T> {
+class Setting {
   readonly key: string;
   readonly value: SettingValue;
   constructor(
@@ -17,10 +17,15 @@ class Setting<T> {
 class SettingsConfigSection {
   readonly setting: Setting;
   constructor(
-    sectionKey: string,
-    sectionValue?: Object | undefined
+    sectionName: string,
+    sectionContents?: SettingValue
   ) {
-    this.setting = new Setting(sectionKey, sectionValue);
+    if (sectionValue === undefined) {
+
+    }
+    else
+
+    this.setting = new Setting(sectionName, sectionValue);
   }
 }
 
@@ -58,11 +63,11 @@ class SettingsConfig {
       this.userSection = new SettingsConfigUserSection(settings.user);
     }
   }
-  
+
   get appSetting(): Setting {
     return this.appSection.setting;
   }
-  
+
   get userSetting(): Setting {
     return this.userSection.setting;
   }
@@ -70,7 +75,7 @@ class SettingsConfig {
   get app(): SettingValue {
     return this.appSetting.value;
   }
-  
+
   get user(): SettingValue {
     return this.userSetting.value;
   }
@@ -149,12 +154,12 @@ class _Config {
     winners: SettingsConfigSection,
     losers: SettingsConfigSection
   ): SettingValue {
-    
+
     function mergePrimitives(
-      winner: primitive,
-      loser: primitive
+      winner: nullablePrimitive,
+      loser: nullablePrimitive
     ): primitive {
-      return winner;
+      return (winner ?? loser) ?? String();
     };
 
     function mergeArrays(
@@ -165,7 +170,7 @@ class _Config {
     };
 
     function isPrimitive(
-      obj: any | undefined | null
+      obj: SettingValue
     ): boolean {
       return (
         obj?.constructor === String
