@@ -1,5 +1,7 @@
 /*
-This file must be manually copied from the repository into the boot dir.
+Boot.js
+
+This built file (.js, not the .ts source file) must be manually copied from the repository into the boot dir.
 
 When run, it loads the core system files from the repository.
 */
@@ -32,7 +34,7 @@ class _Boot {
     _Boot.installSystem();
   }
 
-  static cleanSystem(): void {
+  private static cleanSystem(): void {
     const fm: FileManager = FileManager.iCloud();
     const prodPath: string = fm.joinPath(
       fm.bookmarkedPath(
@@ -44,7 +46,7 @@ class _Boot {
       fm.remove(prodPath);
   }
 
-  static installSystem(): void {
+  private static installSystem(): void {
     _Boot.cleanSystem();
     const fm: FileManager = FileManager.iCloud();
     const repoPath: string = fm.bookmarkedPath(

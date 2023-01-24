@@ -356,7 +356,7 @@ class _File {
     }
   }
 
-  static get m(): FileManager {
+  protected static get m(): FileManager {
     return FileManager.iCloud();
   }
 

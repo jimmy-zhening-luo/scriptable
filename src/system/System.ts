@@ -2,7 +2,7 @@ const BOOT_RUNTIME_ROOT_SUBPATH: string = "!boot";
 const BOOT_FILENAME: string = "BOOT";
 
 const SYSTEM_CONFIG_FILENAME: string = "system.json";
-type _SYSTEM_CONFIG = typeof import("./system.json");
+type SYSTEM_CONFIG_INTERFACE = typeof import("./system.json");
 
 class _System {
   private static get BOOT() {
@@ -32,14 +32,14 @@ class _System {
     return importModule("Secret");
   }
 
-  static get CONFIG(): _SYSTEM_CONFIG {
+  private static get CONFIG(): SYSTEM_CONFIG_INTERFACE {
     return JSON.parse(
       new _System.ReadOnlyFile(
         _System.systemRuntime,
         SYSTEM_CONFIG_FILENAME
       )
         .data
-    ) as _SYSTEM_CONFIG;
+    ) as SYSTEM_CONFIG_INTERFACE;
   }
 
   static get runtimeRoot(): typeof _System.ReadOnlyFile {
@@ -50,7 +50,7 @@ class _System {
     );
   }
 
-  static get BOOT_RUNTIME(): typeof _System.ReadOnlyFile {
+  private static get BOOT_RUNTIME(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
       _System.runtimeRoot,
       BOOT_RUNTIME_ROOT_SUBPATH
@@ -100,7 +100,7 @@ class _System {
     );
   }
 
-  static get programRuntime(): typeof _System.ReadOnlyFile {
+  static get programsRuntime(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
       _System.runtimeRoot,
       _System.CONFIG
@@ -108,16 +108,16 @@ class _System {
         .runtime
         .directories
         .rootSubpaths
-        .program
+        .programs
     );
   }
 
   static get configSource(): typeof _System.ReadOnlyFile {
-    const source: _System._Address = _System.CONFIG
+    const source: _System.Address = _System.CONFIG
       .system
       .source
       .addresses
-      .config as _System._Address;
+      .config as _System.Address;
     return new _System.ReadOnlyFile(
       new _System.Bookmark(
         source.bookmark as (string | undefined) ?? String()
@@ -128,11 +128,11 @@ class _System {
 
 
   static get libSource(): typeof _System.ReadOnlyFile {
-    const source: _System._Address = _System.CONFIG
+    const source: _System.Address = _System.CONFIG
       .system
       .source
       .addresses
-      .lib as _System._Address;
+      .lib as _System.Address;
     return new _System.ReadOnlyFile(
       new _System.Bookmark(
         source.bookmark as (string | undefined) ?? String()
@@ -141,12 +141,12 @@ class _System {
     );
   }
 
-  static get programSource(): typeof _System.ReadOnlyFile {
-    const source: _System._Address = _System.CONFIG
+  static get programsSource(): typeof _System.ReadOnlyFile {
+    const source: _System.Address = _System.CONFIG
       .system
       .source
       .addresses
-      .program as _System._Address;
+      .programs as _System.Address;
     return new _System.ReadOnlyFile(
       new _System.Bookmark(
         source.bookmark as (string|undefined) ?? String()
@@ -155,7 +155,7 @@ class _System {
       );
   }
 
-  static get protectedFilePrefix(): string {
+  private static get protectedFilePrefix(): string {
     return String(
       _System.CONFIG
         .system
@@ -165,7 +165,7 @@ class _System {
     );
   }
 
-  static cleanDependencies(): void {
+  private static cleanDependencies(): void {
     _System.cleanConfigs();
     _System.cleanLibraries();
   }
@@ -177,7 +177,7 @@ class _System {
     _System.installPrograms();
   }
 
-  static cleanConfigs(): void {
+  private static cleanConfigs(): void {
     const fm: FileManager = FileManager.iCloud();
 
     const here: string = _System.configRuntime.path;
@@ -187,7 +187,7 @@ class _System {
       fm.remove(destination);
   }
 
-  static installConfigs(): void {
+  private static installConfigs(): void {
     _System.cleanConfigs();
     const fm: FileManager = FileManager.iCloud();
 
@@ -200,7 +200,7 @@ class _System {
     fm.copy(source, destination);
   }
 
-  static cleanLibraries(): void {
+  private static cleanLibraries(): void {
     const fm: FileManager = FileManager.iCloud();
 
     const here: string = _System.libRuntime.path;
@@ -210,7 +210,7 @@ class _System {
       fm.remove(destination);
   }
 
-  static installLibraries(): void {
+  private static installLibraries(): void {
     _System.cleanLibraries();
     const fm: FileManager = FileManager.iCloud();
 
@@ -223,7 +223,7 @@ class _System {
     fm.copy(source, destination);
   }
 
-  static installPrograms(): void {
+  private static installPrograms(): void {
     const confirm: Alert = new Alert();
     confirm.message = "Initializing scripts will delete all scripts currently shown. Are you sure you want to override current runtime files?";
     confirm.addDestructiveAction("Yes, DELETE runtime");
@@ -235,10 +235,10 @@ class _System {
     ): void {
       if (value === 0) {
         const fm: FileManager = FileManager.iCloud();
-        const here: string = _System.programRuntime.path;
+        const here: string = _System.programsRuntime.path;
         const destination: string = here;
 
-        const there: string = _System.programSource.path;
+        const there: string = _System.programsSource.path;
         const source: string = there;
 
         const dScripts: string[] = fm
@@ -286,7 +286,7 @@ class _System {
 }
 
 namespace _System {
-  export type _Address = {
+  export type Address = {
     readonly bookmark?: string | undefined;
     readonly subpath?: string | undefined;
   }

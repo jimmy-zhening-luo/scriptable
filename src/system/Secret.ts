@@ -1,7 +1,7 @@
-const EXTERNAL_SECRETS_BOOKMARK = "Local/Secrets";
+const EXTERNAL_SECRETS_BOOKMARK = "#SECRETS";
 
 class _Secret {
-  readonly file: typeof _Secret.File.ReadOnlyFile;
+  private readonly file: typeof _Secret.File.ReadOnlyFile;
   constructor (
     subpath: string
   ) {

@@ -1,17 +1,13 @@
 type primitive = string | number | boolean;
 type nullablePrimitive = primitive | unknown;
+type SettingValue = nullablePrimitive | Array<any> | Setting;
 
-class Setting {
+class Setting<T> {
   readonly key: string;
-  readonly value: (
-    nullablePrimitive
-    | Array<any>
-    | Object
-  );
-
+  readonly value: SettingValue;
   constructor(
     key: string,
-    value: nullablePrimitive | Array<any> | Object
+    value: SettingValue
   ) {
     this.key = key;
     this.value = value;
@@ -19,12 +15,12 @@ class Setting {
 }
 
 class SettingsConfigSection {
-  readonly bag: Setting;
+  readonly setting: Setting;
   constructor(
     sectionKey: string,
     sectionValue?: Object | undefined
   ) {
-    this.bag = new Setting(sectionKey, sectionValue);
+    this.setting = new Setting(sectionKey, sectionValue);
   }
 }
 
@@ -50,21 +46,33 @@ type SettingsConfigInterface = {
 }
 
 class SettingsConfig {
-  readonly app: SettingsConfigAppSection;
-  readonly user: SettingsConfigUserSection;
+  readonly appSection: SettingsConfigAppSection;
+  readonly userSection: SettingsConfigUserSection;
   constructor(settings?: SettingsConfigInterface | undefined) {
     if (settings === undefined) {
-      this.app = new SettingsConfigAppSection();
-      this.user = new SettingsConfigUserSection();
+      this.appSection = new SettingsConfigAppSection();
+      this.userSection = new SettingsConfigUserSection();
     }
     else {
-      this.app = new SettingsConfigAppSection(settings.app);
-      this.user = new SettingsConfigUserSection(settings.user);
+      this.appSection = new SettingsConfigAppSection(settings.app);
+      this.userSection = new SettingsConfigUserSection(settings.user);
     }
   }
+  
+  get appSetting(): Setting {
+    return this.appSection.setting;
+  }
+  
+  get userSetting(): Setting {
+    return this.userSection.setting;
+  }
 
-  get inner() {
-
+  get app(): SettingValue {
+    return this.appSetting.value;
+  }
+  
+  get user(): SettingValue {
+    return this.userSetting.value;
   }
 }
 
@@ -111,25 +119,25 @@ class _Config {
       : new SettingsConfig();
   }
 
-  get app(): Object {
+  get app(): SettingValue {
     return this.unmerged.app;
   }
 
-  get user(): Object {
+  get user(): SettingValue {
     return this.unmerged.user;
   }
 
-  get merged(): Object {
+  get merged(): SettingValue {
     return _Config.mergeSections(
-      this.user,
-      this.app,
+      this.unmerged.userSection,
+      this.unmerged.appSection
     );
   }
 
-  get mergedUserOverridesProhibited(): Object {
+  get mergedUserOverridesProhibited(): SettingValue {
     return _Config.mergeSections(
-      this.app,
-      this.user,
+      this.unmerged.appSection,
+      this.unmerged.userSection
     );
   }
 
@@ -138,14 +146,15 @@ class _Config {
   }
 
   static mergeSections(
-    winners: Object,
-    losers: Object
-  ): Object {
+    winners: SettingsConfigSection,
+    losers: SettingsConfigSection
+  ): SettingValue {
+    
     function mergePrimitives(
-      winner: string | boolean | number | undefined,
-      loser: string | boolean | number | undefined
-    ): string | boolean | number {
-      return (winner ?? loser) ?? String();
+      winner: primitive,
+      loser: primitive
+    ): primitive {
+      return winner;
     };
 
     function mergeArrays(
@@ -155,7 +164,7 @@ class _Config {
       return winner.concat(loser);
     };
 
-    function primitive(
+    function isPrimitive(
       obj: any | undefined | null
     ): boolean {
       return (
@@ -166,8 +175,8 @@ class _Config {
     };
 
     function intersectKeys(
-      a: Object,
-      b: Object
+      a: SettingsConfigSection,
+      b: SettingsConfigSection
     ): Array<string> {
       return Object.keys(a)
         .filter(

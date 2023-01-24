@@ -6,7 +6,7 @@
           "config": "config",
           "lib": "lib",
           "storage": "!data",
-          "program": ""
+          "programs": ""
         }
       },
       "protected": {
@@ -16,15 +16,15 @@
     "source": {
       "addresses": {
         "config": {
-          "bookmark": "Repositories/Scriptable/config"
+          "bookmark": "@CONFIG"
         },
         "lib": {
-          "bookmark": "Repositories/Scriptable/src",
+          "bookmark": "@BUILT",
           "subpath": "lib"
         },
-        "program": {
-          "bookmark": "Repositories/Scriptable/src",
-          "subpath": "program"
+        "programs": {
+          "bookmark": "@BUILT",
+          "subpath": "programs"
         }
       }
     }
