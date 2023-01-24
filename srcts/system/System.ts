@@ -1,20 +1,19 @@
-const BOOT_DIR: string = "!boot";
-const BOOT_MODULE: string = [
-  ".",
-  BOOT_DIR,
-  "Boot"
-].join("/");
+const BOOT_RUNTIME_ROOT_SUBPATH: string = "!boot";
+const BOOT_FILENAME: string = "BOOT";
 
-type _SystemConfig = typeof import("./system.json");
-
-type _DirAddress = {
-  readonly bookmark?: string | undefined;
-  readonly subpath?: string | undefined;
-}
+const SYSTEM_CONFIG_FILENAME: string = "system.json";
+type _SYSTEM_CONFIG = typeof import("./system.json");
 
 class _System {
-  static get Boot() {
-    return importModule(BOOT_MODULE);
+  private static get BOOT() {
+    return importModule(
+      [
+        ".",
+        BOOT_RUNTIME_ROOT_SUBPATH,
+        BOOT_FILENAME
+      ]
+      .join("/")
+    );
   }
 
   static get Bookmark() {
@@ -29,109 +28,125 @@ class _System {
     return _System.File.ReadOnlyFile;
   }
 
-  static get config(): _SystemConfig {
+  static get Secret() {
+    return importModule("Secret");
+  }
+
+  static get CONFIG(): _SYSTEM_CONFIG {
     return JSON.parse(
       new _System.ReadOnlyFile(
-        _System.systemDir,
-        _System.Boot.SYSTEM_CONFIG_FILE
+        _System.systemRuntime,
+        SYSTEM_CONFIG_FILENAME
       )
-      .data
-    ) as _SystemConfig;
+        .data
+    ) as _SYSTEM_CONFIG;
   }
 
-  static get root(): typeof _System.ReadOnlyFile {
+  static get runtimeRoot(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
       new _System.Bookmark(
-        _System.Boot.ROOT_BOOKMARK
+        _System.BOOT.RUNTIME_ROOT_BOOKMARK
       )
     );
   }
 
-  static get bootDir(): typeof _System.ReadOnlyFile {
+  static get BOOT_RUNTIME(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      _System.root,
-      BOOT_DIR
+      _System.runtimeRoot,
+      BOOT_RUNTIME_ROOT_SUBPATH
     );
   }
 
-  static get systemDir(): typeof _System.ReadOnlyFile {
+  static get systemRuntime(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      _System.root,
-      _System.Boot.SYSTEM_DIR
+      _System.runtimeRoot,
+      _System.BOOT.SYSTEM_RUNTIME_ROOT_SUBPATH
     );
   }
 
-  static get configDir(): typeof _System.ReadOnlyFile {
+  static get configRuntime(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      _System.root,
-      _System.config.system
-        ["prod"]
-        ["dirs"]
-        ["config"]
+      _System.runtimeRoot,
+      _System.CONFIG
+        .system
+        .runtime
+        .directories
+        .rootSubpaths
+        .config
     );
   }
 
-  static get configSource(): typeof _System.ReadOnlyFile {
-    const source: _DirAddress = _System.config.system
-      .source
-      .config
-      .dir as _DirAddress;
+  static get libRuntime(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      new _System.Bookmark(
-        source.bookmark as (string|undefined) ?? String()
-      ),
-      source.subpath as (string|undefined) ?? String()
-    );
-  }
-
-  static get libDir(): typeof _System.ReadOnlyFile {
-    return new _System.ReadOnlyFile(
-      _System.root,
-      _System.config.system
-        .prod
-        .dirs
+      _System.runtimeRoot,
+      _System.CONFIG
+        .system
+        .runtime
+        .directories
+        .rootSubpaths
         .lib
     );
   }
 
-  static get libSource(): typeof _System.ReadOnlyFile {
-    const source: _DirAddress = _System.config.system
-      .source
-      .lib
-      .dir as _DirAddress;
+  static get storageRuntime(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      new _System.Bookmark(
-        source.bookmark as (string|undefined) ?? String()
-      ),
-      source.subpath as (string|undefined) ?? String()
-      );
-  }
-
-  static get dataDir(): typeof _System.ReadOnlyFile {
-    return new _System.ReadOnlyFile(
-      _System.root,
-      _System.config.system
-        .prod
-        .dirs
-        .data
+      _System.runtimeRoot,
+      _System.CONFIG
+        .system
+        .runtime
+        .directories
+        .rootSubpaths
+        .storage
     );
   }
 
-  static get programDir(): typeof _System.ReadOnlyFile {
+  static get programRuntime(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      _System.root,
-      _System.config.system
-        .prod
-        .dirs
+      _System.runtimeRoot,
+      _System.CONFIG
+        .system
+        .runtime
+        .directories
+        .rootSubpaths
         .program
     );
   }
 
-  static get programSource(): typeof _System.ReadOnlyFile {
-    const source: _DirAddress = _System.config.system
+  static get configSource(): typeof _System.ReadOnlyFile {
+    const source: _System._Address = _System.CONFIG
+      .system
       .source
-      .program
-      .dir as _DirAddress;
+      .addresses
+      .config as _System._Address;
+    return new _System.ReadOnlyFile(
+      new _System.Bookmark(
+        source.bookmark as (string | undefined) ?? String()
+      ),
+      source.subpath as (string | undefined) ?? String()
+    );
+  }
+
+
+  static get libSource(): typeof _System.ReadOnlyFile {
+    const source: _System._Address = _System.CONFIG
+      .system
+      .source
+      .addresses
+      .lib as _System._Address;
+    return new _System.ReadOnlyFile(
+      new _System.Bookmark(
+        source.bookmark as (string | undefined) ?? String()
+      ),
+      source.subpath as (string | undefined) ?? String()
+    );
+  }
+
+  static get programSource(): typeof _System.ReadOnlyFile {
+    const source: _System._Address = _System.CONFIG
+      .system
+      .source
+      .addresses
+      .program as _System._Address;
     return new _System.ReadOnlyFile(
       new _System.Bookmark(
         source.bookmark as (string|undefined) ?? String()
@@ -142,88 +157,76 @@ class _System {
 
   static get protectedFilePrefix(): string {
     return String(
-      _System.config.system
-        .prod
+      _System.CONFIG
+        .system
+        .runtime
         .protected
         .filePrefix
     );
   }
 
-  static get externalSecretsDir(): typeof _System.ReadOnlyFile {
-    const ext: _DirAddress = _System.config.system
-      .external
-      .secrets
-      .dir as _DirAddress;
-    return new _System.ReadOnlyFile(
-      new _System.Bookmark(
-        ext.bookmark as (string|undefined) ?? String()
-      ),
-      ext.subpath as (string|undefined) ?? String()
-    );
-  }
-
-  static clean(): void {
+  static cleanDependencies(): void {
     _System.cleanConfigs();
     _System.cleanLibraries();
-    _System.cleanPrograms();
   }
 
   static install(): void {
-    _System.clean();
+    _System.cleanDependencies();
     _System.installConfigs();
     _System.installLibraries();
     _System.installPrograms();
   }
 
   static cleanConfigs(): void {
+    const fm: FileManager = FileManager.iCloud();
 
+    const here: string = _System.configRuntime.path;
+    const destination: string = here;
+
+    if (fm.isDirectory(destination))
+      fm.remove(destination);
   }
 
   static installConfigs(): void {
     _System.cleanConfigs();
     const fm: FileManager = FileManager.iCloud();
 
-    const here: string = _System.configDir.path;
+    const here: string = _System.configRuntime.path;
     const destination: string = here;
 
     const there: string = _System.configSource.path;
     const source: string = there;
 
-    if (fm.isDirectory(destination))
-      fm.remove(destination);
-
     fm.copy(source, destination);
   }
 
   static cleanLibraries(): void {
+    const fm: FileManager = FileManager.iCloud();
 
+    const here: string = _System.libRuntime.path;
+    const destination: string = here;
+
+    if (fm.isDirectory(destination))
+      fm.remove(destination);
   }
 
   static installLibraries(): void {
     _System.cleanLibraries();
     const fm: FileManager = FileManager.iCloud();
 
-    const here: string = _System.libDir.path;
+    const here: string = _System.libRuntime.path;
     const destination: string = here;
 
     const there: string = _System.libSource.path;
     const source: string = there;
 
-    if (fm.isDirectory(destination))
-      fm.remove(destination);
-
     fm.copy(source, destination);
   }
 
-  static cleanPrograms(): void {
-
-  }
-
   static installPrograms(): void {
-    _System.cleanPrograms();
     const confirm: Alert = new Alert();
-    confirm.message = "Initializing scripts will delete all scripts currently shown. Are you sure you want to override current production files?";
-    confirm.addDestructiveAction("Yes, DELETE prod");
+    confirm.message = "Initializing scripts will delete all scripts currently shown. Are you sure you want to override current runtime files?";
+    confirm.addDestructiveAction("Yes, DELETE runtime");
     confirm.addCancelAction("No, cancel");
     confirm.present().then((value: number) => (pull(value)));
 
@@ -232,7 +235,7 @@ class _System {
     ): void {
       if (value === 0) {
         const fm: FileManager = FileManager.iCloud();
-        const here: string = _System.programDir.path;
+        const here: string = _System.programRuntime.path;
         const destination: string = here;
 
         const there: string = _System.programSource.path;
@@ -243,11 +246,11 @@ class _System {
             destination
           ).filter((leaf: string) => (
             !leaf.startsWith(_System.protectedFilePrefix)
-            && !(leaf === _System.libDir.leaf)
-            && !(leaf === _System.bootDir.leaf)
-            && !(leaf === _System.dataDir.leaf)
-            && !(leaf === _System.configDir.leaf)
-            && !(leaf === _System.systemDir.leaf)
+            && !(leaf === _System.libRuntime.leaf)
+            && !(leaf === _System.BOOT_RUNTIME.leaf)
+            && !(leaf === _System.storageRuntime.leaf)
+            && !(leaf === _System.configRuntime.leaf)
+            && !(leaf === _System.systemRuntime.leaf)
             && !(leaf === ".Trash")
           ));
 
@@ -279,6 +282,13 @@ class _System {
         }
       }
     }
+  }
+}
+
+namespace _System {
+  export type _Address = {
+    readonly bookmark?: string | undefined;
+    readonly subpath?: string | undefined;
   }
 }
 

@@ -446,7 +446,7 @@ class _File {
     for (
       const node of relPathTree
     ) {
-      if (node.trim() === ".")
+      if (node.trim() === "..")
         pathTree.pop();
       else if (node.trim() !== String())
         pathTree.push(

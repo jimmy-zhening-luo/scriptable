@@ -1,7 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: gray; icon-glyph: magic; share-sheet-inputs: plain-text;
-"use strict";
 const Shortcut = importModule("lib/Shortcut");
 
 class App {
@@ -9,7 +8,7 @@ class App {
   constructor (name = String()) {
     this.#name = name;
   }
-  
+
   get name() {
     return this.#name;
   }
@@ -41,11 +40,11 @@ class Query {
     this.#key = tokens.shift().toLowerCase().replace(".", "");
     this.#terms = tokens;
   }
-  
+
   get key() {
     return this.#key;
   }
-  
+
   get terms() {
     return this.#terms;
   }
@@ -56,11 +55,11 @@ class Engine {
   constructor(keys = [String()]) {
     this.#keys = keys;
   }
-  
+
   get keys() {
     return this.#keys;
   }
-  
+
   run(query = new Query(String())) {
     throw new Error("Abstract class Engine has abstract run() method.");
   }
@@ -72,7 +71,7 @@ class WebEngine extends Engine {
   #webview = false;
   constructor (
     keys = [String()],
-    urls = [String()], 
+    urls = [String()],
     querytag = String(),
     webview = false
   ) {
@@ -81,12 +80,12 @@ class WebEngine extends Engine {
     this.#querytag = querytag;
     this.#webview = webview;
   }
-  
+
   run(query = new Query(String())) {
     const encodedQuery = query.terms.map((term) => (term.split("+").map((operand) => (encodeURI(operand))).join("\%2B"))).join("+");
-    
+
     const actions = this.#urls.map((url) => (url.replace(this.#querytag, encodedQuery)));
-    
+
     return {
       app: "Safari",
       actions: (this.#webview? actions : actions.reverse()),
@@ -101,7 +100,7 @@ class AppEngine extends Engine {
     super(keys);
     this.#app = app;
   }
-  
+
   run(query = new Query(String())) {
     return {
       app: this.#app.name,
@@ -113,19 +112,19 @@ class AppEngine extends Engine {
 class Search extends Shortcut {
   static run(query) {
     const config = this.config.merged;
-    
+
     const querytag = config.queryTag;
-    
+
     const appToEngine = {
       mail: MailApp,
       files: FilesApp,
       shortcuts: ShortcutsApp
     };
-    
+
     const engines = config.engineKeys.map((engine) => (engine.urls? new WebEngine(engine.keys, engine.urls, querytag, engine.webview) : new AppEngine(engine.keys, new appToEngine[engine.app]())));
-    
+
     const engine = engines.find((engine) => (engine.keys.includes(query.key)));
-    
+
     if (engine !== undefined && engine !== null && engine !== []) {
       return engine.run(query);
     } else {
@@ -135,4 +134,3 @@ class Search extends Shortcut {
 }
 
 return Search.run(new Query(args.plainTexts.shift()));
-
