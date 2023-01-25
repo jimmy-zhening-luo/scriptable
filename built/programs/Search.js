@@ -77,17 +77,20 @@ var Search;
             var _a;
             const query = new TokenizedQuery((_a = args.plainTexts
                 .shift()) !== null && _a !== void 0 ? _a : String());
-            const config = this["config"]["merged"];
-            const querytag = config.queryTag;
+            const config = this["config"]["unmerged"];
+            const querytag = config.user
+                .queryTag;
             const appToEngine = {
                 "mail": MailApp,
                 "files": FilesApp,
                 "shortcuts": ShortcutsApp
             };
-            const engineKeys = config.engineKeys;
-            const engines = engineKeys
+            const engines = config.user
+                .engineKeys
                 .map((engine) => (engine.urls ?
-                new WebEngine(engine.keys, engine.urls, querytag, engine.webview)
+                new WebEngine(engine.keys, Array.isArray(engine.urls) ?
+                    engine.urls
+                    : [engine.urls], querytag, engine.webview)
                 : new AppEngine(engine.keys, new appToEngine[engine.app]())));
             const engine = engines
                 .find((engine) => (engine.keys.includes(query.key)));

@@ -20,7 +20,8 @@
             "directories": {
                 "addresses": {
                     "config": {
-                        "bookmark": "@CONFIG"
+                        "bookmark": "@BUILT",
+                        "subpath": "config"
                     },
                     "lib": {
                         "bookmark": "@BUILT",

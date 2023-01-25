@@ -1,0 +1,125 @@
+{
+    "app": {
+        "queryTag": "%s",
+        "reservedKeys": [
+            {
+                "keys": ["help", "h"],
+                "app": "this.help"
+            }
+        ]
+    },
+    "user": {
+        "queryTag": "%s",
+        "engineKeys": [
+            {
+                "keys": ["a", "o", "ao", "order", "orders", "past", "pasts"],
+                "urls": "https://www.amazon.com/gp/your-account/order-history/ref=ppx_yo_mob_b_search?search=%s",
+                "webview": true
+            },
+            {
+                "keys": ["aa", "as", "am", "ama", "amaz", "amazo", "amazon", "amazons", "buy", "buys", "buynew", "buying"],
+                "urls": "https://www.amazon.com/s?k=%s",
+                "webview": true
+            },
+            {
+                "keys": ["j", "js", "javascript", "java", "script", "scripts", "javas", "javascripts"],
+                "urls": "https://developer.mozilla.org/en-US/search?q=%s"
+            },
+            {
+                "keys": ["jj", "ty", "ts", "type", "typescript", "types"],
+                "urls": "https://google.com/search?q=site%3Atypescriptlang.org+%s"
+            },
+            {
+                "keys": ["tsc", "tsx", "tsconfig"],
+                "urls": "https://www.typescriptlang.org/tsconfig#%s"
+            },
+            {
+                "keys": ["m", "mail", "em", "email", "mails", "emails", "gmail"],
+                "app": "mail"
+            },
+            {
+                "keys": ["f", "file", "files"],
+                "app": "files"
+            },
+            {
+                "keys": ["sc", "sh", "short", "cut", "cuts", "shortcut", "shortcuts"],
+                "app": "shortcuts"
+            },
+            {
+                "keys": ["w", "wi", "wik", "wiki", "wp", "wikipedia", "wikipedias"],
+                "urls": "https://en.m.wikipedia.org/w/index.php?search=%s"
+            },
+            {
+                "keys": ["ww", "wikt", "wk", "wiktionary", "word", "words", "et", "ety", "etym", "etymology", "etymologies"],
+                "urls": "https://en.m.wiktionary.org/w/index.php?search=%s"
+            },
+            {
+                "keys": ["t", "things", "thing", "task", "tasks"],
+                "urls": "things:///search?query=%s"
+            },
+            {
+                "keys": ["p", "chinese", "lang", "pleco"],
+                "urls": "plecoapi://x-callback-url/s?q=%s"
+            },
+            {
+                "keys": ["we", "weather", "forecast", "heat", "rain", "rains", "forecasts", "sky", "skies", "hot", "hots", "cold", "colds", "cool", "cools", "temp", "temps"],
+                "urls": "https://google.com/search?q=weather+in+%s"
+            },
+            {
+                "keys": ["time", "clock", "z", "zone", "tz", "timezone", "zones", "timezones", "times", "clocks"],
+                "urls": "https://google.com/search?q=time+in+%s"
+            },
+            {
+                "keys": ["g", "web", "google", "search", "go"],
+                "urls": "https://google.com/search?q=%s"
+            },
+            {
+                "keys": ["u", "unit", "un", "units", "conv", "convert", "converts"],
+                "urls": "https://google.com/search?q=unit+converter+%s"
+            },
+            {
+                "keys": ["c", "calc", "math", "wolf", "wo", "wol", "alpha", "wa", "alp", "al", "alph", "maths", "calcs", "calculate", "calculates", "calculator", "calculators", "wolframalpha", "alphas", "wolves", "wolfram"],
+                "urls": "https://www.wolframalpha.com/input?i=%s"
+            },
+            {
+                "keys": ["b", "be", "best", "wc", "wirecutter", "wire", "cut", "cutter", "cuts", "cutters", "wires", "wirecutters", "ny", "nyt"],
+                "urls": [
+                    "https://google.com/search?q=site%3Anytimes.com+wirecutter+%s",
+                    "https://google.com/search?q=best+%s"
+                ]
+            },
+            {
+                "keys": ["r", "reddit", "red"],
+                "urls": "https://google.com/search?q=site%3Areddit.com+%s"
+            },
+            {
+                "keys": ["d", "directions", "maps", "map", "direction", "go", "place", "places", "local", "loc", "near", "take", "locations", "location", "locate", "locale", "locales", "located", "locates", "takes", "locals", "goes", "drive", "walk", "bus"],
+                "urls": "comgooglemaps://?q=%s"
+            },
+            {
+                "keys": ["npm", "no", "node", "nodejs", "npmjs", "package", "packages"],
+                "urls": "https://www.npmjs.com/search?q=%s"
+            },
+            {
+                "keys": ["git", "github", "gh"],
+                "urls": "https://github.com/search?q=%s"
+            },
+            {
+                "keys": ["v", "y", "yt", "you", "youtube"],
+                "urls": "https://www.youtube.com/results?search_query=%s"
+            },
+            {
+                "keys": ["ud", "sl", "urban", "slang"],
+                "urls": "http://www.urbandictionary.com/define.php?term=%s"
+            },
+            {
+                "keys": ["un", "tw", "tf", "12ft", "12", "12f", "twelve", "paywall", "unblock"],
+                "urls": "https://12ft.io/proxy?q=%s"
+            },
+            {
+                "keys": ["po", "pocket"],
+                "urls": "https://getpocket.com/saves/search?query=%s"
+            }
+        ]
+    }
+}
