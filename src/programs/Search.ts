@@ -38,12 +38,12 @@ namespace Search {
     constructor (query: string) {
       const tokens: Array<string> = query
         .trim()
-        .split(" ");
-      this.key = tokens
-        .shift()
+        .split(" ") as Array<string>;
+      this.key = ((tokens as Array<string>)
+        .shift() ?? String())
         .toLowerCase()
-        .replace(".", "");
-      this.terms = [...tokens];
+        .replace(".", "") as string;
+      this.terms = tokens as Array<string>;
     }
   }
   
