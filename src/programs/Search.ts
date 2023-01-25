@@ -131,7 +131,7 @@ namespace Search {
               )
               :new AppEngine(
                 engine.keys as Array<string>,
-                (new appToEngine[engine.app]()) as Engine
+                (new appToEngine[engine.app]()) as App
               )
           )
         );
