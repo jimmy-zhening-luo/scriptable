@@ -77,7 +77,7 @@ namespace Search {
   
     queryToAction(query: TokenizedQuery): any {
       return {
-        app: this.app.name.toLower(),
+        app: this.app.toLower(),
         actions: query.terms.join(" ")
       };
     }
@@ -110,19 +110,27 @@ namespace Search {
                 querytag,
                 engine.webview
               )
-              :new AppEngine(
-                engine.keys,
-                engine.app.toLower()
-              )
+              :(engine.app === undefined)?
+                null
+                :new AppEngine(
+                  engine.keys,
+                  engine.app.toLower()
+                )
+          )
+        )
+        .filter(
+          (engine) => (
+            engine !== null
           )
         );
       
-      const engine: Engine | undefined = engines
-        .find((engine: Engine) => (
-          engine.keys.includes(
-            query.key as string
+      const engine: Engine = engines
+        .find(
+          (engine: Engine) => (
+            engine.keys.includes(
+              query.key as string
+            )
           )
-        )
         );
       
       return (engine === undefined)?
