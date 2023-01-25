@@ -111,7 +111,8 @@ namespace Search {
       
       const config: searchConfigInterface = this["config"]["unmerged"] as searchConfigInterface;
   
-      const querytag: string = config.user.queryTag;
+      const querytag: string = config.user
+        .queryTag;
       
       type appKey = "mail"
         | "files"
@@ -122,22 +123,23 @@ namespace Search {
         "files": FilesApp,
         "shortcuts": ShortcutsApp
       };
-      
-      const engineKeys: Array<string> = config.engineKeys as Array<any>;
   
-      const engines: Array<Engine> = engineKeys
+      const engines: Array<Engine> = config.user
+        .engineKeys
         .map(
-          (engine: any) => (
-            (engine.urls as Array<string> | undefined)?
+          (engine) => (
+            engine.urls?
               new WebEngine(
-                engine.keys as Array<string>,
-                engine.urls as Array<string>,
-                querytag as string,
-                engine.webview as boolean | undefined
+                engine.keys,
+                engine.urls,
+                querytag,
+                engine.webview
               )
               :new AppEngine(
-                engine.keys as Array<string>,
-                new appToEngine[engine.app as appKey]() as App
+                engine.keys,
+                new appToEngine[
+                  engine.app as appKey
+                ]()
               )
           )
         );
@@ -152,7 +154,7 @@ namespace Search {
       
       return (engine === undefined)?
         null
-        :(engine as Engine).run(query);
+        :engine.run(query);
     }
   }
   
