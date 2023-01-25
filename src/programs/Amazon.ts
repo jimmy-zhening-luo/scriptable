@@ -8,7 +8,7 @@ class Amazon extends Shortcut {
     const storageFilename: string = "last-run.txt";
     
     const latestRunString: string = this
-      .readStorage(storageFilename);
+      ["readStorage"](storageFilename);
     const latestRunTime: Date = (
       (latestRunString === String())?
         new Date()
