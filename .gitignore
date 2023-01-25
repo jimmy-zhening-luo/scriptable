@@ -2,9 +2,9 @@
 #################### .gitignore ######################
 ######################################################
 
-##############
-### v1.0.2 ###
-##############
+###########################
+### v1.0.3.scriptable.2 ###
+###########################
 
 
 ############################################
@@ -31,14 +31,6 @@
 
 ## Intention: ignore packages, which should be re-installed on each deployment or dev build based on dependencies and versions listed in package.json and package-lock.json
 node_modules/
-
-## Intention: ignore any app secrets, intentionally stored in secrets/
-secret/
-secrets/
-
-## Intention: ignore logging, intentionally stored in log/ or logs/
-log/
-logs/
 
 ## Intention: ignore IDE-specific settings re: auto-deployment when build
 .vscode/
