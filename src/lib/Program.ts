@@ -278,7 +278,7 @@ class _Storage {
 
 abstract class _Program {
   abstract get input(): any;
-  abstract runtime(): any;
+  abstract runtime(input: any): any;
   abstract handleOutput(output: any): any;
   
   run(): any {
