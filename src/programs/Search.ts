@@ -114,7 +114,7 @@ namespace Search {
                 null
                 :new AppEngine(
                   engine.keys,
-                  engine.app
+                  engine.app as keyof typeof SupportedApp
                 )
           )
         )
