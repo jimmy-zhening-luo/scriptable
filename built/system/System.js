@@ -1,5 +1,5 @@
 const BOOT_RUNTIME_ROOT_SUBPATH = "!boot";
-const BOOT_FILENAME = "BOOT";
+const BOOT_FILENAME = "Boot";
 const SYSTEM_CONFIG_FILENAME = "system.json";
 class _System {
     static get BOOT() {

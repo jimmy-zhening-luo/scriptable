@@ -1,5 +1,5 @@
 const BOOT_RUNTIME_ROOT_SUBPATH: string = "!boot";
-const BOOT_FILENAME: string = "BOOT";
+const BOOT_FILENAME: string = "Boot";
 
 const SYSTEM_CONFIG_FILENAME: string = "system.json";
 type SYSTEM_CONFIG_INTERFACE = typeof import("./system.json");
