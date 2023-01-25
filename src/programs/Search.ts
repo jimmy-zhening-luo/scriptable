@@ -124,7 +124,7 @@ namespace Search {
           )
         ) as Array<Engine>;
       
-      const engine: Engine = engines
+      const engine: Engine | undefined = engines
         .find(
           (engine: Engine) => (
             engine.keys.includes(
