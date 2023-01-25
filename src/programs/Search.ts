@@ -110,12 +110,20 @@ namespace Search {
       const config: any = this["config"]["merged"] as any;
   
       const querytag: string = config.queryTag as string;
-  
-      const appToEngine = {
+      
+      type appKey = "mail"
+        | "files"
+        | "shortcuts";
+      
+      interface appKeyToAppInterface {
+        [key: appKey]: App
+      }
+      
+      const appToEngine: appKeyToAppInterface = {
         mail: MailApp,
         files: FilesApp,
         shortcuts: ShortcutsApp
-      };
+      } as appKeyToAppInterface;
       
       const engineKeys: Array<string> = config.engineKeys as Array<any>;
   
@@ -131,7 +139,7 @@ namespace Search {
               )
               :new AppEngine(
                 engine.keys as Array<string>,
-                (new appToEngine[engine.app as string]()) as App
+                new appToEngine[engine.app as appKey]() as App
               )
           )
         );
