@@ -1,13 +1,14 @@
-"use strict";
-const BOOT_DIR = "!boot";
-const BOOT_MODULE = [
-    ".",
-    BOOT_DIR,
-    "Boot"
-].join("/");
+const BOOT_RUNTIME_ROOT_SUBPATH = "!boot";
+const BOOT_FILENAME = "BOOT";
+const SYSTEM_CONFIG_FILENAME = "system.json";
 class _System {
-    static get Boot() {
-        return importModule(BOOT_MODULE);
+    static get BOOT() {
+        return importModule([
+            ".",
+            BOOT_RUNTIME_ROOT_SUBPATH,
+            BOOT_FILENAME
+        ]
+            .join("/"));
     }
     static get Bookmark() {
         return _System.File.Bookmark;
@@ -18,138 +19,155 @@ class _System {
     static get ReadOnlyFile() {
         return _System.File.ReadOnlyFile;
     }
-    static get config() {
-        return JSON.parse(new _System.ReadOnlyFile(_System.systemDir, _System.Boot.SYSTEM_CONFIG_FILE)
+    static get Secret() {
+        return importModule("secret/Secret");
+    }
+    static get CONFIG() {
+        return JSON.parse(new _System.ReadOnlyFile(_System.systemRuntimeDir, SYSTEM_CONFIG_FILENAME)
             .data);
     }
-    static get root() {
-        return new _System.ReadOnlyFile(new _System.Bookmark(_System.Boot.ROOT_BOOKMARK));
+    static get runtimeRootDir() {
+        return new _System.ReadOnlyFile(new _System.Bookmark(_System.BOOT.RUNTIME_ROOT_BOOKMARK));
     }
-    static get bootDir() {
-        return new _System.ReadOnlyFile(_System.root, BOOT_DIR);
+    static get BOOT_RUNTIME() {
+        return new _System.ReadOnlyFile(_System.runtimeRootDir, BOOT_RUNTIME_ROOT_SUBPATH);
     }
-    static get systemDir() {
-        return new _System.ReadOnlyFile(_System.root, _System.Boot.SYSTEM_DIR);
+    static get systemRuntimeDir() {
+        return new _System.ReadOnlyFile(_System.runtimeRootDir, _System.BOOT.SYSTEM_RUNTIME_ROOT_SUBPATH);
     }
-    static get configDir() {
-        return new _System.ReadOnlyFile(_System.root, _System.config.system["prod"]["dirs"]["config"]);
+    static get configRuntimeDir() {
+        return new _System.ReadOnlyFile(_System.runtimeRootDir, _System.CONFIG
+            .system
+            .runtime
+            .directories
+            .rootSubpaths
+            .config);
     }
-    static get configSource() {
-        var _a, _b;
-        const source = _System.config.system
-            .source
-            .config
-            .dir;
-        return new _System.ReadOnlyFile(new _System.Bookmark((_a = source.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = source.subpath) !== null && _b !== void 0 ? _b : String());
-    }
-    static get libDir() {
-        return new _System.ReadOnlyFile(_System.root, _System.config.system
-            .prod
-            .dirs
+    static get libRuntimeDir() {
+        return new _System.ReadOnlyFile(_System.runtimeRootDir, _System.CONFIG
+            .system
+            .runtime
+            .directories
+            .rootSubpaths
             .lib);
     }
-    static get libSource() {
+    static get storageRuntimeDir() {
+        return new _System.ReadOnlyFile(_System.runtimeRootDir, _System.CONFIG
+            .system
+            .runtime
+            .directories
+            .rootSubpaths
+            .storage);
+    }
+    static get programsRuntimeDir() {
+        return new _System.ReadOnlyFile(_System.runtimeRootDir, _System.CONFIG
+            .system
+            .runtime
+            .directories
+            .rootSubpaths
+            .programs);
+    }
+    static get configSourceRepoDir() {
         var _a, _b;
-        const source = _System.config.system
-            .source
-            .lib
-            .dir;
-        return new _System.ReadOnlyFile(new _System.Bookmark((_a = source.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = source.subpath) !== null && _b !== void 0 ? _b : String());
+        const sourceRepo = _System.CONFIG
+            .system
+            .sourceRepo
+            .directories
+            .addresses
+            .config;
+        return new _System.ReadOnlyFile(new _System.Bookmark((_a = sourceRepo.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = sourceRepo.subpath) !== null && _b !== void 0 ? _b : String());
     }
-    static get dataDir() {
-        return new _System.ReadOnlyFile(_System.root, _System.config.system
-            .prod
-            .dirs
-            .data);
-    }
-    static get programDir() {
-        return new _System.ReadOnlyFile(_System.root, _System.config.system
-            .prod
-            .dirs
-            .program);
-    }
-    static get programSource() {
+    static get libSourceRepoDir() {
         var _a, _b;
-        const source = _System.config.system
-            .source
-            .program
-            .dir;
-        return new _System.ReadOnlyFile(new _System.Bookmark((_a = source.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = source.subpath) !== null && _b !== void 0 ? _b : String());
+        const sourceRepo = _System.CONFIG
+            .system
+            .sourceRepo
+            .directories
+            .addresses
+            .lib;
+        return new _System.ReadOnlyFile(new _System.Bookmark((_a = sourceRepo.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = sourceRepo.subpath) !== null && _b !== void 0 ? _b : String());
     }
-    static get protectedFilePrefix() {
-        return String(_System.config.system
-            .prod
+    static get programsSourceRepoDir() {
+        var _a, _b;
+        const sourceRepo = _System.CONFIG
+            .system
+            .sourceRepo
+            .directories
+            .addresses
+            .programs;
+        return new _System.ReadOnlyFile(new _System.Bookmark((_a = sourceRepo.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = sourceRepo.subpath) !== null && _b !== void 0 ? _b : String());
+    }
+    static get protectedFilePrefixes() {
+        return _System.CONFIG
+            .system
+            .runtime
             .protected
-            .filePrefix);
+            .filePrefixes;
     }
-    static get externalSecretsDir() {
-        var _a, _b;
-        const ext = _System.config.system
-            .external
-            .secrets
-            .dir;
-        return new _System.ReadOnlyFile(new _System.Bookmark((_a = ext.bookmark) !== null && _a !== void 0 ? _a : String()), (_b = ext.subpath) !== null && _b !== void 0 ? _b : String());
-    }
-    static clean() {
+    static cleanDependencies() {
         _System.cleanConfigs();
         _System.cleanLibraries();
-        _System.cleanPrograms();
     }
     static install() {
-        _System.clean();
+        _System.cleanDependencies();
         _System.installConfigs();
         _System.installLibraries();
         _System.installPrograms();
     }
     static cleanConfigs() {
+        const fm = FileManager.iCloud();
+        const here = _System.configRuntimeDir.path;
+        const destination = here;
+        if (fm.isDirectory(destination))
+            fm.remove(destination);
     }
     static installConfigs() {
         _System.cleanConfigs();
         const fm = FileManager.iCloud();
-        const here = _System.configDir.path;
+        const here = _System.configRuntimeDir.path;
         const destination = here;
-        const there = _System.configSource.path;
-        const source = there;
-        if (fm.isDirectory(destination))
-            fm.remove(destination);
-        fm.copy(source, destination);
+        const there = _System.configSourceRepoDir.path;
+        const sourceRepo = there;
+        fm.copy(sourceRepo, destination);
     }
     static cleanLibraries() {
+        const fm = FileManager.iCloud();
+        const here = _System.libRuntimeDir.path;
+        const destination = here;
+        if (fm.isDirectory(destination))
+            fm.remove(destination);
     }
     static installLibraries() {
         _System.cleanLibraries();
         const fm = FileManager.iCloud();
-        const here = _System.libDir.path;
+        const here = _System.libRuntimeDir.path;
         const destination = here;
-        const there = _System.libSource.path;
-        const source = there;
-        if (fm.isDirectory(destination))
-            fm.remove(destination);
-        fm.copy(source, destination);
-    }
-    static cleanPrograms() {
+        const there = _System.libSourceRepoDir.path;
+        const sourceRepo = there;
+        fm.copy(sourceRepo, destination);
     }
     static installPrograms() {
-        _System.cleanPrograms();
         const confirm = new Alert();
-        confirm.message = "Initializing scripts will delete all scripts currently shown. Are you sure you want to override current production files?";
-        confirm.addDestructiveAction("Yes, DELETE prod");
+        confirm.message = "Initializing scripts will delete all scripts currently shown. Are you sure you want to override current runtime files?";
+        confirm.addDestructiveAction("Yes, DELETE runtime");
         confirm.addCancelAction("No, cancel");
         confirm.present().then((value) => (pull(value)));
         function pull(value = -1) {
             if (value === 0) {
                 const fm = FileManager.iCloud();
-                const here = _System.programDir.path;
+                const here = _System.programsRuntimeDir.path;
                 const destination = here;
-                const there = _System.programSource.path;
-                const source = there;
+                const there = _System.programsSourceRepoDir.path;
+                const sourceRepo = there;
                 const dScripts = fm
-                    .listContents(destination).filter((leaf) => (!leaf.startsWith(_System.protectedFilePrefix)
-                    && !(leaf === _System.libDir.leaf)
-                    && !(leaf === _System.bootDir.leaf)
-                    && !(leaf === _System.dataDir.leaf)
-                    && !(leaf === _System.configDir.leaf)
-                    && !(leaf === _System.systemDir.leaf)
+                    .listContents(destination).filter((leaf) => (!(_System
+                    .protectedFilePrefixes
+                    .some((prefix) => (leaf.startsWith(prefix))))
+                    && !(leaf === _System.libRuntimeDir.leaf)
+                    && !(leaf === _System.BOOT_RUNTIME.leaf)
+                    && !(leaf === _System.storageRuntimeDir.leaf)
+                    && !(leaf === _System.configRuntimeDir.leaf)
+                    && !(leaf === _System.systemRuntimeDir.leaf)
                     && !(leaf === ".Trash")));
                 for (const leaf of dScripts) {
                     const dFile = fm.joinPath(destination, leaf);
@@ -157,9 +175,9 @@ class _System {
                     fm.remove(dFile);
                 }
                 const sScripts = fm
-                    .listContents(source);
+                    .listContents(sourceRepo);
                 for (const leaf of sScripts) {
-                    const sFile = fm.joinPath(source, leaf);
+                    const sFile = fm.joinPath(sourceRepo, leaf);
                     const dFile = fm.joinPath(destination, leaf);
                     console.log([sFile, dFile]);
                     fm.copy(sFile, dFile);

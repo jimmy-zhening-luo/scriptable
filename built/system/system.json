@@ -1,39 +1,35 @@
 {
     "system": {
-        "prod": {
-            "dirs": {
-                "config": "config",
-                "lib": "lib",
-                "data": "!data",
-                "program": ""
+        "runtime": {
+            "directories": {
+                "rootSubpaths": {
+                    "config": "config",
+                    "lib": "lib",
+                    "storage": "!storage",
+                    "programs": ""
+                }
             },
             "protected": {
-                "filePrefix": "!"
+                "filePrefixes": [
+                    "!",
+                    "."
+                ]
             }
         },
-        "source": {
-            "config": {
-                "dir": {
-                    "bookmark": "Repositories/Scriptable/config"
-                }
-            },
-            "lib": {
-                "dir": {
-                    "bookmark": "Repositories/Scriptable/src",
-                    "subpath": "lib"
-                }
-            },
-            "program": {
-                "dir": {
-                    "bookmark": "Repositories/Scriptable/src",
-                    "subpath": "program"
-                }
-            }
-        },
-        "external": {
-            "secrets": {
-                "dir": {
-                    "bookmark": "Local/Secrets"
+        "sourceRepo": {
+            "directories": {
+                "addresses": {
+                    "config": {
+                        "bookmark": "@CONFIG"
+                    },
+                    "lib": {
+                        "bookmark": "@BUILT",
+                        "subpath": "lib"
+                    },
+                    "programs": {
+                        "bookmark": "@BUILT",
+                        "subpath": "programs"
+                    }
                 }
             }
         }
