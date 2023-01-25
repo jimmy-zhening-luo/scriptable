@@ -3,6 +3,8 @@
 // icon-color: gray; icon-glyph: magic; share-sheet-inputs: plain-text;
 namespace Search {
 
+  type searchConfigInterface = typeof import("./../../config/Program/Shortcut/Search.json"); 
+  
   const Program = importModule("./lib/Program")
   
   const Shortcut = Program.Shortcut;
@@ -107,9 +109,9 @@ namespace Search {
         .shift() ?? String()
       );
       
-      const config: any = this["config"]["merged"] as any;
+      const config: searchConfigInterface = this["config"]["unmerged"] as searchConfigInterface;
   
-      const querytag: string = config.queryTag as string;
+      const querytag: string = config.user.queryTag;
       
       type appKey = "mail"
         | "files"
