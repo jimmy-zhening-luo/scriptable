@@ -104,7 +104,7 @@ namespace Search {
     runtime(args: any): any {
       const query: TokenizedQuery = new TokenizedQuery(
         (args.plainTexts as Array<string>)
-        .shift()
+        .shift() ?? String()
       );
       
       const config: any = this["config"]["merged"] as any;
