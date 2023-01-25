@@ -148,9 +148,9 @@ namespace Search {
         )
         );
       
-      return engine ??
-        engine.run(query)
-        :null
+      return (engine === undefined)?
+        null
+        :(engine as Engine).run(query);
     }
   }
   
