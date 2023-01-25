@@ -77,7 +77,7 @@ namespace Search {
   
     queryToAction(query: TokenizedQuery): any {
       return {
-        app: this.app.toLower(),
+        app: this.app,
         actions: query.terms.join(" ")
       };
     }
