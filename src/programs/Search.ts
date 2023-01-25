@@ -131,7 +131,11 @@ namespace Search {
             engine.urls?
               new WebEngine(
                 engine.keys,
-                engine.urls,
+                Array.isArray(
+                  engine.urls
+                )?
+                  engine.urls
+                  :[engine.urls],
                 querytag,
                 engine.webview
               )
