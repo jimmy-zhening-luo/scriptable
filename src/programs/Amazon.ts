@@ -16,7 +16,7 @@ class Amazon extends Shortcut {
     )
     ?? new Date();
     
-    this.writeStorage(
+    this["writeStorage"](
       (new Date()).toISOString(),
       storageFilename
     );
@@ -24,4 +24,4 @@ class Amazon extends Shortcut {
   }
 }
 
-(new Amazon()).run();
+(new Amazon())["run"]();
