@@ -1,7 +1,7 @@
 ;
 class _Config {
-    constructor(configSubdirectory, programName) {
-        this.file = new _Config.ReadOnlyFile(_Config.System.configRuntimeDir, _Config.ReadOnlyFile.joinPaths(configSubdirectory, [programName, "json"]
+    constructor(configSubdirectoryPath, programName) {
+        this.file = new _Config.ReadOnlyFile(_Config.System.configRuntimeDir, _Config.ReadOnlyFile.joinPaths(configSubdirectoryPath, [programName, "json"]
             .join(".")));
     }
     static get System() {
@@ -96,11 +96,14 @@ class _Config {
     }
 }
 class _Storage {
-    constructor(storageSubdirectory, programName, subpath) {
-        this.file = new _Storage.System.File(_Storage.System.storageRuntimeDir, _Storage.System.File.joinPaths(_Storage.System.File.joinPaths(storageSubdirectory, programName), subpath !== null && subpath !== void 0 ? subpath : String("default.txt")));
+    constructor(storageSubdirectoryPath, programName, subpath) {
+        this.file = new _Storage.File(_Storage.System.storageRuntimeDir, _Storage.File.joinPaths(_Storage.File.joinPaths(storageSubdirectoryPath, programName), subpath !== null && subpath !== void 0 ? subpath : String("default.txt")));
     }
     static get System() {
         return importModule("./system/System");
+    }
+    static get File() {
+        return _Storage.System.File;
     }
     get path() {
         return this.file.path;
@@ -119,9 +122,50 @@ class _Storage {
         return this.data;
     }
 }
-// module.exports = _Program;
-// module.exports.Program = _Program;
-// module.exports.Shortcut = _Shortcut;
-// module.exports.Script = _Script;
+class _Program {
+    run() {
+        return this.handleOutput(this.runtime(this.input));
+    }
+    get configSubdirectoryPath() {
+        return String("Program");
+    }
+    get storageSubdirectoryPath() {
+        return this.configSubdirectoryPath;
+    }
+    get config() {
+        return new _Config(this.configSubdirectoryPath, this.constructor.name);
+    }
+    storage(subpath) {
+        return new _Storage(this.storageSubdirectoryPath, this.constructor.name, subpath);
+    }
+    readStorage(subpath) {
+        return this
+            .storage(subpath)
+            .read();
+    }
+    writeStorage(text, subpath) {
+        this
+            .storage(subpath)
+            .write(text);
+    }
+}
+class _Shortcut extends _Program {
+    get input() {
+        return args;
+    }
+    handleOutput(output) {
+        Script.setShortcutOutput(output);
+        return output;
+    }
+    get configSubdirectoryPath() {
+        return [
+            super.configSubdirectoryPath,
+            "Shortcut"
+        ].join("/");
+    }
+}
+module.exports = _Program;
+module.exports.Program = _Program;
+module.exports.Shortcut = _Shortcut;
 module.exports.Config = _Config;
 module.exports.Storage = _Storage;
