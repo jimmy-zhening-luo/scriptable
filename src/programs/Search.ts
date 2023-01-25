@@ -3,7 +3,7 @@
 // icon-color: gray; icon-glyph: magic; share-sheet-inputs: plain-text;
 namespace Search {
 
-  type searchConfigInterface = typeof import("./../../config/Program/Shortcut/Search.json"); 
+  type searchConfigInterface = typeof import("./../config/Program/Shortcut/Search.json"); 
   
   const Program = importModule("./lib/Program")
   
