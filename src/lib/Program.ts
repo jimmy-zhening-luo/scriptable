@@ -317,7 +317,7 @@ abstract class _Program {
   readStorage(
     subpath?: string | undefined
   ): string {
-    this
+    return this
       .storage(subpath)
       .read();
   }
