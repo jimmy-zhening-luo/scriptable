@@ -5,34 +5,8 @@ namespace Search {
 
   type searchConfigInterface = typeof import("./../config/Program/Shortcut/Search.json"); 
   
-  const Program = importModule("./lib/Program")
-  
+  const Program = importModule("./lib/Program");
   const Shortcut = Program.Shortcut;
-  
-  abstract class App {
-    readonly name: string;
-    constructor (name: string) {
-      this.name = name;
-    }
-  }
-  
-  class MailApp extends App {
-    constructor () {
-      super("Mail");
-    }
-  }
-  
-  class FilesApp extends App {
-    constructor () {
-      super("Files");
-    }
-  }
-  
-  class ShortcutsApp extends App {
-    constructor () {
-      super("Shortcuts");
-    }
-  }
   
   class TokenizedQuery {
     readonly key: string;
@@ -55,7 +29,7 @@ namespace Search {
       this.keys = keys;
     }
   
-    abstract run(query: TokenizedQuery): any;
+    abstract queryToAction(query: TokenizedQuery): any;
   }
   
   class WebEngine extends Engine {
@@ -74,7 +48,7 @@ namespace Search {
       this.webview = webview? webview: false;
     }
   
-    run(query: TokenizedQuery): any {
+    queryToAction(query: TokenizedQuery): any {
       const encodedQuery: string = query.terms.map((term) => (term.split("+").map((operand) => (encodeURI(operand))).join("\%2B"))).join("+");
   
       const actions: Array<string> = this.urls.map((url) => (url.replace(this.querytag, encodedQuery)));
@@ -87,16 +61,23 @@ namespace Search {
     }
   }
   
+  enum SupportedApp {
+    mail,
+    files,
+    shortcuts,
+    bear
+  }
+  
   class AppEngine extends Engine {
-    readonly app: App;
-    constructor (keys: string[], app: App) {
+    readonly app: keyof typeof SupportedApp;
+    constructor (keys: string[], app: keyof typeof SupportedApp) {
       super(keys);
       this.app = app;
     }
   
-    run(query: TokenizedQuery): any {
+    queryToAction(query: TokenizedQuery): any {
       return {
-        app: this.app.name,
+        app: this.app.name.toLower(),
         actions: query.terms.join(" ")
       };
     }
@@ -110,20 +91,10 @@ namespace Search {
       );
       
       const config: searchConfigInterface = this["config"]["unmerged"] as searchConfigInterface;
-  
+      
       const querytag: string = config.user
         .queryTag;
       
-      type appKey = "mail"
-        | "files"
-        | "shortcuts";
-      
-      const appToEngine = {
-        "mail": MailApp,
-        "files": FilesApp,
-        "shortcuts": ShortcutsApp
-      };
-  
       const engines: Array<Engine> = config.user
         .engineKeys
         .map(
@@ -141,9 +112,7 @@ namespace Search {
               )
               :new AppEngine(
                 engine.keys,
-                new appToEngine[
-                  engine.app as appKey
-                ]()
+                engine.app.toLower()
               )
           )
         );
@@ -158,7 +127,7 @@ namespace Search {
       
       return (engine === undefined)?
         null
-        :engine.run(query);
+        :engine.queryToAction(query);
     }
   }
   
