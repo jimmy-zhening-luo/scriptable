@@ -120,9 +120,9 @@ namespace Search {
       }
       
       const appToEngine: appKeyToAppInterface = {
-        mail: MailApp,
-        files: FilesApp,
-        shortcuts: ShortcutsApp
+        "mail": MailApp,
+        "files": FilesApp,
+        "shortcuts": ShortcutsApp
       } as appKeyToAppInterface;
       
       const engineKeys: Array<string> = config.engineKeys as Array<any>;
