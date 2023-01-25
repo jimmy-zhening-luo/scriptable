@@ -20,7 +20,7 @@ class Amazon extends Shortcut {
       (new Date()).toISOString(),
       storageFilename
     );
-    return (Date.now() - latestRunTime.getTime()) > 300000);
+    return (Date.now() - latestRunTime.getTime()) > 300000;
   }
 }
 
