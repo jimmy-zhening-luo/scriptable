@@ -222,16 +222,16 @@ class _Config {
 }
 
 class _Storage {
-  readonly file: typeof _Storage.System.File;
+  readonly file: typeof _Storage.File;
   constructor(
     storageSubdirectory: string,
     programName: string,
     subpath?: string | undefined
   ) {
-    this.file = new _Storage.System.File(
+    this.file = new _Storage.File(
       _Storage.System.storageRuntimeDir,
-      _Storage.System.File.joinPaths(
-        _Storage.System.File.joinPaths(
+      _Storage.File.joinPaths(
+        _Storage.File.joinPaths(
           storageSubdirectory,
           programName
         ),
@@ -242,6 +242,10 @@ class _Storage {
 
   private static get System() {
     return importModule("./system/System");
+  }
+  
+  private static get File() {
+    return _Storage.System.File;
   }
 
   get path(): string {
@@ -266,40 +270,44 @@ class _Storage {
     );
   }
 
-  toString() {
+  toString(): string {
     return this.data;
   }
 }
 
 
-class _Program {
-  readonly config: _Config;
-  readonly storage: _Storage;
-  inputs: any;
-  runtime: Function;
-  output?: any;
-  outputHandler;
-
-  constructor() {
-    throw new TypeError("class Program:constructor(): Program is an abstract class that is meant to be inherited, not instantiated.");
+abstract class _Program {
+  abstract get input(): any;
+  abstract runtime(): any;
+  abstract handleOutput(output: any): any;
+  
+  run(): any {
+    return this.handleOutput(
+      this.runtime(
+        this.input
+      )
+    );
   }
-
-  run() {
-    this.output = this.runtime(this.inputs);
-  }
-
-  static get configSubdirectory(): string {
+  
+  protected get configSubdirectory(): string {
     return String("Program");
   }
 
-  static get storageSubdirectory(): string {
+  protected get storageSubdirectory(): string {
     return this.configSubdirectory;
   }
+  
+  get config(): _Config {
+    return new _Config(
+      this.configSubdirectory,
+      Script.name()
+    );
+  } 
 
-  static loadData(
-    subpath = String()
+  readStorage(
+    subpath?: string
   ) {
-    return new Data(
+    return new _Storage(
       this.dataRoot ?? String(),
       this.name ?? String(),
       (subpath?.constructor === String) ?
@@ -308,7 +316,7 @@ class _Program {
     );
   }
 
-  static saveData(
+  writeStorage(
     subpath = String(),
     data = String()
   ) {
@@ -321,35 +329,24 @@ class _Program {
 
 }
 
-class _Shortcut extends _Program {
-  static get configSubdirectory() {
-    return [
-      (
-        (super.configSubdirectory
-          ?.constructor === String
-        ) ?
-          super.configSubdirectory
-          : String()
-      ) ?? String(),
-      String("Shortcut")
-    ].join("/")
-      ?? String();
+abstract class _Shortcut extends _Program {
+  get input(): any {
+    return args;
   }
-}
-
-class _Script extends _Program {
-  static get configSubdirectory() {
+  
+  handleOutput(
+    output: any
+  ): any {
+    Script.setShortcutOutput(output);
+    return output;
+  }
+  
+  
+  override protected get configSubdirectory(): string {
     return [
-      (
-        (super.configSubdirectory
-          ?.constructor === String
-        ) ?
-          super.configSubdirectory
-          : String()
-      ) ?? String(),
-      String("Script")
-    ].join("/")
-      ?? String();
+      super.configSubdirectory,
+      "Shortcut"
+    ].join("/");
   }
 }
 
@@ -357,6 +354,5 @@ class _Script extends _Program {
 module.exports = _Program;
 module.exports.Program = _Program;
 module.exports.Shortcut = _Shortcut;
-module.exports.Script = _Script;
 module.exports.Config = _Config;
 module.exports.Storage = _Storage;
