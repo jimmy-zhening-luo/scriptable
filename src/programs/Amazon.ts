@@ -9,10 +9,10 @@ class Amazon extends Shortcut {
     
     const latestRunString: string = this
       .readStorage(storageFilename);
-    const latestRun: Date = (
+    const latestRunTime: Date = (
       (latestRunString === String())?
         new Date()
-        :new Date(latestRunData)
+        :new Date(latestRunString)
     )
     ?? new Date();
     
@@ -20,7 +20,7 @@ class Amazon extends Shortcut {
       (new Date()).toISOString(),
       storageFilename
     );
-    return (Date.now() - latestRun.getTime()) > 300000);
+    return (Date.now() - latestRunTime.getTime()) > 300000);
   }
 }
 
