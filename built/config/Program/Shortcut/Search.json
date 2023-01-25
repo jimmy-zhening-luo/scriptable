@@ -46,6 +46,10 @@
                 "app": "shortcuts"
             },
             {
+                "app": "bear",
+                "keys": ["bear", "note", "notes"]
+            },
+            {
                 "keys": ["w", "wi", "wik", "wiki", "wp", "wikipedia", "wikipedias"],
                 "urls": "https://en.m.wikipedia.org/w/index.php?search=%s"
             },

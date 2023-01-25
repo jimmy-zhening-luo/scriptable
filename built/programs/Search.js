@@ -5,26 +5,6 @@ var Search;
 (function (Search_1) {
     const Program = importModule("./lib/Program");
     const Shortcut = Program.Shortcut;
-    class App {
-        constructor(name) {
-            this.name = name;
-        }
-    }
-    class MailApp extends App {
-        constructor() {
-            super("Mail");
-        }
-    }
-    class FilesApp extends App {
-        constructor() {
-            super("Files");
-        }
-    }
-    class ShortcutsApp extends App {
-        constructor() {
-            super("Shortcuts");
-        }
-    }
     class TokenizedQuery {
         constructor(query) {
             var _a;
@@ -50,7 +30,7 @@ var Search;
             this.querytag = querytag;
             this.webview = webview ? webview : false;
         }
-        run(query) {
+        queryToAction(query) {
             const encodedQuery = query.terms.map((term) => (term.split("+").map((operand) => (encodeURI(operand))).join("\%2B"))).join("+");
             const actions = this.urls.map((url) => (url.replace(this.querytag, encodedQuery)));
             return {
@@ -60,14 +40,21 @@ var Search;
             };
         }
     }
+    let SupportedApp;
+    (function (SupportedApp) {
+        SupportedApp[SupportedApp["mail"] = 0] = "mail";
+        SupportedApp[SupportedApp["files"] = 1] = "files";
+        SupportedApp[SupportedApp["shortcuts"] = 2] = "shortcuts";
+        SupportedApp[SupportedApp["bear"] = 3] = "bear";
+    })(SupportedApp || (SupportedApp = {}));
     class AppEngine extends Engine {
         constructor(keys, app) {
             super(keys);
             this.app = app;
         }
-        run(query) {
+        queryToAction(query) {
             return {
-                app: this.app.name,
+                app: this.app,
                 actions: query.terms.join(" ")
             };
         }
@@ -80,23 +67,21 @@ var Search;
             const config = this["config"]["unmerged"];
             const querytag = config.user
                 .queryTag;
-            const appToEngine = {
-                "mail": MailApp,
-                "files": FilesApp,
-                "shortcuts": ShortcutsApp
-            };
             const engines = config.user
                 .engineKeys
                 .map((engine) => (engine.urls ?
                 new WebEngine(engine.keys, Array.isArray(engine.urls) ?
                     engine.urls
                     : [engine.urls], querytag, engine.webview)
-                : new AppEngine(engine.keys, new appToEngine[engine.app]())));
+                : (engine.app === undefined) ?
+                    null
+                    : new AppEngine(engine.keys, engine.app)))
+                .filter((engine) => (engine !== null));
             const engine = engines
                 .find((engine) => (engine.keys.includes(query.key)));
             return (engine === undefined) ?
                 null
-                : engine.run(query);
+                : engine.queryToAction(query);
         }
     }
     (new Search())["run"]();
