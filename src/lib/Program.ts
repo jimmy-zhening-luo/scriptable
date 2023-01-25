@@ -344,7 +344,7 @@ abstract class _Shortcut extends _Program {
     return output;
   }
   
-  override protected get configSubdirectoryPath(): string {
+  protected override get configSubdirectoryPath(): string {
     return [
       super.configSubdirectoryPath,
       "Shortcut"
