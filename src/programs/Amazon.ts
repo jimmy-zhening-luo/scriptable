@@ -1,6 +1,8 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: teal; icon-glyph: magic;
+namespace Amazon {
+
 const Shortcut = importModule("./lib/Program").Shortcut;
 
 class Amazon extends Shortcut {
@@ -25,3 +27,5 @@ class Amazon extends Shortcut {
 }
 
 (new Amazon())["run"]();
+
+}
