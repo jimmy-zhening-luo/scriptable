@@ -30,13 +30,13 @@ type primitive = (
 class _Config {
   protected file: typeof _Config.ReadOnlyFile;
   constructor (
-    configSubdirectory: string,
+    configSubdirectoryPath: string,
     programName: string
   ) {
     this.file = new _Config.ReadOnlyFile(
       _Config.System.configRuntimeDir as string,
       _Config.ReadOnlyFile.joinPaths(
-        configSubdirectory,
+        configSubdirectoryPath,
         [programName, "json"]
           .join(".")
       ) as string
@@ -224,7 +224,7 @@ class _Config {
 class _Storage {
   readonly file: typeof _Storage.File;
   constructor(
-    storageSubdirectory: string,
+    storageSubdirectoryPath: string,
     programName: string,
     subpath?: string | undefined
   ) {
@@ -232,7 +232,7 @@ class _Storage {
       _Storage.System.storageRuntimeDir,
       _Storage.File.joinPaths(
         _Storage.File.joinPaths(
-          storageSubdirectory,
+          storageSubdirectoryPath,
           programName
         ),
         subpath ?? String("default.txt")
@@ -289,44 +289,47 @@ abstract class _Program {
     );
   }
   
-  protected get configSubdirectory(): string {
+  protected get configSubdirectoryPath(): string {
     return String("Program");
   }
 
-  protected get storageSubdirectory(): string {
-    return this.configSubdirectory;
+  protected get storageSubdirectoryPath(): string {
+    return this.configSubdirectoryPath;
   }
   
   get config(): _Config {
     return new _Config(
-      this.configSubdirectory,
-      Script.name()
+      this.configSubdirectoryPath,
+      this.constructor.name
     );
-  } 
+  }
+  
+  protected storage(
+    subpath?: string | undefined
+  ): _Storage {
+    return new _Storage(
+      this.storageSubdirectoryPath,
+      this.constructor.name,
+      subpath
+    );
+  }
 
   readStorage(
-    subpath?: string
-  ) {
-    return new _Storage(
-      this.dataRoot ?? String(),
-      this.name ?? String(),
-      (subpath?.constructor === String) ?
-        subpath
-        : String()
-    );
+    subpath?: string | undefined
+  ): string {
+    this
+      .storage(subpath)
+      .read();
   }
 
   writeStorage(
-    subpath = String(),
-    data = String()
-  ) {
-    this.loadData(subpath)?.write(
-      (data?.constructor === String) ?
-        data
-        : String()
-    );
+    text: string
+    subpath?: string | undefined
+  ): void {
+    this
+      .storage(subpath)
+      .write(text);
   }
-
 }
 
 abstract class _Shortcut extends _Program {
@@ -341,15 +344,13 @@ abstract class _Shortcut extends _Program {
     return output;
   }
   
-  
-  override protected get configSubdirectory(): string {
+  override protected get configSubdirectoryPath(): string {
     return [
-      super.configSubdirectory,
+      super.configSubdirectoryPath,
       "Shortcut"
     ].join("/");
   }
 }
-
 
 module.exports = _Program;
 module.exports.Program = _Program;
