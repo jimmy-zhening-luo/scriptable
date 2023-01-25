@@ -2,9 +2,9 @@
 #################### .gitignore ######################
 ######################################################
 
-###########################
-### v1.0.3.scriptable.2 ###
-###########################
+##############
+### v1.0.3 ###
+##############
 
 
 ############################################
@@ -12,7 +12,6 @@
 ############################################
 
 ##### BEGIN Project-Specific Files to .gitignore #####
-.Trash/
 
 
 
@@ -34,6 +33,9 @@ node_modules/
 
 ## Intention: ignore IDE-specific settings re: auto-deployment when build
 .vscode/
+
+## Intention: ignore common iOS app-specific detritus
+.Trash/
 
 
 #############################
