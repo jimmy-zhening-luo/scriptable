@@ -5,26 +5,31 @@
         "rootSubpaths": {
           "config": "config",
           "lib": "lib",
-          "storage": "!data",
+          "storage": "!storage",
           "programs": ""
         }
       },
       "protected": {
-        "filePrefix": "!"
+        "filePrefixes": [
+          "!",
+          "."
+        ]
       }
     },
-    "source": {
-      "addresses": {
-        "config": {
-          "bookmark": "@CONFIG"
-        },
-        "lib": {
-          "bookmark": "@BUILT",
-          "subpath": "lib"
-        },
-        "programs": {
-          "bookmark": "@BUILT",
-          "subpath": "programs"
+    "sourceRepo": {
+      "directories": {
+        "addresses": {
+          "config": {
+            "bookmark": "@CONFIG"
+          },
+          "lib": {
+            "bookmark": "@BUILT",
+            "subpath": "lib"
+          },
+          "programs": {
+            "bookmark": "@BUILT",
+            "subpath": "programs"
+          }
         }
       }
     }

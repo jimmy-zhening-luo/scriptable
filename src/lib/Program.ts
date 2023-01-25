@@ -1,105 +1,25 @@
-type primitive = string | number | boolean;
-type nullablePrimitive = primitive | undefined;
-type SettingValue = nullablePrimitive | Array<any> | Setting;
-
-class Setting {
-  readonly key: string;
-  readonly value: SettingValue;
-  constructor(
-    key: string,
-    value: SettingValue
-  ) {
-    this.key = key;
-    this.value = value;
-  }
-}
-
-class SettingsConfigSection {
-  readonly setting: Setting;
-  constructor(
-    sectionName: string,
-    sectionContents?: SettingValue
-  ) {
-    if (sectionValue === undefined) {
-
-    }
-    else
-
-    this.setting = new Setting(sectionName, sectionValue);
-  }
-}
-
-class SettingsConfigAppSection extends SettingsConfigSection {
-  constructor(
-    sectionValue?: Object | undefined
-  ) {
-    super("app", sectionValue);
-  }
-}
-
-class SettingsConfigUserSection extends SettingsConfigSection {
-  constructor(
-    sectionValue?: Object | undefined
-  ) {
-    super("user", sectionValue);
-  }
-}
-
-type SettingsConfigInterface = {
-  app?: Object | undefined,
-  user?: Object | undefined
-}
-
-class SettingsConfig {
-  readonly appSection: SettingsConfigAppSection;
-  readonly userSection: SettingsConfigUserSection;
-  constructor(settings?: SettingsConfigInterface | undefined) {
-    if (settings === undefined) {
-      this.appSection = new SettingsConfigAppSection();
-      this.userSection = new SettingsConfigUserSection();
-    }
-    else {
-      this.appSection = new SettingsConfigAppSection(settings.app);
-      this.userSection = new SettingsConfigUserSection(settings.user);
-    }
-  }
-
-  get appSetting(): Setting {
-    return this.appSection.setting;
-  }
-
-  get userSetting(): Setting {
-    return this.userSection.setting;
-  }
-
-  get app(): SettingValue {
-    return this.appSetting.value;
-  }
-
-  get user(): SettingValue {
-    return this.userSetting.value;
-  }
-}
-
 class _Config {
-  protected file: (
-    typeof _Config.System.ReadOnlyFile
-  );
+  protected file: typeof _Config.ReadOnlyFile;
   constructor (
-    configRoot: string,
+    configSubdirectory: string,
     programName: string
   ) {
-    this.file = new _Config.System.ReadOnlyFile(
-      _Config.System.configRuntime,
-      _Config.System.ReadOnlyFile.joinPaths(
-        configRoot,
-        [programName, "json"].join(".")
+    this.file = new _Config.ReadOnlyFile(
+      _Config.System.configRuntimeDir,
+      _Config.ReadOnlyFile.joinPaths(
+        configSubdirectory,
+        [programName, "json"]
+          .join(".")
       )
     );
   }
 
   private static get System() {
     return importModule("./system/System");
+  }
+  
+  private static get ReadOnlyFile() {
+    return _Config.System.ReadOnlyFile;
   }
 
 
@@ -115,13 +35,16 @@ class _Config {
       return false;
     }
   }
+  
+  get parsed(): ConfigObject {
+    return isParseable?
+      JSON.parse(this.file.data) as ConfigObject
+      :{ "app": { }, "user": { } } as ConfigObject;
+      
+  }
 
-  get unmerged(): SettingsConfig {
-    return this.isParseable ?
-      new SettingsConfig(
-        JSON.parse(this.file.data) as SettingsConfigInterface
-      )
-      : new SettingsConfig();
+  get unmerged(): ConfigObject {
+    return this.parsed;
   }
 
   get app(): SettingValue {
@@ -278,21 +201,58 @@ class _Config {
   }
 }
 
+namespace _Config {
+  export type ConfigObject = (
+    AppSection
+    & UserSection
+  ); 
+  
+  export interface AppSection {
+    "app"?: Setting
+  }
+  
+  export interface UserSection {
+    "user"?: Setting
+  }
+  
+  export interface Setting {
+    [key: string]: SettingValue
+  };
+  
+  export type SettingValue = (
+    primitive
+    | ArrayOfSettingValues
+    | Setting
+  );
+  
+  export type primitive = (
+   string
+   | number
+   | boolean
+  );
+  
+  export type ArrayOfSettingValues = (
+    Array<primitive>
+    | Array<Setting>
+  ); 
+}
+
+
 class _Storage {
   readonly file: typeof _Storage.System.File;
   private static get System() {
     return importModule("./system/System");
   }
   constructor(
-    storageRoot: string,
+    storageSubdirectory: string,
     programName: string,
     subpath?: string | undefined
   ) {
     this.file = new _Storage.System.File(
-      _Storage.System.dataRuntime,
+      _Storage.System.storageRuntimeDir,
       _Storage.System.File.joinPaths(
         _Storage.System.File.joinPaths(
-          storageRoot,
+          storageSubdirectory,
           programName
         ),
         subpath ?? String("default.txt")
@@ -329,11 +289,11 @@ class _Storage {
 
 class _Program {
   readonly config: _Config = new _Config(
-    _Program.configRoot,
+    _Program.configSubdirectory,
     String()
   );
   readonly storage: _Storage = new _Storage(
-    _Program.storageRoot,
+    _Program.storageSubdirectory,
     String()
   );
   inputs: any;
@@ -348,12 +308,12 @@ class _Program {
     throw new TypeError("class Program::" + this.constructor.name + ":run(): Program:run() is an abstract function. It should be implemented by the inheriting class.");
   }
 
-  static get configRoot(): string{
+  static get configSubdirectory(): string{
     return String("Program");
   }
 
-  static get storageRoot(): string {
-    return this.configRoot;
+  static get storageSubdirectory(): string {
+    return this.configSubdirectory;
   }
 
   static loadData(
@@ -382,13 +342,13 @@ class _Program {
 }
 
 class _Shortcut extends _Program {
-  static get configRoot() {
+  static get configSubdirectory() {
     return [
       (
-        (super.configRoot
+        (super.configSubdirectory
           ?.constructor === String
         ) ?
-          super.configRoot
+          super.configSubdirectory
           : String()
       ) ?? String(),
       String("Shortcut")
@@ -398,13 +358,13 @@ class _Shortcut extends _Program {
 }
 
 class _Script extends _Program {
-  static get configRoot() {
+  static get configSubdirectory() {
     return [
       (
-        (super.configRoot
+        (super.configSubdirectory
           ?.constructor === String
         ) ?
-          super.configRoot
+          super.configSubdirectory
           : String()
       ) ?? String(),
       String("Script")

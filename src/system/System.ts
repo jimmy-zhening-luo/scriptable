@@ -29,20 +29,20 @@ class _System {
   }
 
   static get Secret() {
-    return importModule("Secret");
+    return importModule("secret/Secret");
   }
 
   private static get CONFIG(): SYSTEM_CONFIG_INTERFACE {
     return JSON.parse(
       new _System.ReadOnlyFile(
-        _System.systemRuntime,
+        _System.systemRuntimeDir,
         SYSTEM_CONFIG_FILENAME
       )
         .data
     ) as SYSTEM_CONFIG_INTERFACE;
   }
 
-  static get runtimeRoot(): typeof _System.ReadOnlyFile {
+  static get runtimeRootDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
       new _System.Bookmark(
         _System.BOOT.RUNTIME_ROOT_BOOKMARK
@@ -52,21 +52,21 @@ class _System {
 
   private static get BOOT_RUNTIME(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      _System.runtimeRoot,
+      _System.runtimeRootDir,
       BOOT_RUNTIME_ROOT_SUBPATH
     );
   }
 
-  static get systemRuntime(): typeof _System.ReadOnlyFile {
+  static get systemRuntimeDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      _System.runtimeRoot,
+      _System.runtimeRootDir,
       _System.BOOT.SYSTEM_RUNTIME_ROOT_SUBPATH
     );
   }
 
-  static get configRuntime(): typeof _System.ReadOnlyFile {
+  static get configRuntimeDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      _System.runtimeRoot,
+      _System.runtimeRootDir,
       _System.CONFIG
         .system
         .runtime
@@ -76,9 +76,9 @@ class _System {
     );
   }
 
-  static get libRuntime(): typeof _System.ReadOnlyFile {
+  static get libRuntimeDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      _System.runtimeRoot,
+      _System.runtimeRootDir,
       _System.CONFIG
         .system
         .runtime
@@ -88,9 +88,9 @@ class _System {
     );
   }
 
-  static get storageRuntime(): typeof _System.ReadOnlyFile {
+  static get storageRuntimeDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      _System.runtimeRoot,
+      _System.runtimeRootDir,
       _System.CONFIG
         .system
         .runtime
@@ -100,9 +100,9 @@ class _System {
     );
   }
 
-  static get programsRuntime(): typeof _System.ReadOnlyFile {
+  static get programsRuntimeDir(): typeof _System.ReadOnlyFile {
     return new _System.ReadOnlyFile(
-      _System.runtimeRoot,
+      _System.runtimeRootDir,
       _System.CONFIG
         .system
         .runtime
@@ -112,57 +112,58 @@ class _System {
     );
   }
 
-  static get configSource(): typeof _System.ReadOnlyFile {
-    const source: _System.Address = _System.CONFIG
+  static get configSourceRepoDir(): typeof _System.ReadOnlyFile {
+    const sourceRepo: _System.Address = _System.CONFIG
       .system
-      .source
+      .sourceRepo
+      .directories
       .addresses
       .config as _System.Address;
     return new _System.ReadOnlyFile(
       new _System.Bookmark(
-        source.bookmark as (string | undefined) ?? String()
+        sourceRepo.bookmark as (string | undefined) ?? String()
       ),
-      source.subpath as (string | undefined) ?? String()
+      sourceRepo.subpath as (string | undefined) ?? String()
     );
   }
 
 
-  static get libSource(): typeof _System.ReadOnlyFile {
-    const source: _System.Address = _System.CONFIG
+  static get libSourceRepoDir(): typeof _System.ReadOnlyFile {
+    const sourceRepo: _System.Address = _System.CONFIG
       .system
-      .source
+      .sourceRepo
+      .directories
       .addresses
       .lib as _System.Address;
     return new _System.ReadOnlyFile(
       new _System.Bookmark(
-        source.bookmark as (string | undefined) ?? String()
+        sourceRepo.bookmark as (string | undefined) ?? String()
       ),
-      source.subpath as (string | undefined) ?? String()
+      sourceRepo.subpath as (string | undefined) ?? String()
     );
   }
 
-  static get programsSource(): typeof _System.ReadOnlyFile {
-    const source: _System.Address = _System.CONFIG
+  static get programsSourceRepoDir(): typeof _System.ReadOnlyFile {
+    const sourceRepo: _System.Address = _System.CONFIG
       .system
-      .source
+      .sourceRepo
+      .directories
       .addresses
       .programs as _System.Address;
     return new _System.ReadOnlyFile(
       new _System.Bookmark(
-        source.bookmark as (string|undefined) ?? String()
+        sourceRepo.bookmark as (string|undefined) ?? String()
       ),
-      source.subpath as (string|undefined) ?? String()
+      sourceRepo.subpath as (string|undefined) ?? String()
       );
   }
 
-  private static get protectedFilePrefix(): string {
-    return String(
-      _System.CONFIG
-        .system
-        .runtime
-        .protected
-        .filePrefix
-    );
+  private static get protectedFilePrefixes(): Array<string> {
+    return _System.CONFIG
+      .system
+      .runtime
+      .protected
+      .filePrefixes;
   }
 
   private static cleanDependencies(): void {
@@ -180,7 +181,7 @@ class _System {
   private static cleanConfigs(): void {
     const fm: FileManager = FileManager.iCloud();
 
-    const here: string = _System.configRuntime.path;
+    const here: string = _System.configRuntimeDir.path;
     const destination: string = here;
 
     if (fm.isDirectory(destination))
@@ -191,19 +192,19 @@ class _System {
     _System.cleanConfigs();
     const fm: FileManager = FileManager.iCloud();
 
-    const here: string = _System.configRuntime.path;
+    const here: string = _System.configRuntimeDir.path;
     const destination: string = here;
 
-    const there: string = _System.configSource.path;
-    const source: string = there;
+    const there: string = _System.configSourceRepoDir.path;
+    const sourceRepo: string = there;
 
-    fm.copy(source, destination);
+    fm.copy(sourceRepo, destination);
   }
 
   private static cleanLibraries(): void {
     const fm: FileManager = FileManager.iCloud();
 
-    const here: string = _System.libRuntime.path;
+    const here: string = _System.libRuntimeDir.path;
     const destination: string = here;
 
     if (fm.isDirectory(destination))
@@ -214,13 +215,13 @@ class _System {
     _System.cleanLibraries();
     const fm: FileManager = FileManager.iCloud();
 
-    const here: string = _System.libRuntime.path;
+    const here: string = _System.libRuntimeDir.path;
     const destination: string = here;
 
-    const there: string = _System.libSource.path;
-    const source: string = there;
+    const there: string = _System.libSourceRepoDir.path;
+    const sourceRepo: string = there;
 
-    fm.copy(source, destination);
+    fm.copy(sourceRepo, destination);
   }
 
   private static installPrograms(): void {
@@ -235,22 +236,29 @@ class _System {
     ): void {
       if (value === 0) {
         const fm: FileManager = FileManager.iCloud();
-        const here: string = _System.programsRuntime.path;
+        const here: string = _System.programsRuntimeDir.path;
         const destination: string = here;
 
-        const there: string = _System.programsSource.path;
-        const source: string = there;
+        const there: string = _System.programsSourceRepoDir.path;
+        const sourceRepo: string = there;
 
         const dScripts: string[] = fm
           .listContents(
             destination
           ).filter((leaf: string) => (
-            !leaf.startsWith(_System.protectedFilePrefix)
-            && !(leaf === _System.libRuntime.leaf)
+            !(_System
+              .protectedFilePrefixes
+              .some(
+                (prefix: string) => (
+                  leaf.startsWith(prefix)
+                )
+              )
+            )
+            && !(leaf === _System.libRuntimeDir.leaf)
             && !(leaf === _System.BOOT_RUNTIME.leaf)
-            && !(leaf === _System.storageRuntime.leaf)
-            && !(leaf === _System.configRuntime.leaf)
-            && !(leaf === _System.systemRuntime.leaf)
+            && !(leaf === _System.storageRuntimeDir.leaf)
+            && !(leaf === _System.configRuntimeDir.leaf)
+            && !(leaf === _System.systemRuntimeDir.leaf)
             && !(leaf === ".Trash")
           ));
 
@@ -265,12 +273,12 @@ class _System {
 
         const sScripts: string[] = fm
           .listContents(
-            source
+            sourceRepo
           );
 
         for (const leaf of sScripts) {
           const sFile: string = fm.joinPath(
-            source,
+            sourceRepo,
             leaf
           );
           const dFile: string = fm.joinPath(
