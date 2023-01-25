@@ -323,7 +323,7 @@ abstract class _Program {
   }
 
   writeStorage(
-    text: string
+    text: string,
     subpath?: string | undefined
   ): void {
     this
