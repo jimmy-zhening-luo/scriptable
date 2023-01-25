@@ -272,9 +272,91 @@ class _Storage {
 }
 
 
-// module.exports = _Program;
-// module.exports.Program = _Program;
-// module.exports.Shortcut = _Shortcut;
-// module.exports.Script = _Script;
+class _Program {
+  readonly config: _Config;
+  readonly storage: _Storage;
+  inputs: any;
+  runtime: Function;
+  output?: any;
+  outputHandler;
+
+  constructor() {
+    throw new TypeError("class Program:constructor(): Program is an abstract class that is meant to be inherited, not instantiated.");
+  }
+
+  run() {
+    this.output = this.runtime(this.inputs);
+  }
+
+  static get configSubdirectory(): string {
+    return String("Program");
+  }
+
+  static get storageSubdirectory(): string {
+    return this.configSubdirectory;
+  }
+
+  static loadData(
+    subpath = String()
+  ) {
+    return new Data(
+      this.dataRoot ?? String(),
+      this.name ?? String(),
+      (subpath?.constructor === String) ?
+        subpath
+        : String()
+    );
+  }
+
+  static saveData(
+    subpath = String(),
+    data = String()
+  ) {
+    this.loadData(subpath)?.write(
+      (data?.constructor === String) ?
+        data
+        : String()
+    );
+  }
+
+}
+
+class _Shortcut extends _Program {
+  static get configSubdirectory() {
+    return [
+      (
+        (super.configSubdirectory
+          ?.constructor === String
+        ) ?
+          super.configSubdirectory
+          : String()
+      ) ?? String(),
+      String("Shortcut")
+    ].join("/")
+      ?? String();
+  }
+}
+
+class _Script extends _Program {
+  static get configSubdirectory() {
+    return [
+      (
+        (super.configSubdirectory
+          ?.constructor === String
+        ) ?
+          super.configSubdirectory
+          : String()
+      ) ?? String(),
+      String("Script")
+    ].join("/")
+      ?? String();
+  }
+}
+
+
+module.exports = _Program;
+module.exports.Program = _Program;
+module.exports.Shortcut = _Shortcut;
+module.exports.Script = _Script;
 module.exports.Config = _Config;
 module.exports.Storage = _Storage;
