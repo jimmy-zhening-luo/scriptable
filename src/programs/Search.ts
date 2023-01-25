@@ -114,7 +114,7 @@ namespace Search {
                 null
                 :new AppEngine(
                   engine.keys,
-                  engine.app.toLower()
+                  engine.app
                 )
           )
         )
