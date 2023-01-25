@@ -122,7 +122,7 @@ namespace Search {
           (engine) => (
             engine !== null
           )
-        );
+        ) as Array<Engine>;
       
       const engine: Engine = engines
         .find(
