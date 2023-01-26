@@ -37,10 +37,10 @@ namespace Drinks {
       }
       
       for (const tag of drinkTags) {
-        const callbackUrl = new CallbackURL(baseUrl);
+        const u: CallbackURL = new CallbackURL(baseUrl);
         u.addParameter("token", token);
         u.addParameter("tag", tag);
-        u.open().then((response) => appendNotes(response));
+        u.open().then((response: BearSearchResults) => appendNotes(response));
       }
       
       return notes.length;
