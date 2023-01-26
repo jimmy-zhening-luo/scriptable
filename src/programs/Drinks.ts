@@ -28,22 +28,25 @@ namespace Drinks {
         "d"
       ];
       
-      const notes: Array<BearNote> = new Array<BearNote>();
+      const taggedNotes: Array<BearNote> = new Array<BearNote>();
       
       function appendNotes(
+        taggedNotes: Array<BearNote>,
         response: BearSearchResults
       ) {
-        notes.push(...response.notes);
+        const theseNotes = response.notes as Array<BearNote>;
+        
+        taggedNotes.push(...theseNotes);
       }
       
       for (const tag of drinkTags) {
         const u: CallbackURL = new CallbackURL(baseUrl);
         u.addParameter("token", token);
         u.addParameter("tag", tag);
-        u.open().then((response: BearSearchResults) => appendNotes(response));
+        u.open().then((value) => (value.json())).then((response: BearSearchResults) => (appendNotes(taggedNotes, response)));
       }
       
-      return notes.length;
+      return taggedNotes.length;
       
     }
   }
