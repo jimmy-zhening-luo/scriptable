@@ -1,18 +1,26 @@
 class CharSet {
   readonly chars: Array<string>;
+
+  includes(char: string): boolean {
+    return this.chars.includes(char)
+  }
+
   constructor(
     ...charSets: Array<string | CharSet | Array<string>>
   ) {
-    for (const set in charSets) {
-      if (Array.isArray(set))
-        this.chars.push(...set);
-      else if (typeof set === "string")
-        this.chars.push(set);
-      else
-        this.chars.push(...set.chars)
-    }
+    this.chars = new Array<string>();
+    charSets.forEach(
+      (set) => {
+        if (Array.isArray(set))
+          this.chars.push(...set);
+        else if (typeof set === "string")
+          this.chars.push(set);
+        else
+          this.chars.push(...set.chars)
+      }
+    );
   }
-  
+
   static get alphaNumeric(): Array<string> {
     return [
       ...this.numbers,
@@ -215,7 +223,7 @@ class CharSet {
   }
 
   static get doubleQuote(): string {
-    return """";
+    return "\"";
   }
 
   static get semicolon(): string {
@@ -245,65 +253,162 @@ class CharSet {
   static get equal(): string {
     return "=";
     }
-  
-  
+
+
 }
 
 abstract class UrlCharSet extends CharSet {
-  
+  static get safe(): Array<string> {
+    return [
+      this.dollar,
+      this.hyphen,
+      this.underscore,
+      this.dot,
+      this.plus
+    ];
+  }
+
+  static get extra(): Array<string> {
+    return [
+      this.exclam,
+      this.asterisk,
+      this.quote,
+      this.leftParen,
+      this.rightParen,
+      this.comma
+    ];
+  }
+
+  static get national(): Array<string> {
+    return [
+      this.leftBrace,
+      this.rightBrace,
+      this.or,
+      this.backslash,
+      this.caret,
+      this.tilde,
+      this.leftBracket,
+      this.rightBracket,
+      this.backTick
+    ];
+  }
+
+  static get punctuation(): Array<string> {
+    return [
+      this.lessThan,
+      this.greaterThan,
+      this.hash,
+      this.percent,
+      this.doubleQuote
+    ];
+  }
+
+  static get hex(): Array<string> {
+    return [
+      ...this.numbers,
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f"
+    ];
+  }
+
+  static get unreserved(): Array<string> {
+    return [
+      ...this.alphaNumeric,
+      ...this.safe,
+      ...this.extra
+    ];
+  }
 }
 
-
 abstract class Pattern {
-  
+  readonly charset: CharSet
+  constructor(
+    charset: CharSet
+  ) {
+    this.charset = charset;
+  }
+
+  abstract match(token: string): boolean;
 }
 
 class NOf extends Pattern {
+  readonly count: number;
   constructor(
-    allowedChars: Array<string>,
-    count: number
+    charset: CharSet,
+    count: number = 1
   ) {
-    
+    super(charset);
+    this.count = count;
+
   }
-  
+
+  match(token: string): boolean {
+    // turn token into iterator
+    // get next until N or until token stream is dry
+    // match token char to charset.includes
+    return false;
+  }
 }
 
 class OneOf extends NOf {
   constructor(
-    allowedChars: Array<string>
+    charset: CharSet
   ) {
-    super(allowedChars, 1);
+    super(charset, 1);
   }
 }
 
 class NOrMany extends Pattern {
-  
+  readonly min: number;
   constructor(
-    allowedChars: Array<string>,
-    min: number
+    charset: CharSet,
+    min: number = 0
   ) {
-    
+    super(charset);
+    this.min = min;
   }
-  
-  
+
+  match(token: string): boolean {
+    return false;
+  }
 }
 
 class OneOrMany extends NOrMany {
-  
   constructor(
-    allowedChars: Array<string>
+    charset: CharSet
   ) {
-    super(allowedChars, 1);
-    
+    super(charset, 1);
   }
 }
 
 class ZeroOrMany extends NOrMany {
   constructor(
-    allowedChars: Array<string>
+    charset: CharSet
   ) {
-    super(allowedChars, 0);
-    
+    super(charset, 0);
+  }
+}
+
+class PatternSet {
+  readonly patternOrderedList: Array<Pattern>;
+  constructor(
+    ...patterns: Array<Pattern>
+  ) {
+    this.patternOrderedList = [...patterns];
+  }
+
+  get length(): number {
+    return this.patternOrderedList.length;
   }
 }
 
@@ -403,76 +508,7 @@ abstract class StringValidator {
 }
 
 abstract class UrlValidator extends StringValidator {
-  static get safe(): Array<string> {
-    return [
-      this.dollar,
-      this.hyphen,
-      this.underscore,
-      this.dot,
-      this.plus
-    ];
-  }
 
-  static get extra(): Array<string> {
-    return [
-      this.exclam,
-      this.asterisk,
-      this.quote,
-      this.leftParen,
-      this.rightParen,
-      this.comma
-    ];
-  }
-
-  static get national(): Array<string> {
-    return [
-      this.leftBrace,
-      this.rightBrace,
-      this.or,
-      this.backslash,
-      this.caret,
-      this.tilde,
-      this.leftBracket,
-      this.rightBracket,
-      this.backTick
-    ];
-  }
-
-  static get punctuation(): Array<string> {
-    return [
-      this.lessThan,
-      this.greaterThan,
-      this.hash,
-      this.percent,
-      this.doubleQuote
-    ];
-  }
-
-  static get hex(): Array<string> {
-    return [
-      ...this.numbers,
-      "A",
-      "B",
-      "C",
-      "D",
-      "E",
-      "F",
-      "a",
-      "b",
-      "c",
-      "d",
-      "e",
-      "f"
-    ];
-  }
-
-  static get unreserved(): Array<string> {
-    return [
-      ...this.alphaNumeric,
-      ...this.safe,
-      ...this.extra
-    ];
-  }
 }
 
 class SchemeValidator extends UrlValidator {
