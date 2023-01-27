@@ -6,27 +6,27 @@ class QueryParam {
     name = String(),
     value = String()
   ) {
-    
+
   }
-  
+
   static fromString() {
-    
+
   }
-  
+
   static fromTuple() {
-    
+
   }
-  
+
   static fromNameValueObject() {
-    
+
   }
-  
+
   static fromObjectEntry() {
-    
+
   }
-  
+
   static fromQueryStringPart() {
-    
+
   }
 }
 

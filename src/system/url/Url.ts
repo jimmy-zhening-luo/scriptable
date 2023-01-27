@@ -34,7 +34,7 @@ class _Url {
   #query: typeof _Url.Query;
   #fragment: typeof _Url.Fragment;
   constructor(
-    input?: undefined | _Url | UrlParts
+    input?: undefined | string | _Url | UrlParts
   ) {
     if (input === undefined) {
       this.scheme = new _Url.Scheme();
@@ -43,6 +43,15 @@ class _Url {
       this.path = new _Url.Path();
       this.query = new _Url.Query();
       this.fragment = new _Url.Fragment();
+    }
+    else if (typeof input === "string") {
+      const parts: UrlParts = this.parse(input);
+      this.scheme = parts.scheme;
+      this.host = parts.host;
+      this.port = parts.port;
+      this.path = parts.path;
+      this.query = parts.query;
+      this.fragment = parts.fragment;
     }
     else if (input instanceof _Url) {
       this.scheme = input.scheme;
@@ -173,6 +182,15 @@ class _Url {
 
   toString(): string {
     return this.string;
+  }
+
+  // WIP
+  protected parse(url: string): UrlParts {
+    // split first fragment before and after, after is fragment, before is URL
+    // URL, do...
+    return {
+
+    };
   }
 
   static joinUrlParts(
