@@ -1,3 +1,56 @@
+abstract class Pattern {
+  
+}
+
+class NOf extends Pattern {
+  constructor(
+    allowedChars: Array<string>,
+    count: number
+  ) {
+    
+  }
+  
+}
+
+class OneOf extends NOf {
+  constructor(
+    allowedChars: Array<string>
+  ) {
+    super(allowedChars, 1);
+  }
+}
+
+class NOrMany extends Pattern {
+  
+  constructor(
+    allowedChars: Array<string>,
+    min: number
+  ) {
+    
+  }
+  
+  
+}
+
+class OneOrMany extends NOrMany {
+  
+  constructor(
+    allowedChars: Array<string>
+  ) {
+    super(allowedChars, 1);
+    
+  }
+}
+
+class ZeroOrMany extends NOrMany {
+  constructor(
+    allowedChars: Array<string>
+  ) {
+    super(allowedChars, 0);
+    
+  }
+}
+
 abstract class StringValidator {
   readonly raw: string;
   readonly cleaned: string;
@@ -294,7 +347,7 @@ abstract class StringValidator {
   }
 
   static get doubleQuote(): string {
-    return "\"";
+    return """";
   }
 
   static get semicolon(): string {
