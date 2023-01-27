@@ -1,150 +1,18 @@
-abstract class Pattern {
-  
-}
-
-class NOf extends Pattern {
+class CharSet {
+  readonly chars: Array<string>;
   constructor(
-    allowedChars: Array<string>,
-    count: number
+    ...charSets: Array<string | CharSet | Array<string>>
   ) {
-    
-  }
-  
-}
-
-class OneOf extends NOf {
-  constructor(
-    allowedChars: Array<string>
-  ) {
-    super(allowedChars, 1);
-  }
-}
-
-class NOrMany extends Pattern {
-  
-  constructor(
-    allowedChars: Array<string>,
-    min: number
-  ) {
-    
+    for (const set in charSets) {
+      if (Array.isArray(set))
+        this.chars.push(...set);
+      else if (typeof set === "string")
+        this.chars.push(set);
+      else
+        this.chars.push(...set.chars)
+    }
   }
   
-  
-}
-
-class OneOrMany extends NOrMany {
-  
-  constructor(
-    allowedChars: Array<string>
-  ) {
-    super(allowedChars, 1);
-    
-  }
-}
-
-class ZeroOrMany extends NOrMany {
-  constructor(
-    allowedChars: Array<string>
-  ) {
-    super(allowedChars, 0);
-    
-  }
-}
-
-abstract class StringValidator {
-  readonly raw: string;
-  readonly cleaned: string;
-  readonly allowedChars: Array<string>;
-  constructor(
-    text: string,
-    {
-      toLower = false,
-      trim = true,
-      trimLeading = [],
-      trimTrailing = []
-    }: {
-        toLower?: boolean,
-        trim?: boolean,
-        trimLeading?: Array<string>,
-        trimTrailing?: Array<string>
-      },
-    ...allowedCharLists: Array<string | Array<string>>
-  ) {
-    this.raw = text;
-    this.cleaned = this.clean(
-      text,
-      toLower,
-      trim,
-      trimLeading,
-      trimTrailing
-    )
-    this.allowedChars = this
-      .flattenAllowedCharLists(
-        ...allowedCharLists
-      );
-  }
-
-  get isValid(): boolean {
-    const chars: Array<string> = this
-      .splitStringIntoChars(this.cleaned);
-
-    return chars.every((char: string) => (
-      this.allowedChars.includes(char)
-    ));
-  }
-
-  get validated(): string {
-    return this.isValid ?
-      this.cleaned
-      : String();
-  }
-
-  private clean(
-    text: string,
-    toLower: boolean,
-    trim: boolean,
-    trimLeading: Array<string>,
-    trimTrailing: Array<string>
-  ): string {
-    text = trim ?
-      text.trim()
-      : text;
-
-    text = toLower ?
-      text.toLowerCase()
-      : text;
-
-    for (const word of trimLeading
-      .filter((word) => (
-        word.length > 0
-      ))
-    ) while (text.startsWith(word))
-        text = text.slice(
-          word.length
-        );
-
-    for (const word of trimTrailing
-      .filter((word) => (
-        word.length > 0
-      ))
-    ) while (text.endsWith(word))
-        text = text.slice(
-          0, 0 - word.length
-        );
-
-    return text;
-  }
-
-  private flattenAllowedCharLists(
-    ...allowedCharLists: Array<string | Array<string>>
-  ): Array<string> {
-    return allowedCharLists.flat(1);
-  }
-
-  private splitStringIntoChars(url: string): Array<string> {
-    return [...url];
-  }
-
   static get alphaNumeric(): Array<string> {
     return [
       ...this.numbers,
@@ -376,6 +244,161 @@ abstract class StringValidator {
 
   static get equal(): string {
     return "=";
+    }
+  
+  
+}
+
+abstract class UrlCharSet extends CharSet {
+  
+}
+
+
+abstract class Pattern {
+  
+}
+
+class NOf extends Pattern {
+  constructor(
+    allowedChars: Array<string>,
+    count: number
+  ) {
+    
+  }
+  
+}
+
+class OneOf extends NOf {
+  constructor(
+    allowedChars: Array<string>
+  ) {
+    super(allowedChars, 1);
+  }
+}
+
+class NOrMany extends Pattern {
+  
+  constructor(
+    allowedChars: Array<string>,
+    min: number
+  ) {
+    
+  }
+  
+  
+}
+
+class OneOrMany extends NOrMany {
+  
+  constructor(
+    allowedChars: Array<string>
+  ) {
+    super(allowedChars, 1);
+    
+  }
+}
+
+class ZeroOrMany extends NOrMany {
+  constructor(
+    allowedChars: Array<string>
+  ) {
+    super(allowedChars, 0);
+    
+  }
+}
+
+abstract class StringValidator {
+  readonly raw: string;
+  readonly cleaned: string;
+  readonly allowedChars: Array<string>;
+  constructor(
+    text: string,
+    {
+      toLower = false,
+      trim = true,
+      trimLeading = [],
+      trimTrailing = []
+    }: {
+        toLower?: boolean,
+        trim?: boolean,
+        trimLeading?: Array<string>,
+        trimTrailing?: Array<string>
+      },
+    ...allowedCharLists: Array<Pattern | string | Array<string>>
+  ) {
+    this.raw = text;
+    this.cleaned = this.clean(
+      text,
+      toLower,
+      trim,
+      trimLeading,
+      trimTrailing
+    )
+    this.allowedChars = this
+      .flattenAllowedCharLists(
+        ...allowedCharLists
+      );
+  }
+
+  get isValid(): boolean {
+    const chars: Array<string> = this
+      .splitStringIntoChars(this.cleaned);
+
+    return chars.every((char: string) => (
+      this.allowedChars.includes(char)
+    ));
+  }
+
+  get validated(): string {
+    return this.isValid ?
+      this.cleaned
+      : String();
+  }
+
+  private clean(
+    text: string,
+    toLower: boolean,
+    trim: boolean,
+    trimLeading: Array<string>,
+    trimTrailing: Array<string>
+  ): string {
+    text = trim ?
+      text.trim()
+      : text;
+
+    text = toLower ?
+      text.toLowerCase()
+      : text;
+
+    for (const word of trimLeading
+      .filter((word) => (
+        word.length > 0
+      ))
+    ) while (text.startsWith(word))
+        text = text.slice(
+          word.length
+        );
+
+    for (const word of trimTrailing
+      .filter((word) => (
+        word.length > 0
+      ))
+    ) while (text.endsWith(word))
+        text = text.slice(
+          0, 0 - word.length
+        );
+
+    return text;
+  }
+
+  private flattenAllowedCharLists(
+    ...allowedCharLists: Array<string | Array<string>>
+  ): Array<string> {
+    return allowedCharLists.flat(1);
+  }
+
+  private splitStringIntoChars(url: string): Array<string> {
+    return [...url];
   }
 }
 
@@ -508,12 +531,11 @@ abstract class _UrlPart {
       | undefined
     )
   ) {
-    if (part === undefined)
-      this.part = String();
-    else if (part instanceof _UrlPart)
-      this.part = this.parse(part.string);
-    else
-      this.part = this.parse(part);
+    this.part = part === undefined ?
+      String()
+      : part instanceof _UrlPart ?
+        this.parse(part.string)
+        : this.parse(part);
   }
 
   get string(): string {
@@ -616,28 +638,23 @@ class _Port extends _UrlPart {
       | undefined
     )
   ) {
-    if (typeof port === "number") {
-      super(
-        Number.isInteger(port) ?
+    super(
+      typeof port !== "number" ?
+        port
+        : Number.isInteger(port) ?
           String(Math.trunc(port))
           : String()
-      );
-    }
-    else
-      super(port);
+    );
   }
 
   protected parse(
     port: string
   ): string {
-    port = new PortValidator(port)
+    const parsedString: string = new PortValidator(port)
       .validated;
-    // TBD port custom validation logic to PortValidator
-    const portParsed: number = Number
-      .parseInt(port);
-    const portInt: number = Number
-      .isInteger(portParsed) ?
-        Math.trunc(portParsed)
+    const parsedInt: number = Number
+      .isInteger(Number.parseInt(port)) ?
+        Math.trunc(Number.parseInt(port))
         : 0;
     return (
       portInt >= 1
