@@ -7,7 +7,7 @@ interface UrlParts {
     | typeof _Url.Host
     | undefined
   ),
-  port?: (string 
+  port?: (string
     | number
     | typeof _Url.Port
     | undefined
@@ -33,11 +33,11 @@ class _Url {
   #path: typeof _Url.Path;
   #query: typeof _Url.Query;
   #fragment: typeof _Url.Fragment;
-  
+
   constructor();
   constructor(url: _Url);
   constructor(parts: UrlParts);
-  
+
   constructor(
     input?: undefined | _Url | UrlParts
   ) {
@@ -66,7 +66,7 @@ class _Url {
       this.fragment = input.fragment;
     }
   }
-  
+
   static get UrlPart() {
     return importModule("parts/UrlPart");
   }
@@ -88,13 +88,13 @@ class _Url {
   static get Fragment() {
     return _Url.UrlPart.Fragment;
   }
-  
+
   get scheme(): string {
     return this.#scheme.string;
   }
-  
+
   set scheme(
-    scheme?: (string
+    scheme: (string
       | typeof _Url.Scheme
       | undefined
     )
@@ -103,26 +103,26 @@ class _Url {
       scheme
     );
   }
-  
+
   get host(): string {
     return this.#host.string;
   }
-  
+
   set host(
-    host?: (string
+    host: (string
       | typeof _Url.Host
       | undefined
     )
   ) {
     this.#host = new _Url.Host(host);
   }
-  
+
   get port(): string {
     return this.#port.string;
   }
-  
+
   set port(
-    port?: (string 
+    port: (string
       | number
       | typeof _Url.Port
       | undefined
@@ -130,39 +130,39 @@ class _Url {
   ) {
     this.#port = new _Url.Port(port);
   }
-  
+
   get path(): string {
     return this.#path.string;
   }
-  
+
   set path(
-    path?: (string
+    path: (string
       | typeof _Url.Path
       | undefined
     )
   ) {
     this.#path = new _Url.Path(path);
   }
-  
+
   get query(): string {
     return this.#query.string;
   }
-  
+
   set query(
-    query?: (string
+    query: (string
       | typeof _Url.Query
       | undefined
     )
   ) {
     this.#query = new _Url.Query(query);
   }
-  
+
   get fragment(): string {
     return this.#fragment.string;
   }
-  
+
   set fragment(
-    fragment?: (string
+    fragment: (string
       | typeof _Url.Fragment
       | undefined
     )
@@ -171,15 +171,15 @@ class _Url {
       fragment
     );
   }
-  
+
   get string(): string {
     return _Url.joinUrlParts(this);
   }
-  
+
   toString(): string {
     return this.string;
   }
-  
+
   static joinUrlParts(
     parts: _Url | UrlParts
   ): string {
@@ -208,7 +208,7 @@ class _Url {
       )
     ).trim();
   }
-  
+
   static appendHostToScheme(
     scheme: (string
       | typeof _Url.Scheme
@@ -235,10 +235,10 @@ class _Url {
     .join(separator)
     .trim();
   }
-  
+
   static appendPortToLeft(
     left: string,
-    port: (string 
+    port: (string
       | number
       | typeof _Url.Port
     )
@@ -261,9 +261,9 @@ class _Url {
     .join(separator)
     .trim();
   }
-  
+
   static appendPathToLeft(
-    left: string;
+    left: string,
     path: (string
       | typeof _Url.Path
     )
@@ -280,7 +280,7 @@ class _Url {
     .join(separator)
     .trim();
   }
-  
+
   static appendQueryToLeft(
     left: string,
     query: (string
@@ -303,7 +303,7 @@ class _Url {
     .join(separator)
     .trim();
   }
-  
+
   static appendFragmentToLeft(
     left: string,
     fragment: (string
@@ -326,7 +326,7 @@ class _Url {
     .join(separator)
     .trim();
   }
-  
+
   static encode(
     url: string
   ): string {
@@ -334,7 +334,7 @@ class _Url {
       ?.trim()
       ?? String();
   }
-  
+
   static decode(
     url: string
   ): string {
@@ -342,7 +342,7 @@ class _Url {
       ?.trim()
       ?? String();
   }
-  
+
   static encodePart(
     part: string
   ): string {
@@ -352,7 +352,7 @@ class _Url {
       ?.trim()
       ?? String();
   }
-  
+
   static decodePart(
     part: string
   ): string {
