@@ -33,11 +33,6 @@ class _Url {
   #path: typeof _Url.Path;
   #query: typeof _Url.Query;
   #fragment: typeof _Url.Fragment;
-
-  constructor();
-  constructor(url: _Url);
-  constructor(parts: UrlParts);
-
   constructor(
     input?: undefined | _Url | UrlParts
   ) {
