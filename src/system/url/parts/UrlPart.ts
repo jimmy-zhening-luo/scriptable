@@ -7,8 +7,8 @@ class CharSet {
     charSets.forEach(
       (set) => {
         Array.isArray(set) ?
-          this.chars.push(...set);
-          :typeof set === "string" ?
+          this.chars.push(...set)
+          : typeof set === "string" ?
             this.chars.push(set)
             : this.chars.push(
                 ...set.chars
@@ -16,7 +16,7 @@ class CharSet {
       }
     );
   }
-  
+
   includes(char: string): boolean {
     return this.chars.includes(char)
   }
@@ -341,7 +341,7 @@ abstract class RepeatedChar {
   abstract match(token: string): boolean;
 }
 
-class MinMaxRepeatedChar {
+class MinMaxRepeatedChar extends RepeatedChar {
   readonly minRepetitions: number;
   readonly maxRepetitions: number;
   constructor(
@@ -349,6 +349,7 @@ class MinMaxRepeatedChar {
     minRepetitions: number,
     maxRepetitions: number
   ) {
+    super(charset);
     if (
       minRepetitions < 0
       || maxRepetitions < 0
@@ -356,19 +357,26 @@ class MinMaxRepeatedChar {
       || Number.isNaN(maxRepetitions)
     )
       minRepetitions = maxRepetitions = 0;
-    
+
     if (minRepetitions > maxRepetitions) {
       const tmp: number = minRepetitions;
       minRepetitions = maxRepetitions;
       maxRepetitions = tmp;
     }
-    
+
     if (!Number.isFinite(minRepetitions))
       this.minRepetitions = this.maxRepetitions = 0;
     else {
       this.minRepetitions = minRepetitions;
       this.maxRepetitions = maxRepetitions;
     }
+  }
+
+  match(token: string): boolean {
+    // turn token into iterator
+    // get next until N or until token stream is dry
+    // match token char to charset.includes
+    return false;
   }
 }
 
@@ -379,16 +387,9 @@ class NOfChar extends MinMaxRepeatedChar {
   ) {
     super(charset, count, count);
   }
-  
-  static get size() {
-    return this.min;
-  }
 
-  match(token: string): boolean {
-    // turn token into iterator
-    // get next until N or until token stream is dry
-    // match token char to charset.includes
-    return false;
+  get repetitions() {
+    return this.minRepetitions;
   }
 }
 
@@ -400,42 +401,18 @@ class OneOfChar extends NOfChar {
   }
 }
 
-class NOrManyChar extends MinMaxRepeatedChar {
-  constructor(
-    charset: CharSet,
-    min: number = 0
-  ) {
-    super(charset, min, Infinity);
-  }
-
-  match(token: string): boolean {
-    return false;
-  }
-}
-
-class OneOrManyChar extends NOrManyChar {
-  constructor(
-    charset: CharSet
-  ) {
-    super(charset, 1);
-  }
-}
-
-class ZeroOrManyChar extends NOrManyChar {
-  constructor(
-    charset: CharSet
-  ) {
-    super(charset, 0);
-  }
-}
+type ValidationPattern = NOfChar
+  | CharSet
+  | string
+  | Array<ValidationPattern>;
 
 abstract class StringValidator {
   readonly raw: string;
   readonly cleaned: string;
-  readonly pattern: NOfChar | ;
+  readonly pattern: NOfChar;
   constructor(
     text: string,
-    pattern: NOfChar,
+    pattern: ValidationPattern
     {
       toLower = false,
       trim = true,
@@ -449,7 +426,12 @@ abstract class StringValidator {
       }
   ) {
     this.raw = text;
-    this.pattern = pattern;
+    this.pattern = pattern instanceof NOfChar ?
+      pattern
+      : pattern instanceof CharSet ?
+        new OneOfChar(pattern)
+        : Array.isArray(pattern) ?
+
     this.cleaned = this.clean(
       text,
       toLower,
