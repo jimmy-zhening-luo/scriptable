@@ -1,69 +1,52 @@
 class _Bookmark {
   readonly bookmark: string;
-  readonly path: string = String();
+  readonly path: string;
   constructor(
     bookmark: string = String()
   ) {
     this.bookmark = bookmark.trim();
-    this.path = (
-      (this.bookmark === String()) ?
-        String()
-        : FileManager
-          .iCloud()
-          .bookmarkedPath(
-            bookmark
-          )
-    );
+    this.path = this.bookmark === String() ?
+      String()
+      : FileManager.iCloud()
+        .bookmarkedPath(bookmark);
   }
 
   toString(): string {
     return this.path;
   }
 }
+
 class _File {
   #subpath: string = String();
-  readonly bookmark: _Bookmark = new _Bookmark();
+  readonly bookmark: _Bookmark;
   constructor();
   constructor(
     subpath: string
   );
   constructor(
     bookmark: _Bookmark,
-    subpath?: (string | undefined)
+    subpath?: string
   );
   constructor(
     file: _File,
-    relativePath?: (string | undefined)
+    relativePath?: string
   );
   constructor(
-    base?: (
-      undefined
-      | _Bookmark
+    base: _Bookmark
       | _File
-      | string
-    ),
-    subpath?: (string | undefined)
+      | string = new _Bookmark(),
+    subpath: string = String()
   ) {
-    if (base === undefined) {
-      this.bookmark = new _Bookmark();
-      this.subpath = String();
-    }
-    else if (base instanceof _Bookmark) {
+    if (base instanceof _Bookmark) {
       this.bookmark = base;
-      if (subpath === undefined)
-        this.subpath = String();
-      else
-        this.subpath = subpath;
+      this.subpath = subpath;
     }
     else if (base instanceof _File) {
       this.bookmark = base.bookmark;
-      if (subpath === undefined)
-        this.subpath = base.subpath;
-      else
-        this.subpath = _File.walkPath(
-          base.subpath,
-          subpath
-        );
+      this.subpath = _File.walkPath(
+        base.subpath,
+        subpath
+      );
     }
     else {
       this.bookmark = new _Bookmark();
@@ -76,80 +59,61 @@ class _File {
   }
 
   get data(): string {
-    if (this.isReadable)
-      return _File.m.readString(
-        this.path
-      );
-    else
-      return String();
+    return this.isReadable ?
+      _File.m.readString(this.path)
+      : String();
   }
 
   get descendants(): _File[] {
-    if (this.isFile)
-      return [this];
-    else if (this.isBottom)
-      return (
-        new Array<_File>()
-      );
-    else if (this.isDirectory) {
-      return this.ls.map(
-        (leaf: string): string => (
-          _File.joinPaths(
-            this.subpath,
-            _File.trimPath(
-              leaf
+    return this.isFile ?
+      [this]
+      : this.isBottom ?
+        []
+        : !this.isDirectory ?
+          []
+          : this.ls.map(
+            (leaf: string): string => (
+              _File.joinPaths(
+                this.subpath,
+                _File.trimPath(leaf)
+              )
             )
-          )
-        )
-      ).map(
-        (subpath: string): _File => (
-          new _File(
-            subpath
-          )
-        )
-      ).filter(
-        (file: _File) => (
-          !this.path.startsWith(
-            file.path
-          )
-        )
-      ).map(
-        (file: _File): (
-          Array<_File>
-        ) => (
-          file.descendants
-        )
-      ).flat(1);
-    }
-    else
-      return (
-        new Array<_File>()
-      );
+          ).map(
+            (subpath: string): _File => (
+              new _File(subpath)
+            )
+          ).filter(
+            (file: _File) => (
+              !this.path
+                .startsWith(
+                  file.path
+                )
+            )
+          ).map(
+            (file: _File):
+              Array<_File> => (
+              file.descendants
+            )
+          ).flat(1);
   }
 
   get exists(): boolean {
-    return (
-      this.parentExists
-      && _File.m.fileExists(
-        this.path
-      )
-    );
+    return this.parentExists
+      && _File.m
+        .fileExists(this.path);
   }
 
   get isBottom(): boolean {
-    return (
-      this.isFile
+    return this.isFile
       || (
         Array.isArray(this.ls)
         && this.ls.length === 0
-      )
-    );
+      );
   }
 
   get isDirectory(): boolean {
-    return _File.m.isDirectory(
-      this.path
-    );
+    return _File.m
+      .isDirectory(this.path);
   }
 
   get isEnumerable(): boolean {
@@ -157,10 +121,8 @@ class _File {
   }
 
   get isFile(): boolean {
-    return (
-      this.exists
-      && !this.isDirectory
-    );
+    return this.exists
+      && !this.isDirectory;
   }
 
   get isReadable(): boolean {
@@ -168,23 +130,28 @@ class _File {
   }
 
   get isTop(): boolean {
-    return (
-      this.subpath === this.parentSubpath
-    );
+    return this
+      .subpath === this
+        .parentSubpath;
   }
 
   get leaf(): string {
     return _File.trimPath(
-      this.path.split("/").slice(-1).shift()
+      this.path
+        .split("/")
+        .slice(-1)
+        .shift()
+      ?? String()
     );
   }
 
-  get ls(): string[] {
-    return this.isDirectory?
-      _File.m.listContents(
-        this.path
-      )
-      :new Array<string>();
+  get ls(): Array<string> {
+    return this.isDirectory ?
+      _File
+        .m.listContents(
+          this.path
+        )
+      : [];
   }
 
   get parent(): _File {
@@ -195,7 +162,8 @@ class _File {
   }
 
   get parentExists(): boolean {
-    return this.parent.isDirectory;
+    return this.parent
+      .isDirectory;
   }
 
   get parentIsSelf(): boolean {
@@ -203,26 +171,30 @@ class _File {
   }
 
   get parentPath(): string {
-    return this.parent.path;
+    return this.parent
+      .path;
   }
 
   get parentSubpath(): string {
     return _File.trimPath(
-      this.subpath.split("/").slice(0, -1).join("/")
+      this.subpath
+        .split("/")
+        .slice(0, -1)
+        .join("/")
     );
   }
 
   get path(): string {
-    return _File.joinPaths(
-      this.bookmarkedPath,
-      this.subpath
-    );
+    return _File
+      .joinPaths(
+        this.root,
+        this.subpath
+      );
   }
 
-  get pathTree(): string[] {
-    return _File.pathToTree(
-      this.path
-    );
+  get pathTree(): Array<string> {
+    return _File
+      .pathToTree(this.path);
   }
 
   get root(): string {
@@ -236,26 +208,22 @@ class _File {
   set subpath (
     path: string
   ) {
-    this.#subpath = _File.trimPath(
-        path
-    );
+    this.#subpath = _File
+      .trimPath(path);
   }
 
-  get subpathTree(): string[] {
-    return _File.pathToTree(
-      this.subpath
-    );
+  get subpathTree(): Array<string> {
+    return _File
+      .pathToTree(this.subpath);
   }
 
   cd (
-    relativePath: string = String()
+    relativePath: string
   ): void {
     this.subpath = _File.trimPath(
-        this.subpathRelativeTo(
-          _File.trimPath(
-            relativePath
-          )
-        )
+      this.subpathRelativeTo(
+        _File.trimPath(relativePath)
+      )
     );
   }
 
@@ -295,14 +263,12 @@ class _File {
   }
 
   pathRelativeTo (
-    relativePath: string = String()
+    relativePath: string
   ): string {
     return _File.trimPath(
       _File.walkPath(
         this.path,
-        _File.trimPath(
-          relativePath
-        )
+        _File.trimPath(relativePath)
       )
     );
   }
@@ -311,15 +277,13 @@ class _File {
     return this.data;
   }
 
-  subpathRelativeTo (
-    relativePath: string = String()
+  subpathRelativeTo(
+    relativePath: string
   ): string {
     return _File.trimPath(
       _File.walkPath(
         this.subpath,
-        _File.trimPath(
-          relativePath
-        )
+        _File.trimPath(relativePath)
       )
     );
   }
@@ -361,49 +325,42 @@ class _File {
   }
 
   static joinPaths (
-    left: string = String(),
+    left: string,
     right: string = String()
   ): string {
-    left = _File.trimPath(left);
-    right = _File.trimPath(right);
     return _File.trimPath(
       _File.m.joinPath(
-        left,
-        right
+        _File.trimPath(left),
+        _File.trimPath(right)
       )
     );
   }
 
   static pathToTree (
-    path: string = String()
-  ): string[] {
-    return _File.trimPath(
-      path
-    )
-    .split("/")
-    .map(
-      (node: string): string => (
-        _File.trimPath(
-          node
+    path: string
+  ): Array<string> {
+    return _File
+      .trimPath(path)
+      .split("/")
+      .map(
+        (node: string): string => (
+          _File.trimPath(node)
         )
       )
-    )
-    .filter(
-      (node: string) => (
-        node.trim() !== String()
-      )
-    );
+      .filter(
+        (node: string) => (
+          node.trim() !== String()
+        )
+      );
   }
 
   static treeToPath (
-    tree: string[] = new Array<string>()
+    tree: Array<string>
   ): string {
-    return _File.trimPath(
-      tree.map(
+    return _File.trimPath(tree
+      .map(
         (node: string): string => (
-          _File.trimPath(
-            node
-          )
+          _File.trimPath(node)
         )
       )
       .filter(
@@ -417,46 +374,40 @@ class _File {
   }
 
   static trimPath (
-    path: string = String()
+    path: string
   ): string {
     path = path.trim();
     while (path.startsWith("/"))
       path = path.slice(1);
     while (path.endsWith("/"))
       path = path.slice(0, -1);
-    path = path.trim();
-    return path;
+    return path.trim();
   }
 
   static walkPath (
-    path: string = String(),
+    path: string,
     relativePath: string = String()
   ): string {
-    const pathTree: string[] = _File.pathToTree(
-        _File.trimPath(
-          path
-        )
+    const pathTree: Array<string> = _File
+      .pathToTree(
+        _File.trimPath(path)
       );
-    const relPathTree = _File.pathToTree(
-        _File.trimPath(
-          relativePath
-        )
+    const relPathTree = _File
+      .pathToTree(
+        _File.trimPath(relativePath)
       );
 
-    for (
-      const node of relPathTree
-    ) {
-      if (node.trim() === "..")
-        pathTree.pop();
-      else if (node.trim() !== String())
-        pathTree.push(
-          node
-        );
-    }
+    relPathTree.forEach(
+      (node: string) => {
+        if (node.trim() === "..")
+          pathTree.pop();
+        else if (node.trim() !== String())
+          pathTree.push(node);
+      }
+    );
+
     return _File.trimPath(
-      _File.treeToPath(
-        pathTree
-      )
+      _File.treeToPath(pathTree)
     );
   }
 }
@@ -470,7 +421,6 @@ class _ReadOnlyFile extends _File {
     throw new ReferenceError("File::ReadOnlyFile:write(): Cannot write to or overwrite a read-only file.");
   }
 }
-
 
 module.exports = _File;
 module.exports.File = _File;

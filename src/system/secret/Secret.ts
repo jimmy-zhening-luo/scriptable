@@ -13,7 +13,7 @@ class _Secret {
       subpath
     );
   }
-  
+
   private static get Bookmark() {
     return _Secret.File.Bookmark;
   }
@@ -21,13 +21,29 @@ class _Secret {
   private static get File() {
     return importModule("file/File");
   }
-  
+
   private static get ReadOnlyFile() {
     return _Secret.File.ReadOnlyFile;
   }
-  
+
   private static get EXTERNAL_SECRETS_BOOKMARK() {
     return EXTERNAL_SECRETS_BOOKMARK;
+  }
+
+  get exists(): boolean {
+    return this.file.exists;
+  }
+
+  get path(): string {
+    return this.file.path;
+  }
+
+  get subpath(): string {
+    return this.file.subpath;
+  }
+
+  get filename(): string {
+    return this.file.leaf;
   }
 
   get secret(): string {
