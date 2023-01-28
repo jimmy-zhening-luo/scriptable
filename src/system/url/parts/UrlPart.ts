@@ -331,7 +331,7 @@ abstract class UrlCharSet extends CharSet {
 abstract class RepeatedChar {
   readonly charset: CharSet
   constructor(
-    ...charset: Array<string | CharSet | Array<string>>
+    ...charset: Array<string | CharSet | RepeatedChar | Array<string>>
   ) {
     this.charset = new CharSet(...charset);
   }
@@ -401,11 +401,10 @@ class OneRepeatedChar extends NRepeatedChar {
 
 abstract class StringValidator {
   readonly raw: string;
-  readonly pattern: NRepeatedChar;
+  readonly patterns: Array<OneRepeatedChar>;
   readonly cleaned: string;
   constructor(
     text: string,
-    pattern: NRepeatedChar | string | CharSet | Array<string | CharSet | Array<string>>,
     {
       toLower = false,
       trim = true,
@@ -416,10 +415,11 @@ abstract class StringValidator {
         trim?: boolean,
         trimLeading?: Array<string>,
         trimTrailing?: Array<string>
-      }
+      },
+    ...patterns: Array<OneRepeatedChar | string | CharSet | Array<string | CharSet | Array<string>>>
   ) {
     this.raw = text;
-    this.pattern = this.parsePattern(pattern);
+    this.pattern = this.parsePatterns(...patterns);
     this.cleaned = this.clean(
       text,
       toLower,
@@ -429,38 +429,26 @@ abstract class StringValidator {
     );
   }
 
-  protected parsePattern(
-    pattern: NRepeatedChar | string | CharSet | Array<string | CharSet | Array<string>>
-  ): NRepeatedChar {
-    return pattern instanceof NRepeatedChar ?
-      pattern
-      : new OneRepeatedChar(
-        !Array.isArray(pattern) ?
-          pattern
-          : ...pattern
-      );
-  }
-
-  get isValid(): boolean {
-    const tokens: Array<string> = this
-      .splitStringIntoTokens(
-        this.cleaned
-      );
-
-    return tokens.every(
-      (token: string) => (
-        // TBD
-        token === token;
-      )
+  private parsePatterns(
+    ...patterns: Array<OneRepeatedChar | string | CharSet | Array<string | CharSet | Array<string>>>
+  ): Array<OneRepeatedChar> {
+    const parsedPatterns: Array<NRepeatedChar> = [];
+    patterns.forEach(
+      (pattern) => {
+        parsedPatterns.push(
+          pattern instanceof NRepeatedChar ?
+            pattern
+            : new OneRepeatedChar(
+              !Array.isArray(pattern) ?
+                pattern
+                : ...pattern
+            );
+        );
+      }
     );
+    return patterns;
   }
-
-  get validated(): string {
-    return this.isValid ?
-      this.cleaned
-      : String();
-  }
-
+  
   private clean(
     text: string,
     toLower: boolean,
@@ -495,6 +483,34 @@ abstract class StringValidator {
         );
     return text;
   }
+  
+  get validated(): string {
+    return this.valid ?
+      this.cleaned
+      : String();
+    }
+
+  get valid(): boolean {
+    const tokens: Array<string> = this
+      .splitStringIntoTokens(
+        this.cleaned
+      );
+
+    return tokens.every(
+      (token: string) => (
+        // TBD
+        token === token;
+      )
+    );
+  }
+
+  protected parseText(
+    text: string,
+    pattern: 
+  ) {
+    
+  }
+
 
   private splitStringIntoTokens(url: string): Array<string> {
     // TBD tokenize
