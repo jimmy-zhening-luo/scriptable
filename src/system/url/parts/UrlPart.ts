@@ -1,24 +1,24 @@
 class CharSet {
   readonly chars: Array<string>;
-
-  includes(char: string): boolean {
-    return this.chars.includes(char)
-  }
-
   constructor(
     ...charSets: Array<string | CharSet | Array<string>>
   ) {
     this.chars = new Array<string>();
     charSets.forEach(
       (set) => {
-        if (Array.isArray(set))
+        Array.isArray(set) ?
           this.chars.push(...set);
-        else if (typeof set === "string")
-          this.chars.push(set);
-        else
-          this.chars.push(...set.chars)
+          :typeof set === "string" ?
+            this.chars.push(set)
+            : this.chars.push(
+                ...set.chars
+              );
       }
     );
+  }
+  
+  includes(char: string): boolean {
+    return this.chars.includes(char)
   }
 
   static get alphaNumeric(): Array<string> {
@@ -330,7 +330,7 @@ abstract class UrlCharSet extends CharSet {
   }
 }
 
-abstract class Pattern {
+abstract class RepeatedChar {
   readonly charset: CharSet
   constructor(
     charset: CharSet
@@ -341,15 +341,47 @@ abstract class Pattern {
   abstract match(token: string): boolean;
 }
 
-class NOf extends Pattern {
-  readonly count: number;
+class MinMaxRepeatedChar {
+  readonly minRepetitions: number;
+  readonly maxRepetitions: number;
   constructor(
     charset: CharSet,
-    count: number = 1
+    minRepetitions: number,
+    maxRepetitions: number
   ) {
-    super(charset);
-    this.count = count;
+    if (
+      minRepetitions < 0
+      || maxRepetitions < 0
+      || Number.isNaN(minRepetitions)
+      || Number.isNaN(maxRepetitions)
+    )
+      minRepetitions = maxRepetitions = 0;
+    
+    if (minRepetitions > maxRepetitions) {
+      const tmp: number = minRepetitions;
+      minRepetitions = maxRepetitions;
+      maxRepetitions = tmp;
+    }
+    
+    if (!Number.isFinite(minRepetitions))
+      this.minRepetitions = this.maxRepetitions = 0;
+    else {
+      this.minRepetitions = minRepetitions;
+      this.maxRepetitions = maxRepetitions;
+    }
+  }
+}
 
+class NOfChar extends MinMaxRepeatedChar {
+  constructor(
+    charset: CharSet,
+    count: number
+  ) {
+    super(charset, count, count);
+  }
+  
+  static get size() {
+    return this.min;
   }
 
   match(token: string): boolean {
@@ -360,7 +392,7 @@ class NOf extends Pattern {
   }
 }
 
-class OneOf extends NOf {
+class OneOfChar extends NOfChar {
   constructor(
     charset: CharSet
   ) {
@@ -368,14 +400,12 @@ class OneOf extends NOf {
   }
 }
 
-class NOrMany extends Pattern {
-  readonly min: number;
+class NOrManyChar extends MinMaxRepeatedChar {
   constructor(
     charset: CharSet,
     min: number = 0
   ) {
-    super(charset);
-    this.min = min;
+    super(charset, min, Infinity);
   }
 
   match(token: string): boolean {
@@ -383,7 +413,7 @@ class NOrMany extends Pattern {
   }
 }
 
-class OneOrMany extends NOrMany {
+class OneOrManyChar extends NOrManyChar {
   constructor(
     charset: CharSet
   ) {
@@ -391,7 +421,7 @@ class OneOrMany extends NOrMany {
   }
 }
 
-class ZeroOrMany extends NOrMany {
+class ZeroOrManyChar extends NOrManyChar {
   constructor(
     charset: CharSet
   ) {
@@ -399,25 +429,13 @@ class ZeroOrMany extends NOrMany {
   }
 }
 
-class PatternSet {
-  readonly patternOrderedList: Array<Pattern>;
-  constructor(
-    ...patterns: Array<Pattern>
-  ) {
-    this.patternOrderedList = [...patterns];
-  }
-
-  get length(): number {
-    return this.patternOrderedList.length;
-  }
-}
-
 abstract class StringValidator {
   readonly raw: string;
   readonly cleaned: string;
-  readonly allowedChars: Array<string>;
+  readonly pattern: NOfChar | ;
   constructor(
     text: string,
+    pattern: NOfChar,
     {
       toLower = false,
       trim = true,
@@ -428,30 +446,30 @@ abstract class StringValidator {
         trim?: boolean,
         trimLeading?: Array<string>,
         trimTrailing?: Array<string>
-      },
-    ...allowedCharLists: Array<Pattern | string | Array<string>>
+      }
   ) {
     this.raw = text;
+    this.pattern = pattern;
     this.cleaned = this.clean(
       text,
       toLower,
       trim,
       trimLeading,
       trimTrailing
-    )
-    this.allowedChars = this
-      .flattenAllowedCharLists(
-        ...allowedCharLists
-      );
+    );
   }
 
   get isValid(): boolean {
-    const chars: Array<string> = this
-      .splitStringIntoChars(this.cleaned);
+    const tokens: Array<string> = this
+      .splitStringIntoTokens(
+        this.cleaned
+      );
 
-    return chars.every((char: string) => (
-      this.allowedChars.includes(char)
-    ));
+    return tokens.every(
+      (token: string) => (
+        // TBD matching logic
+      )
+    );
   }
 
   get validated(): string {
@@ -496,13 +514,8 @@ abstract class StringValidator {
     return text;
   }
 
-  private flattenAllowedCharLists(
-    ...allowedCharLists: Array<string | Array<string>>
-  ): Array<string> {
-    return allowedCharLists.flat(1);
-  }
-
-  private splitStringIntoChars(url: string): Array<string> {
+  private splitStringIntoTokens(url: string): Array<string> {
+    // TBD tokenize
     return [...url];
   }
 }
