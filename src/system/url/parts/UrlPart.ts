@@ -252,9 +252,7 @@ class CharSet {
 
   static get equal(): string {
     return "=";
-    }
-
-
+  }
 }
 
 abstract class UrlCharSet extends CharSet {
@@ -330,12 +328,12 @@ abstract class UrlCharSet extends CharSet {
   }
 }
 
-abstract class RepeatedCharPattern {
+abstract class RepeatedChar {
   readonly charset: CharSet
   constructor(
     ...charset: Array<string | CharSet | Array<string>>
   ) {
-    this.charset = charset;
+    this.charset = new CharSet(...charset);
   }
 
   abstract match(token: string): boolean;
@@ -380,7 +378,7 @@ class MinMaxRepeatedChar extends RepeatedChar {
   }
 }
 
-class NOfChar extends MinMaxRepeatedChar {
+class NRepeatedChar extends MinMaxRepeatedChar {
   constructor(
     charset: CharSet,
     count: number
@@ -393,7 +391,7 @@ class NOfChar extends MinMaxRepeatedChar {
   }
 }
 
-class OneOfChar extends NOfChar {
+class OneRepeatedChar extends NRepeatedChar {
   constructor(
     charset: CharSet
   ) {
@@ -401,18 +399,13 @@ class OneOfChar extends NOfChar {
   }
 }
 
-type StringValidatorPattern = NOfChar
-  | CharSet
-  | string
-  | Array<StringValidatorPatternInput>;
-
 abstract class StringValidator {
   readonly raw: string;
+  readonly pattern: NRepeatedChar;
   readonly cleaned: string;
-  readonly pattern: NOfChar;
   constructor(
     text: string,
-    pattern: StringValidatorPatternInput,
+    pattern: NRepeatedChar | string | CharSet | Array<string | CharSet | Array<string>>,
     {
       toLower = false,
       trim = true,
@@ -426,12 +419,7 @@ abstract class StringValidator {
       }
   ) {
     this.raw = text;
-    this.pattern = pattern instanceof NOfChar ?
-      pattern
-      : pattern instanceof CharSet ?
-        new OneOfChar(pattern)
-        : Array.isArray(pattern) ?
-
+    this.pattern = this.parsePattern(pattern);
     this.cleaned = this.clean(
       text,
       toLower,
@@ -441,7 +429,17 @@ abstract class StringValidator {
     );
   }
 
-  static parsePatternInput
+  protected parsePattern(
+    pattern: NRepeatedChar | string | CharSet | Array<string | CharSet | Array<string>>
+  ): NRepeatedChar {
+    return pattern instanceof NRepeatedChar ?
+      pattern
+      : new OneRepeatedChar(
+        !Array.isArray(pattern) ?
+          pattern
+          : ...pattern
+      );
+  }
 
   get isValid(): boolean {
     const tokens: Array<string> = this
@@ -451,7 +449,8 @@ abstract class StringValidator {
 
     return tokens.every(
       (token: string) => (
-        // TBD matching logic
+        // TBD
+        token === token;
       )
     );
   }
@@ -494,7 +493,6 @@ abstract class StringValidator {
         text = text.slice(
           0, 0 - word.length
         );
-
     return text;
   }
 
@@ -505,7 +503,7 @@ abstract class StringValidator {
 }
 
 abstract class UrlValidator extends StringValidator {
-
+  
 }
 
 class SchemeValidator extends UrlValidator {
