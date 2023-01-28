@@ -330,10 +330,10 @@ abstract class UrlCharSet extends CharSet {
   }
 }
 
-abstract class RepeatedChar {
+abstract class RepeatedCharPattern {
   readonly charset: CharSet
   constructor(
-    charset: CharSet
+    ...charset: Array<string | CharSet | Array<string>>
   ) {
     this.charset = charset;
   }
@@ -401,10 +401,10 @@ class OneOfChar extends NOfChar {
   }
 }
 
-type ValidationPattern = NOfChar
+type StringValidatorPattern = NOfChar
   | CharSet
   | string
-  | Array<ValidationPattern>;
+  | Array<StringValidatorPatternInput>;
 
 abstract class StringValidator {
   readonly raw: string;
@@ -412,7 +412,7 @@ abstract class StringValidator {
   readonly pattern: NOfChar;
   constructor(
     text: string,
-    pattern: ValidationPattern
+    pattern: StringValidatorPatternInput,
     {
       toLower = false,
       trim = true,
@@ -440,6 +440,8 @@ abstract class StringValidator {
       trimTrailing
     );
   }
+
+  static parsePatternInput
 
   get isValid(): boolean {
     const tokens: Array<string> = this
