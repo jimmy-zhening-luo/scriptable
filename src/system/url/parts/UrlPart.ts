@@ -1,7 +1,11 @@
+type CharSetInput = CharSet
+  | Array<string>
+  | string;
+
 class CharSet {
   readonly chars: Array<string>;
   constructor(
-    ...charSets: Array<string | CharSet | Array<string>>
+    ...charSets: Array<CharSetInput>
   ) {
     this.chars = new Array<string>();
     charSets.forEach(
@@ -253,9 +257,13 @@ class CharSet {
   static get equal(): string {
     return "=";
   }
+
+  static get space(): string {
+    return " ";
+  }
 }
 
-abstract class UrlCharSet extends CharSet {
+class UrlCharSet extends CharSet {
   static get safe(): Array<string> {
     return [
       this.dollar,
@@ -328,45 +336,61 @@ abstract class UrlCharSet extends CharSet {
   }
 }
 
+type RepeatedCharInput = RepeatedChar
+  | CharSetInput;
+
 abstract class RepeatedChar {
-  readonly charset: CharSet
+  readonly charset: CharSet;
   constructor(
-    ...charset: Array<string | CharSet | RepeatedChar | Array<string>>
+    ...charsets: Array<RepeatedCharInput>
   ) {
-    this.charset = new CharSet(...charset);
+    const chars: Array<string> = [];
+    charsets.forEach(
+      (charset) => {
+        if (charset instanceof RepeatedChar)
+          chars.push(...charset.charset.chars);
+        else if (charset instanceof CharSet)
+          chars.push(...charset.chars);
+        else if (Array.isArray(charset))
+          chars.push(...charset);
+        else
+          chars.push(charset);
+      }
+    );
+    this.charset = new CharSet(chars);
   }
 
   abstract match(token: string): boolean;
 }
 
 class MinMaxRepeatedChar extends RepeatedChar {
-  readonly minRepetitions: number;
-  readonly maxRepetitions: number;
+  readonly minReps: number;
+  readonly maxReps: number;
   constructor(
-    charset: CharSet,
-    minRepetitions: number,
-    maxRepetitions: number
+    minReps: number,
+    maxReps: number,
+    ...charsets: Array<RepeatedCharInput>
   ) {
-    super(charset);
+    super(...charsets);
     if (
-      minRepetitions < 0
-      || maxRepetitions < 0
-      || Number.isNaN(minRepetitions)
-      || Number.isNaN(maxRepetitions)
+      minReps < 0
+      || maxReps < 0
+      || Number.isNaN(minReps)
+      || Number.isNaN(maxReps)
     )
-      minRepetitions = maxRepetitions = 0;
+      minReps = maxReps = 0;
 
-    if (minRepetitions > maxRepetitions) {
-      const tmp: number = minRepetitions;
-      minRepetitions = maxRepetitions;
-      maxRepetitions = tmp;
+    if (minReps > maxReps) {
+      const tmp: number = minReps;
+      minReps = maxReps;
+      maxReps = tmp;
     }
 
-    if (!Number.isFinite(minRepetitions))
-      this.minRepetitions = this.maxRepetitions = 0;
+    if (!Number.isFinite(minReps))
+      this.minReps = this.maxReps = 0;
     else {
-      this.minRepetitions = minRepetitions;
-      this.maxRepetitions = maxRepetitions;
+      this.minReps = minReps;
+      this.maxReps = maxReps;
     }
   }
 
@@ -380,24 +404,28 @@ class MinMaxRepeatedChar extends RepeatedChar {
 
 class NRepeatedChar extends MinMaxRepeatedChar {
   constructor(
-    charset: CharSet,
-    count: number
+    reps: number,
+    ...charsets: Array<RepeatedCharInput>
   ) {
-    super(charset, count, count);
+    super(reps, reps, ...charsets);
   }
 
-  get repetitions() {
-    return this.minRepetitions;
+  get reps() {
+    return this.minReps;
   }
 }
 
 class OneRepeatedChar extends NRepeatedChar {
   constructor(
-    charset: CharSet
+    ...charsets: Array<RepeatedCharInput>
   ) {
-    super(charset, 1);
+    super(1, ...charsets);
   }
 }
+
+type StringValidatorInput = StringValidator
+  | OneRepeatedChar
+  | CharSetInput;
 
 abstract class StringValidator {
   readonly raw: string;
@@ -416,40 +444,39 @@ abstract class StringValidator {
         trimLeading?: Array<string>,
         trimTrailing?: Array<string>
       },
-    ...patterns: Array<OneRepeatedChar | string | CharSet | Array<string | CharSet | Array<string>>>
+    ...patterns: Array<StringValidatorInput>
   ) {
     this.raw = text;
-    this.pattern = this.parsePatterns(...patterns);
-    this.cleaned = this.clean(
-      text,
-      toLower,
-      trim,
-      trimLeading,
-      trimTrailing
-    );
+    this.patterns = this
+      .parsePatterns(...patterns);
+    this.cleaned = this
+      .clean(
+        text,
+        toLower,
+        trim,
+        trimLeading,
+        trimTrailing
+      );
   }
 
-  private parsePatterns(
-    ...patterns: Array<OneRepeatedChar | string | CharSet | Array<string | CharSet | Array<string>>>
+  protected parsePatterns(
+    ...patterns: Array<StringValidatorInput>
   ): Array<OneRepeatedChar> {
-    const parsedPatterns: Array<NRepeatedChar> = [];
+    const parsedPatterns: Array<OneRepeatedChar> = [];
     patterns.forEach(
       (pattern) => {
-        parsedPatterns.push(
-          pattern instanceof NRepeatedChar ?
-            pattern
-            : new OneRepeatedChar(
-              !Array.isArray(pattern) ?
-                pattern
-                : ...pattern
-            );
-        );
+        if (pattern instanceof StringValidator)
+          parsedPatterns.push(...pattern.patterns);
+        else if (pattern instanceof OneRepeatedChar)
+          parsedPatterns.push(pattern);
+        else
+          parsedPatterns.push(new OneRepeatedChar(pattern));
       }
     );
-    return patterns;
+    return parsedPatterns;
   }
-  
-  private clean(
+
+  protected clean(
     text: string,
     toLower: boolean,
     trim: boolean,
@@ -483,7 +510,7 @@ abstract class StringValidator {
         );
     return text;
   }
-  
+
   get validated(): string {
     return this.valid ?
       this.cleaned
@@ -491,6 +518,12 @@ abstract class StringValidator {
     }
 
   get valid(): boolean {
+    const allowedChars: Array<string> = this.patterns.map(
+      (pattern: OneRepeatedChar): Array<string> => (
+        pattern.charset.chars
+      )
+    ).flat(1);
+
     const tokens: Array<string> = this
       .splitStringIntoTokens(
         this.cleaned
@@ -498,28 +531,18 @@ abstract class StringValidator {
 
     return tokens.every(
       (token: string) => (
-        // TBD
-        token === token;
+        allowedChars.includes(token)
       )
     );
   }
 
-  protected parseText(
-    text: string,
-    pattern: 
-  ) {
-    
-  }
-
-
-  private splitStringIntoTokens(url: string): Array<string> {
-    // TBD tokenize
+  protected splitStringIntoTokens(url: string): Array<string> {
     return [...url];
   }
 }
 
 abstract class UrlValidator extends StringValidator {
-  
+
 }
 
 class SchemeValidator extends UrlValidator {
@@ -529,14 +552,14 @@ class SchemeValidator extends UrlValidator {
       {
         toLower: true,
         trimTrailing: [
-          UrlValidator.slash,
-          UrlValidator.colon
+          UrlCharSet.slash,
+          UrlCharSet.colon
         ]
       },
-      UrlValidator.alphaNumericLower,
-      UrlValidator.plus,
-      UrlValidator.dot,
-      UrlValidator.hyphen
+      UrlCharSet.alphaNumericLower,
+      UrlCharSet.plus,
+      UrlCharSet.dot,
+      UrlCharSet.hyphen
     );
   }
 }
@@ -547,11 +570,11 @@ class PortValidator extends UrlValidator {
       port,
       {
         trimLeading: [
-          ":",
-          " "
+          UrlCharSet.colon,
+          UrlCharSet.space
         ]
       },
-      UrlValidator.numbers
+      UrlCharSet.numbers
     );
   }
 }
@@ -562,8 +585,8 @@ class FragmentValidator extends UrlValidator {
       fragment,
       {
         trimLeading: [
-          "#",
-          " "
+          UrlCharSet.hash,
+          UrlCharSet.space
         ]
       }
     );
@@ -573,16 +596,12 @@ class FragmentValidator extends UrlValidator {
 abstract class _UrlPart {
   readonly part: string;
   constructor(
-    part?: (string
-      | _UrlPart
-      | undefined
-    )
+    part: _UrlPart
+      | string = String()
   ) {
-    this.part = part === undefined ?
-      String()
-      : part instanceof _UrlPart ?
-        this.parse(part.string)
-        : this.parse(part);
+    this.part = part instanceof _UrlPart ?
+      this.parse(part.string)
+      : this.parse(part);
   }
 
   get string(): string {
@@ -593,24 +612,17 @@ abstract class _UrlPart {
     return this.string;
   }
 
-  protected abstract parse(
-    part: string
-  ): string;
+  protected abstract parse(part: string): string;
 }
 
 class _Scheme extends _UrlPart {
   constructor(
-    scheme?: (string
-      | _Scheme
-      | undefined
-    )
+    scheme?: string | _Scheme
   ) {
     super(scheme);
   }
 
-  protected parse(
-    scheme: string
-  ): string {
+  protected parse(scheme: string): string {
     return new SchemeValidator(scheme)
       .validated;
   }
@@ -619,10 +631,7 @@ class _Scheme extends _UrlPart {
 // WIP
 class _Host extends _UrlPart {
   constructor(
-    host?: (string
-      | _Host
-      | undefined
-    )
+    host?: string | _Host
   ) {
     super(host);
   }
@@ -679,18 +688,16 @@ class _Host extends _UrlPart {
 
 class _Port extends _UrlPart {
   constructor(
-    port?: (string
+    port?: string
       | number
       | _Port
-      | undefined
-    )
   ) {
     super(
-      typeof port !== "number" ?
-        port
-        : Number.isInteger(port) ?
+      typeof port === "number" ?
+        Number.isInteger(port) ?
           String(Math.trunc(port))
           : String()
+        : port
     );
   }
 
@@ -699,33 +706,32 @@ class _Port extends _UrlPart {
   ): string {
     const parsedString: string = new PortValidator(port)
       .validated;
-    const parsedInt: number = Number
-      .isInteger(Number.parseInt(port)) ?
-        Math.trunc(Number.parseInt(port))
-        : 0;
-    return (
-      portInt >= 1
-      && portInt <= 65535
+    const parsedInt: number = Number.isInteger(
+      Number.parseInt(parsedString)
     ) ?
-      String(portInt).trim()
+      Math.round(Number.parseInt(parsedString))
+      : 0;
+    return (
+      parsedInt >= 1
+      && parsedInt <= 65535
+    ) ?
+      String(Math.round(parsedInt)).trim()
       : String();
   }
 
   get number(): number {
     return (this.string === String()) ?
       0
-      : Number.parseInt(this.string);
+      : Math.abs(Math.round(Number.parseInt(this.string)));
   }
 
   toNumber(
     coerceEmptyPortToNull: boolean = false
   ): null | number {
-    const zeroValue: (
-      null | number
-    ) = coerceEmptyPortToNull ?
-        null
-        : 0;
-    return (this.number === 0)?
+    const zeroValue: null | number = coerceEmptyPortToNull ?
+      null
+      : 0;
+    return this.number === 0 ?
       zeroValue
       : this.number;
   }
@@ -785,10 +791,8 @@ class _Query extends _UrlPart {
 class _Fragment extends _UrlPart {
   readonly encode: boolean;
   constructor(
-    fragment?: (string
-      | _Fragment
-      | undefined
-    ),
+    fragment?: string
+      | _Fragment,
     encode: boolean = true
   ) {
     super(fragment);
