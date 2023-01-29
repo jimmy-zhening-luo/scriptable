@@ -1007,209 +1007,206 @@ abstract class _UrlPart {
   protected abstract parse(part: string): string;
 }
 
-class _Scheme extends _UrlPart {
-  constructor(
-    scheme?: string | _Scheme
-  ) {
-    super(scheme);
+namespace _UrlPart {
+  export const UrlValidator = Validation.StringValidator.UrlValidator;
+
+  export class Scheme extends _UrlPart {
+    constructor(scheme?: string | Scheme) {
+      super(scheme);
+    }
+
+    protected parse(scheme: string): string {
+      return new UrlValidator.SchemeValidator(scheme)
+        .validated;
+    }
   }
 
-  protected parse(scheme: string): string {
-    return new SchemeValidator(scheme)
-      .validated;
-  }
-}
+  // WIP
+  export class Host extends _UrlPart {
+    constructor(
+      host?: string | Host
+    ) {
+      super(host);
+    }
 
-// WIP
-class _Host extends _UrlPart {
-  constructor(
-    host?: string | _Host
-  ) {
-    super(host);
+    static get IP() {
+      return importModule("host/IP");
+    }
+    static get IPv4() {
+      return Host.IP.IPv4;
+    }
+    static get IPv6() {
+      return Host.IP.IPv6;
+    }
+    static get RegName() {
+      return importModule("host/RegName");
+    }
+
+    protected parse(host: any): string {
+      return (this.parseIP(host) !== String()) ?
+        this.parseIP(host)
+        : (this.parseRegName(host) !== String()) ?
+          this.parseRegName(host)
+          : String();
+    }
+
+    protected parseIP(
+      host: any
+    ): string {
+      return (this.parseIPv4(host) !== String()) ?
+        this.parseIPv4(host)
+        : (this.parseIPv6(host) !== String()) ?
+          this.parseIPv6(host)
+          : String();
+    }
+
+    protected parseIPv4(
+      host: any
+    ): string {
+      return new Host.IPv4(host).string;
+    }
+
+    protected parseIPv6(
+      host: any
+    ): string {
+      return new Host.IPv6(host).string;
+    }
+
+    protected parseRegName(
+      host: any
+    ): string {
+      return new Host.RegName(host).string;
+    }
   }
 
-  static get IP() {
-    return importModule("host/IP");
-  }
-  static get IPv4() {
-    return _Host.IP.IPv4;
-  }
-  static get IPv6() {
-    return _Host.IP.IPv6;
-  }
-  static get RegName() {
-    return importModule("host/RegName");
-  }
+  // WIP
+  export class Port extends _UrlPart {
+    constructor(
+      port?: string
+        | number
+        | Port
+    ) {
+      super(
+        typeof port === "number" ?
+          Number.isInteger(port) ?
+            String(Math.trunc(port))
+            : String()
+          : port
+      );
+    }
 
-  protected parse(host: any): string {
-    return (this.parseIP(host) !== String()) ?
-      this.parseIP(host)
-      : (this.parseRegName(host) !== String()) ?
-        this.parseRegName(host)
+    protected parse(
+      port: string
+    ): string {
+      const parsedString: string = new PortValidator(port)
+        .validated;
+      const parsedInt: number = Number.isInteger(
+        Number.parseInt(parsedString)
+      ) ?
+        Math.round(Number.parseInt(parsedString))
+        : 0;
+      return (
+        parsedInt >= 1
+        && parsedInt <= 65535
+      ) ?
+        String(Math.round(parsedInt)).trim()
         : String();
+    }
+
+    get number(): number {
+      return (this.string === String()) ?
+        0
+        : Math.abs(Math.round(Number.parseInt(this.string)));
+    }
+
+    toNumber(
+      coerceEmptyPortToNull: boolean = false
+    ): null | number {
+      const zeroValue: null | number = coerceEmptyPortToNull ?
+        null
+        : 0;
+      return this.number === 0 ?
+        zeroValue
+        : this.number;
+    }
   }
 
-  protected parseIP(
-    host: any
-  ): string {
-    return (this.parseIPv4(host) !== String()) ?
-      this.parseIPv4(host)
-      : (this.parseIPv6(host) !== String()) ?
-        this.parseIPv6(host)
-        : String();
-  }
+  // WIP
+  export class Path extends _UrlPart {
+    constructor(
+      path?: (string
+        | Path
+        | undefined
+      )
+    ) {
+      super(path);
+    }
 
-  protected parseIPv4(
-    host: any
-  ): string {
-    return new _Host.IPv4(host).string;
-  }
+    protected static get PathSegment() {
+      return importModule("path/PathSegment");
+    }
 
-  protected parseIPv6(
-    host: any
-  ): string {
-    return new _Host.IPv6(host).string;
-  }
-
-  protected parseRegName(
-    host: any
-  ): string {
-    return new _Host.RegName(host).string;
-  }
-}
-
-class _Port extends _UrlPart {
-  constructor(
-    port?: string
-      | number
-      | _Port
-  ) {
-    super(
-      typeof port === "number" ?
-        Number.isInteger(port) ?
-          String(Math.trunc(port))
-          : String()
-        : port
-    );
-  }
-
-  protected parse(
-    port: string
-  ): string {
-    const parsedString: string = new PortValidator(port)
-      .validated;
-    const parsedInt: number = Number.isInteger(
-      Number.parseInt(parsedString)
-    ) ?
-      Math.round(Number.parseInt(parsedString))
-      : 0;
-    return (
-      parsedInt >= 1
-      && parsedInt <= 65535
-    ) ?
-      String(Math.round(parsedInt)).trim()
-      : String();
-  }
-
-  get number(): number {
-    return (this.string === String()) ?
-      0
-      : Math.abs(Math.round(Number.parseInt(this.string)));
-  }
-
-  toNumber(
-    coerceEmptyPortToNull: boolean = false
-  ): null | number {
-    const zeroValue: null | number = coerceEmptyPortToNull ?
-      null
-      : 0;
-    return this.number === 0 ?
-      zeroValue
-      : this.number;
-  }
-}
-
-// WIP
-class _Path extends _UrlPart {
-  constructor(
-    path?: (string
-      | _Path
-      | undefined
-    )
-  ) {
-    super(path);
-  }
-
-  protected static get PathSegment() {
-    return importModule("path/PathSegment");
-  }
-
-  protected parse(path: string): string {
-    return path;
-  }
-
-}
-
-// WIP
-class _Query extends _UrlPart {
-  readonly params: Array<typeof _Query.QueryParam>;
-  constructor(
-    query?: (string
-      | _Query
-      | undefined
-    )
-  ) {
-    super(query);
-    this.params = new Array<typeof _Query.QueryParam>();
-  }
-
-  protected static get QueryParam() {
-    return importModule("query/QueryParam");
-  }
-
-  protected parse(query: string): string {
-    return query;
-  }
-
-  static fromObjectEntries() {
+    protected parse(path: string): string {
+      return path;
+    }
 
   }
 
-  static fromQueryString() {
+  // WIP
+  export class Query extends _UrlPart {
+    readonly params: Array<typeof Query.QueryParam>;
+    constructor(
+      query?: (string
+        | Query
+        | undefined
+      )
+    ) {
+      super(query);
+      this.params = new Array<typeof Query.QueryParam>();
+    }
 
+    protected static get QueryParam() {
+      return importModule("query/QueryParam");
+    }
+
+    protected parse(query: string): string {
+      return query;
+    }
+
+    static fromObjectEntries() {
+
+    }
+
+    static fromQueryString() {
+
+    }
   }
-}
 
-class _Fragment extends _UrlPart {
-  readonly encode: boolean;
-  constructor(
-    fragment?: string
-      | _Fragment,
-    encode: boolean = true
-  ) {
-    super(fragment);
-    this.encode = encode;
-  }
+  // WIP
+  export class Fragment extends _UrlPart {
+    readonly encode: boolean;
+    constructor(
+      fragment?: string
+        | Fragment,
+      encode: boolean = true
+    ) {
+      super(fragment);
+      this.encode = encode;
+    }
 
-  override get string(): string {
-    return this.encode ?
-      encodeURIComponent(super.string)
-      : super.string;
-  }
+    override get string(): string {
+      return this.encode ?
+        encodeURIComponent(super.string)
+        : super.string;
+    }
 
-  protected parse(
-    fragment: string
-  ): string {
-    return new FragmentValidator(fragment)
-      .cleaned;
+    protected parse(
+      fragment: string
+    ): string {
+      return new FragmentValidator(fragment)
+        .cleaned;
+    }
   }
 }
 
 module.exports = _UrlPart;
-module.exports.UrlPart = _UrlPart;
-module.exports.Scheme = _Scheme;
-module.exports.Host = _Host;
-module.exports.Port = _Port;
-module.exports.Path = _Path;
-module.exports.Query = _Query;
-module.exports.Fragment = _Fragment;
