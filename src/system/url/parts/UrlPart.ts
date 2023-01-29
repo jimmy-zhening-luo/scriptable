@@ -1,28 +1,177 @@
+abstract class Cardinality {
+  abstract 
+}
+
+class AnyCardinality extends Cardinality {
+  
+}
+
+class PositiveCardinality extends Cardinality {
+  
+}
+
+class NegativeCardinality extends Cardinality {
+  
+}
+
+class RealNumber {
+  readonly cardinality: Cardinality;
+  readonly value?: number;
+  constructor(value: RealNumber);
+  constructor(
+    value: number,
+    cardinality?: Cardinality
+  );
+  constructor(
+    value: RealNumber | number,
+    cardinality: Cardinality = new AnyCardinality()
+  ) {
+    if (value instanceof RealNumber) {
+      this.cardinality = value.cardinality;
+      this.value = value.value;
+    }
+    else {
+      this.cardinality = cardinality;
+      this.value = Number.isNaN(value) ?
+        undefined
+        : value === -0 ?
+          0
+          : value;
+    }
+  }
+  
+  get isNumber(): boolean {
+    return this.value !== undefined;
+  }
+  
+  get exists(): boolean {
+    return this.isNumber();
+  }
+  
+  get isFinite(): boolean {
+    return Number.isFinite(this.value);
+  }
+  
+  get isInfinite(): boolean {
+    return this.isPositiveInfinite
+      || this.isNegativeInfinite;
+  }
+  
+  get isPositiveInfinite(): boolean {
+    return this.value === Infinity;
+  }
+  
+  get isNegativeInfinite(): boolean {
+    return this.value === -Infinity;
+  }
+  
+  get isZero(): boolean {
+    return this.value === 0;
+  }
+  
+  get isStrictlyPositive(): boolean {
+    return this.value > 0;
+  }
+  
+  get isStrictlyNegative(): boolean {
+    return this.value < 0;
+  }
+  
+  get isPositive(): boolean {
+    return this.isZero
+      || this.isStrictlyPositive;
+  }
+  
+  get isNegative(): boolean {
+    return this.isZero
+      || this.isStrictlyNegative;
+  }
+  
+  get string(): string {
+    return this.value === undefined ?
+      String()
+      : String(this.value);
+  }
+  
+  toString(): string {
+    return this.string;
+  }
+  
+  get number(): number {
+    return this.value === undefined ?
+      NaN
+      : this.value;
+  }
+  
+  toNumber(): number {
+    return this.number;
+  }
+}
+
+class PositiveNumber extends RealNumber {
+  constructor(
+    value: RealNumber | number
+  ) {
+    super(value);
+    if (this.isStrictlyNegative)
+      this.value = undefined;
+  }
+}
+
+class NegativeNumber extends RealNumber {
+  constructor(
+    value: RealNumber | number
+  ) {
+    super(value);
+    if (this.isStrictlyPositive)
+      this.value = undefined;
+  }
+}
+
+class FiniteNumber extends RealNumber {
+  constructor(
+    value: RealNumber | number
+  ) {
+    super(value);
+    if (this.isInfinite)
+      this.value = undefined;
+  }
+}
+
+class PositiveFinite
+
+class Integer extends FiniteNumber {
+  constructor(
+    
+  )
+}
+
+
 type CharSetInput = CharSet
-  | Array<string>
+  | string[]
   | string;
 
 class CharSet {
-  readonly chars: Array<string>;
+  readonly chars: string[];
   constructor(
-    ...charSets: Array<CharSetInput>
+    ...charSets: CharSetInput[]
   ) {
     this.chars = new Array<string>();
     charSets.forEach(
-      (set) => {
-        Array.isArray(set) ?
-          this.chars.push(...set)
-          : typeof set === "string" ?
-            this.chars.push(set)
-            : this.chars.push(
-                ...set.chars
-              );
+      (charset: CharSetInput) => {
+        charset instanceof CharSet ?
+          this.chars.push(
+            ...charset.chars
+          )
+          : Array.isArray(charset) ?
+            this.chars.push(...charset)
+            : this.chars.push(charset);
       }
     );
   }
 
   includes(char: string): boolean {
-    return this.chars.includes(char)
+    return this.chars.includes(char);
   }
 
   static get alphaNumeric(): Array<string> {
@@ -395,10 +544,13 @@ class MinMaxRepeatedChar extends RepeatedChar {
   }
 
   match(token: string): boolean {
-    // turn token into iterator
-    // get next until N or until token stream is dry
-    // match token char to charset.includes
-    return false;
+    return token.length >= this.minReps
+      && token.length <= this.maxReps
+      && [...token].every(
+        (char: string) => (
+          this.charset.includes(char)
+        )
+      );
   }
 }
 
@@ -421,6 +573,85 @@ class OneRepeatedChar extends NRepeatedChar {
   ) {
     super(1, ...charsets);
   }
+}
+
+abstract class Gram {
+  readonly word: string;
+  constructor(
+    word: string
+  ) {
+    this.word = word;
+  }
+  
+  get length(): number {
+    return this.word.length;
+  }
+  
+  get string(): string {
+    return this.word;
+  }
+  
+  toString(): string {
+    return this.string;
+  }
+}
+
+class NGram extends Gram {
+  readonly n: number;
+  readonly remainder: string;
+  constructor(
+    text: string,
+    n: number = 1,
+    startIndex: number = 0
+  ) {
+    n = Number.isNaN(n)?
+      1
+      : Number.isFinite(n)?
+        n >= 1 ?
+          Math.round(n)
+          : 1
+        : n !== -Infinity ?
+          Infinity
+          : 1;
+    super(
+      n === Infinity ?
+        text
+        : text.length >= n ?
+          text.slice(0, n)
+          : String()
+    );
+    this.n = n;
+    this.remainder = text
+      .slice(this.word.length);
+  }
+  
+  get isToken(): boolean {
+    return this.word.length > 0;
+  }
+  
+  get valid(): boolean {
+    return this.isToken;
+  }
+  
+  get deterministic(): boolean {
+    return Number.isFinite(this.n);
+  }
+  
+  get hasRemainder(): boolean {
+    return this.remainder.length > 0;
+  }
+}
+
+class OneGram extends NGram {
+  constructor(
+    text: string
+  ) {
+    
+  }
+}
+
+class NGrams {
+  
 }
 
 type StringValidatorInput = StringValidator
@@ -459,7 +690,7 @@ abstract class StringValidator {
       );
   }
 
-  protected parsePatterns(
+  private parsePatterns(
     ...patterns: Array<StringValidatorInput>
   ): Array<OneRepeatedChar> {
     const parsedPatterns: Array<OneRepeatedChar> = [];
@@ -476,73 +707,110 @@ abstract class StringValidator {
     return parsedPatterns;
   }
 
-  protected clean(
+  private clean(
     text: string,
     toLower: boolean,
     trim: boolean,
     trimLeading: Array<string>,
     trimTrailing: Array<string>
   ): string {
-    text = trim ?
-      text.trim()
-      : text;
-
-    text = toLower ?
-      text.toLowerCase()
-      : text;
-
-    for (const word of trimLeading
-      .filter((word) => (
-        word.length > 0
-      ))
-    ) while (text.startsWith(word))
-        text = text.slice(
-          word.length
+    return postTrim(
+      preTrim(
+        trim ?
+          toLower ?
+            text.toLowerCase().trim()
+            : text.trim()
+          : toLower ?
+            text.toLowerCase()
+            : text
+      )
+    );
+    
+    function preTrim(
+      text: string,
+      wordsToTrim: string[]
+    ): string {
+      wordsToTrim
+        .filter(
+          (word: string) => (
+            word.length > 0
+          )
+        )
+        .forEach(
+          (word: string) => {
+            while(text.startsWith(word))
+              text = text.slice(
+                word.length
+              );
+          }
         );
-
-    for (const word of trimTrailing
-      .filter((word) => (
-        word.length > 0
-      ))
-    ) while (text.endsWith(word))
-        text = text.slice(
-          0, 0 - word.length
+      return text;
+    }
+    
+    function postTrim(
+      text: string,
+      wordsToTrim: string[]
+    ): string {
+      wordsToTrim
+        .filter(
+          (word: string) => (
+            word.length > 0
+          )
+        )
+        .forEach(
+          (word: string) => {
+            while (text.endsWith(word))
+              text = text.slice(
+                0,
+                0 - word.length
+              );
+          }
         );
-    return text;
+      return text;
+    }
   }
 
   get validated(): string {
-    return this.valid ?
+    return this.isValid ?
       this.cleaned
       : String();
-    }
+  }
 
-  get valid(): boolean {
-    const allowedChars: Array<string> = this.patterns.map(
-      (pattern: OneRepeatedChar): Array<string> => (
+  get isValid(): boolean {
+    const allowedChars: string[] = this.patterns.map(
+      (pattern: OneRepeatedChar): string[] => (
         pattern.charset.chars
       )
     ).flat(1);
-
-    const tokens: Array<string> = this
-      .splitStringIntoTokens(
-        this.cleaned
-      );
-
-    return tokens.every(
+    
+    return this.tokens.every(
       (token: string) => (
-        allowedChars.includes(token)
+        this.patterns.some(
+          (pattern: OneRepeatedChar) => (
+            pattern.match()
+          )
+        )
       )
     );
   }
-
-  protected splitStringIntoTokens(url: string): Array<string> {
-    return [...url];
+  
+  private get tokens(): string[] {
+    return splitStringIntoTokens(
+      this.cleaned,
+      1
+    );
+  
+    function splitStringIntoTokens(
+      text: string,
+      maxTokenLength: number
+    ): string[] {
+      return [...url];
+    }
   }
 }
 
 abstract class UrlValidator extends StringValidator {
-
+  
 }
 
 class SchemeValidator extends UrlValidator {
