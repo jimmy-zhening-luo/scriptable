@@ -1,3 +1,27 @@
+abstract class Bounds {
+  isBounded(
+    value: undefined | null | number
+  ): boolean {
+    return value !== undefined
+      && value !== null
+      && !Number.isNaN(value);
+  }
+}
+
+class InfiniteBounds extends Bounds {
+
+}
+
+class FiniteBounds extends Bounds {
+  override isBounded(
+    value: undefined | null | number
+  ): boolean {
+    return super.isBounded(value)
+      && value !== Infinity
+      && value !== -Infinity;
+  }
+}
+
 abstract class Cardinality {
   isCardinal(
     value: undefined | null | number
@@ -38,26 +62,42 @@ class NegativeCardinality extends Cardinality {
   }
 }
 
-class RealNumber {
+abstract class RealNumber {
+  abstract get number(): number;
+  toNumber(): number {
+    return this.number;
+  }
+  abstract get string(): string;
+  toString(): string {
+    return this.string;
+  }
+}
+
+class Rational extends RealNumber {
+  readonly bounds: Bounds;
   readonly cardinality: Cardinality;
   readonly value: number | null;
   constructor(
-    value: RealNumber | number,
-    cardinality: Cardinality = new AnyCardinality()
+    value: Rational | number,
+    cardinality: Cardinality = new AnyCardinality(),
+    bounds: Bounds = new InfiniteBounds()
   ) {
+    super();
     this.cardinality = cardinality;
-    value = value instanceof RealNumber ?
+    this.bounds = bounds;
+    value = value instanceof Rational ?
       value.number
       : value;
-    this.value = this.isCardinal(value) ?
+    this.value = this.qualifies(value) ?
       value === -0 ?
         0
         : value
       : null;
   }
 
-  protected isCardinal(value: number): boolean {
-    return this.cardinality.isCardinal(value);
+  protected qualifies(value: number): boolean {
+    return this.bounds.isBounded(value)
+      && this.cardinality.isCardinal(value);
   }
 
   get isNumber(): boolean {
@@ -113,82 +153,73 @@ class RealNumber {
       : String(this.value);
   }
 
-  toString(): string {
-    return this.string;
-  }
-
   get number(): number {
     return this.isNumber ?
       this.value as number
       : NaN;
   }
-
-  toNumber(): number {
-    return this.number;
-  }
 }
 
-class PositiveNumber extends RealNumber {
-  constructor(value: RealNumber | number) {
-    super(value, new PositiveCardinality());
-  }
-}
-
-class NegativeNumber extends RealNumber {
-  constructor(value: RealNumber | number) {
-    super(value, new NegativeCardinality());
-  }
-}
-
-class FiniteNumber extends RealNumber {
+class PositiveNumber extends Rational {
   constructor(
-    value: RealNumber | number,
+    value: Rational | number,
+    bounds?: Bounds
+  ) {
+    super(value, new PositiveCardinality(), bounds);
+  }
+}
+
+class NegativeNumber extends Rational {
+  constructor(
+    value: Rational | number,
+    bounds?: Bounds
+  ) {
+    super(value, new NegativeCardinality(), bounds);
+  }
+}
+
+class FiniteNumber extends Rational {
+  constructor(
+    value: Rational | number,
     cardinality?: Cardinality
   ) {
-    super(value, cardinality);
-  }
-
-  protected override isCardinal(value: number): boolean {
-    return super.isCardinal(value)
-      && value !== Infinity
-      && value !== -Infinity;
+    super(value, cardinality, new FiniteBounds());
   }
 }
 
 class PositiveFiniteNumber extends FiniteNumber {
-  constructor(value: RealNumber | number) {
+  constructor(value: Rational | number) {
     super(value, new PositiveCardinality());
   }
 }
 
 class NegativeFiniteNumber extends FiniteNumber {
-  constructor(value: RealNumber | number) {
+  constructor(value: Rational | number) {
     super(value, new NegativeCardinality());
   }
 }
 
-class Integer extends FiniteNumber {
-  constructor(
-    value: RealNumber | number,
-    cardinality?: Cardinality
-  ) {
-    super(value, cardinality);
-  }
-
-  protected override isCardinal(value: number): boolean {
-    return super.isCardinal(value)
+class Integer extends Rational {
+  protected override qualifies(value: number): boolean {
+    return super.qualifies(value)
       && Number.isInteger(value);
   }
 }
 
 class PositiveInteger extends Integer {
-  constructor(value: RealNumber | number) {
+  constructor(
+    value: Rational | number,
+    bounds: Bounds
+  ) {
     super(value, new PositiveCardinality());
   }
 }
 
 class NegativeInteger extends Integer {
-  constructor(value: RealNumber | number) {
+  constructor(
+    value: Rational | number,
+    bounds: Bounds
+  ) {
     super(value, new NegativeCardinality());
   }
 }
