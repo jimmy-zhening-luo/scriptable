@@ -41,27 +41,23 @@ class NegativeCardinality extends Cardinality {
 class RealNumber {
   readonly cardinality: Cardinality;
   readonly value: number | null;
-  constructor(value: RealNumber);
-  constructor(
-    value: number,
-    cardinality?: Cardinality
-  );
   constructor(
     value: RealNumber | number,
     cardinality: Cardinality = new AnyCardinality()
   ) {
-    if (value instanceof RealNumber) {
-      this.cardinality = value.cardinality;
-      this.value = value.value;
-    }
-    else {
-      this.cardinality = cardinality;
-      this.value = cardinality.isCardinal(value) ?
-        value === -0 ?
-          0
-          : value
-        : null;
-    }
+    this.cardinality = cardinality;
+    value = value instanceof RealNumber ?
+      value.number
+      : value;
+    this.value = this.isCardinal(value) ?
+      value === -0 ?
+        0
+        : value
+      : null;
+  }
+
+  protected isCardinal(value: number): boolean {
+    return this.cardinality.isCardinal(value);
   }
 
   get isNumber(): boolean {
@@ -107,6 +103,10 @@ class RealNumber {
       || this.isStrictlyNegative;
   }
 
+  get isInteger(): boolean {
+    return Number.isInteger(this.number);
+  }
+
   get string(): string {
     return this.isNumber?
       String()
@@ -129,43 +129,69 @@ class RealNumber {
 }
 
 class PositiveNumber extends RealNumber {
-  constructor(
-    value: RealNumber | number
-  ) {
-    super(value);
-    if (this.isStrictlyNegative)
-      this.value = undefined;
+  constructor(value: RealNumber | number) {
+    super(value, new PositiveCardinality());
   }
 }
 
 class NegativeNumber extends RealNumber {
-  constructor(
-    value: RealNumber | number
-  ) {
-    super(value);
-    if (this.isStrictlyPositive)
-      this.value = undefined;
+  constructor(value: RealNumber | number) {
+    super(value, new NegativeCardinality());
   }
 }
 
 class FiniteNumber extends RealNumber {
   constructor(
-    value: RealNumber | number
+    value: RealNumber | number,
+    cardinality?: Cardinality
   ) {
-    super(value);
-    if (this.isInfinite)
-      this.value = undefined;
+    super(value, cardinality);
+  }
+
+  protected override isCardinal(value: number): boolean {
+    return super.isCardinal(value)
+      && value !== Infinity
+      && value !== -Infinity;
   }
 }
 
-class PositiveFinite
+class PositiveFiniteNumber extends FiniteNumber {
+  constructor(value: RealNumber | number) {
+    super(value, new PositiveCardinality());
+  }
+}
+
+class NegativeFiniteNumber extends FiniteNumber {
+  constructor(value: RealNumber | number) {
+    super(value, new NegativeCardinality());
+  }
+}
 
 class Integer extends FiniteNumber {
   constructor(
+    value: RealNumber | number,
+    cardinality?: Cardinality
+  ) {
+    super(value, cardinality);
+  }
 
-  )
+  protected override isCardinal(value: number): boolean {
+    return super.isCardinal(value)
+      && Number.isInteger(value);
+  }
 }
 
+class PositiveInteger extends Integer {
+  constructor(value: RealNumber | number) {
+    super(value, new PositiveCardinality());
+  }
+}
+
+class NegativeInteger extends Integer {
+  constructor(value: RealNumber | number) {
+    super(value, new NegativeCardinality());
+  }
+}
 
 type CharSetInput = CharSet
   | string[]
