@@ -1,22 +1,46 @@
 abstract class Cardinality {
-  abstract 
+  isCardinal(
+    value: undefined | null | number
+  ): boolean {
+    return value !== undefined
+      && value !== null
+      && !Number.isNaN(value);
+  }
 }
 
 class AnyCardinality extends Cardinality {
-  
+
 }
 
 class PositiveCardinality extends Cardinality {
-  
+  override isCardinal(
+    value: undefined | null | number
+  ): boolean {
+    return super.isCardinal(value)
+      && (
+        value as number === 0
+        || value as number === -0
+        || value as number > 0
+      );
+  }
 }
 
 class NegativeCardinality extends Cardinality {
-  
+  override isCardinal(
+    value: undefined | null | number
+  ): boolean {
+    return super.isCardinal(value)
+      && (
+        value as number === 0
+        || value as number === -0
+        || value as number < 0
+      );
+  }
 }
 
 class RealNumber {
   readonly cardinality: Cardinality;
-  readonly value?: number;
+  readonly value: number | null;
   constructor(value: RealNumber);
   constructor(
     value: number,
@@ -32,77 +56,73 @@ class RealNumber {
     }
     else {
       this.cardinality = cardinality;
-      this.value = Number.isNaN(value) ?
-        undefined
-        : value === -0 ?
+      this.value = cardinality.isCardinal(value) ?
+        value === -0 ?
           0
-          : value;
+          : value
+        : null;
     }
   }
-  
+
   get isNumber(): boolean {
-    return this.value !== undefined;
+    return !(this.value === null);
   }
-  
-  get exists(): boolean {
-    return this.isNumber();
-  }
-  
+
   get isFinite(): boolean {
-    return Number.isFinite(this.value);
+    return Number.isFinite(this.number);
   }
-  
+
   get isInfinite(): boolean {
     return this.isPositiveInfinite
       || this.isNegativeInfinite;
   }
-  
+
   get isPositiveInfinite(): boolean {
-    return this.value === Infinity;
+    return this.number === Infinity;
   }
-  
+
   get isNegativeInfinite(): boolean {
-    return this.value === -Infinity;
+    return this.number === -Infinity;
   }
-  
+
   get isZero(): boolean {
-    return this.value === 0;
+    return this.number === 0;
   }
-  
+
   get isStrictlyPositive(): boolean {
-    return this.value > 0;
+    return this.number > 0;
   }
-  
+
   get isStrictlyNegative(): boolean {
-    return this.value < 0;
+    return this.number < 0;
   }
-  
+
   get isPositive(): boolean {
     return this.isZero
       || this.isStrictlyPositive;
   }
-  
+
   get isNegative(): boolean {
     return this.isZero
       || this.isStrictlyNegative;
   }
-  
+
   get string(): string {
-    return this.value === undefined ?
+    return this.isNumber?
       String()
       : String(this.value);
   }
-  
+
   toString(): string {
     return this.string;
   }
-  
+
   get number(): number {
-    return this.value === undefined ?
-      NaN
-      : this.value;
+    return this.isNumber ?
+      this.value as number
+      : NaN;
   }
-  
+
   toNumber(): number {
     return this.number;
   }
@@ -142,7 +162,7 @@ class PositiveFinite
 
 class Integer extends FiniteNumber {
   constructor(
-    
+
   )
 }
 
@@ -582,15 +602,15 @@ abstract class Gram {
   ) {
     this.word = word;
   }
-  
+
   get length(): number {
     return this.word.length;
   }
-  
+
   get string(): string {
     return this.word;
   }
-  
+
   toString(): string {
     return this.string;
   }
@@ -624,19 +644,19 @@ class NGram extends Gram {
     this.remainder = text
       .slice(this.word.length);
   }
-  
+
   get isToken(): boolean {
     return this.word.length > 0;
   }
-  
+
   get valid(): boolean {
     return this.isToken;
   }
-  
+
   get deterministic(): boolean {
     return Number.isFinite(this.n);
   }
-  
+
   get hasRemainder(): boolean {
     return this.remainder.length > 0;
   }
@@ -646,12 +666,12 @@ class OneGram extends NGram {
   constructor(
     text: string
   ) {
-    
+
   }
 }
 
 class NGrams {
-  
+
 }
 
 type StringValidatorInput = StringValidator
@@ -725,7 +745,7 @@ abstract class StringValidator {
             : text
       )
     );
-    
+
     function preTrim(
       text: string,
       wordsToTrim: string[]
@@ -746,7 +766,7 @@ abstract class StringValidator {
         );
       return text;
     }
-    
+
     function postTrim(
       text: string,
       wordsToTrim: string[]
@@ -782,7 +802,7 @@ abstract class StringValidator {
         pattern.charset.chars
       )
     ).flat(1);
-    
+
     return this.tokens.every(
       (token: string) => (
         this.patterns.some(
@@ -793,13 +813,13 @@ abstract class StringValidator {
       )
     );
   }
-  
+
   private get tokens(): string[] {
     return splitStringIntoTokens(
       this.cleaned,
       1
     );
-  
+
     function splitStringIntoTokens(
       text: string,
       maxTokenLength: number
@@ -810,7 +830,7 @@ abstract class StringValidator {
 }
 
 abstract class UrlValidator extends StringValidator {
-  
+
 }
 
 class SchemeValidator extends UrlValidator {
