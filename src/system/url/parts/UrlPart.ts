@@ -1,68 +1,14 @@
-abstract class Bounds {
-  isBounded(
-    value: undefined | null | number
-  ): boolean {
-    return value !== undefined
-      && value !== null
-      && !Number.isNaN(value);
-  }
-}
-
-class InfiniteBounds extends Bounds {
-
-}
-
-class FiniteBounds extends Bounds {
-  override isBounded(
-    value: undefined | null | number
-  ): boolean {
-    return super.isBounded(value)
-      && value !== Infinity
-      && value !== -Infinity;
-  }
-}
-
-abstract class Cardinality {
-  isCardinal(
-    value: undefined | null | number
-  ): boolean {
-    return value !== undefined
-      && value !== null
-      && !Number.isNaN(value);
-  }
-}
-
-class AnyCardinality extends Cardinality {
-
-}
-
-class PositiveCardinality extends Cardinality {
-  override isCardinal(
-    value: undefined | null | number
-  ): boolean {
-    return super.isCardinal(value)
-      && (
-        value as number === 0
-        || value as number === -0
-        || value as number > 0
-      );
-  }
-}
-
-class NegativeCardinality extends Cardinality {
-  override isCardinal(
-    value: undefined | null | number
-  ): boolean {
-    return super.isCardinal(value)
-      && (
-        value as number === 0
-        || value as number === -0
-        || value as number < 0
-      );
-  }
-}
-
 abstract class RealNumber {
+  readonly bounds: RealNumber.Bounds;
+  readonly cardinality: RealNumber.Cardinality;
+  constructor(
+    cardinality: RealNumber.Cardinality = new RealNumber.Cardinality.AnyCardinality(),
+    bounds: RealNumber.Bounds = new RealNumber.Bounds.InfiniteBounds()
+  ) {
+    this.cardinality = cardinality;
+    this.bounds = bounds;
+  }
+
   abstract get number(): number;
   toNumber(): number {
     return this.number;
@@ -73,154 +19,243 @@ abstract class RealNumber {
   }
 }
 
-class Rational extends RealNumber {
-  readonly bounds: Bounds;
-  readonly cardinality: Cardinality;
-  readonly value: number | null;
-  constructor(
-    value: Rational | number,
-    cardinality: Cardinality = new AnyCardinality(),
-    bounds: Bounds = new InfiniteBounds()
-  ) {
-    super();
-    this.cardinality = cardinality;
-    this.bounds = bounds;
-    value = value instanceof Rational ?
-      value.number
-      : value;
-    this.value = this.qualifies(value) ?
-      value === -0 ?
-        0
-        : value
-      : null;
+namespace RealNumber {
+  export abstract class Bounds {
+    isBounded(
+      value: undefined | null | number
+    ): boolean {
+      return value !== undefined
+        && value !== null
+        && !Number.isNaN(value);
+    }
   }
 
-  protected qualifies(value: number): boolean {
-    return this.bounds.isBounded(value)
-      && this.cardinality.isCardinal(value);
+  export namespace Bounds {
+    export class InfiniteBounds extends Bounds {}
+    export class FiniteBounds extends Bounds {
+      override isBounded(
+        value: undefined | null | number
+      ): boolean {
+        return super.isBounded(value)
+          && value !== Infinity
+          && value !== -Infinity;
+      }
+    }
   }
 
-  get isNumber(): boolean {
-    return !(this.value === null);
+  export abstract class Cardinality {
+    isCardinal(
+      value: undefined | null | number
+    ): boolean {
+      return value !== undefined
+        && value !== null
+        && !Number.isNaN(value);
+    }
   }
 
-  get isFinite(): boolean {
-    return Number.isFinite(this.number);
+  export namespace Cardinality {
+    export class AnyCardinality extends Cardinality {}
+    export class PositiveCardinality extends Cardinality {
+      override isCardinal(
+        value: undefined | null | number
+      ): boolean {
+        return super.isCardinal(value)
+          && (
+            value as number === 0
+            || value as number === -0
+            || value as number > 0
+          );
+      }
+    }
+
+    export class NegativeCardinality extends Cardinality {
+      override isCardinal(
+        value: undefined | null | number
+      ): boolean {
+        return super.isCardinal(value)
+          && (
+            value as number === 0
+            || value as number === -0
+            || value as number < 0
+          );
+      }
+    }
   }
 
-  get isInfinite(): boolean {
-    return this.isPositiveInfinite
-      || this.isNegativeInfinite;
+  export class Rational extends RealNumber {
+    readonly value: number | null;
+    constructor(
+      value: Rational | number,
+      cardinality?: Cardinality,
+      bounds?: Bounds
+    ) {
+      super(cardinality, bounds);
+      value = value instanceof Rational ?
+        value.number
+        : value;
+      this.value = this.qualifies(value) ?
+        value === -0 ?
+          0
+          : value
+        : null;
+    }
+
+    protected qualifies(value: number): boolean {
+      return this.bounds.isBounded(value)
+        && this.cardinality.isCardinal(value);
+    }
+
+    get isNumber(): boolean {
+      return !(this.value === null);
+    }
+
+    get isFinite(): boolean {
+      return Number.isFinite(this.number);
+    }
+
+    get isInfinite(): boolean {
+      return this.isPositiveInfinite
+        || this.isNegativeInfinite;
+    }
+
+    get isPositiveInfinite(): boolean {
+      return this.number === Infinity;
+    }
+
+    get isNegativeInfinite(): boolean {
+      return this.number === -Infinity;
+    }
+
+    get isZero(): boolean {
+      return this.number === 0;
+    }
+
+    get isStrictlyPositive(): boolean {
+      return this.number > 0;
+    }
+
+    get isStrictlyNegative(): boolean {
+      return this.number < 0;
+    }
+
+    get isPositive(): boolean {
+      return this.isZero
+        || this.isStrictlyPositive;
+    }
+
+    get isNegative(): boolean {
+      return this.isZero
+        || this.isStrictlyNegative;
+    }
+
+    get isInteger(): boolean {
+      return Number.isInteger(this.number);
+    }
+
+    get string(): string {
+      return this.isNumber ?
+        String()
+        : String(this.value);
+    }
+
+    get number(): number {
+      return this.isNumber ?
+        this.value as number
+        : NaN;
+    }
   }
 
-  get isPositiveInfinite(): boolean {
-    return this.number === Infinity;
-  }
+  export namespace Rational {
+    export class PositiveNumber extends Rational {
+      constructor(
+        value: Rational | number,
+        bounds?: Bounds
+      ) {
+        super(value, new Cardinality.PositiveCardinality(), bounds);
+      }
+    }
 
-  get isNegativeInfinite(): boolean {
-    return this.number === -Infinity;
-  }
+    export class NegativeNumber extends Rational {
+      constructor(
+        value: Rational | number,
+        bounds?: Bounds
+      ) {
+        super(value, new Cardinality.NegativeCardinality(), bounds);
+      }
+    }
 
-  get isZero(): boolean {
-    return this.number === 0;
-  }
+    export class FiniteNumber extends Rational {
+      constructor(
+        value: Rational | number,
+        cardinality?: Cardinality
+      ) {
+        super(value, cardinality, new Bounds.FiniteBounds());
+      }
+    }
 
-  get isStrictlyPositive(): boolean {
-    return this.number > 0;
-  }
+    export namespace FiniteNumber {
+      export class PositiveFiniteNumber extends FiniteNumber {
+        constructor(value: Rational | number) {
+          super(value, new Cardinality.PositiveCardinality());
+        }
+      }
 
-  get isStrictlyNegative(): boolean {
-    return this.number < 0;
-  }
+      export class NegativeFiniteNumber extends FiniteNumber {
+        constructor(value: Rational | number) {
+          super(value, new Cardinality.NegativeCardinality());
+        }
+      }
+    }
 
-  get isPositive(): boolean {
-    return this.isZero
-      || this.isStrictlyPositive;
-  }
+    export class Integer extends Rational {
+      protected override qualifies(value: number): boolean {
+        return super.qualifies(value)
+          && Number.isInteger(value);
+      }
+    }
 
-  get isNegative(): boolean {
-    return this.isZero
-      || this.isStrictlyNegative;
-  }
+    export namespace Integer {
+      export class PositiveInteger extends Integer {
+        constructor(
+          value: Rational | number,
+          bounds?: Bounds
+        ) {
+          super(value, new Cardinality.PositiveCardinality(), bounds);
+        }
+      }
 
-  get isInteger(): boolean {
-    return Number.isInteger(this.number);
-  }
+      export class NegativeInteger extends Integer {
+        constructor(
+          value: Rational | number,
+          bounds?: Bounds
+        ) {
+          super(value, new Cardinality.NegativeCardinality(), bounds);
+        }
+      }
 
-  get string(): string {
-    return this.isNumber?
-      String()
-      : String(this.value);
-  }
+      export class FiniteInteger extends Integer {
+        constructor(
+          value: Rational | number,
+          cardinality?: Cardinality
+        ) {
+          super(value, cardinality, new Bounds.FiniteBounds());
+        }
+      }
 
-  get number(): number {
-    return this.isNumber ?
-      this.value as number
-      : NaN;
-  }
-}
+      export namespace FiniteInteger {
+        export class PositiveFiniteInteger extends FiniteInteger {
+          constructor(value: Rational | number) {
+            super(value, new Cardinality.PositiveCardinality());
+          }
+        }
 
-class PositiveNumber extends Rational {
-  constructor(
-    value: Rational | number,
-    bounds?: Bounds
-  ) {
-    super(value, new PositiveCardinality(), bounds);
-  }
-}
-
-class NegativeNumber extends Rational {
-  constructor(
-    value: Rational | number,
-    bounds?: Bounds
-  ) {
-    super(value, new NegativeCardinality(), bounds);
-  }
-}
-
-class FiniteNumber extends Rational {
-  constructor(
-    value: Rational | number,
-    cardinality?: Cardinality
-  ) {
-    super(value, cardinality, new FiniteBounds());
-  }
-}
-
-class PositiveFiniteNumber extends FiniteNumber {
-  constructor(value: Rational | number) {
-    super(value, new PositiveCardinality());
-  }
-}
-
-class NegativeFiniteNumber extends FiniteNumber {
-  constructor(value: Rational | number) {
-    super(value, new NegativeCardinality());
-  }
-}
-
-class Integer extends Rational {
-  protected override qualifies(value: number): boolean {
-    return super.qualifies(value)
-      && Number.isInteger(value);
-  }
-}
-
-class PositiveInteger extends Integer {
-  constructor(
-    value: Rational | number,
-    bounds: Bounds
-  ) {
-    super(value, new PositiveCardinality());
-  }
-}
-
-class NegativeInteger extends Integer {
-  constructor(
-    value: Rational | number,
-    bounds: Bounds
-  ) {
-    super(value, new NegativeCardinality());
+        export class NegativeFiniteInteger extends FiniteInteger {
+          constructor(value: Rational | number) {
+            super(value, new Cardinality.NegativeCardinality());
+          }
+        }
+      }
+    }
   }
 }
 
