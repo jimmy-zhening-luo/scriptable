@@ -9,8 +9,6 @@
     "prebuild": "npm run clean",
     "build": "npm run tsc",
     "b": "npm run build",
-    "dev": "npm run build -- --pretty",
-    "d": "npm run dev",
     "test": ""
   },
   "repository": {

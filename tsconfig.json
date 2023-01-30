@@ -1,6 +1,9 @@
 {
   "references": [
     {
+      "path": "src/!boot"
+    },
+    {
       "path": "src"
     }
   ],
