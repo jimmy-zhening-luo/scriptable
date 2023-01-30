@@ -1,11 +1,5 @@
 {
-  "include": [
-    "*.ts"
-  ],
   "references": [
-    {
-      "path": "src/!boot"
-    },
     {
       "path": "src"
     }

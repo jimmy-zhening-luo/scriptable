@@ -1,0 +1,6 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../../../../../built/shortcut/application/appdata/filesystem/file/bookmark"
+  }
+}

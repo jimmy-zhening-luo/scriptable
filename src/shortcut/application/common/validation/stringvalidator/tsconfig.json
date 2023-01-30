@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.json",
+  "references": [
+    {
+      "path": "grammars/tsconfig.json"
+    },
+    {
+      "path": "patterns/tsconfig.json"
+    },
+    {
+      "path": "tokens/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "outDir": "../../../../../../built/shortcut/application/common/validation/stringvalidator"
+  }
+}

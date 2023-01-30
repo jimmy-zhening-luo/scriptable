@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "references": [
+    {
+      "path": "primitive/tsconfig.json"
+    },
+    {
+      "path": "validation/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "outDir": "../../../../built/shortcut/application/common"
+  }
+}

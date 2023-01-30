@@ -1,7 +1,17 @@
 {
   "extends": "../tsconfig.json",
   "references": [
-    "./appdata",
-    "./web"
-  ]
+    {
+      "path": "appdata/tsconfig.json"
+    },
+    {
+      "path": "browser/tsconfig.json"
+    },
+    {
+      "path": "common/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "outDir": "../../../built/shortcut/application"
+  }
 }

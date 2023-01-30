@@ -2,6 +2,9 @@
   "extends": "../tsconfig.json",
   "references": [
     {
+      "path": "!boot/tsconfig.json"
+    },
+    {
       "path": "config/tsconfig.json"
     },
     {
