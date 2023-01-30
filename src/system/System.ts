@@ -57,18 +57,6 @@ namespace System {
       );
     }
 
-    static get libRuntimeDir(): typeof ReadOnlyFile {
-      return new ReadOnlyFile(
-        Runtime.runtimeRootDir,
-        Runtime.CONFIG
-          .system
-          .runtime
-          .directories
-          .rootSubpaths
-          .lib
-      );
-    }
-
     static get storageRuntimeDir(): typeof ReadOnlyFile {
       return new ReadOnlyFile(
         Runtime.runtimeRootDir,
@@ -81,7 +69,7 @@ namespace System {
       );
     }
 
-    static get programsRuntimeDir(): typeof ReadOnlyFile {
+    static get applicationsRuntimeDir(): typeof ReadOnlyFile {
       return new ReadOnlyFile(
         Runtime.runtimeRootDir,
         Runtime.CONFIG
@@ -89,7 +77,7 @@ namespace System {
           .runtime
           .directories
           .rootSubpaths
-          .programs
+          .applications
       );
     }
 
@@ -108,29 +96,13 @@ namespace System {
       );
     }
 
-
-    static get libSourceRepoDir(): typeof ReadOnlyFile {
+    static get applicationsSourceRepoDir(): typeof ReadOnlyFile {
       const sourceRepo: Runtime.Address = Runtime.CONFIG
         .system
         .sourceRepo
         .directories
         .addresses
-        .lib as Runtime.Address;
-      return new ReadOnlyFile(
-        new Bookmark(
-          sourceRepo.bookmark as (string | undefined) ?? String()
-        ),
-        sourceRepo.subpath as (string | undefined) ?? String()
-      );
-    }
-
-    static get programsSourceRepoDir(): typeof ReadOnlyFile {
-      const sourceRepo: Runtime.Address = Runtime.CONFIG
-        .system
-        .sourceRepo
-        .directories
-        .addresses
-        .programs as Runtime.Address;
+        .applications as Runtime.Address;
       return new ReadOnlyFile(
         new Bookmark(
           sourceRepo.bookmark as (string | undefined) ?? String()
@@ -149,14 +121,12 @@ namespace System {
 
     private static cleanDependencies(): void {
       Runtime.cleanConfigs();
-      Runtime.cleanLibraries();
     }
 
     static install(): void {
       Runtime.cleanDependencies();
       Runtime.installConfigs();
-      Runtime.installLibraries();
-      Runtime.installPrograms();
+      Runtime.installApplications();
     }
 
     private static cleanConfigs(): void {
@@ -182,30 +152,7 @@ namespace System {
       fm.copy(sourceRepo, destination);
     }
 
-    private static cleanLibraries(): void {
-      const fm: FileManager = FileManager.iCloud();
-
-      const here: string = Runtime.libRuntimeDir.path;
-      const destination: string = here;
-
-      if (fm.isDirectory(destination))
-        fm.remove(destination);
-    }
-
-    private static installLibraries(): void {
-      Runtime.cleanLibraries();
-      const fm: FileManager = FileManager.iCloud();
-
-      const here: string = Runtime.libRuntimeDir.path;
-      const destination: string = here;
-
-      const there: string = Runtime.libSourceRepoDir.path;
-      const sourceRepo: string = there;
-
-      fm.copy(sourceRepo, destination);
-    }
-
-    private static installPrograms(): void {
+    private static installApplications(): void {
       const confirm: Alert = new Alert();
       confirm.message = "Initializing scripts will delete all scripts currently shown. Are you sure you want to override current runtime files?";
       confirm.addDestructiveAction("Yes, DELETE runtime");
@@ -217,10 +164,10 @@ namespace System {
       ): void {
         if (value === 0) {
           const fm: FileManager = FileManager.iCloud();
-          const here: string = Runtime.programsRuntimeDir.path;
+          const here: string = Runtime.applicationsRuntimeDir.path;
           const destination: string = here;
 
-          const there: string = Runtime.programsSourceRepoDir.path;
+          const there: string = Runtime.applicationsSourceRepoDir.path;
           const sourceRepo: string = there;
 
           const dScripts: string[] = fm

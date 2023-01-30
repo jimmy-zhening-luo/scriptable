@@ -4,9 +4,8 @@
       "directories": {
         "rootSubpaths": {
           "config": "config",
-          "lib": "lib",
           "storage": "!storage",
-          "programs": ""
+          "applications": ""
         }
       },
       "protected": {
@@ -23,13 +22,9 @@
             "bookmark": "@BUILT",
             "subpath": "config"
           },
-          "lib": {
+          "applications": {
             "bookmark": "@BUILT",
-            "subpath": "lib"
-          },
-          "programs": {
-            "bookmark": "@BUILT",
-            "subpath": "programs"
+            "subpath": "applications"
           }
         }
       }
