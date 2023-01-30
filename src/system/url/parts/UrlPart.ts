@@ -22,8 +22,9 @@ abstract class _UrlPart {
 
 namespace _UrlPart {
   export const StringValidator = importModule("./system/validation/Validation.ts");
-  
-  export abstract class UrlValidator extends StringValidator { }
+
+  export abstract class UrlValidator extends StringValidator {
+   }
   export namespace UrlValidator {
     export class SchemeValidator extends UrlValidator {
       constructor(scheme: string) {
