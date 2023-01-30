@@ -1,5 +1,4 @@
-namespace Files {
-  export class File {
+class File {
     #subpath: string = String();
     readonly bookmark: Bookmark;
     constructor();
@@ -394,4 +393,3 @@ namespace Files {
       );
     }
   }
-}

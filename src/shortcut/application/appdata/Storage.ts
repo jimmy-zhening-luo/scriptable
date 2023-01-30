@@ -1,29 +1,21 @@
 
 class Storage {
-  readonly file: typeof Storage.File;
+  readonly file: File;
   constructor(
     storageSubdirectoryPath: string,
     programName: string,
     subpath?: string | undefined
   ) {
-    this.file = new Storage.File(
-      Storage.System.storageRuntimeDir,
-      Storage.File.joinPaths(
-        Storage.File.joinPaths(
+    this.file = new File(
+      Boot.storageRuntimeDir,
+      File.joinPaths(
+        File.joinPaths(
           storageSubdirectoryPath,
           programName
         ),
         subpath ?? String("default.txt")
       )
     );
-  }
-
-  private static get System() {
-    return importModule("./system/System");
-  }
-
-  private static get File() {
-    return Storage.System.File;
   }
 
   get path(): string {

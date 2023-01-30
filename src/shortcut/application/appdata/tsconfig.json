@@ -3,6 +3,9 @@
   "references": [
     {
       "path": "filesystem/tsconfig.json"
+    },
+    {
+      "path": "../../../!boot/tsconfig.json"
     }
   ],
   "compilerOptions": {

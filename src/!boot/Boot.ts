@@ -6,51 +6,49 @@ When Boot.Installer.install() is run by !bootrun.js from the Scriptable app root
 The CONST values at the top of namespace Boot are required, project-defined values for the Boot Installer to know from where and to where to install files.
 */
 // v2.0.0
-namespace Boot {
-  const RUNTIME_ROOT_BOOKMARK: string = ">>ROOT";
-  const REPO_SOURCE_BOOKMARK: string = "@REPO";
-  const IGNORE_PREFIX: string = "!";
+const RUNTIME_ROOT_BOOKMARK: string = ">>ROOT";
+const REPO_SOURCE_BOOKMARK: string = "@REPO";
+const IGNORE_PREFIX: string = "!";
 
 
-  export class Installer {
-    static clean(): void {
-      this.FM
-        .listContents(this.runtimeRootPath)
-        .filter(child => !child.startsWith(this.ignorePrefix))
-        .forEach(child => {
-          const runtimeChild: string = this.FM.joinPath(this.runtimeRootPath, child);
-          this.FM.remove(runtimeChild);
-        });
-    }
+export class Installer {
+  static clean(): void {
+    this.FM
+      .listContents(this.runtimeRootPath)
+      .filter(child => !child.startsWith(this.ignorePrefix))
+      .forEach(child => {
+        const runtimeChild: string = this.FM.joinPath(this.runtimeRootPath, child);
+        this.FM.remove(runtimeChild);
+      });
+  }
 
-    static install(): void {
-      this.clean();
-      this.FM
-        .listContents(this.repoSourcePath)
-        .filter(child => !child.startsWith(this.ignorePrefix))
-        .forEach(child => {
-          const repoChild: string = this.FM.joinPath(this.repoSourcePath, child);
-          const runtimeChild: string = this.FM.joinPath(this.runtimeRootPath, child);
-          this.FM.copy(repoChild, runtimeChild);
-        });
-    }
+  static install(): void {
+    this.clean();
+    this.FM
+      .listContents(this.repoSourcePath)
+      .filter(child => !child.startsWith(this.ignorePrefix))
+      .forEach(child => {
+        const repoChild: string = this.FM.joinPath(this.repoSourcePath, child);
+        const runtimeChild: string = this.FM.joinPath(this.runtimeRootPath, child);
+        this.FM.copy(repoChild, runtimeChild);
+      });
+  }
 
-    private static get runtimeRootPath(): string {
-      return this.FM.bookmarkedPath(RUNTIME_ROOT_BOOKMARK);
-    }
+  static get runtimeRootPath(): string {
+    return this.FM.bookmarkedPath(RUNTIME_ROOT_BOOKMARK);
+  }
 
-    private static get repoSourcePath(): string {
-      return this.FM.bookmarkedPath(REPO_SOURCE_BOOKMARK);
-    }
+  private static get repoSourcePath(): string {
+    return this.FM.bookmarkedPath(REPO_SOURCE_BOOKMARK);
+  }
 
-    private static get ignorePrefix(): string {
-      return IGNORE_PREFIX;
-    }
+  private static get ignorePrefix(): string {
+    return IGNORE_PREFIX;
+  }
 
-    private static get FM(): FileManager {
-      return FileManager.iCloud()
-    }
+  private static get FM(): FileManager {
+    return FileManager.iCloud()
   }
 }
 
-module.exports = Boot.Installer;
+module.exports = Installer;

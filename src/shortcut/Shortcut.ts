@@ -1,4 +1,4 @@
-abstract class Shortcut extends Application {
+abstract class _Shortcut extends Application {
   get input(): any {
     return args;
   }
@@ -18,4 +18,4 @@ abstract class Shortcut extends Application {
   }
 }
 
-module.exports = Shortcut;
+module.exports = _Shortcut;
