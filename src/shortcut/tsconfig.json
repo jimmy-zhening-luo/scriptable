@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "*.ts"
+  ],
+  "references": [
+    {
+      "path": "application/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "outDir": "../../built/shortcut"
+  }
+}

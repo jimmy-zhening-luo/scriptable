@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "references": [
+    {
+      "path": "config/tsconfig.json"
+    },
+    {
+      "path": "shortcut/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "outDir": "../built"
+  }
+}

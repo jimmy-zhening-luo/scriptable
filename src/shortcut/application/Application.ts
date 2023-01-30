@@ -243,7 +243,7 @@ class _Storage {
   private static get System() {
     return importModule("./system/System");
   }
-  
+
   private static get File() {
     return _Storage.System.File;
   }
@@ -280,7 +280,7 @@ abstract class _Program {
   abstract get input(): any;
   abstract runtime(input: any): any;
   abstract handleOutput(output: any): any;
-  
+
   run(): any {
     return this.handleOutput(
       this.runtime(
@@ -288,7 +288,7 @@ abstract class _Program {
       )
     );
   }
-  
+
   protected get configSubdirectoryPath(): string {
     return String("Program");
   }
@@ -296,14 +296,14 @@ abstract class _Program {
   protected get storageSubdirectoryPath(): string {
     return this.configSubdirectoryPath;
   }
-  
+
   get config(): _Config {
     return new _Config(
       this.configSubdirectoryPath,
       this.constructor.name
     );
   }
-  
+
   protected storage(
     subpath?: string | undefined
   ): _Storage {
@@ -336,14 +336,14 @@ abstract class _Shortcut extends _Program {
   get input(): any {
     return args;
   }
-  
+
   handleOutput(
     output: any
   ): any {
     Script.setShortcutOutput(output);
     return output;
   }
-  
+
   protected override get configSubdirectoryPath(): string {
     return [
       super.configSubdirectoryPath,
