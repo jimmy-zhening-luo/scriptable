@@ -7,7 +7,7 @@ class Storage {
     subpath?: string | undefined
   ) {
     this.file = new File(
-      Boot.storageRuntimeDir,
+      Installer.storageRuntimeDir,
       File.joinPaths(
         File.joinPaths(
           storageSubdirectoryPath,
