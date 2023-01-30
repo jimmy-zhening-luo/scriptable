@@ -6,5 +6,5 @@
 const Boot = importModule("!boot/Boot");
 Boot.install();
 
-const System = importModule("system/System");
-System.install();
+const SystemRuntime = importModule("system/System").Runtime;
+SystemRuntime.install();
