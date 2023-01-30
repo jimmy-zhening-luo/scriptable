@@ -2,8 +2,8 @@
 // These must be at the very top of the file. Do not edit.
 // always-run-in-app: true; icon-color: deep-gray;
 // icon-glyph: hdd;
-const Boot = importModule("!boot/Boot");
-Boot.install();
+namespace bootrun {
+  export const Installer = importModule("!boot/Boot");
+}
 
-const SystemRuntime = importModule("system/System").Runtime;
-SystemRuntime.install();
+bootrun.Installer.install();
