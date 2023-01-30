@@ -5,37 +5,17 @@ namespace System {
   const SYSTEM_CONFIG_FILENAME: string = "system.json";
   type SYSTEM_CONFIG_INTERFACE = typeof import("./system.json");
 
+
+  export const Explorer = importModule("explorer/Explorer");
+  export const Files = Explorer.Files;
+  export const File = Explorer.File;
+  export const ReadOnlyFile = Explorer.ReadOnlyFile;
+  export const Bookmark = Explorer.Bookmark;
+
   export class Runtime {
-    private static get BOOT() {
-      return importModule(
-        [
-          ".",
-          BOOT_RUNTIME_ROOT_SUBPATH,
-          BOOT_FILENAME
-        ]
-          .join("/")
-      );
-    }
-
-    static get Bookmark() {
-      return Runtime.File.Bookmark;
-    }
-
-    static get File() {
-      return importModule("file/File");
-    }
-
-    static get ReadOnlyFile() {
-      return Runtime.File.ReadOnlyFile;
-    }
-
-    static get Secret() {
-      return importModule("secret/Secret");
-    }
-
     private static get CONFIG(): SYSTEM_CONFIG_INTERFACE {
       return JSON.parse(
-        new Runtime.ReadOnlyFile(
+        new ReadOnlyFile(
           Runtime.systemRuntimeDir,
           SYSTEM_CONFIG_FILENAME
         )
@@ -43,30 +23,30 @@ namespace System {
       ) as SYSTEM_CONFIG_INTERFACE;
     }
 
-    static get runtimeRootDir(): typeof Runtime.ReadOnlyFile {
-      return new Runtime.ReadOnlyFile(
-        new Runtime.Bookmark(
-          Runtime.BOOT.RUNTIME_ROOT_BOOKMARK
+    static get runtimeRootDir(): typeof ReadOnlyFile {
+      return new ReadOnlyFile(
+        new Bookmark(
+          Runtime.Boot.RUNTIME_ROOT_BOOKMARK
         )
       );
     }
 
-    private static get BOOT_RUNTIME(): typeof Runtime.ReadOnlyFile {
-      return new Runtime.ReadOnlyFile(
+    private static get BOOT_RUNTIME(): typeof ReadOnlyFile {
+      return new ReadOnlyFile(
         Runtime.runtimeRootDir,
         BOOT_RUNTIME_ROOT_SUBPATH
       );
     }
 
-    static get systemRuntimeDir(): typeof Runtime.ReadOnlyFile {
-      return new Runtime.ReadOnlyFile(
+    static get systemRuntimeDir(): typeof ReadOnlyFile {
+      return new ReadOnlyFile(
         Runtime.runtimeRootDir,
-        Runtime.BOOT.SYSTEM_RUNTIME_ROOT_SUBPATH
+        Runtime.Boot.SYSTEM_RUNTIME_ROOT_SUBPATH
       );
     }
 
-    static get configRuntimeDir(): typeof Runtime.ReadOnlyFile {
-      return new Runtime.ReadOnlyFile(
+    static get configRuntimeDir(): typeof ReadOnlyFile {
+      return new ReadOnlyFile(
         Runtime.runtimeRootDir,
         Runtime.CONFIG
           .system
@@ -77,8 +57,8 @@ namespace System {
       );
     }
 
-    static get libRuntimeDir(): typeof Runtime.ReadOnlyFile {
-      return new Runtime.ReadOnlyFile(
+    static get libRuntimeDir(): typeof ReadOnlyFile {
+      return new ReadOnlyFile(
         Runtime.runtimeRootDir,
         Runtime.CONFIG
           .system
@@ -89,8 +69,8 @@ namespace System {
       );
     }
 
-    static get storageRuntimeDir(): typeof Runtime.ReadOnlyFile {
-      return new Runtime.ReadOnlyFile(
+    static get storageRuntimeDir(): typeof ReadOnlyFile {
+      return new ReadOnlyFile(
         Runtime.runtimeRootDir,
         Runtime.CONFIG
           .system
@@ -101,8 +81,8 @@ namespace System {
       );
     }
 
-    static get programsRuntimeDir(): typeof Runtime.ReadOnlyFile {
-      return new Runtime.ReadOnlyFile(
+    static get programsRuntimeDir(): typeof ReadOnlyFile {
+      return new ReadOnlyFile(
         Runtime.runtimeRootDir,
         Runtime.CONFIG
           .system
@@ -113,15 +93,15 @@ namespace System {
       );
     }
 
-    static get configSourceRepoDir(): typeof Runtime.ReadOnlyFile {
+    static get configSourceRepoDir(): typeof ReadOnlyFile {
       const sourceRepo: Runtime.Address = Runtime.CONFIG
         .system
         .sourceRepo
         .directories
         .addresses
         .config as Runtime.Address;
-      return new Runtime.ReadOnlyFile(
-        new Runtime.Bookmark(
+      return new ReadOnlyFile(
+        new Bookmark(
           sourceRepo.bookmark as (string | undefined) ?? String()
         ),
         sourceRepo.subpath as (string | undefined) ?? String()
@@ -129,30 +109,30 @@ namespace System {
     }
 
 
-    static get libSourceRepoDir(): typeof Runtime.ReadOnlyFile {
+    static get libSourceRepoDir(): typeof ReadOnlyFile {
       const sourceRepo: Runtime.Address = Runtime.CONFIG
         .system
         .sourceRepo
         .directories
         .addresses
         .lib as Runtime.Address;
-      return new Runtime.ReadOnlyFile(
-        new Runtime.Bookmark(
+      return new ReadOnlyFile(
+        new Bookmark(
           sourceRepo.bookmark as (string | undefined) ?? String()
         ),
         sourceRepo.subpath as (string | undefined) ?? String()
       );
     }
 
-    static get programsSourceRepoDir(): typeof Runtime.ReadOnlyFile {
+    static get programsSourceRepoDir(): typeof ReadOnlyFile {
       const sourceRepo: Runtime.Address = Runtime.CONFIG
         .system
         .sourceRepo
         .directories
         .addresses
         .programs as Runtime.Address;
-      return new Runtime.ReadOnlyFile(
-        new Runtime.Bookmark(
+      return new ReadOnlyFile(
+        new Bookmark(
           sourceRepo.bookmark as (string | undefined) ?? String()
         ),
         sourceRepo.subpath as (string | undefined) ?? String()
@@ -299,6 +279,14 @@ namespace System {
       readonly bookmark?: string | undefined;
       readonly subpath?: string | undefined;
     }
+
+    export const Boot = importModule(
+      [
+        ".",
+        BOOT_RUNTIME_ROOT_SUBPATH,
+        BOOT_FILENAME
+      ].join("/")
+    );
   }
 }
 
