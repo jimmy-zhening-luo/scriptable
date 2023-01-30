@@ -33,11 +33,17 @@ class Installer {
             this.FM.copy(repoChild, runtimeChild);
         });
     }
+    static get runtimeRootBookmark() {
+        return RUNTIME_ROOT_BOOKMARK;
+    }
+    static get repoSourceBookmark() {
+        return REPO_SOURCE_BOOKMARK;
+    }
     static get runtimeRootPath() {
-        return this.FM.bookmarkedPath(RUNTIME_ROOT_BOOKMARK);
+        return this.FM.bookmarkedPath(this.runtimeRootBookmark);
     }
     static get repoSourcePath() {
-        return this.FM.bookmarkedPath(REPO_SOURCE_BOOKMARK);
+        return this.FM.bookmarkedPath(this.repoSourceBookmark);
     }
     static get ignorePrefix() {
         return IGNORE_PREFIX;

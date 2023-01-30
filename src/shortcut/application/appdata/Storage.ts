@@ -1,3 +1,4 @@
+import type { Installer } from "./../../../!boot/Boot";
 
 class Storage {
   readonly file: File;
@@ -6,6 +7,8 @@ class Storage {
     programName: string,
     subpath?: string | undefined
   ) {
+    const installer: typeof Installer = importModule("./!boot/Boot");
+
     this.file = new File(
       Installer.storageRuntimeDir,
       File.joinPaths(

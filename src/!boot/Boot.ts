@@ -34,12 +34,20 @@ export class Installer {
       });
   }
 
+  static get runtimeRootBookmark(): string {
+    return RUNTIME_ROOT_BOOKMARK;
+  }
+
+  static get repoSourceBookmark(): string {
+    return REPO_SOURCE_BOOKMARK;
+  }
+
   static get runtimeRootPath(): string {
-    return this.FM.bookmarkedPath(RUNTIME_ROOT_BOOKMARK);
+    return this.FM.bookmarkedPath(this.runtimeRootBookmark);
   }
 
   private static get repoSourcePath(): string {
-    return this.FM.bookmarkedPath(REPO_SOURCE_BOOKMARK);
+    return this.FM.bookmarkedPath(this.repoSourceBookmark);
   }
 
   private static get ignorePrefix(): string {
