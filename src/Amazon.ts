@@ -3,12 +3,10 @@
 // icon-color: teal; icon-glyph: magic;
 namespace Amazon {
 
-  const Shortcut = importModule("./lib/Program").Shortcut;
-  
-  class Amazon extends Shortcut {
+  class Amazon extends _Shortcut {
     runtime(): boolean {
       const storageFilename: string = "last-run.txt";
-      
+
       const latestRunString: string = this
         ["readStorage"](storageFilename);
       const latestRunTime: Date = (
@@ -17,7 +15,7 @@ namespace Amazon {
           :new Date(latestRunString)
       )
       ?? new Date();
-      
+
       this["writeStorage"](
         (new Date()).toISOString(),
         storageFilename
@@ -25,7 +23,7 @@ namespace Amazon {
       return (Date.now() - latestRunTime.getTime()) > 300000;
     }
   }
-  
+
   (new Amazon())["run"]();
 
 }
