@@ -1,56 +1,29 @@
-type ConfigObject = (
-  AppSection
-  & UserSection
-);
-
-interface AppSection {
-  "app"?: Settings
-}
-
-interface UserSection {
-  "user"?: Settings
-}
-
-interface Settings {
-  [key: string]: SettingValue
-};
-
-type SettingValue = (
-  primitive
-  | Array<SettingValue>
-  | Settings
-);
-
-type primitive = (
-  string
-  | number
-  | boolean
-);
+const CONFIG_DIR_SUBPATH_FROM_ROOT: string = "config";
 
 class Config {
-  protected file: typeof Config.ReadOnlyFile;
+  protected file: ReadOnlyFile;
   constructor(
     configSubdirectoryPath: string,
     programName: string
   ) {
-    this.file = new Config.ReadOnlyFile(
-      Config.System.configRuntimeDir as string,
-      Config.ReadOnlyFile.joinPaths(
+    this.file = new ReadOnlyFile(
+      this.configDirFile as ReadOnlyFile,
+      File.joinPaths(
         configSubdirectoryPath,
         [programName, "json"]
           .join(".")
-      ) as string
+      )
     );
   }
 
-  private static get System() {
-    return importModule("./system/System");
+  protected get configDirFile(): File {
+    const installer = importModule("./!boot/Boot");
+    return new File(new Bookmark(installer.runtimeRootBookmarkName), this.configDirSubpathFromRoot);
   }
 
-  private static get ReadOnlyFile() {
-    return Config.System.ReadOnlyFile;
+  protected get configDirSubpathFromRoot(): string {
+    return CONFIG_DIR_SUBPATH_FROM_ROOT;
   }
-
 
   get path(): string {
     return this.file.path as string;
@@ -65,33 +38,33 @@ class Config {
     }
   }
 
-  get parsed(): ConfigObject {
+  get parsed(): Config.ConfigObject {
     return this.isParseable ?
       JSON.parse(this.file.data as string)
       : {}
   }
 
-  get unmerged(): ConfigObject {
+  get unmerged(): Config.ConfigObject {
     return this.parsed;
   }
 
-  get app(): Settings | undefined {
+  get app(): Config.Settings | undefined {
     return this.unmerged.app;
   }
 
-  get user(): Settings | undefined {
+  get user(): Config.Settings | undefined {
     return this.unmerged.user;
   }
 
-  get merged(): SettingValue {
-    return Config.mergeSettings(
+  get merged(): Config.SettingValue {
+    return this.mergeSettings(
       this.user,
       this.app
     );
   }
 
-  get mergedUserOverridesProhibited(): SettingValue {
-    return Config.mergeSettings(
+  get mergedUserOverridesProhibited(): Config.SettingValue {
+    return this.mergeSettings(
       this.app,
       this.user
     );
@@ -101,10 +74,10 @@ class Config {
     return this.file.data as string;
   }
 
-  static mergeSettings(
-    winningSettings: Settings | undefined,
-    losingSettings: Settings | undefined
-  ): Settings {
+  protected mergeSettings(
+    winningSettings: Config.Settings | undefined,
+    losingSettings: Config.Settings | undefined
+  ): Config.Settings {
     if (winningSettings === undefined && losingSettings !== undefined)
       return losingSettings;
     else if (losingSettings === undefined && winningSettings !== undefined)
@@ -122,24 +95,24 @@ class Config {
         losingSettings,
         commonSettingKeys
       );
-      const mergedSettingsMap = new Map<string, SettingValue>();
+      const mergedSettingsMap = new Map<string, Config.SettingValue>();
       for (const loser of keysUniqueToLosingSettings)
         mergedSettingsMap.set(
           loser,
-          losingSettings[loser] as SettingValue
+          losingSettings[loser] as Config.SettingValue
         );
       for (const winner of keysUniqueToWinningSettings)
         mergedSettingsMap.set(
           winner,
-          winningSettings[winner] as SettingValue
+          winningSettings[winner] as Config.SettingValue
         );
       for (const key of commonSettingKeys) {
-        if (isPrimitive(winningSettings[key] as SettingValue)
-          && isPrimitive(losingSettings[key] as SettingValue)
+        if (isPrimitive(winningSettings[key] as Config.SettingValue)
+          && isPrimitive(losingSettings[key] as Config.SettingValue)
         )
           mergedSettingsMap.set(
             key,
-            winningSettings[key] as primitive
+            winningSettings[key] as Config.primitive
           );
         else if (Array.isArray(winningSettings[key])
           && Array.isArray(losingSettings[key])
@@ -147,32 +120,32 @@ class Config {
           mergedSettingsMap.set(
             key,
             mergeArrays(
-              winningSettings[key] as Array<SettingValue>,
-              losingSettings[key] as Array<SettingValue>
+              winningSettings[key] as Array<Config.SettingValue>,
+              losingSettings[key] as Array<Config.SettingValue>
             )
           );
         else if (Array.isArray(winningSettings[key]))
           mergedSettingsMap.set(
             key,
             mergeArrays(
-              winningSettings[key] as Array<SettingValue>,
-              [losingSettings[key] as SettingValue]
+              winningSettings[key] as Array<Config.SettingValue>,
+              [losingSettings[key] as Config.SettingValue]
             )
           );
         else if (Array.isArray(losingSettings[key]))
           mergedSettingsMap.set(
             key,
             mergeArrays(
-              [winningSettings[key] as SettingValue],
-              losingSettings[key] as Array<SettingValue>
+              [winningSettings[key] as Config.SettingValue],
+              losingSettings[key] as Array<Config.SettingValue>
             )
           );
         else
           mergedSettingsMap.set(
             key,
-            Config.mergeSettings(
-              winningSettings[key] as Settings,
-              losingSettings[key] as Settings
+            this.mergeSettings(
+              winningSettings[key] as Config.Settings,
+              losingSettings[key] as Config.Settings
             )
           );
       }
@@ -182,7 +155,7 @@ class Config {
       return {};
 
     function isPrimitive(
-      obj: SettingValue
+      obj: Config.SettingValue
     ): boolean {
       return (
         obj?.constructor === String
@@ -191,14 +164,14 @@ class Config {
       );
     }
     function mergeArrays(
-      winner: Array<SettingValue>,
-      loser: Array<SettingValue>
-    ): Array<SettingValue> {
+      winner: Array<Config.SettingValue>,
+      loser: Array<Config.SettingValue>
+    ): Array<Config.SettingValue> {
       return winner.concat(loser);
     }
     function intersectKeys(
-      a: Settings,
-      b: Settings
+      a: Config.Settings,
+      b: Config.Settings
     ): Array<string> {
       return Object.keys(a)
         .filter(
@@ -208,7 +181,7 @@ class Config {
         );
     }
     function uniqueKeysOf(
-      obj: Settings,
+      obj: Config.Settings,
       commonSettingKeys: Array<string>
     ): Array<string> {
       return Object.keys(obj)
@@ -219,4 +192,35 @@ class Config {
         );
     }
   }
+}
+
+namespace Config {
+  export type ConfigObject = (
+    AppSection
+    & UserSection
+  );
+
+  export interface AppSection {
+    "app"?: Settings
+  }
+
+  export interface UserSection {
+    "user"?: Settings
+  }
+
+  export interface Settings {
+    [key: string]: SettingValue
+  };
+
+  export type SettingValue = (
+    primitive
+    | Array<SettingValue>
+    | Settings
+  );
+
+  export type primitive = (
+    string
+    | number
+    | boolean
+  );
 }

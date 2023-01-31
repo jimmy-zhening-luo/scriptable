@@ -1,33 +1,18 @@
-const EXTERNAL_SECRETS_BOOKMARK: string = "#Secrets";
+const EXTERNAL_SECRETS_BOOKMARK_NAME: string = "#Secrets";
 
 export class Secret {
-  private readonly file: typeof Secret.File.ReadOnlyFile;
+  private readonly file: ReadOnlyFile;
   constructor(
     subpath: string
   ) {
-    this.file = new Secret.ReadOnlyFile(
-      new Secret.Bookmark(
-        Secret
-          .EXTERNAL_SECRETS_BOOKMARK
-      ),
+    this.file = new ReadOnlyFile(
+      new Bookmark(this.externalSecretsBookmarkName),
       subpath
     );
   }
 
-  private static get Bookmark() {
-    return Secret.File.Bookmark;
-  }
-
-  private static get File() {
-    return importModule("file/File");
-  }
-
-  private static get ReadOnlyFile() {
-    return Secret.File.ReadOnlyFile;
-  }
-
-  private static get EXTERNAL_SECRETS_BOOKMARK() {
-    return EXTERNAL_SECRETS_BOOKMARK;
+  private get externalSecretsBookmarkName(): string {
+    return EXTERNAL_SECRETS_BOOKMARK_NAME;
   }
 
   get exists(): boolean {

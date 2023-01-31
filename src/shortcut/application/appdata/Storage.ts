@@ -1,24 +1,32 @@
-import type { Installer } from "./../../../!boot/Boot";
+const STORAGE_DIR_SUBPATH_FROM_ROOT = "storage";
 
 class Storage {
   readonly file: File;
   constructor(
     storageSubdirectoryPath: string,
     programName: string,
-    subpath?: string | undefined
+    subpath: string = "default.txt"
   ) {
-    const installer: typeof Installer = importModule("./!boot/Boot");
 
     this.file = new File(
-      Installer.storageRuntimeDir,
+      this.storageDirFile as File,
       File.joinPaths(
         File.joinPaths(
           storageSubdirectoryPath,
           programName
         ),
-        subpath ?? String("default.txt")
+        subpath
       )
     );
+  }
+
+  protected get storageDirFile(): File {
+    const installer = importModule("./!boot/Boot");
+    return new File(new Bookmark(installer.runtimeRootBookmarkName), this.storageDirSubpathFromRoot);
+  }
+
+  protected get storageDirSubpathFromRoot(): string {
+    return STORAGE_DIR_SUBPATH_FROM_ROOT;
   }
 
   get path(): string {
