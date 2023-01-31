@@ -1,11 +1,14 @@
 {
   "extends": "../tsconfig.json",
+  "include": [
+    "**/*"
+  ],
   "references": [
     {
       "path": "iphostvalidator/tsconfig.json"
     }
   ],
   "compilerOptions": {
-    "outDir": "../../../../../../../built/shortcut/application/browser/urlparts/validators/hostvalidators"
+    "rootDir": "../../../../../.."
   }
 }

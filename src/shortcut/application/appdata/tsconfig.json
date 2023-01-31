@@ -9,6 +9,6 @@
     }
   ],
   "compilerOptions": {
-    "outDir": "../../../../built/shortcut/application/appdata"
+    "rootDir": "../../.."
   }
 }

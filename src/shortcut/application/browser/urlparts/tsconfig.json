@@ -1,5 +1,8 @@
 {
   "extends": "../tsconfig.json",
+  "include": [
+    "**/*"
+  ],
   "references": [
     {
       "path": "repeaters/tsconfig.json"
@@ -12,6 +15,6 @@
     }
   ],
   "compilerOptions": {
-    "outDir": "../../../../../built/shortcut/application/browser/urlparts"
+    "rootDir": "../../../.."
   }
 }

@@ -12,6 +12,6 @@
     }
   ],
   "compilerOptions": {
-    "outDir": "../../../../built/shortcut/application/common"
+    "rootDir": "../../.."
   }
 }

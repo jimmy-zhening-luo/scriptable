@@ -4,6 +4,6 @@
     "**/*"
   ],
   "compilerOptions": {
-    "outDir": "../../../../../../../../built/shortcut/application/common/validation/stringvalidator/grammars/charset"
+    "rootDir": "../../../../../../.."
   }
 }
