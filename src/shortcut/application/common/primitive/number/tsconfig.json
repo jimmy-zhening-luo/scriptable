@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "references": [
     {
-      "path": "realnumber/tsconfig.json"
+      "path": "rational/tsconfig.json"
     }
   ],
   "compilerOptions": {

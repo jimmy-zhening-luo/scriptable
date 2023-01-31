@@ -6,6 +6,6 @@
     }
   ],
   "compilerOptions": {
-    "outDir": "../../../../../../../built/shortcut/application/common/primitive/number/realnumber"
+    "outDir": "../../../../../../../../built/shortcut/application/common/primitive/number/rational/real"
   }
 }
