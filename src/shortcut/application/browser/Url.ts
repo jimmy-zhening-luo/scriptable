@@ -14,37 +14,97 @@ class Url {
   #path: Path;
   #query: Query;
   #fragment: Fragment;
+  constructor();
+  constructor(url: Url);
+  constructor(urlparts: UrlParts);
+  constructor(url: string);
   constructor(
-    input?: undefined | Url | UrlParts
+    scheme: Scheme,
+    host?: Host | string,
+    port?: Port | number | string,
+    path?: Path | string,
+    query?: Query | string,
+    fragment?: Fragment | string
+  );
+  constructor(
+    scheme: Scheme | string,
+    host: Host | string,
+    port?: Port | number | string,
+    path?: Path | string,
+    query?: Query | string,
+    fragment?: Fragment | string
+  );
+  constructor(
+    head?: Url | UrlParts | Scheme | string,
+    host?: Host | string,
+    port?: Port | number | string,
+    path?: Path | string,
+    query?: Query | string,
+    fragment?: Fragment | string
   ) {
-    if (input === undefined) {
+    if (head === undefined) {
       this.#scheme = new Scheme();
       this.#host = new Host();
       this.#port = new Port();
-      this.path = new Path();
-      this.query = new Query();
-      this.fragment = new Fragment();
+      this.#path = new Path();
+      this.#query = new Query();
+      this.#fragment = new Fragment();
     }
-    else if (input instanceof Url) {
-      this.scheme = input.scheme;
-      this.host = input.host;
-      this.port = input.port;
-      this.path = input.path;
-      this.query = input.query;
-      this.fragment = input.fragment;
+    else if (head instanceof Url) {
+      this.#scheme = head.scheme;
+      this.#host = head.host;
+      this.#port = head.port;
+      this.#path = head.path;
+      this.#query = head.query;
+      this.#fragment = head.fragment;
+    }
+    else if (head instanceof Scheme) {
+      this.#scheme = head;
+      this.#host = new Host(host);
+      this.#port = new Port(port);
+      this.#path = new Path(path);
+      this.#query = new Query(query);
+      this.#fragment = new Fragment(fragment);
+    }
+    else if (typeof head === "string"
+      && host === undefined
+      && port === undefined
+      && path === undefined
+      && query === undefined
+      && fragment === undefined
+    ) {
+      const parsedUrl: Url = this.parse(head);
+      this.#scheme = parsedUrl.scheme;
+      this.#host = parsedUrl.host;
+      this.#port = parsedUrl.port;
+      this.#path = parsedUrl.path;
+      this.#query = parsedUrl.query;
+      this.#fragment = parsedUrl.fragment;
+    }
+    else if (typeof head === "string") {
+      this.#scheme = new Scheme(head);
+      this.#host = new Host(host);
+      this.#port = new Port(port);
+      this.#path = new Path(path);
+      this.#query = new Query(query);
+      this.#fragment = new Fragment(fragment);
     }
     else {
-      this.scheme = input.scheme;
-      this.host = input.host;
-      this.port = input.port;
-      this.path = input.path;
-      this.query = input.query;
-      this.fragment = input.fragment;
+      this.#scheme = new Scheme(head.scheme);
+      this.#host = new Host(head.host);
+      this.#port = new Port(head.port);
+      this.#path = new Path(head.path);
+      this.#query = new Query(head.query);
+      this.#fragment = new Fragment(head.fragment);
     }
   }
 
-  get scheme(): string {
-    return this.#scheme.string;
+  private parse(url: string): Url {
+    return new Url(url);
+  }
+
+  get scheme(): Scheme {
+    return this.#scheme;
   }
 
   set scheme(
@@ -58,8 +118,8 @@ class Url {
     );
   }
 
-  get host(): string {
-    return this.#host.string;
+  get host(): Host {
+    return this.#host;
   }
 
   set host(
@@ -71,8 +131,8 @@ class Url {
     this.#host = new Host(host);
   }
 
-  get port(): string {
-    return this.#port.string;
+  get port(): Port {
+    return this.#port;
   }
 
   set port(
@@ -85,8 +145,8 @@ class Url {
     this.#port = new Port(port);
   }
 
-  get path(): string {
-    return this.#path.string;
+  get path(): Path {
+    return this.#path;
   }
 
   set path(
@@ -98,8 +158,8 @@ class Url {
     this.#path = new Path(path);
   }
 
-  get query(): string {
-    return this.#query.string;
+  get query(): Query {
+    return this.#query
   }
 
   set query(
@@ -111,8 +171,8 @@ class Url {
     this.#query = new Query(query);
   }
 
-  get fragment(): string {
-    return this.#fragment.string;
+  get fragment(): Fragment {
+    return this.#fragment;
   }
 
   set fragment(
@@ -134,8 +194,8 @@ class Url {
     return this.string;
   }
 
-  static joinUrlParts(
-    parts: Url | UrlParts
+  private static joinUrlParts(
+    url: Url
   ): string {
     return (
       Url.appendFragmentToLeft(
@@ -143,22 +203,16 @@ class Url {
           Url.appendPathToLeft(
             Url.appendPortToLeft(
               Url.appendHostToScheme(
-                parts.scheme
-                  ?? new Scheme(),
-                parts.host
-                  ?? new Host()
+                url.scheme,
+                url.host
               ),
-              parts.port
-                ?? new Port()
+              url.port
             ),
-            parts.path
-              ?? new Path()
+            url.path
           ),
-          parts.query
-            ?? new Query()
+          url.query
         ),
-        parts.fragment
-          ?? new Fragment()
+        url.fragment
       )
     ).trim();
   }
@@ -171,23 +225,14 @@ class Url {
       | Host
     )
   ): string {
-    scheme = new Url
-      .Scheme(scheme)
-      .string as string;
-    host = new Url
-      .Host(host)
-      .string as string;
-    const separator: string = (
-      scheme === String()
-    )?
+    const left: string = new Scheme(scheme).string;
+    const right: string = new Host(host).string;
+    const delim: string = left === String() ?
       String()
-      :"://";
-    return [
-      scheme,
-      host
-    ]
-    .join(separator)
-    .trim();
+      : "://";
+    return [left, right]
+      .join(delim)
+      .trim();
   }
 
   static appendPortToLeft(
@@ -198,22 +243,18 @@ class Url {
     )
   ): string {
     left = left.trim();
-    port = (left === String())?
+    const right: string = left === String() ?
       String()
-      :new Url
-        .Port(port)
-        .string as string;
-    const separator: string = (
-      port === String() || port === "0"
-    )?
+      : new Port(port).string
+    const delim: string = (
+      right === String()
+      || right === "0"
+    ) ?
       String()
-      :":";
-    return [
-      left,
-      port
-    ]
-    .join(separator)
-    .trim();
+      : ":";
+    return [left, right]
+      .join(delim)
+      .trim();
   }
 
   static appendPathToLeft(
@@ -223,16 +264,11 @@ class Url {
     )
   ): string {
     left = left.trim();
-    path = new Url
-      .Path(path)
-      .string as string;
-    const separator: string = String();
-    return [
-      left,
-      path
-    ]
-    .join(separator)
-    .trim();
+    const right: string = new Path(path).string;
+    const delim: string = String();
+    return [left, right]
+      .join(delim)
+      .trim();
   }
 
   static appendQueryToLeft(
@@ -242,20 +278,13 @@ class Url {
     )
   ): string {
     left = left.trim();
-    query = new Url
-      .Query(query)
-      .string as string;
-    const separator: string = (
-      query === String()
-    )?
+    const right: string = new Query(query).string;
+    const delim: string = right === String() ?
       String()
-      :"?";
-    return [
-      left,
-      query
-    ]
-    .join(separator)
-    .trim();
+      : "?";
+    return [left, right]
+      .join(delim)
+      .trim();
   }
 
   static appendFragmentToLeft(
@@ -265,20 +294,13 @@ class Url {
     )
   ): string {
     left = left.trim();
-    fragment = new Url
-      .Fragment(fragment)
-      .string as string;
-    const separator = (
-      fragment === String()
-    )?
+    const right: string = new Fragment(fragment).string;
+    const delim = right === String() ?
       String()
-      :"#";
-    return [
-      left,
-      fragment
-    ]
-    .join(separator)
-    .trim();
+      : "#";
+    return [left, right]
+      .join(delim)
+      .trim();
   }
 
   static encode(

@@ -1,0 +1,1 @@
+{"version":3,"file":"UrlPart.d.ts","sourceRoot":"","sources":["../../../../../../src/shortcut/application/browser/urlparts/urlpart/UrlPart.ts"],"names":[],"mappings":"AAAA,uBAAe,OAAO;IACpB,QAAQ,CAAC,IAAI,EAAE,MAAM,CAAC;gBAEpB,IAAI,GAAE,OAAO,GACT,MAAiB;IAOvB,IAAI,MAAM,IAAI,MAAM,CAEnB;IAED,QAAQ,IAAI,MAAM;IAIlB,SAAS,CAAC,QAAQ,CAAC,KAAK,CAAC,IAAI,EAAE,MAAM,GAAG,MAAM;CAC/C"}

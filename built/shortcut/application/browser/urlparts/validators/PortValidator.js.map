@@ -1,0 +1,1 @@
+{"version":3,"file":"PortValidator.js","sourceRoot":"","sources":["../../../../../../src/shortcut/application/browser/urlparts/validators/PortValidator.ts"],"names":[],"mappings":"AAAA,MAAM,aAAc,SAAQ,eAAe;IACzC,YAAY,IAAY;QACtB,KAAK,CACH,IAAI,EACJ;YACE,WAAW,EAAE;gBACX,UAAU,CAAC,KAAK;gBAChB,UAAU,CAAC,KAAK;aACjB;SACF,EACD,UAAU,CAAC,OAAO,CACnB,CAAC;IACJ,CAAC;CACF"}

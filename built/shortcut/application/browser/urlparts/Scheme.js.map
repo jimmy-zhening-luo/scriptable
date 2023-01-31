@@ -1,0 +1,1 @@
+{"version":3,"file":"Scheme.js","sourceRoot":"","sources":["../../../../../src/shortcut/application/browser/urlparts/Scheme.ts"],"names":[],"mappings":"AAAA,MAAM,MAAO,SAAQ,OAAO;IAC1B,YAAY,MAAwB;QAClC,KAAK,CAAC,MAAM,CAAC,CAAC;IAChB,CAAC;IAES,KAAK,CAAC,MAAc;QAC5B,OAAO,IAAI,eAAe,CAAC,MAAM,CAAC;aAC/B,SAAS,CAAC;IACf,CAAC;CACF"}
