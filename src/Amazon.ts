@@ -16,7 +16,7 @@ namespace Amazon {
       )
       ?? new Date();
 
-      this["writeStorage"](
+      this.writeStorage(
         (new Date()).toISOString(),
         storageFilename
       );

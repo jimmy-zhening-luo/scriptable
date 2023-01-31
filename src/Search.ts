@@ -11,4 +11,4 @@ namespace Search {
   }
 }
 
-(new Search.Search())["run"]();
+new Search.Search().run();
