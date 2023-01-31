@@ -1,6 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: teal; icon-glyph: magic;
+// icon-color: orange; icon-glyph: share;
 var Amazon;
 (function (Amazon_1) {
     const shortcut = importModule("shortcut/Shortcut");
