@@ -27,4 +27,5 @@ class Application {
             .write(text);
     }
 }
+module.exports = Application;
 //# sourceMappingURL=Application.js.map
