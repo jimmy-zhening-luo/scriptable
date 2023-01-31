@@ -1,4 +1,4 @@
-const STORAGE_DIR_SUBPATH_FROM_ROOT = "storage";
+const STORAGE_DIR_SUBPATH_FROM_ROOT = "!storage";
 class Storage {
     constructor(storageSubdirectoryPath, programName, subpath = "default.txt") {
         const _File = importModule("filesystem/file/File");

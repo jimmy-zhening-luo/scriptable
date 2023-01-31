@@ -1,4 +1,4 @@
-declare const STORAGE_DIR_SUBPATH_FROM_ROOT = "storage";
+declare const STORAGE_DIR_SUBPATH_FROM_ROOT = "!storage";
 declare class Storage {
     readonly file: File;
     constructor(storageSubdirectoryPath: string, programName: string, subpath?: string);
