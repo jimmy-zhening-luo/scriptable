@@ -8,8 +8,7 @@ namespace Amazon {
     runtime(): boolean {
       const storageFilename: string = "last-run.txt";
 
-      const latestRunString: string = this
-        ["readStorage"](storageFilename);
+      const latestRunString: string = this.readStorage(storageFilename);
       const latestRunTime: Date = (
         (latestRunString === String())?
           new Date()
@@ -26,4 +25,4 @@ namespace Amazon {
   }
 }
 
-(new Amazon.Amazon())["run"]();
+new Amazon.Amazon().run();
