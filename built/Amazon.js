@@ -3,7 +3,7 @@
 // icon-color: teal; icon-glyph: magic;
 var Amazon;
 (function (Amazon_1) {
-    class Amazon extends _Shortcut {
+    class Amazon extends Shortcut {
         runtime() {
             var _a;
             const storageFilename = "last-run.txt";
@@ -15,6 +15,7 @@ var Amazon;
             return (Date.now() - latestRunTime.getTime()) > 300000;
         }
     }
-    (new Amazon())["run"]();
+    Amazon_1.Amazon = Amazon;
 })(Amazon || (Amazon = {}));
+(new Amazon.Amazon())["run"]();
 //# sourceMappingURL=Amazon.js.map

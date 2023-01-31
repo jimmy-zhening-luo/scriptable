@@ -1,1 +1,1 @@
-{"version":3,"file":"Amazon.d.ts","sourceRoot":"","sources":["../src/Amazon.ts"],"names":[],"mappings":"AAGA,kBAAU,MAAM,CAAC;CAyBhB"}
+{"version":3,"file":"Amazon.d.ts","sourceRoot":"","sources":["../src/Amazon.ts"],"names":[],"mappings":"AAGA,kBAAU,MAAM,CAAC;IACf,MAAa,MAAO,SAAQ,QAAQ;QAClC,OAAO,IAAI,OAAO;KAkBnB;CACF"}

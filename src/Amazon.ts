@@ -2,8 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: teal; icon-glyph: magic;
 namespace Amazon {
-
-  class Amazon extends _Shortcut {
+  export class Amazon extends Shortcut {
     runtime(): boolean {
       const storageFilename: string = "last-run.txt";
 
@@ -23,7 +22,6 @@ namespace Amazon {
       return (Date.now() - latestRunTime.getTime()) > 300000;
     }
   }
-
-  (new Amazon())["run"]();
-
 }
+
+(new Amazon.Amazon())["run"]();

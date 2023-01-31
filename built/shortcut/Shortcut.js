@@ -1,4 +1,4 @@
-class _Shortcut extends Application {
+class Shortcut extends Application {
     get input() {
         return args;
     }
@@ -13,5 +13,5 @@ class _Shortcut extends Application {
         ].join("/");
     }
 }
-module.exports = _Shortcut;
+module.exports = Shortcut;
 //# sourceMappingURL=Shortcut.js.map
