@@ -1,6 +1,6 @@
 const _Application: typeof Application = importModule("application/Application");
 
-abstract class Shortcut extends Application {
+abstract class Shortcut extends _Application {
   get input(): any {
     return args;
   }
