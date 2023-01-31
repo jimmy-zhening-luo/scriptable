@@ -11,5 +11,5 @@ var Search;
     }
     Search_1.Search = Search;
 })(Search || (Search = {}));
-(new Search.Search())["run"]();
+new Search.Search().run();
 //# sourceMappingURL=Search.js.map

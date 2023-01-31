@@ -12,7 +12,7 @@ var Amazon;
             const latestRunTime = (_a = ((latestRunString === String()) ?
                 new Date()
                 : new Date(latestRunString))) !== null && _a !== void 0 ? _a : new Date();
-            this["writeStorage"]((new Date()).toISOString(), storageFilename);
+            this.writeStorage((new Date()).toISOString(), storageFilename);
             return (Date.now() - latestRunTime.getTime()) > 300000;
         }
     }
