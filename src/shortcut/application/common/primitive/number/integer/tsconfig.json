@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "references": [
+    {
+      "path": "rational/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "outDir": "../../../../../../../built/shortcut/application/common/primitive/number/integer"
+  }
+}
