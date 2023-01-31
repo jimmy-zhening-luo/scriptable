@@ -1,0 +1,1 @@
+class AnyCardinality extends Cardinality { }

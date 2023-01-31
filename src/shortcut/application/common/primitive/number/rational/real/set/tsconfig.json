@@ -1,5 +1,13 @@
 {
   "extends": "../tsconfig.json",
+  "references": [
+    {
+      "path": "bounds/tsconfig.json"
+    },
+    {
+      "path": "cardinality/tsconfig.json"
+    }
+  ],
   "compilerOptions": {
     "outDir": "../../../../../../../../../built/shortcut/application/common/primitive/number/rational/real/set"
   }
