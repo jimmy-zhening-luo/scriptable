@@ -1,5 +1,8 @@
 {
   "extends": "../tsconfig.json",
+  "include": [
+    "**/*"
+  ],
   "compilerOptions": {
     "outDir": "../../../../../../../../../../../built/shortcut/application/common/primitive/number/integer/rational/real/set/bounds"
   }

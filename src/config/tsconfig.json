@@ -1,9 +1,9 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*.json"
+    "Application/**/*.json"
   ],
   "compilerOptions": {
-    "outDir": "../../built/config"
+    "rootDir": ".."
   }
 }
