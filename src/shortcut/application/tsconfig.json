@@ -1,7 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "../../!boot/**/*"
   ],
   "references": [
     {
@@ -12,6 +13,9 @@
     },
     {
       "path": "common/tsconfig.json"
+    },
+    {
+      "path": "../../!boot/tsconfig.json"
     }
   ],
   "compilerOptions": {
