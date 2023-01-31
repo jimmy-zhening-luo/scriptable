@@ -215,4 +215,5 @@ class File {
     }
 }
 _File_subpath = new WeakMap();
+module.exports = File;
 //# sourceMappingURL=File.js.map

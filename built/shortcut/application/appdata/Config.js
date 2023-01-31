@@ -102,4 +102,5 @@ class Config {
 (function (Config) {
     ;
 })(Config || (Config = {}));
+module.exports = Config;
 //# sourceMappingURL=Config.js.map

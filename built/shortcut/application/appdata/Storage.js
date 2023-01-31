@@ -30,4 +30,5 @@ class Storage {
         return this.data;
     }
 }
+module.exports = Storage;
 //# sourceMappingURL=Storage.js.map

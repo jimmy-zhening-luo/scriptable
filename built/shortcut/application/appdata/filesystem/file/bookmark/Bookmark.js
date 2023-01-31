@@ -10,4 +10,5 @@ class Bookmark {
         return this.path;
     }
 }
+module.exports = Bookmark;
 //# sourceMappingURL=Bookmark.js.map

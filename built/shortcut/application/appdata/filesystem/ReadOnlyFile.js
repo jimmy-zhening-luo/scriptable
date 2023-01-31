@@ -7,4 +7,5 @@ class ReadOnlyFile extends _File {
         throw new ReferenceError("File::ReadOnlyFile:write(): Cannot write to or overwrite a read-only file.");
     }
 }
+module.exports = ReadOnlyFile;
 //# sourceMappingURL=ReadOnlyFile.js.map

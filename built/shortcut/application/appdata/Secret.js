@@ -33,4 +33,5 @@ class Secret {
         return this.secret;
     }
 }
+module.exports = Secret;
 //# sourceMappingURL=Secret.js.map
