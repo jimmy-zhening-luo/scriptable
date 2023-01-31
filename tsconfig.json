@@ -54,7 +54,7 @@
     "noEmit": false,                                   /* Disable emitting files from a compilation. */
     // "importHelpers": true,                            /* Allow importing helper functions from tslib once per project, instead of including them per-file. */
     "importsNotUsedAsValues": "remove",               /* Specify emit/checking behavior for imports that are only used for types. */
-    "downlevelIteration": true,                       /* Emit more compliant, but verbose and less performant JavaScript for iteration. */
+    "downlevelIteration": true,                       /* TMP: true for testing. Emit more compliant, but verbose and less performant JavaScript for iteration. */
     "inlineSourceMap": false,                          /* Include sourcemap files inside the emitted JavaScript. */
     "inlineSources": false,                            /* Include source code in the sourcemaps inside the emitted JavaScript. */
     // "emitBOM": true,                                  /* Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files. */
