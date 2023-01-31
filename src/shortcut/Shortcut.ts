@@ -1,4 +1,4 @@
-const _Application: typeof Application = importModule("_Application/Application");
+const _Application: typeof Application = importModule("application/Application");
 
 abstract class Shortcut extends Application {
   get input(): any {

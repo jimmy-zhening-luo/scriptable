@@ -1,4 +1,4 @@
-const _Application = importModule("_Application/Application");
+const _Application = importModule("application/Application");
 class Shortcut extends Application {
     get input() {
         return args;
