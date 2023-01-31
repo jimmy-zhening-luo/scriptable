@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Installer = void 0;
 /*
 This built file (.js, not the .ts source file) must be manually copied from the repository into the boot dir.
 
@@ -9,8 +6,8 @@ When Boot.Installer.install() is run by !bootrun.js from the Scriptable app root
 The CONST values at the top of namespace Boot are required, project-defined values for the Boot Installer to know from where and to where to install files.
 */
 // v2.0.0
-const RUNTIME_ROOT_BOOKMARK = ">>ROOT";
-const REPO_SOURCE_BOOKMARK = "@REPO";
+const RUNTIME_ROOT_BOOKMARK_NAME = ">>ROOT";
+const REPO_SOURCE_BOOKMARK_NAME = "@REPO";
 const IGNORE_PREFIX = "!";
 class Installer {
     static clean() {
@@ -33,17 +30,17 @@ class Installer {
             this.FM.copy(repoChild, runtimeChild);
         });
     }
-    static get runtimeRootBookmark() {
-        return RUNTIME_ROOT_BOOKMARK;
+    static get runtimeRootBookmarkName() {
+      return RUNTIME_ROOT_BOOKMARK_NAME;
     }
-    static get repoSourceBookmark() {
-        return REPO_SOURCE_BOOKMARK;
+    static get repoSourceBookmarkName() {
+      return REPO_SOURCE_BOOKMARK_NAME;
     }
     static get runtimeRootPath() {
-        return this.FM.bookmarkedPath(this.runtimeRootBookmark);
+        return this.FM.bookmarkedPath(this.runtimeRootBookmarkName);
     }
     static get repoSourcePath() {
-        return this.FM.bookmarkedPath(this.repoSourceBookmark);
+        return this.FM.bookmarkedPath(this.repoSourceBookmarkName);
     }
     static get ignorePrefix() {
         return IGNORE_PREFIX;
@@ -52,6 +49,5 @@ class Installer {
         return FileManager.iCloud();
     }
 }
-exports.Installer = Installer;
 module.exports = Installer;
 //# sourceMappingURL=Boot.js.map

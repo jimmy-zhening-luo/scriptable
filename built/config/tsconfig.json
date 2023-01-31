@@ -1,0 +1,9 @@
+{
+    "extends": "../tsconfig.json",
+    "include": [
+        "**/*.json"
+    ],
+    "compilerOptions": {
+        "outDir": "../../built/config"
+    }
+}
