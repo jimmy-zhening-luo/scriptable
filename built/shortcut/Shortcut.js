@@ -1,5 +1,5 @@
 const _Application = importModule("application/Application");
-class Shortcut extends Application {
+class Shortcut extends _Application {
     get input() {
         return args;
     }
