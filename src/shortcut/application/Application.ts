@@ -56,3 +56,5 @@ abstract class Application {
       .write(text);
   }
 }
+
+module.exports = Application;
