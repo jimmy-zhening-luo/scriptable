@@ -1,6 +1,8 @@
 declare namespace Amazon {
-    class Amazon extends Shortcut {
+    const shortcut: typeof Shortcut;
+    export class Amazon extends shortcut {
         runtime(): boolean;
     }
+    export {};
 }
 //# sourceMappingURL=Amazon.d.ts.map

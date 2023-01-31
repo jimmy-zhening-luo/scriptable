@@ -3,7 +3,8 @@
 // icon-color: teal; icon-glyph: magic;
 var Amazon;
 (function (Amazon_1) {
-    class Amazon extends Shortcut {
+    const shortcut = importModule("shortcut/Shortcut");
+    class Amazon extends shortcut {
         runtime() {
             var _a;
             const storageFilename = "last-run.txt";

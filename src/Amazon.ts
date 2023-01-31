@@ -2,7 +2,9 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: teal; icon-glyph: magic;
 namespace Amazon {
-  export class Amazon extends Shortcut {
+  const shortcut: typeof Shortcut = importModule("shortcut/Shortcut");
+
+  export class Amazon extends shortcut {
     runtime(): boolean {
       const storageFilename: string = "last-run.txt";
 
