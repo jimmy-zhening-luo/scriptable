@@ -8,14 +8,15 @@ The CONST values at the top of namespace Boot are required, project-defined valu
 // v2.0.0
 const RUNTIME_ROOT_BOOKMARK_NAME: string = ">>ROOT";
 const REPO_SOURCE_BOOKMARK_NAME: string = "@REPO";
-const IGNORE_PREFIX: string = "!";
+const EXCLUDE_PREFIX: string = "!";
+const INCLUDE_POSTFIX: string = ".js";
 
 
 class Installer {
   static clean(): void {
     this.FM
       .listContents(this.runtimeRootPath)
-      .filter(child => !child.startsWith(this.ignorePrefix))
+      .filter(child => !child.startsWith(this.excludePrefix))
       .forEach(child => {
         const runtimeChild: string = this.FM.joinPath(this.runtimeRootPath, child);
         this.FM.remove(runtimeChild);
@@ -26,11 +27,12 @@ class Installer {
     this.clean();
     this.FM
       .listContents(this.repoSourcePath)
-      .filter(child => !child.startsWith(this.ignorePrefix))
+      .filter(child => !child.startsWith(this.excludePrefix))
       .forEach(child => {
         const repoChild: string = this.FM.joinPath(this.repoSourcePath, child);
         const runtimeChild: string = this.FM.joinPath(this.runtimeRootPath, child);
-        this.FM.copy(repoChild, runtimeChild);
+        if (this.FM.isDirectory(repoChild) || repoChild.endsWith(this.includePostfix))
+          this.FM.copy(repoChild, runtimeChild);
       });
   }
 
@@ -50,8 +52,12 @@ class Installer {
     return this.FM.bookmarkedPath(this.repoSourceBookmarkName);
   }
 
-  private static get ignorePrefix(): string {
-    return IGNORE_PREFIX;
+  private static get excludePrefix(): string {
+    return EXCLUDE_PREFIX;
+  }
+
+  private static get includePostfix(): string {
+    return INCLUDE_POSTFIX;
   }
 
   private static get FM(): FileManager {
