@@ -14,8 +14,7 @@ declare abstract class StringValidator {
     get isValid(): boolean;
     private get oneGrams();
 }
-export declare namespace StringValidator {
+declare namespace StringValidator {
     type StringValidatorInput = StringValidator | OneRepeatedChar | CharSet.CharSetInput;
 }
-export {};
 //# sourceMappingURL=StringValidator.d.ts.map

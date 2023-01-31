@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 class StringValidator {
     constructor(text, { toLower = false, trim = true, trimLeading = [], trimTrailing = [] }, ...allowedChars) {
         this.raw = text;
