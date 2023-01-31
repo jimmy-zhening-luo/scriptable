@@ -1,5 +1,8 @@
 {
   "extends": "../tsconfig.json",
+  "files": [
+    "../../../!boot/Boot.ts"
+  ],
   "references": [
     {
       "path": "filesystem/tsconfig.json"

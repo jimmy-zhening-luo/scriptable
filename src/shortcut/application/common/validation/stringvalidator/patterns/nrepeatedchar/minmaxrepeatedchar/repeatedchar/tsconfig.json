@@ -1,5 +1,14 @@
 {
   "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+    "../../../../grammars/**/*"
+  ],
+  "references": [
+    {
+      "path": "../../../../grammars/tsconfig.json"
+    }
+  ],
   "compilerOptions": {
     "outDir": "../../../../../../../../../../built/shortcut/application/common/validation/stringvalidator/patterns/nrepeatedchar/minmaxrepeatedchar/repeatedchar"
   }
