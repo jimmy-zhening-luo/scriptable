@@ -227,3 +227,5 @@ namespace Config {
     | boolean
   );
 }
+
+module.exports = Config;

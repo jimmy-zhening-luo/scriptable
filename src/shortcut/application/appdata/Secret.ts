@@ -50,3 +50,6 @@ class Secret {
     return this.secret;
   }
 }
+
+module.exports = Secret;
+

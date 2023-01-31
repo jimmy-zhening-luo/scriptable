@@ -15,3 +15,5 @@ class Bookmark {
     return this.path;
   }
 }
+
+module.exports = Bookmark;

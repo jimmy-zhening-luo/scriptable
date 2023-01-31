@@ -1,7 +1,5 @@
 const STORAGE_DIR_SUBPATH_FROM_ROOT = "storage";
 
-
-
 class Storage {
   readonly file: File;
   constructor(
@@ -59,3 +57,5 @@ class Storage {
     return this.data;
   }
 }
+
+module.exports = Storage;
