@@ -1,4 +1,4 @@
-class PositiveCardinality extends Cardinality {
+class Positive extends Cardinality {
   override isCardinal(
     value: undefined | null | number
   ): boolean {

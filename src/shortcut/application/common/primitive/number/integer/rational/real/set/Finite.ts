@@ -1,4 +1,4 @@
-class FiniteBounds extends Bounds {
+class Finite extends Bounds {
   override isBounded(
     value: undefined | null | number
   ): boolean {
