@@ -17,8 +17,7 @@ class Config {
   }
 
   protected get configDirFile(): File {
-    const installer = importModule("./!boot/Boot");
-    return new File(new Bookmark(installer.runtimeRootBookmarkName), this.configDirSubpathFromRoot);
+    return new File(new Bookmark(Installer.runtimeRootBookmarkName), this.configDirSubpathFromRoot);
   }
 
   protected get configDirSubpathFromRoot(): string {

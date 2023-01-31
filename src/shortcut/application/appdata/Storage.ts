@@ -21,8 +21,7 @@ class Storage {
   }
 
   protected get storageDirFile(): File {
-    const installer = importModule("./!boot/Boot");
-    return new File(new Bookmark(installer.runtimeRootBookmarkName), this.storageDirSubpathFromRoot);
+    return new File(new Bookmark(Installer.runtimeRootBookmarkName), this.storageDirSubpathFromRoot);
   }
 
   protected get storageDirSubpathFromRoot(): string {
