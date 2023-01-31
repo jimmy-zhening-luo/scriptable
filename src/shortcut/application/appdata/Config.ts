@@ -6,9 +6,10 @@ class Config {
     configSubdirectoryPath: string,
     programName: string
   ) {
-    this.file = new ReadOnlyFile(
+    const _ReadOnlyFile: typeof ReadOnlyFile = importModule("filesystem/ReadOnlyFile");
+    this.file = new _ReadOnlyFile(
       this.configDirFile as ReadOnlyFile,
-      File.joinPaths(
+      _ReadOnlyFile.joinPaths(
         configSubdirectoryPath,
         [programName, "json"]
           .join(".")
@@ -16,8 +17,11 @@ class Config {
     );
   }
 
-  protected get configDirFile(): File {
-    return new File(new Bookmark(Installer.runtimeRootBookmarkName), this.configDirSubpathFromRoot);
+  protected get configDirFile(): ReadOnlyFile {
+    const _ReadOnlyFile: typeof ReadOnlyFile = importModule("filesystem/ReadOnlyFile");
+    const _Bookmark: typeof Bookmark = importModule("filesystem/file/bookmark/Bookmark");
+    const _Installer: typeof Installer = importModule("./!boot/Boot");
+    return new _ReadOnlyFile(new _Bookmark(_Installer.runtimeRootBookmarkName), this.configDirSubpathFromRoot);
   }
 
   protected get configDirSubpathFromRoot(): string {

@@ -2,7 +2,7 @@ declare const CONFIG_DIR_SUBPATH_FROM_ROOT: string;
 declare class Config {
     protected file: ReadOnlyFile;
     constructor(configSubdirectoryPath: string, programName: string);
-    protected get configDirFile(): File;
+    protected get configDirFile(): ReadOnlyFile;
     protected get configDirSubpathFromRoot(): string;
     get path(): string;
     get isParseable(): boolean;

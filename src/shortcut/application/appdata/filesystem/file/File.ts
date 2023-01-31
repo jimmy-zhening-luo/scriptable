@@ -1,3 +1,4 @@
+const _Bookmark: typeof Bookmark = importModule("bookmark/Bookmark");
 class File {
     #subpath: string = String();
     readonly bookmark: Bookmark;
@@ -16,10 +17,10 @@ class File {
     constructor(
       base: Bookmark
         | File
-        | string = new Bookmark(),
+        | string = new _Bookmark(),
       subpath: string = String()
     ) {
-      if (base instanceof Bookmark) {
+      if (base instanceof _Bookmark) {
         this.bookmark = base;
         this.subpath = subpath;
       }
@@ -31,7 +32,7 @@ class File {
         );
       }
       else {
-        this.bookmark = new Bookmark();
+        this.bookmark = new _Bookmark();
         this.subpath = base;
       }
     }

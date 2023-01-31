@@ -1,4 +1,5 @@
 /// <reference types="scriptable" />
+declare const _Bookmark: typeof Bookmark;
 declare class File {
     #private;
     readonly bookmark: Bookmark;

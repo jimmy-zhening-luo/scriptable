@@ -1,12 +1,15 @@
 const EXTERNAL_SECRETS_BOOKMARK_NAME: string = "#Secrets";
 
-export class Secret {
+
+class Secret {
   private readonly file: ReadOnlyFile;
   constructor(
     subpath: string
   ) {
-    this.file = new ReadOnlyFile(
-      new Bookmark(this.externalSecretsBookmarkName),
+    const _ReadOnlyFile: typeof ReadOnlyFile = importModule("filesystem/ReadOnlyFile");
+    const _Bookmark: typeof Bookmark = importModule("filesystem/file/bookmark/Bookmark");
+    this.file = new _ReadOnlyFile(
+      new _Bookmark(this.externalSecretsBookmarkName),
       subpath
     );
   }

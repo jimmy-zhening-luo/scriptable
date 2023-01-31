@@ -1,5 +1,7 @@
 const STORAGE_DIR_SUBPATH_FROM_ROOT = "storage";
 
+
+
 class Storage {
   readonly file: File;
   constructor(
@@ -7,11 +9,11 @@ class Storage {
     programName: string,
     subpath: string = "default.txt"
   ) {
-
-    this.file = new File(
-      this.storageDirFile as File,
-      File.joinPaths(
-        File.joinPaths(
+    const _File: typeof File = importModule("filesystem/file/File");
+    this.file = new _File(
+      this.storageDirFile,
+      _File.joinPaths(
+        _File.joinPaths(
           storageSubdirectoryPath,
           programName
         ),
@@ -21,7 +23,10 @@ class Storage {
   }
 
   protected get storageDirFile(): File {
-    return new File(new Bookmark(Installer.runtimeRootBookmarkName), this.storageDirSubpathFromRoot);
+    const _File: typeof File = importModule("filesystem/file/File");
+    const _Bookmark: typeof Bookmark = importModule("filesystem/file/bookmark/Bookmark");
+    const _Installer: typeof Installer = importModule("./!boot/Boot");
+    return new _File(new _Bookmark(_Installer.runtimeRootBookmarkName), this.storageDirSubpathFromRoot);
   }
 
   protected get storageDirSubpathFromRoot(): string {

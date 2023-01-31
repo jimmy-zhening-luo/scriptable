@@ -1,3 +1,4 @@
+const _Application = importModule("_Application/Application");
 class Shortcut extends Application {
     get input() {
         return args;

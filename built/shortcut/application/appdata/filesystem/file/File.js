@@ -10,10 +10,11 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _File_subpath;
+const _Bookmark = importModule("bookmark/Bookmark");
 class File {
-    constructor(base = new Bookmark(), subpath = String()) {
+    constructor(base = new _Bookmark(), subpath = String()) {
         _File_subpath.set(this, String());
-        if (base instanceof Bookmark) {
+        if (base instanceof _Bookmark) {
             this.bookmark = base;
             this.subpath = subpath;
         }
@@ -22,7 +23,7 @@ class File {
             this.subpath = File.walkPath(base.subpath, subpath);
         }
         else {
-            this.bookmark = new Bookmark();
+            this.bookmark = new _Bookmark();
             this.subpath = base;
         }
     }

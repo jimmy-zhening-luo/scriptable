@@ -1,3 +1,5 @@
+declare const _Config: typeof Config;
+declare const _Storage: typeof Storage;
 declare abstract class Application {
     abstract get input(): any;
     abstract runtime(input: any): any;

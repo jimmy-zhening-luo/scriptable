@@ -1,4 +1,5 @@
-export declare class Secret {
+declare const EXTERNAL_SECRETS_BOOKMARK_NAME: string;
+declare class Secret {
     private readonly file;
     constructor(subpath: string);
     private get externalSecretsBookmarkName();

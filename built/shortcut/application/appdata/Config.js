@@ -1,11 +1,15 @@
 const CONFIG_DIR_SUBPATH_FROM_ROOT = "config";
 class Config {
     constructor(configSubdirectoryPath, programName) {
-        this.file = new ReadOnlyFile(this.configDirFile, File.joinPaths(configSubdirectoryPath, [programName, "json"]
+        const _ReadOnlyFile = importModule("filesystem/ReadOnlyFile");
+        this.file = new _ReadOnlyFile(this.configDirFile, _ReadOnlyFile.joinPaths(configSubdirectoryPath, [programName, "json"]
             .join(".")));
     }
     get configDirFile() {
-        return new File(new Bookmark(Installer.runtimeRootBookmarkName), this.configDirSubpathFromRoot);
+        const _ReadOnlyFile = importModule("filesystem/ReadOnlyFile");
+        const _Bookmark = importModule("filesystem/file/bookmark/Bookmark");
+        const _Installer = importModule("./!boot/Boot");
+        return new _ReadOnlyFile(new _Bookmark(_Installer.runtimeRootBookmarkName), this.configDirSubpathFromRoot);
     }
     get configDirSubpathFromRoot() {
         return CONFIG_DIR_SUBPATH_FROM_ROOT;

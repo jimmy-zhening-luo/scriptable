@@ -1,3 +1,5 @@
+const _Config = importModule("appdata/Config");
+const _Storage = importModule("appdata/Storage");
 class Application {
     run() {
         return this.handleOutput(this.runtime(this.input));
@@ -9,10 +11,10 @@ class Application {
         return this.configSubdirectoryPath;
     }
     get config() {
-        return new Config(this.configSubdirectoryPath, this.constructor.name);
+        return new _Config(this.configSubdirectoryPath, this.constructor.name);
     }
     storage(subpath) {
-        return new Storage(this.storageSubdirectoryPath, this.constructor.name, subpath);
+        return new _Storage(this.storageSubdirectoryPath, this.constructor.name, subpath);
     }
     readStorage(subpath) {
         return this

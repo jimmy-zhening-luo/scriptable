@@ -1,3 +1,4 @@
+declare const _Application: typeof Application;
 declare abstract class Shortcut extends Application {
     get input(): any;
     handleOutput(output: any): any;
