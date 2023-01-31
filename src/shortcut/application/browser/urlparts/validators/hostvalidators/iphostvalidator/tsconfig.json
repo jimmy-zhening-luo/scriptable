@@ -1,0 +1,6 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../../../../../../built/shortcut/application/browser/urlparts/validators/hostvalidators/iphostvalidator"
+  }
+}

@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "references": [
     {
-      "path": "web/tsconfig.json"
+      "path": "urlparts/tsconfig.json"
     }
   ],
   "compilerOptions": {

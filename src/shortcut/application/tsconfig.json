@@ -5,6 +5,9 @@
       "path": "appdata/tsconfig.json"
     },
     {
+      "path": "browser/tsconfig.json"
+    },
+    {
       "path": "common/tsconfig.json"
     }
   ],
