@@ -1,7 +1,7 @@
-export class NRepeatedChar extends MinMaxRepeatedChar {
+class NRepeatedChar extends MinMaxRepeatedChar {
   constructor(
     reps: number,
-    ...charsets: Array<RepeatedCharInput>
+    ...charsets: Array<RepeatedChar.RepeatedCharInput>
   ) {
     super(reps, reps, ...charsets);
   }

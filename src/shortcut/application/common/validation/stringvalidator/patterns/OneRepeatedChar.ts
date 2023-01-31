@@ -1,6 +1,6 @@
-export class OneRepeatedChar extends NRepeatedChar {
+class OneRepeatedChar extends NRepeatedChar {
   constructor(
-    ...charsets: Array<RepeatedCharInput>
+    ...charsets: Array<RepeatedChar.RepeatedCharInput>
   ) {
     super(1, ...charsets);
   }

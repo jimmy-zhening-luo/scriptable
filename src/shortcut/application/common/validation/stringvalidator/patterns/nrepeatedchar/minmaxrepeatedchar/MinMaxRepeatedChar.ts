@@ -4,7 +4,7 @@ class MinMaxRepeatedChar extends RepeatedChar {
   constructor(
     minReps: number,
     maxReps: number,
-    ...charsets: Array<RepeatedCharInput>
+    ...charsets: Array<RepeatedChar.RepeatedCharInput>
   ) {
     super(...charsets);
     if (
