@@ -11,7 +11,7 @@ const REPO_SOURCE_BOOKMARK: string = "@REPO";
 const IGNORE_PREFIX: string = "!";
 
 
-export class Installer {
+class Installer {
   static clean(): void {
     this.FM
       .listContents(this.runtimeRootPath)
