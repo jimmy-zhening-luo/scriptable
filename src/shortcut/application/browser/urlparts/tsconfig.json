@@ -1,7 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "../../common/validation/**/*"
   ],
   "references": [
     {
@@ -12,6 +13,9 @@
     },
     {
       "path": "validators/tsconfig.json"
+    },
+    {
+      "path": "../../common/validation/tsconfig.json"
     }
   ],
   "compilerOptions": {

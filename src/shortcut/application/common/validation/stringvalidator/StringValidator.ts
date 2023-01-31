@@ -148,7 +148,7 @@ abstract class StringValidator {
   }
 }
 
-export namespace StringValidator {
+namespace StringValidator {
   export type StringValidatorInput = StringValidator
     | OneRepeatedChar
     | CharSet.CharSetInput;
