@@ -1,12 +1,12 @@
-class CharSet {
+class Char {
   readonly chars: string[];
   constructor(
-    ...charSets: CharSet.CharSetInput[]
+    ...charSets: Char.CharInput[]
   ) {
     this.chars = new Array<string>();
     charSets.forEach(
-      (charset: CharSet.CharSetInput) => {
-        charset instanceof CharSet ?
+      (charset: Char.CharInput) => {
+        charset instanceof Char ?
           this.chars.push(
             ...charset.chars
           )
@@ -259,8 +259,10 @@ class CharSet {
   }
 }
 
-namespace CharSet {
-  export type CharSetInput = CharSet
+namespace Char {
+  export type CharInput = Char
     | string[]
     | string;
 }
+
+module.exports = Char;
