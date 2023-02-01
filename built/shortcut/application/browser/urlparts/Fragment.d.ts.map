@@ -1,1 +1,0 @@
-{"version":3,"file":"Fragment.d.ts","sourceRoot":"","sources":["../../../../../src/shortcut/application/browser/urlparts/Fragment.ts"],"names":[],"mappings":"AACA,cAAM,QAAS,SAAQ,OAAO;IAC5B,QAAQ,CAAC,MAAM,EAAE,OAAO,CAAC;gBAEvB,QAAQ,CAAC,EAAE,MAAM,GACb,QAAQ,EACZ,MAAM,GAAE,OAAc;IAMxB,IAAa,MAAM,IAAI,MAAM,CAI5B;IAED,SAAS,CAAC,KAAK,CACb,QAAQ,EAAE,MAAM,GACf,MAAM;CAIV"}

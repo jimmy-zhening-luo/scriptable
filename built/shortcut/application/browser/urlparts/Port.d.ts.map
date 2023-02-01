@@ -1,1 +1,0 @@
-{"version":3,"file":"Port.d.ts","sourceRoot":"","sources":["../../../../../src/shortcut/application/browser/urlparts/Port.ts"],"names":[],"mappings":"AACA,cAAM,IAAK,SAAQ,OAAO;gBAEtB,IAAI,CAAC,EAAE,MAAM,GACT,MAAM,GACN,IAAI;IAWV,SAAS,CAAC,KAAK,CACb,IAAI,EAAE,MAAM,GACX,MAAM;IAgBT,IAAI,MAAM,IAAI,MAAM,CAInB;IAED,QAAQ,CACN,qBAAqB,GAAE,OAAe,GACrC,IAAI,GAAG,MAAM;CAQjB"}

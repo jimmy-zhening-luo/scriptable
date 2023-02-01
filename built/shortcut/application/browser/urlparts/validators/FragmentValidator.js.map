@@ -1,1 +1,0 @@
-{"version":3,"file":"FragmentValidator.js","sourceRoot":"","sources":["../../../../../../src/shortcut/application/browser/urlparts/validators/FragmentValidator.ts"],"names":[],"mappings":"AAAC,MAAM,iBAAkB,SAAQ,eAAe;IAC9C,YAAY,QAAgB;QAC1B,KAAK,CACH,QAAQ,EACR;YACE,WAAW,EAAE;gBACX,UAAU,CAAC,IAAI;gBACf,UAAU,CAAC,KAAK;aACjB;SACF,CACF,CAAC;IACJ,CAAC;CACF"}
