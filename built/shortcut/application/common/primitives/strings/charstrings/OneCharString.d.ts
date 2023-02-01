@@ -1,5 +1,5 @@
 declare const _NRepeatCharString: typeof NRepeatCharString;
-declare class OneRepeatedChar extends _NRepeatCharString {
+declare class OneCharString extends _NRepeatCharString {
     constructor(charstring: string);
     constructor(charstring: string, ...ofChars: Char[]);
     constructor(charstring: string, ...ofStrings: string[]);

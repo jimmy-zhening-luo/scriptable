@@ -10,6 +10,14 @@ abstract class Word {
     return this.word.length;
   }
 
+  get isWord(): boolean {
+    return this.length > 0;
+  }
+
+  get hasValue(): boolean {
+    return this.isWord;
+  }
+
   get string(): string {
     return this.word;
   }

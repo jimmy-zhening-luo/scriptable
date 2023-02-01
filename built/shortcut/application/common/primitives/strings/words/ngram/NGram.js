@@ -11,14 +11,11 @@ class NGram extends _Word {
         this.n = nInt;
         this.remainder = text.slice(this.word.length);
     }
-    get isWord() {
-        return this.word.length > 0;
-    }
-    get hasValue() {
-        return this.isWord;
-    }
     get isValid() {
         return this.hasValue;
+    }
+    get isValidAndFullyConsumed() {
+        return this.isValid && !this.hasRemainder;
     }
     get hasFixedLength() {
         return this.n !== Infinity;

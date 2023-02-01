@@ -1,7 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "../numbers/**/*"
   ],
   "references": [
     {
@@ -9,6 +10,9 @@
     },
     {
       "path": "words/tsconfig.json"
+    },
+    {
+      "path": "../numbers/tsconfig.json"
     }
   ],
   "compilerOptions": {

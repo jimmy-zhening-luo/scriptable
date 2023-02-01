@@ -1,7 +1,7 @@
 abstract class ValidString {
   readonly raw: string;
-  readonly allowedChars: Array<OneRepeatedChar>;
   readonly cleaned: string;
+  readonly value: string | null;
   constructor(
     text: string,
     {
@@ -12,144 +12,98 @@ abstract class ValidString {
     }: {
       toLower?: boolean,
       trim?: boolean,
-      trimLeading?: Array<string>,
-      trimTrailing?: Array<string>
+      trimLeading?: string[],
+      trimTrailing?: string[]
     },
-    ...allowedChars: Array<ValidString.StringValidatorInput>
+    ...allowedChars: Char.CharInput[]
   ) {
     this.raw = text;
-    this.allowedChars = this
-      .parseStringValidatorInput(...allowedChars);
-    this.cleaned = this
-      .clean(
-        text,
-        toLower,
-        trim,
-        trimLeading,
-        trimTrailing
-      );
-  }
-
-  private parseStringValidatorInput(
-    ...allowedCharsInput: Array<ValidString.StringValidatorInput>
-  ): Array<OneRepeatedChar> {
-    const parsedPatterns: Array<OneRepeatedChar> = [];
-    allowedCharsInput.forEach(
-      (input) => {
-        if (input instanceof ValidString)
-          parsedPatterns.push(...input.allowedChars);
-        else if (input instanceof OneRepeatedChar)
-          parsedPatterns.push(input);
-        else
-          parsedPatterns.push(new OneRepeatedChar(input));
-      }
+    this.cleaned = clean(
+      this.raw,
+      toLower,
+      trim,
+      trimLeading,
+      trimTrailing
     );
-    return parsedPatterns;
-  }
+    this.value = parseStringToOneGrams(
+      this.cleaned
+    ).map(ngram => new ValidString._OneCharString(
+      ngram.word, ...allowedChars
+    )).every(charstring => charstring.isValid) ?
+      this.cleaned
+      : null;
 
-  private clean(
-    text: string,
-    toLower: boolean,
-    trim: boolean,
-    trimLeading: Array<string>,
-    trimTrailing: Array<string>
-  ): string {
-    return postTrim(
-      preTrim(
-        trim ?
+    function clean(
+      text: string,
+      toLower: boolean,
+      trim: boolean,
+      trimLeading: string[],
+      trimTrailing: string[]
+    ): string {
+      return postTrim(
+        preTrim(trim ?
           toLower ?
             text.toLowerCase().trim()
             : text.trim()
           : toLower ?
             text.toLowerCase()
             : text,
-        trimLeading
-      ),
-      trimTrailing
-    );
-
-    function preTrim(
-      text: string,
-      wordsToTrim: string[]
-    ): string {
-      wordsToTrim
-        .filter(
-          (word: string) => (
-            word.length > 0
-          )
-        )
-        .forEach(
-          (word: string) => {
+          trimLeading
+        ),
+        trimTrailing
+      );
+      function preTrim(
+        text: string,
+        wordsToTrim: string[]
+      ): string {
+        wordsToTrim
+          .filter(word => word !== "")
+          .forEach(word => {
             while (text.startsWith(word))
-              text = text.slice(
-                word.length
-              );
-          }
-        );
-      return text;
+              text = text.slice(word.length);
+          });
+        return text;
+      }
+      function postTrim(
+        text: string,
+        wordsToTrim: string[]
+      ): string {
+        wordsToTrim
+          .filter(word => word !== "")
+          .forEach(word => {
+            while (text.endsWith(word))
+              text = text.slice(0, 0 - word.length);
+          });
+        return text;
+      }
     }
 
-    function postTrim(
-      text: string,
-      wordsToTrim: string[]
-    ): string {
-      wordsToTrim
-        .filter(
-          (word: string) => (
-            word.length > 0
-          )
-        )
-        .forEach(
-          (word: string) => {
-            while (text.endsWith(word))
-              text = text.slice(
-                0,
-                0 - word.length
-              );
-          }
-        );
-      return text;
+    function parseStringToOneGrams(text: string): NGram[] {
+      return [...text]
+        .map(char => new ValidString._OneGram(char));
     }
   }
 
-  get validated(): string {
-    return this.isValid ?
-      this.cleaned
-      : String();
+  get hasValue(): boolean {
+    return this.value !== null;
   }
 
   get isValid(): boolean {
-    return this.oneGrams.every(
-      (oneGram) => (
-        this.allowedChars.some(
-          (oneRepeatedChar) => (
-            oneRepeatedChar.match(oneGram.word)
-          )
-        )
-      )
-    );
+    return this.hasValue;
   }
 
-  private get oneGrams(): OneGram[] {
-    return splitStringIntoOneGrams(
-      this.cleaned
-    );
+  get string(): string {
+    return this.value ?? "";
+  }
 
-    function splitStringIntoOneGrams(
-      text: string
-    ): OneGram[] {
-      return [...text]
-        .map(
-          (char) => (
-            new OneGram(char)
-          )
-        );
-    }
+  toString(): string {
+    return this.string;
   }
 }
 
 namespace ValidString {
-  export type StringValidatorInput = ValidString
-    | OneRepeatedChar
-    | CharSet.CharSetInput;
+  export const _OneGram: typeof OneGram = importModule("words/OneGram");
+  export const _OneCharString: typeof OneCharString = importModule("charstrings/OneCharString.ts");
 }
+
+module.exports = ValidString;

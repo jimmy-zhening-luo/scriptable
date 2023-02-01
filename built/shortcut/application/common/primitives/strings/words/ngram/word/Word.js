@@ -5,6 +5,12 @@ class Word {
     get length() {
         return this.word.length;
     }
+    get isWord() {
+        return this.length > 0;
+    }
+    get hasValue() {
+        return this.isWord;
+    }
     get string() {
         return this.word;
     }

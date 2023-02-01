@@ -19,16 +19,12 @@ class NGram extends _Word {
     this.remainder = text.slice(this.word.length);
   }
 
-  get isWord(): boolean {
-    return this.word.length > 0;
-  }
-
-  get hasValue(): boolean {
-    return this.isWord;
-  }
-
   get isValid(): boolean {
     return this.hasValue;
+  }
+
+  get isValidAndFullyConsumed(): boolean {
+    return this.isValid && !this.hasRemainder;
   }
 
   get hasFixedLength(): boolean {
