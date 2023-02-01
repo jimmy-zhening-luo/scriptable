@@ -1,5 +1,7 @@
+const fr_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
+
 // WIP
-class Fragment extends UrlPart {
+class Fragment extends fr_UrlPart {
   readonly encode: boolean;
   constructor(
     fragment?: string
@@ -23,3 +25,5 @@ class Fragment extends UrlPart {
       .cleaned;
   }
 }
+
+module.exports = Fragment;

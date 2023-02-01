@@ -1,5 +1,7 @@
+const pa_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
+
 // WIP
-class Path extends UrlPart {
+class Path extends pa_UrlPart {
   constructor(
     path?: (string
       | Path
@@ -15,32 +17,4 @@ class Path extends UrlPart {
 
 }
 
-// WIP
-class Query extends UrlPart {
-  readonly params: Array<typeof Query.QueryParam>;
-  constructor(
-    query?: (string
-      | Query
-      | undefined
-    )
-  ) {
-    super(query);
-    this.params = new Array<typeof Query.QueryParam>();
-  }
-
-  protected static get QueryParam() {
-    return importModule("query/QueryParam");
-  }
-
-  protected parse(query: string): string {
-    return query;
-  }
-
-  static fromObjectEntries() {
-
-  }
-
-  static fromQueryString() {
-
-  }
-}
+module.exports = Path;

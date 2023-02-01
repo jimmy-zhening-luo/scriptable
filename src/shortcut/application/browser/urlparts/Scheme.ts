@@ -1,4 +1,6 @@
-class Scheme extends UrlPart {
+const sc_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
+
+class Scheme extends sc_UrlPart {
   constructor(scheme?: string | Scheme) {
     super(scheme);
   }
@@ -8,3 +10,5 @@ class Scheme extends UrlPart {
       .validated;
   }
 }
+
+module.exports = Scheme;

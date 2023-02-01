@@ -1,5 +1,7 @@
+const ho_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
+
 // WIP
-class Host extends UrlPart {
+class Host extends ho_UrlPart {
   constructor(
     host?: string | Host
   ) {
@@ -55,3 +57,5 @@ class Host extends UrlPart {
     return new Host.RegName(host).string;
   }
 }
+
+module.exports = Host;

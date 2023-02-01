@@ -43,12 +43,12 @@ class Url {
     fragment?: Fragment | string
   ) {
     if (head === undefined) {
-      this.#scheme = new Scheme();
-      this.#host = new Host();
-      this.#port = new Port();
-      this.#path = new Path();
-      this.#query = new Query();
-      this.#fragment = new Fragment();
+      this.#scheme = new Url._Scheme();
+      this.#host = new Url._Host();
+      this.#port = new Url._Port();
+      this.#path = new Url._Path();
+      this.#query = new Url._Query();
+      this.#fragment = new Url._Fragment();
     }
     else if (head instanceof Url) {
       this.#scheme = head.scheme;
@@ -58,7 +58,7 @@ class Url {
       this.#query = head.query;
       this.#fragment = head.fragment;
     }
-    else if (head instanceof Scheme) {
+    else if (head instanceof Url._Scheme) {
       this.#scheme = head;
       this.#host = new Host(host);
       this.#port = new Port(port);
@@ -339,3 +339,14 @@ class Url {
       ?? String();
   }
 }
+
+namespace Url {
+  export const _Scheme: typeof Scheme = importModule("urlparts/Scheme");
+  export const _Host: typeof Host = importModule("urlparts/Host");
+  export const _Port: typeof Port = importModule("urlparts/Port");
+  export const _Path: typeof Path = importModule("urlparts/Path");
+  export const _Query: typeof Query = importModule("urlparts/Query");
+  export const _Fragment: typeof Fragment = importModule("urlparts/Fragment");
+}
+
+module.exports = Url;

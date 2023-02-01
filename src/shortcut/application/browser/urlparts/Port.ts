@@ -1,5 +1,7 @@
+const po_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
+
 // WIP
-class Port extends UrlPart {
+class Port extends po_UrlPart {
   constructor(
     port?: string
       | number
@@ -49,3 +51,5 @@ class Port extends UrlPart {
       : this.number;
   }
 }
+
+module.exports = Port;

@@ -19,3 +19,5 @@ abstract class UrlPart {
 
   protected abstract parse(part: string): string;
 }
+
+module.exports = UrlPart;
