@@ -3,7 +3,7 @@
 // icon-color: blue; icon-glyph: search;
 namespace Search {
   const shortcut: typeof Shortcut = importModule("shortcut/Shortcut");
-  
+
   export class Search extends shortcut {
     runtime(args: any): SearchResponse | null {
       const query: SearchQuery = new SearchQuery(args
@@ -11,7 +11,7 @@ namespace Search {
         ?.shift()
         ?? String()
       );
-      
+
       const searchShortcutConfig: SearchConfigInterface = this
         .config
         .unmerged as SearchConfigInterface;
@@ -38,7 +38,7 @@ namespace Search {
               : engine.app in SupportedAppSearchEngine ?
                 new AppSearchEngine(
                   engine.keys ?? [],
-                  engine.app
+                  engine.app as keyof typeof SupportedAppSearchEngine
                 )
                 : null
           ).filter(engine => engine !== null) as SearchEngine[];
@@ -54,9 +54,9 @@ namespace Search {
       }
     }
   }
-  
+
   type SearchConfigInterface = typeof import("./config/Application/Shortcut/Search.json");
-  
+
   class SearchQuery {
     readonly searchKey: string;
     readonly searchTerms: string[];
@@ -72,20 +72,20 @@ namespace Search {
       this.searchTerms = tokens;
     }
   }
-  
+
   interface SearchResponse {
     app: string,
     actions: string[],
     showWebview?: boolean
   }
-  
+
   enum SupportedAppSearchEngine {
     mail,
     files,
     shortcuts,
     bear
   }
-  
+
   abstract class SearchEngine {
     readonly engineKeys: string[];
     constructor(configuredKeys: string[] | string) {
@@ -94,10 +94,10 @@ namespace Search {
         : [configuredKeys]
         ).map(key => key.toLowerCase());
     }
-    
+
     abstract parseQueryToAction(query: SearchQuery): SearchResponse;
   }
-  
+
   class BrowserSearchEngine extends SearchEngine {
     readonly engineUrls: string[];
     readonly querytag: string;
@@ -115,7 +115,7 @@ namespace Search {
       this.querytag = querytag;
       this.showWebview = showWebview === undefined ? false : showWebview;
     }
-    
+
     parseQueryToAction(
       query: SearchQuery
     ): SearchResponse {
@@ -128,7 +128,7 @@ namespace Search {
           )).join("\%2B")
         ).join("+");
       const actions: string[] = this
-        .configuredUrls
+        .engineUrls
         .map(url => url
           .replace(
             this.querytag,
@@ -142,7 +142,7 @@ namespace Search {
       };
     }
   }
-  
+
   class AppSearchEngine extends SearchEngine {
     readonly app: keyof typeof SupportedAppSearchEngine;
     constructor(
@@ -152,13 +152,13 @@ namespace Search {
       super(configuredKeys);
       this.app = app;
     }
-    
+
     parseQueryToAction(
       query: SearchQuery
     ): SearchResponse {
       return {
         app: this.app,
-        actions: query.searchTerms.join(" ")
+        actions: [query.searchTerms.join(" ")]
       };
     }
   }
