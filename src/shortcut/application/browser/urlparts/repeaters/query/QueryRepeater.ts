@@ -67,3 +67,5 @@ namespace QueryRepeater {
 
   export type QueryObjectEntry = QueryTuple;
 }
+
+module.exports = QueryRepeater;

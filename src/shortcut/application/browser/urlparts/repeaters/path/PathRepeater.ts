@@ -6,3 +6,5 @@ class PathRepeater {
     this.segment = segment;
   }
 }
+
+module.exports = PathRepeater;
