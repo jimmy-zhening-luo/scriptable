@@ -1,7 +1,29 @@
-class OneRepeatedChar extends NRepeatedChar {
+const _NRepeatCharString: typeof NRepeatCharString = importModule("nrepeatcharstring/NRepeatCharString");
+
+class OneRepeatedChar extends _NRepeatCharString {
   constructor(
-    ...charsets: Array<RepeatedChar.RepeatedCharInput>
+    charstring: string
+  );
+  constructor(
+    charstring: string,
+    ...ofChars: Char[]
+  );
+  constructor(
+    charstring: string,
+    ...ofStrings: string[]
+  );
+  constructor(
+    charstring: string,
+    ...ofCharsets: string[][]
+  );
+  constructor(
+    charstring: string,
+    ...ofCharInputs: Char.CharInput[]
+  );
+  constructor(
+    charstring: string,
+    ...ofCharInputs: Char.CharInput[]
   ) {
-    super(1, ...charsets);
+    super(1, charstring, ...ofCharInputs);
   }
 }
