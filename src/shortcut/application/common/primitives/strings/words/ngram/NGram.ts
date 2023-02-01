@@ -5,9 +5,9 @@ class NGram extends _Word {
   readonly remainder: string;
   constructor(
     text: string,
-    n: PositiveInteger = new NGram.positiveInt(1)
+    n: number
   ) {
-    const nInt: number = n.value ?? 0;
+    const nInt: number = new NGram.positiveInt(n).value ?? 0;
     super(
       nInt === Infinity ?
         text

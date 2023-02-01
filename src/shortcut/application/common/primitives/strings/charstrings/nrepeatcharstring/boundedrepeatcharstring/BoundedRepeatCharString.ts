@@ -1,4 +1,6 @@
-class BoundedRepeatCharString extends RepeatedChar {
+const _RepeatCharString: typeof RepeatCharString = importModule("repeatcharstring/RepeatCharString");
+
+class BoundedRepeatCharString extends RepeatCharString {
   readonly minReps: number;
   readonly maxReps: number;
   constructor(
