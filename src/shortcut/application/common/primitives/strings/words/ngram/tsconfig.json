@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*"
+  ],
+  "references": [
+    {
+      "path": "word/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../../../.."
+  }
+}

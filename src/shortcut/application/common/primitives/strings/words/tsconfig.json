@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*"
+  ],
+  "references": [
+    {
+      "path": "ngram/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../../.."
+  }
+}

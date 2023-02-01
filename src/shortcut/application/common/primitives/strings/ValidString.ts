@@ -1,4 +1,4 @@
-abstract class StringValidator {
+abstract class ValidString {
   readonly raw: string;
   readonly allowedChars: Array<OneRepeatedChar>;
   readonly cleaned: string;
@@ -15,7 +15,7 @@ abstract class StringValidator {
       trimLeading?: Array<string>,
       trimTrailing?: Array<string>
     },
-    ...allowedChars: Array<StringValidator.StringValidatorInput>
+    ...allowedChars: Array<ValidString.StringValidatorInput>
   ) {
     this.raw = text;
     this.allowedChars = this
@@ -31,12 +31,12 @@ abstract class StringValidator {
   }
 
   private parseStringValidatorInput(
-    ...allowedCharsInput: Array<StringValidator.StringValidatorInput>
+    ...allowedCharsInput: Array<ValidString.StringValidatorInput>
   ): Array<OneRepeatedChar> {
     const parsedPatterns: Array<OneRepeatedChar> = [];
     allowedCharsInput.forEach(
       (input) => {
-        if (input instanceof StringValidator)
+        if (input instanceof ValidString)
           parsedPatterns.push(...input.allowedChars);
         else if (input instanceof OneRepeatedChar)
           parsedPatterns.push(input);
@@ -148,8 +148,8 @@ abstract class StringValidator {
   }
 }
 
-namespace StringValidator {
-  export type StringValidatorInput = StringValidator
+namespace ValidString {
+  export type StringValidatorInput = ValidString
     | OneRepeatedChar
     | CharSet.CharSetInput;
 }

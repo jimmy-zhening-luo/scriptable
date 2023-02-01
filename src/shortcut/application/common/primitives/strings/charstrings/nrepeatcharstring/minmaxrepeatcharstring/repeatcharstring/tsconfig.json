@@ -5,10 +5,10 @@
   ],
   "references": [
     {
-      "path": "nrepeatedcharstring/tsconfig.json"
+      "path": "charstring/tsconfig.json"
     }
   ],
   "compilerOptions": {
-    "rootDir": "../../../../../.."
+    "rootDir": "../../../../../../../../.."
   }
 }
