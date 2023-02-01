@@ -2,7 +2,8 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../common/primitives/strings/**/*"
+    "../common/primitives/strings/**/*",
+    "../../appdata/filesystem/file/**/*"
   ],
   "references": [
     {
@@ -10,6 +11,9 @@
     },
     {
       "path": "../common/primitives/strings/tsconfig.json"
+    },
+    {
+      "path": "../../appdata/filesystem/file/tsconfig.json"
     }
   ],
   "compilerOptions": {

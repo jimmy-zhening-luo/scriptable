@@ -8,6 +8,10 @@ abstract class UrlPart {
       this.parse(part.string)
       : this.parse(part);
   }
+  
+  get hasValue(): boolean {
+    return this.part !== "";
+  }
 
   get string(): string {
     return this.part;
