@@ -1,12 +1,3 @@
-interface UrlParts {
-  scheme?: string | Scheme,
-  host?: string | Host,
-  port?: string | number | Port,
-  path?: string | Path,
-  query?: string | Query,
-  fragment?: string | Fragment
-};
-
 class Url {
   #scheme: Scheme;
   #host: Host;
@@ -16,15 +7,12 @@ class Url {
   #fragment: Fragment;
   constructor();
   constructor(url: Url);
-  constructor(urlparts: UrlParts);
+  constructor(urlparts: Url.UrlParts);
+  constructor(schemehost: string)
   constructor(url: string);
   constructor(
-    scheme: Scheme,
-    host?: Host | string,
-    port?: Port | number | string,
-    path?: Path | string,
-    query?: Query | string,
-    fragment?: Fragment | string
+    scheme: Scheme | string,
+    host: Host | string
   );
   constructor(
     scheme: Scheme | string,
@@ -35,7 +23,7 @@ class Url {
     fragment?: Fragment | string
   );
   constructor(
-    head?: Url | UrlParts | Scheme | string,
+    head?: Url | Url.UrlParts | Scheme | string,
     host?: Host | string,
     port?: Port | number | string,
     path?: Path | string,
@@ -58,14 +46,6 @@ class Url {
       this.#query = head.query;
       this.#fragment = head.fragment;
     }
-    else if (head instanceof Url._Scheme) {
-      this.#scheme = head;
-      this.#host = new Host(host);
-      this.#port = new Port(port);
-      this.#path = new Path(path);
-      this.#query = new Query(query);
-      this.#fragment = new Fragment(fragment);
-    }
     else if (typeof head === "string"
       && host === undefined
       && port === undefined
@@ -81,26 +61,29 @@ class Url {
       this.#query = parsedUrl.query;
       this.#fragment = parsedUrl.fragment;
     }
-    else if (typeof head === "string") {
-      this.#scheme = new Scheme(head);
-      this.#host = new Host(host);
-      this.#port = new Port(port);
-      this.#path = new Path(path);
-      this.#query = new Query(query);
-      this.#fragment = new Fragment(fragment);
+    else if (host !== undefined) {
+      this.#scheme = new Url._Scheme(head);
+      this.#host = new Url._Host(host);
+      this.#port = new Url._Port(port);
+      this.#path = new Url._Path(path);
+      this.#query = new Url._Query(query);
+      this.#fragment = new Url._Fragment(fragment);
     }
     else {
-      this.#scheme = new Scheme(head.scheme);
-      this.#host = new Host(head.host);
-      this.#port = new Port(head.port);
-      this.#path = new Path(head.path);
-      this.#query = new Query(head.query);
-      this.#fragment = new Fragment(head.fragment);
+      this.#scheme = new Url._Scheme(head.scheme);
+      this.#host = new Url._Host(head.host);
+      this.#port = new Url._Port(head.port);
+      this.#path = new Url._Path(head.path);
+      this.#query = new Url._Query(head.query);
+      this.#fragment = new Url._Fragment(head.fragment);
     }
-  }
-
-  private parse(url: string): Url {
-    return new Url(url);
+    
+    function parse(url: string): Url {
+      const urlParts: Url.UrlParts = {
+        
+      };
+      return new Url(urlParts);
+    }
   }
 
   get scheme(): Scheme {
@@ -113,7 +96,7 @@ class Url {
       | undefined
     )
   ) {
-    this.#scheme = new Scheme(
+    this.#scheme = new Url._Scheme(
       scheme
     );
   }
@@ -128,7 +111,7 @@ class Url {
       | undefined
     )
   ) {
-    this.#host = new Host(host);
+    this.#host = new Url._Host(host);
   }
 
   get port(): Port {
@@ -142,7 +125,7 @@ class Url {
       | undefined
     )
   ) {
-    this.#port = new Port(port);
+    this.#port = new Url._Port(port);
   }
 
   get path(): Path {
@@ -155,7 +138,7 @@ class Url {
       | undefined
     )
   ) {
-    this.#path = new Path(path);
+    this.#path = new Url._Path(path);
   }
 
   get query(): Query {
@@ -168,7 +151,7 @@ class Url {
       | undefined
     )
   ) {
-    this.#query = new Query(query);
+    this.#query = new Url._Query(query);
   }
 
   get fragment(): Fragment {
@@ -181,7 +164,7 @@ class Url {
       | undefined
     )
   ) {
-    this.#fragment = new Fragment(
+    this.#fragment = new Url._Fragment(
       fragment
     );
   }
@@ -225,8 +208,8 @@ class Url {
       | Host
     )
   ): string {
-    const left: string = new Scheme(scheme).string;
-    const right: string = new Host(host).string;
+    const left: string = new Url._Scheme(scheme).string;
+    const right: string = new Url._Host(host).string;
     const delim: string = left === String() ?
       String()
       : "://";
@@ -245,7 +228,7 @@ class Url {
     left = left.trim();
     const right: string = left === String() ?
       String()
-      : new Port(port).string
+      : new Url._Port(port).string
     const delim: string = (
       right === String()
       || right === "0"
@@ -264,7 +247,7 @@ class Url {
     )
   ): string {
     left = left.trim();
-    const right: string = new Path(path).string;
+    const right: string = new Url._Path(path).string;
     const delim: string = String();
     return [left, right]
       .join(delim)
@@ -278,7 +261,7 @@ class Url {
     )
   ): string {
     left = left.trim();
-    const right: string = new Query(query).string;
+    const right: string = new Url._Query(query).string;
     const delim: string = right === String() ?
       String()
       : "?";
@@ -294,7 +277,7 @@ class Url {
     )
   ): string {
     left = left.trim();
-    const right: string = new Fragment(fragment).string;
+    const right: string = new Url._Fragment(fragment).string;
     const delim = right === String() ?
       String()
       : "#";
@@ -341,6 +324,15 @@ class Url {
 }
 
 namespace Url {
+  export interface UrlParts {
+    scheme?: string | Scheme,
+    host?: string | Host,
+    port?: string | number | Port,
+    path?: string | Path,
+    query?: string | Query,
+    fragment?: string | Fragment
+  };
+  
   export const _Scheme: typeof Scheme = importModule("urlparts/Scheme");
   export const _Host: typeof Host = importModule("urlparts/Host");
   export const _Port: typeof Port = importModule("urlparts/Port");
