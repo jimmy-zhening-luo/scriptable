@@ -79,10 +79,26 @@ class Url {
     }
     
     function parse(url: string): Url {
-      const urlParts: Url.UrlParts = {
+      let urlParts: Url.UrlParts = { };
+      
+      const url_fragment: string[] = url
+        .trim()
+        .split("#");
+      url = url_fragment
+        .shift() ?? "";
+      urlParts.fragment = url_fragment.join("#").trim();
+      
+      const queryOrSchemehostpath_query: string[] = url
+        .trim()
+        .split("?");
+      const queryOrSchemehostpath = queryOrSchemehostpath_query.shift();
+      const schemehostpath = queryOrSchemehostpath.includes("=") ?
+        ""
+        : queryOrSchemehostpath;
+      urlStringParts.
+      
         
-      };
-      return new Url(urlParts);
+      return new Url(urlStringParts);
     }
   }
 
