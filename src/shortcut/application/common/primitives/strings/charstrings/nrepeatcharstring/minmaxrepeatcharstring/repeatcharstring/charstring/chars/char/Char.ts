@@ -21,28 +21,28 @@ class Char {
     return this.chars.includes(char);
   }
 
-  static get alphaNumeric(): Array<string> {
+  static get alphaNumeric(): string[] {
     return [
       ...this.numbers,
       ...this.alpha
     ];
   }
 
-  static get alphaNumericLower(): Array<string> {
+  static get alphaNumericLower(): string[] {
     return [
       ...this.numbers,
       ...this.alphaLower
     ];
   }
 
-  static get alphaNumericUpper(): Array<string> {
+  static get alphaNumericUpper(): string[] {
     return [
       ...this.numbers,
       ...this.alphaUpper
     ];
   }
 
-  static get numbers(): Array<string> {
+  static get numbers(): string[] {
     return [
       "0",
       "1",
@@ -57,14 +57,14 @@ class Char {
     ];
   }
 
-  static get alpha(): Array<string> {
+  static get alpha(): string[] {
     return [
       ...this.alphaLower,
       ...this.alphaUpper
     ];
   }
 
-  static get alphaLower(): Array<string> {
+  static get alphaLower(): string[] {
     return [
       "a",
       "b",
@@ -95,7 +95,7 @@ class Char {
     ];
   }
 
-  static get alphaUpper(): Array<string> {
+  static get alphaUpper(): string[] {
     return [
       "A",
       "B",

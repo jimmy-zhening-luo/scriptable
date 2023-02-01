@@ -1,5 +1,7 @@
-class UrlCharSet extends CharSet {
-  static get safe(): Array<string> {
+const _Char: typeof Char = importModule("char/Char");
+
+class UrlChar extends _Char {
+  static get safe(): string[] {
     return [
       this.dollar,
       this.hyphen,
@@ -9,7 +11,7 @@ class UrlCharSet extends CharSet {
     ];
   }
 
-  static get extra(): Array<string> {
+  static get extra(): string[] {
     return [
       this.exclam,
       this.asterisk,
@@ -20,7 +22,7 @@ class UrlCharSet extends CharSet {
     ];
   }
 
-  static get national(): Array<string> {
+  static get national(): string[] {
     return [
       this.leftBrace,
       this.rightBrace,
@@ -34,7 +36,7 @@ class UrlCharSet extends CharSet {
     ];
   }
 
-  static get punctuation(): Array<string> {
+  static get punctuation(): string[] {
     return [
       this.lessThan,
       this.greaterThan,
@@ -44,7 +46,7 @@ class UrlCharSet extends CharSet {
     ];
   }
 
-  static get hex(): Array<string> {
+  static get hex(): string[] {
     return [
       ...this.numbers,
       "A",
@@ -62,7 +64,7 @@ class UrlCharSet extends CharSet {
     ];
   }
 
-  static get unreserved(): Array<string> {
+  static get unreserved(): string[] {
     return [
       ...this.alphaNumeric,
       ...this.safe,
@@ -70,3 +72,5 @@ class UrlCharSet extends CharSet {
     ];
   }
 }
+
+module.exports = UrlChar;
