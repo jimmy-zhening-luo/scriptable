@@ -1,28 +1,23 @@
-abstract class RepeatedChar {
-  readonly charset: CharSet;
-  constructor(
-    ...charsets: Array<RepeatedChar.RepeatedCharInput>
-  ) {
-    const chars: Array<string> = [];
-    charsets.forEach(
-      (charset) => {
-        if (charset instanceof RepeatedChar)
-          chars.push(...charset.charset.chars);
-        else if (charset instanceof CharSet)
-          chars.push(...charset.chars);
-        else if (Array.isArray(charset))
-          chars.push(...charset);
-        else
-          chars.push(charset);
-      }
-    );
-    this.charset = new CharSet(chars);
+const _CharString: typeof CharString = importModule("charstring/CharString");
+
+class RepeatCharString extends CharString {
+  protected qualifies(
+    candidateCharString: string
+  ): boolean {
+    return this
+      .parseCharStringToCharArray(candidateCharString)
+      .every(char => this
+        .ofChar
+        .includes(char)
+      );
   }
 
-  abstract match(token: string): boolean;
+  protected parseCharStringToCharArray(
+    candidateCharString: string
+  ): string[] {
+    return [...candidateCharString];
+  }
 }
 
-namespace RepeatedChar {
-  export type RepeatedCharInput = RepeatedChar
-    | CharSet.CharSetInput;
-}
+
+module.exports = RepeatCharString;

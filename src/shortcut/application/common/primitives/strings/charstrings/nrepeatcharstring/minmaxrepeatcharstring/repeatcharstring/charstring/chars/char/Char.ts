@@ -1,24 +1,30 @@
 class Char {
-  readonly chars: string[];
+  readonly charset: string[];
+  constructor();
+  constructor(...chars: Char[]);
+  constructor(...strings: string[]);
+  constructor(...charsets: string[][]);
+  constructor(...charInputs: Char.CharInput[]);
   constructor(
-    ...charSets: Char.CharInput[]
+    ...charInputs: Char.CharInput[]
   ) {
-    this.chars = new Array<string>();
-    charSets.forEach(
-      (charset: Char.CharInput) => {
-        charset instanceof Char ?
-          this.chars.push(
-            ...charset.chars
-          )
-          : Array.isArray(charset) ?
-            this.chars.push(...charset)
-            : this.chars.push(charset);
+    this.charset = [];
+    charInputs.forEach(input => {
+      input instanceof Char ?
+        this.charset.push(...input.charset)
+        : Array.isArray(input) ?
+          this.charset.push(...input)
+          : this.charset.push(input);
       }
     );
   }
 
   includes(char: string): boolean {
-    return this.chars.includes(char);
+    return this.charset.includes(char);
+  }
+
+  toString(): string {
+    return this.charset.join(" | ");
   }
 
   static get alphaNumeric(): string[] {
@@ -260,9 +266,7 @@ class Char {
 }
 
 namespace Char {
-  export type CharInput = Char
-    | string[]
-    | string;
+  export type CharInput = Char | string | string[];
 }
 
 module.exports = Char;
