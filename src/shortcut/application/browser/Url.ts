@@ -53,7 +53,7 @@ class Url {
       && query === undefined
       && fragment === undefined
     ) {
-      const parsedUrl: Url = this.parse(head);
+      const parsedUrl: Url = parse(head);
       this.#scheme = parsedUrl.scheme;
       this.#host = parsedUrl.host;
       this.#port = parsedUrl.port;
@@ -200,7 +200,7 @@ class Url {
     ).trim();
   }
 
-  static appendHostToScheme(
+  private static appendHostToScheme(
     scheme: (string
       | Scheme
     ),
@@ -218,7 +218,7 @@ class Url {
       .trim();
   }
 
-  static appendPortToLeft(
+  private static appendPortToLeft(
     left: string,
     port: (string
       | number
@@ -240,7 +240,7 @@ class Url {
       .trim();
   }
 
-  static appendPathToLeft(
+  private static appendPathToLeft(
     left: string,
     path: (string
       | Path
@@ -254,7 +254,7 @@ class Url {
       .trim();
   }
 
-  static appendQueryToLeft(
+  private static appendQueryToLeft(
     left: string,
     query: (string
       | Query
@@ -270,7 +270,7 @@ class Url {
       .trim();
   }
 
-  static appendFragmentToLeft(
+  private static appendFragmentToLeft(
     left: string,
     fragment: (string
       | Fragment
