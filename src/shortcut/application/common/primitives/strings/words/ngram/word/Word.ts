@@ -1,4 +1,4 @@
-abstract class Gram {
+abstract class Word {
   readonly word: string;
   constructor(
     word: string
@@ -18,3 +18,5 @@ abstract class Gram {
     return this.string;
   }
 }
+
+module.exports = Word;

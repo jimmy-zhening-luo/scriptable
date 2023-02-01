@@ -1,44 +1,47 @@
-class NGram extends Gram {
+const _Word: typeof Word = importModule("word/Word");
+
+class NGram extends _Word {
   readonly n: number;
   readonly remainder: string;
   constructor(
     text: string,
-    n: number = 1
+    n: PositiveInteger = new NGram.positiveInt(1)
   ) {
-    n = Number.isNaN(n) ?
-      1
-      : Number.isFinite(n) ?
-        n >= 1 ?
-          Math.round(n)
-          : 1
-        : n !== -Infinity ?
-          Infinity
-          : 1;
+    const nInt: number = n.value ?? 0;
     super(
-      n === Infinity ?
+      nInt === Infinity ?
         text
-        : text.length >= n ?
-          text.slice(0, n)
+        : text.length >= nInt ?
+          text.slice(0, nInt)
           : String()
     );
-    this.n = n;
-    this.remainder = text
-      .slice(this.word.length);
+    this.n = nInt;
+    this.remainder = text.slice(this.word.length);
   }
 
-  get isToken(): boolean {
+  get isWord(): boolean {
     return this.word.length > 0;
   }
 
-  get valid(): boolean {
-    return this.isToken;
+  get hasValue(): boolean {
+    return this.isWord;
   }
 
-  get deterministic(): boolean {
-    return Number.isFinite(this.n);
+  get isValid(): boolean {
+    return this.hasValue;
+  }
+
+  get hasFixedLength(): boolean {
+    return this.n !== Infinity;
   }
 
   get hasRemainder(): boolean {
     return this.remainder.length > 0;
   }
 }
+
+namespace NGram {
+  export const positiveInt: typeof PositiveInteger = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger.ts");
+}
+
+module.exports = NGram;

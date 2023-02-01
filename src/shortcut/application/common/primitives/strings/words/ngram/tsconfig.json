@@ -1,11 +1,15 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "../../../numbers/**/*"
   ],
   "references": [
     {
       "path": "word/tsconfig.json"
+    },
+    {
+      "path": "../../../numbers/tsconfig.json"
     }
   ],
   "compilerOptions": {
