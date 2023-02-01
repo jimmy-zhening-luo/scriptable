@@ -1,8 +1,8 @@
 const _Word = importModule("word/Word");
 class NGram extends _Word {
-    constructor(text, n = new NGram.positiveInt(1)) {
+    constructor(text, n) {
         var _a;
-        const nInt = (_a = n.value) !== null && _a !== void 0 ? _a : 0;
+        const nInt = (_a = new NGram.positiveInt(n).value) !== null && _a !== void 0 ? _a : 0;
         super(nInt === Infinity ?
             text
             : text.length >= nInt ?

@@ -1,43 +1,70 @@
 const _RepeatCharString: typeof RepeatCharString = importModule("repeatcharstring/RepeatCharString");
 
-class BoundedRepeatCharString extends RepeatCharString {
-  readonly minReps: number;
-  readonly maxReps: number;
+class BoundedRepeatCharString extends _RepeatCharString {
+  readonly min: number;
+  readonly max: number;
   constructor(
-    minReps: number,
-    maxReps: number,
-    ...charsets: Array<RepeatedChar.RepeatedCharInput>
+    min: number,
+    max: number,
+    charstring: string
+  );
+  constructor(
+    min: number,
+    max: number,
+    charstring: string,
+    ...ofChars: Char[]
+  );
+  constructor(
+    min: number,
+    max: number,
+    charstring: string,
+    ...ofStrings: string[]
+  );
+  constructor(
+    min: number,
+    max: number,
+    charstring: string,
+    ...ofCharsets: string[][]
+  );
+  constructor(
+    min: number,
+    max: number,
+    charstring: string,
+    ...ofCharInputs: Char.CharInput[]
+  );
+  constructor(
+    min: number,
+    max: number,
+    charstring: string,
+    ...ofCharInputs: Char.CharInput[]
   ) {
-    super(...charsets);
-    if (
-      minReps < 0
-      || maxReps < 0
-      || Number.isNaN(minReps)
-      || Number.isNaN(maxReps)
-    )
-      minReps = maxReps = 0;
-
-    if (minReps > maxReps) {
-      const tmp: number = minReps;
-      minReps = maxReps;
-      maxReps = tmp;
-    }
-
-    if (!Number.isFinite(minReps))
-      this.minReps = this.maxReps = 0;
+    let minInt: number = new BoundedRepeatCharString.positiveInt(min).toNumber();
+    let maxInt: number = new BoundedRepeatCharString.positiveInt(max).toNumber();
+    if (Number.isNaN(minInt)
+      || Number.isNaN(maxInt)
+    ) minInt = maxInt = 0;
     else {
-      this.minReps = minReps;
-      this.maxReps = maxReps;
+      if (minInt > maxInt) {
+        const prevMinInt: number = minInt;
+        minInt = maxInt;
+        maxInt = prevMinInt;
+      }
+      if (minInt === Infinity)
+        minInt = maxInt = 0;
     }
-  }
-
-  match(token: string): boolean {
-    return token.length >= this.minReps
-      && token.length <= this.maxReps
-      && [...token].every(
-        (char: string) => (
-          this.charset.includes(char)
-        )
-      );
+    super(
+      charstring.length >= minInt && charstring.length <= maxInt ?
+        charstring
+        : "",
+      ...ofCharInputs
+    );
+    this.min = minInt;
+    this.max = maxInt;
   }
 }
+
+namespace BoundedRepeatCharString {
+  export const positiveInt: typeof PositiveInteger = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger.ts");
+}
+
+module.exports = BoundedRepeatCharString;

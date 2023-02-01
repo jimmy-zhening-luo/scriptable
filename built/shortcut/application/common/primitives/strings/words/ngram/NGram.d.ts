@@ -2,7 +2,7 @@ declare const _Word: typeof Word;
 declare class NGram extends _Word {
     readonly n: number;
     readonly remainder: string;
-    constructor(text: string, n?: PositiveInteger);
+    constructor(text: string, n: number);
     get isWord(): boolean;
     get hasValue(): boolean;
     get isValid(): boolean;
