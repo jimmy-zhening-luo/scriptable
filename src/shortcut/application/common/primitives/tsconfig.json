@@ -5,7 +5,10 @@
   ],
   "references": [
     {
-      "path": "number/tsconfig.json"
+      "path": "numbers/tsconfig.json"
+    },
+    {
+      "path": "strings/tsconfig.json"
     }
   ],
   "compilerOptions": {

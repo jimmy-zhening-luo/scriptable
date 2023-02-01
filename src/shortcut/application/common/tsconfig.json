@@ -5,10 +5,7 @@
   ],
   "references": [
     {
-      "path": "primitive/tsconfig.json"
-    },
-    {
-      "path": "validation/tsconfig.json"
+      "path": "primitives/tsconfig.json"
     }
   ],
   "compilerOptions": {

@@ -5,10 +5,13 @@
   ],
   "references": [
     {
-      "path": "stringvalidator/tsconfig.json"
+      "path": "charstrings/tsconfig.json"
+    },
+    {
+      "path": "words/tsconfig.json"
     }
   ],
   "compilerOptions": {
-    "rootDir": "../../../.."
+    "rootDir": "../../../../.."
   }
 }
