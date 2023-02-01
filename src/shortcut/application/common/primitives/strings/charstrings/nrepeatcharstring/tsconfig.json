@@ -5,7 +5,7 @@
   ],
   "references": [
     {
-      "path": "minmaxrepeatcharstring/tsconfig.json"
+      "path": "boundedrepeatcharstring/tsconfig.json"
     }
   ],
   "compilerOptions": {

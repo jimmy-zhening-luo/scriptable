@@ -1,4 +1,4 @@
-class MinMaxRepeatedChar extends RepeatedChar {
+class BoundedRepeatCharString extends RepeatedChar {
   readonly minReps: number;
   readonly maxReps: number;
   constructor(
