@@ -5,6 +5,7 @@ class Url {
   #path: Path = new Url._Path();
   #query: Query = new Url._Query();
   #fragment: Fragment = new Url._Fragment();
+
   constructor();
   constructor(url: Url);
   constructor(urlparts: Url.UrlParts);
@@ -17,6 +18,7 @@ class Url {
     query?: Query | string,
     fragment?: Fragment | string
   );
+
   constructor(
     head?: Url | Url.UrlParts | Scheme | string,
     host?: Host | string,
@@ -26,54 +28,78 @@ class Url {
     fragment?: Fragment | string
   ) {
     if (head === undefined) {
-      this.scheme = new Url._Scheme();
-      this.host = new Url._Host();
-      this.port = new Url._Port();
-      this.path = new Url._Path();
-      this.query = new Url._Query();
-      this.fragment = new Url._Fragment();
+      this.scheme = undefined;
+      this.host = undefined;
+      this.port = undefined;
+      this.path = undefined;
+      this.query = undefined;
+      this.fragment = undefined;
     }
     else if (head instanceof Url) {
-      this.scheme = head.scheme;
-      this.host = head.host;
-      this.port = head.port;
-      this.path = head.path;
-      this.query = head.query;
-      this.fragment = head.fragment;
+      const url: Url = head;
+      this.scheme = url.scheme;
+      this.host = url.host;
+      this.port = url.port;
+      this.path = url.path;
+      this.query = url.query;
+      this.fragment = url.fragment;
     }
-    else if (typeof head === "string"
-      && host === undefined
-      && port === undefined
-      && path === undefined
-      && query === undefined
-      && fragment === undefined
+    else if (typeof head === "string") {
+      if (host === undefined) {
+        const url: string = head;
+        const parsedUrl: Url = parse(url);
+        this.scheme = parsedUrl.scheme;
+        this.host = parsedUrl.host;
+        this.port = parsedUrl.port;
+        this.path = parsedUrl.path;
+        this.query = parsedUrl.query;
+        this.fragment = parsedUrl.fragment;
+      }
+      else {
+        const scheme: string = head;
+        this.scheme = scheme;
+        this.host = host;
+        this.port = port;
+        this.path = path;
+        this.query = query;
+        this.fragment = fragment;
+      }
+    }
+    else if (
+      "part" in head
+      && "string" in head
+      && "hasValue" in head
     ) {
-      const parsedUrl: Url = parse(head);
-      this.scheme = parsedUrl.scheme;
-      this.host = parsedUrl.host;
-      this.port = parsedUrl.port;
-      this.path = parsedUrl.path;
-      this.query = parsedUrl.query;
-      this.fragment = parsedUrl.fragment;
-    }
-    else if (host !== undefined) {
-      this.scheme = new Url._Scheme(head);
-      this.host = new Url._Host(host);
-      this.port = new Url._Port(port);
-      this.path = new Url._Path(path);
-      this.query = new Url._Query(query);
-      this.fragment = new Url._Fragment(fragment);
+      if (host === undefined) {
+        this.scheme = undefined;
+        this.host = undefined;
+        this.port = undefined;
+        this.path = undefined;
+        this.query = undefined;
+        this.fragment = undefined;
+      }
+      else {
+        const scheme: Scheme = head;
+        this.scheme = scheme;
+        this.host = host;
+        this.port = port;
+        this.path = path;
+        this.query = query;
+        this.fragment = fragment;
+      }
     }
     else {
-      this.scheme = new Url._Scheme(head.scheme);
-      this.host = new Url._Host(head.host);
-      this.port = new Url._Port(head.port);
-      this.path = new Url._Path(head.path);
-      this.query = new Url._Query(head.query);
-      this.fragment = new Url._Fragment(head.fragment);
+      const urlParts: Url.UrlParts = head;
+      this.scheme = urlParts.scheme;
+      this.host = urlParts.host;
+      this.port = urlParts.port;
+      this.path = urlParts.path;
+      this.query = urlParts.query;
+      this.fragment = urlParts.fragment;
     }
 
     function parse(url: string): Url {
+
       let urlStringParts: Url.UrlParts = { };
 
       const url_fragment: string[] = url
@@ -219,6 +245,8 @@ class Url {
   }
 
   private get joinedUrlParts(): string {
+
+
     const hostPort: string = this.host === "" ?
       ""
       : this.port === "" ?
