@@ -1,4 +1,4 @@
-abstract class ValidString {
+class ValidString {
   readonly raw: string;
   readonly cleaned: string;
   readonly value: string | null;

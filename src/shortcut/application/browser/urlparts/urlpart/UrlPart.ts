@@ -2,11 +2,9 @@ abstract class UrlPart {
   readonly part: string;
   constructor(
     part: UrlPart
-      | string = String()
+      | string = ""
   ) {
-    this.part = part instanceof UrlPart ?
-      this.parse(part.string)
-      : this.parse(part);
+    this.part = this.parse(part.toString());
   }
   
   get hasValue(): boolean {
