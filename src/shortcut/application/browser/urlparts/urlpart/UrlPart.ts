@@ -6,7 +6,7 @@ abstract class UrlPart {
   ) {
     this.part = this.parse(part.toString());
   }
-  
+
   get hasValue(): boolean {
     return this.part !== "";
   }
