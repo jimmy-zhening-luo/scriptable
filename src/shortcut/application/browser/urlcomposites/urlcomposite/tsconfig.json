@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+    "../urlparts/**/*"
+  ],
+  "references": [
+    {
+      "path": "../urlparts/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../.."
+  }
+}
