@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+    "../../../../common/primitives/strings/**/*"
+  ],
+  "references": [
+    {
+      "path": "hostvalidators/tsconfig.json"
+    },
+    {
+      "path": "../../../../common/primitives/strings/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../../.."
+  }
+}

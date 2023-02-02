@@ -5,7 +5,10 @@
   ],
   "references": [
     {
-      "path": "iphostvalidator/tsconfig.json"
+      "path": "path/tsconfig.json"
+    },
+    {
+      "path": "query/tsconfig.json"
     }
   ],
   "compilerOptions": {

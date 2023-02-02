@@ -6,7 +6,13 @@
   ],
   "references": [
     {
-      "path": "hostvalidators/tsconfig.json"
+      "path": "repeaters/tsconfig.json"
+    },
+    {
+      "path": "urlpart/tsconfig.json"
+    },
+    {
+      "path": "validators/tsconfig.json"
     },
     {
       "path": "../../../common/primitives/strings/tsconfig.json"

@@ -7,7 +7,7 @@
   ],
   "references": [
     {
-      "path": "urlparts/tsconfig.json"
+      "path": "urlcomposites/tsconfig.json"
     },
     {
       "path": "../common/primitives/strings/tsconfig.json"
