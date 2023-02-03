@@ -2,8 +2,8 @@ abstract class Real {
   readonly bounds: Bounds;
   readonly cardinality: Cardinality;
   constructor(
-    cardinality: Cardinality = new AnyCardinality(),
-    bounds: Bounds = new Infinite()
+    cardinality: Cardinality = new Real._AnyCardinality(),
+    bounds: Bounds = new Real._Infinite()
   ) {
     this.cardinality = cardinality;
     this.bounds = bounds;
@@ -18,3 +18,11 @@ abstract class Real {
     return this.string;
   }
 }
+
+namespace {
+  export const _AnyCardinality: typeof AnyCardinality = importModule("set/AnyCardinality");
+  
+  export const _Infinite: typeof Infinite = importModule("set/Infinite"); 
+}
+
+module.exports = Real;

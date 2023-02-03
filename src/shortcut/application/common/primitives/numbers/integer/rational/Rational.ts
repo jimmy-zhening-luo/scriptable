@@ -1,4 +1,6 @@
-class Rational extends Real {
+const _Real: typeof Real = importModule("real/Real");
+
+class Rational extends _Real {
   readonly value: number | null;
   constructor(
     value: Rational | number,
@@ -80,3 +82,5 @@ class Rational extends Real {
       : NaN;
   }
 }
+
+module.exports = Rational;

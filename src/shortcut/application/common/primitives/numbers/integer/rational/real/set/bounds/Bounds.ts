@@ -7,3 +7,5 @@ abstract class Bounds {
       && !Number.isNaN(value);
   }
 }
+
+module.exports = Bounds;

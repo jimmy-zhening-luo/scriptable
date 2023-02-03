@@ -7,3 +7,5 @@ abstract class Cardinality {
       && !Number.isNaN(value);
   }
 }
+
+module.exports = Cardinality;

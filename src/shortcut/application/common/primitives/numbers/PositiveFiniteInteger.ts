@@ -1,9 +1,19 @@
-class PositiveFiniteInteger extends Integer {
+const pf_Integer: typeof Integer = importModule("integer/Integers");
+
+class PositiveFiniteInteger extends pf_Integer {
   constructor(value: number | Rational) {
     super(
       value,
-      new Positive(),
-      new Finite()
+      new PositiveFiniteInteger._Positive(),
+      new PositiveFiniteInteger._Finite()
     );
   }
 }
+
+namespace PositiveFiniteInteger {
+  export const _Positive: typeof Positive = importModule("integer/rational/real/set/Positive");
+  
+  export const _Finite: typeof Finite = importModule("integer/rational/real/set/Finite");
+}
+
+module.exports = PositiveFiniteInteger;
