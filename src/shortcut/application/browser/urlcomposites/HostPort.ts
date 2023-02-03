@@ -5,7 +5,6 @@ class HostPort extends hp_UrlComposite {
   readonly host: Host = this.parts[0];
   readonly port: Port = this.parts[1];
 
-
   constructor();
   constructor(hostport: HostPort);
   constructor(host: string | Host);
