@@ -105,12 +105,12 @@ class Url {
       const url_fragment: string[] = url
         .trim()
         .split("#");
-      url = url_fragment.shift();
+      url = url_fragment.shift() ?? "";
       urlStringParts.fragment = url_fragment.join("#");
 
       const queryOrSchemehostportpath_query: string[] = url.split("?");
-      const queryOrSchemehostportpath: string = queryOrSchemehostportpath_query.shift();
-      const schemehostpath: string = queryOrSchemehostportpath.includes("=") ?
+      const queryOrSchemehostportpath: string = queryOrSchemehostportpath_query.shift() ?? "";
+      const schemehostportpath: string = queryOrSchemehostportpath.includes("=") ?
         ""
         : queryOrSchemehostportpath;
       urlStringParts.query = queryOrSchemehostportpath.includes("=") ?
@@ -121,7 +121,7 @@ class Url {
         : queryOrSchemehostportpath_query.join("?");
 
       const scheme_hostportpath: string[] = schemehostportpath.split("://");
-      const schemeOrHostportpath: string = scheme_hostportpath.shift();
+      const schemeOrHostportpath: string = scheme_hostportpath.shift() ?? "";
       urlStringParts.scheme = scheme_hostportpath.length > 0 ?
         schemeOrHostportpath
         : (schemeOrHostportpath.includes(".")
@@ -137,12 +137,12 @@ class Url {
       const hostport_path: string[] = Url._File
         .trimPath(hostportpath)
         .split("/");
-      const hostport: string = hostport_path.shift();
+      const hostport: string = hostport_path.shift() ?? "";
       urlStringParts.path = hostport_path.join("/");
 
       const host_port: string[] =
         hostport.split(":");
-      urlStringParts.host = host_port.shift();
+      urlStringParts.host = host_port.shift() ?? "";
       urlStringParts.port = urlStringParts.host === "" ?
         ""
         : host_port.join(":");

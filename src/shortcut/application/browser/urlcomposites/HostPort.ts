@@ -6,30 +6,29 @@ class HostPort extends hp_UrlComposite {
   readonly port: Port = this.parts[1];
 
   constructor();
-  constructor(hostport: HostPort);
-  constructor(host: string | Host);
+  constructor(hostPort?: HostPort);
+  constructor(host?: string | Host);
   constructor(
-    host: string | Host | undefined,
-    port: string | number | Port | undefined
+    host?: string | Host,
+    port?: string | number | Port
   );
 
   constructor(
-    hostOrHostport?: string | Host | HostPort | undefined,
-    port?: string | number | Port | undefined
+    hostOrHostPort?: string | Host | HostPort,
+    port?: string | number | Port
   ) {
     super();
-    if (hostOrHostport === undefined)
-      this.parts = [
+    this.parts = hostOrHostPort === undefined ?
+      [
         new HostPort._Host(),
         new HostPort._Port()
-      ];
-    else if (hostOrHostport instanceof HostPort)
-      this.parts = hostOrHostport.parts;
-    else
-      this.parts = [
-        new HostPort._Host(hostOrHostport),
-        new HostPort._Port(port)
-      ];
+      ]
+      : hostOrHostPort instanceof HostPort ?
+        hostOrHostPort.parts
+        : [
+          new HostPort._Host(hostOrHostPort),
+          new HostPort._Port(port)
+        ];
   }
 
   get composite(): string {

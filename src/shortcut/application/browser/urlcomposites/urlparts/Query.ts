@@ -6,7 +6,6 @@ class Query extends qu_UrlPart {
   constructor(
     query?: (string
       | Query
-      | undefined
     )
   ) {
     super(query);

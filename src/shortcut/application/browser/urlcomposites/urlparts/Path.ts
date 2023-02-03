@@ -5,7 +5,6 @@ class Path extends pa_UrlPart {
   constructor(
     path?: (string
       | Path
-      | undefined
     )
   ) {
     super(path);
