@@ -12,26 +12,61 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
   constructor(schemeHostPortPathQueryFragment?: SchemeHostPortPathQueryFragment);
   constructor(schemeHostPort?: SchemeHostPort);
   constructor(
+    schemeHostPortPathQueryFragmentTuple?: [
+      string | Scheme,
+      string | Host,
+      string | number | Port,
+      string | Path,
+      string | Query,
+      string | Fragment
+    ]
+  )
+  constructor(
     schemeHostPort?: SchemeHostPort,
     pathQueryFragment?: PathQueryFragment
   );
 
   constructor(
-    schemeHostPortOrSchemeHostPortPathQueryFragment?: SchemeHostPort | SchemeHostPortPathQueryFragment,
-    pathQueryFragment?: PathQueryFragment
+    schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment?:
+      | SchemeHostPort
+      | SchemeHostPortPathQueryFragment
+      | [
+        string | Scheme,
+        string | Host,
+        string | number | Port,
+        string | Path,
+        string | Query,
+        string | Fragment
+      ]
+    ,
+    hostOrPathQueryFragment?: PathQueryFragment
   ) {
     super();
-    this.parts = schemeHostPortOrSchemeHostPortPathQueryFragment === undefined ?
+    this.parts = schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment === undefined ?
       [
         new SchemeHostPortPathQueryFragment._SchemeHostPort(),
         new SchemeHostPortPathQueryFragment._PathQueryFragment()
       ]
-      : schemeHostPortOrSchemeHostPortPathQueryFragment instanceof SchemeHostPortPathQueryFragment ?
-        schemeHostPortOrSchemeHostPortPathQueryFragment.parts
-        : [
-          new SchemeHostPortPathQueryFragment._SchemeHostPort(schemeHostPortOrSchemeHostPortPathQueryFragment),
-          new SchemeHostPortPathQueryFragment._PathQueryFragment(pathQueryFragment)
-        ];
+      : schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment instanceof SchemeHostPortPathQueryFragment ?
+        schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment.parts
+        : Array.isArray(schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment) ?
+          [
+            new SchemeHostPortPathQueryFragment._SchemeHostPort(schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[0], [
+              schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[1],
+              schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[2]
+            ]),
+            new SchemeHostPortPathQueryFragment._PathQueryFragment(
+              [
+                schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[3],
+                schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[4]
+              ],
+              schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[5]
+            )
+          ]
+          : [
+            new SchemeHostPortPathQueryFragment._SchemeHostPort(schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment),
+            new SchemeHostPortPathQueryFragment._PathQueryFragment(hostOrPathQueryFragment)
+          ];
   }
 
   get composite(): string {
@@ -46,7 +81,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
   }
 }
 
-namespace SchemeHostPortPathQueryFragment {;
+namespace SchemeHostPortPathQueryFragment {
+  ;
   export const _SchemeHostPort: typeof SchemeHostPort = importModule("SchemeHostPort");
   export const _PathQueryFragment: typeof PathQueryFragment = importModule("PathQueryFragment");
 }

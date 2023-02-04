@@ -13,8 +13,24 @@ class SchemeHostPort extends shp_UrlComposite {
     hostPort?: HostPort
   );
   constructor(
-    schemeOrSchemeHostPort?: string | Scheme | SchemeHostPort,
-    hostPort?: HostPort
+    scheme?: string | Scheme,
+    hostPortTuple?: [
+      string | Host,
+      string | number | Port
+    ]
+  );
+
+  constructor(
+    schemeOrSchemeHostPort?:
+      string
+      | Scheme
+      | SchemeHostPort,
+    hostPort?:
+      HostPort
+      | [
+        string | Host,
+        string | number | Port
+      ]
   ) {
     super();
     this.parts = schemeOrSchemeHostPort === undefined ?
@@ -26,7 +42,12 @@ class SchemeHostPort extends shp_UrlComposite {
         schemeOrSchemeHostPort.parts
         : [
           new SchemeHostPort._Scheme(schemeOrSchemeHostPort),
-          new SchemeHostPort._HostPort(hostPort)
+          Array.isArray(hostPort) ?
+            new SchemeHostPort._HostPort(
+              new SchemeHostPort._HostPort._Host(hostPort[0]),
+              new SchemeHostPort._HostPort._Port(hostPort[1])
+            )
+            : new SchemeHostPort._HostPort(hostPort)
         ];
   }
 

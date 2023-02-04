@@ -13,16 +13,21 @@ class PathQueryFragment extends pqf_UrlComposite {
     fragment?: string | Fragment
   );
   constructor(
-    {
-      path?: string | Path,
-    query?: string | Query,
-    },
+    pathQueryTuple?: [
+      string | Path,
+      string | Query
+    ],
     fragment?: string | Fragment
   );
 
   constructor(
-    pathOrPathQueryOrPathQueryFragment?: string | Path | PathQuery | PathQueryFragment,
-    ifPathThenQueryElseFragment?: string | Query | Fragment,
+    pathOrPathQueryOrPathQueryFragment?:
+      | PathQuery
+      | [
+        string | Path,
+        string | Query
+      ]
+      | PathQueryFragment,
     fragment?: string | Fragment
   ) {
     super();
@@ -33,18 +38,18 @@ class PathQueryFragment extends pqf_UrlComposite {
       ]
       : pathOrPathQueryOrPathQueryFragment instanceof PathQueryFragment ?
         pathOrPathQueryOrPathQueryFragment.parts
-        : typeof pathOrPathQueryOrPathQueryFragment === "string" ?
+        : Array.isArray(pathOrPathQueryOrPathQueryFragment) ?
           [
-            new PathQueryFragment._PathQuery._Path(pathOrPathQueryOrPathQueryFragment),
-            new PathQueryFragment._PathQuery._Query(ifPathThenQueryElseFragment),
+            new PathQueryFragment._PathQuery(
+              new PathQueryFragment._PathQuery._Path(pathOrPathQueryOrPathQueryFragment[0]),
+              new PathQueryFragment._PathQuery._Query(pathOrPathQueryOrPathQueryFragment[1])
+            ),
             new PathQueryFragment._Fragment(fragment)
           ]
-          : "query" in pathOrPathQueryOrPathQueryFragment ?
-            [
-              new PathQueryFragment._PathQuery(pathOrPathQueryOrPathQueryFragment),
-              new PathQueryFragment._Fragment(fragment)
-            ]
-            :
+          : [
+            new PathQueryFragment._PathQuery(pathOrPathQueryOrPathQueryFragment),
+            new PathQueryFragment._Fragment(fragment)
+          ]
   }
 
   get composite(): string {
