@@ -7,7 +7,7 @@ class Scheme extends sc_UrlPart {
 
   protected parse(scheme: string): string {
     return new SchemeValidator(scheme)
-      .validated;
+      .toString();
   }
 }
 

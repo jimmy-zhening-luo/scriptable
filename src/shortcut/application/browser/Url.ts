@@ -99,8 +99,7 @@ class Url {
     }
 
     function parse(url: string): Url {
-
-      let urlStringParts: Url.UrlParts = { };
+      let urlStringParts: Url.UrlParts = {};
 
       const url_fragment: string[] = url
         .trim()
@@ -245,32 +244,14 @@ class Url {
   }
 
   private get joinedUrlParts(): string {
-
-
-    const hostPort: string = this.host === "" ?
-      ""
-      : this.port === "" ?
-        this.host
-        : [this.host, this.port]
-          .join(":");
-    const schemeHostPort: string = this.scheme === "" ?
-      hostPort === "" ?
-        ""
-        : ["https", hostPort].join("://")
-      : [this.scheme, hostPort].join("://");
-
-    const pathQuery: string = this.query === "" ?
-      this.path
-      : [this.path, this.query].join("?");
-    const pathQueryFragment: string = this.fragment === "" ?
-      pathQuery
-      : [pathQuery, this.fragment].join("#");
-
-    return schemeHostPort === "" ?
-      ""
-      : pathQueryFragment === "" ?
-        schemeHostPort
-        : [schemeHostPort, pathQueryFragment].join("/");
+    return new Url._SchemeHostPortPathQueryFragment([
+      this.#scheme,
+      this.#host,
+      this.#port,
+      this.#path,
+      this.#query,
+      this.#fragment
+    ]).toString();
   }
 
   static encode(
@@ -328,6 +309,7 @@ namespace Url {
   export const _Path: typeof Path = importModule("urlparts/Path");
   export const _Query: typeof Query = importModule("urlparts/Query");
   export const _Fragment: typeof Fragment = importModule("urlparts/Fragment");
+  export const _SchemeHostPortPathQueryFragment: typeof SchemeHostPortPathQueryFragment = importModule("urlcomposites/SchemeHostPortPathQueryFragment");
 }
 
 module.exports = Url;

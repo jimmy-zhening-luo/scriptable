@@ -1,14 +1,18 @@
-class PortValidator extends StringValidator {
+const po_ValidString: typeof ValidString = importModule("./shortcut/application/common/primitives/strings/ValidString");
+
+class PortValidator extends po_ValidString {
   constructor(port: string) {
     super(
       port,
       {
         trimLeading: [
-          UrlCharSet.colon,
-          UrlCharSet.space
+          UrlChar.colon,
+          UrlChar.space
         ]
       },
-      UrlCharSet.numbers
+      UrlChar.numbers
     );
   }
 }
+
+module.exports = PortValidator;

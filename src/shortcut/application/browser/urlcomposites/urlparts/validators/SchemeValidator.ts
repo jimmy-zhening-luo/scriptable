@@ -1,18 +1,22 @@
-class SchemeValidator extends StringValidator {
+const sc_ValidString: typeof ValidString = importModule("./shortcut/application/common/primitives/strings/ValidString");
+
+class SchemeValidator extends sc_ValidString {
   constructor(scheme: string) {
     super(
       scheme,
       {
         toLower: true,
         trimTrailing: [
-          UrlCharSet.slash,
-          UrlCharSet.colon
+          UrlChar.slash,
+          UrlChar.colon
         ]
       },
-      UrlCharSet.alphaNumericLower,
-      UrlCharSet.plus,
-      UrlCharSet.dot,
-      UrlCharSet.hyphen
+      UrlChar.alphaNumericLower,
+      UrlChar.plus,
+      UrlChar.dot,
+      UrlChar.hyphen
     );
   }
 }
+
+module.exports = SchemeValidator;
