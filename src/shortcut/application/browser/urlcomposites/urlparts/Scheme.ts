@@ -7,8 +7,14 @@ class Scheme extends sc_UrlPart {
 
   protected parse(scheme: string): string {
     return new SchemeValidator(scheme)
-      .toString();
+      .hasValue ?
+      new SchemeValidator(scheme).toString()
+      : "https";
   }
+}
+
+namespace Scheme {
+  export const _ValidScheme: typeof ValidScheme = importModule("validators/ValidScheme");
 }
 
 module.exports = Scheme;

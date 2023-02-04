@@ -58,4 +58,10 @@ class Host extends ho_UrlPart {
   }
 }
 
+namespace Host {
+  export const _ValidIPv4: typeof ValidIPv4 = importModule("validators/validhosts/ValidIPv4");
+  export const _ValidIPv6: typeof ValidIPv6 = importModule("validators/validhosts/ValidIPv6");
+  export const _ValidRegName: typeof ValidRegName = importModule("validators/validhosts/ValidRegName");
+}
+
 module.exports = Host;

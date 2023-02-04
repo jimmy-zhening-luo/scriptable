@@ -29,4 +29,8 @@ class Query extends qu_UrlPart {
   }
 }
 
+namespace Query {
+  export const _ValidQuery: typeof ValidQuery = importModule("validators/ValidQuery");
+}
+
 module.exports = Query;

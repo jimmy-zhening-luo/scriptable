@@ -151,9 +151,7 @@ class Url {
   }
 
   get scheme(): string {
-    return this.#scheme.hasValue ?
-      this.#scheme.toString()
-      : "https";
+    return this.#scheme.toString();
   }
 
   set scheme(
@@ -236,14 +234,6 @@ class Url {
   }
 
   get string(): string {
-    return this.joinedUrlParts;
-  }
-
-  toString(): string {
-    return this.string;
-  }
-
-  private get joinedUrlParts(): string {
     return new Url._SchemeHostPortPathQueryFragment([
       this.#scheme,
       this.#host,
@@ -252,6 +242,10 @@ class Url {
       this.#query,
       this.#fragment
     ]).toString();
+  }
+
+  toString(): string {
+    return this.string;
   }
 
   static encode(

@@ -5,7 +5,7 @@
   ],
   "references": [
     {
-      "path": "iphostvalidator/tsconfig.json"
+      "path": "validip/tsconfig.json"
     }
   ],
   "compilerOptions": {

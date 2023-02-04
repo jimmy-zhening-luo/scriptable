@@ -52,4 +52,8 @@ class Port extends po_UrlPart {
   }
 }
 
+namespace Port {
+  export const _ValidPort: typeof ValidPort = importModule("validators/ValidPort");
+}
+
 module.exports = Port;

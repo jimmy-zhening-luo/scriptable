@@ -13,7 +13,10 @@ class Path extends pa_UrlPart {
   protected parse(path: string): string {
     return path;
   }
+}
 
+namespace Path {
+  export const _ValidPath: typeof ValidPath = importModule("validators/ValidPath");
 }
 
 module.exports = Path;

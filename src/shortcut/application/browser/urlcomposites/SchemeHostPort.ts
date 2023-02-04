@@ -53,9 +53,7 @@ class SchemeHostPort extends shp_UrlComposite {
 
   get composite(): string {
     return [
-      this.scheme.hasValue ?
-        this.scheme.toString()
-        : "https",
+      this.scheme.toString(),
       this.hostPort.toString()
     ].join("://");
   }

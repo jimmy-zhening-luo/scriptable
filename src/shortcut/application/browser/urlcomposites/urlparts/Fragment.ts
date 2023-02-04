@@ -21,9 +21,13 @@ class Fragment extends fr_UrlPart {
   protected parse(
     fragment: string
   ): string {
-    return new FragmentValidator(fragment)
+    return new Fragment._FragmentValidator(fragment)
       .cleaned;
   }
+}
+
+namespace Fragment {
+  export const _ValidFragment: typeof ValidFragment = importModule("validators/ValidFragment");
 }
 
 module.exports = Fragment;
