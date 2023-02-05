@@ -64,7 +64,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
 }
 
 namespace BoundedRepeatCharString {
-  export const positiveInt: typeof PositiveInteger = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger.ts");
+  export const positiveInt: typeof PositiveInteger = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger");
 }
 
 module.exports = BoundedRepeatCharString;

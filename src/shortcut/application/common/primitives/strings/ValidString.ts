@@ -109,7 +109,7 @@ class ValidString {
 
 namespace ValidString {
   export const _OneGram: typeof OneGram = importModule("words/OneGram");
-  export const _OneCharString: typeof OneCharString = importModule("charstrings/OneCharString.ts");
+  export const _OneCharString: typeof OneCharString = importModule("charstrings/OneCharString");
   export const _PositiveInteger: typeof PositiveInteger = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger");
 }
 
