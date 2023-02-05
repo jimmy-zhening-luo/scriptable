@@ -19,11 +19,11 @@ class Char {
     );
   }
 
-  includes(char: string[]): boolean {
+  includes(char: string): boolean {
     return this.charset.includes(char);
   }
 
-  toString(): string[] {
+  toString(): string {
     return this.charset.join(" | ");
   }
 
@@ -266,7 +266,7 @@ class Char {
 }
 
 namespace Char {
-  export type CharInput = Char | string[] | string[];
+  export type CharInput = Char | string | string[];
 }
 
 module.exports = Char;
