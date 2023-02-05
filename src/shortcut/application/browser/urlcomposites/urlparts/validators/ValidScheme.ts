@@ -1,6 +1,6 @@
 const sc_ValidString: typeof ValidString = importModule("./shortcut/application/common/primitives/strings/ValidString");
 
-class SchemeValidator extends sc_ValidString {
+class ValidScheme extends sc_ValidString {
   constructor(scheme: string) {
     super(
       scheme,
@@ -19,4 +19,4 @@ class SchemeValidator extends sc_ValidString {
   }
 }
 
-module.exports = SchemeValidator;
+module.exports = ValidScheme;

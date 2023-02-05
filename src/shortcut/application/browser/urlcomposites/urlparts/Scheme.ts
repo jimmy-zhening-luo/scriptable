@@ -6,9 +6,9 @@ class Scheme extends sc_UrlPart {
   }
 
   protected parse(scheme: string): string {
-    return new SchemeValidator(scheme)
+    return new Scheme._ValidScheme(scheme)
       .hasValue ?
-      new SchemeValidator(scheme).toString()
+      new Scheme._ValidScheme(scheme).toString()
       : "https";
   }
 }

@@ -21,7 +21,7 @@ class Fragment extends fr_UrlPart {
   protected parse(
     fragment: string
   ): string {
-    return new Fragment._FragmentValidator(fragment)
+    return new Fragment._ValidFragment(fragment)
       .cleaned;
   }
 }

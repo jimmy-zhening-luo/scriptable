@@ -1,7 +1,7 @@
 const fr_ValidString: typeof ValidString = importModule("./shortcut/application/common/primitives/strings/ValidString");
 
 
-class FragmentValidator extends fr_ValidString {
+class ValidFragment extends fr_ValidString {
   constructor(fragment: string) {
     super(
       fragment,
@@ -15,4 +15,4 @@ class FragmentValidator extends fr_ValidString {
   }
 }
 
-module.exports = FragmentValidator;
+module.exports = ValidFragment;

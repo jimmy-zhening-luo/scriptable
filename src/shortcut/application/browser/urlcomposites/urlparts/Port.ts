@@ -19,7 +19,7 @@ class Port extends po_UrlPart {
   protected parse(
     port: string
   ): string {
-    const parsedString: string = new PortValidator(port)
+    const parsedString: string = new Port._ValidPort(port)
       .toString();
     const parsedInt: number = Number.isInteger(
       Number.parseInt(parsedString)

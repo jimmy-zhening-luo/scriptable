@@ -1,6 +1,6 @@
 const po_ValidString: typeof ValidString = importModule("./shortcut/application/common/primitives/strings/ValidString");
 
-class PortValidator extends po_ValidString {
+class ValidPort extends po_ValidString {
   constructor(port: string) {
     super(
       port,
@@ -15,4 +15,4 @@ class PortValidator extends po_ValidString {
   }
 }
 
-module.exports = PortValidator;
+module.exports = ValidPort;
