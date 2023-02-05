@@ -5,7 +5,7 @@ class Scheme extends sc_UrlPart {
     super(scheme);
   }
 
-  protected parse(scheme: string): string {
+  protected parse(scheme: string): null | string {
     const validScheme: ValidScheme = new Scheme._ValidScheme(scheme);
 
     const firstChar: string = [...validScheme.toString()].shift() ?? "";

@@ -30,7 +30,7 @@ class PathQuery extends pq_UrlComposite {
   }
 
   get composite(): string {
-    return this.query.hasValue ?
+    return this.query.isValid ?
       [
         this.path.toString(),
         this.query.toString()

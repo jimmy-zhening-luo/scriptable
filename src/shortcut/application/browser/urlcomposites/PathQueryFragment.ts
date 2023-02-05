@@ -50,7 +50,7 @@ class PathQueryFragment extends pqf_UrlComposite {
   }
 
   get composite(): string {
-    return this.fragment.hasValue ?
+    return this.fragment.isValid ?
       [
         this.pathQuery.toString(),
         this.fragment.toString()

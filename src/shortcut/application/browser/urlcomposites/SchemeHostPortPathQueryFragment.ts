@@ -69,8 +69,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
   }
 
   get composite(): string {
-    return this.schemeHostPort.hasValue ?
-      this.pathQueryFragment.hasValue ?
+    return this.schemeHostPort.isValid ?
+      this.pathQueryFragment.isValid ?
         [
           this.schemeHostPort.toString(),
           this.pathQueryFragment.toString()

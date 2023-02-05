@@ -13,7 +13,7 @@ class Fragment extends fr_UrlPart {
 
   protected parse(
     fragment: string
-  ): string {
+  ): null | string {
     return new Fragment._ValidFragment(fragment)
       .toString();
   }

@@ -1,8 +1,19 @@
 const ho_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Host extends ho_UrlPart {
-  protected parse(host: string): string {
-    return host;
+  protected parse(host: string): null | string {
+    host = host.includes("://") ?
+      host.split("://").slice(1).join("://")
+      : host;
+    return host.split(".").length === 4
+      && host
+        .split(".")
+        .map(hostRepeater => new Host._HostIPv4Repeater(hostRepeater).toString())
+        .every(hostRepeater => hostRepeater !== "")
+      || host.split(":").length < 8
+      && host.split(":").map(hostRepeater => new Host._HostIPv6Repeater(hostRepeater).toString()).every(hostRepeater => hostRepeater !== "")
+      ? host
+      : "";
   }
 }
 

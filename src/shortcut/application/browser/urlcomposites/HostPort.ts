@@ -30,8 +30,8 @@ class HostPort extends hp_UrlComposite {
   }
 
   get composite(): string {
-    return this.host.hasValue ?
-      this.port.hasValue ?
+    return this.host.isValid ?
+      this.port.isValid ?
         [
           this.host.toString(),
           this.port.toString()

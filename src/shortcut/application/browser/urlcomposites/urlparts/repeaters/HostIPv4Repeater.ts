@@ -1,7 +1,7 @@
 const hipf_UrlPartRepeater: typeof UrlPartRepeater = importModule("urlpartrepeater/UrlPartRepeater");
 
 class HostIPv4Repeater extends hipf_UrlPartRepeater {
-  protected parse(repeater: string): string {
+  protected parse(repeater: string): null | string {
     return repeater;
   }
 }

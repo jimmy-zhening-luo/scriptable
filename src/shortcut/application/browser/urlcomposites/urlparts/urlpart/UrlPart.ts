@@ -1,5 +1,5 @@
 abstract class UrlPart {
-  readonly part: string;
+  readonly part: null | string;
   constructor(
     part: UrlPart
       | string = ""
@@ -7,14 +7,14 @@ abstract class UrlPart {
     this.part = this.parse(part.toString());
   }
 
-  protected abstract parse(part: string): string;
+  protected abstract parse(part: string): null | string;
 
-  get hasValue(): boolean {
-    return this.part !== "";
+  get isValid(): boolean {
+    return this.part !== null;
   }
 
   get string(): string {
-    return this.part;
+    return this.part ?? "";
   }
 
   toString(): string {
