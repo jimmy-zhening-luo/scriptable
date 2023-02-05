@@ -5,19 +5,15 @@ class SchemeHostPort extends shp_UrlComposite {
   readonly scheme: Scheme = this.parts[0];
   readonly hostPort: HostPort = this.parts[1];
 
-  constructor();
   constructor(schemeHostPort?: SchemeHostPort);
-  constructor(scheme?: string | Scheme);
   constructor(
     scheme?: string | Scheme,
-    hostPort?: HostPort
-  );
-  constructor(
-    scheme?: string | Scheme,
-    hostPortTuple?: [
-      string | Host,
-      string | number | Port
-    ]
+    hostPort?:
+      HostPort
+      | [
+        string | Host,
+        string | number | Port
+      ]
   );
 
   constructor(

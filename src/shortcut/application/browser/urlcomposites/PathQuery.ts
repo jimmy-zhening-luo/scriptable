@@ -5,9 +5,7 @@ class PathQuery extends pq_UrlComposite {
   readonly path: Path = this.parts[0];
   readonly query: Query = this.parts[1];
 
-  constructor();
   constructor(pathQuery?: PathQuery);
-  constructor(path?: string | Path);
   constructor(
     path?: string | Path,
     query?: string | Query

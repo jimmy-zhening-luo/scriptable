@@ -5,19 +5,16 @@ class PathQueryFragment extends pqf_UrlComposite {
   readonly pathQuery: PathQuery = this.parts[0];
   readonly fragment: Fragment = this.parts[1];
 
-  constructor();
   constructor(pathQueryFragment?: PathQueryFragment)
-  constructor(pathQuery?: PathQuery);
   constructor(
-    pathQuery?: PathQuery,
-    fragment?: string | Fragment
-  );
-  constructor(
-    pathQueryTuple?: [
-      string | Path,
-      string | Query
-    ],
-    fragment?: string | Fragment
+    pathQuery?:
+      PathQuery
+      | [
+        string | Path,
+        string | Query
+      ],
+    fragment?:
+      string | Fragment
   );
 
   constructor(

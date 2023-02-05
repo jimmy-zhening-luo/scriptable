@@ -8,18 +8,17 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
   readonly schemeHostPort: SchemeHostPort = this.parts[0];
   readonly pathQueryFragment: PathQueryFragment = this.parts[1];
 
-  constructor();
-  constructor(schemeHostPortPathQueryFragment?: SchemeHostPortPathQueryFragment);
-  constructor(schemeHostPort?: SchemeHostPort);
   constructor(
-    schemeHostPortPathQueryFragmentTuple?: [
-      string | Scheme,
-      string | Host,
-      string | number | Port,
-      string | Path,
-      string | Query,
-      string | Fragment
-    ]
+    schemeHostPortPathQueryFragment?:
+      SchemeHostPortPathQueryFragment
+      | [
+        string | Scheme,
+        string | Host,
+        string | number | Port,
+        string | Path,
+        string | Query,
+        string | Fragment
+      ]
   )
   constructor(
     schemeHostPort?: SchemeHostPort,
@@ -27,7 +26,7 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
   );
 
   constructor(
-    schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment?:
+    schemeHostPortOrSchemeHostPortPathQueryFragment?:
       | SchemeHostPort
       | SchemeHostPortPathQueryFragment
       | [
@@ -39,33 +38,33 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
         string | Fragment
       ]
     ,
-    hostOrPathQueryFragment?: PathQueryFragment
+    pathQueryFragment?: PathQueryFragment
   ) {
     super();
-    this.parts = schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment === undefined ?
+    this.parts = schemeHostPortOrSchemeHostPortPathQueryFragment === undefined ?
       [
         new SchemeHostPortPathQueryFragment._SchemeHostPort(),
         new SchemeHostPortPathQueryFragment._PathQueryFragment()
       ]
-      : schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment instanceof SchemeHostPortPathQueryFragment ?
-        schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment.parts
-        : Array.isArray(schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment) ?
+      : schemeHostPortOrSchemeHostPortPathQueryFragment instanceof SchemeHostPortPathQueryFragment ?
+        schemeHostPortOrSchemeHostPortPathQueryFragment.parts
+        : Array.isArray(schemeHostPortOrSchemeHostPortPathQueryFragment) ?
           [
-            new SchemeHostPortPathQueryFragment._SchemeHostPort(schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[0], [
-              schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[1],
-              schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[2]
+            new SchemeHostPortPathQueryFragment._SchemeHostPort(schemeHostPortOrSchemeHostPortPathQueryFragment[0], [
+              schemeHostPortOrSchemeHostPortPathQueryFragment[1],
+              schemeHostPortOrSchemeHostPortPathQueryFragment[2]
             ]),
             new SchemeHostPortPathQueryFragment._PathQueryFragment(
               [
-                schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[3],
-                schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[4]
+                schemeHostPortOrSchemeHostPortPathQueryFragment[3],
+                schemeHostPortOrSchemeHostPortPathQueryFragment[4]
               ],
-              schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment[5]
+              schemeHostPortOrSchemeHostPortPathQueryFragment[5]
             )
           ]
           : [
-            new SchemeHostPortPathQueryFragment._SchemeHostPort(schemeOrSchemeHostPortOrSchemeHostPortPathQueryFragment),
-            new SchemeHostPortPathQueryFragment._PathQueryFragment(hostOrPathQueryFragment)
+            new SchemeHostPortPathQueryFragment._SchemeHostPort(schemeHostPortOrSchemeHostPortPathQueryFragment),
+            new SchemeHostPortPathQueryFragment._PathQueryFragment(pathQueryFragment)
           ];
   }
 
