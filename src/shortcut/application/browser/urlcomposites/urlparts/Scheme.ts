@@ -7,11 +7,11 @@ class Scheme extends sc_UrlPart {
 
   protected parse(scheme: string): string {
     const validScheme: ValidScheme = new Scheme._ValidScheme(scheme);
-    
+
     const firstChar: string = [...validScheme.toString()].shift() ?? "";
-    
-    const alpha: string[] = Scheme._ValidScheme._UrlChar._alpha;
-    
+
+    const alpha: string[] = Scheme._ValidScheme._UrlChar.alpha;
+
     return (validScheme.hasValue && alpha.includes(firstChar)) ?
     validScheme.toString()
     : "https";
