@@ -1,11 +1,15 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "../validators/**/*"
   ],
   "references": [
     {
       "path": "urlpartrepeater/tsconfig.json"
+    },
+    {
+      "path": "../validators/tsconfig.json"
     }
   ],
   "compilerOptions": {
