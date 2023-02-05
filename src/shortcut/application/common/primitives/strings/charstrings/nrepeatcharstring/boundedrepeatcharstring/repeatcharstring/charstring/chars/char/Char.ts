@@ -19,11 +19,11 @@ class Char {
     );
   }
 
-  includes(char: string): boolean {
+  includes(char: string[]): boolean {
     return this.charset.includes(char);
   }
 
-  toString(): string {
+  toString(): string[] {
     return this.charset.join(" | ");
   }
 
@@ -132,141 +132,141 @@ class Char {
     ];
   }
 
-  static get dot(): string {
-    return ".";
+  static get dot(): string[] {
+    return ["."];
   }
 
-  static get plus(): string {
-    return "+";
+  static get plus(): string[] {
+    return ["+"];
   }
 
-  static get hyphen(): string {
-    return "-";
+  static get hyphen(): string[] {
+    return ["-"];
   }
 
-  static get dollar(): string {
-    return "$";
+  static get dollar(): string[] {
+    return ["$"];
   }
 
-  static get underscore(): string {
-    return "_";
+  static get underscore(): string[] {
+    return ["_"];
   }
 
-  static get exclam(): string {
-    return "!";
+  static get exclam(): string[] {
+    return ["!"];
   }
 
-  static get asterisk(): string {
-    return "*";
+  static get asterisk(): string[] {
+    return ["*"];
   }
 
-  static get quote(): string {
-    return "'";
+  static get quote(): string[] {
+    return ["'"];
   }
 
-  static get leftParen(): string {
-    return "(";
+  static get leftParen(): string[] {
+    return ["("];
   }
 
-  static get rightParen(): string {
-    return ")";
+  static get rightParen(): string[] {
+    return [")"];
   }
 
-  static get comma(): string {
-    return ",";
+  static get comma(): string[] {
+    return [","];
   }
 
-  static get leftBrace(): string {
-    return "{";
+  static get leftBrace(): string[] {
+    return ["{"];
   }
 
-  static get rightBrace(): string {
-    return "}";
+  static get rightBrace(): string[] {
+    return ["}"];
   }
 
-  static get or(): string {
-    return "|";
+  static get or(): string[] {
+    return ["|"];
   }
 
-  static get backslash(): string {
-    return "\\";
+  static get backslash(): string[] {
+    return ["\\"];
   }
 
-  static get caret(): string {
-    return "^";
+  static get caret(): string[] {
+    return ["^"];
   }
 
-  static get tilde(): string {
-    return "~";
+  static get tilde(): string[] {
+    return ["~"];
   }
 
-  static get leftBracket(): string {
-    return "[";
+  static get leftBracket(): string[] {
+    return ["["];
   }
 
-  static get rightBracket(): string {
-    return "]";
+  static get rightBracket(): string[] {
+    return ["]"];
   }
 
-  static get backTick(): string {
-    return "`";
+  static get backTick(): string[] {
+    return ["`"];
   }
 
-  static get lessThan(): string {
-    return "<";
+  static get lessThan(): string[] {
+    return ["<"];
   }
 
-  static get greaterThan(): string {
-    return ">";
+  static get greaterThan(): string[] {
+    return [">"];
   }
 
-  static get hash(): string {
-    return "#";
+  static get hash(): string[] {
+    return ["#"];
   }
 
-  static get percent(): string {
-    return "%";
+  static get percent(): string[] {
+    return ["%"];
   }
 
-  static get doubleQuote(): string {
-    return "\"";
+  static get doubleQuote(): string[] {
+    return ["\""];
   }
 
-  static get semicolon(): string {
-    return ";";
+  static get semicolon(): string[] {
+    return ["];"];
   }
 
-  static get slash(): string {
-    return "/";
+  static get slash(): string[] {
+    return ["/"];
   }
 
-  static get question(): string {
-    return "?";
+  static get question(): string[] {
+    return ["?"];
   }
 
-  static get colon(): string {
-    return ":";
+  static get colon(): string[] {
+    return [":"];
   }
 
-  static get at(): string {
-    return "@";
+  static get at(): string[] {
+    return ["@"];
   }
 
-  static get and(): string {
-    return "&";
+  static get and(): string[] {
+    return ["&"];
   }
 
-  static get equal(): string {
-    return "=";
+  static get equal(): string[] {
+    return ["="];
   }
 
-  static get space(): string {
-    return " ";
+  static get space(): string[] {
+    return [" "];
   }
 }
 
 namespace Char {
-  export type CharInput = Char | string | string[];
+  export type CharInput = Char | string[] | string[];
 }
 
 module.exports = Char;
