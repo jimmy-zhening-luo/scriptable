@@ -300,7 +300,7 @@ namespace Url {
     fragment?: string | Fragment
   };
 
-  export const _File: typeof File = importModule("./shortcut/application/appdata/filesystem/file/File");
+  export const _File: typeof File = importModule("./system/application/appdata/filesystem/file/File");
 
   export const _Scheme: typeof Scheme = importModule("urlcomposites/urlparts/Scheme");
   export const _Host: typeof Host = importModule("urlcomposites/urlparts/Host");

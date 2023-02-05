@@ -7,7 +7,7 @@ class HostIPv4Repeater extends hipf_UrlPartRepeater {
 }
 
 namespace HostIPv4Repeater {
-  export const _ValidHostIPv4Repeater: typeof ValidHostIPv4Repeater = importModule("./shortcut/application/browser/urlcomposites/urlparts/validators/ValidHostIPv4Repeater");
+  export const _ValidHostIPv4Repeater: typeof ValidHostIPv4Repeater = importModule("./system/application/browser/urlcomposites/urlparts/validators/ValidHostIPv4Repeater");
 }
 
 module.exports = HostIPv4Repeater;

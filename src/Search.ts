@@ -2,7 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: blue; icon-glyph: search;
 namespace Search {
-  const shortcut: typeof Shortcut = importModule("shortcut/Shortcut");
+  const shortcut: typeof Shortcut = importModule("system/Shortcut");
 
   export class Search extends shortcut {
     runtime(args: any): SearchResponse | null {

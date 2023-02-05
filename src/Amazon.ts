@@ -2,7 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: orange; icon-glyph: share;
 namespace Amazon {
-  const shortcut: typeof Shortcut = importModule("shortcut/Shortcut");
+  const shortcut: typeof Shortcut = importModule("system/Shortcut");
 
   export class Amazon extends shortcut {
     runtime(): boolean {

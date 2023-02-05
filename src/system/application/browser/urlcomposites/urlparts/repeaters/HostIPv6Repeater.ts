@@ -7,7 +7,7 @@ class HostIPv6Repeater extends hips_UrlPartRepeater {
 }
 
 namespace HostIPv6Repeater {
-  export const _ValidHostIPv6Repeater: typeof ValidHostIPv6Repeater = importModule("./shortcut/application/browser/urlcomposites/urlparts/validators/ValidHostIPv6Repeater");
+  export const _ValidHostIPv6Repeater: typeof ValidHostIPv6Repeater = importModule("./system/application/browser/urlcomposites/urlparts/validators/ValidHostIPv6Repeater");
 }
 
 module.exports = HostIPv6Repeater;

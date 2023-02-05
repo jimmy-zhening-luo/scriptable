@@ -110,7 +110,7 @@ class ValidString {
 namespace ValidString {
   export const _OneGram: typeof OneGram = importModule("words/OneGram");
   export const _OneCharString: typeof OneCharString = importModule("charstrings/OneCharString");
-  export const _PositiveInteger: typeof PositiveInteger = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger");
+  export const _PositiveInteger: typeof PositiveInteger = importModule("./system/application/common/primitives/numbers/PositiveInteger");
 }
 
 module.exports = ValidString;

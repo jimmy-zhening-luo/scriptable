@@ -37,7 +37,7 @@ class NGram extends _Word {
 }
 
 namespace NGram {
-  export const positiveInt: typeof PositiveInteger = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger");
+  export const positiveInt: typeof PositiveInteger = importModule("./system/application/common/primitives/numbers/PositiveInteger");
 }
 
 module.exports = NGram;
