@@ -1,4 +1,4 @@
-const p_Integer: typeof Integer = importModule("integer/Integers");
+const p_Integer: typeof Integer = importModule("integer/Integer");
 
 class PositiveInteger extends p_Integer {
   constructor(value: number | Rational) {

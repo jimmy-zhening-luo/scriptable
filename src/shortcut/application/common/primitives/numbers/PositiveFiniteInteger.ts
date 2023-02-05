@@ -1,4 +1,4 @@
-const pf_Integer: typeof Integer = importModule("integer/Integers");
+const pf_Integer: typeof Integer = importModule("integer/Integer");
 
 class PositiveFiniteInteger extends pf_Integer {
   constructor(value: number | Rational) {
