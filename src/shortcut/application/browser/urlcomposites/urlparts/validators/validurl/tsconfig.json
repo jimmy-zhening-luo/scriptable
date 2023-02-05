@@ -1,11 +1,12 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "../../../../../common/primitives/strings/**/*"
   ],
   "references": [
     {
-      "path": "validip/tsconfig.json"
+      "path": "../../../../../common/primitives/strings/tsconfig.json"
     }
   ],
   "compilerOptions": {

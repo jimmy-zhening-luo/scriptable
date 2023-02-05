@@ -8,19 +8,6 @@ class Host extends ho_UrlPart {
     super(host);
   }
 
-  static get IP() {
-    return importModule("host/IP");
-  }
-  static get IPv4() {
-    return Host.IP.IPv4;
-  }
-  static get IPv6() {
-    return Host.IP.IPv6;
-  }
-  static get RegName() {
-    return importModule("host/RegName");
-  }
-
   protected parse(host: any): string {
     return (this.parseIP(host) !== String()) ?
       this.parseIP(host)
@@ -42,26 +29,26 @@ class Host extends ho_UrlPart {
   protected parseIPv4(
     host: any
   ): string {
-    return new Host.IPv4(host).string;
+    return new Host._ValidHostIPv4(host).string;
   }
 
   protected parseIPv6(
     host: any
   ): string {
-    return new Host.IPv6(host).string;
+    return new Host._ValidHostIPv6(host).string;
   }
 
   protected parseRegName(
     host: any
   ): string {
-    return new Host.RegName(host).string;
+    return new Host._ValidHostRegName(host).string;
   }
 }
 
 namespace Host {
-  export const _ValidIPv4: typeof ValidIPv4 = importModule("validators/validhosts/ValidIPv4");
-  export const _ValidIPv6: typeof ValidIPv6 = importModule("validators/validhosts/ValidIPv6");
-  export const _ValidRegName: typeof ValidRegName = importModule("validators/validhosts/ValidRegName");
+  export const _ValidHostIPv4: typeof ValidHostIPv4 = importModule("validators/ValidIPv4");
+  export const _ValidHostIPv6: typeof ValidHostIPv6 = importModule("validators/ValidIPv6");
+  export const _ValidHostRegName: typeof ValidHostRegName = importModule("validators/ValidRegName");
 }
 
 module.exports = Host;

@@ -6,9 +6,6 @@
   ],
   "references": [
     {
-      "path": "validhosts/tsconfig.json"
-    },
-    {
       "path": "../../../../common/primitives/strings/tsconfig.json"
     }
   ],
