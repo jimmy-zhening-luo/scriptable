@@ -1,4 +1,4 @@
-const p_Integer = importModule("integer/Integers");
+const p_Integer = importModule("integer/Integer");
 class PositiveInteger extends p_Integer {
     constructor(value) {
         super(value, new PositiveInteger._Positive());

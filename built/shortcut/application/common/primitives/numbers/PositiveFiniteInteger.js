@@ -1,4 +1,4 @@
-const pf_Integer = importModule("integer/Integers");
+const pf_Integer = importModule("integer/Integer");
 class PositiveFiniteInteger extends pf_Integer {
     constructor(value) {
         super(value, new PositiveFiniteInteger._Positive(), new PositiveFiniteInteger._Finite());
