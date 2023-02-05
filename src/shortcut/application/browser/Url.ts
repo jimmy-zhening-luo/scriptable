@@ -209,12 +209,18 @@ class Url {
   ) {
     this.#query = new Url._Query(query);
   }
-  
+
   addQueryParam(
     keyOrKeyValue: string | [string, string],
     value?: string
-  ): this {
-    this.query = this.#query.addParam(keyOrKeyValue, value?);
+  ): void {
+    this.query = this.#query.addParam(keyOrKeyValue, value);
+  }
+
+  removeQueryParam(
+    key: string
+  ): void {
+    this.query = this.#query.removeParam(key);
   }
 
   get fragment(): string {
