@@ -25,7 +25,7 @@ class NGram extends _Word {
     }
 }
 (function (NGram) {
-    NGram.positiveInt = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger.ts");
+    NGram.positiveInt = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger");
 })(NGram || (NGram = {}));
 module.exports = NGram;
 //# sourceMappingURL=NGram.js.map

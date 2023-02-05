@@ -23,7 +23,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
     }
 }
 (function (BoundedRepeatCharString) {
-    BoundedRepeatCharString.positiveInt = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger.ts");
+    BoundedRepeatCharString.positiveInt = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger");
 })(BoundedRepeatCharString || (BoundedRepeatCharString = {}));
 module.exports = BoundedRepeatCharString;
 //# sourceMappingURL=BoundedRepeatCharString.js.map

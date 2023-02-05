@@ -54,7 +54,7 @@ class ValidString {
 }
 (function (ValidString) {
     ValidString._OneGram = importModule("words/OneGram");
-    ValidString._OneCharString = importModule("charstrings/OneCharString.ts");
+    ValidString._OneCharString = importModule("charstrings/OneCharString");
     ValidString._PositiveInteger = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger");
 })(ValidString || (ValidString = {}));
 module.exports = ValidString;
