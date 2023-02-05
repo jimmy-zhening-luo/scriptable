@@ -3,9 +3,9 @@ class ValidPort extends po_ValidUrlPart {
     constructor(port) {
         super(port, {
             trimLeading: [
-                ...UrlChar.colon
+                ...po_ValidUrlPart._UrlChar.colon
             ]
-        }, {}, UrlChar.numbers);
+        }, {}, po_ValidUrlPart._UrlChar.numbers);
     }
 }
 module.exports = ValidPort;
