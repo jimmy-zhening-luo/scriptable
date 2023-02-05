@@ -6,7 +6,7 @@ class ValidPort extends po_ValidUrlPart {
       port,
       {
         trimLeading: [
-          UrlChar.colon
+          ...UrlChar.colon
         ]
       },
       UrlChar.numbers

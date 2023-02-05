@@ -7,8 +7,8 @@ class ValidScheme extends sc_ValidUrlPart {
       {
         toLower: true,
         trimTrailing: [
-          ValidScheme._UrlChar.slash,
-          ValidScheme._UrlChar.colon
+          ...ValidScheme._UrlChar.slash,
+          ...ValidScheme._UrlChar.colon
         ]
       },
       ValidScheme._UrlChar.alphaNumericLower,

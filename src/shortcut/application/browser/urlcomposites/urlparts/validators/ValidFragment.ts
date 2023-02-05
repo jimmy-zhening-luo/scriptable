@@ -6,7 +6,7 @@ class ValidFragment extends fr_ValidUrlPart {
       fragment,
       {
         trimLeading: [
-          ValidFragment._UrlChar.hash
+          ...ValidFragment._UrlChar.hash
         ]
       },
       ValidFragment._UrlChar.pchar,
