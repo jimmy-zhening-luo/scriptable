@@ -11,6 +11,10 @@ class Query extends qu_UrlPart {
       .map(queryRepeater => queryRepeater.toString())
       .join("&");
   }
+
+  static queryStringToMap(queryString: string): Map<string, string> {
+    return new Map();
+  }
 }
 
 namespace Query {
