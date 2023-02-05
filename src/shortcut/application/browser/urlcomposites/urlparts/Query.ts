@@ -11,9 +11,42 @@ class Query extends qu_UrlPart {
       .map(queryRepeater => queryRepeater.toString())
       .join("&");
   }
-
-  static queryStringToMap(queryString: string): Map<string, string> {
-    return new Map();
+  
+  get params(): Map<string, string> {
+    return new Map<string, string>(
+      this
+        .toString()
+        .split("&")
+        .map(
+          keyValuePair => keyValuePair
+            .split("=")
+        )
+        .filter([])
+    );
+  }
+  
+  addParam(
+    keyOrKeyValue: string | [string, string],
+    value?: string
+  ): Query {
+    const key: string = Array.isArray(keyOrKeyValue) ?
+      keyOrKeyValue[0] ?? ""
+      : keyOrKeyValue;
+    const value: string = Array.isArray(keyOrKeyValue) ?
+    keyOrKeyValue[1] ?? ""
+    : value ?? "";
+    const params: Map<string, string> = this.params;
+    
+    if (key !== "") {
+      if (value === "")
+        params.delete(key)
+      else
+        params.set(key, value)
+    }
+    
+    return new Query(
+      params.entries().map(keyValuePair => keyValuePair.join("=")).join
+    )
   }
 }
 

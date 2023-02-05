@@ -209,6 +209,13 @@ class Url {
   ) {
     this.#query = new Url._Query(query);
   }
+  
+  addQueryParam(
+    keyOrKeyValue: string | [string, string],
+    value?: string
+  ): this {
+    this.query = this.#query.addParam(keyOrKeyValue, value?);
+  }
 
   get fragment(): string {
     return this.#fragment.toString();
