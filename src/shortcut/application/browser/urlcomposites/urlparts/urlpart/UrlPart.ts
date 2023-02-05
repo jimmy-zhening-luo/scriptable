@@ -7,6 +7,8 @@ abstract class UrlPart {
     this.part = this.parse(part.toString());
   }
 
+  protected abstract parse(part: string): string;
+
   get hasValue(): boolean {
     return this.part !== "";
   }
@@ -18,8 +20,6 @@ abstract class UrlPart {
   toString(): string {
     return this.string;
   }
-
-  protected abstract parse(part: string): string;
 }
 
 module.exports = UrlPart;
