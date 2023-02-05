@@ -199,12 +199,12 @@ _Url_scheme = new WeakMap(), _Url_host = new WeakMap(), _Url_port = new WeakMap(
 (function (Url) {
     ;
     Url._File = importModule("./shortcut/application/appdata/filesystem/file/File");
-    Url._Scheme = importModule("urlparts/Scheme");
-    Url._Host = importModule("urlparts/Host");
-    Url._Port = importModule("urlparts/Port");
-    Url._Path = importModule("urlparts/Path");
-    Url._Query = importModule("urlparts/Query");
-    Url._Fragment = importModule("urlparts/Fragment");
+    Url._Scheme = importModule("urlcomposites/urlparts/Scheme");
+    Url._Host = importModule("urlcomposites/urlparts/Host");
+    Url._Port = importModule("urlcomposites/urlparts/Port");
+    Url._Path = importModule("urlcomposites/urlparts/Path");
+    Url._Query = importModule("urlcomposites/urlparts/Query");
+    Url._Fragment = importModule("urlcomposites/urlparts/Fragment");
     Url._SchemeHostPortPathQueryFragment = importModule("urlcomposites/SchemeHostPortPathQueryFragment");
 })(Url || (Url = {}));
 module.exports = Url;

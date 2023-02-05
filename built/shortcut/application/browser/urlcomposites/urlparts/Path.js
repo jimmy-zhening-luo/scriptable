@@ -15,7 +15,7 @@ class Path extends pa_UrlPart {
     }
 }
 (function (Path) {
-    Path._PathRepeater = importModule("repeater/PathRepeater");
+    Path._PathRepeater = importModule("repeaters/PathRepeater");
 })(Path || (Path = {}));
 module.exports = Path;
 //# sourceMappingURL=Path.js.map

@@ -60,7 +60,7 @@ class Query extends qu_UrlPart {
     }
 }
 (function (Query) {
-    Query._QueryRepeater = importModule("repeater/QueryRepeater");
+    Query._QueryRepeater = importModule("repeaters/QueryRepeater");
 })(Query || (Query = {}));
 module.exports = Query;
 //# sourceMappingURL=Query.js.map

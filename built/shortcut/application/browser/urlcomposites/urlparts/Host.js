@@ -27,9 +27,9 @@ class Host extends ho_UrlPart {
     }
 }
 (function (Host) {
-    Host._HostIPv4Repeater = importModule("repeater/HostIPv4Repeater");
-    Host._HostIPv6Repeater = importModule("repeater/HostIPv6Repeater");
-    Host._HostRegNameRepeater = importModule("repeater/HostRegNameRepeater");
+    Host._HostIPv4Repeater = importModule("repeaters/HostIPv4Repeater");
+    Host._HostIPv6Repeater = importModule("repeaters/HostIPv6Repeater");
+    Host._HostRegNameRepeater = importModule("repeaters/HostRegNameRepeater");
 })(Host || (Host = {}));
 module.exports = Host;
 //# sourceMappingURL=Host.js.map
