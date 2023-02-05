@@ -1,6 +1,5 @@
 const po_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
-// WIP
 class Port extends po_UrlPart {
   constructor(
     port?: string

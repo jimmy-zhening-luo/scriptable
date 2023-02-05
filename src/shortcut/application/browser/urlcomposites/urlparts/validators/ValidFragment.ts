@@ -9,8 +9,9 @@ class ValidFragment extends fr_ValidUrlPart {
           ValidFragment._UrlChar.hash
         ]
       },
-      ValidFragment._UrlChar.unreserved,
-      ValidFragment._UrlChar.
+      ValidFragment._UrlChar.pchar,
+      ValidFragment._UrlChar.slash,
+      ValidFragment._UrlChar.question
     );
   }
 }

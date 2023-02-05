@@ -6,10 +6,15 @@ class Scheme extends sc_UrlPart {
   }
 
   protected parse(scheme: string): string {
-    return new Scheme._ValidScheme(scheme)
-      .hasValue ?
-      new Scheme._ValidScheme(scheme).toString()
-      : "https";
+    const validScheme: ValidScheme = new Scheme._ValidScheme(scheme);
+    
+    const firstChar: string = [...validScheme.toString()].shift() ?? "";
+    
+    const alpha: string[] = Scheme._ValidScheme._UrlChar._alpha;
+    
+    return (validScheme.hasValue && alpha.includes(firstChar)) ?
+    validScheme.toString()
+    : "https";
   }
 }
 
