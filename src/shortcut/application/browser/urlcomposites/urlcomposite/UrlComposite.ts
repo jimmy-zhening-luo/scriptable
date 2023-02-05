@@ -15,8 +15,4 @@ abstract class UrlComposite {
   }
 }
 
-namespace UrlComposite {
-  export const _UrlPart: typeof UrlPart = importModule("./shortcut/application/browser/urlcomposites/urlparts/urlpart/tsconfig.json");
-}
-
 module.exports = UrlComposite;

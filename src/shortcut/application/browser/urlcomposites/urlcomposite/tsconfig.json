@@ -2,11 +2,11 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../urlparts/**/*"
+    "../urlparts/urlpart/**/*"
   ],
   "references": [
     {
-      "path": "../urlparts/tsconfig.json"
+      "path": "../urlparts/urlpart/tsconfig.json"
     }
   ],
   "compilerOptions": {
