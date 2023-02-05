@@ -5,6 +5,9 @@
   ],
   "references": [
     {
+      "path": "host/tsconfig.json"
+    },
+    {
       "path": "path/tsconfig.json"
     },
     {
