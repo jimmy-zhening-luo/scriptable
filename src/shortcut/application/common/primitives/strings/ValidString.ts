@@ -1,7 +1,7 @@
 class ValidString {
   readonly raw: string;
   readonly cleaned: string;
-  readonly value: string | null;
+  readonly value: null | string;
   constructor(
     text: string,
     {
@@ -84,12 +84,8 @@ class ValidString {
     }
   }
 
-  get hasValue(): boolean {
-    return this.value !== null;
-  }
-
   get isValid(): boolean {
-    return this.hasValue;
+    return this.value !== null;
   }
 
   get string(): string {

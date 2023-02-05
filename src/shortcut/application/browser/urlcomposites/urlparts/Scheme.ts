@@ -12,7 +12,7 @@ class Scheme extends sc_UrlPart {
 
     const alpha: string[] = Scheme._ValidScheme._UrlChar.alpha;
 
-    return (validScheme.hasValue && alpha.includes(firstChar)) ?
+    return (validScheme.isValid && alpha.includes(firstChar)) ?
     validScheme.toString()
     : "https";
   }
