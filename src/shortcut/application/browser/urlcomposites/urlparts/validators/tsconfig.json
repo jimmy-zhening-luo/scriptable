@@ -6,6 +6,9 @@
   ],
   "references": [
     {
+      "path": "validurlpart/tsconfig.json"
+    },
+    {
       "path": "../../../../common/primitives/strings/tsconfig.json"
     }
   ],
