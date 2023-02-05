@@ -6,7 +6,7 @@ class HostRegNameRepeater extends hrn_UrlPartRepeater {
   }
 }
 
-namespace QueryRepeater {
+namespace HostRegNameRepeater {
   export const _ValidHostRegNameRepeater: typeof ValidHostRegNameRepeater = importModule("./shortcut/application/browser/urlcomposites/urlparts/validators/ValidHostRegNameRepeater");
 }
 
