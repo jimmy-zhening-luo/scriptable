@@ -5,13 +5,7 @@
   ],
   "references": [
     {
-      "path": "host/tsconfig.json"
-    },
-    {
-      "path": "path/tsconfig.json"
-    },
-    {
-      "path": "query/tsconfig.json"
+      "path": "urlpartrepeater/tsconfig.json"
     }
   ],
   "compilerOptions": {
