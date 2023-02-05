@@ -6,4 +6,8 @@ class Path extends pa_UrlPart {
   }
 }
 
+namespace Path {
+  export const _PathRepeater: typeof PathRepeater = importModule("repeater/PathRepeater");
+}
+
 module.exports = Path;

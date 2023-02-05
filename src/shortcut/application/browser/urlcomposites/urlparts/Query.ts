@@ -6,4 +6,8 @@ class Query extends qu_UrlPart {
   }
 }
 
+namespace Query {
+  export const _QueryRepeater: typeof QueryRepeater = importModule("repeater/QueryRepeater");
+}
+
 module.exports = Query;
