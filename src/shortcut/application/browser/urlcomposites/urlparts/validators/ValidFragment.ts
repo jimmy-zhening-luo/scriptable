@@ -1,7 +1,6 @@
-const fr_ValidString: typeof ValidString = importModule("./shortcut/application/common/primitives/strings/ValidString");
+const fr_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrlPart");
 
-
-class ValidFragment extends fr_ValidString {
+class ValidFragment extends fr_ValidUrlPart {
   constructor(fragment: string) {
     super(
       fragment,
