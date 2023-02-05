@@ -1,0 +1,1 @@
+const hips_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrlPart");

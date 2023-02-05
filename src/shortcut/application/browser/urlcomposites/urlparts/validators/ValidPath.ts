@@ -1,1 +1,1 @@
-const pa_ValidString: typeof ValidString = importModule("./shortcut/application/common/primitives/strings/ValidString");
+const pa_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrlPart");

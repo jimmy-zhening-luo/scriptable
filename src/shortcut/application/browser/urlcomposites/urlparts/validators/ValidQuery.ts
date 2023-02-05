@@ -1,1 +1,1 @@
-const qu_ValidString: typeof ValidString = importModule("./shortcut/application/common/primitives/strings/ValidString");
+const qu_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrlPart");

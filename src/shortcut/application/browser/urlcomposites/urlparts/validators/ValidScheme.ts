@@ -1,20 +1,20 @@
-const sc_ValidString: typeof ValidString = importModule("./shortcut/application/common/primitives/strings/ValidString");
+const sc_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrlPart");
 
-class ValidScheme extends sc_ValidString {
+class ValidScheme extends sc_ValidUrlPart {
   constructor(scheme: string) {
     super(
       scheme,
       {
         toLower: true,
         trimTrailing: [
-          UrlChar.slash,
-          UrlChar.colon
+          ValidScheme._UrlChar.slash,
+          ValidScheme._UrlChar.colon
         ]
       },
-      UrlChar.alphaNumericLower,
-      UrlChar.plus,
-      UrlChar.dot,
-      UrlChar.hyphen
+      ValidScheme._UrlChar.alphaNumericLower,
+      ValidScheme._UrlChar.plus,
+      ValidScheme._UrlChar.hyphen,
+      ValidScheme._UrlChar.dot
     );
   }
 }

@@ -1,6 +1,6 @@
-const po_ValidString: typeof ValidString = importModule("./shortcut/application/common/primitives/strings/ValidString");
+const po_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrlPart");
 
-class ValidPort extends po_ValidString {
+class ValidPort extends po_ValidUrlPart {
   constructor(port: string) {
     super(
       port,
