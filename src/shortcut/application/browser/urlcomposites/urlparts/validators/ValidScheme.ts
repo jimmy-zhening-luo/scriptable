@@ -11,6 +11,7 @@ class ValidScheme extends sc_ValidUrlPart {
           ...ValidScheme._UrlChar.colon
         ]
       },
+      {},
       ValidScheme._UrlChar.alphaNumericLower,
       ValidScheme._UrlChar.plus,
       ValidScheme._UrlChar.hyphen,

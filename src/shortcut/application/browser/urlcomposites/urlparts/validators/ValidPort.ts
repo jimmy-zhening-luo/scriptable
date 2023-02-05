@@ -9,6 +9,7 @@ class ValidPort extends po_ValidUrlPart {
           ...UrlChar.colon
         ]
       },
+      {},
       UrlChar.numbers
     );
   }

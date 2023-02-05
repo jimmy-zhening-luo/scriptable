@@ -2,7 +2,7 @@ const qu_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrl
 
 class ValidQueryRepeater extends qu_ValidUrlPart {
   constructor(queryRepeater: string) {
-    super(queryRepeater, {});
+    super(queryRepeater, {}, {});
   }
 }
 

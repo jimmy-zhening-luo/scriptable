@@ -8,12 +8,17 @@ class ValidString {
       toLower = false,
       trim = true,
       trimLeading = [],
-      trimTrailing = []
+      trimTrailing = [],
     }: {
       toLower?: boolean,
       trim?: boolean,
       trimLeading?: string[],
       trimTrailing?: string[]
+      },
+    {
+      maxLength = Infinity
+    }: {
+      maxLength?: number
     },
     ...allowedChars: Char.CharInput[]
   ) {
@@ -25,7 +30,12 @@ class ValidString {
       trimLeading,
       trimTrailing
     );
-    this.value = parseStringToOneGrams(
+
+    maxLength = new ValidString._PositiveInteger(maxLength).value ?? Infinity;
+
+    this.value = text.length > maxLength ?
+      null
+      : parseStringToOneGrams(
       this.cleaned
     ).map(ngram => new ValidString._OneCharString(
       ngram.word, ...allowedChars
@@ -100,6 +110,7 @@ class ValidString {
 namespace ValidString {
   export const _OneGram: typeof OneGram = importModule("words/OneGram");
   export const _OneCharString: typeof OneCharString = importModule("charstrings/OneCharString.ts");
+  export const _PositiveInteger: typeof PositiveInteger = importModule("./shortcut/application/common/primitives/numbers/PositiveInteger");
 }
 
 module.exports = ValidString;

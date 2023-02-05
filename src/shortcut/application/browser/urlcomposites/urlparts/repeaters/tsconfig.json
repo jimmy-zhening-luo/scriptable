@@ -2,7 +2,8 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../validators/**/*"
+    "../validators/**/*",
+    "../../../../common/primitives/strings/**/*"
   ],
   "references": [
     {
@@ -10,6 +11,9 @@
     },
     {
       "path": "../validators/tsconfig.json"
+    },
+    {
+      "path": "../../../../common/primitives/strings/tsconfig.json"
     }
   ],
   "compilerOptions": {

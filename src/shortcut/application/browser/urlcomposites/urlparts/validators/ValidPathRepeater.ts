@@ -2,7 +2,12 @@ const pa_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrl
 
 class ValidPathRepeater extends pa_ValidUrlPart {
   constructor(pathRepeater: string) {
-    super(pathRepeater, {});
+    super(
+      pathRepeater,
+      {},
+      {},
+      pa_ValidUrlPart._UrlChar.pchar
+    );
   }
 
 }

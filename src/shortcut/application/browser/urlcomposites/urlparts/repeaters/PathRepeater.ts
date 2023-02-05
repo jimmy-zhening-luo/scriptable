@@ -2,7 +2,7 @@ const pa_UrlPartRepeater: typeof UrlPartRepeater = importModule("urlpartrepeater
 
 class PathRepeater extends pa_UrlPartRepeater {
   protected parse(repeater: string): null | string {
-    return repeater;
+    return new PathRepeater._ValidPathRepeater(repeater).value;
   }
 }
 

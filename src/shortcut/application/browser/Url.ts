@@ -6,13 +6,12 @@ class Url {
   #query: Query = new Url._Query();
   #fragment: Fragment = new Url._Fragment();
 
-  constructor();
-  constructor(url: Url);
-  constructor(urlparts: Url.UrlParts);
-  constructor(url: string);
+  constructor(url?: Url);
+  constructor(urlparts?: Url.UrlParts);
+  constructor(url?: string);
   constructor(
-    scheme: Scheme | string,
-    host: Host | string,
+    scheme?: Scheme | string,
+    host?: Host | string,
     port?: Port | number | string,
     path?: Path | string,
     query?: Query | string,
@@ -45,7 +44,12 @@ class Url {
       this.fragment = url.fragment;
     }
     else if (typeof head === "string") {
-      if (host === undefined) {
+      if (host === undefined
+        && port === undefined
+        && path === undefined
+        && query === undefined
+        && fragment === undefined
+      ) {
         const url: string = head;
         const parsedUrl: Url = parse(url);
         this.scheme = parsedUrl.scheme;
@@ -66,27 +70,15 @@ class Url {
       }
     }
     else if (
-      "part" in head
-      && "string" in head
-      && "hasValue" in head
+      "ClassDecorator_UrlPart" in head
     ) {
-      if (host === undefined) {
-        this.scheme = undefined;
-        this.host = undefined;
-        this.port = undefined;
-        this.path = undefined;
-        this.query = undefined;
-        this.fragment = undefined;
-      }
-      else {
-        const scheme: Scheme = head;
-        this.scheme = scheme;
-        this.host = host;
-        this.port = port;
-        this.path = path;
-        this.query = query;
-        this.fragment = fragment;
-      }
+      const scheme: Scheme = head;
+      this.scheme = scheme;
+      this.host = host;
+      this.port = port;
+      this.path = path;
+      this.query = query;
+      this.fragment = fragment;
     }
     else {
       const urlParts: Url.UrlParts = head;
