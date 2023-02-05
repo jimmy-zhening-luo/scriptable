@@ -2,7 +2,7 @@ const url_ValidString: typeof ValidString = importModule("./shortcut/application
 
 abstract class ValidUrlPart extends url_ValidString {
   constructor(
-    url: string,
+    part: string,
     {
       toLower = false,
       trim = true,
@@ -17,8 +17,14 @@ abstract class ValidUrlPart extends url_ValidString {
     ...allowedChars: Char.CharInput[]
   ) {
     super(
-
-    )
+      part,
+      {
+        toLower,
+        trim,
+        trimLeading,
+        trimTrailing
+      },
+      ...allowedChars
     );
   }
 }
