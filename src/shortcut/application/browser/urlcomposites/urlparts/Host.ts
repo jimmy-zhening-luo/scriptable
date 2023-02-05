@@ -12,7 +12,10 @@ class Host extends ho_UrlPart {
       && host
         .split(".")
         .map(hostRepeater => new Host._HostIPv4Repeater(hostRepeater))
-        .every(hostRepeater => hostRepeater.isValid)
+        .every(hostRepeater => (
+          hostRepeater.isValid
+          && Number.parseInt(hostRepeater.toString()) <= 255
+        ))
     ) || (
       host
         .split(":").length < 8
