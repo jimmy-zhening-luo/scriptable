@@ -1,7 +1,17 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "../../validators/**/*",
+    "../../../../../common/primitives/**/*"
+  ],
+  "references": [
+    {
+      "path": "../../validators/tsconfig.json"
+    },
+    {
+      "path": "../../../../../common/primitives/tsconfig.json"
+    }
   ],
   "compilerOptions": {
     "rootDir": "../../../../../../.."

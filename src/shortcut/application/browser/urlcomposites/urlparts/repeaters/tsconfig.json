@@ -3,7 +3,7 @@
   "include": [
     "**/*",
     "../validators/**/*",
-    "../../../../common/primitives/strings/**/*"
+    "../../../../common/primitives/**/*"
   ],
   "references": [
     {
@@ -13,7 +13,7 @@
       "path": "../validators/tsconfig.json"
     },
     {
-      "path": "../../../../common/primitives/strings/tsconfig.json"
+      "path": "../../../../common/primitives/tsconfig.json"
     }
   ],
   "compilerOptions": {

@@ -2,11 +2,15 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../urlparts/urlpart/**/*"
+    "../urlparts/urlpart/**/*",
+    "../../../common/primitives/**/*"
   ],
   "references": [
     {
       "path": "../urlparts/urlpart/tsconfig.json"
+    },
+    {
+      "path": "../../../common/primitives/tsconfig.json"
     }
   ],
   "compilerOptions": {

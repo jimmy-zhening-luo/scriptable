@@ -1,11 +1,15 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "../../../../../numbers/**/*"
   ],
   "references": [
     {
       "path": "charstring/tsconfig.json"
+    },
+    {
+      "path": "../../../../../numbers/tsconfig.json"
     }
   ],
   "compilerOptions": {
