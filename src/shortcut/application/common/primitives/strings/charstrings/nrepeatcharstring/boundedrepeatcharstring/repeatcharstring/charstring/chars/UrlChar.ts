@@ -64,6 +64,17 @@ class UrlChar extends _Char {
     ];
   }
 
+  // RFC 3986: https://www.rfc-editor.org/rfc/rfc3986#appendix-A
+
+  static get pchar(): string[] {
+    return [
+      ...this.unreserved,
+      ...this.percentEncoded,
+      ...this.subDelims,
+      this.colon,
+    ]
+  }
+
   static get unreserved(): string[] {
     return [
       ...this.alphaNumeric,
