@@ -302,12 +302,12 @@ namespace Url {
 
   export const _File: typeof File = importModule("./shortcut/application/appdata/filesystem/file/File");
 
-  export const _Scheme: typeof Scheme = importModule("urlparts/Scheme");
-  export const _Host: typeof Host = importModule("urlparts/Host");
-  export const _Port: typeof Port = importModule("urlparts/Port");
-  export const _Path: typeof Path = importModule("urlparts/Path");
-  export const _Query: typeof Query = importModule("urlparts/Query");
-  export const _Fragment: typeof Fragment = importModule("urlparts/Fragment");
+  export const _Scheme: typeof Scheme = importModule("urlcomposites/urlparts/Scheme");
+  export const _Host: typeof Host = importModule("urlcomposites/urlparts/Host");
+  export const _Port: typeof Port = importModule("urlcomposites/urlparts/Port");
+  export const _Path: typeof Path = importModule("urlcomposites/urlparts/Path");
+  export const _Query: typeof Query = importModule("urlcomposites/urlparts/Query");
+  export const _Fragment: typeof Fragment = importModule("urlcomposites/urlparts/Fragment");
   export const _SchemeHostPortPathQueryFragment: typeof SchemeHostPortPathQueryFragment = importModule("urlcomposites/SchemeHostPortPathQueryFragment");
 }
 
