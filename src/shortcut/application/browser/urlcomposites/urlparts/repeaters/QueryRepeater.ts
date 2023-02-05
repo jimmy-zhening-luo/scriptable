@@ -6,4 +6,8 @@ class QueryRepeater extends qu_UrlPartRepeater {
   }
 }
 
+namespace QueryRepeater {
+  export const _ValidQueryRepeater: typeof ValidQueryRepeater = importModule("./shortcut/application/browser/urlcomposites/urlparts/validators/ValidQueryRepeater");
+}
+
 module.exports = QueryRepeater;

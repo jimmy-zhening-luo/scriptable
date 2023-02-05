@@ -6,4 +6,8 @@ class PathRepeater extends pa_UrlPartRepeater {
   }
 }
 
+namespace PathRepeater {
+  export const _ValidPathRepeater: typeof ValidPathRepeater = importModule("./shortcut/application/browser/urlcomposites/urlparts/validators/ValidPathRepeater");
+}
+
 module.exports = PathRepeater;
