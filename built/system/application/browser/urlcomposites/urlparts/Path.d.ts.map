@@ -1,0 +1,1 @@
+{"version":3,"file":"Path.d.ts","sourceRoot":"","sources":["../../../../../../src/system/application/browser/urlcomposites/urlparts/Path.ts"],"names":[],"mappings":"AAAA,QAAA,MAAM,UAAU,EAAE,OAAO,OAAyC,CAAC;AAEnE,cAAM,IAAK,SAAQ,UAAU;IAC3B,SAAS,CAAC,KAAK,CAAC,IAAI,EAAE,MAAM,GAAG,IAAI,GAAG,MAAM;CAa7C;AAED,kBAAU,IAAI,CAAC;IACN,MAAM,aAAa,EAAE,OAAO,YAAqD,CAAC;CAC1F"}

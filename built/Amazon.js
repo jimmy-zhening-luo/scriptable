@@ -3,7 +3,7 @@
 // icon-color: orange; icon-glyph: share;
 var Amazon;
 (function (Amazon_1) {
-    const shortcut = importModule("shortcut/Shortcut");
+    const shortcut = importModule("system/Shortcut");
     class Amazon extends shortcut {
         runtime() {
             var _a;

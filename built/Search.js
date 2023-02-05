@@ -3,7 +3,7 @@
 // icon-color: blue; icon-glyph: search;
 var Search;
 (function (Search_1) {
-    const shortcut = importModule("shortcut/Shortcut");
+    const shortcut = importModule("system/Shortcut");
     class Search extends shortcut {
         runtime(args) {
             var _a, _b;
