@@ -2,8 +2,6 @@ const hp_UrlComposite = importModule("urlcomposite/UrlComposite");
 class HostPort extends hp_UrlComposite {
     constructor(hostOrHostPort, port) {
         super();
-        this.host = this.parts[0];
-        this.port = this.parts[1];
         this.parts = hostOrHostPort === undefined ?
             [
                 new HostPort._Host(),
@@ -15,6 +13,8 @@ class HostPort extends hp_UrlComposite {
                     new HostPort._Host(hostOrHostPort),
                     new HostPort._Port(port)
                 ];
+        this.host = this.parts[0];
+        this.port = this.parts[1];
     }
     get composite() {
         return this.host.isValid ?

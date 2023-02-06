@@ -2,8 +2,6 @@ const shp_UrlComposite = importModule("urlcomposite/UrlComposite");
 class SchemeHostPort extends shp_UrlComposite {
     constructor(schemeOrSchemeHostPort, hostPort) {
         super();
-        this.scheme = this.parts[0];
-        this.hostPort = this.parts[1];
         this.parts = schemeOrSchemeHostPort === undefined ?
             [
                 new SchemeHostPort._Scheme(),
@@ -17,6 +15,8 @@ class SchemeHostPort extends shp_UrlComposite {
                         new SchemeHostPort._HostPort(new SchemeHostPort._HostPort._Host(hostPort[0]), new SchemeHostPort._HostPort._Port(hostPort[1]))
                         : new SchemeHostPort._HostPort(hostPort)
                 ];
+        this.scheme = this.parts[0];
+        this.hostPort = this.parts[1];
     }
     get composite() {
         return [

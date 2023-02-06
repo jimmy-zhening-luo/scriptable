@@ -2,8 +2,6 @@ const pq_UrlComposite = importModule("urlcomposite/UrlComposite");
 class PathQuery extends pq_UrlComposite {
     constructor(pathOrPathQuery, query) {
         super();
-        this.path = this.parts[0];
-        this.query = this.parts[1];
         this.parts = pathOrPathQuery === undefined ?
             [
                 new PathQuery._Path(),
@@ -15,6 +13,8 @@ class PathQuery extends pq_UrlComposite {
                     new PathQuery._Path(pathOrPathQuery),
                     new PathQuery._Query(query)
                 ];
+        this.path = this.parts[0];
+        this.query = this.parts[1];
     }
     get composite() {
         return this.query.isValid ?

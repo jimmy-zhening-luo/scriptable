@@ -2,8 +2,6 @@ const pqf_UrlComposite = importModule("urlcomposite/UrlComposite");
 class PathQueryFragment extends pqf_UrlComposite {
     constructor(pathOrPathQueryOrPathQueryFragment, fragment) {
         super();
-        this.pathQuery = this.parts[0];
-        this.fragment = this.parts[1];
         this.parts = pathOrPathQueryOrPathQueryFragment === undefined ?
             [
                 new PathQueryFragment._PathQuery(),
@@ -20,6 +18,8 @@ class PathQueryFragment extends pqf_UrlComposite {
                         new PathQueryFragment._PathQuery(pathOrPathQueryOrPathQueryFragment),
                         new PathQueryFragment._Fragment(fragment)
                     ];
+        this.pathQuery = this.parts[0];
+        this.fragment = this.parts[1];
     }
     get composite() {
         return this.fragment.isValid ?

@@ -2,8 +2,6 @@ const shppqf_UrlComposite = importModule("urlcomposite/UrlComposite");
 class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     constructor(schemeHostPortOrSchemeHostPortPathQueryFragment, pathQueryFragment) {
         super();
-        this.schemeHostPort = this.parts[0];
-        this.pathQueryFragment = this.parts[1];
         this.parts = schemeHostPortOrSchemeHostPortPathQueryFragment === undefined ?
             [
                 new SchemeHostPortPathQueryFragment._SchemeHostPort(),
@@ -26,6 +24,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
                         new SchemeHostPortPathQueryFragment._SchemeHostPort(schemeHostPortOrSchemeHostPortPathQueryFragment),
                         new SchemeHostPortPathQueryFragment._PathQueryFragment(pathQueryFragment)
                     ];
+        this.schemeHostPort = this.parts[0];
+        this.pathQueryFragment = this.parts[1];
     }
     get composite() {
         return this.schemeHostPort.isValid ?
