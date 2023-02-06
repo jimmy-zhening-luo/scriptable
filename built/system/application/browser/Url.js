@@ -165,7 +165,10 @@ class Url {
     set fragment(fragment) {
         __classPrivateFieldSet(this, _Url_fragment, new Url._Fragment(fragment), "f");
     }
-    get string() {
+    get isValid() {
+        return __classPrivateFieldGet(this, _Url_scheme, "f").isValid;
+    }
+    toString() {
         return new Url._SchemeHostPortPathQueryFragment([
             __classPrivateFieldGet(this, _Url_scheme, "f"),
             __classPrivateFieldGet(this, _Url_host, "f"),
@@ -174,9 +177,6 @@ class Url {
             __classPrivateFieldGet(this, _Url_query, "f"),
             __classPrivateFieldGet(this, _Url_fragment, "f")
         ]).toString();
-    }
-    toString() {
-        return this.string;
     }
     static encode(url) {
         var _a, _b;

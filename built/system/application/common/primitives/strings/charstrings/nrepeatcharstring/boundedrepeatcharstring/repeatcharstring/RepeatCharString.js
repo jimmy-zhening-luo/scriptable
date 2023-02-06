@@ -1,7 +1,7 @@
 const _CharString = importModule("charstring/CharString");
 class RepeatCharString extends _CharString {
     qualifies(candidateCharString) {
-        return candidateCharString !== String()
+        return candidateCharString !== ""
             && this.parseCharStringToCharArray(candidateCharString)
                 .every(char => this
                 .ofChar

@@ -1,17 +1,20 @@
 class UrlPart {
-    constructor(part = "") {
+    constructor(part) {
         this.ClassDecorator_UrlPart = "UrlPart";
-        this.value = this.parse(part.toString());
+        this.value = (part === null
+            || part === undefined
+            || part.toString() === "") ?
+            null
+            : this.parse(part.toString());
+        if (this.value === "")
+            this.value = null;
     }
     get isValid() {
         return this.value !== null;
     }
-    get string() {
+    toString() {
         var _a;
         return (_a = this.value) !== null && _a !== void 0 ? _a : "";
-    }
-    toString() {
-        return this.string;
     }
 }
 module.exports = UrlPart;

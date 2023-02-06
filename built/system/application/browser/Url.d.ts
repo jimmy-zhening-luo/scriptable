@@ -3,7 +3,7 @@ declare class Url {
     constructor(url?: Url);
     constructor(urlparts?: Url.UrlParts);
     constructor(url?: string);
-    constructor(scheme?: Scheme | string, host?: Host | string, port?: Port | number | string, path?: Path | string, query?: Query | string, fragment?: Fragment | string);
+    constructor(scheme?: string | Scheme, host?: string | Host, port?: string | number | Port, path?: string | Path, query?: string | Query, fragment?: string | Fragment);
     get scheme(): string;
     set scheme(scheme: (string | Scheme | undefined));
     get host(): string;
@@ -18,7 +18,7 @@ declare class Url {
     removeQueryParam(key: string): void;
     get fragment(): string;
     set fragment(fragment: (string | Fragment | undefined));
-    get string(): string;
+    get isValid(): boolean;
     toString(): string;
     static encode(url: string): string;
     static decode(url: string): string;

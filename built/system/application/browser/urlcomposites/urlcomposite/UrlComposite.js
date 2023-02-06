@@ -2,11 +2,8 @@ class UrlComposite {
     get isValid() {
         return this.composite !== "";
     }
-    get string() {
-        return this.composite;
-    }
     toString() {
-        return this.string;
+        return this.composite;
     }
 }
 module.exports = UrlComposite;

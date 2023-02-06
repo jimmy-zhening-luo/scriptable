@@ -9,10 +9,7 @@ class NGram extends _Word {
                 text.slice(0, nInt)
                 : String());
         this.n = nInt;
-        this.remainder = text.slice(this.word.length);
-    }
-    get isValid() {
-        return this.hasValue;
+        this.remainder = text.slice(this.length);
     }
     get isValidAndFullyConsumed() {
         return this.isValid && !this.hasRemainder;

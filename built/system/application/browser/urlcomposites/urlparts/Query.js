@@ -3,13 +3,15 @@ class Query extends qu_UrlPart {
     parse(query) {
         query = query.trim();
         query = query.startsWith("?") ? query.slice(1) : query;
-        return this
-            .mapToQueryString(this.queryStringToMap(query))
-            .split("&")
-            .map(keyValueString => new Query._QueryRepeater(keyValueString))
-            .filter(queryRepeater => queryRepeater.isValid)
-            .map(queryRepeater => queryRepeater.toString())
-            .join("&");
+        return query === "" ?
+            null
+            : this
+                .mapToQueryString(this.queryStringToMap(query))
+                .split("&")
+                .map(keyValueString => new Query._QueryRepeater(keyValueString))
+                .filter(queryRepeater => queryRepeater.isValid)
+                .map(queryRepeater => queryRepeater.toString())
+                .join("&");
     }
     get params() {
         return this.queryStringToMap(this.toString());

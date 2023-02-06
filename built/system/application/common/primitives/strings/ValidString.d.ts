@@ -7,11 +7,11 @@ declare class ValidString {
         trim?: boolean;
         trimLeading?: string[];
         trimTrailing?: string[];
-    }, { maxLength }: {
+    }, { minLength, maxLength }: {
+        minLength?: number;
         maxLength?: number;
     }, ...allowedChars: Char.CharInput[]);
     get isValid(): boolean;
-    get string(): string;
     toString(): string;
 }
 declare namespace ValidString {

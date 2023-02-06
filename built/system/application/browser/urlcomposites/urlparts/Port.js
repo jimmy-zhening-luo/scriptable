@@ -4,7 +4,7 @@ class Port extends po_UrlPart {
         super(typeof port === "number" ?
             Number.isInteger(port) ?
                 String(Math.trunc(port))
-                : String()
+                : null
             : port);
     }
     parse(port) {
@@ -12,24 +12,18 @@ class Port extends po_UrlPart {
             .toString();
         const parsedInt = Number.isInteger(Number.parseInt(parsedString)) ?
             Math.round(Number.parseInt(parsedString))
-            : 0;
+            : NaN;
         return (parsedInt >= 1
             && parsedInt <= 65535) ?
             String(Math.round(parsedInt)).trim()
-            : String();
+            : null;
     }
-    get number() {
-        return (this.string === String()) ?
-            0
-            : Math.abs(Math.round(Number.parseInt(this.string)));
-    }
-    toNumber(coerceEmptyPortToNull = false) {
-        const zeroValue = coerceEmptyPortToNull ?
-            null
-            : 0;
-        return this.number === 0 ?
-            zeroValue
-            : this.number;
+    toNumber(coerceEmptyPortToZero = false) {
+        return this.isValid ?
+            Math.abs(Math.round(Number.parseInt(this.toString())))
+            : coerceEmptyPortToZero ?
+                0
+                : NaN;
     }
 }
 (function (Port) {

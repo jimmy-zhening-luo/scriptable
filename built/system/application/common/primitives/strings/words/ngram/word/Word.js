@@ -1,21 +1,24 @@
 class Word {
     constructor(word) {
-        this.word = word;
+        this.word = (word === null
+            || word === undefined
+            || word === "") ?
+            null
+            : word;
     }
     get length() {
-        return this.word.length;
+        var _a, _b;
+        return (_b = (_a = this.word) === null || _a === void 0 ? void 0 : _a.length) !== null && _b !== void 0 ? _b : 0;
     }
     get isWord() {
-        return this.length > 0;
+        return this.word !== null;
     }
-    get hasValue() {
+    get isValid() {
         return this.isWord;
     }
-    get string() {
-        return this.word;
-    }
     toString() {
-        return this.string;
+        var _a;
+        return (_a = this.word) !== null && _a !== void 0 ? _a : "";
     }
 }
 module.exports = Word;

@@ -1,16 +1,19 @@
 class UrlPartRepeater {
     constructor(repeater) {
-        this.value = this.parse(repeater);
+        this.value = (repeater === null
+            || repeater === undefined
+            || repeater === "") ?
+            null
+            : this.parse(repeater);
+        if (this.value === "")
+            this.value = null;
     }
     get isValid() {
         return this.value !== null;
     }
-    get string() {
+    toString() {
         var _a;
         return (_a = this.value) !== null && _a !== void 0 ? _a : "";
-    }
-    toString() {
-        return this.string;
     }
 }
 module.exports = UrlPartRepeater;

@@ -1,5 +1,5 @@
 declare abstract class CharString {
-    readonly charstring: string | null;
+    readonly charstring: null | string;
     readonly ofChar: Char;
     constructor(charstring: string);
     constructor(charstring: string, ...ofChars: Char[]);
@@ -8,9 +8,7 @@ declare abstract class CharString {
     constructor(charstring: string, ...ofCharInputs: Char.CharInput[]);
     protected abstract qualifies(candidateCharString: string): boolean;
     protected get Char(): typeof Char;
-    get hasValue(): boolean;
     get isValid(): boolean;
-    get string(): string;
     toString(): string;
 }
 //# sourceMappingURL=CharString.d.ts.map

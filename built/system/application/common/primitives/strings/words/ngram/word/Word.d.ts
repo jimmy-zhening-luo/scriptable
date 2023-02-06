@@ -1,10 +1,9 @@
 declare abstract class Word {
-    readonly word: string;
-    constructor(word: string);
+    readonly word: null | string;
+    constructor(word?: null | string);
     get length(): number;
     get isWord(): boolean;
-    get hasValue(): boolean;
-    get string(): string;
+    get isValid(): boolean;
     toString(): string;
 }
 //# sourceMappingURL=Word.d.ts.map

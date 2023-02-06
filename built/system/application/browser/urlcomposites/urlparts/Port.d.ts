@@ -1,9 +1,8 @@
 declare const po_UrlPart: typeof UrlPart;
 declare class Port extends po_UrlPart {
-    constructor(port?: string | number | Port);
+    constructor(port?: null | string | number | Port);
     protected parse(port: string): null | string;
-    get number(): number;
-    toNumber(coerceEmptyPortToNull?: boolean): null | number;
+    toNumber(coerceEmptyPortToZero?: boolean): number;
 }
 declare namespace Port {
     const _ValidPort: typeof ValidPort;

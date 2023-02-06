@@ -1,12 +1,12 @@
 const fr_UrlPart = importModule("urlpart/UrlPart");
 class Fragment extends fr_UrlPart {
-    constructor(fragment, encode = true) {
-        super(fragment);
-        this.encode = encode;
-    }
     parse(fragment) {
-        return new Fragment._ValidFragment(fragment)
-            .toString();
+        return (fragment.trim() === "#"
+            || fragment.trim() === "") ?
+            null
+            : new Fragment
+                ._ValidFragment(fragment)
+                .value;
     }
 }
 (function (Fragment) {

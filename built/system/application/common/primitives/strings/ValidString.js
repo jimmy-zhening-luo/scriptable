@@ -1,12 +1,16 @@
 class ValidString {
-    constructor(text, { toLower = false, trim = true, trimLeading = [], trimTrailing = [], }, { maxLength = Infinity }, ...allowedChars) {
-        var _a;
+    constructor(text, { toLower = false, trim = true, trimLeading = [], trimTrailing = [], }, { minLength = 1, maxLength = Infinity }, ...allowedChars) {
+        var _a, _b;
         this.raw = text;
         this.cleaned = clean(this.raw, toLower, trim, trimLeading, trimTrailing);
-        maxLength = (_a = new ValidString._PositiveInteger(maxLength).value) !== null && _a !== void 0 ? _a : Infinity;
-        this.value = text.length > maxLength ?
+        minLength = (_a = new ValidString._PositiveInteger(maxLength).value) !== null && _a !== void 0 ? _a : 1;
+        maxLength = (_b = new ValidString._PositiveInteger(maxLength).value) !== null && _b !== void 0 ? _b : Infinity;
+        this.value = (this.cleaned.length > maxLength
+            || this.cleaned.length < minLength) ?
             null
-            : parseStringToOneGrams(this.cleaned).map(ngram => new ValidString._OneCharString(ngram.word, ...allowedChars)).every(charstring => charstring.isValid) ?
+            : parseStringToOneGrams(this.cleaned)
+                .map(ngram => new ValidString
+                ._OneCharString(ngram.toString(), ...allowedChars)).every(charstring => charstring.isValid) ?
                 this.cleaned
                 : null;
         function clean(text, toLower, trim, trimLeading, trimTrailing) {
@@ -44,12 +48,9 @@ class ValidString {
     get isValid() {
         return this.value !== null;
     }
-    get string() {
+    toString() {
         var _a;
         return (_a = this.value) !== null && _a !== void 0 ? _a : "";
-    }
-    toString() {
-        return this.string;
     }
 }
 (function (ValidString) {
