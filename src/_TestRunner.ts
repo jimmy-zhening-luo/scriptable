@@ -99,7 +99,7 @@ namespace TestRunner {
             ...moreCases
           )
         );
-    }
+ 
     
     private parseInput(
       cases?:
@@ -109,12 +109,23 @@ namespace TestRunner {
       ...moreCases:
         Array<TestCase | TestCases>
     ): TestCases {
-      return [
-        cases instanceof TestSuite ?
-          (...cases.cases)
-          : (...caseOrCasesToCases(cases)),
-         (...arrCaseCasesToCases(moreCases))
-      ];
+      const joined: TestCases = [];
+      if (cases instanceof TestSuite)
+        joined.push(...cases.cases)
+      else
+        joined
+          .push(
+            ...caseOrCasesToCases(
+              cases
+            )
+          );
+      joined
+        .push(
+          ...arrCaseCasesToCases(
+            moreCases
+          )
+        );
+      return joined;
       
       function arrCaseCasesToCases(
         moreCases: Array<TestCase | TestCases>
