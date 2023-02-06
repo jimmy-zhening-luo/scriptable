@@ -69,7 +69,7 @@ namespace TestRunner {
       suppressLogging: boolean = false
     ): boolean {
       if (!suppressLogging)
-        this.cases.forEach(case => {
+        this.cases.forEach((case) => {
           console.log(
             case.length === 2 ?
               case.join(", ")
