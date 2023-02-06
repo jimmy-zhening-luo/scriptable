@@ -45,7 +45,7 @@ class ValidString {
       :parseStringToOneGrams(this.cleaned)
       .map(ngram => new ValidString
         ._OneCharString(
-          ngram.word,
+          ngram.toString(),
           ...allowedChars
         )
       ).every(charstring => charstring.isValid) ?
