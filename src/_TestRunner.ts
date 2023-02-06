@@ -99,7 +99,7 @@ namespace TestRunner {
             ...moreCases
           )
         );
- 
+    }
     
     private parseInput(
       cases?:
