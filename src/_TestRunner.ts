@@ -69,17 +69,13 @@ namespace TestRunner {
       suppressLogging: boolean = false
     ): boolean {
       if (!suppressLogging)
-        this.cases.forEach((case) => {
+        this.cases.forEach([evaluate, result] => {
           console.log(
-            case.length === 2 ?
-              case.join(", ")
-              : "ERROR: Incorrect test case syntax. "
+            [evaluate, result].join(", ")
           )
         });
       return this.cases
-        .every(case => case.length === 2
-          && case[0] === case[1]
-        );
+        .every([evaluate, result] => evaluate === result);
     }
     
     addCase(
