@@ -130,7 +130,9 @@ namespace TestRunner {
         const cases: TestCases = [];
         moreCases.forEach((caseOrCases) => {
           cases.push(
-            ...toCases(caseOrCases)
+            ...caseOrCasesToCases(
+              caseOrCases
+            )
           );
         });
         return cases;
