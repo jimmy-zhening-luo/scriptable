@@ -1,5 +1,5 @@
 class Url {
-  #scheme: Scheme = new Url._Scheme();
+  #scheme: Scheme = new Url._Scheme("https");
   #host: Host = new Url._Host();
   #port: Port = new Url._Port();
   #path: Path = new Url._Path();
@@ -30,14 +30,7 @@ class Url {
     query?: string | Query,
     fragment?: string | Fragment
   ) {
-    if (head === undefined) {
-      this.scheme = undefined;
-      this.host = undefined;
-      this.port = undefined;
-      this.path = undefined;
-      this.query = undefined;
-      this.fragment = undefined;
-    }
+    if (head === undefined) {}
     else if (head instanceof Url) {
       const url: Url = head;
       this.scheme = url.scheme;
@@ -154,11 +147,16 @@ class Url {
     scheme: (string
       | Scheme
       | undefined
+      | null
     )
   ) {
     this.#scheme = new Url._Scheme(
       scheme
     );
+    if (this.scheme === "")
+      this.#scheme = new Url._Scheme(
+        "https"
+      );
   }
 
   get host(): string {
@@ -169,6 +167,7 @@ class Url {
     host: (string
       | Host
       | undefined
+      | null
     )
   ) {
     this.#host = new Url._Host(host);
@@ -183,6 +182,7 @@ class Url {
       | number
       | Port
       | undefined
+      | null
     )
   ) {
     this.#port = new Url._Port(port);
@@ -196,6 +196,7 @@ class Url {
     path: (string
       | Path
       | undefined
+      | null
     )
   ) {
     this.#path = new Url._Path(path);
@@ -209,6 +210,7 @@ class Url {
     query: (string
       | Query
       | undefined
+      | null
     )
   ) {
     this.#query = new Url._Query(query);
@@ -235,6 +237,7 @@ class Url {
     fragment: (string
       | Fragment
       | undefined
+      | null
     )
   ) {
     this.#fragment = new Url._Fragment(
