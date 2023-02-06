@@ -2,8 +2,8 @@ const hp_UrlComposite: typeof UrlComposite = importModule("urlcomposite/UrlCompo
 
 class HostPort extends hp_UrlComposite {
   readonly parts: [Host, Port];
-  readonly host: Host = this.parts[0];
-  readonly port: Port = this.parts[1];
+  readonly host: Host;
+  readonly port: Port;
 
   constructor(hostPort?: HostPort);
   constructor(
@@ -27,6 +27,8 @@ class HostPort extends hp_UrlComposite {
           new HostPort._Host(hostOrHostPort),
           new HostPort._Port(port)
         ];
+    this.host = this.parts[0];
+    this.port = this.parts[1];
   }
 
   get composite(): string {

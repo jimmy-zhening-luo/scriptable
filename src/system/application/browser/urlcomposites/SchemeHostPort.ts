@@ -2,8 +2,8 @@ const shp_UrlComposite: typeof UrlComposite = importModule("urlcomposite/UrlComp
 
 class SchemeHostPort extends shp_UrlComposite {
   readonly parts: [Scheme, HostPort];
-  readonly scheme: Scheme = this.parts[0];
-  readonly hostPort: HostPort = this.parts[1];
+  readonly scheme: Scheme;
+  readonly hostPort: HostPort;
 
   constructor(schemeHostPort?: SchemeHostPort);
   constructor(
@@ -45,6 +45,8 @@ class SchemeHostPort extends shp_UrlComposite {
             )
             : new SchemeHostPort._HostPort(hostPort)
         ];
+    this.scheme = this.parts[0];
+    this.hostPort = this.parts[1];
   }
 
   get composite(): string {

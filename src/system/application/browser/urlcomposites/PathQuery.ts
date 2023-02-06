@@ -2,8 +2,8 @@ const pq_UrlComposite: typeof UrlComposite = importModule("urlcomposite/UrlCompo
 
 class PathQuery extends pq_UrlComposite {
   readonly parts: [Path, Query];
-  readonly path: Path = this.parts[0];
-  readonly query: Query = this.parts[1];
+  readonly path: Path;
+  readonly query: Query;
 
   constructor(pathQuery?: PathQuery);
   constructor(
@@ -27,6 +27,8 @@ class PathQuery extends pq_UrlComposite {
           new PathQuery._Path(pathOrPathQuery),
           new PathQuery._Query(query)
         ];
+    this.path = this.parts[0];
+    this.query = this.parts[1];
   }
 
   get composite(): string {

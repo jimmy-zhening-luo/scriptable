@@ -5,8 +5,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     SchemeHostPort,
     PathQueryFragment
   ];
-  readonly schemeHostPort: SchemeHostPort = this.parts[0];
-  readonly pathQueryFragment: PathQueryFragment = this.parts[1];
+  readonly schemeHostPort: SchemeHostPort;
+  readonly pathQueryFragment: PathQueryFragment;
 
   constructor(
     schemeHostPortPathQueryFragment?:
@@ -66,6 +66,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
             new SchemeHostPortPathQueryFragment._SchemeHostPort(schemeHostPortOrSchemeHostPortPathQueryFragment),
             new SchemeHostPortPathQueryFragment._PathQueryFragment(pathQueryFragment)
           ];
+    this.schemeHostPort = this.parts[0];
+    this.pathQueryFragment = this.parts[1];
   }
 
   get composite(): string {
