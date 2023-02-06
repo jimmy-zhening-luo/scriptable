@@ -56,13 +56,10 @@ namespace TestRunner {
         Array<TestCase | TestCases>
     ) {
       this.id = id;
-      if (cases === undefined)
-        this.cases = [];
-      else
-        this.cases = this.parseInput(
-          cases,
-          ...moreCases
-        );
+      this.cases = this.parseInput(
+        cases,
+        ...moreCases
+      );
     }
     
     run(
@@ -92,13 +89,12 @@ namespace TestRunner {
       ...moreCases:
         Array<TestCase | TestCases>
     ): void {
-      if (cases !== undefined)
-        this.cases.push(
-          ...this.parseInput(
-            cases,
-            ...moreCases
-          )
-        );
+      this.cases.push(
+        ...this.parseInput(
+          cases,
+          ...moreCases
+        )
+      );
     }
     
     private parseInput(
@@ -110,7 +106,8 @@ namespace TestRunner {
         Array<TestCase | TestCases>
     ): TestCases {
       const joined: TestCases = [];
-      if (cases instanceof TestSuite)
+      if (cases === undefined) {}
+      else if (cases instanceof TestSuite)
         joined.push(...cases.cases)
       else
         joined
