@@ -30,8 +30,8 @@ namespace TestRunner {
   type TestCases = TestCase[];
   
   class TestSuite {
-    readonly id: string,
-    readonly cases: TestCases
+    readonly id: string;
+    readonly cases: TestCases;
     
     constructor(
       id: string,
