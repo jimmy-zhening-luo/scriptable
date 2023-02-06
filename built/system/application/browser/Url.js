@@ -12,20 +12,13 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 var _Url_scheme, _Url_host, _Url_port, _Url_path, _Url_query, _Url_fragment;
 class Url {
     constructor(head, host, port, path, query, fragment) {
-        _Url_scheme.set(this, new Url._Scheme());
+        _Url_scheme.set(this, new Url._Scheme("https"));
         _Url_host.set(this, new Url._Host());
         _Url_port.set(this, new Url._Port());
         _Url_path.set(this, new Url._Path());
         _Url_query.set(this, new Url._Query());
         _Url_fragment.set(this, new Url._Fragment());
-        if (head === undefined) {
-            this.scheme = undefined;
-            this.host = undefined;
-            this.port = undefined;
-            this.path = undefined;
-            this.query = undefined;
-            this.fragment = undefined;
-        }
+        if (head === undefined) { }
         else if (head instanceof Url) {
             const url = head;
             this.scheme = url.scheme;
@@ -128,6 +121,8 @@ class Url {
     }
     set scheme(scheme) {
         __classPrivateFieldSet(this, _Url_scheme, new Url._Scheme(scheme), "f");
+        if (this.scheme === "")
+            __classPrivateFieldSet(this, _Url_scheme, new Url._Scheme("https"), "f");
     }
     get host() {
         return __classPrivateFieldGet(this, _Url_host, "f").toString();
