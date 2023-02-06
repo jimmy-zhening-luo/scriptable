@@ -2,7 +2,9 @@ const po_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Port extends po_UrlPart {
   constructor(
-    port?: string
+    port?:
+      null
+      | string
       | number
       | Port
   ) {
@@ -10,7 +12,7 @@ class Port extends po_UrlPart {
       typeof port === "number" ?
         Number.isInteger(port) ?
           String(Math.trunc(port))
-          : String()
+          : null
         : port
     );
   }
@@ -24,30 +26,29 @@ class Port extends po_UrlPart {
       Number.parseInt(parsedString)
     ) ?
       Math.round(Number.parseInt(parsedString))
-      : 0;
+      : NaN;
     return (
       parsedInt >= 1
       && parsedInt <= 65535
     ) ?
       String(Math.round(parsedInt)).trim()
-      : String();
-  }
-
-  get number(): number {
-    return (this.string === String()) ?
-      0
-      : Math.abs(Math.round(Number.parseInt(this.string)));
+      : null;
   }
 
   toNumber(
-    coerceEmptyPortToNull: boolean = false
-  ): null | number {
-    const zeroValue: null | number = coerceEmptyPortToNull ?
-      null
-      : 0;
-    return this.number === 0 ?
-      zeroValue
-      : this.number;
+    coerceEmptyPortToZero: boolean = false
+  ): number {
+    return this.isValid ?
+      Math.abs(
+        Math.round(
+          Number.parseInt(
+            this.toString()
+          )
+        )
+      )
+      : coerceEmptyPortToZero ?
+        0
+        : NaN;
   }
 }
 

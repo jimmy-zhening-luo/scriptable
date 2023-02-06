@@ -10,21 +10,25 @@ class Url {
   constructor(urlparts?: Url.UrlParts);
   constructor(url?: string);
   constructor(
-    scheme?: Scheme | string,
-    host?: Host | string,
-    port?: Port | number | string,
-    path?: Path | string,
-    query?: Query | string,
-    fragment?: Fragment | string
+    scheme?: string | Scheme,
+    host?: string | Host,
+    port?: string | number | Port,
+    path?: string | Path,
+    query?: string | Query,
+    fragment?: string | Fragment
   );
 
   constructor(
-    head?: Url | Url.UrlParts | Scheme | string,
-    host?: Host | string,
-    port?: Port | number | string,
-    path?: Path | string,
-    query?: Query | string,
-    fragment?: Fragment | string
+    head?:
+      string
+      | Scheme
+      | Url
+      | Url.UrlParts,
+    host?: string | Host,
+    port?: string | number | Port,
+    path?: string | Path,
+    query?: string | Query,
+    fragment?: string | Fragment
   ) {
     if (head === undefined) {
       this.scheme = undefined;
@@ -237,8 +241,12 @@ class Url {
       fragment
     );
   }
+  
+  get isValid(): boolean {
+    return this.#scheme.isValid;
+  }
 
-  get string(): string {
+  toString(): string {
     return new Url._SchemeHostPortPathQueryFragment([
       this.#scheme,
       this.#host,
@@ -246,11 +254,7 @@ class Url {
       this.#path,
       this.#query,
       this.#fragment
-    ]).toString();
-  }
-
-  toString(): string {
-    return this.string;
+      ]).toString();
   }
 
   static encode(

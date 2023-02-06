@@ -1,9 +1,15 @@
 abstract class Word {
-  readonly word: string;
+  readonly word: null | string;
   constructor(
-    word: string
+    word?: null | string
   ) {
-    this.word = word;
+    this.word = (
+      word === null
+      || word === undefined
+      || word === ""
+    ) ?
+      null
+      : word;
   }
 
   get length(): number {
@@ -11,19 +17,15 @@ abstract class Word {
   }
 
   get isWord(): boolean {
-    return this.length > 0;
+    return this.word !== null;
   }
 
-  get hasValue(): boolean {
+  get isValid(): boolean {
     return this.isWord;
   }
 
-  get string(): string {
-    return this.word;
-  }
-
   toString(): string {
-    return this.string;
+    return this.word ?? "";
   }
 }
 

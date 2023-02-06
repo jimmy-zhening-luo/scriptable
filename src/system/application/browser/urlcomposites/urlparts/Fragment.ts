@@ -1,21 +1,17 @@
 const fr_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Fragment extends fr_UrlPart {
-  readonly encode: boolean;
-  constructor(
-    fragment?: string
-      | Fragment,
-    encode: boolean = true
-  ) {
-    super(fragment);
-    this.encode = encode;
-  }
-
   protected parse(
     fragment: string
   ): null | string {
-    return new Fragment._ValidFragment(fragment)
-      .toString();
+    return (
+      fragment.trim() === "#"
+      || fragment.trim() === ""
+    ) ?
+      null
+      : new Fragment
+        ._ValidFragment(fragment)
+        .value;
   }
 }
 

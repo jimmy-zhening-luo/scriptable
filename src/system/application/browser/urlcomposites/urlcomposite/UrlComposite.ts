@@ -6,12 +6,8 @@ abstract class UrlComposite {
     return this.composite !== "";
   }
 
-  get string(): string {
-    return this.composite;
-  }
-
   toString(): string {
-    return this.string;
+    return this.composite;
   }
 }
 

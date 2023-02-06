@@ -2,10 +2,20 @@ abstract class UrlPart {
   readonly value: null | string;
   readonly ClassDecorator_UrlPart: string = "UrlPart";
   constructor(
-    part: UrlPart
-      | string = ""
+    part?:
+      null
+      | string
+      | UrlPart
   ) {
-    this.value = this.parse(part.toString());
+    this.value = (
+      part === null
+      || part === undefined
+      || part.toString() === ""
+    ) ?
+      null
+      : this.parse(part.toString());
+    if (this.value === "")
+      this.value = null;
   }
 
   protected abstract parse(part: string): null | string;
@@ -14,12 +24,8 @@ abstract class UrlPart {
     return this.value !== null;
   }
 
-  get string(): string {
-    return this.value ?? "";
-  }
-
   toString(): string {
-    return this.string;
+    return this.value ?? "";
   }
 }
 

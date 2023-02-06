@@ -16,8 +16,10 @@ class ValidString {
       trimTrailing?: string[]
       },
     {
+      minLength = 1,
       maxLength = Infinity
     }: {
+      minLength?: number,
       maxLength?: number
     },
     ...allowedChars: Char.CharInput[]
@@ -30,18 +32,25 @@ class ValidString {
       trimLeading,
       trimTrailing
     );
+    
+    minLength = new ValidString._PositiveInteger(maxLength).value ?? 1;
 
     maxLength = new ValidString._PositiveInteger(maxLength).value ?? Infinity;
 
-    this.value = text.length > maxLength ?
+    this.value = (
+      this.cleaned.length > maxLength
+      || this.cleaned.length < minLength
+    ) ?
       null
-      : parseStringToOneGrams(
-      this.cleaned
-    ).map(ngram => new ValidString._OneCharString(
-      ngram.word, ...allowedChars
-    )).every(charstring => charstring.isValid) ?
-      this.cleaned
-      : null;
+      :parseStringToOneGrams(this.cleaned)
+      .map(ngram => new ValidString
+        ._OneCharString(
+          ngram.word,
+          ...allowedChars
+        )
+      ).every(charstring => charstring.isValid) ?
+        this.cleaned
+        : null;
 
     function clean(
       text: string,
@@ -62,6 +71,7 @@ class ValidString {
         ),
         trimTrailing
       );
+      
       function preTrim(
         text: string,
         wordsToTrim: string[]
@@ -74,6 +84,7 @@ class ValidString {
           });
         return text;
       }
+      
       function postTrim(
         text: string,
         wordsToTrim: string[]
@@ -98,12 +109,8 @@ class ValidString {
     return this.value !== null;
   }
 
-  get string(): string {
-    return this.value ?? "";
-  }
-
   toString(): string {
-    return this.string;
+    return this.value ?? "";
   }
 }
 

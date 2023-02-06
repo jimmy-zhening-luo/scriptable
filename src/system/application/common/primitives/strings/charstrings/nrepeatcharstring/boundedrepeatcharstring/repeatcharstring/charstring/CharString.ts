@@ -1,5 +1,5 @@
 abstract class CharString {
-  readonly charstring: string | null;
+  readonly charstring: null | string;
   readonly ofChar: Char;
   constructor(charstring: string);
   constructor(
@@ -37,21 +37,13 @@ abstract class CharString {
     return importModule("chars/char/Char");
   }
 
-  get hasValue(): boolean {
+  get isValid(): boolean {
     return this.charstring !== null;
   }
 
-  get isValid(): boolean {
-    return this.hasValue;
-  }
-
-  get string(): string {
-    return this.charstring
-      ?? String();
-  }
-
   toString(): string {
-    return this.string;
+    return this.charstring
+    ?? "";
   }
 }
 

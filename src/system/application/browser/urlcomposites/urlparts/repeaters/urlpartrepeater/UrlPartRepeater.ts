@@ -1,9 +1,17 @@
 abstract class UrlPartRepeater {
   readonly value: null | string;
   constructor(
-    repeater: string
+    repeater?: null | string
   ) {
-    this.value = this.parse(repeater);
+    this.value = (
+      repeater === null
+      || repeater === undefined
+      || repeater === ""
+    ) ?
+      null
+      : this.parse(repeater);
+    if (this.value === "")
+      this.value = null;
   }
 
   protected abstract parse(repeater: string): null | string;
@@ -12,12 +20,8 @@ abstract class UrlPartRepeater {
     return this.value !== null;
   }
 
-  get string(): string {
-    return this.value ?? "";
-  }
-
   toString(): string {
-    return this.string;
+    return this.value ?? "";
   }
 }
 

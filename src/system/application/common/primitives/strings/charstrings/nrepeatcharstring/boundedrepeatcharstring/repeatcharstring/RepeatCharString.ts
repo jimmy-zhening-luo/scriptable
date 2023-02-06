@@ -4,7 +4,7 @@ class RepeatCharString extends _CharString {
   protected qualifies(
     candidateCharString: string
   ): boolean {
-    return candidateCharString !== String()
+    return candidateCharString !== ""
       && this.parseCharStringToCharArray(candidateCharString)
       .every(char => this
         .ofChar
