@@ -4,12 +4,11 @@ class Scheme extends sc_UrlPart {
         var _a;
         const validScheme = new Scheme._ValidScheme(scheme).toString();
         const charSetAlpha = Scheme._ValidScheme._UrlChar.alpha;
-        const defaultScheme = "https";
         return validScheme === "" ?
-            validScheme
+            "https"
             : charSetAlpha.includes((_a = [...validScheme].shift()) !== null && _a !== void 0 ? _a : "") ?
                 validScheme
-                : defaultScheme;
+                : "https";
     }
 }
 (function (Scheme) {
