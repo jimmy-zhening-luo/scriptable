@@ -141,7 +141,7 @@ namespace TestRunner {
       function caseOrCasesToCases(
         caseOrCases: TestCase | TestCases
       ): TestCases {
-        return caseOrCases === [] ?
+        return caseOrCases.length === 0 ?
           []
           : Array.isArray(caseOrCases[0])?
             [...caseOrCases]
