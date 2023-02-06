@@ -13,7 +13,7 @@ abstract class Word {
   }
 
   get length(): number {
-    return this.word.length;
+    return this.isValid ? this.word.length : 0;
   }
 
   get isWord(): boolean {
