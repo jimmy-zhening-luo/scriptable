@@ -69,13 +69,19 @@ namespace TestRunner {
       suppressLogging: boolean = false
     ): boolean {
       if (!suppressLogging)
-        this.cases.forEach([evaluate, result] => {
+        this.cases.forEach(([evaluate, result], i) => {
           console.log(
-            [evaluate, result].join(", ")
-          )
+            [
+              i,
+              evaluate === result,
+              [evaluate, result]
+                .join(", ")
+            ]
+              .join(": ")
+          );
         });
       return this.cases
-        .every([evaluate, result] => evaluate === result);
+        .every(([evaluate, result]) => evaluate === result);
     }
     
     addCase(
@@ -114,7 +120,7 @@ namespace TestRunner {
         moreCases: Array<TestCase | TestCases>
       ): TestCases {
         const cases: TestCases = [];
-        moreCases.forEach(caseOrCases => {
+        moreCases.forEach((caseOrCases) => {
           cases.push(
             ...toCases(caseOrCases)
           );
