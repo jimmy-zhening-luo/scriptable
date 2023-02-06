@@ -111,9 +111,9 @@ namespace TestRunner {
     ): TestCases {
       return [
         cases instanceof TestSuite ?
-          ...cases.cases
-          : ...caseOrCasesToCases(cases),
-        ...arrCaseCasesToCases(moreCases)
+          (...cases.cases)
+          : (...caseOrCasesToCases(cases)),
+         (...arrCaseCasesToCases(moreCases))
       ];
       
       function arrCaseCasesToCases(
