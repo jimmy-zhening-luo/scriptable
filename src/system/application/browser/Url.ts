@@ -31,45 +31,13 @@ class Url {
     fragment?: string | Fragment
   ) {
     if (head === undefined) {}
-    else if (head instanceof Url) {
-      const url: Url = head;
-      this.scheme = url.scheme;
-      this.host = url.host;
-      this.port = url.port;
-      this.path = url.path;
-      this.query = url.query;
-      this.fragment = url.fragment;
-    }
-    else if (typeof head === "string") {
-      if (host === undefined
-        && port === undefined
-        && path === undefined
-        && query === undefined
-        && fragment === undefined
-      ) {
-        const url: string = head;
-        const parsedUrl: Url = this.parse(url);
-        this.scheme = parsedUrl.scheme;
-        this.host = parsedUrl.host;
-        this.port = parsedUrl.port;
-        this.path = parsedUrl.path;
-        this.query = parsedUrl.query;
-        this.fragment = parsedUrl.fragment;
-      }
-      else {
-        const scheme: string = head;
-        this.scheme = scheme;
-        this.host = host;
-        this.port = port;
-        this.path = path;
-        this.query = query;
-        this.fragment = fragment;
-      }
-    }
     else if (
-      "ClassDecorator_UrlPart" in head
+      typeof head === "string"
+      && host !== undefined
+      || typeof head !== "string"
+      && "ClassDecorator_UrlPart" in head
     ) {
-      const scheme: Scheme = head;
+      const scheme: string | Scheme = head;
       this.scheme = scheme;
       this.host = host;
       this.port = port;
@@ -78,13 +46,50 @@ class Url {
       this.fragment = fragment;
     }
     else {
-      const urlParts: Url.UrlParts = head;
-      this.scheme = urlParts.scheme;
-      this.host = urlParts.host;
-      this.port = urlParts.port;
-      this.path = urlParts.path;
-      this.query = urlParts.query;
-      this.fragment = urlParts.fragment;
+      const url: string | Url | Url.UrlParts = head;
+      this.url = url;
+    }
+  }
+
+  get url(): string {
+    return this.isValid ?
+      new Url._SchemeHostPortPathQueryFragment([
+        this.#scheme,
+        this.#host,
+        this.#port,
+        this.#path,
+        this.#query,
+        this.#fragment
+      ]).toString()
+      : "";
+  }
+
+  set url(url:t
+    undefined | null
+    | string
+    | Url
+    | Url.UrlParts
+  ) {
+    if (
+      url === undefined
+      || url === null
+    ) { }
+    else if (typeof url === "string") {
+      const parsedUrl: Url = this.parse(url);
+      this.scheme = parsedUrl.scheme;
+      this.host = parsedUrl.host;
+      this.port = parsedUrl.port;
+      this.path = parsedUrl.path;
+      this.query = parsedUrl.query;
+      this.fragment = parsedUrl.fragment;
+    }
+    else {
+      this.scheme = url.scheme;
+      this.host = url.host;
+      this.port = url.port;
+      this.path = url.path;
+      this.query = url.query;
+      this.fragment = url.fragment;
     }
   }
 
@@ -195,11 +200,11 @@ class Url {
       fragment
     );
   }
-  
+
   open(): void {
     Safari.open(this.url);
   }
-  
+
   webview(fullScreen: boolean = false): void {
     WebView.loadURL(
       this.url,
@@ -207,24 +212,11 @@ class Url {
       fullScreen
     );
   }
-  
+
   get isValid(): boolean {
     return this.#scheme.isValid;
   }
-  
-  get url(): string {
-    return this.isValid ?
-      new Url._SchemeHostPortPathQueryFragment([
-      this.#scheme,
-      this.#host,
-      this.#port,
-      this.#path,
-      this.#query,
-      this.#fragment
-      ]).toString();
-      : "";
-  }
-  
+
   private parse(url: string): Url {
       let urlStringParts: Url.UrlParts = {};
 
