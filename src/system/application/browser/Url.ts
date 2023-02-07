@@ -48,7 +48,7 @@ class Url {
         && fragment === undefined
       ) {
         const url: string = head;
-        const parsedUrl: Url = parse(url);
+        const parsedUrl: Url = this.parse(url);
         this.scheme = parsedUrl.scheme;
         this.host = parsedUrl.host;
         this.port = parsedUrl.port;
@@ -85,57 +85,6 @@ class Url {
       this.path = urlParts.path;
       this.query = urlParts.query;
       this.fragment = urlParts.fragment;
-    }
-
-    function parse(url: string): Url {
-      let urlStringParts: Url.UrlParts = {};
-
-      const url_fragment: string[] = url
-        .trim()
-        .split("#");
-      url = url_fragment.shift() ?? "";
-      urlStringParts.fragment = url_fragment.join("#");
-
-      const queryOrSchemehostportpath_query: string[] = url.split("?");
-      const queryOrSchemehostportpath: string = queryOrSchemehostportpath_query.shift() ?? "";
-      const schemehostportpath: string = queryOrSchemehostportpath.includes("=") ?
-        ""
-        : queryOrSchemehostportpath;
-      urlStringParts.query = queryOrSchemehostportpath.includes("=") ?
-        [
-          queryOrSchemehostportpath,
-          ...queryOrSchemehostportpath_query
-        ].join("?")
-        : queryOrSchemehostportpath_query.join("?");
-
-      const scheme_hostportpath: string[] = schemehostportpath.split("://");
-      const schemeOrHostportpath: string = scheme_hostportpath.shift() ?? "";
-      urlStringParts.scheme = scheme_hostportpath.length > 0 ?
-        schemeOrHostportpath
-        : (schemeOrHostportpath.includes(".")
-          || schemeOrHostportpath.includes("/")) ?
-          ""
-          : schemeOrHostportpath;
-      const hostportpath: string = scheme_hostportpath.length > 0 ?
-        scheme_hostportpath.join("://")
-        : urlStringParts.scheme === "" ?
-          schemeOrHostportpath
-          : "";
-
-      const hostport_path: string[] = Url._File
-        .trimPath(hostportpath)
-        .split("/");
-      const hostport: string = hostport_path.shift() ?? "";
-      urlStringParts.path = hostport_path.join("/");
-
-      const host_port: string[] =
-        hostport.split(":");
-      urlStringParts.host = host_port.shift() ?? "";
-      urlStringParts.port = urlStringParts.host === "" ?
-        ""
-        : host_port.join(":");
-
-      return new Url(urlStringParts);
     }
   }
 
@@ -245,12 +194,25 @@ class Url {
     );
   }
   
+  open(): void {
+    Safari.open(this.url);
+  }
+  
+  webview(fullScreen: boolean = false): void {
+    WebView.loadURL(
+      this.url,
+      undefined,
+      fullScreen
+    );
+  }
+  
   get isValid(): boolean {
     return this.#scheme.isValid;
   }
-
-  toString(): string {
-    return new Url._SchemeHostPortPathQueryFragment([
+  
+  get url(): string {
+    return this.isValid ?
+      new Url._SchemeHostPortPathQueryFragment([
       this.#scheme,
       this.#host,
       this.#port,
@@ -258,6 +220,62 @@ class Url {
       this.#query,
       this.#fragment
       ]).toString();
+      : "";
+  }
+  
+  private parse(url: string): Url {
+      let urlStringParts: Url.UrlParts = {};
+
+      const url_fragment: string[] = url
+        .trim()
+        .split("#");
+      url = url_fragment.shift() ?? "";
+      urlStringParts.fragment = url_fragment.join("#");
+
+      const queryOrSchemehostportpath_query: string[] = url.split("?");
+      const queryOrSchemehostportpath: string = queryOrSchemehostportpath_query.shift() ?? "";
+      const schemehostportpath: string = queryOrSchemehostportpath.includes("=") ?
+        ""
+        : queryOrSchemehostportpath;
+      urlStringParts.query = queryOrSchemehostportpath.includes("=") ?
+        [
+          queryOrSchemehostportpath,
+          ...queryOrSchemehostportpath_query
+        ].join("?")
+        : queryOrSchemehostportpath_query.join("?");
+
+      const scheme_hostportpath: string[] = schemehostportpath.split("://");
+      const schemeOrHostportpath: string = scheme_hostportpath.shift() ?? "";
+      urlStringParts.scheme = scheme_hostportpath.length > 0 ?
+        schemeOrHostportpath
+        : (schemeOrHostportpath.includes(".")
+          || schemeOrHostportpath.includes("/")) ?
+          ""
+          : schemeOrHostportpath;
+      const hostportpath: string = scheme_hostportpath.length > 0 ?
+        scheme_hostportpath.join("://")
+        : urlStringParts.scheme === "" ?
+          schemeOrHostportpath
+          : "";
+
+      const hostport_path: string[] = Url._File
+        .trimPath(hostportpath)
+        .split("/");
+      const hostport: string = hostport_path.shift() ?? "";
+      urlStringParts.path = hostport_path.join("/");
+
+      const host_port: string[] =
+        hostport.split(":");
+      urlStringParts.host = host_port.shift() ?? "";
+      urlStringParts.port = urlStringParts.host === "" ?
+        ""
+        : host_port.join(":");
+
+      return new Url(urlStringParts);
+    }
+
+  toString(): string {
+    return this.url;
   }
 
   static encode(
