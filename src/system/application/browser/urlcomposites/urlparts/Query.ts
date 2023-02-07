@@ -43,7 +43,7 @@ class Query extends qu_UrlPart {
     );
   }
 
-  removeParam(key: string): Query {
+  deleteParam(key: string): Query {
     return this.addParam(key, "");
   }
 

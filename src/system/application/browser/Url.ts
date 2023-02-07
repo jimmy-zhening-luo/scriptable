@@ -165,17 +165,19 @@ class Url {
     this.#query = new Url._Query(query);
   }
 
-  addQueryParam(
-    keyOrKeyValue: string | [string, string],
+  addParam(
+    keyOrKeyValue:
+      string
+      | [string, string],
     value?: string
   ): void {
     this.query = this.#query.addParam(keyOrKeyValue, value);
   }
 
-  removeQueryParam(
+  deleteParam(
     key: string
   ): void {
-    this.query = this.#query.removeParam(key);
+    this.addParam(key, "");
   }
 
   get fragment(): string {
