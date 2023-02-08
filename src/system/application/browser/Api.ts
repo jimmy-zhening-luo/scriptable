@@ -28,6 +28,7 @@ class Api {
     this.httpMethod = new Api.Methods[method](
       this.url,
       new ApiRequest(
+        authHeader,
         headers,
         body
       ),
