@@ -1,12 +1,9 @@
 class Api {
   #url: Url = new Api._Url();
-  #request: ApiRequest = new Api._ApiRequest();
+  #httpMethod: ApiRequest = new Api._ApiRequest();
 
   constructor(
     url: string | Url | Url.UrlParts,
-    method?:
-      | keyof typeof Api.Method
-      | HttpMethod,
     headers?:
       | [string, string | number | boolean]
       | [string, string | number | boolean][]
@@ -15,9 +12,17 @@ class Api {
       | RequestHeaders
       | { [key: string]: string | number | boolean },
     body?:
-      | string
+      | string,
+    method:
+      | Api.Method
+      | HttpMethod = Api.Method.GET
   ) {
     this.url = new Api._Url(url);
+    this.#httpMethod = new Api.Methods[method instanceof enum ? method | method.method](this.#url, headers, body);
+  }
+
+  request(): ApiResponse {
+    return new Api._ApiResponse();
   }
 
   get url(): string {
@@ -110,7 +115,7 @@ namespace Api {
 
   export const _ApiResponse: typeof ApiResponse = importModule("apimethods/apiresponse/ApiResponse");
 
-  export const methods: HttpMethods = {
+  export const Methods: HttpMethods = {
     GET: importModule("apimethods/HttpGet"),
     POST: importModule("apimethods/HttpPost")
   };
