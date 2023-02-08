@@ -1,9 +1,11 @@
 class Api {
-  #url: Url = new Api._Url();
-  #httpMethod: ApiRequest = new Api._ApiRequest();
+  readonly httpMethod: HttpMethod;
 
   constructor(
-    url: string | Url | Url.UrlParts,
+    url:
+      | string
+      | Url
+      | Url.UrlParts,
     headers?:
       | [string, string | number | boolean]
       | [string, string | number | boolean][]
@@ -11,25 +13,40 @@ class Api {
       | RequestHeader[]
       | RequestHeaders
       | { [key: string]: string | number | boolean },
-    body?:
-      | string,
-    method:
-      | Api.Method
-      | HttpMethod = Api.Method.GET
+    body?: 
+      | string
+      | Api.RequestBodyObject
+    method?: Api.Method = Api.Method.GET,
+    timeoutSeconds?: number = 30;
   ) {
-    this.url = new Api._Url(url);
-    this.#httpMethod = new Api.Methods[method instanceof enum ? method | method.method](this.#url, headers, body);
+    this.httpMethod = new Api.Methods[method](
+      this.url,
+      new ApiRequest()
+      timeoutSeconds
+    );
   }
 
   request(): ApiResponse {
     return new Api._ApiResponse();
+  }
+  
+  get #url(): Url {
+    return this.httpMethod.url;
+  }
+  
+  set #url(url: Url) {
+    this.httpMethod.url = url;
   }
 
   get url(): string {
     return this.#url.toString();
   }
 
-  set url(url: string | Url) {
+  set url(url:
+    | string
+    | Url
+    | Url.UrlParts
+  ) {
     this.#url = new Url(url);
   }
 
@@ -104,9 +121,14 @@ class Api {
 }
 
 namespace Api {
-  export enum Method {
-    GET,
-    POST
+  export interface RequestBodyObject {
+    [key: string]: (
+      | string
+      | number
+      | boolean
+      | RequestBodyObject
+      | RequestBodyObject[]
+    )
   }
 
   export const _Url: typeof Url = importModule("Url");
@@ -115,14 +137,18 @@ namespace Api {
 
   export const _ApiResponse: typeof ApiResponse = importModule("apimethods/apiresponse/ApiResponse");
 
+  export enum Method {
+    GET,
+    POST
+  }
+  
   export const Methods: HttpMethods = {
     GET: importModule("apimethods/HttpGet"),
     POST: importModule("apimethods/HttpPost")
   };
 
   export interface HttpMethods {
-    GET: typeof HttpMethod
-    POST: typeof HttpMethod
+    [key: Method]: typeof HttpMethod
   }
 }
 
