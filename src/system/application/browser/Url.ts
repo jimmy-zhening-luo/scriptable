@@ -6,9 +6,7 @@ class Url {
   #query: Query = new Url._Query();
   #fragment: Fragment = new Url._Fragment();
 
-  constructor(url?: Url);
-  constructor(urlparts?: Url.UrlParts);
-  constructor(url?: string);
+  constructor(url?: string | Url | Url.UrlParts);
   constructor(
     scheme?: string | Scheme,
     host?: string | Host,
