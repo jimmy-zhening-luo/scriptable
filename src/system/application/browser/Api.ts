@@ -106,13 +106,13 @@ namespace Api {
 
   export const _Url: typeof Url = importModule("Url");
 
-  export const _ApiRequest: typeof ApiRequest = importModule("http/apirequest/ApiRequest");
+  export const _ApiRequest: typeof ApiRequest = importModule("apimethods/apirequest/ApiRequest");
 
-  export const _ApiResponse: typeof ApiResponse = importModule("http/apiresponse/ApiResponse");
+  export const _ApiResponse: typeof ApiResponse = importModule("apimethods/apiresponse/ApiResponse");
 
   export const methods: HttpMethods = {
-    GET: importModule("http/HttpGet"),
-    POST: importModule("http/HttpPost")
+    GET: importModule("apimethods/HttpGet"),
+    POST: importModule("apimethods/HttpPost")
   };
 
   export interface HttpMethods {
