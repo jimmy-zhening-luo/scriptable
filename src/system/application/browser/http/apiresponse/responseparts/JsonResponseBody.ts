@@ -1,6 +1,6 @@
-const _ResponseBody: typeof ResponseBody = importModule("responsebody/ResponseBody");
+const js_ResponseBody: typeof ResponseBody = importModule("responsebody/ResponseBody");
 
-class JsonResponseBody extends _ResponseBody {
+class JsonResponseBody extends js_ResponseBody {
 
 }
 

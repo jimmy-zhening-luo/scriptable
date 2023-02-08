@@ -1,14 +1,21 @@
 class Api {
   #url: Url = new Api._Url();
-  request: ApiRequest = new Api._ApiRequest();
+  #request: ApiRequest = new Api._ApiRequest();
 
   constructor(
-    url: string | Url,
+    url: string | Url | Url.UrlParts,
     method?:
-      keyof typeof Api.Method
+      | keyof typeof Api.Method
       | HttpMethod,
-    headers?: any,
-    body?: any
+    headers?:
+      | [string, string | number | boolean]
+      | [string, string | number | boolean][]
+      | RequestHeader
+      | RequestHeader[]
+      | RequestHeaders
+      | { [key: string]: string | number | boolean },
+    body?:
+      | string
   ) {
     this.url = new Api._Url(url);
   }
@@ -86,6 +93,7 @@ class Api {
   }
 
   toString(): string {
+    // TBD
     return "";
   }
 }
@@ -108,7 +116,8 @@ namespace Api {
   };
 
   export interface HttpMethods {
-    [key: keyof typeof Method]: typeof HttpMethod
+    GET: typeof HttpMethod
+    POST: typeof HttpMethod
   }
 }
 
