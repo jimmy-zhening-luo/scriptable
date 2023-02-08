@@ -1,0 +1,24 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+    "../../common/primitives/**/*"
+  ],
+  "references": [
+    {
+      "path": "../../common/primitives/tsconfig.json"
+    },
+    {
+      "path": "apirequest/tsconfig.json"
+    },
+    {
+      "path": "apiresponse/tsconfig.json"
+    },
+    {
+      "path": "httpmethod/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../.."
+  }
+}

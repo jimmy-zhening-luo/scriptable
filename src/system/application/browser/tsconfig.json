@@ -10,6 +10,9 @@
       "path": "urlcomposites/tsconfig.json"
     },
     {
+      "path": "http/tsconfig.json"
+    },
+    {
       "path": "../common/primitives/tsconfig.json"
     },
     {

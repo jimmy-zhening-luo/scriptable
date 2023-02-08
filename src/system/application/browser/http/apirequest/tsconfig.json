@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+    "../../../common/primitives/**/*"
+  ],
+  "references": [
+    {
+      "path": "requestparts/tsconfig.json"
+    },
+    {
+      "path": "../../../common/primitives/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../.."
+  }
+}
