@@ -5,7 +5,7 @@ abstract class HttpMethod {
   readonly timeoutSeconds: number;
 
   constructor(
-    url: 
+    url:
       | string
       | Url
       | Url.UrlParts,

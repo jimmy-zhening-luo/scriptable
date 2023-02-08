@@ -13,15 +13,15 @@ class Api {
       | RequestHeader[]
       | RequestHeaders
       | { [key: string]: string | number | boolean },
-    body?: 
+    body?:
       | string
-      | Api.RequestBodyObject
+      | Api.RequestBodyObject,
     method?: Api.Method = Api.Method.GET,
-    timeoutSeconds?: number = 30;
+    timeoutSeconds?: number = 30
   ) {
-    this.httpMethod = new Api.Methods[method](
+    this.httpMethod = new (Api.Methods[Api.Method.GET])(
       this.url,
-      new ApiRequest()
+      new ApiRequest(headers, body),
       timeoutSeconds
     );
   }
@@ -29,11 +29,11 @@ class Api {
   request(): ApiResponse {
     return new Api._ApiResponse();
   }
-  
+
   get #url(): Url {
     return this.httpMethod.url;
   }
-  
+
   set #url(url: Url) {
     this.httpMethod.url = url;
   }
@@ -141,14 +141,14 @@ namespace Api {
     GET,
     POST
   }
-  
-  export const Methods: HttpMethods = {
+
+  export const Methods: HttpMethods<typeof Method> = {
     GET: importModule("apimethods/HttpGet"),
     POST: importModule("apimethods/HttpPost")
   };
 
-  export interface HttpMethods {
-    [key: Method]: typeof HttpMethod
+  type HttpMethods<Type> = {
+    [Property in keyof Type]: typeof HttpMethod
   }
 }
 
