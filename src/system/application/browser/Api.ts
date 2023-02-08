@@ -1,4 +1,6 @@
 class Api {
+  private _url: Url;
+  readonly method: Api.Method = Api.Method.GET;
   readonly httpMethod: HttpMethod;
 
   constructor(
@@ -6,6 +8,9 @@ class Api {
       | string
       | Url
       | Url.UrlParts,
+    authHeader?:
+      | [string, string]
+      | AuthRequestHeader,
     headers?:
       | [string, string | number | boolean]
       | [string, string | number | boolean][]
@@ -16,30 +21,34 @@ class Api {
     body?:
       | string
       | Api.RequestBodyObject,
-    method?: Api.Method = Api.Method.GET,
-    timeoutSeconds?: number = 30
+    method: Api.Method = Api.Method.GET,
+    timeoutSeconds: number = 30
   ) {
-    this.httpMethod = new (Api.Methods[Api.Method.GET])(
+    this._url = new Url(url);
+    this.httpMethod = new Api.Methods[method](
       this.url,
-      new ApiRequest(headers, body),
+      new ApiRequest(
+        headers,
+        body
+      ),
       timeoutSeconds
     );
   }
 
   request(): ApiResponse {
-    return new Api._ApiResponse();
+    return this.httpMethod.request();
   }
 
-  get #url(): Url {
-    return this.httpMethod.url;
+  requestJson(): any {
+    return this.request().toObject();
   }
 
-  set #url(url: Url) {
-    this.httpMethod.url = url;
+  requestString(): string {
+    return this.request().toString();
   }
 
   get url(): string {
-    return this.#url.toString();
+    return this._url.toString();
   }
 
   set url(url:
@@ -47,47 +56,47 @@ class Api {
     | Url
     | Url.UrlParts
   ) {
-    this.#url = new Url(url);
+    this._url = new Url(url);
   }
 
   get scheme(): string {
-    return this.#url.scheme;
+    return this._url.scheme;
   }
 
   set scheme(scheme: string | Scheme) {
-    this.#url.scheme = scheme;
+    this._url.scheme = scheme;
   }
 
   get host(): string {
-    return this.#url.host;
+    return this._url.host;
   }
 
   set host(host: string | Host) {
-    this.#url.host = host;
+    this._url.host = host;
   }
 
   get port(): string {
-    return this.#url.port;
+    return this._url.port;
   }
 
   set port(port: string | number | Port) {
-    this.#url.port = port;
+    this._url.port = port;
   }
 
   get path(): string {
-    return this.#url.path;
+    return this._url.path;
   }
 
   set path(path: string | Path) {
-    this.#url.path = path;
+    this._url.path = path;
   }
 
   get query(): string {
-    return this.#url.query;
+    return this._url.query;
   }
 
   set query(query: string | Query) {
-    this.#url.query = query;
+    this._url.query = query;
   }
 
   addParam(
@@ -96,7 +105,7 @@ class Api {
       | [string, string],
     value?: string
   ): void {
-    this.#url.addParam(
+    this._url.addParam(
       keyOrKeyValue,
       value
     );
@@ -107,16 +116,15 @@ class Api {
   }
 
   get fragment(): string {
-    return this.#url.fragment;
+    return this._url.fragment;
   }
 
   set fragment(scheme: string | Scheme) {
-    this.#url.scheme = scheme;
+    this._url.scheme = scheme;
   }
 
   toString(): string {
-    // TBD
-    return "";
+    return this.httpMethod.toString();
   }
 }
 
@@ -142,13 +150,13 @@ namespace Api {
     POST
   }
 
-  export const Methods: HttpMethods<typeof Method> = {
-    GET: importModule("apimethods/HttpGet"),
-    POST: importModule("apimethods/HttpPost")
+  export const Methods: HttpMethods<typeof Method, typeof HttpGet | typeof HttpPost> = {
+    GET: importModule("apimethods/HttpGet") as typeof HttpGet,
+    POST: importModule("apimethods/HttpPost") as typeof HttpPost
   };
 
-  type HttpMethods<Type> = {
-    [Property in keyof Type]: typeof HttpMethod
+  export type HttpMethods<E, M> = {
+    [Property in keyof E]: M extends HttpMethod ? M : typeof HttpGet
   }
 }
 

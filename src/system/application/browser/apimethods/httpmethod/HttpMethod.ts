@@ -1,23 +1,19 @@
 abstract class HttpMethod {
-  readonly url: Url;
+  readonly url: string;
   readonly apiRequest: ApiRequest;
-  readonly method: string;
   readonly timeoutSeconds: number;
 
   constructor(
-    url:
-      | string
-      | Url
-      | Url.UrlParts,
+    url: string,
     apiRequest?: ApiRequest,
-    method: string = "GET",
     timeoutSeconds: number = 30
   ) {
     this.url = new HttpMethod._Url(url);
     this.apiRequest = apiRequest ?? new ApiRequest();
-    this.method = method;
     this.timeoutSeconds = timeoutSeconds;
   }
+
+  abstract get method(): string;
 
   request(): ApiResponse {
     const req: Request = new Request(this.url);
