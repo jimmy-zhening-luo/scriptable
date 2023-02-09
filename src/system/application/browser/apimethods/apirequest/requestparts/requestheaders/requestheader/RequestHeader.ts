@@ -1,27 +1,32 @@
 abstract class RequestHeader {
-  readonly key?: string | null;
-  readonly value?: string | number | boolean | null;
 
-  constructor(keyValue?: [string, string | number | boolean]);
-  constructor(key?: string, value?: string | number | boolean);
+  readonly key: string;
+  readonly value: Types.primitive;
 
+  constructor(keyValue: [
+    string,
+    Types.primitive?
+  ]);
   constructor(
-    keyOrKeyValue?: string | [string, string | number | boolean],
-    value?: string | number | boolean
+    key: string,
+    value?: Types.primitive
+  );
+  constructor(
+    keyOrKeyValue: string | [string, Types.primitive?],
+    value?: Types.primitive
   ) {
-    if (keyOrKeyValue === undefined) {
-      this.key = null;
-      this.value = null;
-    }
-    else if (Array.isArray(keyOrKeyValue)) {
-      this.key = keyOrKeyValue[0];
-      this.value = keyOrKeyValue[1];
+    if (typeof keyOrKeyValue === "string") {
+      this.key = keyOrKeyValue;
+      this.value = value ?? "";
     }
     else {
-      this.key = value ? keyOrKeyValue : null;
-      this.value = value ?? null;
+      this.key = keyOrKeyValue[0];
+      this.value = keyOrKeyValue[1] ?? "";
     }
   }
+}
+
+namespace RequestHeader {
 }
 
 module.exports = RequestHeader;

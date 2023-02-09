@@ -1,7 +1,10 @@
+import { _ResponseBody } from './apimethods/apiresponse/ApiResponse';
+import { _RequestBody } from './apimethods/apirequest/ApiRequest';
+import { RequestBodyInterface } from './apimethods/apirequest/requestparts/RequestBody';
 class Api {
+
   private _url: Url;
-  readonly method: Api.Method = Api.Method.GET;
-  readonly httpMethod: HttpMethod;
+  private readonly httpMethod: HttpMethod;
 
   constructor(
     url:
@@ -20,7 +23,7 @@ class Api {
       | { [key: string]: string | number | boolean },
     body?:
       | string
-      | Api.RequestBodyObject,
+      | RequestBodyInterface,
     method: Api.Method = Api.Method.GET,
     timeoutSeconds: number = 30
   ) {
@@ -130,15 +133,6 @@ class Api {
 }
 
 namespace Api {
-  export interface RequestBodyObject {
-    [key: string]: (
-      | string
-      | number
-      | boolean
-      | RequestBodyObject
-      | RequestBodyObject[]
-    )
-  }
 
   export const _Url: typeof Url = importModule("Url");
 

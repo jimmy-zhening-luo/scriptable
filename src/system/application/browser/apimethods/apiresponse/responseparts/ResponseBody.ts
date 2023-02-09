@@ -20,4 +20,7 @@ class ResponseBody {
   }
 }
 
+namespace ResponseBody {
+}
+
 module.exports = ResponseBody;

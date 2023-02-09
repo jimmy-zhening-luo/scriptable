@@ -2,13 +2,13 @@ const a_RequestHeader: typeof RequestHeader = importModule("requestheader/Reques
 
 class AuthRequestHeader extends a_RequestHeader {
   constructor(
-    mode: string,
+    authType: string,
     token: string
   );
 
-  constructor(modeTokenString: string);
+  constructor(authTypeTokenString: string);
 
-  constructor(modeTokenTuple: [string, string]);
+  constructor(authTypeTokenTuple: [string, string]);
 
   constructor(
     modeOrModeToken?: string | [string, string],
