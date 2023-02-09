@@ -1,12 +1,14 @@
 class ApiRequest {
 
   url: Types.stringful;
+  private _method: Types.stringful;
   private _headers: RequestHeaders;
   private _body: RequestBody;
   private _timeoutSeconds: number = 30;
 
   constructor(
     url: Types.stringful,
+    method: Types.stringful = "GET",
     authHeader?:
       | [string, string]
       | string
@@ -24,6 +26,7 @@ class ApiRequest {
     timeoutSeconds?: number
   ) {
     this.url = url;
+    this._method = method.toUpperCase();
     this._headers = authHeader === undefined ?
       new ApiRequest._RequestHeaders(headers)
       : typeof authHeader === "string" ?
@@ -40,14 +43,22 @@ class ApiRequest {
     var response: string = "";
     const req: Request = new Request(this.url);
     req.headers = this._headers.toStringObject();
-    req.body = this.apiRequest.body;
+    req.body = this._body.toString();
     req.method = this.method;
-    req.timeoutInterval = this.timeoutSeconds;
+    req.timeoutInterval = this._timeoutSeconds;
     req.loadString().then((_response) => {
       response = _response ?? "";
     }
     );
     return response;
+  }
+
+  get method(): string {
+    return this._method;
+  }
+
+  set method(method: string) {
+    this._method = method.toUpperCase();
   }
 
   get timeout(): number {
