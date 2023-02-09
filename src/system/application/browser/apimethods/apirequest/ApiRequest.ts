@@ -1,25 +1,35 @@
 class ApiRequest {
   url: string;
-  headers: RequestHeaders;
-  body: RequestBody;
+  private _headers: RequestHeaders;
+  private _body: RequestBody;
   private _timeoutSeconds: number;
   constructor(
-    url?: null | string,
+    url: string,
     authHeader?:
       | [string, string]
-      | AuthRequestHeader,
+      | string
+      | {
+        authType: string,
+        authToken: string
+      },
     headers?:
-      | [string, string | number | boolean]
-      | [string, string | number | boolean][]
-      | RequestHeader
-      | RequestHeader[]
-      | RequestHeaders
-      | { [key: string]: string | number | boolean },
+      | [string, Types.primitive]
+      | [string, Types.primitive][]
+      | { [key: string]: Types.primitive },
     body?:
       | string
       | RequestBody.RequestBodyInterface,
     timeoutSeconds?: null | undefined | number
   ) {
+    this.url = url;
+    this._headers = authHeader === undefined ?
+      new ApiRequest._RequestHeaders(headers)
+      : typeof authHeader === "string" ?
+        new ApiRequest._RequestHeaders(authHeader, headers)
+        : Array.isArray(authHeader) ?
+          new ApiRequest._RequestHeaders(authHeader[0], authHeader[1], headers)
+          : new ApiRequest._RequestHeaders(authHeader.authType, authHeader.authToken, headers);
+
     const defaultTimeoutSeconds: number = 30;
     this.headers = new ApiRequest._RequestHeaders(headers);
     if (authHeader !== undefined) {

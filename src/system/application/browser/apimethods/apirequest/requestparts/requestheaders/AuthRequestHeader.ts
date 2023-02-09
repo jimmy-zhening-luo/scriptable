@@ -37,12 +37,13 @@ class AuthRequestHeader extends a_RequestHeader<string> {
   setAuthTypeAndToken(
     authType: string,
     token: string
-  ) {
+  ): this {
     this.value = [
       authType,
       token
     ]
       .join(" ");
+    return this;
   }
 
 }

@@ -1,102 +1,151 @@
 class RequestHeaders {
 
-  private _authHeader?: null | AuthRequestHeader;
-  private _headers?: null | RequestHeader[];
+  private readonly _headers: {
+    Authorization?: AuthRequestHeader
+    [key: string]: RequestHeader<Types.primitive>
+  };
 
+  constructor();
   constructor(
-    authType?: string,
-    authToken?: string,
-    headers?: RequestHeaders.RequestHeadersInput
+    auth: string,
+    headers?: RequestHeaders.Input
   );
   constructor(
-    authTypeToken?: string,
-    headers?: RequestHeaders.RequestHeadersInput
+    authType: string,
+    authToken: string,
+    headers?: RequestHeaders.Input
   );
-  constructor(headers?: RequestHeaders.RequestHeadersInput);
+  constructor(headers?: RequestHeaders.Input);
 
   constructor(
-    authTypeOrHeaders?:
+    authOrAuthTypeOrHeaders?:
       | string
-      | RequestHeaders.RequestHeadersInput,
+      | RequestHeaders.Input,
     authTokenOrHeaders?:
       | string
-      | RequestHeaders.RequestHeadersInput,
+      | RequestHeaders.Input,
     headers?:
-      | RequestHeaders.RequestHeadersInput
+      | RequestHeaders.Input
   ) {
-    if (typeof authTypeOrHeaders === "string") {
-      if (typeof authTokenOrHeaders === "string") {
-        this._authHeader = new RequestHeaders._AuthRequestHeader(authTypeOrHeaders, authTokenOrHeaders);
-        this.add(headers);
+    this._headers = {};
+    if (authOrAuthTypeOrHeaders === undefined) { }
+    else if (typeof authOrAuthTypeOrHeaders !== "string")
+      this.add(authOrAuthTypeOrHeaders);
+    else {
+      if (authTokenOrHeaders === undefined || typeof authTokenOrHeaders !== "string")
+        this.auth = authOrAuthTypeOrHeaders;
+      else
+        this.setAuthTypeAndToken(authOrAuthTypeOrHeaders, authTokenOrHeaders);
+
+      if (authTokenOrHeaders === undefined) { }
+      else if (typeof authTokenOrHeaders === "string") {
+        if (headers !== undefined)
+          this.add(headers);
       }
-      else {
-        this._authHeader = new RequestHeaders._AuthRequestHeader(authTypeOrHeaders);
+      else
         this.add(authTokenOrHeaders);
-      }
     }
-    else
-      this.add(authTypeOrHeaders);
   }
 
   get auth(): string {
-    return this._authHeader?.toString() ?? "";
+    return "Authorization" in this._headers ?
+      this._headers.Authorization.auth
+      : "";
   }
 
-  get authTuple(): string {
-    return
+  set auth(authString: string) {
+    authString === "" ?
+      delete this._headers.Authorization
+      : this._headers.Authorization = new RequestHeaders._AuthRequestHeader(authString);
   }
 
-  setAuth(
-    authType?: string,
-    token?: string
+  get headers(): { [key: string]: Types.primitive } {
+    return Object.keys(
+      this._headers
+    )
+      .reduce(
+        (obj, key) => {
+          obj[key] = this._headers[key].value;
+          return obj;
+        },
+        {} as { [key: string]: Types.primitive }
+      );
+  }
+
+  setAuthTypeAndToken(
+    authType: string,
+    token: string
   ): this {
-    if (authType === undefined && token === undefined)
-      this._authHeader = null;
-    else if (authType === undefined && token !== undefined)
-      this._authHeader = new RequestHeaders._AuthRequestHeader(token);
-    else if (authType !== undefined && token === undefined)
-      this._authHeader = new RequestHeaders._AuthRequestHeader(authType);
-    else if (authType !== undefined && token !== undefined)
-      this._authHeader = new RequestHeaders._AuthRequestHeader(authType, token);
+    this.auth = [authType, token].join(" ");
+    return this;
+  }
+
+  deleteAuth(): this {
+    this.auth = "";
+    return this;
+  }
+
+  set(key: string, value: Types.primitive): this {
+    if (key !== "")
+      this._headers[key] = new RequestHeaders._GenericRequestHeader(key, value);
+    return this;
+  }
+
+  delete(key: string): this {
+    if (key !== "")
+      delete this._headers[key];
     return this;
   }
 
   add(
-    headers?: RequestHeaders.RequestHeadersInput
+    headers: RequestHeaders.Input
   ): this {
-    if (this._headers === undefined || this._headers === null)
-      this._headers = [];
-
-    if (headers === undefined)
-      this._headers = null;
-    else if (Array.isArray(headers)) {
-      if (headers.length === 0)
-        this._headers = null;
-      else
-        for (const header of headers) {
-          if (typeof header === "string")
-            this._headers.push(new RequestHeaders._GenericRequestHeader(header));
-          else if (Array.isArray(header))
-            this._headers.push(new RequestHeaders._GenericRequestHeader(header[0], header[1]));
-        }
+    if (!Array.isArray(headers))
+      Object.keys(headers)
+        .forEach(key => this.set(
+          key,
+          headers[key]
+        ));
+    else {
+      if (headers.length === 0) { }
+      else if (typeof headers[0] === "string") {
+        this.set(headers[0], headers[1] as Types.primitive);
+      }
+      else {
+        (headers as [string, Types.primitive][]).forEach(header => {
+          this.set(
+            header[0],
+            header[1]
+          );
+        });
+      }
     }
-
-    else
-      for (const key in headers)
-        if (headers.hasOwnProperty(key)) {
-          const value = headers[key];
-          this._headers.push(new RequestHeaders._GenericRequestHeader(key, value));
-        }
-
     return this;
   }
+
+  toObject(): { [key: string]: Types.primitive } {
+    return this.headers;
+  }
+
+  toString(): string {
+    return Object.keys(
+      this.headers
+    )
+      .map(
+        key => this
+          .headers[key]
+          .toString()
+      )
+      .join("\r\n");
+  }
+
 }
 
 namespace RequestHeaders {
 
-  export type RequestHeadersInput =
-    | [string, Types.primitive?]
-    | [string, Types.primitive?][]
+  export type Input =
+    | [string, Types.primitive]
+    | [string, Types.primitive][]
     | { [key: string]: Types.primitive };
 
 
