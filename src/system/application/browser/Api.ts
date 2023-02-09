@@ -1,7 +1,7 @@
 class Api {
 
   private _url: Url;
-  private readonly _httpMethod: HttpMethod;
+  private _httpMethod: HttpMethod;
 
   constructor(
     url:
@@ -35,17 +35,25 @@ class Api {
       timeoutSeconds
     );
   }
-
-  request(): ApiResponse {
+  
+  private get _request(): ApiResponse {
     return this._httpMethod.request();
   }
 
-  requestJson(): any {
-    return this.request().toObject();
+  request(): any {
+    return this.requestObject();
+  }
+
+  requestObject(): any {
+    return this._request.toObject();
+  }
+  
+  requestStringObject(): any {
+    return this.
   }
 
   requestString(): string {
-    return this.request().toString();
+    return this._request.toString();
   }
 
   get url(): string {
@@ -133,18 +141,21 @@ namespace Api {
 
   export const _Url: typeof Url = importModule("Url");
 
-  export const _ApiRequest: typeof ApiRequest = importModule("apimethods/apirequest/ApiRequest");
-
-  export const _ApiResponse: typeof ApiResponse = importModule("apimethods/apiresponse/ApiResponse");
-
   export enum Method {
     GET,
-    POST
+    POST,
+    PUT
   }
 
-  export const Methods: HttpMethods<typeof Method, typeof HttpGet | typeof HttpPost> = {
+  export const Methods: HttpMethods<
+    typeof Method,
+    typeof HttpGet
+    | typeof HttpPost
+    | typeof HttpPut
+  > = {
     GET: importModule("apimethods/HttpGet") as typeof HttpGet,
-    POST: importModule("apimethods/HttpPost") as typeof HttpPost
+    POST: importModule("apimethods/HttpPost") as typeof HttpPost,
+    PUT: importModule("apimethods/HttpPut") as typeof HttpPut
   };
 
   export type HttpMethods<E, M> = {

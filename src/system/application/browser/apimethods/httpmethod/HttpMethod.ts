@@ -1,10 +1,10 @@
 abstract class HttpMethod {
 
+  protected readonly method: Types.stringful = "GET"; 
   readonly apiRequest: ApiRequest;
 
   constructor(
     url: Types.stringful,
-    method: Types.stringful,
     authHeader?: any,
     headers?: any,
     body?: any,
@@ -12,7 +12,7 @@ abstract class HttpMethod {
   ) {
     this.apiRequest = new HttpMethod._ApiRequest(
       url,
-      method,
+      this.method,
       authHeader,
       headers,
       body,
