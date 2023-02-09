@@ -1,46 +1,43 @@
-import { _ResponseBody } from './apimethods/apiresponse/ApiResponse';
-import { _RequestBody } from './apimethods/apirequest/ApiRequest';
-import { RequestBodyInterface } from './apimethods/apirequest/requestparts/RequestBody';
 class Api {
 
   private _url: Url;
-  private readonly httpMethod: HttpMethod;
+  private readonly _httpMethod: HttpMethod;
 
   constructor(
     url:
       | string
       | Url
       | Url.UrlParts,
+    method: Api.Method = Api.Method.GET,
     authHeader?:
+      | string
       | [string, string]
-      | AuthRequestHeader,
+      | {
+        authType: string,
+        authToken: string
+      },
     headers?:
-      | [string, string | number | boolean]
-      | [string, string | number | boolean][]
-      | RequestHeader
-      | RequestHeader[]
-      | RequestHeaders
-      | { [key: string]: string | number | boolean },
+      | [string, Types.primitive]
+      | [string, Types.primitive][]
+      | { [key: string]: Types.primitive },
     body?:
       | string
-      | RequestBodyInterface,
-    method: Api.Method = Api.Method.GET,
-    timeoutSeconds: number = 30
+      | RequestBody.RequestBodyInterface,
+    timeoutSeconds?: number
   ) {
     this._url = new Url(url);
-    this.httpMethod = new Api.Methods[method](
-      this.url,
-      new ApiRequest(
-        authHeader,
-        headers,
-        body
-      ),
+    this._httpMethod = new Api.Methods[method](
+      this._url.toString(),
+      method.toString(),
+      authHeader,
+      headers,
+      body,
       timeoutSeconds
     );
   }
 
   request(): ApiResponse {
-    return this.httpMethod.request();
+    return this._httpMethod.request();
   }
 
   requestJson(): any {

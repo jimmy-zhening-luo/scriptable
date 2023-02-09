@@ -1,19 +1,54 @@
 abstract class HttpMethod {
 
-  readonly url: string;
   readonly apiRequest: ApiRequest;
+
   constructor(
-    url?: null | string,
+    url: Types.stringful,
+    method: Types.stringful,
+    authHeader?: any,
     headers?: any,
     body?: any,
     timeoutSeconds?: number
   ) {
-    this.url = url ?? "";
-    this.apiRequest = new HttpMethod._ApiRequest(headers, body);
-
+    this.apiRequest = new HttpMethod._ApiRequest(
+      url,
+      method,
+      authHeader,
+      headers,
+      body,
+      timeoutSeconds
+    );
   }
 
-  abstract get method(): string;
+  get method(): string {
+    return this.apiRequest.method;
+  }
+
+  set method(
+    method: string
+  ) {
+    this.apiRequest.method = method;
+  }
+
+  get timeout(): number {
+    return this.apiRequest.timeout;
+  }
+
+  set timeout(
+    timeoutSeconds: number
+  ) {
+    this.apiRequest.timeout = timeoutSeconds;
+  }
+
+  get url(): string {
+    return this.apiRequest.url;
+  }
+
+  set url(
+    url: string
+  ) {
+    this.apiRequest.url = url;
+  }
 
   request(): string {
     return "";
