@@ -1,25 +1,56 @@
 class RequestBody {
-  private body:
+  private readonly _body:
     | string
     | RequestBody.RequestBodyInterface;
 
   constructor(body?:
-    | null
     | string
     | RequestBody.RequestBodyInterface)
   {
-    this.body = body || "";
+    this._body = body || "";
+  }
+
+  toObject(): RequestBody.RequestBodyInterface {
+    if (typeof this._body === "string")
+      return this.toStringObject();
+    else
+      return this._body;
+  }
+
+  toStringObject(): RequestBody.StringRequestBodyInterface {
+    if (typeof this._body === "string") {
+      try {
+        return JSON.parse(this._body);
+      } catch (e) {
+        return {};
+      }
+    }
+    else
+      return JSON.parse(JSON.stringify(this._body));
+  }
+
+  toString(): string {
+    if (typeof this._body === "string")
+      return this._body;
+    else
+      return JSON.stringify(this._body);
   }
 }
 
 namespace RequestBody {
   export interface RequestBodyInterface {
-    [key: string]: (
-      | string
-      | number
-      | boolean
+    [key: Types.stringful]: (
+      | Types.primitive
       | RequestBodyInterface
       | RequestBodyInterface[]
+    )
+  }
+
+  export interface StringRequestBodyInterface {
+    [key: Types.stringful]: (
+      | string
+      | StringRequestBodyInterface
+      | StringRequestBodyInterface[]
     )
   }
 }
