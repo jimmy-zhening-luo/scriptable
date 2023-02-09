@@ -24,6 +24,36 @@ abstract class RequestHeader {
       this.value = keyOrKeyValue[1] ?? "";
     }
   }
+
+  get keyValueTuple(): [string, Types.primitive] {
+    return [this.key, this.value];
+  }
+
+  get keyValueObject(): {
+    [key: string]: Types.primitive
+  } {
+    return {
+      [this.key]: this.value
+    };
+  }
+
+  get keyValue(): string {
+    return this.keyValueTuple.join(": ");
+  }
+
+  toTuple(): [string, Types.primitive] {
+    return this.keyValueTuple;
+  }
+
+  toObject(): {
+    [key: string]: Types.primitive
+  } {
+    return this.keyValueObject;
+  }
+
+  toString(): string {
+    return this.keyValue;
+  }
 }
 
 namespace RequestHeader {

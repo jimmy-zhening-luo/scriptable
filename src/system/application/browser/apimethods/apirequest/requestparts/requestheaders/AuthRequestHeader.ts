@@ -1,35 +1,31 @@
 const a_RequestHeader: typeof RequestHeader = importModule("requestheader/RequestHeader");
 
 class AuthRequestHeader extends a_RequestHeader {
-  constructor(
-    authType: string,
-    token: string
-  );
 
   constructor(authTypeTokenString: string);
-
-  constructor(authTypeTokenTuple: [string, string]);
+  constructor(authTypeTokenTuple: [string?, string?]);
+  constructor(
+    authType: string,
+    token?: string
+  );
 
   constructor(
-    modeOrModeToken?: string | [string, string],
-    token?: string
+    authTypeOrAuthTypeToken: string | [string?, string?],
+    token: string = "Bearer"
   ) {
-    if (Array.isArray(modeOrModeToken))
-      super(
-        "Authorization",
-        modeOrModeToken.join(" ")
-      );
-    else if (token === undefined)
-      super(
-        "Authorization",
-        modeOrModeToken
-      );
-    else
-      super(
-        "Authorization",
-        [modeOrModeToken, token]
-          .join(" ")
-      );
+    super(
+      "Authorization",
+      Array.isArray(authTypeOrAuthTypeToken) ?
+        authTypeOrAuthTypeToken.join()
+        : token ?
+          [
+            authTypeOrAuthTypeToken,
+            token
+          ]
+            .join(" ")
+          : authTypeOrAuthTypeToken
+
+    );
   }
 }
 
