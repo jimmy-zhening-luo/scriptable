@@ -1,4 +1,4 @@
-class RequestHeader {
+abstract class RequestHeader {
   readonly key?: string | null;
   readonly value?: string | number | boolean | null;
 
