@@ -20,7 +20,7 @@ abstract class RequestHeader<T extends Types.primitive> {
     return this;
   }
 
-  get valueString(): string {
+  get stringValue(): string {
     return this.value.toString();
   }
 
@@ -43,7 +43,7 @@ abstract class RequestHeader<T extends Types.primitive> {
     [key: Types.stringful]: string
   } {
     return {
-      [this.key]: this.valueString
+      [this.key]: this.stringValue
     };
   }
 

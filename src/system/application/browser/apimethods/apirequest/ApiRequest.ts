@@ -39,7 +39,7 @@ class ApiRequest {
   request(): string {
     var response: string = "";
     const req: Request = new Request(this.url);
-    req.headers = this._headers.toObject();
+    req.headers = this._headers.toStringObject();
     req.body = this.apiRequest.body;
     req.method = this.method;
     req.timeoutInterval = this.timeoutSeconds;

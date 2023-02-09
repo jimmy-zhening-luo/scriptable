@@ -59,10 +59,12 @@ class RequestHeaders {
       : this._headers.Authorization = new RequestHeaders._AuthRequestHeader(authString);
   }
 
+  get keys(): string[] {
+    return Object.keys(this._headers);
+  }
+
   get headers(): { [key: string]: Types.primitive } {
-    return Object.keys(
-      this._headers
-    )
+    return this.keys
       .reduce(
         (obj, key) => {
           obj[key] = this._headers[key].value;
@@ -70,6 +72,17 @@ class RequestHeaders {
         },
         {} as { [key: string]: Types.primitive }
       );
+  }
+
+  get stringHeaders(): { [key: string]: string } {
+    return this.keys
+      .reduce(
+        (obj, key) => {
+          obj[key] = this._headers[key].stringValue;
+          return obj;
+        },
+        {} as { [key: string]: string }
+    );
   }
 
   setAuthTypeAndToken(
@@ -127,6 +140,10 @@ class RequestHeaders {
     return this.headers;
   }
 
+  toStringObject(): { [key: string]: string } {
+    return this.stringHeaders;
+  }
+
   toString(): string {
     return Object.keys(
       this.headers
@@ -147,7 +164,6 @@ namespace RequestHeaders {
     | [string, Types.primitive]
     | [string, Types.primitive][]
     | { [key: string]: Types.primitive };
-
 
   export const _AuthRequestHeader: typeof AuthRequestHeader = importModule("requestheaders/AuthRequestHeader");
 
