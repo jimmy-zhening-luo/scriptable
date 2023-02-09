@@ -6,9 +6,6 @@
   ],
   "references": [
     {
-      "path": "responsebody/tsconfig.json"
-    },
-    {
       "path": "../../../../common/primitives/tsconfig.json"
     }
   ],

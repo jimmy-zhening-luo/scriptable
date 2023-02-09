@@ -6,9 +6,6 @@
   ],
   "references": [
     {
-      "path": "requestbody/tsconfig.json"
-    },
-    {
       "path": "requestheaders/tsconfig.json"
     },
     {

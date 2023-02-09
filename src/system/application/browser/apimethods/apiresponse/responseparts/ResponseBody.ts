@@ -1,4 +1,4 @@
-abstract class ResponseBody {
+class ResponseBody {
   response;
 
   constructor(
@@ -10,12 +10,14 @@ abstract class ResponseBody {
     this.response = this.parseResponse(response);
   }
 
-  abstract parseResponse(
+  parseResponse(
     response?:
       | null
       | string
       | any
-  ): any;
+  ): any {
+    return null;
+  }
 }
 
 module.exports = ResponseBody;

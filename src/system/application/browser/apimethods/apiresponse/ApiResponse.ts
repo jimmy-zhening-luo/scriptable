@@ -25,11 +25,7 @@ class ApiResponse {
 }
 
 namespace ApiResponse {
-  export const _JsonResponseBody: typeof JsonResponseBody = importModule("responseparts/JsonResponseBody");
-
-  export const _StringResponseBody: typeof StringResponseBody = importModule("responseparts/StringResponseBody");
-
-  export const _ResponseBody: typeof ResponseBody = importModule("responseparts/responsebody/ResponseBody");
+  export const _ResponseBody: typeof ResponseBody = importModule("responseparts/ResponseBody");
 }
 
 module.exports = ApiResponse;

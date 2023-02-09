@@ -28,7 +28,7 @@ class ApiRequest {
 namespace ApiRequest {
   export const _RequestHeaders: typeof RequestHeaders = importModule("requestparts/RequestHeaders");
 
-  export const _RequestBody: typeof RequestBody = importModule("requestparts/requestbody/RequestBody");
+  export const _RequestBody: typeof RequestBody = importModule("requestparts/RequestBody");
 }
 
 module.exports = ApiRequest;
