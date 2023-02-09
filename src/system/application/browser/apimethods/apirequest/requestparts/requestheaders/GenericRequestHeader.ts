@@ -1,6 +1,6 @@
 const g_RequestHeader: typeof RequestHeader = importModule("requestheader/RequestHeader");
 
-class GenericRequestHeader extends g_RequestHeader {
+class GenericRequestHeader<T extends Types.primitive> extends g_RequestHeader<T> {
 
 }
 

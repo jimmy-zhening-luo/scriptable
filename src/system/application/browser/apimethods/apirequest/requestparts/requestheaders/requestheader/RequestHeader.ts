@@ -1,52 +1,64 @@
-abstract class RequestHeader {
+abstract class RequestHeader<T extends Types.primitive> {
 
-  readonly key: string;
-  readonly value: Types.primitive;
+  key: string;
+  value: T;
 
-  constructor(keyValue: [
-    string,
-    Types.primitive?
-  ]);
   constructor(
     key: string,
-    value?: Types.primitive
-  );
-  constructor(
-    keyOrKeyValue: string | [string, Types.primitive?],
-    value?: Types.primitive
+    value: T
   ) {
-    if (typeof keyOrKeyValue === "string") {
-      this.key = keyOrKeyValue;
-      this.value = value ?? "";
-    }
-    else {
-      this.key = keyOrKeyValue[0];
-      this.value = keyOrKeyValue[1] ?? "";
-    }
+    this.key = key;
+    this.value = value;
   }
 
-  get keyValueTuple(): [string, Types.primitive] {
-    return [this.key, this.value];
+  setKeyValue(
+    key: string,
+    value: T
+  ): this {
+    this.key = key;
+    this.value = value;
+    return this;
+  }
+
+  get isValid(): boolean {
+    return this.key !== "";
+  }
+
+  get valueString(): string {
+    return this.value.toString();
+  }
+
+  get keyValueTuple(): [] | [string, T] {
+    return this.isValid ?
+      [
+        this.key,
+        this.value
+      ]
+      : [];
   }
 
   get keyValueObject(): {
-    [key: string]: Types.primitive
+    [key: string]: T
   } {
-    return {
-      [this.key]: this.value
-    };
+    return this.isValid ?
+      {
+        [this.key]: this.value as T
+      }
+      : {};
   }
 
   get keyValue(): string {
-    return this.keyValueTuple.join(": ");
+    return this.isValid ?
+      this.keyValueTuple.join(": ")
+      : "";
   }
 
-  toTuple(): [string, Types.primitive] {
+  toTuple(): [] | [string, T] {
     return this.keyValueTuple;
   }
 
   toObject(): {
-    [key: string]: Types.primitive
+    [key: string]: T
   } {
     return this.keyValueObject;
   }
@@ -54,9 +66,7 @@ abstract class RequestHeader {
   toString(): string {
     return this.keyValue;
   }
-}
 
-namespace RequestHeader {
 }
 
 module.exports = RequestHeader;
