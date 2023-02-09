@@ -2,7 +2,7 @@ class RequestHeaders {
 
   private readonly _headers: {
     Authorization?: AuthRequestHeader
-    [key: string]: RequestHeader<Types.primitive>
+    [key: Types.stringful]: RequestHeader<Types.primitive>
   };
 
   constructor();

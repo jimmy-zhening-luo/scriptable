@@ -1,10 +1,10 @@
 abstract class RequestHeader<T extends Types.primitive> {
 
-  key: string;
+  key: Types.stringful;
   value: T;
 
   constructor(
-    key: string,
+    key: Types.stringful,
     value: T
   ) {
     this.key = key;
@@ -12,7 +12,7 @@ abstract class RequestHeader<T extends Types.primitive> {
   }
 
   setKeyValue(
-    key: string,
+    key: Types.stringful,
     value: T
   ): this {
     this.key = key;
@@ -20,50 +20,54 @@ abstract class RequestHeader<T extends Types.primitive> {
     return this;
   }
 
-  get isValid(): boolean {
-    return this.key !== "";
-  }
-
   get valueString(): string {
     return this.value.toString();
   }
 
-  get keyValueTuple(): [] | [string, T] {
-    return this.isValid ?
-      [
-        this.key,
-        this.value
-      ]
-      : [];
+  get keyValueTuple(): [Types.stringful, T] {
+    return [
+      this.key,
+      this.value
+    ];
   }
 
   get keyValueObject(): {
-    [key: string]: T
+    [key: Types.stringful]: T
   } {
-    return this.isValid ?
-      {
-        [this.key]: this.value as T
-      }
-      : {};
+      return {
+        [this.key]: this.value
+    };
   }
 
-  get keyValue(): string {
-    return this.isValid ?
-      this.keyValueTuple.join(": ")
-      : "";
+  get keyValueStringObject(): {
+    [key: Types.stringful]: string
+  } {
+    return {
+      [this.key]: this.valueString
+    };
   }
 
-  toTuple(): [] | [string, T] {
+  get keyValue(): Types.stringful {
+    return this.keyValueTuple.join(": ");
+  }
+
+  toTuple(): [Types.stringful, T] {
     return this.keyValueTuple;
   }
 
   toObject(): {
-    [key: string]: T
+    [key: Types.stringful]: T
   } {
     return this.keyValueObject;
   }
 
-  toString(): string {
+  toStringObject(): {
+    [key: Types.stringful]: string
+  } {
+    return this.keyValueStringObject;
+  }
+
+  toString(): Types.stringful {
     return this.keyValue;
   }
 

@@ -1,10 +1,12 @@
 class ApiRequest {
-  url: string;
+
+  url: Types.stringful;
   private _headers: RequestHeaders;
   private _body: RequestBody;
-  private _timeoutSeconds: number;
+  private _timeoutSeconds: number = 30;
+
   constructor(
-    url: string,
+    url: Types.stringful,
     authHeader?:
       | [string, string]
       | string
@@ -19,7 +21,7 @@ class ApiRequest {
     body?:
       | string
       | RequestBody.RequestBodyInterface,
-    timeoutSeconds?: null | undefined | number
+    timeoutSeconds?: number
   ) {
     this.url = url;
     this._headers = authHeader === undefined ?
@@ -29,25 +31,18 @@ class ApiRequest {
         : Array.isArray(authHeader) ?
           new ApiRequest._RequestHeaders(authHeader[0], authHeader[1], headers)
           : new ApiRequest._RequestHeaders(authHeader.authType, authHeader.authToken, headers);
-
-    const defaultTimeoutSeconds: number = 30;
-    this.headers = new ApiRequest._RequestHeaders(headers);
-    if (authHeader !== undefined) {
-      this.headers.add(authHeader);
-    }
-    this.body = new ApiRequest._RequestBody(body);
-    this._timeoutSeconds = new ApiRequest._PositiveFiniteInteger(timeoutSeconds ?? defaultTimeoutSeconds).isFinite ?
-      timeoutSeconds ?? defaultTimeoutSeconds
-      : defaultTimeoutSeconds;
+    this._body = new ApiRequest._RequestBody(body);
+    if (timeoutSeconds !== undefined)
+      this.timeout = timeoutSeconds;
   }
 
   request(): string {
+    var response: string = "";
     const req: Request = new Request(this.url);
-    req.headers = this.apiRequest.headers;
+    req.headers = this._headers.toObject();
     req.body = this.apiRequest.body;
     req.method = this.method;
     req.timeoutInterval = this.timeoutSeconds;
-    var response: string = "";
     req.loadString().then((_response) => {
       response = _response ?? "";
     }
@@ -60,18 +55,19 @@ class ApiRequest {
   }
 
   set timeout(timeoutSeconds: number) {
-    this._timeoutSeconds = new ApiRequest._PositiveFiniteInteger(timeoutSeconds).isFinite ?
-      timeoutSeconds
-      : this._timeoutSeconds;
+    if (new ApiRequest._PositiveFiniteInteger(timeoutSeconds).isNumber)
+      this._timeoutSeconds = timeoutSeconds;
   }
 }
 
 namespace ApiRequest {
+
   export const _RequestHeaders: typeof RequestHeaders = importModule("requestparts/RequestHeaders");
 
   export const _RequestBody: typeof RequestBody = importModule("requestparts/RequestBody");
 
   export const _PositiveFiniteInteger: typeof PositiveFiniteInteger = importModule("./system/application/common/primitives/numbers/PositiveFiniteInteger");
+
 }
 
 module.exports = ApiRequest;
