@@ -20,7 +20,7 @@ class TestRunner {
         "url",
         [(u = u).toString(), "https://"],
         [
-          (u = new Url(
+          (u = new url(
             "bongo",
             "example.com",
             500,
