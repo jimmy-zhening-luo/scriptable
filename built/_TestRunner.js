@@ -12,7 +12,7 @@ class TestRunner {
         const suites = [
             [
                 "url",
-                [u.toString(), "https://"],
+                [(u = u).toString(), "https://"],
                 [],
             ],
         ];
