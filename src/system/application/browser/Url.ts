@@ -196,7 +196,7 @@ class Url {
   ) {
     this.#fragment = new Url._Fragment(
       fragment
-    );
+lol
   }
 
   open(): void {

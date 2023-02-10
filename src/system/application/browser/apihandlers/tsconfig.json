@@ -9,13 +9,10 @@
       "path": "../../common/primitives/tsconfig.json"
     },
     {
-      "path": "apirequest/tsconfig.json"
+      "path": "requestparts/tsconfig.json"
     },
     {
-      "path": "apiresponse/tsconfig.json"
-    },
-    {
-      "path": "httpmethod/tsconfig.json"
+      "path": "responseparts/tsconfig.json"
     }
   ],
   "compilerOptions": {

@@ -6,6 +6,9 @@
   ],
   "references": [
     {
+      "path": "requestheader/tsconfig.json"
+    },
+    {
       "path": "../../../../common/primitives/tsconfig.json"
     }
   ],

@@ -10,7 +10,7 @@
       "path": "urlcomposites/tsconfig.json"
     },
     {
-      "path": "apimethods/tsconfig.json"
+      "path": "apihandlers/tsconfig.json"
     },
     {
       "path": "../common/primitives/tsconfig.json"

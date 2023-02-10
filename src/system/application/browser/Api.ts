@@ -1,7 +1,8 @@
 class Api {
 
   private _url: Url;
-  private _httpMethod: HttpMethod;
+  method: Api.Method;
+  private _request: ApiRequest;
 
   constructor(
     url:
@@ -26,9 +27,10 @@ class Api {
     timeoutSeconds?: number
   ) {
     this._url = new Url(url);
-    this._httpMethod = new Api.Methods[method](
+    this.method = method;
+    this._request = new Api._ApiRequest(
       this._url.toString(),
-      method.toString(),
+      this.method.toString(),
       authHeader,
       headers,
       body,
@@ -36,24 +38,20 @@ class Api {
     );
   }
   
-  private get _request(): ApiResponse {
-    return this._httpMethod.request();
-  }
-
   request(): any {
-    return this.requestObject();
+    return ""
   }
 
   requestObject(): any {
-    return this._request.toObject();
+    return ""
   }
   
   requestStringObject(): any {
-    return this.
+    return ""
   }
 
   requestString(): string {
-    return this._request.toString();
+    return ""
   }
 
   get url(): string {
@@ -139,28 +137,18 @@ class Api {
 
 namespace Api {
 
-  export const _Url: typeof Url = importModule("Url");
-
   export enum Method {
     GET,
     POST,
     PUT
   }
-
-  export const Methods: HttpMethods<
-    typeof Method,
-    typeof HttpGet
-    | typeof HttpPost
-    | typeof HttpPut
-  > = {
-    GET: importModule("apimethods/HttpGet") as typeof HttpGet,
-    POST: importModule("apimethods/HttpPost") as typeof HttpPost,
-    PUT: importModule("apimethods/HttpPut") as typeof HttpPut
-  };
-
-  export type HttpMethods<E, M> = {
-    [Property in keyof E]: M extends HttpMethod ? M : typeof HttpGet
-  }
+  
+  export const _Url: typeof Url = importModule("Url");
+  
+  export const _ApiRequest: typeof ApiRequest = importModule("apihandlers/ApiRequest");
+  
+  export const _ApiResponse: typeof ApiResponse = importModule("apihandlers/ApiResponse");
+  
 }
 
 module.exports = Api;
