@@ -1,0 +1,1 @@
+{"version":3,"file":"Fragment.d.ts","sourceRoot":"","sources":["../../../../../../src/system/application/browser/urlcomposites/urlparts/Fragment.ts"],"names":[],"mappings":"AAAA,QAAA,MAAM,UAAU,EAAE,OAAO,OAAyC,CAAC;AAEnE,cAAM,QAAS,SAAQ,UAAU;IAC/B,SAAS,CAAC,KAAK,CACb,QAAQ,EAAE,MAAM,GACf,IAAI,GAAG,MAAM;CAUjB;AAED,kBAAU,QAAQ,CAAC;IACV,MAAM,cAAc,EAAE,OAAO,aAAwD,CAAC;CAC9F"}

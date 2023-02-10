@@ -1,0 +1,1 @@
+{"version":3,"file":"ResponseBody.js","sourceRoot":"","sources":["../../../../../../src/system/application/browser/apihandlers/responseparts/ResponseBody.ts"],"names":[],"mappings":"AAAA,MAAM,YAAY;IAGhB,YACE,QAGO;QAEP,IAAI,CAAC,QAAQ,GAAG,IAAI,CAAC,aAAa,CAAC,QAAQ,CAAC,CAAC;IAC/C,CAAC;IAED,aAAa,CACX,QAAc;QAEd,OAAO,QAAQ,CAAC;IAClB,CAAC;CACF;AAED,MAAM,CAAC,OAAO,GAAG,YAAY,CAAC"}

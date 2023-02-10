@@ -1,0 +1,1 @@
+{"version":3,"file":"ValidUrlPart.d.ts","sourceRoot":"","sources":["../../../../../../../../src/system/application/browser/urlcomposites/urlparts/validators/validurlpart/ValidUrlPart.ts"],"names":[],"mappings":"AAAA,QAAA,MAAM,eAAe,EAAE,OAAO,WAAwF,CAAC;AAEvH,cAAM,YAAa,SAAQ,eAAe;CAAG;AAE7C,kBAAU,YAAY,CAAC;IACd,MAAM,QAAQ,EAAE,OAAO,OAAwK,CAAC;CACxM"}
