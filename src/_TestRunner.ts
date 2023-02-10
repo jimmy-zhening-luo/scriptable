@@ -31,7 +31,7 @@ class TestRunner {
           "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
         ],
         [
-          (u.port = 2111).toString,
+          (u.port = 2111).toString(),
           "bongo://example.com:2111/a/b/c?x=1&y=2#bingo"
         ]
       ],
