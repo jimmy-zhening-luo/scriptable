@@ -27,7 +27,7 @@ class Api {
   ) {
     this._url = new Url(url);
     this._request = new Api._ApiRequest(
-      this._url.toString(),
+      new Api._Url(url).toString(),
       method,
       authHeader,
       headers,
@@ -36,24 +36,27 @@ class Api {
     );
   }
 
+  private handleRequest(): ApiResponse {
+    this._request.url = this.url;
+    return new Api._ApiResponse(
+      this._request.request()
+    );
+  }
+
   request(): any {
-    return ""
+    return this.handleRequest().response;
   }
 
   requestObject(): any {
-    return ""
-  }
-
-  requestStringObject(): any {
-    return ""
+    return this.handleRequest().toObject();
   }
 
   requestString(): string {
-    return ""
+    return this.handleRequest().toString();
   }
 
   get url(): string {
-    return this._request.url;
+    return this._url.toString();
   }
 
   set url(url:
@@ -105,19 +108,17 @@ class Api {
   }
 
   addParam(
-    keyOrKeyValue:
-      string
-      | [string, string],
-    value?: string
-  ): void {
-    this._url.addParam(
-      keyOrKeyValue,
-      value
-    );
+    ...param: Parameters<Url["addParam"]>
+  ): this {
+    this._url.addParam(...param);
+    return this;
   }
 
-  deleteParam(key: string): void {
-    this.addParam(key, "")
+  deleteParam(
+    ...param: Parameters<Url["deleteParam"]>
+  ): this {
+    this._url.deleteParam(...param);
+    return this;
   }
 
   get fragment(): string {
@@ -134,6 +135,99 @@ class Api {
 
   set method(method: ApiRequest.Method) {
     this._request.method = method;
+  }
+
+  get auth(): string {
+    return this._request.auth;
+  }
+
+  set auth(
+    authHeader: string
+  ) {
+    this._request.auth = authHeader;
+  }
+
+  setAuthTypeAndToken(
+    ...auth: Parameters<ApiRequest["setAuthTypeAndToken"]>
+  ): this {
+    this._request.setAuthTypeAndToken(...auth);
+    return this;
+  }
+
+  deleteAuth(): this {
+    this._request.deleteAuth();
+    return this;
+  }
+
+  get headerKeys(): typeof ApiRequest.prototype.keys {
+    return this._request.keys;
+  }
+
+  get headers(): typeof ApiRequest.prototype.headers {
+    return this._request.headers;
+  }
+
+  get headersObject(): typeof ApiRequest.prototype.headersObject {
+    return this._request.headersObject;
+  }
+
+  get headersStringObject(): typeof ApiRequest.prototype.headersStringObject {
+    return this._request.headersStringObject;
+  }
+
+  get headersString(): typeof ApiRequest.prototype.headersString {
+    return this._request.headersString;
+  }
+
+  setHeader(
+    ...header: Parameters<ApiRequest["set"]>
+  ): this {
+    this._request.set(...header);
+    return this;
+  }
+
+  deleteHeader(
+    ...header: Parameters<ApiRequest["delete"]>
+  ): this {
+    this._request.delete(...header);
+    return this;
+  }
+
+  addHeaders(
+    ...headers: Parameters<ApiRequest["add"]>
+  ): this {
+    this._request.add(...headers);
+    return this;
+  }
+
+  get body(): typeof ApiRequest.prototype.body {
+    return this._request.body;
+  }
+
+  set body(
+    body: string | RequestBody.RequestBodyInterface
+  ) {
+    this._request.body = body;
+  }
+
+  get bodyObject(): typeof ApiRequest.prototype.bodyObject {
+    return this._request.bodyObject;
+  }
+
+  get bodyStringObject(): typeof ApiRequest.prototype.bodyStringObject {
+    return this._request.bodyStringObject;
+  }
+
+  get bodyString(): typeof ApiRequest.prototype.bodyString {
+    return this._request.bodyString;
+  }
+
+  get timeout(): number {
+    return this._request.timeout;
+  }
+
+  set timeout(timeoutSeconds: number) {
+    this._request.timeout = timeoutSeconds;
   }
 
 }

@@ -47,14 +47,14 @@ class RequestHeaders {
     }
   }
 
-  get auth(): typeof AuthRequestHeader.prototype.auth {
+  get auth(): string {
     return "Authorization" in this._headers ?
       this._headers.Authorization.auth
       : "";
   }
 
   set auth(
-    authString: typeof this.auth
+    authString: string
   ) {
     authString === "" ?
       delete this._headers.Authorization

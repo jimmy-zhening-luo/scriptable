@@ -64,22 +64,34 @@ class ApiRequest {
     return response;
   }
 
-  get auth(): typeof RequestHeaders.prototype.auth {
+  get auth(): string {
     return this._headers.auth;
   }
 
   set auth(
-    authHeader: typeof this.auth
+    authHeader: string
   ) {
     this._headers.auth = authHeader;
+  }
+
+  setAuthTypeAndToken(
+    ...auth: Parameters<RequestHeaders["setAuthTypeAndToken"]>
+  ): this {
+    this._headers.setAuthTypeAndToken(...auth);
+    return this;
+  }
+
+  deleteAuth(): this {
+    this._headers.deleteAuth();
+    return this;
   }
 
   get keys(): typeof RequestHeaders.prototype.keys {
     return this._headers.keys;
   }
 
-  get headers(): typeof this.headersObject {
-    return this.headersObject;
+  get headers(): typeof RequestHeaders.prototype.headers {
+    return this._headers.headers;
   }
 
   get headersObject(): ReturnType<RequestHeaders["toObject"]> {
@@ -94,26 +106,18 @@ class ApiRequest {
     return this._headers.toString();
   }
 
-  setAuthTypeAndToken(
-    ...auth: Parameters<RequestHeaders["setAuthTypeAndToken"]>
-  ) {
-    this._headers.setAuthTypeAndToken(...auth);
-  }
-
-  deleteAuth() {
-    this._headers.deleteAuth();
-  }
-
   set(
     ...header: Parameters<RequestHeaders["set"]>
-  ) {
+  ): this {
     this._headers.set(...header);
+    return this;
   }
 
   delete(
     ...header: Parameters<RequestHeaders["delete"]>
-  ) {
+  ): this {
     this._headers.delete(...header);
+    return this;
   }
 
   add(
@@ -154,6 +158,7 @@ class ApiRequest {
     if (new ApiRequest._PositiveFiniteInteger(timeoutSeconds).isNumber)
       this._timeoutSeconds = timeoutSeconds;
   }
+
 }
 
 namespace ApiRequest {

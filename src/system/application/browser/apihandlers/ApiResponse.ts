@@ -12,11 +12,24 @@ class ApiResponse {
   }
 
   toObject(): any {
-    return typeof this.responseBody.response === "string" ? JSON.parse(this.responseBody.response) : this.responseBody.response;
+    try {
+      return typeof this.responseBody.response === "string" ?
+        JSON.parse(
+          this.responseBody.response
+        )
+        : this.responseBody.response;
+    }
+    catch {
+      return {};
+    }
   }
 
   toString(): string {
-    return typeof this.responseBody.response === "string" ? this.responseBody.response : JSON.stringify(this.responseBody.response);
+    return typeof this.responseBody.response === "string" ?
+      this.responseBody.response
+      : JSON.stringify(
+        this.responseBody.response
+      );
   }
 }
 
