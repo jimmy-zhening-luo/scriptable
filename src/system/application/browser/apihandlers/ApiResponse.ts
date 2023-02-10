@@ -4,11 +4,7 @@ class ApiResponse {
   constructor(
     response?: any
   ) {
-    this.responseBody = response === undefined || response === null ?
-      new ApiResponse._StringResponseBody("")
-      : new ApiResponse._JsonResponseBody(response).response.toString() === "{}" ?
-        new ApiResponse._StringResponseBody(response)
-        : new ApiResponse._JsonResponseBody(response);
+    this.responseBody = new ApiResponse._ResponseBody(response);
   }
 
   get response(): any {
@@ -25,7 +21,9 @@ class ApiResponse {
 }
 
 namespace ApiResponse {
+
   export const _ResponseBody: typeof ResponseBody = importModule("responseparts/ResponseBody");
+
 }
 
 module.exports = ApiResponse;

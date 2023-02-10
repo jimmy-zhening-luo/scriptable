@@ -1,14 +1,14 @@
 class ApiRequest {
 
   url: Types.stringful;
-  private _method: Types.stringful;
+  method: ApiRequest.Method;
   private _headers: RequestHeaders;
   private _body: RequestBody;
   private _timeoutSeconds: number = 30;
 
   constructor(
     url: Types.stringful,
-    method: Types.stringful = "GET",
+    method: ApiRequest.Method = ApiRequest.Method.GET,
     authHeader?:
       | [string, string]
       | string
@@ -26,7 +26,7 @@ class ApiRequest {
     timeoutSeconds?: number
   ) {
     this.url = url;
-    this._method = method.toUpperCase();
+    this.method = method;
     this._headers = authHeader === undefined ?
       new ApiRequest._RequestHeaders(headers)
       : typeof authHeader === "string" ?
@@ -44,21 +44,13 @@ class ApiRequest {
     const req: Request = new Request(this.url);
     req.headers = this._headers.toStringObject();
     req.body = this._body.toString();
-    req.method = this.method;
+    req.method = this.method.toString();
     req.timeoutInterval = this._timeoutSeconds;
     req.loadString().then((_response) => {
       response = _response ?? "";
     }
     );
     return response;
-  }
-
-  get method(): Types.stringful {
-    return this._method;
-  }
-
-  set method(method: Types.stringful) {
-    this._method = method.toUpperCase();
   }
 
   get timeout(): number {
@@ -72,6 +64,12 @@ class ApiRequest {
 }
 
 namespace ApiRequest {
+
+  export enum Method {
+    GET,
+    POST,
+    PUT
+  }
 
   export const _RequestHeaders: typeof RequestHeaders = importModule("requestparts/RequestHeaders");
 

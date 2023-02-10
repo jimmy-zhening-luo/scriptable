@@ -8,7 +8,7 @@ class Api {
       | string
       | Url
       | Url.UrlParts,
-    method: Api.Method = Api.Method.GET,
+    method: ApiRequest.Method = Api.Method.GET,
     authHeader?:
       | string
       | [string, string]
@@ -28,7 +28,7 @@ class Api {
     this._url = new Url(url);
     this._request = new Api._ApiRequest(
       this._url.toString(),
-      method.toString(),
+      method,
       authHeader,
       headers,
       body,
@@ -52,12 +52,12 @@ class Api {
     return ""
   }
 
-  get method(): Api.Method {
-    return Api.Method[this._request.method as keyof typeof Api.Method];
+  get method(): ApiRequest.Method {
+    return this._request.method;
   }
 
-  set method(method: Api.Method = Api.Method.GET) {
-    this._request.method = method.toString();
+  set method(method: ApiRequest.Method) {
+    this._request.method = method;
   }
 
   get url(): string {
@@ -140,15 +140,7 @@ class Api {
 
 namespace Api {
 
-  export type UrlInstance = InstanceType<typeof ApiRequest>;
-
-  export type bong = UrlInstance[]
-
-  export enum Method {
-    GET,
-    POST,
-    PUT
-  }
+  export const Method: typeof ApiRequest.Method = ApiRequest.Method;
 
   export const _Url: typeof Url = importModule("Url");
 
