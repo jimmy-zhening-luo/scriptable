@@ -42,7 +42,7 @@ class TestRunner {
   private casesToSuites(
     ...suiteInputs: [
       string,
-      ...([], TestRunner.Case)[]
+      ...([] | TestRunner.Case)[]
     ][]
   ): TestRunner.Suites {
     return suiteInputs
