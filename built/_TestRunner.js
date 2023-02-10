@@ -14,7 +14,7 @@ class TestRunner {
                 "url",
                 [(u = u).toString(), "https://"],
                 [
-                    (u = new Url("bongo", "example.com", 500, "a/b/c", "x=1&y=2", "#bingo")).toString(),
+                    (u = new url("bongo", "example.com", 500, "a/b/c", "x=1&y=2", "#bingo")).toString(),
                     "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
                 ],
                 [
