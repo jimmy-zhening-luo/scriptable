@@ -3,56 +3,56 @@
 // icon-color: deep-purple; icon-glyph: bug;
 
 namespace TestRunner {
-  const stl: typeof STL = importModule("stl/STL");
   
-  const suites: TestSuites = [];
+  export const suites: TestClass.Suites = [];
+  
+  const stl: typeof STL = importModule("stl/STL");
   
   // Url test cases
   const url: typeof Url = stl.url;
   suites.push(
-    new TestSuite(
+    new TestClass.Suite(
       "url",
       [new Url().toString(), "https://"]
     )
   );
   
+}
+
+// TestRunner interfaces and classes
+namespace TestClass {
   
+  export type Evaluate = any;
+  export type Result = any;
+  export type Case = [Evaluate, Result];
+  export type Cases = Case[];
+  export type Suites = Suite[];
   
-  
-  
-  
-  // TestRunner interfaces and classes
-  type Evaluate = any;
-  type Result = any;
-  type TestCase = [Evaluate, Result];
-  type TestCases = TestCase[];
-  type TestSuites = TestSuite[];
-  
-  class TestSuite {
+  export class Suite {
+    
     readonly id: string;
-    readonly cases: TestCases;
+    readonly cases: Cases;
     
     constructor(
       id: string,
       ...cases:
-        Array<TestCase | TestCases>
+        Array<Case | Cases>
+    );
+    constructor(
+      id: string,
+      suite?: Suite,
+      ...moreCases:
+        Array<Case | Cases>
     );
     
     constructor(
       id: string,
-      testSuite?: TestSuite,
+      suiteOrCases?:
+        Suite
+        | Case
+        | Cases,
       ...moreCases:
-        Array<TestCase | TestCases>
-    );
-    
-    constructor(
-      id: string,
-      cases?:
-        TestSuite
-        | TestCase
-        | TestCases,
-      ...moreCases:
-        Array<TestCase | TestCases>
+        Array<Case | Cases>
     ) {
       this.id = id;
       this.cases = this.parseInput(
@@ -82,11 +82,11 @@ namespace TestRunner {
     
     addCase(
       cases?:
-        TestSuite
-        | TestCase
-        | TestCases,
+        Suite
+        | Case
+        | Cases,
       ...moreCases:
-        Array<TestCase | TestCases>
+        Array<Case | Cases>
     ): void {
       this.cases.push(
         ...this.parseInput(
@@ -98,15 +98,15 @@ namespace TestRunner {
     
     private parseInput(
       cases?:
-        TestSuite
-        | TestCase
-        | TestCases,
+        Suite
+        | Case
+        | Cases,
       ...moreCases:
-        Array<TestCase | TestCases>
-    ): TestCases {
-      const joined: TestCases = [];
+        Array<Case | Cases>
+    ): Cases {
+      const joined: Cases = [];
       if (cases === undefined) {}
-      else if (cases instanceof TestSuite)
+      else if (cases instanceof Suite)
         joined.push(...cases.cases)
       else
         joined
@@ -124,9 +124,9 @@ namespace TestRunner {
       return joined;
       
       function arrCaseCasesToCases(
-        moreCases: Array<TestCase | TestCases>
-      ): TestCases {
-        const cases: TestCases = [];
+        moreCases: Array<Case | Cases>
+      ): Cases {
+        const cases: Cases = [];
         moreCases.forEach((caseOrCases) => {
           cases.push(
             ...caseOrCasesToCases(
@@ -138,8 +138,8 @@ namespace TestRunner {
       }
       
       function caseOrCasesToCases(
-        caseOrCases: TestCase | TestCases
-      ): TestCases {
+        caseOrCases: Case | Cases
+      ): Cases {
         return caseOrCases.length === 0 ?
           []
           : Array.isArray(caseOrCases[0])?
@@ -147,8 +147,10 @@ namespace TestRunner {
             : [caseOrCases];
       }
     }
+    
   }
+  
 }
 
-for (const suite of suites)
+for (const suite of TestRunner.suites)
   suite.run();
