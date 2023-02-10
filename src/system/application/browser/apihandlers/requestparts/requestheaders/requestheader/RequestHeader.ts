@@ -47,15 +47,15 @@ abstract class RequestHeader<T extends Types.primitive> {
     return this.keyValueTuple.join(": ");
   }
 
-  toTuple(): typeof this.keyValueTuple {
+  toTuple(): typeof RequestHeader.prototype.keyValueTuple {
     return this.keyValueTuple;
   }
 
-  toObject(): typeof this.keyValueObject {
+  toObject(): typeof RequestHeader.prototype.keyValueObject {
     return this.keyValueObject;
   }
 
-  toStringObject(): typeof this.keyValueStringObject {
+  toStringObject(): typeof RequestHeader.prototype.keyValueStringObject {
     return this.keyValueStringObject;
   }
 

@@ -72,7 +72,7 @@ class RequestHeaders {
           obj[key] = this._headers[key].value;
           return obj;
         },
-        {} as typeof this.headers
+        {} as typeof RequestHeaders.prototype.headers
       );
   }
 
@@ -130,7 +130,7 @@ class RequestHeaders {
     return this;
   }
 
-  toObject(): typeof this.headers {
+  toObject(): typeof RequestHeaders.prototype.headers {
     return this.headers;
   }
 

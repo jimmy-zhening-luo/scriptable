@@ -128,7 +128,7 @@ class ApiRequest {
     return this;
   }
 
-  get body(): typeof this.bodyObject {
+  get body(): typeof ApiRequest.prototype.bodyObject {
     return this.bodyObject;
   }
 
