@@ -52,7 +52,7 @@ class TestRunner {
           : new TestRunner.Suite(...suite)
       ).filter(
         suite => suite !== null
-      );
+      ) as TestRunner.Suites;
   }
 }
 
