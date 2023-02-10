@@ -2,25 +2,65 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-purple; icon-glyph: bug;
 
-namespace TestRunner {
+const SUPPRESS_LOGGING: boolean = false;
+
+
+class TestRunner {
   
-  export const suites: TestClass.Suites = [];
+  private readonly suites: TestRunner.Suites;
   
-  const stl: typeof STL = importModule("stl/STL");
+  constructor() {
+    const stl: typeof STL = this.stl;
+    const url: typeof Url = stl.url;
+    
+    const suites: Parameters<TestRunner["casesToSuites"]> = [
+      [
+        "url",
+        [
+          new url().toString(),
+          "https://"
+        ],
+      ],
+    ];
+    
+    this.suites = this.casesToSuites(...suites); 
+  }
   
-  // Url test cases
-  const url: typeof Url = stl.url;
-  suites.push(
-    new TestClass.Suite(
-      "url",
-      [new Url().toString(), "https://"]
-    )
-  );
+  run(
+    suppressLogging: boolean = false
+  ): void {
+    this.runAll(suppressLogging);
+  }
   
+  runAll(
+    suppressLogging: boolean = false
+  ): void {
+    for (const suite in this.suites)
+      suite.run(suppressLogging);
+  }
+  
+  private stl(): typeof STL {
+    return TestRunner.stl;
+  }
+  
+  private casesToSuites(
+    ...suiteInputs: Array<[
+      string,
+      ...TestRunner.Case
+    ]>
+  ): TestRunner.Suites {
+    return suiteInputs.map(
+      suiteInputs => new TestRunner.Suite(
+        ...suiteInputs
+      )
+    );
+  }
 }
 
-// TestRunner interfaces and classes
-namespace TestClass {
+
+namespace TestRunner {
+  
+  export const stl: typeof STL = importModule("stl/STL");
   
   export type Evaluate = any;
   export type Result = any;
@@ -147,10 +187,7 @@ namespace TestClass {
             : [caseOrCases];
       }
     }
-    
   }
-  
 }
 
-for (const suite of TestRunner.suites)
-  suite.run();
+new TestRunner().run(SUPRESS_LOGGING);
