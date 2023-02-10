@@ -4,20 +4,46 @@
 const SUPPRESS_LOGGING: boolean = false;
 
 class TestRunner {
-  
+ 
   private readonly suites: TestRunner.Suites;
   
   constructor() {
+    // CLASS IMPORTS GO HERE
     const url: typeof Url = this.stl.url;
+    
+    // TEST VARS GO HERE
+    let u: Url = new url();
+    
+    // TESTS GO HERE
     const suites: any = [
       [
         "url",
-        [new url().toString(), "https://"],
+        [u.toString(), "https://"],
         [
         
         ],
       ],
     ];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     this.suites = this.casesToSuites(...suites); 
   }
