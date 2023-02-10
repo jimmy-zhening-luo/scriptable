@@ -25,7 +25,7 @@ class Api {
       | RequestBody.RequestBodyInterface,
     timeoutSeconds?: number
   ) {
-    this._url = new Url(url);
+    this._url = new Api._Url(url);
     this._request = new Api._ApiRequest(
       new Api._Url(url).toString(),
       method,
