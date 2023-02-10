@@ -1,13 +1,42 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-purple; icon-glyph: bug;
-var TestRunner;
+const SUPPRESS_LOGGING = false;
+class TestRunner {
+    constructor() {
+        const stl = this.stl;
+        const url = stl.url;
+        const suites = [
+            [
+                "url",
+                [
+                    new url().toString(),
+                    "https://"
+                ],
+            ],
+        ];
+        this.suites = this.casesToSuites(...suites);
+    }
+    run(suppressLogging = false) {
+        this.runAll(suppressLogging);
+    }
+    runAll(suppressLogging = false) {
+        for (const suite of this.suites)
+            suite.run(suppressLogging);
+    }
+    get stl() {
+        return TestRunner.stl;
+    }
+    casesToSuites(...suiteInputs) {
+        return suiteInputs.map(suiteInputs => new TestRunner.Suite(...suiteInputs));
+    }
+}
 (function (TestRunner) {
-    const stl = importModule("stl/STL");
-    class TestSuite {
-        constructor(id, cases, ...moreCases) {
+    TestRunner.stl = importModule("stl/STL");
+    class Suite {
+        constructor(id, suiteOrCaseOrCases, ...moreCases) {
             this.id = id;
-            this.cases = this.parseInput(cases, ...moreCases);
+            this.cases = this.parseInput(suiteOrCaseOrCases, ...moreCases);
         }
         run(suppressLogging = false) {
             if (!suppressLogging)
@@ -29,7 +58,7 @@ var TestRunner;
         parseInput(cases, ...moreCases) {
             const joined = [];
             if (cases === undefined) { }
-            else if (cases instanceof TestSuite)
+            else if (cases instanceof Suite)
                 joined.push(...cases.cases);
             else
                 joined
@@ -53,5 +82,7 @@ var TestRunner;
             }
         }
     }
+    TestRunner.Suite = Suite;
 })(TestRunner || (TestRunner = {}));
+new TestRunner().run(SUPPRESS_LOGGING);
 //# sourceMappingURL=_TestRunner.js.map
