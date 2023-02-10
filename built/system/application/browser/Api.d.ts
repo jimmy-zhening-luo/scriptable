@@ -50,9 +50,9 @@ declare class Api {
     set timeout(timeoutSeconds: number);
 }
 declare namespace Api {
-    const Method: typeof ApiRequest.Method;
     const _Url: typeof Url;
     const _ApiRequest: typeof ApiRequest;
     const _ApiResponse: typeof ApiResponse;
+    const Method: typeof ApiRequest.Method;
 }
 //# sourceMappingURL=Api.d.ts.map

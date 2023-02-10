@@ -136,10 +136,10 @@ class Api {
     }
 }
 (function (Api) {
-    Api.Method = ApiRequest.Method;
     Api._Url = importModule("Url");
     Api._ApiRequest = importModule("apihandlers/ApiRequest");
     Api._ApiResponse = importModule("apihandlers/ApiResponse");
+    Api.Method = Api._ApiRequest.Method;
 })(Api || (Api = {}));
 module.exports = Api;
 //# sourceMappingURL=Api.js.map
