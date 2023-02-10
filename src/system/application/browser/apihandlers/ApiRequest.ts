@@ -54,14 +54,13 @@ class ApiRequest {
   request(): string {
     var response: string = "";
     const req: Request = new Request(this.url);
-    req.headers = this._headers.toStringObject();
-    req.body = this._body.toString();
+    req.headers = this.headersStringObject;
+    req.body = this.bodyString;
     req.method = this.method.toString();
     req.timeoutInterval = this._timeoutSeconds;
     req.loadString().then((_response) => {
       response = _response ?? "";
-    }
-    );
+    });
     return response;
   }
 
