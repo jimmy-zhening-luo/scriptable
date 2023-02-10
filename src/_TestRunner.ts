@@ -39,7 +39,7 @@ class TestRunner {
       suite.run(suppressLogging);
   }
   
-  private stl(): typeof STL {
+  private get stl(): typeof STL {
     return TestRunner.stl;
   }
   
