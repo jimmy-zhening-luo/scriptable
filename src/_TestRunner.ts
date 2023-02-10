@@ -15,11 +15,25 @@ class TestRunner {
     let u: Url = new url();
     
     // TESTS GO HERE
-    const suites: any = [
+    const happy: any = [
       [
         "url",
         [(u = u).toString(), "https://"],
-        [],
+        [
+          (u = new Url(
+            "bongo",
+            "example.com",
+            500,
+            "a/b/c",
+            "x=1&y=2",
+            "#bingo"
+          )).toString(),
+          "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
+        ],
+        [
+          (u.port = 2111).toString,
+          "bongo://example.com:2111/a/b/c?x=1&y=2#bingo"
+        ]
       ],
     ];
     
@@ -43,7 +57,7 @@ class TestRunner {
     
     
     
-    this.suites = this.casesToSuites(...suites); 
+    this.suites = this.casesToSuites(...happy); 
   }
   
   run(
