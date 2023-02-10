@@ -18,7 +18,7 @@ class TestRunner {
     const suites: any = [
       [
         "url",
-        [u = u.toString(), "https://"],
+        [(u = u).toString(), "https://"],
         [],
       ],
     ];
