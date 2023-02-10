@@ -1,3 +1,5 @@
+class STL {}
+
 namespace STL {
   
   export const shortcut: typeof Shortcut = importModule("./system/Shortcut");
