@@ -2,7 +2,7 @@ class ApiRequest {
 
   url: Types.stringful;
   method: ApiRequest.Method;
-  private _headers: RequestHeaders;
+  private readonly _headers: RequestHeaders;
   private _body: RequestBody;
   private _timeoutSeconds: number = 30;
 
@@ -16,10 +16,7 @@ class ApiRequest {
         authType: string,
         authToken: string
       },
-    headers?:
-      | [string, Types.primitive]
-      | [string, Types.primitive][]
-      | { [key: string]: Types.primitive },
+    headers?: RequestHeaders.Input,
     body?:
       | string
       | RequestBody.RequestBodyInterface,
@@ -28,13 +25,28 @@ class ApiRequest {
     this.url = url;
     this.method = method;
     this._headers = authHeader === undefined ?
-      new ApiRequest._RequestHeaders(headers)
+      new ApiRequest._RequestHeaders(
+        headers
+      )
       : typeof authHeader === "string" ?
-        new ApiRequest._RequestHeaders(authHeader, headers)
+        new ApiRequest._RequestHeaders(
+          authHeader,
+          headers
+        )
         : Array.isArray(authHeader) ?
-          new ApiRequest._RequestHeaders(authHeader[0], authHeader[1], headers)
-          : new ApiRequest._RequestHeaders(authHeader.authType, authHeader.authToken, headers);
-    this._body = new ApiRequest._RequestBody(body);
+          new ApiRequest._RequestHeaders(
+            authHeader[0],
+            authHeader[1],
+            headers
+          )
+          : new ApiRequest._RequestHeaders(
+            authHeader.authType,
+            authHeader.authToken,
+            headers
+          );
+    this._body = new ApiRequest._RequestBody(
+      body
+    );
     if (timeoutSeconds !== undefined)
       this.timeout = timeoutSeconds;
   }
@@ -51,6 +63,88 @@ class ApiRequest {
     }
     );
     return response;
+  }
+
+  get auth(): typeof RequestHeaders.prototype.auth {
+    return this._headers.auth;
+  }
+
+  set auth(
+    authHeader: typeof this.auth
+  ) {
+    this._headers.auth = authHeader;
+  }
+
+  get keys(): typeof RequestHeaders.prototype.keys {
+    return this._headers.keys;
+  }
+
+  get headers(): typeof this.headersObject {
+    return this.headersObject;
+  }
+
+  get headersObject(): ReturnType<RequestHeaders["toObject"]> {
+    return this._headers.toObject();
+  }
+
+  get headersStringObject(): ReturnType<RequestHeaders["toStringObject"]> {
+    return this._headers.toStringObject();
+  }
+
+  get headersString(): ReturnType<RequestHeaders["toString"]> {
+    return this._headers.toString();
+  }
+
+  setAuthTypeAndToken(
+    ...auth: Parameters<RequestHeaders["setAuthTypeAndToken"]>
+  ) {
+    this._headers.setAuthTypeAndToken(...auth);
+  }
+
+  deleteAuth() {
+    this._headers.deleteAuth();
+  }
+
+  set(
+    ...header: Parameters<RequestHeaders["set"]>
+  ) {
+    this._headers.set(...header);
+  }
+
+  delete(
+    ...header: Parameters<RequestHeaders["delete"]>
+  ) {
+    this._headers.delete(...header);
+  }
+
+  add(
+    ...headers: Parameters<RequestHeaders["add"]>
+  )
+    : this {
+    this._headers.add(...headers);
+    return this;
+  }
+
+  get body(): typeof this.bodyObject {
+    return this.bodyObject;
+  }
+
+  set body(
+    body: string | RequestBody.RequestBodyInterface
+  ) {
+    this._body = new ApiRequest._RequestBody(body);
+  }
+
+  get bodyObject(): ReturnType<RequestBody["toObject"]> {
+    return this._body.toObject();
+  }
+
+  get bodyStringObject(): ReturnType<RequestBody["toStringObject"]> {
+    return this._body.toStringObject();
+  }
+
+  get bodyString(): ReturnType<RequestBody["toString"]> {
+    return this._body.toString();
   }
 
   get timeout(): number {

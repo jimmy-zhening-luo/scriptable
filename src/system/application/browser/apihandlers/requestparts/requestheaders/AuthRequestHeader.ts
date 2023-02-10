@@ -29,7 +29,7 @@ class AuthRequestHeader extends a_RequestHeader<string> {
   }
 
   set auth(
-    authString: string
+    authString: typeof this.auth
   ) {
     this.value = authString;
   }

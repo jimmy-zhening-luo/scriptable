@@ -47,42 +47,33 @@ class RequestHeaders {
     }
   }
 
-  get auth(): string {
+  get auth(): typeof AuthRequestHeader.prototype.auth {
     return "Authorization" in this._headers ?
       this._headers.Authorization.auth
       : "";
   }
 
-  set auth(authString: string) {
+  set auth(
+    authString: typeof this.auth
+  ) {
     authString === "" ?
       delete this._headers.Authorization
       : this._headers.Authorization = new RequestHeaders._AuthRequestHeader(authString);
   }
 
-  get keys(): string[] {
+  get keys(): Types.stringful[] {
     return Object.keys(this._headers);
   }
 
-  get headers(): { [key: string]: Types.primitive } {
+  get headers(): Record<Types.stringful, Types.primitive> {
     return this.keys
       .reduce(
         (obj, key) => {
           obj[key] = this._headers[key].value;
           return obj;
         },
-        {} as { [key: string]: Types.primitive }
+        {} as typeof this.headers
       );
-  }
-
-  get stringHeaders(): { [key: string]: string } {
-    return this.keys
-      .reduce(
-        (obj, key) => {
-          obj[key] = this._headers[key].stringValue;
-          return obj;
-        },
-        {} as { [key: string]: string }
-    );
   }
 
   setAuthTypeAndToken(
@@ -98,15 +89,18 @@ class RequestHeaders {
     return this;
   }
 
-  set(key: string, value: Types.primitive): this {
-    if (key !== "")
-      this._headers[key] = new RequestHeaders._GenericRequestHeader(key, value);
+  set(
+    key: Types.stringful,
+    value: Types.primitive
+  ): this {
+    this._headers[key] = new RequestHeaders._GenericRequestHeader(key, value);
     return this;
   }
 
-  delete(key: string): this {
-    if (key !== "")
-      delete this._headers[key];
+  delete(
+    key: Types.stringful
+  ): this {
+    delete this._headers[key];
     return this;
   }
 
@@ -136,12 +130,19 @@ class RequestHeaders {
     return this;
   }
 
-  toObject(): { [key: string]: Types.primitive } {
+  toObject(): typeof this.headers {
     return this.headers;
   }
 
-  toStringObject(): { [key: string]: string } {
-    return this.stringHeaders;
+  toStringObject(): Record<Types.stringful, string> {
+    return this.keys
+      .reduce(
+        (obj, key) => {
+          obj[key] = this._headers[key].stringValue;
+          return obj;
+        },
+        {} as ReturnType<RequestHeaders["toStringObject"]>
+    );
   }
 
   toString(): string {
@@ -161,9 +162,9 @@ class RequestHeaders {
 namespace RequestHeaders {
 
   export type Input =
-    | [string, Types.primitive]
-    | [string, Types.primitive][]
-    | { [key: string]: Types.primitive };
+    | [Types.stringful, Types.primitive]
+    | [Types.stringful, Types.primitive][]
+    | Record<Types.stringful, Types.primitive>;
 
   export const _AuthRequestHeader: typeof AuthRequestHeader = importModule("requestheaders/AuthRequestHeader");
 

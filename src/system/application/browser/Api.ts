@@ -52,14 +52,6 @@ class Api {
     return ""
   }
 
-  get method(): ApiRequest.Method {
-    return this._request.method;
-  }
-
-  set method(method: ApiRequest.Method) {
-    this._request.method = method;
-  }
-
   get url(): string {
     return this._request.url;
   }
@@ -134,6 +126,14 @@ class Api {
 
   set fragment(scheme: string | Scheme) {
     this._url.scheme = scheme;
+  }
+
+  get method(): ApiRequest.Method {
+    return this._request.method;
+  }
+
+  set method(method: ApiRequest.Method) {
+    this._request.method = method;
   }
 
 }

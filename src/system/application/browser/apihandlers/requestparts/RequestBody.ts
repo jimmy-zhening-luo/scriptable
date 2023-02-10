@@ -3,11 +3,11 @@ class RequestBody {
     | string
     | RequestBody.RequestBodyInterface;
 
-  constructor(body?:
-    | string
-    | RequestBody.RequestBodyInterface)
+  constructor(
+    body?: typeof RequestBody.prototype._body
+  )
   {
-    this._body = body || "";
+    this._body = body ?? "";
   }
 
   toObject(): RequestBody.RequestBodyInterface {

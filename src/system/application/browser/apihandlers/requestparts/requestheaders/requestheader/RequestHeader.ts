@@ -31,17 +31,13 @@ abstract class RequestHeader<T extends Types.primitive> {
     ];
   }
 
-  get keyValueObject(): {
-    [key: Types.stringful]: T
-  } {
+  get keyValueObject(): Record<Types.stringful, T> {
       return {
         [this.key]: this.value
     };
   }
 
-  get keyValueStringObject(): {
-    [key: Types.stringful]: string
-  } {
+  get keyValueStringObject(): Record<Types.stringful, string> {
     return {
       [this.key]: this.stringValue
     };
@@ -51,19 +47,15 @@ abstract class RequestHeader<T extends Types.primitive> {
     return this.keyValueTuple.join(": ");
   }
 
-  toTuple(): [Types.stringful, T] {
+  toTuple(): typeof this.keyValueTuple {
     return this.keyValueTuple;
   }
 
-  toObject(): {
-    [key: Types.stringful]: T
-  } {
+  toObject(): typeof this.keyValueObject {
     return this.keyValueObject;
   }
 
-  toStringObject(): {
-    [key: Types.stringful]: string
-  } {
+  toStringObject(): typeof this.keyValueStringObject {
     return this.keyValueStringObject;
   }
 
