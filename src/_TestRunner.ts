@@ -46,7 +46,7 @@ class TestRunner {
   private casesToSuites(
     ...suiteInputs: Array<[
       string,
-      ...TestRunner.Case
+      ...TestRunner.Case[]
     ]>
   ): TestRunner.Suites {
     return suiteInputs.map(
@@ -190,4 +190,4 @@ namespace TestRunner {
   }
 }
 
-new TestRunner().run(SUPRESS_LOGGING);
+new TestRunner().run(SUPPRESS_LOGGING);
