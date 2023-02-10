@@ -1,0 +1,1 @@
+{"version":3,"file":"Scheme.d.ts","sourceRoot":"","sources":["../../../../../../src/system/application/browser/urlcomposites/urlparts/Scheme.ts"],"names":[],"mappings":"AAAA,QAAA,MAAM,UAAU,EAAE,OAAO,OAAyC,CAAC;AAEnE,cAAM,MAAO,SAAQ,UAAU;IAC7B,SAAS,CAAC,KAAK,CAAC,MAAM,EAAE,MAAM,GAAG,IAAI,GAAG,MAAM;CAW/C;AAED,kBAAU,MAAM,CAAC;IACR,MAAM,YAAY,EAAE,OAAO,WAAoD,CAAC;CACxF"}
