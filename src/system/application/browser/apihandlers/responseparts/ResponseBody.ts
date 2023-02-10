@@ -1,5 +1,5 @@
 class ResponseBody {
-  response;
+  response: any;
 
   constructor(
     response?:
@@ -11,16 +11,10 @@ class ResponseBody {
   }
 
   parseResponse(
-    response?:
-      | null
-      | string
-      | any
+    response?: any
   ): any {
-    return null;
+    return response;
   }
-}
-
-namespace ResponseBody {
 }
 
 module.exports = ResponseBody;
