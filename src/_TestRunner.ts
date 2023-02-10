@@ -49,7 +49,7 @@ class TestRunner {
       .map(
         suite => suite.length === 0 ?
           null
-          : new TestRunner.Suite(...suiteInput)
+          : new TestRunner.Suite(...suite)
       ).filter(
         suite => suite !== null
       );
