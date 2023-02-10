@@ -9,14 +9,21 @@ class TestRunner {
         // TEST VARS GO HERE
         let u = new url();
         // TESTS GO HERE
-        const suites = [
+        const happy = [
             [
                 "url",
                 [(u = u).toString(), "https://"],
-                [],
+                [
+                    (u = new Url("bongo", "example.com", 500, "a/b/c", "x=1&y=2", "#bingo")).toString(),
+                    "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
+                ],
+                [
+                    (u.port = 2111).toString,
+                    "bongo://example.com:2111/a/b/c?x=1&y=2#bingo"
+                ]
             ],
         ];
-        this.suites = this.casesToSuites(...suites);
+        this.suites = this.casesToSuites(...happy);
     }
     run(suppressLogging = false) {
         this.runAll(suppressLogging);
