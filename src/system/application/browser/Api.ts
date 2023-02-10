@@ -37,7 +37,7 @@ class Api {
       timeoutSeconds
     );
   }
-  
+
   request(): any {
     return ""
   }
@@ -45,7 +45,7 @@ class Api {
   requestObject(): any {
     return ""
   }
-  
+
   requestStringObject(): any {
     return ""
   }
@@ -130,9 +130,6 @@ class Api {
     this._url.scheme = scheme;
   }
 
-  toString(): string {
-    return this.httpMethod.toString();
-  }
 }
 
 namespace Api {
@@ -142,13 +139,13 @@ namespace Api {
     POST,
     PUT
   }
-  
+
   export const _Url: typeof Url = importModule("Url");
-  
+
   export const _ApiRequest: typeof ApiRequest = importModule("apihandlers/ApiRequest");
-  
+
   export const _ApiResponse: typeof ApiResponse = importModule("apihandlers/ApiResponse");
-  
+
 }
 
 module.exports = Api;
