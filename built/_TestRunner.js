@@ -4,15 +4,12 @@
 const SUPPRESS_LOGGING = false;
 class TestRunner {
     constructor() {
-        const stl = this.stl;
-        const url = stl.url;
+        const url = this.stl.url;
         const suites = [
             [
                 "url",
-                [
-                    new url().toString(),
-                    "https://"
-                ],
+                [new url().toString(), "https://"],
+                [],
             ],
         ];
         this.suites = this.casesToSuites(...suites);
@@ -28,7 +25,10 @@ class TestRunner {
         return TestRunner.stl;
     }
     casesToSuites(...suiteInputs) {
-        return suiteInputs.map(suiteInputs => new TestRunner.Suite(...suiteInputs));
+        return suiteInputs
+            .map(suite => suite.length === 0 ?
+            null
+            : new TestRunner.Suite(...suite)).filter(suite => suite !== null);
     }
 }
 (function (TestRunner) {

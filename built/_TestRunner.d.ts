@@ -17,10 +17,10 @@ declare namespace TestRunner {
     class Suite {
         readonly id: string;
         readonly cases: Cases;
-        constructor(id: string, ...cases: Array<Case | Cases>);
-        constructor(id: string, suite?: Suite, ...moreCases: Array<Case | Cases>);
+        constructor(id: string, ...cases: (Case | Cases)[]);
+        constructor(id: string, suite?: Suite, ...moreCases: (Case | Cases)[]);
         run(suppressLogging?: boolean): boolean;
-        addCase(cases?: Suite | Case | Cases, ...moreCases: Array<Case | Cases>): void;
+        addCase(cases?: Suite | Case | Cases, ...moreCases: (Case | Cases)[]): void;
         private parseInput;
     }
 }
