@@ -1,6 +1,6 @@
 class Api {
     constructor(url, method = Api.Method.GET, authHeader, headers, body, timeoutSeconds) {
-        this._url = new Url(url);
+        this._url = new Api._Url(url);
         this._request = new Api._ApiRequest(new Api._Url(url).toString(), method, authHeader, headers, body, timeoutSeconds);
     }
     handleRequest() {
