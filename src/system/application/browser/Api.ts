@@ -1,7 +1,6 @@
 class Api {
 
   private _url: Url;
-  method: Api.Method;
   private _request: ApiRequest;
 
   constructor(
@@ -27,10 +26,9 @@ class Api {
     timeoutSeconds?: number
   ) {
     this._url = new Url(url);
-    this.method = method;
     this._request = new Api._ApiRequest(
       this._url.toString(),
-      this.method.toString(),
+      method.toString(),
       authHeader,
       headers,
       body,
@@ -54,8 +52,16 @@ class Api {
     return ""
   }
 
+  get method(): Api.Method {
+    return Api.Method[this._request.method as keyof typeof Api.Method];
+  }
+
+  set method(method: Api.Method = Api.Method.GET) {
+    this._request.method = method.toString();
+  }
+
   get url(): string {
-    return this._url.toString();
+    return this._request.url;
   }
 
   set url(url:
@@ -133,6 +139,10 @@ class Api {
 }
 
 namespace Api {
+
+  export type UrlInstance = InstanceType<typeof ApiRequest>;
+
+  export type bong = UrlInstance[]
 
   export enum Method {
     GET,

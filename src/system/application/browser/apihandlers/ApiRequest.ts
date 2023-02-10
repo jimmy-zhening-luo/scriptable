@@ -53,11 +53,11 @@ class ApiRequest {
     return response;
   }
 
-  get method(): string {
+  get method(): Types.stringful {
     return this._method;
   }
 
-  set method(method: string) {
+  set method(method: Types.stringful) {
     this._method = method.toUpperCase();
   }
 
