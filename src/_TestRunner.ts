@@ -3,19 +3,18 @@
 // icon-color: deep-purple; icon-glyph: bug;
 
 namespace TestRunner {
+  const stl: typeof STL = importModule("stl/STL");
   
-  const stl: STL = importModule("stl/STL");
+  const suites: TestSuites = [];
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  // Url test cases
+  const url: typeof Url = stl.url;
+  suites.push(
+    new TestSuite(
+      "url",
+      [new Url().toString(), "https://"]
+    )
+  );
   
   
   
@@ -27,6 +26,7 @@ namespace TestRunner {
   type Result = any;
   type TestCase = [Evaluate, Result];
   type TestCases = TestCase[];
+  type TestSuites = TestSuite[];
   
   class TestSuite {
     readonly id: string;
@@ -149,3 +149,6 @@ namespace TestRunner {
     }
   }
 }
+
+for (const suite of suites)
+  suite.run();
