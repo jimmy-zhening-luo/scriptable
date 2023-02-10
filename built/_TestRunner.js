@@ -3,8 +3,7 @@
 // icon-color: deep-purple; icon-glyph: bug;
 var TestRunner;
 (function (TestRunner) {
-    // TestRunner imports
-    const shortcut = importModule("system/Shortcut");
+    const stl = importModule("stl/STL");
     class TestSuite {
         constructor(id, cases, ...moreCases) {
             this.id = id;

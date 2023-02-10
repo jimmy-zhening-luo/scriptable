@@ -1,3 +1,5 @@
+declare class STL {
+}
 declare namespace STL {
     const shortcut: typeof Shortcut;
     const rofile: typeof ReadOnlyFile;

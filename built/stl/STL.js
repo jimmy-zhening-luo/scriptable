@@ -1,4 +1,5 @@
-var STL;
+class STL {
+}
 (function (STL) {
     STL.shortcut = importModule("./system/Shortcut");
     STL.rofile = importModule("./system/application/appdata/filesystem/ReadOnlyFile");
