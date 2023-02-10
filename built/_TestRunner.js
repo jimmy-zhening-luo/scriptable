@@ -4,11 +4,15 @@
 const SUPPRESS_LOGGING = false;
 class TestRunner {
     constructor() {
+        // CLASS IMPORTS GO HERE
         const url = this.stl.url;
+        // TEST VARS GO HERE
+        let u = new url();
+        // TESTS GO HERE
         const suites = [
             [
                 "url",
-                [new url().toString(), "https://"],
+                [u.toString(), "https://"],
                 [],
             ],
         ];
