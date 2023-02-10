@@ -234,13 +234,13 @@ class Api {
 
 namespace Api {
 
-  export const Method: typeof ApiRequest.Method = ApiRequest.Method;
-
   export const _Url: typeof Url = importModule("Url");
 
   export const _ApiRequest: typeof ApiRequest = importModule("apihandlers/ApiRequest");
 
   export const _ApiResponse: typeof ApiResponse = importModule("apihandlers/ApiResponse");
+  
+  export const Method: typeof ApiRequest.Method = _ApiRequest.Method;
 
 }
 
