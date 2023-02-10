@@ -1,24 +1,20 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-purple; icon-glyph: bug;
-
 const SUPPRESS_LOGGING: boolean = false;
-
 
 class TestRunner {
   
   private readonly suites: TestRunner.Suites;
   
   constructor() {
-    const stl: typeof STL = this.stl;
-    const url: typeof Url = stl.url;
-    
-    const suites: Parameters<TestRunner["casesToSuites"]> = [
+    const url: typeof Url = this.stl.url;
+    const suites: any = [
       [
         "url",
+        [new url().toString(), "https://"],
         [
-          new url().toString(),
-          "https://"
+        
         ],
       ],
     ];
@@ -44,16 +40,19 @@ class TestRunner {
   }
   
   private casesToSuites(
-    ...suiteInputs: Array<[
+    ...suiteInputs: [
       string,
-      ...TestRunner.Case[]
-    ]>
+      ...([], TestRunner.Case)[]
+    ][]
   ): TestRunner.Suites {
-    return suiteInputs.map(
-      suiteInputs => new TestRunner.Suite(
-        ...suiteInputs
-      )
-    );
+    return suiteInputs
+      .map(
+        suite => suite.length === 0 ?
+          null
+          : new TestRunner.Suite(...suiteInput)
+      ).filter(
+        suite => suite !== null
+      );
   }
 }
 
@@ -76,13 +75,13 @@ namespace TestRunner {
     constructor(
       id: string,
       ...cases:
-        Array<Case | Cases>
+        (Case|Cases)[]
     );
     constructor(
       id: string,
       suite?: Suite,
       ...moreCases:
-        Array<Case | Cases>
+        (Case|Cases)[]
     );
     
     constructor(
@@ -92,7 +91,7 @@ namespace TestRunner {
         | Case
         | Cases,
       ...moreCases:
-        Array<Case | Cases>
+        (Case|Cases)[]
     ) {
       this.id = id;
       this.cases = this.parseInput(
@@ -126,7 +125,7 @@ namespace TestRunner {
         | Case
         | Cases,
       ...moreCases:
-        Array<Case | Cases>
+        (Case|Cases)[]
     ): void {
       this.cases.push(
         ...this.parseInput(
@@ -142,7 +141,7 @@ namespace TestRunner {
         | Case
         | Cases,
       ...moreCases:
-        Array<Case | Cases>
+        (Case|Cases)[]
     ): Cases {
       const joined: Cases = [];
       if (cases === undefined) {}
@@ -164,7 +163,7 @@ namespace TestRunner {
       return joined;
       
       function arrCaseCasesToCases(
-        moreCases: Array<Case | Cases>
+        moreCases: (Case|Cases)[]
       ): Cases {
         const cases: Cases = [];
         moreCases.forEach((caseOrCases) => {
