@@ -218,7 +218,7 @@ class Api {
     return this._request.bodyStringObject;
   }
 
-  get bodyString(): typeof ApiRequest.prototype.bodyString {
+  get bodyString(): string {
     return this._request.bodyString;
   }
 
