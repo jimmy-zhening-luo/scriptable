@@ -1,1 +1,0 @@
-{"version":3,"file":"Bookmark.d.ts","sourceRoot":"","sources":["../../../../../../../src/system/application/appdata/filesystem/file/bookmark/Bookmark.ts"],"names":[],"mappings":"AAAA,cAAM,QAAQ;IACZ,QAAQ,CAAC,QAAQ,EAAE,MAAM,CAAC;IAC1B,QAAQ,CAAC,IAAI,EAAE,MAAM,CAAC;gBAEpB,QAAQ,GAAE,MAAiB;IAS7B,QAAQ,IAAI,MAAM;CAGnB"}
