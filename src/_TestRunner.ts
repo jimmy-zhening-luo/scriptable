@@ -35,7 +35,7 @@ class TestRunner {
   runAll(
     suppressLogging: boolean = false
   ): void {
-    for (const suite in this.suites)
+    for (const suite of this.suites)
       suite.run(suppressLogging);
   }
   
@@ -87,7 +87,7 @@ namespace TestRunner {
     
     constructor(
       id: string,
-      suiteOrCases?:
+      suiteOrCaseOrCases?:
         Suite
         | Case
         | Cases,
@@ -96,7 +96,7 @@ namespace TestRunner {
     ) {
       this.id = id;
       this.cases = this.parseInput(
-        cases,
+        suiteOrCaseOrCases,
         ...moreCases
       );
     }
