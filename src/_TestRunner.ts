@@ -4,6 +4,7 @@
 
 namespace TestRunner {
   
+  const stl: STL = importModule("stl/STL");
   
   
   
@@ -15,8 +16,6 @@ namespace TestRunner {
   
   
   
-  // TestRunner imports
-  const shortcut: typeof Shortcut = importModule("system/Shortcut");
   
   
   
