@@ -3,7 +3,7 @@
   "include": [
     "**/*",
     "../common/**/*",
-    "../appdata/filesystem/**/*",
+    "../files/**/*",
     "../browser/**/*"
   ],
   "references": [
@@ -14,7 +14,7 @@
       "path": "../common/tsconfig.json"
     },
     {
-      "path": "../appdata/filesystem/tsconfig.json"
+      "path": "../files/tsconfig.json"
     },
     {
       "path": "../browser/tsconfig.json"

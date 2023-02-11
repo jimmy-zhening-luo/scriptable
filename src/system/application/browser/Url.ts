@@ -12,7 +12,12 @@ class Url {
     host?: string | Host,
     port?: string | number | Port,
     path?: string | Path,
-    query?: string | Query,
+    query?:
+      | string
+      | Query
+      | Record<string, string>
+      | [string, string]
+      | [string, string][],
     fragment?: string | Fragment
   );
 
@@ -25,7 +30,12 @@ class Url {
     host?: string | Host,
     port?: string | number | Port,
     path?: string | Path,
-    query?: string | Query,
+    query?:
+      | string
+      | Query
+      | Record<string, string>
+      | [string, string]
+      | [string, string][],
     fragment?: string | Fragment
   ) {
     if (head === undefined) { }
@@ -163,6 +173,9 @@ class Url {
       | null | undefined
       | string
       | Query
+      | Record<string, string>
+      | [string, string]
+      | [string, string][]
     )
   ) {
     this.#query = new Url._Query(query);
@@ -348,7 +361,7 @@ namespace Url {
     fragment?: string | Fragment
   };
 
-  export const _File: typeof File = importModule("./system/application/appdata/filesystem/file/File");
+  export const _File: typeof File = importModule("./system/application/files/file/File");
 
   export const _Scheme: typeof Scheme = importModule("urlcomposites/urlparts/Scheme");
   export const _Host: typeof Host = importModule("urlcomposites/urlparts/Host");

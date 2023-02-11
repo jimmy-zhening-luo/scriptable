@@ -7,7 +7,7 @@ class Storage {
     programName: string,
     subpath: string = "default.txt"
   ) {
-    const _File: typeof File = importModule("filesystem/file/File");
+    const _File: typeof File = importModule("files/file/File");
     this.file = new _File(
       this.storageDirFile,
       _File.joinPaths(
@@ -21,8 +21,8 @@ class Storage {
   }
 
   protected get storageDirFile(): File {
-    const _File: typeof File = importModule("filesystem/file/File");
-    const _Bookmark: typeof Bookmark = importModule("filesystem/file/bookmark/Bookmark");
+    const _File: typeof File = importModule("files/file/File");
+    const _Bookmark: typeof Bookmark = importModule("files/file/bookmark/Bookmark");
     const _Installer: typeof Installer = importModule("./!boot/Boot");
     return new _File(new _Bookmark(_Installer.runtimeRootBookmarkName), this.storageDirSubpathFromRoot);
   }

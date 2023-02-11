@@ -6,8 +6,8 @@ class Secret {
   constructor(
     subpath: string
   ) {
-    const _ReadOnlyFile: typeof ReadOnlyFile = importModule("filesystem/ReadOnlyFile");
-    const _Bookmark: typeof Bookmark = importModule("filesystem/file/bookmark/Bookmark");
+    const _ReadOnlyFile: typeof ReadOnlyFile = importModule("files/ReadOnlyFile");
+    const _Bookmark: typeof Bookmark = importModule("files/file/bookmark/Bookmark");
     this.file = new _ReadOnlyFile(
       new _Bookmark(this.externalSecretsBookmarkName),
       subpath

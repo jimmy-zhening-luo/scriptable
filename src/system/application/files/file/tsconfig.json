@@ -5,7 +5,7 @@
   ],
   "references": [
     {
-      "path": "file/tsconfig.json"
+      "path": "bookmark/tsconfig.json"
     }
   ],
   "compilerOptions": {

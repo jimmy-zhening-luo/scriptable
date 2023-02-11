@@ -1,6 +1,32 @@
 const qu_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Query extends qu_UrlPart {
+  
+  constructor(
+    query?:
+      | null
+      | string
+      | Query
+      | Record<string, string>
+      | [string, string]
+      | [string, string][]
+  ) {
+    super(
+      query === null
+      || query === undefined
+      || typeof query === "string"
+      || query.ClassDecorator_UrlPart === "UrlPart" ?
+        query
+        : Array.isArray(query) ?
+          Array.isArray(query[0]) ?
+            query.join("&").join("=")
+            : query.join("=")
+          : Array.from(
+            Object.entries(query)
+          ).join("&").join("=")
+    );
+  }
+  
   protected parse(query: string): null | string {
     query = query.trim();
     query = query.startsWith("?") ? query.slice(1) : query;

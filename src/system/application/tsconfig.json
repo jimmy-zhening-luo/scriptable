@@ -9,7 +9,7 @@
       "path": "../../!boot/tsconfig.json"
     },
     {
-      "path": "appdata/tsconfig.json"
+      "path": "files/tsconfig.json"
     },
     {
       "path": "browser/tsconfig.json"

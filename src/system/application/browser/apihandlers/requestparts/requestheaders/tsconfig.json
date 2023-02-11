@@ -2,14 +2,14 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../../../../common/primitives/**/*"
+    "../../../../common/**/*"
   ],
   "references": [
     {
       "path": "requestheader/tsconfig.json"
     },
     {
-      "path": "../../../../common/primitives/tsconfig.json"
+      "path": "../../../../common/tsconfig.json"
     }
   ],
   "compilerOptions": {

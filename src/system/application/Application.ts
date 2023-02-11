@@ -20,7 +20,7 @@ abstract class Application {
   }
 
   get config(): Config {
-    const _Config: typeof Config = importModule("appdata/Config");
+    const _Config: typeof Config = importModule("Config");
     return new _Config(
       this.configSubdirectoryPath,
       this.constructor.name
@@ -30,7 +30,7 @@ abstract class Application {
   protected storage(
     subpath?: string | undefined
   ): Storage {
-    const _Storage: typeof Storage = importModule("appdata/Storage");
+    const _Storage: typeof Storage = importModule("Storage");
     return new _Storage(
       this.storageSubdirectoryPath,
       this.constructor.name,
