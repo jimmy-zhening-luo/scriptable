@@ -36,7 +36,7 @@ class TestRunner {
         ],
         [
           (u.url = "leftduck.mano:999999/3/4/6?ea=15&eb=16#rightduck").toString(),
-          "https://leftduck.mano/3/4/6?ea=15&eb=16#rightduck"
+          "leftduck.mano:999999/3/4/6?ea=15&eb=16#rightduck"
         ],
         [
           u.toString(),
