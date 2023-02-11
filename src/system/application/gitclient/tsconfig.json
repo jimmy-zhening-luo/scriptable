@@ -3,7 +3,8 @@
   "include": [
     "**/*",
     "../common/**/*",
-    "../appdata/filesystem/**/*"
+    "../appdata/filesystem/**/*",
+    "../browser/**/*"
   ],
   "references": [
     {
@@ -14,6 +15,9 @@
     },
     {
       "path": "../appdata/filesystem/tsconfig.json"
+    },
+    {
+      "path": "../browser/tsconfig.json"
     }
   ],
   "compilerOptions": {
