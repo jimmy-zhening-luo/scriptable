@@ -75,10 +75,10 @@ namespace Repository {
   >;
 
   export interface Actions extends ActionHandlerRecord {
-    [Action.Checkout]: Checkout;
-    [Action.Pull]: Pull;
-    [Action.Commit]: Commit;
-    [Action.Push]: Push;
+    [Action.Checkout]: CheckoutHandler;
+    [Action.Pull]: PullHandler;
+    [Action.Commit]: CommitHandler;
+    [Action.Push]: PushHandler;
   }
 
   export abstract class ActionHandler {
@@ -95,9 +95,15 @@ namespace Repository {
       this.query = query;
       this.params = params;
     }
+
+    createActionUrl(
+      url: Url
+    ): Url {
+      return url;
+    }
   }
 
-  export class Checkout extends ActionHandler {
+  export class CheckoutHandler extends ActionHandler {
     constructor(
       path: string,
       query: string,
@@ -109,7 +115,7 @@ namespace Repository {
     }
   }
 
-  export class Pull extends ActionHandler {
+  export class PullHandler extends ActionHandler {
     constructor(
       path: string,
       query: string,
@@ -119,7 +125,7 @@ namespace Repository {
     }
   }
 
-  export class Commit extends ActionHandler {
+  export class CommitHandler extends ActionHandler {
     constructor(
       path: string,
       query: string,
@@ -132,7 +138,7 @@ namespace Repository {
     }
   }
 
-  export class Push extends ActionHandler {
+  export class PushHandler extends ActionHandler {
     constructor(
       path: string,
       query: string,
@@ -150,20 +156,10 @@ namespace Repository {
     Limit
   }
 
-  export class ParamConfig {
-    param: Param;
-    urlpart: UrlPart;
-    prepend: string;
-
-    constructor(
-      param: Param,
-      urlpart: UrlPart,
-      prepend?: string
-    ) {
-      this.param = param;
-      this.urlpart = urlpart;
-      this.prepend = prepend ?? "";
-    }
+  export interface ParamConfig {
+    param: Param,
+    urlpart: UrlPart,
+    prepend: string
   }
 
   export enum UrlPart {
