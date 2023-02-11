@@ -7,7 +7,7 @@ class ValidHostIPv6Repeater extends hips_ValidUrlRepeater {
       {
         maxLength: 4
       },
-      hips_ValidUrlRepeater._UrlChar.hex
+      hips_ValidUrlRepeater.UrlChar.hex
     );
   }
 }

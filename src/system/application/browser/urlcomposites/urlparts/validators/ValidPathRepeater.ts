@@ -5,7 +5,7 @@ class ValidPathRepeater extends pa_ValidUrlRepeater {
     super(
       pathRepeater,
       {},
-      pa_ValidUrlRepeater._UrlChar.pchar
+      pa_ValidUrlRepeater.UrlChar.pchar
     );
   }
 

@@ -1,6 +1,6 @@
-const ur_ValidString: typeof ValidString = importModule("./system/application/common/primitives/strings/ValidString");
+const r_ValidUrlPart: typeof ValidUrlPart = importModule("ValidUrlPart");
 
-class ValidUrlRepeater extends ur_ValidString {
+class ValidUrlRepeater extends r_ValidUrlPart {
   constructor(
     part: string,
     {
@@ -14,16 +14,11 @@ class ValidUrlRepeater extends ur_ValidString {
       part,
       {},
       {
-        minLength: 1,
         maxLength: maxLength
       },
       ...allowedChars
     );
   }
-}
-
-namespace ValidUrlRepeater {
-  export const _UrlChar: typeof UrlChar = importModule("./system/application/common/primitives/strings/charstrings/nrepeatcharstring/boundedrepeatcharstring/repeatcharstring/charstring/chars/UrlChar");
 }
 
 module.exports = ValidUrlRepeater;

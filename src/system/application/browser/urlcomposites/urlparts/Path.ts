@@ -2,11 +2,7 @@ const pa_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Path extends pa_UrlPart {
   protected parse(path: string): null | string {
-    path = path.trim();
-    while (path.startsWith("/"))
-      path = path.slice(1);
-    while (path.endsWith("/"))
-      path = path.slice(0, -1);
+    path = Path.Paths.trimPath(path);
     return path === "" ?
       null
       : path

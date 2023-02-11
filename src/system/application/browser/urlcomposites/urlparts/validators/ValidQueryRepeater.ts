@@ -5,9 +5,9 @@ class ValidQueryRepeater extends qu_ValidUrlRepeater {
     super(
       queryRepeater,
       {},
-      qu_ValidUrlRepeater._UrlChar.pchar,
-      qu_ValidUrlRepeater._UrlChar.slash,
-      qu_ValidUrlRepeater._UrlChar.question
+      qu_ValidUrlRepeater.UrlChar.pchar,
+      qu_ValidUrlRepeater.UrlChar.slash,
+      qu_ValidUrlRepeater.UrlChar.question
     );
   }
 }

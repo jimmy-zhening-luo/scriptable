@@ -40,6 +40,14 @@ abstract class UrlPart {
       && instance.nominalType === "UrlPart"
     );
   }
+
+  get Paths(): typeof Paths {
+    return UrlPart.Paths;
+  }
+
+  static get Paths(): typeof Paths {
+    return importModule("./system/application/common/paths/Paths")
+  }
 }
 
 module.exports = UrlPart;

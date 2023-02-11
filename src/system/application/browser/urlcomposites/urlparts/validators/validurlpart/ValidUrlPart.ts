@@ -34,10 +34,14 @@ class ValidUrlPart extends up_ValidString {
       ...allowedChars
     );
   }
-}
 
-namespace ValidUrlPart {
-  export const _UrlChar: typeof UrlChar = importModule("./system/application/common/primitives/strings/charstrings/nrepeatcharstring/boundedrepeatcharstring/repeatcharstring/charstring/chars/UrlChar");
+  get UrlChar(): typeof UrlChar {
+    return ValidUrlPart.UrlChar;
+  }
+
+  static get UrlChar(): typeof UrlChar {
+    return importModule("./system/application/common/primitives/strings/charstrings/nrepeatcharstring/boundedrepeatcharstring/repeatcharstring/charstring/chars/UrlChar");
+  }
 }
 
 module.exports = ValidUrlPart;

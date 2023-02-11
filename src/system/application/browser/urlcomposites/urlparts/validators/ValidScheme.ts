@@ -7,15 +7,15 @@ class ValidScheme extends sc_ValidUrlPart {
       {
         toLower: true,
         trimTrailing: [
-          ...ValidScheme._UrlChar.slash,
-          ...ValidScheme._UrlChar.colon
+          ...ValidScheme.UrlChar.slash,
+          ...ValidScheme.UrlChar.colon
         ]
       },
       {},
-      ValidScheme._UrlChar.alphaNumericLower,
-      ValidScheme._UrlChar.plus,
-      ValidScheme._UrlChar.hyphen,
-      ValidScheme._UrlChar.dot
+      ValidScheme.UrlChar.alphaNumericLower,
+      ValidScheme.UrlChar.plus,
+      ValidScheme.UrlChar.hyphen,
+      ValidScheme.UrlChar.dot
     );
   }
 }

@@ -7,7 +7,7 @@ class ValidHostIPv4Repeater extends hipf_ValidUrlRepeater {
       {
         maxLength: 3
       },
-      hipf_ValidUrlRepeater._UrlChar.numbers
+      hipf_ValidUrlRepeater.UrlChar.numbers
     );
   }
 }

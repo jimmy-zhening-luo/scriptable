@@ -23,6 +23,14 @@ abstract class UrlPartRepeater {
   toString(): string {
     return this.value ?? "";
   }
+
+  get Paths(): typeof Paths {
+    return UrlPartRepeater.Paths;
+  }
+
+  static get Paths(): typeof Paths {
+    return importModule("./system/application/common/paths/Paths")
+  }
 }
 
 module.exports = UrlPartRepeater;

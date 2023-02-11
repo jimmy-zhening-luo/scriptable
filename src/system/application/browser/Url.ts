@@ -1,10 +1,10 @@
 class Url {
-  #scheme: Scheme = new Url._Scheme("https");
-  #host: Host = new Url._Host();
-  #port: Port = new Url._Port();
-  #path: Path = new Url._Path();
-  #query: Query = new Url._Query();
-  #fragment: Fragment = new Url._Fragment();
+  #scheme: Scheme = new Url.Scheme("https");
+  #host: Host = new Url.Host();
+  #port: Port = new Url.Port();
+  #path: Path = new Url.Path();
+  #query: Query = new Url.Query();
+  #fragment: Fragment = new Url.Fragment();
 
   constructor(url?: string | Url | Url.UrlParts);
   constructor(
@@ -111,11 +111,11 @@ class Url {
       | Scheme
     )
   ) {
-    this.#scheme = new Url._Scheme(
+    this.#scheme = new Url.Scheme(
       scheme
     );
     if (this.scheme === "")
-      this.#scheme = new Url._Scheme(
+      this.#scheme = new Url.Scheme(
         "https"
       );
   }
@@ -131,7 +131,7 @@ class Url {
       | Host
     )
   ) {
-    this.#host = new Url._Host(host);
+    this.#host = new Url.Host(host);
   }
 
   get port(): string {
@@ -146,7 +146,7 @@ class Url {
       | Port
     )
   ) {
-    this.#port = new Url._Port(port);
+    this.#port = new Url.Port(port);
   }
 
   get path(): string {
@@ -160,7 +160,7 @@ class Url {
       | Path
     )
   ) {
-    this.#path = new Url._Path(path);
+    this.#path = new Url.Path(path);
   }
 
   get query(): string {
@@ -190,7 +190,7 @@ class Url {
       | [Types.stringful, string][]
     )
   ) {
-    this.#query = new Url._Query(query);
+    this.#query = new Url.Query(query);
   }
 
   addParam(
@@ -230,7 +230,7 @@ class Url {
       | Fragment
     )
   ) {
-    this.#fragment = new Url._Fragment(
+    this.#fragment = new Url.Fragment(
       fragment
     );
   }
@@ -315,7 +315,7 @@ class Url {
         schemeOrHostportpath
         : "";
 
-    const hostport_path: string[] = Url._File
+    const hostport_path: string[] = Url.Paths
       .trimPath(hostportpath)
       .split("/");
     const hostport: string = hostport_path.shift() ?? "";
@@ -370,9 +370,63 @@ class Url {
       ?.trim()
       ?? String();
   }
+
+  get Scheme(): typeof Scheme {
+    return Url.Scheme;
+  }
+
+  get Host(): typeof Host {
+    return Url.Host;
+  }
+
+  get Port(): typeof Port {
+    return Url.Port;
+  }
+
+  get Path(): typeof Path {
+    return Url.Path;
+  }
+
+  get Query(): typeof Query {
+    return Url.Query;
+  }
+
+  get Fragment(): typeof Fragment {
+    return Url.Fragment;
+  }
+
+  static get Scheme(): typeof Scheme {
+    return importModule("urlcomposites/urlparts/Scheme");
+  }
+
+  static get Host(): typeof Host {
+    return importModule("urlcomposites/urlparts/Host");
+  }
+
+  static get Port(): typeof Port {
+    return importModule("urlcomposites/urlparts/Port");
+  }
+
+  static get Path(): typeof Path {
+    return importModule("urlcomposites/urlparts/Path");
+  }
+
+  static get Query(): typeof Query {
+    return importModule("urlcomposites/urlparts/Query");
+  }
+
+  static get Fragment(): typeof Fragment {
+    return importModule("urlcomposites/urlparts/Fragment");
+  }
+
+  static get Paths(): typeof Paths {
+    return Url.Scheme.Paths;
+  }
+
 }
 
 namespace Url {
+
   export interface UrlParts {
     scheme?: string | Scheme,
     host?: string | Host,
@@ -382,15 +436,8 @@ namespace Url {
     fragment?: string | Fragment
   };
 
-  export const _File: typeof File = importModule("./system/application/files/file/File");
-
-  export const _Scheme: typeof Scheme = importModule("urlcomposites/urlparts/Scheme");
-  export const _Host: typeof Host = importModule("urlcomposites/urlparts/Host");
-  export const _Port: typeof Port = importModule("urlcomposites/urlparts/Port");
-  export const _Path: typeof Path = importModule("urlcomposites/urlparts/Path");
-  export const _Query: typeof Query = importModule("urlcomposites/urlparts/Query");
-  export const _Fragment: typeof Fragment = importModule("urlcomposites/urlparts/Fragment");
   export const _SchemeHostPortPathQueryFragment: typeof SchemeHostPortPathQueryFragment = importModule("urlcomposites/SchemeHostPortPathQueryFragment");
+
 }
 
 module.exports = Url;
