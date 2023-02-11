@@ -14,7 +14,7 @@ class ValidString {
       trim?: boolean,
       trimLeading?: string[],
       trimTrailing?: string[]
-      },
+    },
     {
       minLength = 0,
       maxLength = Infinity
@@ -42,13 +42,13 @@ class ValidString {
       || this.cleaned.length < minLength
     ) ?
       null
-      :parseStringToOneGrams(this.cleaned)
-      .map(ngram => new ValidString
-        ._OneCharString(
-          ngram.toString(),
-          ...allowedChars
-        )
-      ).every(charstring => charstring.isValid) ?
+      : parseStringToOneGrams(this.cleaned)
+        .map(ngram => new ValidString
+          ._OneCharString(
+            ngram.toString(),
+            ...allowedChars
+          )
+        ).every(charstring => charstring.isValid) ?
         this.cleaned
         : null;
 

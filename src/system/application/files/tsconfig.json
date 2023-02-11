@@ -1,11 +1,15 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "../common/**/*"
   ],
   "references": [
     {
       "path": "file/tsconfig.json"
+    },
+    {
+      "path": "../common/tsconfig.json"
     }
   ],
   "compilerOptions": {

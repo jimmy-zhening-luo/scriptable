@@ -6,6 +6,9 @@
   "references": [
     {
       "path": "primitives/tsconfig.json"
+    },
+    {
+      "path": "paths/tsconfig.json"
     }
   ],
   "compilerOptions": {

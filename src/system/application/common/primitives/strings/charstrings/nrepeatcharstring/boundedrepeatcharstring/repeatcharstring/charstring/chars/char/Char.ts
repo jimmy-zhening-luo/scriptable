@@ -20,7 +20,7 @@ class Char {
   }
 
   includes(char: string): boolean {
-    return this.charset.includes(char);
+    return this.charset.length === 0 || this.charset.includes(char);
   }
 
   toString(): string {

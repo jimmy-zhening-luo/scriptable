@@ -26,7 +26,7 @@ class File {
     }
     else if (base instanceof File) {
       this.bookmark = base.bookmark;
-      this.subpath = File.walkPath(
+      this.subpath = File.Paths.walkPath(
         base.subpath,
         subpath
       );
@@ -56,9 +56,9 @@ class File {
           []
           : this.ls.map(
             (leaf: string): string => (
-              File.joinPaths(
+              File.Paths.joinPaths(
                 this.subpath,
-                File.trimPath(leaf)
+                File.Paths.trimPath(leaf)
               )
             )
           ).map(
@@ -119,7 +119,7 @@ class File {
   }
 
   get leaf(): string {
-    return File.trimPath(
+    return File.Paths.trimPath(
       this.path
         .split("/")
         .slice(-1)
@@ -159,7 +159,7 @@ class File {
   }
 
   get parentSubpath(): string {
-    return File.trimPath(
+    return File.Paths.trimPath(
       this.subpath
         .split("/")
         .slice(0, -1)
@@ -169,7 +169,7 @@ class File {
 
   get path(): string {
     return File
-      .joinPaths(
+      .Paths.joinPaths(
         this.root,
         this.subpath
       );
@@ -177,7 +177,7 @@ class File {
 
   get pathTree(): Array<string> {
     return File
-      .pathToTree(this.path);
+      .Paths.pathToTree(this.path);
   }
 
   get root(): string {
@@ -192,20 +192,20 @@ class File {
     path: string
   ) {
     this.#subpath = File
-      .trimPath(path);
+      .Paths.trimPath(path);
   }
 
   get subpathTree(): Array<string> {
     return File
-      .pathToTree(this.subpath);
+      .Paths.pathToTree(this.subpath);
   }
 
   cd(
     relativePath: string
   ): void {
-    this.subpath = File.trimPath(
+    this.subpath = File.Paths.trimPath(
       this.subpathRelativeTo(
-        File.trimPath(relativePath)
+        File.Paths.trimPath(relativePath)
       )
     );
   }
@@ -248,10 +248,10 @@ class File {
   pathRelativeTo(
     relativePath: string
   ): string {
-    return File.trimPath(
-      File.walkPath(
+    return File.Paths.trimPath(
+      File.Paths.walkPath(
         this.path,
-        File.trimPath(relativePath)
+        File.Paths.trimPath(relativePath)
       )
     );
   }
@@ -263,10 +263,10 @@ class File {
   subpathRelativeTo(
     relativePath: string
   ): string {
-    return File.trimPath(
-      File.walkPath(
+    return File.Paths.trimPath(
+      File.Paths.walkPath(
         this.subpath,
-        File.trimPath(relativePath)
+        File.Paths.trimPath(relativePath)
       )
     );
   }
@@ -307,92 +307,10 @@ class File {
     return FileManager.iCloud();
   }
 
-  static joinPaths(
-    left: string,
-    right: string = String()
-  ): string {
-    return File.trimPath(
-      File.m.joinPath(
-        File.trimPath(left),
-        File.trimPath(right)
-      )
-    );
+  protected static get Paths(): typeof Paths {
+    return importModule("./system/application/common/paths/Paths");
   }
 
-  static pathToTree(
-    path: string
-  ): Array<string> {
-    return File
-      .trimPath(path)
-      .split("/")
-      .map(
-        (node: string): string => (
-          File.trimPath(node)
-        )
-      )
-      .filter(
-        (node: string) => (
-          node.trim() !== String()
-        )
-      );
-  }
-
-  static treeToPath(
-    tree: Array<string>
-  ): string {
-    return File.trimPath(tree
-      .map(
-        (node: string): string => (
-          File.trimPath(node)
-        )
-      )
-      .filter(
-        (node: string) => (
-          node.trim() !== String()
-        )
-      )
-      .join("/")
-      .trim()
-    );
-  }
-
-  static trimPath(
-    path: string
-  ): string {
-    path = path.trim();
-    while (path.startsWith("/"))
-      path = path.slice(1);
-    while (path.endsWith("/"))
-      path = path.slice(0, -1);
-    return path.trim();
-  }
-
-  static walkPath(
-    path: string,
-    relativePath: string = String()
-  ): string {
-    const pathTree: Array<string> = File
-      .pathToTree(
-        File.trimPath(path)
-      );
-    const relPathTree = File
-      .pathToTree(
-        File.trimPath(relativePath)
-      );
-
-    relPathTree.forEach(
-      (node: string) => {
-        if (node.trim() === "..")
-          pathTree.pop();
-        else if (node.trim() !== String())
-          pathTree.push(node);
-      }
-    );
-
-    return File.trimPath(
-      File.treeToPath(pathTree)
-    );
-  }
 }
 
 module.exports = File;

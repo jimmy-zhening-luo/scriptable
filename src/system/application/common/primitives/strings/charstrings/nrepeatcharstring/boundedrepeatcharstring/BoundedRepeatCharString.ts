@@ -1,45 +1,18 @@
 const _RepeatCharString: typeof RepeatCharString = importModule("repeatcharstring/RepeatCharString");
 
 class BoundedRepeatCharString extends _RepeatCharString {
+
   readonly min: number;
   readonly max: number;
-  constructor(
-    min: number,
-    max: number,
-    charstring: string
-  );
-  constructor(
-    min: number,
-    max: number,
-    charstring: string,
-    ...ofChars: Char[]
-  );
-  constructor(
-    min: number,
-    max: number,
-    charstring: string,
-    ...ofStrings: string[]
-  );
-  constructor(
-    min: number,
-    max: number,
-    charstring: string,
-    ...ofCharsets: string[][]
-  );
-  constructor(
-    min: number,
-    max: number,
-    charstring: string,
-    ...ofCharInputs: Char.CharInput[]
-  );
+
   constructor(
     min: number,
     max: number,
     charstring: string,
     ...ofCharInputs: Char.CharInput[]
   ) {
-    let minInt: number = new BoundedRepeatCharString.positiveInt(min).toNumber();
-    let maxInt: number = new BoundedRepeatCharString.positiveInt(max).toNumber();
+    let minInt: number = new BoundedRepeatCharString._PositiveInt(min).toNumber();
+    let maxInt: number = new BoundedRepeatCharString._PositiveInt(max).toNumber();
     if (Number.isNaN(minInt)
       || Number.isNaN(maxInt)
     ) minInt = maxInt = 0;
@@ -64,7 +37,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
 }
 
 namespace BoundedRepeatCharString {
-  export const positiveInt: typeof PositiveInteger = importModule("./system/application/common/primitives/numbers/PositiveInteger");
+  export const _PositiveInt: typeof PositiveInteger = importModule("./system/application/common/primitives/numbers/PositiveInteger");
 }
 
 module.exports = BoundedRepeatCharString;
