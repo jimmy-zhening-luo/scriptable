@@ -201,8 +201,19 @@ namespace TestRunner {
     run(
       suppressLogging: boolean = false
     ): boolean {
-      if (!suppressLogging)
-        console.log("\n\n======\n" + this.id + ": " + this.cases.length + this.cases.length === 1 ? " case" : " cases:\n");
+      if (!suppressLogging) {
+        console.log(
+          "\n\n======\n"
+          + this.id
+          + ": "
+          + this.cases.length
+          + " "
+          + (
+              this.cases.length === 1 ?
+              "case"
+              : "cases"
+            )
+          + ":\n");
         this.cases.forEach(([evaluate, result], i) => {
           console.log(
             [
@@ -214,6 +225,7 @@ namespace TestRunner {
               .join(": ")
           );
         });
+      }
       return this.cases
         .every(([evaluate, result]) => evaluate === result);
     }
