@@ -52,12 +52,19 @@ class Paths {
   static trimPath(
     path: string
   ): string {
-    path = path.trim();
-    while (path.startsWith("/"))
-      path = path.slice(1);
-    while (path.endsWith("/"))
-      path = path.slice(0, -1);
-    return path.trim();
+    return new Paths.ValidString(
+      path,
+      {
+        trim: true,
+        trimLeading: [
+          ...Paths.ValidString.Char.slash
+        ],
+        trimTrailing: [
+          ...Paths.ValidString.Char.slash
+        ]
+      },
+      {}
+    ).cleaned;
   }
 
   static walkPath(
@@ -87,11 +94,9 @@ class Paths {
     );
   }
 
-}
-
-namespace Paths {
-
-  export const _ValidString: typeof ValidString = importModule("./system/application/common/primitives/strings/ValidString");
+  static get ValidString(): typeof ValidString {
+    return importModule("./system/application/common/primitives/strings/ValidString");
+  }
 
 }
 

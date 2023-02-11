@@ -33,9 +33,9 @@ class ValidString {
       trimTrailing
     );
 
-    minLength = new ValidString._PositiveInteger(maxLength).value ?? 1;
+    minLength = new ValidString.PositiveInteger(maxLength).value ?? 1;
 
-    maxLength = new ValidString._PositiveInteger(maxLength).value ?? Infinity;
+    maxLength = new ValidString.PositiveInteger(maxLength).value ?? Infinity;
 
     this.value = (
       this.cleaned.length > maxLength
@@ -44,7 +44,7 @@ class ValidString {
       null
       : parseStringToOneGrams(this.cleaned)
         .map(ngram => new ValidString
-          ._OneCharString(
+          .OneCharString(
             ngram.toString(),
             ...allowedChars
           )
@@ -101,7 +101,7 @@ class ValidString {
 
     function parseStringToOneGrams(text: string): NGram[] {
       return [...text]
-        .map(char => new ValidString._OneGram(char));
+        .map(char => new ValidString.OneGram(char));
     }
   }
 
@@ -112,12 +112,27 @@ class ValidString {
   toString(): string {
     return this.value ?? "";
   }
-}
 
-namespace ValidString {
-  export const _OneGram: typeof OneGram = importModule("words/OneGram");
-  export const _OneCharString: typeof OneCharString = importModule("charstrings/OneCharString");
-  export const _PositiveInteger: typeof PositiveInteger = importModule("./system/application/common/primitives/numbers/PositiveInteger");
+  get Char(): typeof Char {
+    return ValidString.Char;
+  }
+
+  static get OneGram(): typeof OneGram {
+    return importModule("words/OneGram");
+  }
+
+  static get OneCharString(): typeof OneCharString {
+    return importModule("charstrings/OneCharString");
+  }
+
+  static get PositiveInteger(): typeof PositiveInteger {
+    return importModule("./system/application/common/primitives/numbers/PositiveInteger");
+  }
+
+  static get Char(): typeof Char {
+    return ValidString.OneCharString.Char;
+  }
+
 }
 
 module.exports = ValidString;

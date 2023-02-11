@@ -34,7 +34,7 @@ abstract class CharString {
   ): boolean;
 
   protected get Char(): typeof Char {
-    return importModule("chars/char/Char");
+    return CharString.Char;
   }
 
   get isValid(): boolean {
@@ -43,7 +43,11 @@ abstract class CharString {
 
   toString(): string {
     return this.charstring
-    ?? "";
+      ?? "";
+  }
+
+  static get Char(): typeof Char {
+    return importModule("chars/char/Char");
   }
 }
 

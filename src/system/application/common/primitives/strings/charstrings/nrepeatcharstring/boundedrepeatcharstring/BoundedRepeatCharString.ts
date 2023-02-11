@@ -11,8 +11,8 @@ class BoundedRepeatCharString extends _RepeatCharString {
     charstring: string,
     ...ofCharInputs: Char.CharInput[]
   ) {
-    let minInt: number = new BoundedRepeatCharString._PositiveInt(min).toNumber();
-    let maxInt: number = new BoundedRepeatCharString._PositiveInt(max).toNumber();
+    let minInt: number = new BoundedRepeatCharString.PositiveInteger(min).toNumber();
+    let maxInt: number = new BoundedRepeatCharString.PositiveInteger(max).toNumber();
     if (Number.isNaN(minInt)
       || Number.isNaN(maxInt)
     ) minInt = maxInt = 0;
@@ -34,10 +34,10 @@ class BoundedRepeatCharString extends _RepeatCharString {
     this.min = minInt;
     this.max = maxInt;
   }
-}
 
-namespace BoundedRepeatCharString {
-  export const _PositiveInt: typeof PositiveInteger = importModule("./system/application/common/primitives/numbers/PositiveInteger");
+  static get PositiveInteger(): typeof PositiveInteger {
+    return importModule("./system/application/common/primitives/numbers/PositiveInteger");
+  }
 }
 
 module.exports = BoundedRepeatCharString;
