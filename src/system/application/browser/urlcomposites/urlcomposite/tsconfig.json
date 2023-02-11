@@ -3,14 +3,14 @@
   "include": [
     "**/*",
     "../urlparts/urlpart/**/*",
-    "../../../common/primitives/**/*"
+    "../../../common/**/*"
   ],
   "references": [
     {
       "path": "../urlparts/urlpart/tsconfig.json"
     },
     {
-      "path": "../../../common/primitives/tsconfig.json"
+      "path": "../../../common/tsconfig.json"
     }
   ],
   "compilerOptions": {
