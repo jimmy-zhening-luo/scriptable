@@ -4,16 +4,16 @@
 const SUPPRESS_LOGGING: boolean = false;
 
 class TestRunner {
- 
+
   private readonly suites: TestRunner.Suites;
-  
+
   constructor() {
     // CLASS IMPORTS GO HERE
     const url: typeof Url = this.stl.url;
-    
+
     // TEST VARS GO HERE
     let u: Url = new url();
-    
+
     // TESTS GO HERE
     const happy: any = [
       [
@@ -31,52 +31,84 @@ class TestRunner {
           "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
         ],
         [
+          (u = new url(u)).toString(),
+          "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
+        ],
+        [
+          (u.url = "leftduck.mano:999999/3/4/6?ea=15&eb=16#rightduck").toString(),
+          "https://leftduck.mano/3/4/6?ea=15&eb=16#rightduck"
+        ],
+        [
+          u.toString(),
+          "https://leftduck.mano/3/4/6?ea=15&eb=16#rightduck"
+        ],
+        [
+          (u = new url("bongo://example.com:500/a/b/c?x=1&y=2#bingo")).toString(),
+          "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
+        ],
+        [
           (u.port = 2111).toString(),
+          "2111"
+        ],
+        [
+          u.toString(),
           "bongo://example.com:2111/a/b/c?x=1&y=2#bingo"
+        ],
+        [
+          u.addParam("z", "3").toString(),
+          "bongo://example.com:2111/a/b/c?x=1&y=2&z=3#bingo"
+        ],
+        [
+          u.deleteParam("x").toString(),
+          "bongo://example.com:2111/a/b/c?y=2&z=3#bingo"
+        ],
+
+        [
+
         ]
       ],
     ];
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    this.suites = this.casesToSuites(...happy); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    this.suites = this.casesToSuites(...happy);
   }
-  
+
   run(
     suppressLogging: boolean = false
   ): void {
     this.runAll(suppressLogging);
   }
-  
+
   runAll(
     suppressLogging: boolean = false
   ): void {
     for (const suite of this.suites)
       suite.run(suppressLogging);
   }
-  
+
   private get stl(): typeof STL {
     return TestRunner.stl;
   }
-  
+
   private casesToSuites(
     ...suiteInputs: [
       string,
@@ -96,20 +128,20 @@ class TestRunner {
 
 
 namespace TestRunner {
-  
+
   export const stl: typeof STL = importModule("stl/STL");
-  
+
   export type Evaluate = any;
   export type Result = any;
   export type Case = [Evaluate, Result];
   export type Cases = Case[];
   export type Suites = Suite[];
-  
+
   export class Suite {
-    
+
     readonly id: string;
     readonly cases: Cases;
-    
+
     constructor(
       id: string,
       ...cases:
@@ -121,7 +153,7 @@ namespace TestRunner {
       ...moreCases:
         (Case|Cases)[]
     );
-    
+
     constructor(
       id: string,
       suiteOrCaseOrCases?:
@@ -137,7 +169,7 @@ namespace TestRunner {
         ...moreCases
       );
     }
-    
+
     run(
       suppressLogging: boolean = false
     ): boolean {
@@ -156,7 +188,7 @@ namespace TestRunner {
       return this.cases
         .every(([evaluate, result]) => evaluate === result);
     }
-    
+
     addCase(
       cases?:
         Suite
@@ -172,7 +204,7 @@ namespace TestRunner {
         )
       );
     }
-    
+
     private parseInput(
       cases?:
         Suite
@@ -199,7 +231,7 @@ namespace TestRunner {
           )
         );
       return joined;
-      
+
       function arrCaseCasesToCases(
         moreCases: (Case|Cases)[]
       ): Cases {
@@ -213,7 +245,7 @@ namespace TestRunner {
         });
         return cases;
       }
-      
+
       function caseOrCasesToCases(
         caseOrCases: Case | Cases
       ): Cases {
