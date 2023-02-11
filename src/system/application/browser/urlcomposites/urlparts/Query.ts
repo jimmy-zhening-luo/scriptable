@@ -7,7 +7,8 @@ class Query extends qu_UrlPart {
       | null
       | string
       | Query
-      | Record<string, string>
+      | Map<Types.stringful, string>
+      | Record<Types.stringful, string>
       | [string, string]
       | [string, string][]
   ) {
@@ -17,28 +18,30 @@ class Query extends qu_UrlPart {
       || typeof query === "string"
       || query instanceof Query
     )
-      super(query);
+      super(
+        query
+      );
     else if (Array.isArray(query)) {
       if (
         query.length === 2
         && typeof query[0] === "string"
         && typeof query[1] === "string"
       )
-        super(query.join("="));
+        super(
+          query.join("=")
+        );
       else
         super(
-          query
-            .map(([key, value]) => [key, value].join("="))
-            .join("&")
+          Query.tuplesToQueryString(
+            query as [string, string][]
+          )
         );
     }
     else {
       super(
-        Array.from(
-          Object.entries(query)
+        Query.mapToQueryString(
+          query
         )
-          .map(([key, value]) => [key, value].join("="))
-          .join("&")
       );
     }
   }
@@ -48,8 +51,8 @@ class Query extends qu_UrlPart {
     query = query.startsWith("?") ? query.slice(1) : query;
     return query === "" ?
       null
-      : this
-        .mapToQueryString(this.queryStringToMap(query))
+      : Query
+        .mapToQueryString(Query.queryStringToMap(query))
         .split("&")
         .filter(keyValueString => keyValueString !== "")
         .map(keyValueString => new Query._QueryRepeater(keyValueString))
@@ -58,76 +61,141 @@ class Query extends qu_UrlPart {
         .join("&");
   }
 
-  get params(): Map<string, string> {
-    return this.queryStringToMap(this.toString());
+  get query(): string {
+    return this.queryString;
+  }
+
+  get queryString(): string {
+    return this.toString();
+  }
+
+  get queryTuples(): [Types.stringful, string][] {
+    return Query.queryStringToTuples(this.query);
+  }
+
+  get queryMap(): Map<Types.stringful, string> {
+    return Query.queryStringToMap(this.query);
   }
 
   addParam(
     _keyOrKeyValue:
-      string
-      | [string, string],
-    _value?: string
+      Types.stringful
+      | Map<Types.stringful, string>
+      | Record<Types.stringful, string>
+      | [Types.stringful, string]
+      | [Types.stringful, string][],
+    _value: string = ""
   ): Query {
-    const params: Map<string, string> = this.params;
-    const key: string = Array.isArray(_keyOrKeyValue) ?
-      _keyOrKeyValue[0] ?? ""
-      : _keyOrKeyValue;
-    const value: string = Array.isArray(_keyOrKeyValue) ?
-      _keyOrKeyValue[1] ?? ""
-      : _value ?? "";
-
-    if (key !== "")
-      value === "" ?
-        params.delete(key)
-        : params.set(key, value);
-
-    return new Query(
-      this.mapToQueryString(params)
+    const queryMapCopy: Map<Types.stringful, string> = new Map(
+      this.queryMap
     );
+    const newParamTuples: [Types.stringful, string][] = [];
+    if (typeof _keyOrKeyValue === "string")
+      newParamTuples.push(
+        [
+          _keyOrKeyValue,
+          _value
+        ]
+      );
+    else if (Array.isArray(_keyOrKeyValue)) {
+      if (_keyOrKeyValue.length > 0) {
+        if (
+          _keyOrKeyValue.length === 2
+          && typeof _keyOrKeyValue[0] === "string"
+          && typeof _keyOrKeyValue[1] === "string"
+        )
+          newParamTuples.push(_keyOrKeyValue as [Types.stringful, string]);
+        else
+          newParamTuples.push(..._keyOrKeyValue as [Types.stringful, string][]);
+      }
+    }
+    else {
+      newParamTuples.push(
+        ...Query.mapToTuples(_keyOrKeyValue)
+      );
+    }
+    newParamTuples
+      .filter(tuple => tuple[0] !== "")
+      .forEach(([key, value]) => {
+        value === "" ?
+          queryMapCopy.delete(key)
+          : queryMapCopy.set(key, value);
+      });
+
+    return new Query(queryMapCopy);
   }
 
-  deleteParam(key: string): Query {
+  deleteParam(key: Types.stringful): Query {
     return this.addParam(key, "");
   }
 
-  protected queryStringToMap(query: string): Map<string, string> {
-    const queryEntries: Array<[string, string]> = query
-      .split("&")
-      .map(keyValueString => keyValueString.split("="))
-      .map(keyValueTuple => [
-        keyValueTuple.slice(0, 1).shift() ?? "",
-        keyValueTuple.slice(1).join("=")
-      ]);
-
-    const nullabeQueryMap: Map<string, string> = new Map<string, string>(queryEntries);
-    nullabeQueryMap.delete("");
-    for (const key of nullabeQueryMap.keys())
-      if (
-        nullabeQueryMap.get(key) === undefined
-        || nullabeQueryMap.get(key) === null
-        || nullabeQueryMap.get(key) === ""
-      )
-        nullabeQueryMap.delete(key);
-
-    const queryMap: Map<string, string> = nullabeQueryMap;
-    return queryMap;
+  toTuples(): typeof Query.prototype.queryTuples {
+    return this.queryTuples;
   }
 
-  protected mapToQueryString(queryMap: Map<string, string>): string {
-    return Array.from(queryMap.entries())
+  toMap(): typeof Query.prototype.queryMap {
+    return this.queryMap;
+  }
+
+  static queryStringToTuples(
+    query: string
+  ): [Types.stringful, string][] {
+    return (
+      query
+        .split("&")
+        .filter(keyValueString => keyValueString !== "")
+        .map(keyValueString => keyValueString.split("="))
+        .filter(keyValueTuple => keyValueTuple.length >= 2)
+        .map(keyValueTuple => [
+          keyValueTuple[0],
+          keyValueTuple.slice(1).join("=")
+        ]) as [Types.stringful, string][]
+    )
+      .filter(keyValueTuple => keyValueTuple[0] !== "");
+  }
+
+  static tuplesToMap(
+    tuples: [Types.stringful, string][]
+  ): Map<Types.stringful, string> {
+    return new Map(tuples);
+  }
+
+  static queryStringToMap(
+    query: string
+  ): Map<Types.stringful, string> {
+    return Query.tuplesToMap(
+      Query.queryStringToTuples(
+        query
+      )
+    );
+  }
+
+  static mapToTuples(
+    record:
+      | Map<Types.stringful, string>
+      | Record<Types.stringful, string>
+  ): [Types.stringful, string][] {
+    return Array.from(Object.entries(record));
+  }
+
+  static tuplesToQueryString(
+    tuples: [Types.stringful, string][]
+  ): string {
+    return tuples
       .map(keyValueTuple => keyValueTuple.join("="))
       .join("&");
   }
 
-  static recordToTuples(record: Record<Types.stringful, string>): [Types.stringful, string][] {
-    return Array.from(Object.entries(record));
+  static mapToQueryString(
+    record:
+      | Map<string, string>
+      | Record<Types.stringful, string>
+  ): string {
+    return Query.tuplesToQueryString(
+      Query.mapToTuples(record)
+    );
   }
 
-  static tuplesToRecord(tuples: [Types.stringful, string][]): Record<Types.stringful, string> {
-    return Object.fromEntries(tuples);
-  }
-
-  static recordToQueryString(record: Record<Types.stringful, string>): string {
 }
 
 namespace Query {

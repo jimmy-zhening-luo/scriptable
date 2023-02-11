@@ -164,7 +164,19 @@ class Url {
   }
 
   get query(): string {
+    return this.queryString;
+  }
+
+  get queryString(): string {
     return this.#query.toString();
+  }
+
+  get queryTuples(): typeof Query.prototype.queryTuples {
+    return this.#query.toTuples();
+  }
+
+  get queryMap(): typeof Query.prototype.queryMap {
+    return this.#query.toMap();
   }
 
   set query(
@@ -172,9 +184,10 @@ class Url {
       | null | undefined
       | string
       | Query
-      | Record<string, string>
-      | [string, string]
-      | [string, string][]
+      | Map<Types.stringful, string>
+      | Record<Types.stringful, string>
+      | [Types.stringful, string]
+      | [Types.stringful, string][]
     )
   ) {
     this.#query = new Url._Query(query);
@@ -183,7 +196,10 @@ class Url {
   addParam(
     keyOrKeyValue:
       | string
-      | [string, string],
+      | Map<Types.stringful, string>
+      | Record<Types.stringful, string>
+      | [Types.stringful, string]
+      | [Types.stringful, string][],
     value?: string
   ): this {
     this.query = this.#query.addParam(keyOrKeyValue, value);
@@ -191,9 +207,15 @@ class Url {
   }
 
   deleteParam(
-    key: string
+    key:
+      | Types.stringful
+      | Types.stringful[]
   ): this {
-    this.addParam(key, "");
+    Array.isArray(key) ?
+      key.forEach((key) => {
+        this.addParam(key, "");
+      })
+      : this.addParam(key, "");
     return this;
   }
 
@@ -237,7 +259,7 @@ class Url {
     Array.from(
       this
         .#query
-        .params
+        .queryMap
         .entries()
     ).forEach(([key, value]) => {
       callbackUrl.addParameter(
