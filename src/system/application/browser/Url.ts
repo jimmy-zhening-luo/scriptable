@@ -214,13 +214,13 @@ class Url {
     );
     return this;
   }
-  
+
   xCallback(): any {
     const baseUrl = new Url(this);
     baseUrl.query = "";
     baseUrl.fragment = "";
     const callbackUrl = new CallbackURL(
-      baseUrl
+      baseUrl.toString()
     );
     Array.from(
       this
@@ -233,7 +233,7 @@ class Url {
         value
       );
     });
-    var response: string = "";
+    var response: Record<string, Types.primitive | null> = {};
     callbackUrl
       .open()
       .then((_response) => {
