@@ -94,15 +94,18 @@ class TestRunner {
 
   run(
     suppressLogging: boolean = false
-  ): void {
-    this.runAll(suppressLogging);
+  ): boolean {
+    return this.runAll(suppressLogging);
   }
 
   runAll(
     suppressLogging: boolean = false
-  ): void {
-    for (const suite of this.suites)
-      suite.run(suppressLogging);
+  ): boolean {
+    return this
+      .suites
+      .every(
+        suite => suite.run(suppressLogging) === true
+      );
   }
 
   private get stl(): typeof STL {
@@ -145,13 +148,13 @@ namespace TestRunner {
     constructor(
       id: string,
       ...cases:
-        (Case|Cases)[]
+        (Case | Cases)[]
     );
     constructor(
       id: string,
       suite?: Suite,
       ...moreCases:
-        (Case|Cases)[]
+        (Case | Cases)[]
     );
 
     constructor(
@@ -161,7 +164,7 @@ namespace TestRunner {
         | Case
         | Cases,
       ...moreCases:
-        (Case|Cases)[]
+        (Case | Cases)[]
     ) {
       this.id = id;
       this.cases = this.parseInput(
@@ -195,7 +198,7 @@ namespace TestRunner {
         | Case
         | Cases,
       ...moreCases:
-        (Case|Cases)[]
+        (Case | Cases)[]
     ): void {
       this.cases.push(
         ...this.parseInput(
@@ -211,10 +214,10 @@ namespace TestRunner {
         | Case
         | Cases,
       ...moreCases:
-        (Case|Cases)[]
+        (Case | Cases)[]
     ): Cases {
       const joined: Cases = [];
-      if (cases === undefined) {}
+      if (cases === undefined) { }
       else if (cases instanceof Suite)
         joined.push(...cases.cases)
       else
@@ -233,7 +236,7 @@ namespace TestRunner {
       return joined;
 
       function arrCaseCasesToCases(
-        moreCases: (Case|Cases)[]
+        moreCases: (Case | Cases)[]
       ): Cases {
         const cases: Cases = [];
         moreCases.forEach((caseOrCases) => {
@@ -251,7 +254,7 @@ namespace TestRunner {
       ): Cases {
         return caseOrCases.length === 0 ?
           []
-          : Array.isArray(caseOrCases[0])?
+          : Array.isArray(caseOrCases[0]) ?
             [...caseOrCases]
             : [caseOrCases];
       }
@@ -259,4 +262,13 @@ namespace TestRunner {
   }
 }
 
-new TestRunner().run(SUPPRESS_LOGGING);
+console.log(
+  "ALL test cases passed? "
+  + String(
+    new TestRunner()
+      .run(
+        SUPPRESS_LOGGING
+      )
+  )
+    .toUpperCase()
+);
