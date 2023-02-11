@@ -1,29 +1,31 @@
 abstract class Repository {
   
-  private readonly url: Url;
+  private readonly urlRoot: Url;
   private readonly repo: Types.stringful;
+  private readonly secret: string;
+  private readonly actions: Readonly<
+    Record<
+      Repository.Action,
+      Repository.ActionHandler
+    >
+  >;
   
   constructor(
-    repo: Types.stringful
+    scheme: Types.stringful,
+    host: string,
+    repo: Types.stringful,
+    secret: string,
+    actions?: typeof Repository.prototype.actions
   ) {
-    this.url = this.instantiateUrl();
+    this.urlRoot = this.instantiateRootUrl();
     this.repo = repo;
+    this.secret = secret;
+    this.actions = actions ?? {};
   }
   
-  private abstract get scheme(): Types.stringful;
-  
-  private abstract get host(): Types.stringful;
-  
-  private abstract get actions(): Repository.Actions;
-  
-  private abstract get secret(): string;
-  
-  private abstract attachRepoToUrl(url: Url): Url;
-  
-  private abstract attachSecretToUrl(url: Url): Url;
-  
-  private instantiateUrl(
-    repo: Types.stringful
+  private instantiateRootUrl(
+    scheme: Types.stringful,
+    host: string
   ): Url {
     return new Repository._Url(
       this.scheme,
@@ -31,19 +33,23 @@ abstract class Repository {
     );
   }
   
-  private createActionUrl(
-    action: keyof Repository.Actions
-  ): Url {
-    return this.attachSecretToUrl(
-      this.attachRepoToUrl(
-        new Repository._Url(
-          FileManager.iCloud().joinPath(
-            this.url.toString(),
-            Repository.Actions[action]
-          )
-        )
-      )
-    );
+  private takeAction(
+    action: Repository.Action
+  ): any {
+    
+    
+    
+    function createActionUrl(
+      action: Repository.Actionq
+    ): Url {
+      
+      
+      
+      function attachIds(
+        url: Url
+      ): Url {
+        
+      }
   }
   
   checkout(
@@ -68,6 +74,13 @@ namespace Repository {
     Message
   }
   
+  export enum Action {
+    Checkout,
+    Pull,
+    Commit,
+    Push
+  }
+  
   export type Actions = {
     checkout: ActionParams,
     pull: ActionParams,
@@ -75,16 +88,36 @@ namespace Repository {
     push: ActionParams,
   }
   
-  export type ActionParams = {
-    path: string,
-    query: string,
-    ids?: PartsParams[]
+  export class ActionHandler {
+    readonly path: string;
+    readonly query: string;
+    readonly ids: IdConfig[];
+    
+    constructor(
+      path: string,
+      query: string,
+      ...ids: IdConfig[]
+    ) {
+      this.path = path;
+      this.query = query;
+      this.ids = ids;
+    }
   }
   
-  export type IdParams = {
-    id: Id,
-    urlpart: UrlPart,
-    prepend: string
+  export class Id {
+    id: Id;
+    urlpart: UrlPart;
+    prepend: string;
+    
+    constructor(
+      id: Id,
+      urlpart: UrlPart,
+      prepend?: string
+    ) {
+      this.id = id;
+      this.urlpart = urlpart;
+      this.prepend = prepend ?? "";
+    }
   }
   
   export enum UrlPart {

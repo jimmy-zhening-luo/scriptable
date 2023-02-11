@@ -228,7 +228,7 @@ class Url {
         .params
         .entries()
     ).forEach(([key, value]) => {
-      callbackUrl.add(
+      callbackUrl.addParameter(
         key,
         value
       );
