@@ -76,7 +76,7 @@ class TestRunner {
       [
         (a = new api(
           "fine://example/endpoint?id=5&type=notes",
-          Api.Method.POST,
+          api.Method.POST,
           ["Bearer", "12345"],
           {
             "Content-Type": "application/json",
