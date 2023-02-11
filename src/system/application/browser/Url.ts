@@ -173,14 +173,16 @@ class Url {
       | string
       | [string, string],
     value?: string
-  ): void {
+  ): this {
     this.query = this.#query.addParam(keyOrKeyValue, value);
+    return this;
   }
 
   deleteParam(
     key: string
-  ): void {
+  ): this {
     this.addParam(key, "");
+    return this;
   }
 
   get fragment(): string {
@@ -199,16 +201,18 @@ class Url {
     );
   }
 
-  open(): void {
+  open(): this {
     Safari.open(this.url);
+    return this;
   }
 
-  webview(fullScreen: boolean = false): void {
+  webview(fullScreen: boolean = false): this {
     WebView.loadURL(
       this.url,
       undefined,
       fullScreen
     );
+    return this;
   }
 
   get isValid(): boolean {
