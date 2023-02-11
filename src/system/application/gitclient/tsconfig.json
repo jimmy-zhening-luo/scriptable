@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+    "../common/**/*",
+    "../appdata/**/*"
+  ],
+  "references": [
+    {
+      "path": "repository/tsconfig.json"
+    },
+    {
+      "path": "../common/tsconfig.json"
+    },
+    {
+      "path": "../appdata/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../.."
+  }
+}
