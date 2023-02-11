@@ -14,25 +14,66 @@ const INCLUDE_POSTFIX: string = ".js";
 
 class Installer {
   static clean(): void {
-    this.FM
-      .listContents(this.runtimeRootPath)
-      .filter(child => !child.startsWith(this.excludePrefix))
+    const FM: FileManager = this.FM;
+    FM
+      .listContents(
+        this.runtimeRootPath
+      )
+      .filter(child => !child.startsWith(
+        this.excludePrefix
+      ))
       .forEach(child => {
-        const runtimeChild: string = this.FM.joinPath(this.runtimeRootPath, child);
-        this.FM.remove(runtimeChild);
+        FM
+          .remove(
+            FM
+              .joinPath(
+                this.runtimeRootPath,
+                child
+              )
+          );
       });
   }
 
-  static install(): void {
+  static install(
+    subpath: string = ""
+  ): void {
     this.clean();
-    this.FM
-      .listContents(this.repoSourcePath)
-      .filter(child => !child.startsWith(this.excludePrefix))
+    const FM: FileManager = this.FM;
+    const repoSourceSubpath: string = FM.joinPath(
+      this.repoSourcePath,
+      subpath
+    );
+    FM
+      .listContents(
+        repoSourceSubpath
+      )
+      .filter(child => !child.startsWith(
+        this.excludePrefix
+      ))
       .forEach(child => {
-        const repoChild: string = this.FM.joinPath(this.repoSourcePath, child);
-        const runtimeChild: string = this.FM.joinPath(this.runtimeRootPath, child);
-        if (this.FM.isDirectory(repoChild) || repoChild.endsWith(this.includePostfix))
-          this.FM.copy(repoChild, runtimeChild);
+        const repoChild: string = FM
+          .joinPath(
+            repoSourceSubpath,
+            child
+          );
+        const runtimeChild: string = FM
+          .joinPath(
+            this.runtimeRootPath,
+            child
+          );
+        if (
+          FM.isDirectory(
+            repoChild
+          )
+          || repoChild.endsWith(
+            this.includePostfix
+          )
+        )
+          FM
+            .copy(
+              repoChild,
+              runtimeChild
+            );
       });
   }
 
