@@ -3,7 +3,7 @@
   "include": [
     "**/*",
     "../common/**/*",
-    "../appdata/**/*"
+    "../appdata/filesystem/**/*"
   ],
   "references": [
     {
