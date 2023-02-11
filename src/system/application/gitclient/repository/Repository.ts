@@ -32,28 +32,49 @@ abstract class Repository {
   }
 
   private takeAction(
-    action: Repository.Action
+    action: Repository.Action,
+    params: Partial<Record<Repository.Param, Types.stringful>> = {}
   ): any {
+    const handler = this.actions[action];
+    return handler.createActionUrl(
+      this.urlRoot,
+      params
+    )
   }
 
   checkout(
     branch: Types.stringful
   ): any {
-    return this.takeAction(Repository.Action.Checkout);
+    return this.takeAction(
+      Repository.Action.Checkout,
+      {
+        [Repository.Param.Branch]: branch
+      }
+    );
   }
 
   pull(): any {
-    return this.takeAction(Repository.Action.Pull);
+    return this.takeAction(
+      Repository.Action.Pull
+    );
   }
 
   commit(
     message: Types.stringful
   ): any {
-    return this.takeAction(Repository.Action.Commit);
+    return this.takeAction(
+      Repository.Action.Commit,
+      {
+        [Repository.Param.Message]: message,
+        [Repository.Param.Limit]: "10000"
+      }
+    );
   }
 
   push(): any {
-
+    return this.takeAction(
+      Repository.Action.Push
+    );
   }
 
 }
@@ -84,21 +105,50 @@ namespace Repository {
   export abstract class ActionHandler {
     readonly path: string;
     readonly query: string;
-    readonly params: Partial<Readonly<Record<Param, ParamConfig[]>>>;
+    readonly requiredParams:
+      Partial<
+        Readonly<
+          Record<
+            Param,
+            ParamName
+          >
+        >
+      >;
 
     constructor(
       path: string,
       query: string,
-      params: typeof ActionHandler.prototype.params
+      requiredParams: typeof ActionHandler.prototype.requiredParams
     ) {
       this.path = path;
       this.query = query;
-      this.params = params;
+      this.requiredParams = requiredParams;
     }
 
     createActionUrl(
-      url: Url
+      url: Url,
+      callerParams: {
+        [Param.Branch]?: ParamName,
+        [Param.Repo]?: ParamName,
+        [Param.Secret]?: ParamName,
+        [Param.Message]?: ParamName,
+        [Param.Limit]?: ParamName
+      }
     ): Url {
+      url = new Url(url);
+      url.path = this.path;
+      url.query = this.query;
+      Array.from(Object.entries(this.requiredParams)).forEach(
+        ([param, paramName]) => {
+          if (param in callerParams)
+            url.addParam(
+              paramName,
+              callerParams[param] ?? ""
+            )
+          }
+        }
+      )
+
       return url;
     }
   }
@@ -108,7 +158,7 @@ namespace Repository {
       path: string,
       query: string,
       params: {
-        [Param.Branch]: ParamConfig[]
+        [Param.Branch]: ParamName
       }
     ) {
       super(path, query, params);
@@ -130,8 +180,8 @@ namespace Repository {
       path: string,
       query: string,
       params: {
-        [Param.Message]: ParamConfig[],
-        [Param.Limit]: ParamConfig[]
+        [Param.Message]: ParamName,
+        [Param.Limit]: ParamName
       }
     ) {
       super(path, query, params);
@@ -156,11 +206,7 @@ namespace Repository {
     Limit
   }
 
-  export interface ParamConfig {
-    param: Param,
-    urlpart: UrlPart,
-    prepend: string
-  }
+  export type ParamName = Types.stringful;
 
   export enum UrlPart {
     Path,
