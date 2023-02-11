@@ -202,7 +202,7 @@ namespace TestRunner {
       suppressLogging: boolean = false
     ): boolean {
       if (!suppressLogging)
-        console.log("\n\n======\n" + this.id + ": " + this.cases.length + " cases:\n");
+        console.log("\n\n======\n" + this.id + ": " + this.cases.length + this.cases.length === 1 ? " case" : " cases:\n");
         this.cases.forEach(([evaluate, result], i) => {
           console.log(
             [
