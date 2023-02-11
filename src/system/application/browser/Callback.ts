@@ -1,9 +1,9 @@
 class Callback {
-  
+
   private readonly _rootUrl: Url;
   secretParamName?: Types.stringful;
   secret?: string;
-  
+
   constructor(
     scheme: Types.stringful | Scheme,
     host: string | Host,
@@ -19,15 +19,15 @@ class Callback {
       this.secret = secret ?? "";
     }
   }
-  
+
   get rootUrl(): Types.stringful {
     return this._rootUrl.toString();
   }
-  
+
   get scheme(): Types.stringful {
     return this._rootUrl.scheme;
   }
-  
+
   set scheme(
     scheme:
       | Types.stringful
@@ -35,11 +35,11 @@ class Callback {
   ) {
     this._rootUrl.scheme = scheme;
   }
-  
+
   get host(): string {
     return this._rootUrl.host;
   }
-  
+
   set host(
     host:
       | string
@@ -47,7 +47,7 @@ class Callback {
   ) {
     this._rootUrl.host = host;
   }
-  
+
   request(
     path: string | Path,
     query:
@@ -57,7 +57,7 @@ class Callback {
       | [string, string]
       | [string, string][]
   ): any {
-    const cUrl: Url = new Repository._Url(this._rootUrl);
+    const cUrl: Url = new Callback._Url(this._rootUrl);
     cUrl.path = path;
     cUrl.query = query;
     if (this.secretParamName !== undefined
@@ -70,13 +70,13 @@ class Callback {
       );
     return cUrl.xCallback;
   }
-  
+
 }
 
 namespace Callback {
-  
+
   export const _Url: typeof Url = importModule("Url");
-  
+
 }
 
 module.exports = Callback;
