@@ -1,36 +1,18 @@
 abstract class Repository {
 
   private readonly callback: Callback;
-  private readonly repo: Types.stringful;
-  private readonly actions: Repository.Actions;
+  private readonly paramNames:
+    Record<
+      Repository.Param,
+      Types.stringful
+    >;
 
   constructor(
     scheme: Types.stringful,
     host: string,
-    secretParamName: string,
-    secret: string
-    repo: Types.stringful,
-    actions: typeof Repository.prototype.actions
-  ) {
-    this.callback = secretParamName === "" ?
-      new Repository._Callback
-        scheme,
-        host
-      )
-      : new Repository._Callback
-        scheme,
-        host,
-        secretParamName,
-        secret
-      )
     
-    new Repository._Callback
-      scheme,
-      host
-    );
-    this.repo = repo;
-    this.secret = secret;
-    this.actions = actions;
+  ) {
+    
   }
 
   private takeAction(
@@ -222,6 +204,6 @@ namespace Repository {
 
   export const _Callback: typeof Callback = importModule("./system/application/browser/Callback");
 
-}
+
 
 module.exports = Repository;
