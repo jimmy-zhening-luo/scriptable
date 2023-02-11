@@ -1,16 +1,13 @@
-const hipf_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrlPart");
+const hipf_ValidUrlRepeater: typeof ValidUrlRepeater = importModule("validurlpart/ValidUrlRepeater");
 
-class ValidHostIPv4Repeater extends hipf_ValidUrlPart {
+class ValidHostIPv4Repeater extends hipf_ValidUrlRepeater {
   constructor(hostIPv4Repeater: string) {
     super(
       hostIPv4Repeater,
       {
-        trim: false
-      },
-      {
         maxLength: 3
       },
-      hipf_ValidUrlPart._UrlChar.numbers
+      hipf_ValidUrlRepeater._UrlChar.numbers
     );
   }
 }

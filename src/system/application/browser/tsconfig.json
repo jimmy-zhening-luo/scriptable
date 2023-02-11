@@ -13,6 +13,9 @@
       "path": "apihandlers/tsconfig.json"
     },
     {
+      "path": "callbackhandlers/tsconfig.json"
+    },
+    {
       "path": "../common/tsconfig.json"
     },
     {

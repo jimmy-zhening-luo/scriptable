@@ -1,7 +1,7 @@
 const qu_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Query extends qu_UrlPart {
-  
+
   constructor(
     query?:
       | null
@@ -11,22 +11,38 @@ class Query extends qu_UrlPart {
       | [string, string]
       | [string, string][]
   ) {
-    super(
-      query === null
-      || query === undefined
+    if (
+      query === undefined
+      || query === null
       || typeof query === "string"
-      || query.ClassDecorator_UrlPart === "UrlPart" ?
-        query
-        : Array.isArray(query) ?
-          Array.isArray(query[0]) ?
-            query.join("&").join("=")
-            : query.join("=")
-          : Array.from(
-            Object.entries(query)
-          ).join("&").join("=")
-    );
+      || query instanceof Query
+    )
+      super(query);
+    else if (Array.isArray(query)) {
+      if (
+        query.length === 2
+        && typeof query[0] === "string"
+        && typeof query[1] === "string"
+      )
+        super(query.join("="));
+      else
+        super(
+          query
+            .map(([key, value]) => [key, value].join("="))
+            .join("&")
+        );
+    }
+    else {
+      super(
+        Array.from(
+          Object.entries(query)
+        )
+          .map(([key, value]) => [key, value].join("="))
+          .join("&")
+      );
+    }
   }
-  
+
   protected parse(query: string): null | string {
     query = query.trim();
     query = query.startsWith("?") ? query.slice(1) : query;
@@ -35,6 +51,7 @@ class Query extends qu_UrlPart {
       : this
         .mapToQueryString(this.queryStringToMap(query))
         .split("&")
+        .filter(keyValueString => keyValueString !== "")
         .map(keyValueString => new Query._QueryRepeater(keyValueString))
         .filter(queryRepeater => queryRepeater.isValid)
         .map(queryRepeater => queryRepeater.toString())
@@ -101,6 +118,16 @@ class Query extends qu_UrlPart {
       .map(keyValueTuple => keyValueTuple.join("="))
       .join("&");
   }
+
+  static recordToTuples(record: Record<Types.stringful, string>): [Types.stringful, string][] {
+    return Array.from(Object.entries(record));
+  }
+
+  static tuplesToRecord(tuples: [Types.stringful, string][]): Record<Types.stringful, string> {
+    return Object.fromEntries(tuples);
+  }
+
+  static recordToQueryString(record: Record<Types.stringful, string>): string {
 }
 
 namespace Query {

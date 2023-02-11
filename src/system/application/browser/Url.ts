@@ -40,10 +40,9 @@ class Url {
   ) {
     if (head === undefined) { }
     else if (
-      typeof head === "string"
+      head instanceof UrlPart
+      || typeof head === "string"
       && host !== undefined
-      || typeof head !== "string"
-      && "ClassDecorator_UrlPart" in head
     ) {
       const scheme: string | Scheme = head;
       this.scheme = scheme;

@@ -6,7 +6,7 @@ class ValidString {
     text: string,
     {
       toLower = false,
-      trim = true,
+      trim = false,
       trimLeading = [],
       trimTrailing = [],
     }: {
@@ -16,7 +16,7 @@ class ValidString {
       trimTrailing?: string[]
       },
     {
-      minLength = 1,
+      minLength = 0,
       maxLength = Infinity
     }: {
       minLength?: number,
@@ -32,7 +32,7 @@ class ValidString {
       trimLeading,
       trimTrailing
     );
-    
+
     minLength = new ValidString._PositiveInteger(maxLength).value ?? 1;
 
     maxLength = new ValidString._PositiveInteger(maxLength).value ?? Infinity;
@@ -71,7 +71,7 @@ class ValidString {
         ),
         trimTrailing
       );
-      
+
       function preTrim(
         text: string,
         wordsToTrim: string[]
@@ -84,7 +84,7 @@ class ValidString {
           });
         return text;
       }
-      
+
       function postTrim(
         text: string,
         wordsToTrim: string[]

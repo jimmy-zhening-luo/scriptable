@@ -1,16 +1,13 @@
-const hrn_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrlPart");
+const hrn_ValidUrlRepeater: typeof ValidUrlRepeater = importModule("validurlpart/ValidUrlRepeater");
 
-class ValidHostRegNameRepeater extends hrn_ValidUrlPart {
+class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
   constructor(hostRegNameRepeater: string) {
     super(
       hostRegNameRepeater,
-      {
-        trim: false
-      },
       {},
-      hrn_ValidUrlPart._UrlChar.unreserved,
-      hrn_ValidUrlPart._UrlChar.percentEncoded,
-      hrn_ValidUrlPart._UrlChar.subDelims
+      hrn_ValidUrlRepeater._UrlChar.unreserved,
+      hrn_ValidUrlRepeater._UrlChar.percentEncoded,
+      hrn_ValidUrlRepeater._UrlChar.subDelims
     );
   }
 }

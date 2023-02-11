@@ -1,6 +1,9 @@
 abstract class UrlPart {
+
+  readonly _nominalType: Types.stringful = "UrlPart";
+
   readonly value: null | string;
-  readonly ClassDecorator_UrlPart: string = "UrlPart";
+
   constructor(
     part?:
       null
@@ -26,6 +29,16 @@ abstract class UrlPart {
 
   toString(): string {
     return this.value ?? "";
+  }
+
+  static [Symbol.hasInstance](instance: any): boolean {
+    return (
+      instance !== null
+      && instance !== undefined
+      && typeof instance === "object"
+      && "nominalType" in instance
+      && instance.nominalType === "UrlPart"
+    );
   }
 }
 
