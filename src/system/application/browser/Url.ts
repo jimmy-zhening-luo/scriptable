@@ -214,6 +214,33 @@ class Url {
     );
     return this;
   }
+  
+  xCallback(): any {
+    const baseUrl = new Url(this);
+    baseUrl.query = "";
+    baseUrl.fragment = "";
+    const callbackUrl = new CallbackURL(
+      baseUrl
+    );
+    Array.from(
+      this
+        .#query
+        .params
+        .entries()
+    ).forEach(([key, value]) => {
+      callbackUrl.add(
+        key,
+        value
+      );
+    });
+    var response: string = "";
+    callbackUrl
+      .open()
+      .then((_response) => {
+        response = _response ?? "";
+      });
+    return response;
+  }
 
   get isValid(): boolean {
     return this.#scheme.isValid;
