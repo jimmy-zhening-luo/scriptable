@@ -202,6 +202,7 @@ namespace TestRunner {
       suppressLogging: boolean = false
     ): boolean {
       if (!suppressLogging)
+        console.log("\n\n======\n" + this.id + ": " + this.cases.length + " cases:\n");
         this.cases.forEach(([evaluate, result], i) => {
           console.log(
             [
@@ -288,7 +289,7 @@ namespace TestRunner {
 }
 
 console.log(
-  "ALL test cases passed? "
+  "\n\n\nALL test cases passed? "
   + String(
     new TestRunner()
       .run(
