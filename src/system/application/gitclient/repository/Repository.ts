@@ -33,13 +33,18 @@ abstract class Repository {
 
   private takeAction(
     action: Repository.Action,
-    params: Partial<Record<Repository.Param, Types.stringful>> = {}
+    callerParams: Repository.OptionalParamValues = {}
   ): any {
-    const handler = this.actions[action];
+    const handler: Repository.ActionHandler = this.actions[action];
+
+    const allParams = Object.create(callerParams);
+    allParams[Repository.Param.Repo] = this.repo;
+    allParams[Repository.Param.Secret] = this.secret;
+
     return handler.createActionUrl(
       this.urlRoot,
-      params
-    )
+      allParams
+    );
   }
 
   checkout(
@@ -127,29 +132,20 @@ namespace Repository {
 
     createActionUrl(
       url: Url,
-      callerParams: {
-        [Param.Branch]?: ParamName,
-        [Param.Repo]?: ParamName,
-        [Param.Secret]?: ParamName,
-        [Param.Message]?: ParamName,
-        [Param.Limit]?: ParamName
-      }
+      callerParams: ParamValues
     ): Url {
-      url = new Url(url);
-      url.path = this.path;
-      url.query = this.query;
+      const actionUrl = new Url(url);
+      actionUrl.path = this.path;
+      actionUrl.query = this.query;
       Array.from(Object.entries(this.requiredParams)).forEach(
-        ([param, paramName]) => {
-          if (param in callerParams)
-            url.addParam(
-              paramName,
-              callerParams[param] ?? ""
-            )
-          }
+        ([paramEnum, paramName]) => {
+          actionUrl.addParam(
+            paramName,
+            callerParams[Param[paramEnum as keyof typeof Param]] ?? ""
+          );
         }
-      )
-
-      return url;
+      );
+      return actionUrl;
     }
   }
 
@@ -199,19 +195,28 @@ namespace Repository {
   }
 
   export enum Param {
-    Branch,
     Repo,
     Secret,
+    Branch,
     Message,
     Limit
   }
 
   export type ParamName = Types.stringful;
+  export type ParamValue = Types.stringful;
 
-  export enum UrlPart {
-    Path,
-    Query
-  }
+  export type RequiredParam = Param.Repo | Param.Secret;
+  export type OptionalParam = Param.Branch | Param.Message | Param.Limit;
+
+  export type RequiredParamNames = Record<RequiredParam, ParamName>;
+  export type OptionalParamNames = Partial<Record<OptionalParam, ParamName>>;
+  export type ParamNames = RequiredParamNames
+    & OptionalParamNames;
+
+  export type RequiredParamValues = Record<RequiredParam, ParamValue>;
+  export type OptionalParamValues = Partial<Record<OptionalParam, ParamValue>>;
+  export type ParamValues = RequiredParamValues & OptionalParamValues;
+
 
   export const _Url: typeof Url = importModule("./system/application/browser/Url");
 
