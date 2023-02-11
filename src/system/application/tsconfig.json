@@ -6,6 +6,9 @@
   ],
   "references": [
     {
+      "path": "../../!boot/tsconfig.json"
+    },
+    {
       "path": "appdata/tsconfig.json"
     },
     {
@@ -16,9 +19,6 @@
     },
     {
       "path": "gitclient/tsconfig.json"
-    },
-    {
-      "path": "../../!boot/tsconfig.json"
     }
   ],
   "compilerOptions": {

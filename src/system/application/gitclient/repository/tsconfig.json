@@ -3,14 +3,14 @@
   "include": [
     "**/*",
     "../../common/**/*",
-    "../../appdata/**/*"
+    "../../appdata/filesystem/**/*"
   ],
   "references": [
     {
       "path": "../../common/tsconfig.json"
     },
     {
-      "path": "../../appdata/tsconfig.json"
+      "path": "../../appdata/filesystem/tsconfig.json"
     }
   ],
   "compilerOptions": {
