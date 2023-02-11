@@ -10,66 +10,91 @@ class TestRunner {
   constructor() {
     // CLASS IMPORTS GO HERE
     const url: typeof Url = this.stl.url;
+    const api: typeof Api = this.stl.api;
 
     // TEST VARS GO HERE
     let u: Url = new url();
+    let a: Api;
 
     // TESTS GO HERE
-    const happy: any = [
+    const happy: any = [];
+
+    happy.push([
+      "url",
+      [(u = u).toString(), "https://"],
       [
-        "url",
-        [(u = u).toString(), "https://"],
-        [
-          (u = new url(
-            "bongo",
-            "example.com",
-            500,
-            "a/b/c",
-            "x=1&y=2",
-            "#bingo"
-          )).toString(),
-          "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
-        ],
-        [
-          (u = new url(u)).toString(),
-          "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
-        ],
-        [
-          (u.url = "leftduck.mano:999999/3/4/6?ea=15&eb=16#rightduck").toString(),
-          "leftduck.mano:999999/3/4/6?ea=15&eb=16#rightduck"
-        ],
-        [
-          u.toString(),
-          "https://leftduck.mano/3/4/6?ea=15&eb=16#rightduck"
-        ],
-        [
-          (u = new url("bongo://example.com:500/a/b/c?x=1&y=2#bingo")).toString(),
-          "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
-        ],
-        [
-          (u.port = 2111).toString(),
-          "2111"
-        ],
-        [
-          u.toString(),
-          "bongo://example.com:2111/a/b/c?x=1&y=2#bingo"
-        ],
-        [
-          u.addParam("z", "3").toString(),
-          "bongo://example.com:2111/a/b/c?x=1&y=2&z=3#bingo"
-        ],
-        [
-          u.deleteParam("x").toString(),
-          "bongo://example.com:2111/a/b/c?y=2&z=3#bingo"
-        ],
-
-        [
-
-        ]
+        (u = new url(
+          "bongo",
+          "example.com",
+          500,
+          "a/b/c",
+          "x=1&y=2",
+          "#bingo"
+        )).toString(),
+        "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
       ],
-    ];
+      [
+        (u = new url(u)).toString(),
+        "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
+      ],
+      [
+        (u.url = "leftduck.mano:999999/3/4/6?ea=15&eb=16#rightduck").toString(),
+        "leftduck.mano:999999/3/4/6?ea=15&eb=16#rightduck"
+      ],
+      [
+        u.toString(),
+        "https://leftduck.mano/3/4/6?ea=15&eb=16#rightduck"
+      ],
+      [
+        (u = new url("bongo://example.com:500/a/b/c?x=1&y=2#bingo")).toString(),
+        "bongo://example.com:500/a/b/c?x=1&y=2#bingo"
+      ],
+      [
+        (u.port = 2111).toString(),
+        "2111"
+      ],
+      [
+        u.toString(),
+        "bongo://example.com:2111/a/b/c?x=1&y=2#bingo"
+      ],
+      [
+        u.addParam("z", "3").toString(),
+        "bongo://example.com:2111/a/b/c?x=1&y=2&z=3#bingo"
+      ],
+      [
+        u.deleteParam("x").toString(),
+        "bongo://example.com:2111/a/b/c?y=2&z=3#bingo"
+      ],
 
+      [
 
+      ]
+    ]);
+
+    happy.push([
+      "api",
+      [
+        (a = new api(
+          "fine://example/endpoint?id=5&type=notes",
+          Api.Method.POST,
+          ["Bearer", "12345"],
+          {
+            "Content-Type": "application/json",
+            "model": "iPhone 1"
+          },
+          {
+            "x": 1,
+            "y": 2,
+            "z": 3
+          },
+          55
+        )).auth,
+        "Bearer 12345"
+      ],
+      [
+
+      ]
+    ]);
 
 
 
