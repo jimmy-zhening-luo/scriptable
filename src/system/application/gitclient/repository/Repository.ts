@@ -1,47 +1,123 @@
 abstract class Repository {
   
   private readonly callbackBase: Callback;
-  private readonly commandConfigMap: CommandConfigMap;
-  secret: string;
-  repo: Types.stringful;
+  private readonly paramIdToKey: Map<Callback.Command, Map<Callback.Param, Types.stringful>>;
 
   constructor(
     scheme: Types.stringful,
     host: string,
-    commandConfigs: CommandConfigMap,
+    secretParamName: string,
     secret: string,
-    repo: Types.stringful
+    repoParamName: Types.stringful,
+    repo: Types.stringful,
+    commandConfigs: CommandConfigMap
   ) {
-    this.callbackBase = new Repository.Callback(scheme, host);
-    this.commandConfigMap = commandConfigs;
-    this.secret = secret;
-    this.repo = repo;
+    this.callbackBase = new Repository.Callback(
+      scheme,
+      host,
+      [
+        [
+          secretParamName,
+          secret
+        ],
+        [
+          repoParamName,
+          repo
+        ],
+        this.configureCommands(
+          commandConfigs
+        )
+      ]
+    );
   }
   
-  execute(
+  private configureCommands(
+    commandConfigMap: CommandConfigMap
+  ): Map<Types.stringful, Repository.Callback.ActionConfig>  {
+    const actionMap: Map<Types.stringful, Repository.Callback.ActionConfig> = new Map();
+    for (const command in Repository.Command) {
+      const config: CommandConfig = commandConfigMap[command];
+      actionMap[command.toString()] = {
+        path: config.path,
+        queryRoot: config.query,
+        requiredParams?: {
+          
+        }
+        optionalParams?: 
+      }
+    }
+  }
   
-  ) {
-    
+  private mapParamIdsToKeys(
+    commandConfigMap: CommandConfigMap
+  ): Map<Callback.Param, Types.stringful> {
+    const keyMap: Map<Callback.Param, Types.stringful> = new Map();
+    for (const command in Repository.Command) {
+      const config: CommandConfig = commandConfigMap[command];
+      actionMap[command.toString()] = {
+        path: config.path,
+        queryRoot: config.query,
+        requiredParams?: {
+          
+        }
+        optionalParams?: 
+      }
+    }
+  }
+  
+  protected executeCommand(
+    command: Repository.Command,
+    params: any
+  ): any {
+    this.callbackBase.requestAction(
+      command.toString(),
+      new Map(
+        Array.from(
+          Object.entries(
+            params
+          )
+        ).map(([paramId, paramValue]) => (
+          [
+            paramId,
+            paramValue
+          ]
+        ))
+      )
+    );
   }
 
   checkout(
     branch: Types.stringful
   ): any {
-    
+    return this.executeCommand(
+      Repository.Command.Checkout,
+      {
+        [Repository.Param.Branch]: branch
+      }
+    );
   }
 
   pull(): any {
-    
+    return this.executeCommand(
+      Repository.Command.Pull
+    );
   }
 
   commit(
     message: Types.stringful
   ): any {
-    
+    return this.executeCommand(
+      Repository.Command.Commit,
+      {
+        [Repository.Param.Message]: message
+      }
+    );
   }
 
   push(): any {
-    
+    return this.executeCommand(
+      Repository.Command.Push
+    );
   }
   
   get Callback(): typeof Callback {
@@ -85,8 +161,6 @@ namespace Repository {
   export interface CommandConfigInterface {
     readonly path: string,
     readonly query: string,
-    readonly secretParamKey: Types.stringful,
-    readonly repoParamKey: Types.stringful,
     readonly otherRequiredParamKeys?: Partial<Record<CommandParam, Types.stringful>>,
     readonly optionalParamKeys?: Partial<Record<CommandParam, Types.stringful>>
   }
@@ -95,16 +169,12 @@ namespace Repository {
     
     readonly path: string;
     readonly query: string;
-    readonly secretParamKey: Types.stringful;
-    readonly repoParamKey: Types.stringful;
     readonly otherRequiredParamKeys?: Partial<Record<CommandParam, Types.stringful>>;
     readonly optionalParamKeys?: Partial<Record<CommandParam, Types.stringful>>;
     
     constructor(
      path: string,
      query: string,
-     secretParamKey: Types.stringful,
-     repoParamKey: Types.stringful,
      otherRequiredParamKeys: Partial<Record<CommandParam, Types.stringful>> = {}
      optionalParamKeys:  Partial<Record<CommandParam, Types.stringful>> = {}
     ) {
@@ -114,63 +184,55 @@ namespace Repository {
     }
   }
 
-  export class CheckoutHandler extends CommandHandler {
+  export class CheckoutConfig extends CommandConfig {
     constructor(
       path: string,
       query: string,
-      secretParamKey: Types.stringful,
-      repoParamKey: Types.stringful,
       otherRequiredParamKeys: {
         [Param.Branch]: Types.stringful
       }
     ) {
-      super(path, query, secretParamKey, repoParamKey, otherRequiredParamKeys);
+      super(path, query, otherRequiredParamKeys);
     }
   }
 
-  export class PullHandler extends CommandHandler {
+  export class PullConfig extends CommandConfig {
     constructor(
       path: string,
       query: string,
-      secretParamKey: Types.stringful,
-      repoParamKey: Types.stringful
     ) {
-      super(path, query, secretParamKey, repoParamKey);
+      super(path, query);
     }
   }
 
-  export class CommitHandler extends CommandHandler {
+  export class CommitConfig extends CommandConfig {
     constructor(
       path: string,
       query: string,
-      secretParamKey: Types.stringful,
-      repoParamKey: Types.stringful,
       otherRequiredParamKeys: {
         [Param.Message]: Types.stringful
       }
     ) {
-      super(path, query, secretParamKey, repoParamKey, otherRequiredParamKeys);
+      super(path, query, otherRequiredParamKeys);
     }
   }
 
-  export class PushHandler extends CommandHandler {
+  export class PushConfig extends CommandConfig {
     constructor(
       path: string,
       query: string,
-      secretParamKey: Types.stringful,
-      repoParamKey: Types.stringful
     ) {
-      super(path, query, secretParamKey, repoParamKey);
+      super(path, query);
     }
   }
   
   export type CommandConfigMapType = Required<Record<Command, CommandConfig>>;
   
   export interface CommandConfigMap extends CommandConfigMapType {
-    [Command.Checkout]: CheckoutHandler,
-    [Command.Pull]: PullHandler,
-    [Command.Commit]: CommitHandler,
-    [Command.Push]: PushHandler
+    [Command.Checkout]: CheckoutConfig,
+    [Command.Pull]: PullConfig,
+    [Command.Commit]: CommitConfig,
+    [Command.Push]: PushConfig
   }
 
 }
