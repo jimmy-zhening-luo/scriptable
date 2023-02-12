@@ -1,68 +1,55 @@
 abstract class Repository {
-
-  private readonly callback: Callback;
-  private readonly actionHandlers: Repository.ActionHandlerRecords;
+  
+  private readonly callbackBase: Callback;
+  private readonly commandConfigMap: CommandConfigMap;
+  secret: string;
+  repo: Types.stringful;
 
   constructor(
     scheme: Types.stringful,
-    host: string
+    host: string,
+    commandConfigs: CommandConfigMap,
+    secret: string,
+    repo: Types.stringful
   ) {
-    this.callback = new Repository._Callback(
-      scheme,
-      host
-    );
-
+    this.callbackBase = new Repository.Callback(scheme, host);
+    this.commandConfigMap = commandConfigs;
+    this.secret = secret;
+    this.repo = repo;
   }
-
-  private takeAction(
-    action: Repository.Action,
-    callerParams: Repository.OptionalParamValues = {}
-  ): any {
-    const handler: Repository.ActionHandler = this.actions[action];
-
-    const allParams = Object.create(callerParams);
-    allParams[Repository.Param.Repo] = this.repo;
-    allParams[Repository.Param.Secret] = this.secret;
-
-    return handler.createActionUrl(
-      this.urlRoot,
-      allParams
-    );
+  
+  execute(
+  
+  ) {
+    
   }
 
   checkout(
     branch: Types.stringful
   ): any {
-    return this.takeAction(
-      Repository.Action.Checkout,
-      {
-        [Repository.Param.Branch]: branch
-      }
-    );
+    
   }
 
   pull(): any {
-    return this.takeAction(
-      Repository.Action.Pull
-    );
+    
   }
 
   commit(
     message: Types.stringful
   ): any {
-    return this.takeAction(
-      Repository.Action.Commit,
-      {
-        [Repository.Param.Message]: message,
-        [Repository.Param.Limit]: "10000"
-      }
-    );
+    
   }
 
   push(): any {
-    return this.takeAction(
-      Repository.Action.Push
-    );
+    
+  }
+  
+  get Callback(): typeof Callback {
+    return Repository.Callback;
+  }
+  
+  static get Callback(): typeof Callback {
+    return importModule("./system/application/browser/Callback");
   }
 
 }
@@ -70,20 +57,13 @@ abstract class Repository {
 namespace Repository {
 
   // Action type
-  export enum Action {
+  export enum Command {
     Checkout,
     Pull,
     Commit,
     Push
   }
-
-  export type RequiredAction =
-    | Action.Checkout
-    | Action.Pull
-    | Action.Commit
-    | Action.Push;
-
-
+  
   // Param type
   export enum Param {
     Repo,
@@ -93,173 +73,105 @@ namespace Repository {
     Limit
   }
 
-  export type RequiredParam =
+  export type StaticParam =
     | Param.Repo
     | Param.Secret;
 
-  export type OptionalParam =
+  export type CommandParam =
     | Param.Branch
     | Param.Message
-    | Param.Limit;
-
-
-  // Param data
-  //// Param key
-  export type ParamKey = Types.stringful;
-
-  export type RequiredParamKeys =
-    Required<Record<
-      RequiredParam,
-      ParamKey
-    >>;
-
-  export type OptionalParamKeys =
-    Partial<Record<
-      OptionalParam,
-      ParamKey
-    >>;
-
-  export type ParamKeys =
-    Required<RequiredParamKeys>
-    & Partial<OptionalParamKeys>;
-
-  //// Param value
-  export type ParamValue =
-    | string
-    | Types.stringful;
-
-  export type RequiredParamValues =
-    Required<Record<
-      RequiredParam,
-      ParamValue
-    >>;
-
-  export type OptionalParamValues =
-    Partial<Record<
-      OptionalParam,
-      ParamValue
-    >>;
-
-  export type ParamValues =
-    Required<RequiredParamValues>
-    & Partial<OptionalParamValues>;
-
-  //// Param key-value pair
-  export type ParamKeyValuePair = [ParamKey, ParamValue];
-
-  export type RequiredParamKeyValuePairs =
-    Required<Record<
-      RequiredParam,
-      ParamKeyValuePair
-    >>;
-
-  export type OptionalParamKeyValuePairs =
-    Partial<Record<
-      OptionalParam,
-      ParamKeyValuePair
-    >>;
-
-  export type ParamKeyValuePairs =
-    Required<RequiredParamKeyValuePairs>
-    & Partial<OptionalParamKeyValuePairs>;
-
-
-  // Action Handler
-  //// Action Handler records
-  export type ActionHandlerRecordInterface =
-    Required<Record<
-      RequiredAction,
-      ActionHandler
-    >>;
-
-  export interface ActionHandlerRecords extends ActionHandlerRecordInterface {
-    [Action.Checkout]: CheckoutHandler;
-    [Action.Pull]: PullHandler;
-    [Action.Commit]: CommitHandler;
-    [Action.Push]: PushHandler;
+    
+  // Command Config
+  export interface CommandConfigInterface {
+    readonly path: string,
+    readonly query: string,
+    readonly secretParamKey: Types.stringful,
+    readonly repoParamKey: Types.stringful,
+    readonly otherRequiredParamKeys?: Partial<Record<CommandParam, Types.stringful>>,
+    readonly optionalParamKeys?: Partial<Record<CommandParam, Types.stringful>>
   }
-
-  //// Action Handler type
-  export interface ActionHandlerInterface {
-    path: string;
-    query: string;
-    requiredParams: RequiredParamKeys;
-    optionalParams: OptionalParamKeys;
-  }
-
-  export abstract class ActionHandler implements ActionHandlerInterface {
-
+  
+  export abstract class CommandConfig implements CommandConfigInterface {
+    
     readonly path: string;
     readonly query: string;
-    readonly requiredParams: RequiredParamKeys;
-    readonly optionalParams: OptionalParamKeys;
-
+    readonly secretParamKey: Types.stringful;
+    readonly repoParamKey: Types.stringful;
+    readonly otherRequiredParamKeys?: Partial<Record<CommandParam, Types.stringful>>;
+    readonly optionalParamKeys?: Partial<Record<CommandParam, Types.stringful>>;
+    
     constructor(
-      path: string,
-      query: string,
-      requiredParams: typeof ActionHandler.prototype.requiredParams,
-      optionalParams: typeof ActionHandler.prototype.optionalParams = {}
+     path: string,
+     query: string,
+     secretParamKey: Types.stringful,
+     repoParamKey: Types.stringful,
+     otherRequiredParamKeys: Partial<Record<CommandParam, Types.stringful>> = {}
+     optionalParamKeys:  Partial<Record<CommandParam, Types.stringful>> = {}
     ) {
       this.path = path;
       this.query = query;
-      this.requiredParams = requiredParams;
-      this.optionalParams = optionalParams;
+      // finish later
     }
-
   }
 
-  export class CheckoutHandler extends ActionHandler {
+  export class CheckoutHandler extends CommandHandler {
     constructor(
       path: string,
       query: string,
-      requiredParams: RequiredParamKeys,
-      optionalParams: {
-        [Param.Branch]: ParamKey
+      secretParamKey: Types.stringful,
+      repoParamKey: Types.stringful,
+      otherRequiredParamKeys: {
+        [Param.Branch]: Types.stringful
       }
     ) {
-      super(path, query, requiredParams, optionalParams);
+      super(path, query, secretParamKey, repoParamKey, otherRequiredParamKeys);
     }
   }
 
-  export class PullHandler extends ActionHandler {
+  export class PullHandler extends CommandHandler {
     constructor(
       path: string,
       query: string,
-      requiredParams: RequiredParamKeys,
-      optionalParams: {}
+      secretParamKey: Types.stringful,
+      repoParamKey: Types.stringful
     ) {
-      super(path, query, requiredParams, optionalParams);
+      super(path, query, secretParamKey, repoParamKey);
     }
   }
 
-  export class CommitHandler extends ActionHandler {
+  export class CommitHandler extends CommandHandler {
     constructor(
       path: string,
       query: string,
-      requiredParams: RequiredParamKeys,
-      optionalParams: {
-        [Param.Message]: ParamKey,
-        [Param.Limit]: ParamKey
+      secretParamKey: Types.stringful,
+      repoParamKey: Types.stringful,
+      otherRequiredParamKeys: {
+        [Param.Message]: Types.stringful
       }
     ) {
-      super(path, query, requiredParams, optionalParams);
+      super(path, query, secretParamKey, repoParamKey, otherRequiredParamKeys);
     }
   }
 
-  export class PushHandler extends ActionHandler {
+  export class PushHandler extends CommandHandler {
     constructor(
       path: string,
       query: string,
-      requiredParams: RequiredParamKeys,
-      optionalParams: {}
+      secretParamKey: Types.stringful,
+      repoParamKey: Types.stringful
     ) {
-      super(path, query, requiredParams, optionalParams);
+      super(path, query, secretParamKey, repoParamKey);
     }
   }
-
-
-  // External dependencies
-  export const _Callback: typeof Callback = importModule("./system/application/browser/Callback");
+  
+  export type CommandConfigMapType = Required<Record<Command, CommandConfig>>;
+  
+  export interface CommandConfigMap extends CommandConfigMapType {
+    [Command.Checkout]: CheckoutHandler,
+    [Command.Pull]: PullHandler,
+    [Command.Commit]: CommitHandler,
+    [Command.Push]: PushHandler
+  }
 
 }
 

@@ -14,15 +14,10 @@ class Callback {
     staticParams:
       | string
       | Query
-      | Map<
-          Callback.ParamKey,
-          Callback.ParamValue
-        >
-      | {
-          [key: Callback.ParamKey]: Callback.ParamValue
-        }
+      | Callback.ParamMap
+      | Callback.ParamRecord
       | Callback.ParamTuple
-      | Callback.ParamTuples,
+      | Callback.ParamTuples = "",
     actions: {
       [key: Callback.ActionId]: Callback.ActionConfig
     } = {}
@@ -68,6 +63,34 @@ class Callback {
       | Host
   ) {
     this._rootUrl.host = host;
+  }
+  
+  get staticParams(): ParamMap {
+    return this.staticParamMap;
+  }
+  
+  get staticParamQueryString(): string {
+    return this._staticParams.toString();
+  }
+  
+  get staticParamEntries(): ParamTuples {
+    return this._staticParams.toTuples();
+  }
+  
+  get staticParamMap(): ParamMap {
+    return this._staticParams.toMap();
+  }
+  
+  set staticParams(
+    params:
+      | string
+      | Query
+      | Callback.ParamMap
+      | Callback.ParamRecord
+      | Callback.ParamTuple
+      | Callback.ParamTuples
+  ) {
+    this._staticParams = new Callback.Query(params);
   }
   
   addStaticParam(
@@ -221,6 +244,10 @@ namespace Callback {
   export type ParamTuple = [ParamKey, ParamValue];
   
   export type ParamTuples = ParamTuple[];
+  
+  export type ParamMap = Map<ParamKey, ParamValue>;
+  
+  export type ParamRecord = Record<ParamKey, ParamValue>;
   
 }
 
