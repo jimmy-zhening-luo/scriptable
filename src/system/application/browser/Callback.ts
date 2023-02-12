@@ -145,61 +145,59 @@ class Callback {
       | string
       | Query
       | Map<
-          Callback.ParamKey,
-          Callback.ParamValue
-        >
+        Callback.ParamKey,
+        Callback.ParamValue
+      >
       | {
-          [key: Callback.ParamKey]: Callback.ParamValue
-        }
+        [key: Callback.ParamKey]: Callback.ParamValue
+      }
       | Callback.ParamTuple
       | Callback.ParamTuples = ""
   ): any {
     if (this._actions.has(actionId)) {
-      const action: Callback.ActionConfig = this._actions[actionId];
+      const staticQuery: Query = this._staticParams;
+      const requestQuery: Query = new Callback
+        .Query(
+          requestParams
+        );
+      const action: Callback.ActionConfig = this
+        ._actions
+        .get(actionId) as Callback.ActionConfig;
 
-      const actionUrl: Url = new Callback.Url(this._rootUrl);
+      const actionUrl: Url = new Callback.Url(
+        this._rootUrl
+      );
       actionUrl.appendPath(
         action.path
       );
-      actionUrl.query = action.query;
+      actionUrl.query = action.queryRoot;
+      (action.requiredParams ?? []).forEach(key => {
+        if (staticQuery.hasParam(key))
+          actionUrl.addParam(
+            key,
+            staticQuery.getParam(
+              key
+            )
+          );
+        if (requestQuery.hasParam(key))
+          actionUrl.addParam(
+            key,
+            requestQuery.getParam(key)
+          );
+      });
+      (action.optionalParams ?? []).forEach(key => {
+        if (requestQuery.hasParam(key))
+          actionUrl.addParam(
+            key,
+            requestQuery.getParam(key)
+          );
+      });
 
-      const requestParams: Query = new Callback
-        .Query(
-          staticParams
-        );
-
-      action.requiredParams.forEach(
-        (key) => {
-          if (this._staticParams.hasParam(key))
-            actionUrl.addParam(
-              key,
-              this._staticParams.getParam(
-                key
-              )
-            );
-          if (requestParams.hasParam(key))
-            actionUrl.addParam(
-              key,
-              requestParams(key)
-            );
-        }
-      );
-
-      action.optionalParams.forEach(
-        (key) => {
-          if (requestParams.hasParam(key))
-            actionUrl.addParam(
-              key,
-              requestParams(key)
-            );
-        }
-      );
-
-      if (action
-        .requiredParams
-        .every((key) => actionUrl
-          .hasParam(key)
-        )
+      if (
+        action.requiredParams === undefined
+        || action.requiredParams.length === 0
+        || action.requiredParams
+          .every((key) => actionUrl.hasParam(key))
       )
         return actionUrl.xCallback();
       else
@@ -240,13 +238,10 @@ namespace Callback {
 
   export type ParamKey = Types.stringful;
   export type ParamValue = string;
-
   export type ParamTuple = [ParamKey, ParamValue];
 
   export type ParamTuples = ParamTuple[];
-
   export type ParamMap = Map<ParamKey, ParamValue>;
-
   export type ParamRecord = Record<ParamKey, ParamValue>;
 
 }
