@@ -1,15 +1,16 @@
 const EXTERNAL_SECRETS_BOOKMARK_NAME: string = "#Secrets";
 
-
 class Secret {
+
   private readonly file: ReadOnlyFile;
+
   constructor(
     subpath: string
   ) {
-    const _ReadOnlyFile: typeof ReadOnlyFile = importModule("files/ReadOnlyFile");
-    const _Bookmark: typeof Bookmark = importModule("files/file/bookmark/Bookmark");
-    this.file = new _ReadOnlyFile(
-      new _Bookmark(this.externalSecretsBookmarkName),
+    this.file = new Secret.ReadOnlyFile(
+      new Secret.ReadOnlyFile.Bookmark(
+        this.externalSecretsBookmarkName
+      ),
       subpath
     );
   }
@@ -49,7 +50,23 @@ class Secret {
   toString(): string {
     return this.secret;
   }
+
+  get ReadOnlyFile(): typeof ReadOnlyFile {
+    return Secret.ReadOnlyFile;
+  }
+
+  get Paths(): typeof Paths {
+    return Secret.Paths;
+  }
+
+  static get ReadOnlyFile(): typeof ReadOnlyFile {
+    return importModule("files/ReadOnlyFile");
+  }
+
+  static get Paths(): typeof Paths {
+    return Secret.ReadOnlyFile.Paths;
+  }
+
 }
 
 module.exports = Secret;
-

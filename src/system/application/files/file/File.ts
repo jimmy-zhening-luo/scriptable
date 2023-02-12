@@ -1,4 +1,3 @@
-const _Bookmark: typeof Bookmark = importModule("bookmark/Bookmark");
 class File {
   #subpath: string = String();
   readonly bookmark: Bookmark;
@@ -17,10 +16,10 @@ class File {
   constructor(
     base: Bookmark
       | File
-      | string = new _Bookmark(),
+      | string = new File.Bookmark(),
     subpath: string = String()
   ) {
-    if (base instanceof _Bookmark) {
+    if (base instanceof File.Bookmark) {
       this.bookmark = base;
       this.subpath = subpath;
     }
@@ -32,7 +31,7 @@ class File {
       );
     }
     else {
-      this.bookmark = new _Bookmark();
+      this.bookmark = new File.Bookmark();
       this.subpath = base;
     }
   }
@@ -303,12 +302,24 @@ class File {
     }
   }
 
-  protected static get m(): FileManager {
-    return FileManager.iCloud();
+  get Bookmark(): typeof Bookmark {
+    return File.Bookmark;
   }
 
-  protected static get Paths(): typeof Paths {
+  get Paths(): typeof Paths {
+    return File.Paths;
+  }
+
+  static get Bookmark(): typeof Bookmark {
+    return importModule("bookmark/Bookmark");
+  }
+
+  static get Paths(): typeof Paths {
     return importModule("./system/application/common/paths/Paths");
+  }
+
+  protected static get m(): FileManager {
+    return FileManager.iCloud();
   }
 
 }

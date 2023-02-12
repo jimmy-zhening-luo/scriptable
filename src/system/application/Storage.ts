@@ -1,17 +1,18 @@
 const STORAGE_DIR_SUBPATH_FROM_ROOT = "!storage";
 
 class Storage {
+
   readonly file: File;
+
   constructor(
     storageSubdirectoryPath: string,
     programName: string,
     subpath: string = "default.txt"
   ) {
-    const _File: typeof File = importModule("files/file/File");
-    this.file = new _File(
+    this.file = new Storage.File(
       this.storageDirFile,
-      _File.joinPaths(
-        _File.joinPaths(
+      Storage.Paths.joinPaths(
+        Storage.Paths.joinPaths(
           storageSubdirectoryPath,
           programName
         ),
@@ -21,10 +22,13 @@ class Storage {
   }
 
   protected get storageDirFile(): File {
-    const _File: typeof File = importModule("files/file/File");
-    const _Bookmark: typeof Bookmark = importModule("files/file/bookmark/Bookmark");
-    const _Installer: typeof Installer = importModule("./!boot/Boot");
-    return new _File(new _Bookmark(_Installer.runtimeRootBookmarkName), this.storageDirSubpathFromRoot);
+    const _installer: typeof Installer = importModule("./!boot/Boot");
+    return new Storage.File(
+      new Storage.File.Bookmark(
+        _installer.runtimeRootBookmarkName
+      ),
+      this.storageDirSubpathFromRoot
+    );
   }
 
   protected get storageDirSubpathFromRoot(): string {
@@ -56,6 +60,23 @@ class Storage {
   toString(): string {
     return this.data;
   }
+
+  get File(): typeof File {
+    return Storage.File;
+  }
+
+  get Paths(): typeof Paths {
+    return Storage.Paths;
+  }
+
+  static get File(): typeof File {
+    return importModule("files/file/File");
+  }
+
+  static get Paths(): typeof Paths {
+    return Storage.File.Paths;
+  }
+
 }
 
 module.exports = Storage;

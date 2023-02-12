@@ -6,22 +6,27 @@ class Config {
     configSubdirectoryPath: string,
     programName: string
   ) {
-    const _ReadOnlyFile: typeof ReadOnlyFile = importModule("files/ReadOnlyFile");
-    this.file = new _ReadOnlyFile(
-      this.configDirFile as ReadOnlyFile,
-      _ReadOnlyFile.joinPaths(
+    this.file = new Config.ReadOnlyFile(
+      this.configDirFile,
+      Config.Paths.joinPaths(
         configSubdirectoryPath,
-        [programName, "json"]
+        [
+          programName,
+          "json"
+        ]
           .join(".")
       )
     );
   }
 
   protected get configDirFile(): ReadOnlyFile {
-    const _ReadOnlyFile: typeof ReadOnlyFile = importModule("files/ReadOnlyFile");
-    const _Bookmark: typeof Bookmark = importModule("files/file/bookmark/Bookmark");
-    const _Installer: typeof Installer = importModule("./!boot/Boot");
-    return new _ReadOnlyFile(new _Bookmark(_Installer.runtimeRootBookmarkName), this.configDirSubpathFromRoot);
+    const _installer: typeof Installer = importModule("./!boot/Boot");
+    return new Config.ReadOnlyFile(
+      new Config.ReadOnlyFile.Bookmark(
+        _installer.runtimeRootBookmarkName
+      ),
+      this.configDirSubpathFromRoot
+    );
   }
 
   protected get configDirSubpathFromRoot(): string {
@@ -34,9 +39,11 @@ class Config {
 
   get isParseable(): boolean {
     try {
-      JSON.parse(this.file.data as string);
+      JSON.parse(
+        this.file.data
+      );
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   }
@@ -78,60 +85,79 @@ class Config {
   }
 
   protected mergeSettings(
-    winningSettings: Config.Settings | undefined,
-    losingSettings: Config.Settings | undefined
+    winningSettings:
+      | Config.Settings
+      | undefined,
+    losingSettings:
+      | Config.Settings
+      | undefined
   ): Config.Settings {
-    if (winningSettings === undefined && losingSettings !== undefined)
+    if (
+      winningSettings === undefined
+      && losingSettings !== undefined
+    )
       return losingSettings;
-    else if (losingSettings === undefined && winningSettings !== undefined)
+    else if (
+      losingSettings === undefined
+      && winningSettings !== undefined
+    )
       return winningSettings;
-    else if (losingSettings !== undefined && winningSettings !== undefined) {
-      const commonSettingKeys: Array<string> = intersectKeys(
+    else if (
+      losingSettings !== undefined
+      && winningSettings !== undefined
+    ) {
+      const commonSettingKeys: string[] = intersectKeys(
         winningSettings,
         losingSettings
       );
-      const keysUniqueToWinningSettings: Array<string> = uniqueKeysOf(
+      const keysUniqueToWinningSettings: string[] = uniqueKeysOf(
         winningSettings,
         commonSettingKeys
       );
-      const keysUniqueToLosingSettings: Array<string> = uniqueKeysOf(
+      const keysUniqueToLosingSettings: string[] = uniqueKeysOf(
         losingSettings,
         commonSettingKeys
       );
-      const mergedSettingsMap = new Map<string, Config.SettingValue>();
+      const mergedSettingsMap:
+        Map<
+          Types.stringful,
+          Config.SettingValue
+        > = new Map();
       for (const loser of keysUniqueToLosingSettings)
         mergedSettingsMap.set(
           loser,
-          losingSettings[loser] as Config.SettingValue
+          losingSettings[loser]
         );
       for (const winner of keysUniqueToWinningSettings)
         mergedSettingsMap.set(
           winner,
-          winningSettings[winner] as Config.SettingValue
+          winningSettings[winner]
         );
       for (const key of commonSettingKeys) {
-        if (isPrimitive(winningSettings[key] as Config.SettingValue)
-          && isPrimitive(losingSettings[key] as Config.SettingValue)
+        if (
+          isPrimitive(winningSettings[key])
+          && isPrimitive(losingSettings[key])
         )
           mergedSettingsMap.set(
             key,
-            winningSettings[key] as Config.primitive
+            winningSettings[key]
           );
-        else if (Array.isArray(winningSettings[key])
+        else if (
+          Array.isArray(winningSettings[key])
           && Array.isArray(losingSettings[key])
         )
           mergedSettingsMap.set(
             key,
             mergeArrays(
-              winningSettings[key] as Array<Config.SettingValue>,
-              losingSettings[key] as Array<Config.SettingValue>
+              winningSettings[key] as Config.SettingValue[],
+              losingSettings[key] as Config.SettingValue[]
             )
           );
         else if (Array.isArray(winningSettings[key]))
           mergedSettingsMap.set(
             key,
             mergeArrays(
-              winningSettings[key] as Array<Config.SettingValue>,
+              winningSettings[key] as Config.SettingValue[],
               [losingSettings[key] as Config.SettingValue]
             )
           );
@@ -140,7 +166,7 @@ class Config {
             key,
             mergeArrays(
               [winningSettings[key] as Config.SettingValue],
-              losingSettings[key] as Array<Config.SettingValue>
+              losingSettings[key] as Config.SettingValue[]
             )
           );
         else
@@ -152,7 +178,9 @@ class Config {
             )
           );
       }
-      return Object.fromEntries(mergedSettingsMap);
+      return Object.fromEntries(
+        mergedSettingsMap
+      );
     }
     else
       return {};
@@ -160,40 +188,59 @@ class Config {
     function isPrimitive(
       obj: Config.SettingValue
     ): boolean {
-      return (
-        obj?.constructor === String
-        || obj?.constructor === Number
-        || obj?.constructor === Boolean
-      );
+      return typeof obj === "string"
+        || typeof obj === "number"
+        || typeof obj === "boolean";
     }
+
     function mergeArrays(
-      winner: Array<Config.SettingValue>,
-      loser: Array<Config.SettingValue>
-    ): Array<Config.SettingValue> {
-      return winner.concat(loser);
+      winner: Config.SettingValue[],
+      loser: Config.SettingValue[]
+    ): Config.SettingValue[] {
+      return winner
+        .concat(
+          loser
+        );
     }
+
     function intersectKeys(
       a: Config.Settings,
       b: Config.Settings
-    ): Array<string> {
-      return Object.keys(a)
-        .filter(
-          (aKey: string) => (
-            Object.keys(b).includes(aKey)
-          )
+    ): string[] {
+      return Object
+        .keys(a)
+        .filter(keyOfA => Object
+          .keys(b)
+          .includes(keyOfA)
         );
     }
+
     function uniqueKeysOf(
       obj: Config.Settings,
-      commonSettingKeys: Array<string>
-    ): Array<string> {
-      return Object.keys(obj)
-        .filter(
-          (objKey: string) => (
-            !commonSettingKeys.includes(objKey)
-          )
+      sharedKeys: string[]
+    ): string[] {
+      return Object
+        .keys(obj)
+        .filter(objKey => !sharedKeys
+          .includes(objKey)
         );
     }
+  }
+
+  get ReadOnlyFile(): typeof ReadOnlyFile {
+    return Config.ReadOnlyFile;
+  }
+
+  get Paths(): typeof Paths {
+    return Config.Paths;
+  }
+
+  static get ReadOnlyFile(): typeof ReadOnlyFile {
+    return importModule("files/ReadOnlyFile");
+  }
+
+  static get Paths(): typeof Paths {
+    return Config.ReadOnlyFile.Paths;
   }
 }
 
@@ -216,16 +263,11 @@ namespace Config {
   };
 
   export type SettingValue = (
-    primitive
+    Types.primitive
     | Array<SettingValue>
     | Settings
   );
 
-  export type primitive = (
-    string
-    | number
-    | boolean
-  );
 }
 
 module.exports = Config;
