@@ -1,23 +1,45 @@
 class Callback {
 
   private readonly _rootUrl: Url;
-  secretParamName?: Types.stringful;
-  secret?: string;
+  private _staticParams: Query;
+  private _actions:
+    Map<
+      Callback.ActionId,
+      Callback.ActionConfig
+    >;
 
   constructor(
     scheme: Types.stringful | Scheme,
     host: string | Host,
-    secretParamName?: Types.stringful,
-    secret?: string
+    staticParams:
+      | string
+      | Query
+      | Map<
+          Callback.ParamKey,
+          Callback.ParamValue
+        >
+      | {
+          [key: Callback.ParamKey]: Callback.ParamValue
+        }
+      | Callback.ParamTuple
+      | Callback.ParamTuples,
+    actions: {
+      [key: Callback.ActionId]: Callback.ActionConfig
+    } = {}
   ) {
-    this._rootUrl = new Callback._Url(
+    this._rootUrl = new Callback.Url(
       scheme,
       host
     );
-    if (secretParamName !== undefined) {
-      this.secretParamName = secretParamName;
-      this.secret = secret ?? "";
-    }
+    this._staticParams = new Callback
+      .Query(
+        staticParams
+      );
+    this._actions = new Map(
+      Object.entries(
+        actions
+      )
+    );
   }
 
   get rootUrl(): Types.stringful {
@@ -47,6 +69,24 @@ class Callback {
   ) {
     this._rootUrl.host = host;
   }
+  
+  addStaticParam(
+    ...params: Parameters<Query["addParam"]>
+  ): this {
+    this._staticParams = this._staticParams.addParam(
+      ...params
+    );
+    return this;
+  }
+  
+  deleteStaticParam(
+    ...keys: Parameters<Query["deleteParam"]>
+  ): this {
+    this._staticParams = this._staticParams.deleteParam(
+      ...keys
+    );
+    return this;
+  }
 
   request(
     path: string | Path,
@@ -55,28 +95,134 @@ class Callback {
       | Query
       | Record<string, string>
       | [string, string]
-      | [string, string][]
+      | [string, string][],
+    attachStaticParams: boolean = true,
+    overrideStaticParams: boolean = true
   ): any {
-    const cUrl: Url = new Callback._Url(this._rootUrl);
+    const cUrl: Url = new Callback.Url(this._rootUrl);
     cUrl.path = path;
-    cUrl.query = query;
-    if (this.secretParamName !== undefined
-      && this.secret !== undefined
-      && this.secret !== ""
-    )
-      cUrl.addParam(
-        this.secretParamName,
-        this.secret
-      );
+    if (attachStaticParams) {
+      if (overrideStaticParams) {
+        cUrl.query = this._staticParams;
+        cUrl.addParam(query);
+      }
+      else {
+        cUrl.query = query;
+        cUrl.addParam(this._staticParams);
+      }
+    }
+    else
+      cUrl.query = query;
     return cUrl.xCallback;
+  }
+  
+  requestAction(
+    actionId: Callback.ActionId,
+    requestParams:
+      | string
+      | Query
+      | Map<
+          Callback.ParamKey,
+          Callback.ParamValue
+        >
+      | {
+          [key: Callback.ParamKey]: Callback.ParamValue
+        }
+      | Callback.ParamTuple
+      | Callback.ParamTuples = ""
+  ): any {
+    if (this._actions.has(actionId)) {
+      const action: Callback.ActionConfig = this._actions[actionId];
+      
+      const actionUrl: Url = new Callback.Url(this._rootUrl);
+      actionUrl.appendPath(
+        action.path
+      );
+      actionUrl.query = action.query;
+      
+      const requestParams: Query = new Callback
+        .Query(
+          staticParams
+        );
+      
+      action.requiredParams.forEach(
+        (key) => {
+          if (this._staticParams.hasParam(key))
+            actionUrl.addParam(
+              key,
+              this._staticParams.getParam(
+                key
+              )
+            );
+          if (requestParams.hasParam(key))
+            actionUrl.addParam(
+              key,
+              requestParams(key)
+            );
+        }
+      );
+      
+      action.optionalParams.forEach(
+        (key) => {
+          if (requestParams.hasParam(key))
+            actionUrl.addParam(
+              key,
+              requestParams(key)
+            );
+        }
+      );
+      
+      if (action
+        .requiredParams
+        .every((key) => actionUrl
+          .hasParam(key)
+        )
+      )
+        return actionUrl.xCallback();
+      else
+        return {};
+    }
+    else
+      return {};
+  }
+  
+  get Url(): typeof Url { 
+    return Callback.Url;
+  }
+  
+  get Query(): typeof Query { 
+    return Callback.Query;
+  }
+  
+  static get Url(): typeof Url { 
+    return importModule("Url");
+  }
+  
+  static get Query(): typeof Query { 
+    return Callback.Url.Query;
   }
 
 }
 
 namespace Callback {
-
-  export const _Url: typeof Url = importModule("Url");
-
+  
+  export type ActionId = Types.stringful;
+  
+  export interface ActionConfig {
+    path: string,
+    queryRoot: string,
+    requiredParams?: ParamKey[],
+    optionalParams?: ParamKey[]
+  }
+  
+  export type ParamKey = Types.stringful;
+  export type ParamValue = string;
+  
+  export type ParamTuple = [ParamKey, ParamValue];
+  
+  export type ParamTuples = ParamTuple[];
+  
 }
 
 module.exports = Callback;
+    

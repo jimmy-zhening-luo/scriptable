@@ -162,6 +162,16 @@ class Url {
   ) {
     this.#path = new Url.Path(path);
   }
+  
+  appendPath(
+    path:
+      | null | undefined
+      | string
+      | Path
+  ): this {
+    this.path = this.#path.appendPath(path);
+    return this;
+  }
 
   get query(): string {
     return this.queryString;
@@ -192,30 +202,34 @@ class Url {
   ) {
     this.#query = new Url.Query(query);
   }
+  
+  hasParam(
+    key: Types.stringful
+  ): boolean {
+    return this.#query.hasParam(key);
+  }
+  
+  getParam(
+    key: Types.stringful
+  ): string {
+    return this.#query.getParam(key);
+  }
 
   addParam(
-    keyOrKeyValue:
-      | string
-      | Map<Types.stringful, string>
-      | Record<Types.stringful, string>
-      | [Types.stringful, string]
-      | [Types.stringful, string][],
-    value?: string
+    ...params: Parameters<Query["addParam"]>
   ): this {
-    this.query = this.#query.addParam(keyOrKeyValue, value);
+    this.query = this.#query.addParam(
+      ...params
+    );
     return this;
   }
 
   deleteParam(
-    key:
-      | Types.stringful
-      | Types.stringful[]
+    ...keys: Parameters<Query["deleteParam"]>
   ): this {
-    Array.isArray(key) ?
-      key.forEach((key) => {
-        this.addParam(key, "");
-      })
-      : this.addParam(key, "");
+    this.query = this.#query.deleteParam(
+      ...keys
+    );
     return this;
   }
 

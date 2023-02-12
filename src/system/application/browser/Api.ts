@@ -25,9 +25,9 @@ class Api {
       | RequestBody.RequestBodyInterface,
     timeoutSeconds?: number
   ) {
-    this._url = new Api._Url(url);
-    this._request = new Api._ApiRequest(
-      new Api._Url(url).toString(),
+    this._url = new Api.Url(url);
+    this._request = new Api.ApiRequest(
+      new Api.Url(url).toString(),
       method,
       authHeader,
       headers,
@@ -38,7 +38,7 @@ class Api {
 
   private handleRequest(): ApiResponse {
     this._request.url = this.url;
-    return new Api._ApiResponse(
+    return new Api.ApiResponse(
       this._request.request()
     );
   }
@@ -229,16 +229,34 @@ class Api {
   set timeout(timeoutSeconds: number) {
     this._request.timeout = timeoutSeconds;
   }
+  
+  get Url(): typeof Url { 
+    return Api.Url;
+  }
+  
+  get ApiRequest(): typeof ApiRequest { 
+    return Api.ApiRequest;
+  }
+  
+  get ApiResponse(): typeof ApiResponse { 
+    return Api.ApiResponse;
+  }
+  
+  static get Url(): typeof Url { 
+    return importModule("Url");
+  }
+  
+  static get ApiRequest(): typeof ApiRequest {
+    return importModule("apihandlers/ApiRequest") 
+  }
+
+  static get ApiResponse(): typeof ApiResponse {
+    return importModule("apihandlers/ApiResponse");
+  }
 
 }
 
 namespace Api {
-
-  export const _Url: typeof Url = importModule("Url");
-
-  export const _ApiRequest: typeof ApiRequest = importModule("apihandlers/ApiRequest");
-
-  export const _ApiResponse: typeof ApiResponse = importModule("apihandlers/ApiResponse");
   
   export const Method: typeof ApiRequest.Method = _ApiRequest.Method;
 

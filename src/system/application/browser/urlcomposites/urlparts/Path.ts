@@ -12,6 +12,20 @@ class Path extends pa_UrlPart {
         path
         : null;
   }
+  
+  appendPath(
+    subpath:
+      | null | undefined
+      | string
+      | Path
+  ) {
+    return new Path(
+      this.Paths.joinPaths(
+        this.toString(),
+        new Path(subpath).toString()
+      )
+    );
+  }
 }
 
 namespace Path {

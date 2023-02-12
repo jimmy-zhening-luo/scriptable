@@ -76,6 +76,19 @@ class Query extends qu_UrlPart {
   get queryMap(): Map<Types.stringful, string> {
     return Query.queryStringToMap(this.query);
   }
+  
+  hasParam(
+    key: Types.stringful
+  ): boolean {
+    return this.queryMap.has(key)
+      && this.queryMap[key] !== "";
+  }
+  
+  getParam(
+    key: Types.stringful
+  ): string {
+    return this.queryMap[key] ?? "";
+  }
 
   addParam(
     _keyOrKeyValue:
@@ -125,8 +138,24 @@ class Query extends qu_UrlPart {
     return new Query(queryMapCopy);
   }
 
-  deleteParam(key: Types.stringful): Query {
-    return this.addParam(key, "");
+  deleteParam(
+    keys:
+      | Types.stringful
+      | Types.stringful[]
+  ): Query {
+    let newQuery: Query = new Query(this);
+    Array.isArray(keys) ?
+      keys.forEach((key) => {
+        newQuery = newQuery.addParam(
+          key,
+          ""
+        );
+      })
+      : newQuery = newQuery.addParam(
+        key,
+        ""
+      );
+    return newQuery;
   }
 
   toTuples(): typeof Query.prototype.queryTuples {
@@ -151,13 +180,20 @@ class Query extends qu_UrlPart {
           keyValueTuple.slice(1).join("=")
         ]) as [Types.stringful, string][]
     )
-      .filter(keyValueTuple => keyValueTuple[0] !== "");
+      .filter(tuple => tuple[0] !== ""
+        && tuple[1] !== ""
+      );
   }
 
   static tuplesToMap(
     tuples: [Types.stringful, string][]
   ): Map<Types.stringful, string> {
-    return new Map(tuples);
+    return new Map(
+      tuples
+        .filter(tuple => tuple[0] !== ""
+          && tuple[1] !== ""
+        );
+    );
   }
 
   static queryStringToMap(
@@ -175,14 +211,22 @@ class Query extends qu_UrlPart {
       | Map<Types.stringful, string>
       | Record<Types.stringful, string>
   ): [Types.stringful, string][] {
-    return Array.from(Object.entries(record));
+    return Array.from(
+      Object.entries(
+        record
+      )
+    ).filter(tuple => tuple[0] !== ""
+      && tuple[1] !== ""
+    );
   }
 
   static tuplesToQueryString(
     tuples: [Types.stringful, string][]
   ): string {
     return tuples
-      .map(keyValueTuple => keyValueTuple.join("="))
+      .filter(tuple => tuple[0] !== ""
+        && tuple[1] !== ""
+      ).map(keyValueTuple => keyValueTuple.join("="))
       .join("&");
   }
 
