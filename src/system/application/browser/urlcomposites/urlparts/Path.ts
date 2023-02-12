@@ -12,7 +12,7 @@ class Path extends pa_UrlPart {
         path
         : null;
   }
-  
+
   appendPath(
     subpath:
       | null | undefined

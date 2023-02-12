@@ -64,23 +64,23 @@ class Callback {
   ) {
     this._rootUrl.host = host;
   }
-  
-  get staticParams(): ParamMap {
+
+  get staticParams(): Callback.ParamMap {
     return this.staticParamMap;
   }
-  
+
   get staticParamQueryString(): string {
     return this._staticParams.toString();
   }
-  
-  get staticParamEntries(): ParamTuples {
+
+  get staticParamEntries(): Callback.ParamTuples {
     return this._staticParams.toTuples();
   }
-  
-  get staticParamMap(): ParamMap {
+
+  get staticParamMap(): Callback.ParamMap {
     return this._staticParams.toMap();
   }
-  
+
   set staticParams(
     params:
       | string
@@ -92,7 +92,7 @@ class Callback {
   ) {
     this._staticParams = new Callback.Query(params);
   }
-  
+
   addStaticParam(
     ...params: Parameters<Query["addParam"]>
   ): this {
@@ -101,7 +101,7 @@ class Callback {
     );
     return this;
   }
-  
+
   deleteStaticParam(
     ...keys: Parameters<Query["deleteParam"]>
   ): this {
@@ -138,7 +138,7 @@ class Callback {
       cUrl.query = query;
     return cUrl.xCallback;
   }
-  
+
   requestAction(
     actionId: Callback.ActionId,
     requestParams:
@@ -156,18 +156,18 @@ class Callback {
   ): any {
     if (this._actions.has(actionId)) {
       const action: Callback.ActionConfig = this._actions[actionId];
-      
+
       const actionUrl: Url = new Callback.Url(this._rootUrl);
       actionUrl.appendPath(
         action.path
       );
       actionUrl.query = action.query;
-      
+
       const requestParams: Query = new Callback
         .Query(
           staticParams
         );
-      
+
       action.requiredParams.forEach(
         (key) => {
           if (this._staticParams.hasParam(key))
@@ -184,7 +184,7 @@ class Callback {
             );
         }
       );
-      
+
       action.optionalParams.forEach(
         (key) => {
           if (requestParams.hasParam(key))
@@ -194,7 +194,7 @@ class Callback {
             );
         }
       );
-      
+
       if (action
         .requiredParams
         .every((key) => actionUrl
@@ -208,48 +208,47 @@ class Callback {
     else
       return {};
   }
-  
-  get Url(): typeof Url { 
+
+  get Url(): typeof Url {
     return Callback.Url;
   }
-  
-  get Query(): typeof Query { 
+
+  get Query(): typeof Query {
     return Callback.Query;
   }
-  
-  static get Url(): typeof Url { 
+
+  static get Url(): typeof Url {
     return importModule("Url");
   }
-  
-  static get Query(): typeof Query { 
+
+  static get Query(): typeof Query {
     return Callback.Url.Query;
   }
 
 }
 
 namespace Callback {
-  
+
   export type ActionId = Types.stringful;
-  
+
   export interface ActionConfig {
     path: string,
     queryRoot: string,
     requiredParams?: ParamKey[],
     optionalParams?: ParamKey[]
   }
-  
+
   export type ParamKey = Types.stringful;
   export type ParamValue = string;
-  
+
   export type ParamTuple = [ParamKey, ParamValue];
-  
+
   export type ParamTuples = ParamTuple[];
-  
+
   export type ParamMap = Map<ParamKey, ParamValue>;
-  
+
   export type ParamRecord = Record<ParamKey, ParamValue>;
-  
+
 }
 
 module.exports = Callback;
-    

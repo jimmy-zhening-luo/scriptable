@@ -162,7 +162,7 @@ class Url {
   ) {
     this.#path = new Url.Path(path);
   }
-  
+
   appendPath(
     path:
       | null | undefined
@@ -202,13 +202,13 @@ class Url {
   ) {
     this.#query = new Url.Query(query);
   }
-  
+
   hasParam(
     key: Types.stringful
   ): boolean {
     return this.#query.hasParam(key);
   }
-  
+
   getParam(
     key: Types.stringful
   ): string {

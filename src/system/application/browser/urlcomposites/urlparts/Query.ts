@@ -76,18 +76,18 @@ class Query extends qu_UrlPart {
   get queryMap(): Map<Types.stringful, string> {
     return Query.queryStringToMap(this.query);
   }
-  
+
   hasParam(
     key: Types.stringful
   ): boolean {
     return this.queryMap.has(key)
-      && this.queryMap[key] !== "";
+      && this.queryMap.get(key) !== "";
   }
-  
+
   getParam(
     key: Types.stringful
   ): string {
-    return this.queryMap[key] ?? "";
+    return this.queryMap.get(key) ?? "";
   }
 
   addParam(
@@ -152,7 +152,7 @@ class Query extends qu_UrlPart {
         );
       })
       : newQuery = newQuery.addParam(
-        key,
+        keys,
         ""
       );
     return newQuery;
@@ -192,7 +192,7 @@ class Query extends qu_UrlPart {
       tuples
         .filter(tuple => tuple[0] !== ""
           && tuple[1] !== ""
-        );
+        )
     );
   }
 
