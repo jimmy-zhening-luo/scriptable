@@ -229,25 +229,25 @@ class Api {
   set timeout(timeoutSeconds: number) {
     this._request.timeout = timeoutSeconds;
   }
-  
-  get Url(): typeof Url { 
+
+  get Url(): typeof Url {
     return Api.Url;
   }
-  
-  get ApiRequest(): typeof ApiRequest { 
+
+  get ApiRequest(): typeof ApiRequest {
     return Api.ApiRequest;
   }
-  
-  get ApiResponse(): typeof ApiResponse { 
+
+  get ApiResponse(): typeof ApiResponse {
     return Api.ApiResponse;
   }
-  
-  static get Url(): typeof Url { 
+
+  static get Url(): typeof Url {
     return importModule("Url");
   }
-  
+
   static get ApiRequest(): typeof ApiRequest {
-    return importModule("apihandlers/ApiRequest") 
+    return importModule("apihandlers/ApiRequest")
   }
 
   static get ApiResponse(): typeof ApiResponse {
@@ -257,8 +257,8 @@ class Api {
 }
 
 namespace Api {
-  
-  export const Method: typeof ApiRequest.Method = _ApiRequest.Method;
+
+  export const Method: typeof ApiRequest.Method = Api.ApiRequest.Method;
 
 }
 
