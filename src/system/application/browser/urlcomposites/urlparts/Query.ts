@@ -92,7 +92,8 @@ class Query extends qu_UrlPart {
 
   addParam(
     _keyOrKeyValue:
-      Types.stringful
+      | Types.stringful
+      | Query
       | Map<Types.stringful, string>
       | Record<Types.stringful, string>
       | [Types.stringful, string]
@@ -110,6 +111,10 @@ class Query extends qu_UrlPart {
           _value
         ]
       );
+    else if (_keyOrKeyValue instanceof Query)
+      newParamTuples.push(
+        ..._keyOrKeyValue.queryTuples
+      );
     else if (Array.isArray(_keyOrKeyValue)) {
       if (_keyOrKeyValue.length > 0) {
         if (
@@ -117,9 +122,13 @@ class Query extends qu_UrlPart {
           && typeof _keyOrKeyValue[0] === "string"
           && typeof _keyOrKeyValue[1] === "string"
         )
-          newParamTuples.push(_keyOrKeyValue as [Types.stringful, string]);
+          newParamTuples.push(
+            _keyOrKeyValue as [Types.stringful, string]
+          );
         else
-          newParamTuples.push(..._keyOrKeyValue as [Types.stringful, string][]);
+          newParamTuples.push(
+            ..._keyOrKeyValue as [Types.stringful, string][]
+          );
       }
     }
     else {
