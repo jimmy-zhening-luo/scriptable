@@ -1,4 +1,3 @@
-import { secret } from '../../../../stl/STL';
 abstract class Repository {
 
   private readonly callbackBase: Callback;
@@ -59,23 +58,18 @@ abstract class Repository {
         Callback.ActionConfig
       > = new Map();
 
-    for (const command: Repository.Command in Repository.Command) {
+    for (const command in Repository.Command) {
       const config: Repository.CommandConfig = commandConfigMap[
         Repository.Command[command as keyof typeof Repository.Command]];
-      for (const param in config.otherRequiredParamKeys ?? {})
-
-
       actionMap.set(
-        command.toString(),
+        command,
         {
           path: config.path,
           queryRoot: config.query,
           requiredParams: [
             secretParamName,
             repoParamName,
-            ...(config.otherRequiredParamKeys ?? {}).
           ]
-          optionalParams: []
         }
       );
     }
@@ -99,7 +93,6 @@ abstract class Repository {
         requiredParams?: {
 
         }
-        optionalParams?:
       }
     }
   }
