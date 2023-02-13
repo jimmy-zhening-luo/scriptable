@@ -9,13 +9,7 @@ class ApiRequest {
   constructor(
     url: Types.stringful,
     method: ApiRequest.Method = ApiRequest.Method.GET,
-    authHeader?:
-      | [string, string]
-      | string
-      | {
-        authType: string,
-        authToken: string
-      },
+    authHeader?: Parameters,
     headers?: RequestHeaders.Input,
     body?:
       | string

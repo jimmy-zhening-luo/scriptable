@@ -1,86 +1,82 @@
 class RequestHeaders {
 
-  private readonly _headers: {
-    Authorization?: AuthRequestHeader
-    [key: Types.stringful]: RequestHeader<Types.primitive>
-  };
-
-  constructor();
-  constructor(
-    auth: string,
-    headers?: RequestHeaders.Input
-  );
-  constructor(
-    authType: string,
-    authToken: string,
-    headers?: RequestHeaders.Input
-  );
-  constructor(headers?: RequestHeaders.Input);
+  private readonly _headers: RequestHeaders.RequestHeaderRecord;
 
   constructor(
-    authOrAuthTypeOrHeaders?:
+    authOrHeaders?:
       | string
-      | RequestHeaders.Input,
+      | AuthRequestHeader
+      | Parameters<RequestHeaders["addHeaders"]>[0],
     authTokenOrHeaders?:
       | string
-      | RequestHeaders.Input,
+      | Parameters<RequestHeaders["addHeaders"]>[0],
     headers?:
-      | RequestHeaders.Input
+      | Parameters<RequestHeaders["addHeaders"]>[0]
   ) {
     this._headers = {};
-    if (authOrAuthTypeOrHeaders === undefined) { }
-    else if (typeof authOrAuthTypeOrHeaders !== "string")
-      this.add(authOrAuthTypeOrHeaders);
+    if (authStringOrAuthTypeOrHeaders === undefined) { }
+    else if (typeof authStringOrAuthTypeOrHeaders !== "string")
+      this.addHeaders(
+        authStringOrAuthTypeOrHeaders
+      );
     else {
-      if (authTokenOrHeaders === undefined || typeof authTokenOrHeaders !== "string")
-        this.auth = authOrAuthTypeOrHeaders;
+      if (
+        authTokenOrHeaders === undefined
+        || typeof authTokenOrHeaders !== "string"
+      )
+        this.auth = authStringOrAuthTypeOrHeaders;
       else
-        this.setAuthTypeAndToken(authOrAuthTypeOrHeaders, authTokenOrHeaders);
+        this.setAuthTypeAndToken(
+          authStringOrAuthTypeOrHeaders,
+          authTokenOrHeaders
+        );
 
       if (authTokenOrHeaders === undefined) { }
       else if (typeof authTokenOrHeaders === "string") {
         if (headers !== undefined)
-          this.add(headers);
+          this.addHeaders(
+            headers
+          );
       }
       else
-        this.add(authTokenOrHeaders);
+        this.addHeaders(
+          authTokenOrHeaders
+        );
     }
+    for (const key in this._headers)
+      if (this._headers[key].value === "")
+        delete this._headers[key];
   }
 
-  get auth(): string {
+  get auth(): typeof AuthRequestHeader.prototype.auth {
     return "Authorization" in this._headers ?
-      this._headers.Authorization.auth
+      this._headers.Authorization.authString
       : "";
   }
 
   set auth(
-    authString: string
+    auth: ConstructorParameters<typeof AuthRequestHeader>[0]
   ) {
-    authString === "" ?
-      delete this._headers.Authorization
-      : this._headers.Authorization = new RequestHeaders._AuthRequestHeader(authString);
+    this._headers.Authorization = new this.AuthRequestHeader(
+      auth
+    );
+    if (this._headers.Authorization.auth === "")
+      delete this._headers.Authorization;
   }
 
-  get keys(): Types.stringful[] {
-    return Object.keys(this._headers);
-  }
-
-  get headers(): Record<Types.stringful, Types.primitive> {
-    return this.keys
-      .reduce(
-        (obj, key) => {
-          obj[key] = this._headers[key].value;
-          return obj;
-        },
-        {} as typeof RequestHeaders.prototype.headers
-      );
+  hasAuth(): boolean {
+    return this.headers.has("Authorization");
   }
 
   setAuthTypeAndToken(
     authType: string,
-    token: string
+    authToken: string
   ): this {
-    this.auth = [authType, token].join(" ");
+    this.auth = [
+      authType,
+      authToken
+    ]
+      .join(" ");
     return this;
   }
 
@@ -89,34 +85,103 @@ class RequestHeaders {
     return this;
   }
 
-  set(
-    key: Types.stringful,
-    value: Types.primitive
+
+  get keys(): Types.stringful[] {
+    return Array.from(
+      this.headers.keys()
+    );
+  }
+
+  get headers(): Map<Types.stringful, Types.primitive> {
+    return new Map(
+      Array.from(
+        Object.entries(
+          this._headers
+        )
+      ).map(
+        ([key, value]) => [key, value.value]
+      )
+    );
+  }
+
+  get stringHeaders(): Map<Types.stringful, string> {
+    return new Map(
+      Array.from(
+        this.headers
+      ).map(
+        ([key, value]) => [key, value.toString()]
+      )
+    );
+  }
+
+  hasHeader(
+    headerKey: Types.stringful
+  ): boolean {
+    return this.headers.has(headerKey);
+  }
+
+  getHeader(
+    headerKey: Types.stringful
+  ): string {
+    return headerKey in this._headers ?
+      this._headers[headerKey].header
+      : "";
+  }
+
+  getHeaderValue(
+    headerKey: Types.stringful
+  ): Types.primitive {
+    return headerKey in this._headers ?
+      this._headers[headerKey].value
+      : "";
+  }
+
+  getHeaderValueString(
+    headerKey: Types.stringful
+  ): string {
+    return headerKey in this._headers ?
+      this._headers[headerKey].stringValue
+      : "";
+  }
+
+  setHeader(
+    headerKey: Types.stringful,
+    headerValue: Types.primitive
   ): this {
-    this._headers[key] = new RequestHeaders._GenericRequestHeader(key, value);
+    this._headers[
+      headerKey
+    ] = new this.GenericRequestHeader(
+      headerKey, headerValue
+    );
     return this;
   }
 
-  delete(
+  deleteHeader(
     key: Types.stringful
   ): this {
-    delete this._headers[key];
+    delete this._headers[
+      key
+    ];
     return this;
   }
 
-  add(
-    headers: RequestHeaders.Input
+  addHeaders(
+    headers:
+      | [Types.stringful, Types.primitive]
+      | [Types.stringful, Types.primitive][]
+      | Record<Types.stringful, Types.primitive>
+      | Map<Types.stringful, Types.primitive>
   ): this {
     if (!Array.isArray(headers))
       Object.keys(headers)
-        .forEach(key => this.set(
+        .forEach(key => this.setHeader(
           key,
           headers[key]
         ));
     else {
       if (headers.length === 0) { }
       else if (typeof headers[0] === "string") {
-        this.set(headers[0], headers[1] as Types.primitive);
+        this.setHeader(headers[0], headers[1] as Types.primitive);
       }
       else {
         (headers as [string, Types.primitive][]).forEach(header => {
@@ -130,46 +195,64 @@ class RequestHeaders {
     return this;
   }
 
-  toObject(): typeof RequestHeaders.prototype.headers {
+  toMap(): typeof RequestHeaders.prototype.headers {
     return this.headers;
   }
 
-  toStringObject(): Record<Types.stringful, string> {
-    return this.keys
-      .reduce(
-        (obj, key) => {
-          obj[key] = this._headers[key].stringValue;
-          return obj;
-        },
-        {} as ReturnType<RequestHeaders["toStringObject"]>
-    );
+  toStringMap(): typeof RequestHeaders.prototype.stringHeaders {
+    return this.stringHeaders;
   }
 
   toString(): string {
-    return Object.keys(
-      this.headers
+    return Array.from(
+      this.stringHeaders
+    ).map(
+      ([key, value]) => [key, value]
+        .join(": ")
     )
-      .map(
-        key => this
-          .headers[key]
-          .toString()
-      )
       .join("\r\n");
+  }
+
+  get RequestHeaderTypes(): typeof RequestHeaderTypes {
+    return RequestHeaders.RequestHeaderTypes;
+  }
+
+  get AuthRequestHeader(): typeof AuthRequestHeader {
+    return RequestHeaders.AuthRequestHeader;
+  }
+
+  get GenericRequestHeader(): typeof GenericRequestHeader {
+    return RequestHeaders.GenericRequestHeader;
+  }
+
+  static get RequestHeaderTypes(): typeof RequestHeaderTypes {
+    return importModule("requestheadertypes/RequestHeaderTypes");
+  }
+
+  static get AuthRequestHeader(): typeof AuthRequestHeader {
+    return RequestHeaders.RequestHeaderTypes.AuthRequestHeader;
+  }
+
+  static get GenericRequestHeader(): typeof GenericRequestHeader {
+    return RequestHeaders.RequestHeaderTypes.GenericRequestHeader;
   }
 
 }
 
 namespace RequestHeaders {
 
-  export type Input =
-    | [Types.stringful, Types.primitive]
-    | [Types.stringful, Types.primitive][]
-    | Record<Types.stringful, Types.primitive>;
+  export type RequestHeaderRecordProto =
+    Record<
+      Types.stringful,
+      RequestHeader<Types.primitive>
+    >;
 
-  export const _AuthRequestHeader: typeof AuthRequestHeader = importModule("requestheaders/AuthRequestHeader");
-
-  export const _GenericRequestHeader: typeof GenericRequestHeader = importModule("requestheaders/GenericRequestHeader");
+  export interface RequestHeaderRecord extends RequestHeaderRecordProto {
+    Authorization?: AuthRequestHeader,
+    [key: Types.stringful]: GenericRequestHeader<Types.primitive>
+  }
 
 }
+
 
 module.exports = RequestHeaders;

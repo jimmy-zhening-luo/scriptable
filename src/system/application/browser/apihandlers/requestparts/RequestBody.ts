@@ -1,12 +1,12 @@
 class RequestBody {
+
   private readonly _body:
     | string
     | RequestBody.RequestBodyInterface;
 
   constructor(
     body?: typeof RequestBody.prototype._body
-  )
-  {
+  ) {
     this._body = body ?? "";
   }
 
@@ -37,22 +37,23 @@ class RequestBody {
   }
 }
 
+
 namespace RequestBody {
+
   export interface RequestBodyInterface {
-    [key: Types.stringful]: (
+    [key: Types.stringful]:
       | Types.primitive
       | RequestBodyInterface
       | RequestBodyInterface[]
-    )
   }
 
   export interface StringRequestBodyInterface {
-    [key: Types.stringful]: (
+    [key: Types.stringful]:
       | string
       | StringRequestBodyInterface
       | StringRequestBodyInterface[]
-    )
   }
+
 }
 
 module.exports = RequestBody;

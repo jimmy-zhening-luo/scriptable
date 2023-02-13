@@ -1,6 +1,7 @@
 const up_ValidString: typeof ValidString = importModule("./system/application/common/primitives/strings/ValidString");
 
 class ValidUrlPart extends up_ValidString {
+
   constructor(
     part: string,
     {
@@ -35,13 +36,10 @@ class ValidUrlPart extends up_ValidString {
     );
   }
 
-  get UrlChar(): typeof UrlChar {
-    return ValidUrlPart.UrlChar;
+  static get ValidString(): typeof ValidString {
+    return up_ValidString;
   }
 
-  static get UrlChar(): typeof UrlChar {
-    return importModule("./system/application/common/primitives/strings/charstrings/nrepeatcharstring/boundedrepeatcharstring/repeatcharstring/charstring/chars/UrlChar");
-  }
 }
 
 module.exports = ValidUrlPart;
