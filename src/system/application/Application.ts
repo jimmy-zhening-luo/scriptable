@@ -20,8 +20,7 @@ abstract class Application {
   }
 
   get config(): Config {
-    const _Config: typeof Config = importModule("Config");
-    return new _Config(
+    return new this.Config(
       this.configSubpath,
       this.constructor.name
     );
@@ -30,8 +29,7 @@ abstract class Application {
   protected storage(
     subpath?: string | undefined
   ): Storage {
-    const _Storage: typeof Storage = importModule("Storage");
-    return new _Storage(
+    return new this.Storage(
       this.storageSubpath,
       this.constructor.name,
       subpath
@@ -53,6 +51,14 @@ abstract class Application {
     this
       .storage(subpath)
       .write(text);
+  }
+  
+  get Config(): typeof Config {
+    return Application.Config;
+  }
+  
+  get Storage(): typeof Storage {
+    return Application.Storage;
   }
 
   static get Config(): typeof Config {
