@@ -27,6 +27,11 @@ abstract class Shortcut extends _Application {
       ]
         .join("/");
   }
+  
+  static get Application(): typeof Application {
+    return _Application;
+  }
+  
 }
 
 module.exports = Shortcut;
