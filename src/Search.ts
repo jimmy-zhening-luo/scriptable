@@ -55,7 +55,7 @@ namespace Search {
     }
   }
 
-  type SearchConfigInterface = typeof import("./configproto/Shortcut/Search.json");
+  type SearchConfigInterface = typeof import("./config/Shortcut/Search.json");
 
   class SearchQuery {
     readonly searchKey: string;

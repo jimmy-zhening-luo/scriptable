@@ -1,6 +1,6 @@
 {
   "include": [
-    "Application/**/*.json"
+    "Shortcut/**/*.json"
   ],
   "extends": "../tsconfig.json",
   "compilerOptions": {
