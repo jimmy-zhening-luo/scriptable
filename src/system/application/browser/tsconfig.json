@@ -13,9 +13,6 @@
       "path": "apihandlers/tsconfig.json"
     },
     {
-      "path": "callbackendpoint/tsconfig.json"
-    }
-    {
       "path": "../common/tsconfig.json"
     }
   ],
