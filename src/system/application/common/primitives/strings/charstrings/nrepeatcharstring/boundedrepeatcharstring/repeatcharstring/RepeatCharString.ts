@@ -1,6 +1,7 @@
 const _CharString: typeof CharString = importModule("charstring/CharString");
 
 class RepeatCharString extends _CharString {
+
   protected qualifies(
     candidateCharString: string
   ): boolean {
@@ -16,6 +17,15 @@ class RepeatCharString extends _CharString {
   ): string[] {
     return [...candidateCharString];
   }
+
+  static get CharString(): typeof CharString {
+    return _CharString;
+  }
+
+  get CharString(): typeof CharString {
+    return RepeatCharString.CharString;
+  }
+
 }
 
 module.exports = RepeatCharString;

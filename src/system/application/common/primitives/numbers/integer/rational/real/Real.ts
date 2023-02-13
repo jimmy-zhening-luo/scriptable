@@ -20,9 +20,9 @@ abstract class Real {
 }
 
 namespace Real {
-  export const _AnyCardinality: typeof AnyCardinality = importModule("set/AnyCardinality");
+  export const _AnyCardinality: typeof AnyCardinality = importModule("sets/AnyCardinality");
 
-  export const _Infinite: typeof Infinite = importModule("set/Infinite");
+  export const _Infinite: typeof Infinite = importModule("sets/Infinite");
 }
 
 module.exports = Real;

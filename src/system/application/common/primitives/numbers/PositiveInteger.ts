@@ -10,7 +10,7 @@ class PositiveInteger extends p_Integer {
 }
 
 namespace PositiveInteger {
-  export const _Positive: typeof Positive = importModule("integer/rational/real/set/Positive");
+  export const _Positive: typeof Positive = importModule("integer/rational/real/sets/Positive");
 }
 
 module.exports = PositiveInteger;

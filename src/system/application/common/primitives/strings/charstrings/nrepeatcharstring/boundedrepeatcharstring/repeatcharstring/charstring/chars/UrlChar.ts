@@ -1,6 +1,7 @@
 const _Char: typeof Char = importModule("char/Char");
 
 class UrlChar extends _Char {
+
   static get hex(): string[] {
     return [
       ...this.numbers,
@@ -18,7 +19,7 @@ class UrlChar extends _Char {
       "f"
     ];
   }
-  
+
   // RFC 3986: https://www.rfc-editor.org/rfc/rfc3986#appendix-A
   static get pchar(): string[] {
     return [
@@ -39,21 +40,21 @@ class UrlChar extends _Char {
       ...this.tilde
     ];
   }
-  
+
   static get reserved(): string[] {
     return [
       ...this.genDelims,
       ...this.subDelims
     ];
   }
-  
+
   static get percentEncoded(): string[] {
     return [
       ...this.percent,
       ...this.hex
     ];
   }
-  
+
   static get genDelims(): string[] {
     return [
       ...this.colon,
@@ -65,7 +66,7 @@ class UrlChar extends _Char {
       ...this.at
     ];
   }
-  
+
   static get subDelims(): string[] {
     return [
       ...this.exclam,
@@ -81,6 +82,15 @@ class UrlChar extends _Char {
       ...this.equal
     ];
   }
+
+  static get Char(): typeof Char {
+    return _Char;
+  }
+
+  get Char(): typeof Char {
+    return UrlChar.Char;
+  }
+
 }
 
 module.exports = UrlChar;

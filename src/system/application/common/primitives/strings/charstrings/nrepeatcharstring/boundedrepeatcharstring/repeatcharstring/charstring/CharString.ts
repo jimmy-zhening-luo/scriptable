@@ -1,23 +1,8 @@
 abstract class CharString {
+
   readonly charstring: null | string;
   readonly ofChar: Char;
-  constructor(charstring: string);
-  constructor(
-    charstring: string,
-    ...ofChars: Char[]
-  );
-  constructor(
-    charstring: string,
-    ...ofStrings: string[]
-  );
-  constructor(
-    charstring: string,
-    ...ofCharsets: string[][]
-  );
-  constructor(
-    charstring: string,
-    ...ofCharInputs: Char.CharInput[]
-  );
+
   constructor(
     charstring: string,
     ...charsets: Char.CharInput[]
@@ -33,8 +18,16 @@ abstract class CharString {
     candidateCharString: string
   ): boolean;
 
-  protected get Char(): typeof Char {
+  get Chars(): typeof Chars {
+    return CharString.Chars;
+  }
+
+  get Char(): typeof Char {
     return CharString.Char;
+  }
+
+  get UrlChar(): typeof UrlChar {
+    return CharString.UrlChar;
   }
 
   get isValid(): boolean {
@@ -46,9 +39,18 @@ abstract class CharString {
       ?? "";
   }
 
-  static get Char(): typeof Char {
-    return importModule("chars/char/Char");
+  static get Chars(): typeof Chars {
+    return importModule("chars/Chars");
   }
+
+  static get Char(): typeof Char {
+    return CharString.Chars.Char;
+  }
+
+  static get UrlChar(): typeof UrlChar {
+    return CharString.Chars.UrlChar;
+  }
+
 }
 
 module.exports = CharString;

@@ -1,10 +1,7 @@
 class Char {
+
   readonly charset: string[];
-  constructor();
-  constructor(...chars: Char[]);
-  constructor(...strings: string[]);
-  constructor(...charsets: string[][]);
-  constructor(...charInputs: Char.CharInput[]);
+
   constructor(
     ...charInputs: Char.CharInput[]
   ) {
@@ -263,6 +260,7 @@ class Char {
   static get space(): string[] {
     return [" "];
   }
+
 }
 
 namespace Char {

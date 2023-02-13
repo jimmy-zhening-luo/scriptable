@@ -54,7 +54,21 @@ abstract class Application {
       .storage(subpath)
       .write(text);
   }
-  
+
+  static get Config(): typeof Config {
+    return importModule("Config");
+  }
+
+  static get Storage(): typeof Storage {
+    return importModule("Storage");
+  }
+
+  static get Secret(): typeof Secret {
+    return importModule("Secret");
+  }
+
+  static get
+
 }
 
 module.exports = Application;

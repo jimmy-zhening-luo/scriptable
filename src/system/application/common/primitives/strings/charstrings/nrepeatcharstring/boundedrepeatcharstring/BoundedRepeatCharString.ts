@@ -35,9 +35,22 @@ class BoundedRepeatCharString extends _RepeatCharString {
     this.max = maxInt;
   }
 
+  get PositiveInteger(): typeof PositiveInteger {
+    return BoundedRepeatCharString.PositiveInteger;
+  }
+
+  get RepeatCharString(): typeof RepeatCharString {
+    return BoundedRepeatCharString.RepeatCharString;
+  }
+
   static get PositiveInteger(): typeof PositiveInteger {
     return importModule("./system/application/common/primitives/numbers/PositiveInteger");
   }
+
+  static get RepeatCharString(): typeof RepeatCharString {
+    return _RepeatCharString;
+  }
+
 }
 
 module.exports = BoundedRepeatCharString;

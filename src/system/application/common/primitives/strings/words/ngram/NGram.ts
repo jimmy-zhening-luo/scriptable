@@ -1,13 +1,15 @@
 const _Word: typeof Word = importModule("word/Word");
 
 class NGram extends _Word {
+
   readonly n: number;
   readonly remainder: string;
+
   constructor(
     text: string,
     n: number
   ) {
-    const nInt: number = new NGram.positiveInt(n).value ?? 0;
+    const nInt: number = new NGram.PositiveInteger(n).value ?? 0;
     super(
       nInt === Infinity ?
         text
@@ -30,10 +32,23 @@ class NGram extends _Word {
   get hasRemainder(): boolean {
     return this.remainder.length > 0;
   }
-}
 
-namespace NGram {
-  export const positiveInt: typeof PositiveInteger = importModule("./system/application/common/primitives/numbers/PositiveInteger");
+  get PositiveInteger(): typeof PositiveInteger {
+    return NGram.PositiveInteger;
+  }
+
+  get Word(): typeof Word {
+    return NGram.Word;
+  }
+
+  static get PositiveInteger(): typeof PositiveInteger {
+    return importModule("./system/application/common/primitives/numbers/PositiveInteger");
+  }
+
+  static get Word(): typeof Word {
+    return _Word;
+  }
+
 }
 
 module.exports = NGram;

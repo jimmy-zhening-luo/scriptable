@@ -1,7 +1,9 @@
 class ValidString {
+
   readonly raw: string;
   readonly cleaned: string;
   readonly value: null | string;
+
   constructor(
     text: string,
     {
@@ -117,20 +119,36 @@ class ValidString {
     return ValidString.Char;
   }
 
+  static get CharStrings(): typeof CharStrings {
+    return importModule("charstrings/CharStrings");
+  }
+
+  static get Words(): typeof Words {
+    return importModule("words/Words");
+  }
+
+  static get Chars(): typeof Chars {
+    return ValidString.CharStrings.Chars;
+  }
+
+  static get Char(): typeof Char {
+    return ValidString.Chars.Char;
+  }
+
+  static get UrlChar(): typeof UrlChar {
+    return ValidString.Chars.UrlChar;
+  }
+
   static get OneGram(): typeof OneGram {
-    return importModule("words/OneGram");
+    return ValidString.Words.OneGram;
   }
 
   static get OneCharString(): typeof OneCharString {
-    return importModule("charstrings/OneCharString");
+    return ValidString.CharStrings.OneCharString;
   }
 
   static get PositiveInteger(): typeof PositiveInteger {
     return importModule("./system/application/common/primitives/numbers/PositiveInteger");
-  }
-
-  static get Char(): typeof Char {
-    return ValidString.OneCharString.Char;
   }
 
 }

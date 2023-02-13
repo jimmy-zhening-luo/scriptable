@@ -1,5 +1,7 @@
 abstract class Word {
+
   readonly word: null | string;
+
   constructor(
     word?: null | string
   ) {
@@ -27,6 +29,7 @@ abstract class Word {
   toString(): string {
     return this.word ?? "";
   }
+
 }
 
 module.exports = Word;
