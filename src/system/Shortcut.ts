@@ -11,12 +11,20 @@ abstract class Shortcut extends _Application {
     Script.setShortcutOutput(output);
     return output;
   }
+  
+  private get shortcutSubpath(): string {
+    return "Shortcut";
+  }
 
-  protected override get configSubdirectoryPath(): string {
-    return [
-      super.configSubdirectoryPath,
-      "Shortcut"
-    ].join("/");
+  protected override get configSubpath(): string {
+    return super
+      .configSubdirectoryPath === "" ?
+      this.shortcutSubpath
+      : [
+        super.configSubpath,
+        this.shortcutSubpath
+      ]
+        .join("/");
   }
 }
 

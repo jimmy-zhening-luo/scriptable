@@ -11,18 +11,18 @@ abstract class Application {
     );
   }
 
-  protected get configSubdirectoryPath(): string {
-    return String("Application");
+  protected get configSubpath(): string {
+    return String("");
   }
 
-  protected get storageSubdirectoryPath(): string {
-    return this.configSubdirectoryPath;
+  protected get storageSubpath(): string {
+    return this.configSubpath;
   }
 
   get config(): Config {
     const _Config: typeof Config = importModule("Config");
     return new _Config(
-      this.configSubdirectoryPath,
+      this.configSubpath,
       this.constructor.name
     );
   }
@@ -32,7 +32,7 @@ abstract class Application {
   ): Storage {
     const _Storage: typeof Storage = importModule("Storage");
     return new _Storage(
-      this.storageSubdirectoryPath,
+      this.storageSubpath,
       this.constructor.name,
       subpath
     );
@@ -54,6 +54,7 @@ abstract class Application {
       .storage(subpath)
       .write(text);
   }
+  
 }
 
 module.exports = Application;

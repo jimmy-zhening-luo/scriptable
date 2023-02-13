@@ -9,8 +9,8 @@ class TestRunner {
 
   constructor() {
     // CLASS IMPORTS GO HERE
-    const url: typeof Url = this.stl.url;
-    const api: typeof Api = this.stl.api;
+    const url: typeof Url = this.Shortcut.url;
+    const api: typeof Api = this.Shortcut.api;
 
     // TEST VARS GO HERE
     let u: Url = new url();
@@ -152,12 +152,18 @@ class TestRunner {
         suite => suite !== null
       ) as TestRunner.Suites;
   }
+  
+  get Shortcut(): typeof Shortcut {
+    return TestRunner.Shortcut;
+  }
+  
+  static get Shortcut(): typeof Shortcut {
+    return importModule("system/Shortcut")
+  }
 }
 
 
 namespace TestRunner {
-
-  export const stl: typeof STL = importModule("stl/STL");
 
   export type Evaluate = any;
   export type Result = any;

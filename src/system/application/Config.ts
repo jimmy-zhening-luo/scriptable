@@ -1,15 +1,15 @@
-const CONFIG_DIR_SUBPATH_FROM_ROOT: string = "config";
+const CONFIG_BOOKMARK: string = "#Config";
 
 class Config {
   protected file: ReadOnlyFile;
   constructor(
-    configSubdirectoryPath: string,
+    configSubpath: string,
     programName: string
   ) {
     this.file = new Config.ReadOnlyFile(
       this.configDirFile,
       Config.Paths.joinPaths(
-        configSubdirectoryPath,
+        configSubpath,
         [
           programName,
           "json"
@@ -20,17 +20,15 @@ class Config {
   }
 
   protected get configDirFile(): ReadOnlyFile {
-    const _installer: typeof Installer = importModule("./!boot/Boot");
     return new Config.ReadOnlyFile(
       new Config.ReadOnlyFile.Bookmark(
-        _installer.runtimeRootBookmarkName
-      ),
-      this.configDirSubpathFromRoot
+        this.configBookmark
+      )
     );
   }
 
-  protected get configDirSubpathFromRoot(): string {
-    return CONFIG_DIR_SUBPATH_FROM_ROOT;
+  protected get configBookmark(): string {
+    return CONFIG_BOOKMARK;
   }
 
   get path(): string {

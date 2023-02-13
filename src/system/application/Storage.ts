@@ -1,11 +1,11 @@
-const STORAGE_DIR_SUBPATH_FROM_ROOT = "!storage";
+const STORAGE_BOOKMARK: string = "#Data";
 
 class Storage {
 
   readonly file: File;
 
   constructor(
-    storageSubdirectoryPath: string,
+    storageSubpath: string,
     programName: string,
     subpath: string = "default.txt"
   ) {
@@ -13,7 +13,7 @@ class Storage {
       this.storageDirFile,
       Storage.Paths.joinPaths(
         Storage.Paths.joinPaths(
-          storageSubdirectoryPath,
+          storageSubpath,
           programName
         ),
         subpath
@@ -22,17 +22,15 @@ class Storage {
   }
 
   protected get storageDirFile(): File {
-    const _installer: typeof Installer = importModule("./!boot/Boot");
     return new Storage.File(
       new Storage.File.Bookmark(
-        _installer.runtimeRootBookmarkName
-      ),
-      this.storageDirSubpathFromRoot
+        this.storageBookmark
+      )
     );
   }
 
-  protected get storageDirSubpathFromRoot(): string {
-    return STORAGE_DIR_SUBPATH_FROM_ROOT;
+  protected get storageBookmark(): string {
+    return STORAGE_BOOKMARK;
   }
 
   get path(): string {
