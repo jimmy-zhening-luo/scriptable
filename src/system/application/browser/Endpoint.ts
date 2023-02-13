@@ -28,6 +28,8 @@ class Endpoint {
       | Types.stringful
       | Types.stringful[] = []
   ) {
+    this.callbackBase = callbackBase;
+    this.callbackBase
     this.subpath = new this.Path(
       endpointSubpath
     );
