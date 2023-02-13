@@ -2,11 +2,15 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../../!boot/**/*"
+    "../../!boot/**/*",
+    "../../config/**/*",
   ],
   "references": [
     {
       "path": "../../!boot/tsconfig.json"
+    },
+    {
+      "path": "../../config/tsconfig.json"
     },
     {
       "path": "files/tsconfig.json"

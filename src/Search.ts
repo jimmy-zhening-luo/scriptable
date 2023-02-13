@@ -14,9 +14,9 @@ namespace Search {
         ?? String()
       );
 
-      const searchShortcutConfig: SearchConfigInterface = this
+      const searchShortcutConfig: SearchProto = this
         .config
-        .unmerged as SearchConfigInterface;
+        .unmerged as SearchProto;
       const querytag: string = searchShortcutConfig
         .user
         .queryTag;
@@ -39,8 +39,10 @@ namespace Search {
               null
               : engine.app in SupportedAppSearchEngine ?
                 new AppSearchEngine(
-                  engine.keys ?? [],
-                  engine.app as keyof typeof SupportedAppSearchEngine
+                  typeof engine.keys === "string" ?
+                    [engine.keys]
+                    : engine.keys,
+                  engine.app
                 )
                 : null
           ).filter(engine => engine !== null) as SearchEngine[];
@@ -59,8 +61,6 @@ namespace Search {
 
   }
 
-  type SearchConfigInterface = typeof import("./config/Shortcut/Search.json");
-
   class SearchQuery {
 
     readonly searchKey: string;
@@ -74,7 +74,7 @@ namespace Search {
         .shift()
         ?.toLowerCase()
         ?.replace(".", "")
-          ?? String();
+        ?? String();
       this.searchTerms = tokens;
     }
 
@@ -90,7 +90,8 @@ namespace Search {
     mail,
     files,
     shortcuts,
-    bear
+    bear,
+    shortcut
   }
 
   abstract class SearchEngine {
@@ -101,7 +102,7 @@ namespace Search {
       this.engineKeys = (Array.isArray(configuredKeys) ?
         configuredKeys
         : [configuredKeys]
-        ).map(key => key.toLowerCase());
+      ).map(key => key.toLowerCase());
     }
 
     abstract parseQueryToAction(query: SearchQuery): SearchResponse;

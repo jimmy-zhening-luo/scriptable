@@ -46,32 +46,32 @@ class Config {
     }
   }
 
-  get parsed(): Config.ConfigObject {
+  get parsed(): ConfigProto {
     return this.isParseable ?
       JSON.parse(this.file.data as string)
       : {}
   }
 
-  get unmerged(): Config.ConfigObject {
+  get unmerged(): ConfigProto {
     return this.parsed;
   }
 
-  get app(): Config.Settings | undefined {
+  get app(): ConfigProto["app"] | undefined {
     return this.unmerged.app;
   }
 
-  get user(): Config.Settings | undefined {
+  get user(): ConfigProto["user"] | undefined {
     return this.unmerged.user;
   }
 
-  get merged(): Config.SettingValue {
+  get merged(): Setting {
     return this.mergeSettings(
       this.user,
       this.app
     );
   }
 
-  get mergedUserOverridesProhibited(): Config.SettingValue {
+  get mergedUserOverridesProhibited(): Setting {
     return this.mergeSettings(
       this.app,
       this.user
@@ -84,12 +84,12 @@ class Config {
 
   protected mergeSettings(
     winningSettings:
-      | Config.Settings
+      | Setting
       | undefined,
     losingSettings:
-      | Config.Settings
+      | Setting
       | undefined
-  ): Config.Settings {
+  ): Setting {
     if (
       winningSettings === undefined
       && losingSettings !== undefined
@@ -119,7 +119,7 @@ class Config {
       const mergedSettingsMap:
         Map<
           Types.stringful,
-          Config.SettingValue
+          SettingValue
         > = new Map();
       for (const loser of keysUniqueToLosingSettings)
         mergedSettingsMap.set(
@@ -147,32 +147,32 @@ class Config {
           mergedSettingsMap.set(
             key,
             mergeArrays(
-              winningSettings[key] as Config.SettingValue[],
-              losingSettings[key] as Config.SettingValue[]
+              winningSettings[key] as SettingValue[],
+              losingSettings[key] as SettingValue[]
             )
           );
         else if (Array.isArray(winningSettings[key]))
           mergedSettingsMap.set(
             key,
             mergeArrays(
-              winningSettings[key] as Config.SettingValue[],
-              [losingSettings[key] as Config.SettingValue]
+              winningSettings[key] as SettingValue[],
+              [losingSettings[key] as SettingValue]
             )
           );
         else if (Array.isArray(losingSettings[key]))
           mergedSettingsMap.set(
             key,
             mergeArrays(
-              [winningSettings[key] as Config.SettingValue],
-              losingSettings[key] as Config.SettingValue[]
+              [winningSettings[key] as SettingValue],
+              losingSettings[key] as SettingValue[]
             )
           );
         else
           mergedSettingsMap.set(
             key,
             this.mergeSettings(
-              winningSettings[key] as Config.Settings,
-              losingSettings[key] as Config.Settings
+              winningSettings[key] as Setting,
+              losingSettings[key] as Setting
             )
           );
       }
@@ -184,7 +184,7 @@ class Config {
       return {};
 
     function isPrimitive(
-      obj: Config.SettingValue
+      obj: SettingValue
     ): boolean {
       return typeof obj === "string"
         || typeof obj === "number"
@@ -192,9 +192,9 @@ class Config {
     }
 
     function mergeArrays(
-      winner: Config.SettingValue[],
-      loser: Config.SettingValue[]
-    ): Config.SettingValue[] {
+      winner: SettingValue[],
+      loser: SettingValue[]
+    ): SettingValue[] {
       return winner
         .concat(
           loser
@@ -202,8 +202,8 @@ class Config {
     }
 
     function intersectKeys(
-      a: Config.Settings,
-      b: Config.Settings
+      a: Setting,
+      b: Setting
     ): string[] {
       return Object
         .keys(a)
@@ -214,7 +214,7 @@ class Config {
     }
 
     function uniqueKeysOf(
-      obj: Config.Settings,
+      obj: Setting,
       sharedKeys: string[]
     ): string[] {
       return Object
@@ -240,32 +240,6 @@ class Config {
   static get Paths(): typeof Paths {
     return Config.ReadOnlyFile.Paths;
   }
-}
-
-namespace Config {
-  export type ConfigObject = (
-    AppSection
-    & UserSection
-  );
-
-  export interface AppSection {
-    "app"?: Settings
-  }
-
-  export interface UserSection {
-    "user"?: Settings
-  }
-
-  export interface Settings {
-    [key: string]: SettingValue
-  };
-
-  export type SettingValue = (
-    Types.primitive
-    | Array<SettingValue>
-    | Settings
-  );
-
 }
 
 module.exports = Config;
