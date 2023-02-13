@@ -1,6 +1,7 @@
 const f_Bounds: typeof Bounds = importModule("bounds/Bounds");
 
 class Finite extends f_Bounds {
+
   override isBounded(
     value: undefined | null | number
   ): boolean {
@@ -8,6 +9,11 @@ class Finite extends f_Bounds {
       && value !== Infinity
       && value !== -Infinity;
   }
+
+  static get Bounds(): typeof Bounds {
+    return f_Bounds;
+  }
+
 }
 
 module.exports = Finite;

@@ -55,7 +55,7 @@ class Query extends qu_UrlPart {
         .mapToQueryString(Query.queryStringToMap(query))
         .split("&")
         .filter(keyValueString => keyValueString !== "")
-        .map(keyValueString => new Query._QueryRepeater(keyValueString))
+        .map(keyValueString => new this.QueryRepeater(keyValueString))
         .filter(queryRepeater => queryRepeater.isValid)
         .map(queryRepeater => queryRepeater.toString())
         .join("&");
@@ -249,10 +249,14 @@ class Query extends qu_UrlPart {
     );
   }
 
-}
+  protected get QueryRepeater(): typeof QueryRepeater {
+    return this.Repeaters.QueryRepeater;
+  }
 
-namespace Query {
-  export const _QueryRepeater: typeof QueryRepeater = importModule("repeaters/QueryRepeater");
+  static get UrlPart(): typeof UrlPart {
+    return qu_UrlPart;
+  }
+
 }
 
 module.exports = Query;

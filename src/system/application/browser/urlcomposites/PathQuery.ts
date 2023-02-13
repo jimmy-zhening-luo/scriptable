@@ -1,6 +1,7 @@
 const pq_UrlComposite: typeof UrlComposite = importModule("urlcomposite/UrlComposite");
 
 class PathQuery extends pq_UrlComposite {
+
   readonly parts: [Path, Query];
   readonly path: Path;
   readonly query: Query;
@@ -18,14 +19,14 @@ class PathQuery extends pq_UrlComposite {
     super();
     this.parts = pathOrPathQuery === undefined ?
       [
-        new PathQuery._Path(),
-        new PathQuery._Query()
+        new this.Path(),
+        new this.Query()
       ]
       : pathOrPathQuery instanceof PathQuery ?
         pathOrPathQuery.parts
         : [
-          new PathQuery._Path(pathOrPathQuery),
-          new PathQuery._Query(query)
+          new this.Path(pathOrPathQuery),
+          new this.Query(query)
         ];
     this.path = this.parts[0];
     this.query = this.parts[1];
@@ -39,11 +40,27 @@ class PathQuery extends pq_UrlComposite {
       ].join("?")
       : this.path.toString();
   }
-}
 
-namespace PathQuery {
-  export const _Path: typeof Path = importModule("urlparts/Path");
-  export const _Query: typeof Query = importModule("urlparts/Query");
+  get Path(): typeof Path {
+    return PathQuery.Path;
+  }
+
+  get Query(): typeof Query {
+    return PathQuery.Query;
+  }
+
+  static get Path(): typeof Path {
+    return this.UrlParts.Path;
+  }
+
+  static get Query(): typeof Query {
+    return this.UrlParts.Query;
+  }
+
+  static get UrlComposite(): typeof UrlComposite {
+    return pq_UrlComposite;
+  }
+
 }
 
 module.exports = PathQuery;

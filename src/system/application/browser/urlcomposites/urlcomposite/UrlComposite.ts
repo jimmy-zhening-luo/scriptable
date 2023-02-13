@@ -9,6 +9,11 @@ abstract class UrlComposite {
   toString(): string {
     return this.composite;
   }
+
+  static get UrlParts(): typeof UrlParts {
+    return importModule("./system/application/browser/urlcomposites/urlparts/UrlParts");
+  }
+
 }
 
 module.exports = UrlComposite;

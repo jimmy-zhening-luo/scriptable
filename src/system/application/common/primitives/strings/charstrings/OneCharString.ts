@@ -13,10 +13,6 @@ class OneCharString extends _NRepeatCharString {
     super(1, charstring, ...ofCharInputs);
   }
 
-  get NRepeatCharString(): typeof NRepeatCharString {
-    return OneCharString.NRepeatCharString;
-  }
-
   static get NRepeatCharString(): typeof NRepeatCharString {
     return _NRepeatCharString;
   }

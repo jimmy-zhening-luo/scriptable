@@ -1,5 +1,7 @@
 abstract class UrlPartRepeater {
+
   readonly value: null | string;
+
   constructor(
     repeater?: null | string
   ) {
@@ -28,9 +30,18 @@ abstract class UrlPartRepeater {
     return UrlPartRepeater.Paths;
   }
 
+  protected get UrlValidators(): typeof UrlValidators {
+    return UrlPartRepeater.UrlValidators;
+  }
+
   static get Paths(): typeof Paths {
     return importModule("./system/application/common/paths/Paths")
   }
+
+  protected static get UrlValidators(): typeof UrlValidators {
+    return importModule("./system/application/browser/urlcomposites/urlparts/validators/UrlValidators");
+  }
+
 }
 
 module.exports = UrlPartRepeater;

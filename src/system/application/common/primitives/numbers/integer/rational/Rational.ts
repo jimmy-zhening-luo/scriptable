@@ -1,7 +1,9 @@
 const _Real: typeof Real = importModule("real/Real");
 
 class Rational extends _Real {
+
   readonly value: number | null;
+
   constructor(
     value: Rational | number,
     cardinality?: Cardinality,
@@ -81,6 +83,11 @@ class Rational extends _Real {
       this.value as number
       : NaN;
   }
+
+  static get Real(): typeof Real {
+    return _Real;
+  }
+
 }
 
 module.exports = Rational;

@@ -1,13 +1,19 @@
 const qu_UrlPartRepeater: typeof UrlPartRepeater = importModule("urlpartrepeater/UrlPartRepeater");
 
 class QueryRepeater extends qu_UrlPartRepeater {
-  protected parse(repeater: string): null | string {
-    return new QueryRepeater._ValidQueryRepeater(repeater).value;
-  }
-}
 
-namespace QueryRepeater {
-  export const _ValidQueryRepeater: typeof ValidQueryRepeater = importModule("./system/application/browser/urlcomposites/urlparts/validators/ValidQueryRepeater");
+  protected parse(repeater: string): null | string {
+    return new this.ValidQueryRepeater(repeater).value;
+  }
+
+  protected get ValidQueryRepeater(): typeof ValidQueryRepeater {
+    return this.UrlValidators.Query.Repeaters.Query;
+  }
+
+  static get UrlPartRepeater(): typeof UrlPartRepeater {
+    return qu_UrlPartRepeater;
+  }
+
 }
 
 module.exports = QueryRepeater;

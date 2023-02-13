@@ -1,10 +1,11 @@
 class Url {
-  #scheme: Scheme = new Url.Scheme("https");
-  #host: Host = new Url.Host();
-  #port: Port = new Url.Port();
-  #path: Path = new Url.Path();
-  #query: Query = new Url.Query();
-  #fragment: Fragment = new Url.Fragment();
+
+  private _scheme: Scheme = new Url.Scheme("https");
+  private _host: Host = new Url.Host();
+  private _port: Port = new Url.Port();
+  private _path: Path = new Url.Path();
+  private _query: Query = new Url.Query();
+  private _fragment: Fragment = new Url.Fragment();
 
   constructor(url?: string | Url | Url.UrlParts);
   constructor(
@@ -60,13 +61,13 @@ class Url {
 
   get url(): string {
     return this.isValid ?
-      new Url._SchemeHostPortPathQueryFragment([
-        this.#scheme,
-        this.#host,
-        this.#port,
-        this.#path,
-        this.#query,
-        this.#fragment
+      new this.SchemeHostPortPathQueryFragment([
+        this._scheme,
+        this._host,
+        this._port,
+        this._path,
+        this._query,
+        this._fragment
       ]).toString()
       : "";
   }
@@ -101,7 +102,7 @@ class Url {
   }
 
   get scheme(): string {
-    return this.#scheme.toString();
+    return this._scheme.toString();
   }
 
   set scheme(
@@ -111,17 +112,17 @@ class Url {
       | Scheme
     )
   ) {
-    this.#scheme = new Url.Scheme(
+    this._scheme = new Url.Scheme(
       scheme
     );
     if (this.scheme === "")
-      this.#scheme = new Url.Scheme(
+      this._scheme = new Url.Scheme(
         "https"
       );
   }
 
   get host(): string {
-    return this.#host.toString();
+    return this._host.toString();
   }
 
   set host(
@@ -131,11 +132,11 @@ class Url {
       | Host
     )
   ) {
-    this.#host = new Url.Host(host);
+    this._host = new Url.Host(host);
   }
 
   get port(): string {
-    return this.#port.toString();
+    return this._port.toString();
   }
 
   set port(
@@ -146,11 +147,11 @@ class Url {
       | Port
     )
   ) {
-    this.#port = new Url.Port(port);
+    this._port = new Url.Port(port);
   }
 
   get path(): string {
-    return this.#path.toString();
+    return this._path.toString();
   }
 
   set path(
@@ -160,7 +161,7 @@ class Url {
       | Path
     )
   ) {
-    this.#path = new Url.Path(path);
+    this._path = new Url.Path(path);
   }
 
   appendPath(
@@ -169,7 +170,7 @@ class Url {
       | string
       | Path
   ): this {
-    this.path = this.#path.appendPath(path);
+    this.path = this._path.appendPath(path);
     return this;
   }
 
@@ -178,15 +179,15 @@ class Url {
   }
 
   get queryString(): string {
-    return this.#query.toString();
+    return this._query.toString();
   }
 
   get queryTuples(): typeof Query.prototype.queryTuples {
-    return this.#query.toTuples();
+    return this._query.toTuples();
   }
 
   get queryMap(): typeof Query.prototype.queryMap {
-    return this.#query.toMap();
+    return this._query.toMap();
   }
 
   set query(
@@ -200,25 +201,25 @@ class Url {
       | [Types.stringful, string][]
     )
   ) {
-    this.#query = new Url.Query(query);
+    this._query = new Url.Query(query);
   }
 
   hasParam(
     key: Types.stringful
   ): boolean {
-    return this.#query.hasParam(key);
+    return this._query.hasParam(key);
   }
 
   getParam(
     key: Types.stringful
   ): string {
-    return this.#query.getParam(key);
+    return this._query.getParam(key);
   }
 
   addParam(
     ...params: Parameters<Query["addParam"]>
   ): this {
-    this.query = this.#query.addParam(
+    this.query = this._query.addParam(
       ...params
     );
     return this;
@@ -227,14 +228,14 @@ class Url {
   deleteParam(
     ...keys: Parameters<Query["deleteParam"]>
   ): this {
-    this.query = this.#query.deleteParam(
+    this.query = this._query.deleteParam(
       ...keys
     );
     return this;
   }
 
   get fragment(): string {
-    return this.#fragment.toString();
+    return this._fragment.toString();
   }
 
   set fragment(
@@ -244,7 +245,7 @@ class Url {
       | Fragment
     )
   ) {
-    this.#fragment = new Url.Fragment(
+    this._fragment = new Url.Fragment(
       fragment
     );
   }
@@ -272,7 +273,7 @@ class Url {
     );
     Array.from(
       this
-        .#query
+        ._query
         .queryMap
         .entries()
     ).forEach(([key, value]) => {
@@ -291,7 +292,7 @@ class Url {
   }
 
   get isValid(): boolean {
-    return this.#scheme.isValid;
+    return this._scheme.isValid;
   }
 
   private parse(url: string): Url {
@@ -385,6 +386,10 @@ class Url {
       ?? String();
   }
 
+  get UrlParts(): typeof UrlParts {
+    return Url.UrlParts;
+  }
+
   get Scheme(): typeof Scheme {
     return Url.Scheme;
   }
@@ -409,32 +414,48 @@ class Url {
     return Url.Fragment;
   }
 
+  get Paths(): typeof Paths {
+    return Url.Paths;
+  }
+
+  protected get SchemeHostPortPathQueryFragment(): typeof SchemeHostPortPathQueryFragment {
+    return Url.SchemeHostPortPathQueryFragment;
+  }
+
+  static get UrlParts(): typeof UrlParts {
+    return importModule("urlcomposites/urlparts/UrlParts");
+  }
+
   static get Scheme(): typeof Scheme {
-    return importModule("urlcomposites/urlparts/Scheme");
+    return Url.UrlParts.Scheme;
   }
 
   static get Host(): typeof Host {
-    return importModule("urlcomposites/urlparts/Host");
+    return Url.UrlParts.Host;
   }
 
   static get Port(): typeof Port {
-    return importModule("urlcomposites/urlparts/Port");
+    return Url.UrlParts.Port;
   }
 
   static get Path(): typeof Path {
-    return importModule("urlcomposites/urlparts/Path");
+    return Url.UrlParts.Path;
   }
 
   static get Query(): typeof Query {
-    return importModule("urlcomposites/urlparts/Query");
+    return Url.UrlParts.Query;
   }
 
   static get Fragment(): typeof Fragment {
-    return importModule("urlcomposites/urlparts/Fragment");
+    return Url.UrlParts.Fragment;
   }
 
   static get Paths(): typeof Paths {
     return Url.Scheme.Paths;
+  }
+
+  protected static get SchemeHostPortPathQueryFragment(): typeof SchemeHostPortPathQueryFragment {
+    return importModule("urlcomposites/SchemeHostPortPathQueryFragment");
   }
 
 }
@@ -449,8 +470,6 @@ namespace Url {
     query?: string | Query,
     fragment?: string | Fragment
   };
-
-  export const _SchemeHostPortPathQueryFragment: typeof SchemeHostPortPathQueryFragment = importModule("urlcomposites/SchemeHostPortPathQueryFragment");
 
 }
 

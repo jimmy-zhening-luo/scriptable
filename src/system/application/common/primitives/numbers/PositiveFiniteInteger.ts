@@ -1,19 +1,27 @@
 const pf_Integer: typeof Integer = importModule("integer/Integer");
 
 class PositiveFiniteInteger extends pf_Integer {
+
   constructor(value: number | Rational) {
     super(
       value,
-      new PositiveFiniteInteger._Positive(),
-      new PositiveFiniteInteger._Finite()
+      new PositiveFiniteInteger.Positive(),
+      new PositiveFiniteInteger.Finite()
     );
   }
-}
 
-namespace PositiveFiniteInteger {
-  export const _Positive: typeof Positive = importModule("integer/rational/real/sets/Positive");
+  static get Integer(): typeof Integer {
+    return pf_Integer;
+  }
 
-  export const _Finite: typeof Finite = importModule("integer/rational/real/sets/Finite");
+  static get Positive(): typeof Positive {
+    return PositiveFiniteInteger.Integer.Cardinality.Positive;
+  }
+
+  static get Finite(): typeof Finite {
+    return PositiveFiniteInteger.Integer.Bounds.Finite;
+  }
+
 }
 
 module.exports = PositiveFiniteInteger;

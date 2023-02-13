@@ -1,6 +1,8 @@
 class Bookmark {
+
   readonly bookmark: string;
   readonly path: string;
+
   constructor(
     bookmark: string = String()
   ) {
@@ -14,6 +16,7 @@ class Bookmark {
   toString(): string {
     return this.path;
   }
+
 }
 
 module.exports = Bookmark;

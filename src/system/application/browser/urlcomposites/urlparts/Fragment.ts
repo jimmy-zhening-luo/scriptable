@@ -1,6 +1,7 @@
 const fr_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Fragment extends fr_UrlPart {
+
   protected parse(
     fragment: string
   ): null | string {
@@ -9,14 +10,19 @@ class Fragment extends fr_UrlPart {
       || fragment.trim() === ""
     ) ?
       null
-      : new Fragment
-        ._ValidFragment(fragment)
+      : new this
+        .ValidFragment(fragment)
         .value;
   }
-}
 
-namespace Fragment {
-  export const _ValidFragment: typeof ValidFragment = importModule("validators/ValidFragment");
+  protected get ValidFragment(): typeof ValidFragment {
+    return this.UrlValidators.Fragment;
+  }
+
+  static get UrlPart(): typeof UrlPart {
+    return fr_UrlPart;
+  }
+
 }
 
 module.exports = Fragment;

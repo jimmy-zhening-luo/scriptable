@@ -1,6 +1,7 @@
 const shp_UrlComposite: typeof UrlComposite = importModule("urlcomposite/UrlComposite");
 
 class SchemeHostPort extends shp_UrlComposite {
+
   readonly parts: [Scheme, HostPort];
   readonly scheme: Scheme;
   readonly hostPort: HostPort;
@@ -31,19 +32,19 @@ class SchemeHostPort extends shp_UrlComposite {
     super();
     this.parts = schemeOrSchemeHostPort === undefined ?
       [
-        new SchemeHostPort._Scheme(),
-        new SchemeHostPort._HostPort()
+        new this.Scheme(),
+        new this.HostPort()
       ]
       : schemeOrSchemeHostPort instanceof SchemeHostPort ?
         schemeOrSchemeHostPort.parts
         : [
-          new SchemeHostPort._Scheme(schemeOrSchemeHostPort),
+          new this.Scheme(schemeOrSchemeHostPort),
           Array.isArray(hostPort) ?
-            new SchemeHostPort._HostPort(
-              new SchemeHostPort._HostPort._Host(hostPort[0]),
-              new SchemeHostPort._HostPort._Port(hostPort[1])
+            new this.HostPort(
+              new this.HostPort.Host(hostPort[0]),
+              new this.HostPort.Port(hostPort[1])
             )
-            : new SchemeHostPort._HostPort(hostPort)
+            : new this.HostPort(hostPort)
         ];
     this.scheme = this.parts[0];
     this.hostPort = this.parts[1];
@@ -55,11 +56,27 @@ class SchemeHostPort extends shp_UrlComposite {
       this.hostPort.toString()
     ].join("://");
   }
-}
 
-namespace SchemeHostPort {
-  export const _Scheme: typeof Scheme = importModule("urlparts/Scheme");
-  export const _HostPort: typeof HostPort = importModule("HostPort");
+  get Scheme(): typeof Scheme {
+    return SchemeHostPort.Scheme;
+  }
+
+  get HostPort(): typeof HostPort {
+    return SchemeHostPort.HostPort;
+  }
+
+  static get Scheme(): typeof Scheme {
+    return this.UrlParts.Scheme;
+  }
+
+  static get HostPort(): typeof HostPort {
+    return importModule("HostPort");
+  }
+
+  static get UrlComposite(): typeof UrlComposite {
+    return shp_UrlComposite;
+  }
+
 }
 
 module.exports = SchemeHostPort;

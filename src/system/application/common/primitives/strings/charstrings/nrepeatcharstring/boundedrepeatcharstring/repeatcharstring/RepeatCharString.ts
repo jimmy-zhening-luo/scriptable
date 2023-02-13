@@ -22,10 +22,6 @@ class RepeatCharString extends _CharString {
     return _CharString;
   }
 
-  get CharString(): typeof CharString {
-    return RepeatCharString.CharString;
-  }
-
 }
 
 module.exports = RepeatCharString;

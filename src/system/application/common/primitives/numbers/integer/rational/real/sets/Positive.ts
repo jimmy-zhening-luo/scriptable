@@ -1,6 +1,7 @@
 const p_Cardinality: typeof Cardinality = importModule("cardinality/Cardinality");
 
 class Positive extends p_Cardinality {
+
   override isCardinal(
     value: undefined | null | number
   ): boolean {
@@ -11,6 +12,11 @@ class Positive extends p_Cardinality {
         || value as number > 0
       );
   }
+
+  static get Cardinality(): typeof Cardinality {
+    return p_Cardinality
+  }
+
 }
 
 module.exports = Positive;

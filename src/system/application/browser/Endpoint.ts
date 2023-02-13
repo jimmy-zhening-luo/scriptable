@@ -104,6 +104,7 @@ class Endpoint {
   static get Query(): typeof Query {
     return Endpoint.Url.Query;
   }
+
 }
 
 namespace Endpoint {

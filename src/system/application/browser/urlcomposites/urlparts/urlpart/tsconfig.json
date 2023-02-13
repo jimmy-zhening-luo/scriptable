@@ -3,11 +3,15 @@
   "include": [
     "**/*",
     "../validators/**/*",
+    "../repeaters/**/*",
     "../../../../common/**/*"
   ],
   "references": [
     {
       "path": "../validators/tsconfig.json"
+    },
+    {
+      "path": "../repeaters/tsconfig.json"
     },
     {
       "path": "../../../../common/tsconfig.json"

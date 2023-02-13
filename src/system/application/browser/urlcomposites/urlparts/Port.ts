@@ -1,6 +1,7 @@
 const po_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Port extends po_UrlPart {
+
   constructor(
     port?:
       null
@@ -20,7 +21,7 @@ class Port extends po_UrlPart {
   protected parse(
     port: string
   ): null | string {
-    const parsedString: string = new Port._ValidPort(port)
+    const parsedString: string = new this.ValidPort(port)
       .toString();
     const parsedInt: number = Number.isInteger(
       Number.parseInt(parsedString)
@@ -50,10 +51,15 @@ class Port extends po_UrlPart {
         0
         : NaN;
   }
-}
 
-namespace Port {
-  export const _ValidPort: typeof ValidPort = importModule("validators/ValidPort");
+  protected get ValidPort(): typeof ValidPort {
+    return this.UrlValidators.Port;
+  }
+
+  static get UrlPart(): typeof UrlPart {
+    return po_UrlPart;
+  }
+
 }
 
 module.exports = Port;

@@ -1,6 +1,7 @@
 const fr_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrlPart");
 
 class ValidFragment extends fr_ValidUrlPart {
+
   constructor(fragment: string) {
     super(
       fragment,
@@ -15,6 +16,11 @@ class ValidFragment extends fr_ValidUrlPart {
       ValidFragment.UrlChar.question
     );
   }
+
+  static get ValidUrlPart(): typeof ValidUrlPart {
+    return fr_ValidUrlPart;
+  }
+
 }
 
 module.exports = ValidFragment;

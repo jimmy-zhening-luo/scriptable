@@ -1,6 +1,7 @@
 const shppqf_UrlComposite: typeof UrlComposite = importModule("urlcomposite/UrlComposite");
 
 class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
+
   readonly parts: [
     SchemeHostPort,
     PathQueryFragment
@@ -43,18 +44,18 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     super();
     this.parts = schemeHostPortOrSchemeHostPortPathQueryFragment === undefined ?
       [
-        new SchemeHostPortPathQueryFragment._SchemeHostPort(),
-        new SchemeHostPortPathQueryFragment._PathQueryFragment()
+        new this.SchemeHostPort(),
+        new this.PathQueryFragment()
       ]
       : schemeHostPortOrSchemeHostPortPathQueryFragment instanceof SchemeHostPortPathQueryFragment ?
         schemeHostPortOrSchemeHostPortPathQueryFragment.parts
         : Array.isArray(schemeHostPortOrSchemeHostPortPathQueryFragment) ?
           [
-            new SchemeHostPortPathQueryFragment._SchemeHostPort(schemeHostPortOrSchemeHostPortPathQueryFragment[0], [
+            new this.SchemeHostPort(schemeHostPortOrSchemeHostPortPathQueryFragment[0], [
               schemeHostPortOrSchemeHostPortPathQueryFragment[1],
               schemeHostPortOrSchemeHostPortPathQueryFragment[2]
             ]),
-            new SchemeHostPortPathQueryFragment._PathQueryFragment(
+            new this.PathQueryFragment(
               [
                 schemeHostPortOrSchemeHostPortPathQueryFragment[3],
                 schemeHostPortOrSchemeHostPortPathQueryFragment[4]
@@ -63,8 +64,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
             )
           ]
           : [
-            new SchemeHostPortPathQueryFragment._SchemeHostPort(schemeHostPortOrSchemeHostPortPathQueryFragment),
-            new SchemeHostPortPathQueryFragment._PathQueryFragment(pathQueryFragment)
+            new this.SchemeHostPort(schemeHostPortOrSchemeHostPortPathQueryFragment),
+            new this.PathQueryFragment(pathQueryFragment)
           ];
     this.schemeHostPort = this.parts[0];
     this.pathQueryFragment = this.parts[1];
@@ -80,12 +81,27 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
         : this.schemeHostPort.toString()
       : "";
   }
-}
 
-namespace SchemeHostPortPathQueryFragment {
-  ;
-  export const _SchemeHostPort: typeof SchemeHostPort = importModule("SchemeHostPort");
-  export const _PathQueryFragment: typeof PathQueryFragment = importModule("PathQueryFragment");
+  get SchemeHostPort(): typeof SchemeHostPort {
+    return SchemeHostPortPathQueryFragment.SchemeHostPort;
+  }
+
+  get PathQueryFragment(): typeof PathQueryFragment {
+    return SchemeHostPortPathQueryFragment.PathQueryFragment;
+  }
+
+  static get SchemeHostPort(): typeof SchemeHostPort {
+    return importModule("SchemeHostPort");
+  }
+
+  static get PathQueryFragment(): typeof PathQueryFragment {
+    return importModule("PathQueryFragment");
+  }
+
+  static get UrlComposite(): typeof UrlComposite {
+    return shppqf_UrlComposite;
+  }
+
 }
 
 module.exports = SchemeHostPortPathQueryFragment;

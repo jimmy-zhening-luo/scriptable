@@ -67,7 +67,65 @@ abstract class Application {
     return importModule("Secret");
   }
 
-  static get
+  static get Browser(): typeof Browser {
+    return importModule("browser/Browser");
+  }
+
+  static get Url(): typeof Url {
+    return Application.Browser.Url;
+  }
+
+  static get Api(): typeof Api {
+    return Application.Browser.Api;
+  }
+
+  static get Callback(): typeof Callback {
+    return Application.Browser.Callback;
+  }
+
+  static get Endpoint(): typeof Endpoint {
+    return Application.Browser.Endpoint;
+  }
+
+  static get Common(): typeof Common {
+    return importModule("common/Common");
+  }
+
+  static get Types(): typeof Types {
+    return Application.Common.Types;
+  }
+
+  static get Strings(): typeof Strings {
+    return Application.Types.Strings;
+  }
+
+  static get Numbers(): typeof Numbers {
+    return Application.Types.Numbers;
+  }
+
+  static get Files(): typeof Files {
+    return importModule("files/Files");
+  }
+
+  static get File(): typeof File {
+    return Application.Files.File;
+  }
+
+  static get ReadOnlyFile(): typeof ReadOnlyFile {
+    return Application.Files.ReadOnlyFile;
+  }
+
+  static get Repositories(): typeof Repositories {
+    return importModule("gitclient/Repositories");
+  }
+
+  static get WorkingCopy(): typeof WorkingCopy {
+    return Application.Repositories.WorkingCopy;
+  }
+
+  static get Repository(): typeof Repository {
+    return Application.Repositories.Repository;
+  }
 
 }
 

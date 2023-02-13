@@ -1,7 +1,6 @@
 abstract class UrlPart {
 
   readonly _nominalType: Types.stringful = "UrlPart";
-
   readonly value: null | string;
 
   constructor(
@@ -45,9 +44,26 @@ abstract class UrlPart {
     return UrlPart.Paths;
   }
 
+  protected get UrlValidators(): typeof UrlValidators {
+    return UrlPart.UrlValidators;
+  }
+
+  protected get Repeaters(): typeof Repeaters {
+    return UrlPart.Repeaters;
+  }
+
   static get Paths(): typeof Paths {
     return importModule("./system/application/common/paths/Paths")
   }
+
+  protected static get UrlValidators(): typeof UrlValidators {
+    return importModule("./system/application/browser/urlcomposites/urlparts/validators/UrlValidators");
+  }
+
+  protected static get Repeaters(): typeof Repeaters {
+    return importModule("./system/application/browser/urlcomposites/urlparts/repeaters/Repeaters");
+  }
+
 }
 
 module.exports = UrlPart;

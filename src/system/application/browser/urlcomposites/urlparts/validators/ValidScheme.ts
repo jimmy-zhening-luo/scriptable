@@ -1,6 +1,7 @@
 const sc_ValidUrlPart: typeof ValidUrlPart = importModule("validurlpart/ValidUrlPart");
 
 class ValidScheme extends sc_ValidUrlPart {
+
   constructor(scheme: string) {
     super(
       scheme,
@@ -18,6 +19,11 @@ class ValidScheme extends sc_ValidUrlPart {
       ValidScheme.UrlChar.dot
     );
   }
+
+  static get ValidUrlPart(): typeof ValidUrlPart {
+    return sc_ValidUrlPart;
+  }
+
 }
 
 module.exports = ValidScheme;

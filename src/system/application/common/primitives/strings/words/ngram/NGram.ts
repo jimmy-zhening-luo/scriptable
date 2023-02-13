@@ -33,15 +33,7 @@ class NGram extends _Word {
     return this.remainder.length > 0;
   }
 
-  get PositiveInteger(): typeof PositiveInteger {
-    return NGram.PositiveInteger;
-  }
-
-  get Word(): typeof Word {
-    return NGram.Word;
-  }
-
-  static get PositiveInteger(): typeof PositiveInteger {
+  protected static get PositiveInteger(): typeof PositiveInteger {
     return importModule("./system/application/common/primitives/numbers/PositiveInteger");
   }
 

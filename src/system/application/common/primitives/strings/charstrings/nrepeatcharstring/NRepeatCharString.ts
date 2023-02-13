@@ -18,16 +18,10 @@ class NRepeatCharString extends _BoundedRepeatCharString {
     return this.max;
   }
 
-  get BoundedRepeatCharString(): typeof BoundedRepeatCharString {
-    return NRepeatCharString.BoundedRepeatCharString;
-  }
-
   static get BoundedRepeatCharString(): typeof BoundedRepeatCharString {
     return _BoundedRepeatCharString;
   }
 
 }
-
-interface Parent extends RepeatCharString { };
 
 module.exports = NRepeatCharString;

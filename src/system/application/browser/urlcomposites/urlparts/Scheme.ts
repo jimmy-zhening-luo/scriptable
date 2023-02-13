@@ -1,9 +1,10 @@
 const sc_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Scheme extends sc_UrlPart {
+
   protected parse(scheme: string): null | string {
-    const validScheme: string = new Scheme._ValidScheme(scheme).toString();
-    const charSetAlpha: string[] = Scheme._ValidScheme.UrlChar.alpha;
+    const validScheme: string = new this.ValidScheme(scheme).toString();
+    const charSetAlpha: string[] = this.ValidScheme.UrlChar.alpha;
     return validScheme === "" ?
       "https"
       : charSetAlpha.includes(
@@ -12,10 +13,15 @@ class Scheme extends sc_UrlPart {
         validScheme
         : "https";
   }
-}
 
-namespace Scheme {
-  export const _ValidScheme: typeof ValidScheme = importModule("validators/ValidScheme");
+  protected get ValidScheme(): typeof ValidScheme {
+    return this.UrlValidators.Scheme;
+  }
+
+  static get UrlPart(): typeof UrlPart {
+    return sc_UrlPart;
+  }
+
 }
 
 module.exports = Scheme;

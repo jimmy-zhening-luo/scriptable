@@ -1,18 +1,7 @@
 class File {
   #subpath: string = String();
   readonly bookmark: Bookmark;
-  constructor();
-  constructor(
-    subpath: string
-  );
-  constructor(
-    bookmark: Bookmark,
-    subpath?: string
-  );
-  constructor(
-    file: File,
-    relativePath?: string
-  );
+
   constructor(
     base: Bookmark
       | File

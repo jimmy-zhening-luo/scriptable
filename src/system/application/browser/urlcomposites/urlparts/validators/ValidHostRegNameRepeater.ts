@@ -1,6 +1,7 @@
 const hrn_ValidUrlRepeater: typeof ValidUrlRepeater = importModule("validurlpart/ValidUrlRepeater");
 
 class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
+
   constructor(hostRegNameRepeater: string) {
     super(
       hostRegNameRepeater,
@@ -10,6 +11,11 @@ class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
       hrn_ValidUrlRepeater.UrlChar.subDelims
     );
   }
+
+  static get ValidUrlRepeater(): typeof ValidUrlRepeater {
+    return hrn_ValidUrlRepeater;
+  }
+
 }
 
 module.exports = ValidHostRegNameRepeater;

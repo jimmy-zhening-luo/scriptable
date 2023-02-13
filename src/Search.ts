@@ -2,9 +2,11 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: blue; icon-glyph: search;
 namespace Search {
+
   const shortcut: typeof Shortcut = importModule("system/Shortcut");
 
   export class Search extends shortcut {
+
     runtime(args: any): SearchResponse | null {
       const query: SearchQuery = new SearchQuery(args
         .plainTexts
@@ -52,14 +54,18 @@ namespace Search {
           : userIntendedSearchEngine
             .parseQueryToAction(query);
       }
+
     }
+
   }
 
   type SearchConfigInterface = typeof import("./config/Shortcut/Search.json");
 
   class SearchQuery {
+
     readonly searchKey: string;
     readonly searchTerms: string[];
+
     constructor(query: string) {
       const tokens: string[] = query
         .trim()
@@ -71,6 +77,7 @@ namespace Search {
           ?? String();
       this.searchTerms = tokens;
     }
+
   }
 
   interface SearchResponse {
@@ -87,7 +94,9 @@ namespace Search {
   }
 
   abstract class SearchEngine {
+
     readonly engineKeys: string[];
+
     constructor(configuredKeys: string[] | string) {
       this.engineKeys = (Array.isArray(configuredKeys) ?
         configuredKeys
@@ -96,12 +105,15 @@ namespace Search {
     }
 
     abstract parseQueryToAction(query: SearchQuery): SearchResponse;
+
   }
 
   class BrowserSearchEngine extends SearchEngine {
+
     readonly engineUrls: string[];
     readonly querytag: string;
     readonly showWebview: boolean;
+
     constructor(
       configuredKeys: string[] | string,
       configuredUrls: string[] | string,
@@ -141,10 +153,13 @@ namespace Search {
         showWebview: this.showWebview
       };
     }
+
   }
 
   class AppSearchEngine extends SearchEngine {
+
     readonly app: keyof typeof SupportedAppSearchEngine;
+
     constructor(
       configuredKeys: string[],
       app: keyof typeof SupportedAppSearchEngine
@@ -161,7 +176,9 @@ namespace Search {
         actions: [query.searchTerms.join(" ")]
       };
     }
+
   }
+
 }
 
 new Search.Search().run();

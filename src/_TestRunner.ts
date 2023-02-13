@@ -9,8 +9,8 @@ class TestRunner {
 
   constructor() {
     // CLASS IMPORTS GO HERE
-    const url: typeof Url = this.Shortcut.url;
-    const api: typeof Api = this.Shortcut.api;
+    const url: typeof Url = this.Shortcut.Url;
+    const api: typeof Api = this.Shortcut.Api;
 
     // TEST VARS GO HERE
     let u: Url = new url();
@@ -133,10 +133,6 @@ class TestRunner {
       );
   }
 
-  private get stl(): typeof STL {
-    return TestRunner.stl;
-  }
-
   private casesToSuites(
     ...suiteInputs: [
       string,
@@ -152,12 +148,12 @@ class TestRunner {
         suite => suite !== null
       ) as TestRunner.Suites;
   }
-  
-  get Shortcut(): typeof Shortcut {
+
+  private get Shortcut(): typeof Shortcut {
     return TestRunner.Shortcut;
   }
-  
-  static get Shortcut(): typeof Shortcut {
+
+  private static get Shortcut(): typeof Shortcut {
     return importModule("system/Shortcut")
   }
 }

@@ -4,7 +4,9 @@ class Common {
     return importModule("paths/Paths");
   }
 
-  static get
+  static get Types(): typeof Types {
+    return importModule("primitives/Types");
+  }
 
 }
 

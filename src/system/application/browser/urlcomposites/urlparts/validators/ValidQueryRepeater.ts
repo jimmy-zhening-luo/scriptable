@@ -1,6 +1,7 @@
 const qu_ValidUrlRepeater: typeof ValidUrlRepeater = importModule("validurlpart/ValidUrlRepeater");
 
 class ValidQueryRepeater extends qu_ValidUrlRepeater {
+
   constructor(queryRepeater: string) {
     super(
       queryRepeater,
@@ -10,6 +11,11 @@ class ValidQueryRepeater extends qu_ValidUrlRepeater {
       qu_ValidUrlRepeater.UrlChar.question
     );
   }
+
+  static get ValidUrlRepeater(): typeof ValidUrlRepeater {
+    return qu_ValidUrlRepeater;
+  }
+
 }
 
 module.exports = ValidQueryRepeater;

@@ -87,10 +87,6 @@ class UrlChar extends _Char {
     return _Char;
   }
 
-  get Char(): typeof Char {
-    return UrlChar.Char;
-  }
-
 }
 
 module.exports = UrlChar;

@@ -115,8 +115,16 @@ class ValidString {
     return this.value ?? "";
   }
 
+  get Chars(): typeof Chars {
+    return ValidString.Chars;
+  }
+
   get Char(): typeof Char {
     return ValidString.Char;
+  }
+
+  get UrlChar(): typeof UrlChar {
+    return ValidString.UrlChar;
   }
 
   static get CharStrings(): typeof CharStrings {
@@ -147,7 +155,7 @@ class ValidString {
     return ValidString.CharStrings.OneCharString;
   }
 
-  static get PositiveInteger(): typeof PositiveInteger {
+  protected static get PositiveInteger(): typeof PositiveInteger {
     return importModule("./system/application/common/primitives/numbers/PositiveInteger");
   }
 

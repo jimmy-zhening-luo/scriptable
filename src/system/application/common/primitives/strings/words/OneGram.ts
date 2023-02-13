@@ -8,10 +8,6 @@ class OneGram extends _NGram {
     super(text, 1);
   }
 
-  get NGram(): typeof NGram {
-    return OneGram.NGram;
-  }
-
   static get NGram(): typeof NGram {
     return _NGram;
   }
