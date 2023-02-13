@@ -1,10 +1,10 @@
 class Endpoint {
-  
+
   readonly subpath: Path;
   private readonly _baseQuery: Query;
   readonly requiredParams: Set<Types.stringful>;
   readonly optionalParams: Set<Types.stringful>;
-  
+
   constructor(
     endpointSubpath:
       | string
@@ -38,7 +38,7 @@ class Endpoint {
       [optionalParams]
       : optionalParams);
   }
-  
+
   get url(
     baseCallbackUrl: Url,
     params:
@@ -67,11 +67,13 @@ class Endpoint {
         ))
     );
   }
-  
+
+  static get Url(): typeof Url
+
 }
 
 namespace Endpoint {
-  
+
 }
 
 module.exports = Endpoint;
