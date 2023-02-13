@@ -91,51 +91,26 @@ class Query extends qu_UrlPart {
   }
 
   addParam(
-    _keyOrKeyValue:
-      | Types.stringful
-      | Query
-      | Map<Types.stringful, string>
-      | Record<Types.stringful, string>
-      | [Types.stringful, string]
-      | [Types.stringful, string][],
-    _value: string = ""
+    _keyOrKeyValue: ConstructorParameters<typeof Query>[0],
+    _value?: string
   ): Query {
     const queryMapCopy: Map<Types.stringful, string> = new Map(
       this.queryMap
     );
     const newParamTuples: [Types.stringful, string][] = [];
-    if (typeof _keyOrKeyValue === "string")
-      newParamTuples.push(
-        [
-          _keyOrKeyValue,
-          _value
-        ]
-      );
-    else if (_keyOrKeyValue instanceof Query)
-      newParamTuples.push(
-        ..._keyOrKeyValue.queryTuples
-      );
-    else if (Array.isArray(_keyOrKeyValue)) {
-      if (_keyOrKeyValue.length > 0) {
-        if (
-          _keyOrKeyValue.length === 2
-          && typeof _keyOrKeyValue[0] === "string"
-          && typeof _keyOrKeyValue[1] === "string"
-        )
-          newParamTuples.push(
-            _keyOrKeyValue as [Types.stringful, string]
-          );
-        else
-          newParamTuples.push(
-            ..._keyOrKeyValue as [Types.stringful, string][]
-          );
-      }
+    if (_value !== undefined) {
+      if (typeof _keyOrKeyValue === "string")
+        newParamTuples.push(
+          [
+            _keyOrKeyValue,
+            _value
+          ]
+        );
     }
-    else {
+    else
       newParamTuples.push(
-        ...Query.mapToTuples(_keyOrKeyValue)
+        ...new Query(_keyOrKeyValue).queryTuples
       );
-    }
     newParamTuples
       .filter(tuple => tuple[0] !== "")
       .forEach(([key, value]) => {
@@ -143,7 +118,6 @@ class Query extends qu_UrlPart {
           queryMapCopy.delete(key)
           : queryMapCopy.set(key, value);
       });
-
     return new Query(queryMapCopy);
   }
 

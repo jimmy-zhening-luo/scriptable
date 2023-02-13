@@ -2,6 +2,16 @@ const ho_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Host extends ho_UrlPart {
 
+  constructor(
+    host?:
+      | null
+      | string
+      | Host
+  ) {
+    super(host);
+  }
+
+
   protected parse(host: string): null | string {
     host = host.trim();
     host = host.includes("://") ?

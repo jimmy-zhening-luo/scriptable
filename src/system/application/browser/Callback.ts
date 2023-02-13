@@ -3,29 +3,31 @@ class Callback {
   private readonly _baseUrl: Url;
 
   constructor(
-    scheme: Types.stringful | Scheme,
-    host: string | Host = "",
-    basePath: string | Path = "",
-    commonParams:
-      | string
-      | Query
-      | Callback.ParamMap
-      | Callback.ParamRecord
-      | Callback.ParamTuple
-      | Callback.ParamTuples = ""
+    schemeOrCallback:
+      | Types.stringful
+      | Scheme
+      | Callback,
+    host: ConstructorParameters<typeof Host>[0] = "",
+    basePath: ConstructorParameters<typeof Path>[0] = "",
+    commonParams: ConstructorParameters<typeof Query>[0] = ""
   ) {
-    this._baseUrl = new Callback.Url(
-      scheme,
-      host,
-      undefined,
-      basePath,
-      new Callback.Query(
-        commonParams
-      )
-    );
+    if (schemeOrCallback instanceof Callback)
+      this._baseUrl = new Url(
+        schemeOrCallback.baseUrl
+      );
+    else
+      this._baseUrl = new Callback.Url(
+        schemeOrCallback,
+        host,
+        undefined,
+        basePath,
+        new Callback.Query(
+          commonParams
+        )
+      );
   }
 
-  get urlBase(): Types.stringful {
+  get baseUrl(): Types.stringful {
     return this._baseUrl.toString();
   }
 
@@ -34,9 +36,7 @@ class Callback {
   }
 
   set scheme(
-    scheme:
-      | Types.stringful
-      | Scheme
+    scheme: ConstructorParameters<typeof Scheme>[0]
   ) {
     this._baseUrl.scheme = scheme;
   }
@@ -46,9 +46,7 @@ class Callback {
   }
 
   set host(
-    host:
-      | string
-      | Host
+    host: ConstructorParameters<typeof Host>[0]
   ) {
     this._baseUrl.host = host;
   }
@@ -58,9 +56,7 @@ class Callback {
   }
 
   set basePath(
-    path:
-      | string
-      | Path
+    path: ConstructorParameters<typeof Path>[0]
   ) {
     this._baseUrl.path = path;
   }
@@ -72,36 +68,30 @@ class Callback {
     return this;
   }
 
-  get commonParams(): Callback.ParamMap {
+  get commonParams(): typeof Callback.prototype.commonParamMap {
     return this.commonParamMap;
   }
 
-  get commonQuery(): string {
+  get commonQuery(): typeof Url.prototype.query {
     return this._baseUrl.query;
   }
 
-  get commonParamTuples(): Callback.ParamTuples {
+  get commonParamTuples(): typeof Url.prototype.queryTuples {
     return this._baseUrl.queryTuples;
   }
 
-  get commonParamMap(): Callback.ParamMap {
+  get commonParamMap(): typeof Url.prototype.queryMap {
     return this._baseUrl.queryMap;
   }
 
   set commonParams(
-    params:
-      | string
-      | Query
-      | Callback.ParamMap
-      | Callback.ParamRecord
-      | Callback.ParamTuple
-      | Callback.ParamTuples
+    params: ConstructorParameters<typeof Query>[0]
   ) {
-    this._baseUrl.query = new Callback.Query(params);
+    this._baseUrl.query = params;
   }
 
   addCommonParam(
-    ...params: Parameters<Query["addParam"]>
+    ...params: Parameters<Url["addParam"]>
   ): this {
     this._baseUrl.addParam(
       ...params
@@ -110,7 +100,7 @@ class Callback {
   }
 
   deleteCommonParam(
-    ...keys: Parameters<Query["deleteParam"]>
+    ...keys: Parameters<Url["deleteParam"]>
   ): this {
     this._baseUrl.deleteParam(
       ...keys
@@ -118,17 +108,28 @@ class Callback {
     return this;
   }
 
+  getCommonParam(
+    ...key: Parameters<Url["getParam"]>
+  ): ReturnType<Url["getParam"]> {
+    return this._baseUrl.getParam(
+      ...key
+    );
+  }
+
+  hasCommonParam(
+    ...key: Parameters<Url["hasParam"]>
+  ): ReturnType<Url["hasParam"]> {
+    return this._baseUrl.hasParam(
+      ...key
+    );
+  }
+
   request(
-    path: string | Path,
-    query:
-      | string
-      | Query
-      | Record<string, string>
-      | [string, string]
-      | [string, string][],
+    path: ConstructorParameters<typeof Path>[0],
+    query: ConstructorParameters<typeof Query>[0],
     attachCommonParams: boolean = true,
     overrideCommonParams: boolean = true
-  ): any {
+  ): ReturnType<Url["xCallback"]> {
     const cUrl: Url = new Callback.Url(this._baseUrl);
     cUrl.appendPath(path);
     if (attachCommonParams) {
@@ -144,7 +145,11 @@ class Callback {
       cUrl.query = "";
       cUrl.query = query;
     }
-    return cUrl.xCallback;
+    return cUrl.xCallback();
+  }
+
+  toString(): string {
+    return this.baseUrl;
   }
 
   get Url(): typeof Url {
@@ -162,27 +167,6 @@ class Callback {
   static get Query(): typeof Query {
     return Callback.Url.Query;
   }
-
-}
-
-namespace Callback {
-
-  export type ActionId = Types.stringful;
-
-  export interface ActionConfig {
-    path: string,
-    queryRoot: string,
-    requiredParams?: ParamKey[],
-    optionalParams?: ParamKey[]
-  }
-
-  export type ParamKey = Types.stringful;
-  export type ParamValue = string;
-  export type ParamTuple = [ParamKey, ParamValue];
-
-  export type ParamTuples = ParamTuple[];
-  export type ParamMap = Map<ParamKey, ParamValue>;
-  export type ParamRecord = Record<ParamKey, ParamValue>;
 
 }
 

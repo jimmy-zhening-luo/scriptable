@@ -7,45 +7,26 @@ class Url {
   private _query: Query = new Url.Query();
   private _fragment: Fragment = new Url.Fragment();
 
-  constructor(url?: string | Url | Url.UrlParts);
   constructor(
-    scheme?: string | Scheme,
-    host?: string | Host,
-    port?: string | number | Port,
-    path?: string | Path,
-    query?:
-      | string
-      | Query
-      | Record<string, string>
-      | [string, string]
-      | [string, string][],
-    fragment?: string | Fragment
-  );
-
-  constructor(
-    head?:
+    headOrScheme?:
+      | null
       | string
       | Scheme
       | Url
       | Url.UrlParts,
-    host?: string | Host,
-    port?: string | number | Port,
-    path?: string | Path,
-    query?:
-      | string
-      | Query
-      | Record<string, string>
-      | [string, string]
-      | [string, string][],
-    fragment?: string | Fragment
+    host?: ConstructorParameters<typeof Host>[0],
+    port?: ConstructorParameters<typeof Port>[0],
+    path?: ConstructorParameters<typeof Path>[0],
+    query?: ConstructorParameters<typeof Query>[0],
+    fragment?: ConstructorParameters<typeof Fragment>[0]
   ) {
-    if (head === undefined) { }
+    if (headOrScheme === undefined || headOrScheme === null) { }
     else if (
-      head instanceof UrlPart
-      || typeof head === "string"
+      headOrScheme instanceof UrlPart
+      || typeof headOrScheme === "string"
       && host !== undefined
     ) {
-      const scheme: string | Scheme = head;
+      const scheme: string | Scheme = headOrScheme;
       this.scheme = scheme;
       this.host = host;
       this.port = port;
@@ -54,7 +35,7 @@ class Url {
       this.fragment = fragment;
     }
     else {
-      const url: string | Url | Url.UrlParts = head;
+      const url: string | Url | Url.UrlParts = headOrScheme;
       this.url = url;
     }
   }
@@ -72,11 +53,8 @@ class Url {
       : "";
   }
 
-  set url(url:
-    | null | undefined
-    | string
-    | Url
-    | Url.UrlParts
+  set url(
+    url: ConstructorParameters<typeof Url>[0]
   ) {
     if (
       url === undefined
@@ -90,6 +68,11 @@ class Url {
       this.path = parsedUrl.path;
       this.query = parsedUrl.query;
       this.fragment = parsedUrl.fragment;
+    }
+    else if (url instanceof Scheme) {
+      const scheme: Scheme = url;
+      this.url = "";
+      this.url = scheme.toString();
     }
     else {
       this.scheme = url.scheme;
@@ -106,11 +89,7 @@ class Url {
   }
 
   set scheme(
-    scheme: (
-      | null | undefined
-      | string
-      | Scheme
-    )
+    scheme: ConstructorParameters<typeof Scheme>[0]
   ) {
     this._scheme = new Url.Scheme(
       scheme
@@ -126,11 +105,7 @@ class Url {
   }
 
   set host(
-    host: (
-      | null | undefined
-      | string
-      | Host
-    )
+    host: ConstructorParameters<typeof Host>[0]
   ) {
     this._host = new Url.Host(host);
   }
@@ -140,12 +115,7 @@ class Url {
   }
 
   set port(
-    port: (
-      | null | undefined
-      | string
-      | number
-      | Port
-    )
+    port: ConstructorParameters<typeof Port>[0]
   ) {
     this._port = new Url.Port(port);
   }
@@ -155,30 +125,23 @@ class Url {
   }
 
   set path(
-    path: (
-      | null | undefined
-      | string
-      | Path
-    )
+    path: ConstructorParameters<typeof Path>[0]
   ) {
     this._path = new Url.Path(path);
   }
 
   appendPath(
-    path:
-      | null | undefined
-      | string
-      | Path
+    ...path: Parameters<Path["appendPath"]>
   ): this {
-    this.path = this._path.appendPath(path);
+    this.path = this._path.appendPath(...path);
     return this;
   }
 
-  get query(): string {
+  get query(): typeof Query.prototype.query {
     return this.queryString;
   }
 
-  get queryString(): string {
+  get queryString(): typeof Query.prototype.queryString {
     return this._query.toString();
   }
 
@@ -191,29 +154,21 @@ class Url {
   }
 
   set query(
-    query: (
-      | null | undefined
-      | string
-      | Query
-      | Map<Types.stringful, string>
-      | Record<Types.stringful, string>
-      | [Types.stringful, string]
-      | [Types.stringful, string][]
-    )
+    query: ConstructorParameters<typeof Query>[0]
   ) {
     this._query = new Url.Query(query);
   }
 
   hasParam(
-    key: Types.stringful
+    ...key: Parameters<Query["hasParam"]>
   ): boolean {
-    return this._query.hasParam(key);
+    return this._query.hasParam(...key);
   }
 
   getParam(
-    key: Types.stringful
+    ...key: Parameters<Query["getParam"]>
   ): string {
-    return this._query.getParam(key);
+    return this._query.getParam(...key);
   }
 
   addParam(
@@ -239,11 +194,7 @@ class Url {
   }
 
   set fragment(
-    fragment: (
-      | null | undefined
-      | string
-      | Fragment
-    )
+    fragment: ConstructorParameters<typeof Fragment>[0]
   ) {
     this._fragment = new Url.Fragment(
       fragment
@@ -463,12 +414,12 @@ class Url {
 namespace Url {
 
   export interface UrlParts {
-    scheme?: string | Scheme,
-    host?: string | Host,
-    port?: string | number | Port,
-    path?: string | Path,
-    query?: string | Query,
-    fragment?: string | Fragment
+    scheme?: ConstructorParameters<typeof Scheme>[0],
+    host?: ConstructorParameters<typeof Host>[0],
+    port?: ConstructorParameters<typeof Port>[0],
+    path?: ConstructorParameters<typeof Path>[0],
+    query?: ConstructorParameters<typeof Query>[0],
+    fragment?: ConstructorParameters<typeof Fragment>[0]
   };
 
 }

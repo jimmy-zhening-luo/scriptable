@@ -2,6 +2,15 @@ const pa_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Path extends pa_UrlPart {
 
+  constructor(
+    path?:
+      | null
+      | string
+      | Path
+  ) {
+    super(path);
+  }
+
   protected parse(path: string): null | string {
     path = Path.Paths.trimPath(path);
     return path === "" ?

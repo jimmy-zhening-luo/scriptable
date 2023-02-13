@@ -1,24 +1,13 @@
 class Endpoint {
 
-  private readonly callbackBase: Callback;
-
-  readonly subpath: Path;
-  private readonly _baseQuery: Query;
+  private readonly _callback: Callback;
   readonly requiredParams: Set<Types.stringful>;
   readonly optionalParams: Set<Types.stringful>;
 
   constructor(
     callbackBase: Callback,
-    endpointSubpath:
-      | string
-      | Path = "",
-    endpointQueryBase:
-      | string
-      | Query
-      | [Types.stringful, string]
-      | [Types.stringful, string][]
-      | Map<string, string>
-      | Record<string, string> = "",
+    endpointSubpath: ConstructorParameters<typeof Path>[0] = "",
+    endpointQueryBase: ConstructorParameters<typeof Query>[0] = "",
     requiredParams:
       | Set<Types.stringful>
       | Types.stringful
@@ -28,14 +17,9 @@ class Endpoint {
       | Types.stringful
       | Types.stringful[] = []
   ) {
-    this.callbackBase = callbackBase;
-    this.callbackBase
-    this.subpath = new this.Path(
-      endpointSubpath
-    );
-    this._baseQuery = new this.Query(
-      endpointQueryBase
-    );
+    this._callback = callbackBase;
+    this._callback.appendBasePath(endpointSubpath);
+    this._callback.addCommonParam(endpointQueryBase);
     this.requiredParams = new Set(typeof requiredParams === "string" ?
       [requiredParams]
       : requiredParams);
@@ -44,33 +28,31 @@ class Endpoint {
       : optionalParams);
   }
 
-  get url(
-    baseCallbackUrl: Url,
-    params:
-      | string
-      | Query
-      | [Types.stringful, string]
-      | [Types.stringful, string][]
-      | Map<string, string>
-      | Record<string, string> = ""
-  ): Url {
-    return new this.Url(
-      baseCallbackUrl
-        .appendPath(this.subpath)
-        .addParam(this.baseQuery)
-        .addParam(new this.Query(
-          Array.from(
-            Object.entries(
-              new this.Query(
-                params
-              ).queryMap
-            )
-          ).filter(([key, value]) =>
-            this.requiredParams.has(key)
-            || this.optionalParams.has(key)
-          )
-        ))
-    );
+  request(
+    params: ConstructorParameters<typeof Query>[0] = "",
+    subpath: ConstructorParameters<typeof Path>[0] = ""
+  ): ReturnType<Callback["request"]> {
+    const finalCallbackUrl: Url = new this.Url(
+      this._callback
+    )
+      .appendPath(subpath)
+      .addParam(params);
+
+    if (Array.from(
+      this
+        .requiredParams
+        .keys()
+    ).every(key => finalCallbackUrl
+      .hasParam(
+        key
+      )
+    ))
+      return this._callback.request(
+        subpath,
+        params
+      );
+    else
+      return {};
   }
 
   get Callback(): typeof Callback {
@@ -104,10 +86,6 @@ class Endpoint {
   static get Query(): typeof Query {
     return Endpoint.Url.Query;
   }
-
-}
-
-namespace Endpoint {
 
 }
 

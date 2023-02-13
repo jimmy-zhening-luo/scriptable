@@ -4,22 +4,19 @@ class Api {
   private _request: ApiRequest;
 
   constructor(
-    url:
-      | string
-      | Url
-      | Url.UrlParts,
+    url: ConstructorParameters<typeof Url>[0],
     method: ApiRequest.Method = Api.Method.GET,
     authHeader?:
       | string
-      | [string, string]
+      | [Types.stringful, string]
       | {
         authType: string,
         authToken: string
       },
     headers?:
-      | [string, Types.primitive]
-      | [string, Types.primitive][]
-      | { [key: string]: Types.primitive },
+      | [Types.stringful, Types.primitive]
+      | [Types.stringful, Types.primitive][]
+      | { [key: Types.stringful]: Types.primitive },
     body?:
       | string
       | RequestBody.RequestBodyInterface,
@@ -59,10 +56,8 @@ class Api {
     return this._url.toString();
   }
 
-  set url(url:
-    | string
-    | Url
-    | Url.UrlParts
+  set url(
+    url: ConstructorParameters<typeof Url>[0]
   ) {
     this._url = new Url(url);
   }
@@ -71,7 +66,9 @@ class Api {
     return this._url.scheme;
   }
 
-  set scheme(scheme: string | Scheme) {
+  set scheme(
+    scheme: ConstructorParameters<typeof Scheme>[0]
+  ) {
     this._url.scheme = scheme;
   }
 
@@ -79,7 +76,9 @@ class Api {
     return this._url.host;
   }
 
-  set host(host: string | Host) {
+  set host(
+    host: ConstructorParameters<typeof Host>[0]
+  ) {
     this._url.host = host;
   }
 
@@ -87,7 +86,9 @@ class Api {
     return this._url.port;
   }
 
-  set port(port: string | number | Port) {
+  set port(
+    port: ConstructorParameters<typeof Port>[0]
+  ) {
     this._url.port = port;
   }
 
@@ -95,7 +96,9 @@ class Api {
     return this._url.path;
   }
 
-  set path(path: string | Path) {
+  set path(
+    path: ConstructorParameters<typeof Path>[0]
+  ) {
     this._url.path = path;
   }
 
@@ -103,7 +106,9 @@ class Api {
     return this._url.query;
   }
 
-  set query(query: string | Query) {
+  set query(
+    query: ConstructorParameters<typeof Query>[0]
+  ) {
     this._url.query = query;
   }
 
@@ -119,6 +124,18 @@ class Api {
   ): this {
     this._url.deleteParam(...param);
     return this;
+  }
+
+  getParam(
+    ...param: Parameters<Url["getParam"]>
+  ): ReturnType<Url["getParam"]> {
+    return this._url.getParam(...param);
+  }
+
+  hasParam(
+    ...param: Parameters<Url["hasParam"]>
+  ): ReturnType<Url["hasParam"]> {
+    return this._url.hasParam(...param);
   }
 
   get fragment(): string {

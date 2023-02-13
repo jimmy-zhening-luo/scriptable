@@ -2,6 +2,16 @@ const fr_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Fragment extends fr_UrlPart {
 
+  constructor(
+    fragment?:
+      | null
+      | string
+      | Fragment
+  ) {
+    super(fragment);
+  }
+
+
   protected parse(
     fragment: string
   ): null | string {
