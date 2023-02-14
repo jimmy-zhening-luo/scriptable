@@ -35,7 +35,7 @@ class ValidString {
       trimTrailing
     );
 
-    minLength = new ValidString.PositiveInteger(maxLength).value ?? 1;
+    minLength = new ValidString.PositiveInteger(maxLength).value ?? 0;
 
     maxLength = new ValidString.PositiveInteger(maxLength).value ?? Infinity;
 
