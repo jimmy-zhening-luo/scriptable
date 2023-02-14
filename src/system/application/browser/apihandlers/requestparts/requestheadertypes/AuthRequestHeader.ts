@@ -5,11 +5,13 @@ class AuthRequestHeader extends a_RequestHeader<string> {
   constructor(
     authOrAuthType?:
       | AuthRequestHeader
-      | string
-      | [string, string],
+      | string,
     authToken?: string
   ) {
-    if (authOrAuthType === undefined)
+    if (
+      authOrAuthType === undefined
+      || authOrAuthType === null
+    )
       super(
         "Authorization", ""
       );
@@ -18,13 +20,6 @@ class AuthRequestHeader extends a_RequestHeader<string> {
       super(
         "Authorization",
         authRequestHeader.auth
-      );
-    }
-    else if (Array.isArray(authOrAuthType)) {
-      const authTuple: [string, string] = authOrAuthType;
-      super(
-        "Authorization",
-        authTuple.join(" ")
       );
     }
     else {

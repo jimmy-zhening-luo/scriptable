@@ -3,54 +3,117 @@ class RequestHeaders {
   private readonly _headers: RequestHeaders.RequestHeaderRecord;
 
   constructor(
-    authOrHeaders?:
-      | string
-      | AuthRequestHeader
+    authOrAuthType?:
+      | ConstructorParameters<typeof AuthRequestHeader>[0]
       | Parameters<RequestHeaders["addHeaders"]>[0],
-    authTokenOrHeaders?:
-      | string
+    authToken?:
+      | ConstructorParameters<typeof AuthRequestHeader>[1]
       | Parameters<RequestHeaders["addHeaders"]>[0],
-    headers?:
-      | Parameters<RequestHeaders["addHeaders"]>[0]
+    ...headers: Parameters<RequestHeaders["addHeaders"]>
   ) {
     this._headers = {};
-    if (authStringOrAuthTypeOrHeaders === undefined) { }
-    else if (typeof authStringOrAuthTypeOrHeaders !== "string")
-      this.addHeaders(
-        authStringOrAuthTypeOrHeaders
-      );
+
+    if (
+      authOrAuthType === undefined
+      || authOrAuthType === null
+    ) { }
+
+    else if (typeof authOrAuthType === "string") {
+      if (
+        authToken === undefined
+        || authToken === null
+      ) {
+        const authString: string = authOrAuthType;
+        this.auth = authString;
+      }
+      else if (typeof authToken === "string") {
+        const authType: string = authOrAuthType;
+        this.setAuthTypeAndToken(
+          authType,
+          authToken
+        );
+        this.addHeaders(
+          ...headers
+        );
+      }
+      else {
+        const authString: string = authOrAuthType;
+        this.auth = authString;
+        this.addHeaders(
+          authToken,
+          ...headers
+        );
+      }
+    }
+
+    else if (Symbol.iterator in authOrAuthType) {
+      if (
+        authToken === undefined
+        || authToken === null
+        || typeof authToken === "string"
+      ) {
+        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthType;
+        this.addHeaders(
+          header0,
+          ...headers
+        );
+      }
+      else {
+        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthType;
+        const header1: Parameters<RequestHeaders["addHeaders"]>[0] = authToken;
+        this.addHeaders(header0, header1, ...headers);
+      }
+    }
+
+    else if (
+      authOrAuthType instanceof this.AuthRequestHeader
+      || Reflect
+        .ownKeys(
+          new this.AuthRequestHeader()
+        ).every(
+          key => key in authOrAuthType
+      )
+      || Object.getPrototypeOf(authOrAuthType) === this.AuthRequestHeader.prototype
+    ) {
+      this.auth = authOrAuthType as AuthRequestHeader;
+    }
     else {
       if (
-        authTokenOrHeaders === undefined
-        || typeof authTokenOrHeaders !== "string"
-      )
-        this.auth = authStringOrAuthTypeOrHeaders;
-      else
-        this.setAuthTypeAndToken(
-          authStringOrAuthTypeOrHeaders,
-          authTokenOrHeaders
-        );
-
-      if (authTokenOrHeaders === undefined) { }
-      else if (typeof authTokenOrHeaders === "string") {
-        if (headers !== undefined)
-          this.addHeaders(
-            headers
-          );
-      }
-      else
+        authToken === undefined
+        || authToken === null
+        || typeof authToken === "string"
+      ) {
+        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthType;
         this.addHeaders(
-          authTokenOrHeaders
+          header0,
+          ...headers
         );
+      }
+      else {
+        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthType;
+        const header1: Parameters<RequestHeaders["addHeaders"]>[0] = authToken;
+        this.addHeaders(
+          header0,
+          header1,
+          ...headers
+        );
+      }
     }
+    this.clearEmptyParameters();
+  }
+
+  protected clearEmptyParameters(): void {
     for (const key in this._headers)
-      if (this._headers[key].value === "")
+      if (
+        key === ""
+        || this._headers[key].value === ""
+      )
         delete this._headers[key];
   }
 
   get auth(): typeof AuthRequestHeader.prototype.auth {
     return "Authorization" in this._headers ?
-      this._headers.Authorization.authString
+      this._headers.Authorization.auth
       : "";
   }
 
@@ -148,11 +211,11 @@ class RequestHeaders {
     headerKey: Types.stringful,
     headerValue: Types.primitive
   ): this {
-    this._headers[
-      headerKey
-    ] = new this.GenericRequestHeader(
-      headerKey, headerValue
-    );
+    headerValue.toString() === "" ?
+      this.deleteHeader(headerKey)
+      : this._headers[headerKey] = new this.GenericRequestHeader(
+        headerKey, headerValue
+      );
     return this;
   }
 
@@ -166,32 +229,32 @@ class RequestHeaders {
   }
 
   addHeaders(
-    headers:
+    ...headers: Array<
       | [Types.stringful, Types.primitive]
       | [Types.stringful, Types.primitive][]
       | Record<Types.stringful, Types.primitive>
       | Map<Types.stringful, Types.primitive>
+    >
   ): this {
-    if (!Array.isArray(headers))
-      Object.keys(headers)
-        .forEach(key => this.setHeader(
-          key,
-          headers[key]
-        ));
-    else {
-      if (headers.length === 0) { }
-      else if (typeof headers[0] === "string") {
-        this.setHeader(headers[0], headers[1] as Types.primitive);
+    for (const header of headers) {
+      if (header instanceof Map) {
+        for (const [key, value] of header)
+          this.setHeader(key, value);
+      }
+      else if (!(Symbol.iterator in header)) {
+        for (const [key, value] of Array.from(Object.entries(header)))
+          this.setHeader(key, value);
+      }
+      else if (Array.isArray([header][0])
+      ) {
+        for (const [key, value] of header as [string, Types.primitive][])
+          this.setHeader(key, value);
       }
       else {
-        (headers as [string, Types.primitive][]).forEach(header => {
-          this.set(
-            header[0],
-            header[1]
-          );
-        });
+        this.setHeader(header[0] as Types.stringful, header[1] as Types.primitive);
       }
     }
+    this.clearEmptyParameters();
     return this;
   }
 

@@ -8,6 +8,10 @@ class Repositories {
     return Repositories.WorkingCopy.Repository;
   }
 
+  static get Common(): typeof Common {
+    return importModule("./system/application/common/Common");
+  }
+
 }
 
 module.exports = Repositories;

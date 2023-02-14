@@ -12,6 +12,10 @@ class Files {
     return Files.File.Bookmark;
   }
 
+  static get Common(): typeof Common {
+    return importModule("./system/application/common/Common");
+  }
+
 }
 
 module.exports = Files;

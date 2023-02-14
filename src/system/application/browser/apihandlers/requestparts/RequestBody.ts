@@ -2,7 +2,7 @@ class RequestBody {
 
   private readonly _body:
     | string
-    | RequestBody.RequestBodyInterface;
+    | RequestBody.RequestBodyRecord;
 
   constructor(
     body?: typeof RequestBody.prototype._body
@@ -10,14 +10,14 @@ class RequestBody {
     this._body = body ?? "";
   }
 
-  toObject(): RequestBody.RequestBodyInterface {
+  toObject(): RequestBody.RequestBodyRecord {
     if (typeof this._body === "string")
       return this.toStringObject();
     else
       return this._body;
   }
 
-  toStringObject(): RequestBody.StringRequestBodyInterface {
+  toStringObject(): RequestBody.RequestBodyStringRecord {
     if (typeof this._body === "string") {
       try {
         return JSON.parse(this._body);
@@ -35,24 +35,29 @@ class RequestBody {
     else
       return JSON.stringify(this._body);
   }
+
 }
 
 
 namespace RequestBody {
 
-  export interface RequestBodyInterface {
-    [key: Types.stringful]:
-      | Types.primitive
-      | RequestBodyInterface
-      | RequestBodyInterface[]
+  export interface RequestBodyRecord {
+    [key: Types.stringful]: RequestBodyValue
   }
 
-  export interface StringRequestBodyInterface {
-    [key: Types.stringful]:
-      | string
-      | StringRequestBodyInterface
-      | StringRequestBodyInterface[]
+  export interface RequestBodyStringRecord {
+    [key: Types.stringful]: RequestBodyStringValue
   }
+
+  export type RequestBodyValue =
+    | Types.primitive
+    | RequestBodyRecord
+    | RequestBodyValue[];
+
+  export type RequestBodyStringValue =
+    | string
+    | RequestBodyRecord
+  | RequestBodyStringValue[];
 
 }
 

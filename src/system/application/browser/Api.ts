@@ -1,11 +1,15 @@
 class Api {
 
   private _url: Url;
-  private _request: ApiRequest;
+  private _requestHeaders: RequestHeaders;
+  private _requestBody: RequestBody;
+  private _timeoutSeconds: number;
 
   constructor(
-    url: ConstructorParameters<typeof Url>[0],
-    method: ApiRequest.Method = Api.Method.GET,
+    urlOrApi:
+      | Api
+      | ConstructorParameters<typeof Url>[0],
+    method: Api.Method = Api.Method.GET,
     authHeader?:
       | string
       | [Types.stringful, string]
@@ -17,27 +21,47 @@ class Api {
       | [Types.stringful, Types.primitive]
       | [Types.stringful, Types.primitive][]
       | { [key: Types.stringful]: Types.primitive },
-    body?:
-      | string
-      | RequestBody.RequestBodyInterface,
-    timeoutSeconds?: number
+    body?: ConstructorParameters<typeof RequestBody>[0],
+    timeoutSeconds?: number = 60
   ) {
-    this._url = new Api.Url(url);
-    this._request = new Api.ApiRequest(
-      new Api.Url(url).toString(),
-      method,
-      authHeader,
-      headers,
-      body,
-      timeoutSeconds
-    );
+    if (urlOrApi instanceof Api) {
+      const api: Api = urlOrApi;
+      this._url = new this.Url(api.url);
+      this._requestHeaders = new this.RequestHeaders(
+        api.headers
+      );
+      this._requestBody = new this.RequestBody(
+        api.body
+      );
+      this._timeoutSeconds = api.timeout;
+    }
+    else {
+      this._url = new this.Url(urlOrApi);
+      this._requestHeaders = new this.RequestHeaders(
+        headers
+      )
+      this._requestBody = new this.RequestBody(body);
+      this._timeoutSeconds = timeoutSeconds;
+    }
   }
 
-  private handleRequest(): ApiResponse {
+  private handleRequest(): ResponseBody {
     this._request.url = this.url;
     return new Api.ApiResponse(
       this._request.request()
     );
+    request(): string {
+      var response: string = "";
+      const req: Request = new Request(this.url);
+      req.headers = this.headersStringObject;
+      req.body = this.bodyString;
+      req.method = this.method.toString();
+      req.timeoutInterval = this._timeoutSeconds;
+      req.loadString().then((_response) => {
+        response = _response ?? "";
+      });
+      return response;
+    }
   }
 
   request(): any {
@@ -240,42 +264,86 @@ class Api {
   }
 
   get timeout(): number {
-    return this._request.timeout;
+    return this._timeoutSeconds;
   }
 
-  set timeout(timeoutSeconds: number) {
-    this._request.timeout = timeoutSeconds;
+  set timeout(
+    timeoutSeconds: number
+  ) {
+    if (
+      new this.PositiveFiniteInteger(
+        timeoutSeconds
+      ).isNumber
+    )
+      this._timeoutSeconds = timeoutSeconds;
   }
 
   get Url(): typeof Url {
     return Api.Url;
   }
 
-  get ApiRequest(): typeof ApiRequest {
-    return Api.ApiRequest;
+  get RequestHeaders(): typeof RequestHeaders {
+    return Api.RequestHeaders;
   }
 
-  get ApiResponse(): typeof ApiResponse {
-    return Api.ApiResponse;
+  get RequestBody(): typeof RequestBody {
+    return Api.RequestBody;
+  }
+
+  get ResponseBody(): typeof ResponseBody {
+    return Api.ResponseBody;
+  }
+
+  get Common(): typeof Common {
+    return Api.Common;
+  }
+
+  private get PositiveFiniteInteger(): typeof PositiveFiniteInteger {
+    return this.Common.Types.Numbers.PositiveFiniteInteger;
   }
 
   static get Url(): typeof Url {
     return importModule("Url");
   }
 
-  static get ApiRequest(): typeof ApiRequest {
-    return importModule("apihandlers/ApiRequest")
+  static get ApiHandlers(): typeof ApiHandlers {
+    return importModule("apihandlers/ApiHandlers");
   }
 
-  static get ApiResponse(): typeof ApiResponse {
-    return importModule("apihandlers/ApiResponse");
+  static get RequestParts(): typeof RequestParts {
+    return Api.ApiHandlers.RequestParts;
+  }
+
+  static get RequestHeaders(): typeof RequestHeaders {
+    return Api.RequestParts.RequestHeaders;
+  }
+
+  static get RequestBody(): typeof RequestBody {
+    return Api.RequestParts.RequestBody;
+  }
+
+  static get ResponseParts(): typeof ResponseParts {
+    return Api.ApiHandlers.ResponseParts;
+  }
+
+  static get ResponseBody(): typeof ResponseBody {
+    return Api.ResponseParts.ResponseBody;
+  }
+
+  static get Common(): typeof Common {
+    return importModule("./system/application/common/Common");
   }
 
 }
 
 namespace Api {
 
-  export const Method: typeof ApiRequest.Method = Api.ApiRequest.Method;
+  export enum Method {
+    GET,
+    POST,
+    PUT,
+    DELETE
+  }
 
 }
 
