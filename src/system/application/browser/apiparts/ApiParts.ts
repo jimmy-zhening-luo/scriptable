@@ -1,4 +1,4 @@
-class ApiHandlers {
+class ApiParts {
 
   static get RequestParts(): typeof RequestParts {
     return importModule("requestparts/RequestParts");
@@ -22,4 +22,4 @@ class ApiHandlers {
 
 }
 
-module.exports = ApiHandlers;
+module.exports = ApiParts;

@@ -307,7 +307,7 @@ class Api {
   }
 
   static get ApiHandlers(): typeof ApiHandlers {
-    return importModule("apihandlers/ApiHandlers");
+    return importModule("apiparts/ApiParts");
   }
 
   static get RequestParts(): typeof RequestParts {
