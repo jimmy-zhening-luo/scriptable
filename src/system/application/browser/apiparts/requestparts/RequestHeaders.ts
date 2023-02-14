@@ -3,7 +3,7 @@ class RequestHeaders {
   private readonly _headers: RequestHeaders.RequestHeaderRecord;
 
   constructor(
-    authOrAuthType?:
+    authOrAuthScheme?:
       | ConstructorParameters<typeof AuthRequestHeader>[0]
       | Parameters<RequestHeaders["addHeaders"]>[0],
     authToken?:
@@ -14,20 +14,20 @@ class RequestHeaders {
     this._headers = {};
 
     if (
-      authOrAuthType === undefined
-      || authOrAuthType === null
+      authOrAuthScheme === undefined
+      || authOrAuthScheme === null
     ) { }
 
-    else if (typeof authOrAuthType === "string") {
+    else if (typeof authOrAuthScheme === "string") {
       if (
         authToken === undefined
         || authToken === null
       ) {
-        const authString: string = authOrAuthType;
+        const authString: string = authOrAuthScheme;
         this.auth = authString;
       }
       else if (typeof authToken === "string") {
-        const authType: string = authOrAuthType;
+        const authType: string = authOrAuthScheme;
         this.setAuthTypeAndToken(
           authType,
           authToken
@@ -37,7 +37,7 @@ class RequestHeaders {
         );
       }
       else {
-        const authString: string = authOrAuthType;
+        const authString: string = authOrAuthScheme;
         this.auth = authString;
         this.addHeaders(
           authToken,
@@ -46,36 +46,36 @@ class RequestHeaders {
       }
     }
 
-    else if (Symbol.iterator in authOrAuthType) {
+    else if (Symbol.iterator in authOrAuthScheme) {
       if (
         authToken === undefined
         || authToken === null
         || typeof authToken === "string"
       ) {
-        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthType;
+        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthScheme;
         this.addHeaders(
           header0,
           ...headers
         );
       }
       else {
-        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthType;
+        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthScheme;
         const header1: Parameters<RequestHeaders["addHeaders"]>[0] = authToken;
         this.addHeaders(header0, header1, ...headers);
       }
     }
 
     else if (
-      authOrAuthType instanceof this.AuthRequestHeader
+      authOrAuthScheme instanceof this.AuthRequestHeader
       || Reflect
         .ownKeys(
           new this.AuthRequestHeader()
         ).every(
-          key => key in authOrAuthType
+          key => key in authOrAuthScheme
       )
-      || Object.getPrototypeOf(authOrAuthType) === this.AuthRequestHeader.prototype
+      || Object.getPrototypeOf(authOrAuthScheme) === this.AuthRequestHeader.prototype
     ) {
-      this.auth = authOrAuthType as AuthRequestHeader;
+      this.auth = authOrAuthScheme as AuthRequestHeader;
     }
     else {
       if (
@@ -83,14 +83,14 @@ class RequestHeaders {
         || authToken === null
         || typeof authToken === "string"
       ) {
-        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthType;
+        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthScheme;
         this.addHeaders(
           header0,
           ...headers
         );
       }
       else {
-        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthType;
+        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthScheme;
         const header1: Parameters<RequestHeaders["addHeaders"]>[0] = authToken;
         this.addHeaders(
           header0,

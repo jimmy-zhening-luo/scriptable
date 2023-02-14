@@ -2,73 +2,144 @@ const a_RequestHeader: typeof RequestHeader = importModule("requestheader/Reques
 
 class AuthRequestHeader extends a_RequestHeader<string> {
 
+  private _scheme?: AuthRequestHeader.AuthScheme;
+  private _token?: string;
+
   constructor(
-    authOrAuthType?:
-      | AuthRequestHeader
-      | string,
+    authOrAuthScheme?:
+      | AuthRequestHeader.AuthScheme
+      | keyof typeof AuthRequestHeader.AuthScheme
+      | AuthRequestHeader,
     authToken?: string
   ) {
+    const authHeaderKey: AuthRequestHeader.AuthHeaderKey = "Authorization";
     if (
-      authOrAuthType === undefined
-      || authOrAuthType === null
+      authOrAuthScheme === undefined
+      || authOrAuthScheme === null
     )
       super(
-        "Authorization", ""
+        authHeaderKey,
+        ""
       );
-    else if (authOrAuthType instanceof AuthRequestHeader) {
-      const authRequestHeader: AuthRequestHeader = authOrAuthType;
+    else if (authOrAuthScheme instanceof AuthRequestHeader) {
+      const authHeader: AuthRequestHeader = authOrAuthScheme;
       super(
-        "Authorization",
-        authRequestHeader.auth
+        authHeaderKey,
+        authHeader.value
       );
     }
-    else {
-      if (authToken === undefined) {
-        const authString: string = authOrAuthType;
+    else{
+      if (
+        authToken === undefined
+        || authToken === ""
+      ) {
         super(
-          "Authorization",
-          authString
+          authHeaderKey,
+          ""
         );
       }
       else {
-        const authType: string = authOrAuthType;
-        super(
-          "Authorization",
-          [
-            authType,
-            authToken
-          ]
-            .join(" ")
-        );
+        if (typeof authOrAuthScheme === "string") {
+          const authScheme: keyof typeof AuthRequestHeader.AuthScheme = authOrAuthScheme;
+          super(
+            authHeaderKey,
+            [
+              authScheme,
+              authToken
+            ]
+              .join(" ")
+          );
+        } else {
+          const authScheme: keyof typeof AuthRequestHeader.AuthScheme = AuthRequestHeader.AuthScheme[
+            authOrAuthScheme
+          ] as keyof typeof AuthRequestHeader.AuthScheme;
+          super(
+            authHeaderKey,
+            [
+              authScheme,
+              authToken
+            ]
+              .join(" ")
+          );
+        }
       }
+    }
+
+    if (
+      this.value.split(" ").length >= 2
+      && this.value.split(" ")[0] in AuthRequestHeader.AuthScheme
+    ) {
+      const valueSplitBySpace: string[] = this.value.split(" ");
+      this._scheme = AuthRequestHeader.AuthScheme[valueSplitBySpace.shift() as keyof typeof AuthRequestHeader.AuthScheme];
+      this._token = valueSplitBySpace.join(" ");
     }
   }
 
-  get auth(): typeof RequestHeader.prototype.value {
-    return this.value;
+  get scheme():
+    | keyof typeof AuthRequestHeader.AuthScheme
+    | "" {
+    return this._scheme === undefined ?
+      ""
+      : this._scheme in AuthRequestHeader.AuthScheme ?
+        AuthRequestHeader.AuthScheme[this._scheme] as keyof typeof AuthRequestHeader.AuthScheme
+        : "";
   }
 
-  set auth(
-    auth: ConstructorParameters<typeof AuthRequestHeader>[0]
+  set scheme(
+    authScheme: typeof AuthRequestHeader.prototype.scheme
   ) {
-    this.value = new AuthRequestHeader(auth).value;
+    if (authScheme === "")
+      this.value = "";
+    else {
+      this.value = [
+        AuthRequestHeader.AuthScheme[authScheme],
+        this._token
+      ]
+        .join(" ");
+    }
   }
 
-  setAuthTypeAndToken(
-    authType: string,
-    token: string
+  get token(): string {
+    return this._token ?? "";
+  }
+
+  set token(
+    token: typeof AuthRequestHeader.prototype.token
+  ) {
+    if (
+      token === ""
+    )
+      this.value = ""
+
+  setAuthSchemeAndToken(
+    authOrAuthScheme: ConstructorParameters<typeof AuthRequestHeader>[0],
+    token:
   ): this {
-    this.value = [
-      authType,
-      token
-    ]
-      .join(" ");
-    return this;
+    if (
+      this.value.split(" ").length >= 2
+      && this.value.split(" ")[0] in AuthRequestHeader.AuthScheme
+    ) {
+      const valueSplitBySpace: string[] = this.value.split(" ");
+      this._scheme = AuthRequestHeader.AuthScheme[valueSplitBySpace.shift() as keyof typeof AuthRequestHeader.AuthScheme];
+      this._token = valueSplitBySpace.join(" ");
+    }
   }
 
   static get RequestHeader(): typeof RequestHeader {
     return a_RequestHeader;
   }
+
+}
+
+namespace AuthRequestHeader {
+
+  export enum AuthScheme {
+    Basic,
+    Bearer,
+    Digest
+  }
+
+  export type AuthHeaderKey = "Authorization";
 
 }
 

@@ -10,14 +10,11 @@ class Api {
       | Api
       | ConstructorParameters<typeof Url>[0],
     method: Api.Method = Api.Method.GET,
-    authHeader?:
+    httpAuthHeader?:
       | string
-      | [Types.stringful, string]
-      | {
-        authType: string,
-        authToken: string
-      },
-    headers?:
+      | [keyof typeof Api.AuthScheme, Api.AuthToken]
+    |
+    httpHeaders?:
       | [Types.stringful, Types.primitive]
       | [Types.stringful, Types.primitive][]
       | { [key: Types.stringful]: Types.primitive },
@@ -343,6 +340,12 @@ namespace Api {
     POST,
     PUT,
     DELETE
+  }
+
+  export enum AuthScheme {
+    Bearer,
+    Basic,
+    Digest
   }
 
 }

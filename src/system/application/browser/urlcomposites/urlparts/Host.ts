@@ -11,7 +11,6 @@ class Host extends ho_UrlPart {
     super(host);
   }
 
-
   protected parse(host: string): null | string {
     host = host.trim();
     host = host.includes("://") ?
