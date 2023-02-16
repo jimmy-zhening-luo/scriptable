@@ -5,7 +5,9 @@ class ValidPathRepeater extends pa_ValidUrlRepeater {
   constructor(pathRepeater: string) {
     super(
       pathRepeater,
-      {},
+      {
+        minLength: 0
+      },
       pa_ValidUrlRepeater.UrlChar.pchar
     );
   }

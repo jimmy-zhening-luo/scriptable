@@ -5,8 +5,10 @@ class ValidUrlRepeater extends r_ValidUrlPart {
   constructor(
     part: string,
     {
+      minLength = undefined,
       maxLength = Infinity
     }: {
+      minLength?: number,
       maxLength?: number
     },
     ...allowedChars: Char.CharInput[]

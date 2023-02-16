@@ -40,20 +40,12 @@ abstract class UrlPart {
     );
   }
 
-  get Paths(): typeof Paths {
-    return UrlPart.Paths;
-  }
-
   protected get UrlValidators(): typeof UrlValidators {
     return UrlPart.UrlValidators;
   }
 
   protected get Repeaters(): typeof Repeaters {
     return UrlPart.Repeaters;
-  }
-
-  static get Paths(): typeof Paths {
-    return importModule("./system/application/common/paths/Paths")
   }
 
   protected static get UrlValidators(): typeof UrlValidators {

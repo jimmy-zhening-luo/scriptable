@@ -9,14 +9,16 @@ class ValidUrlPart extends up_ValidString {
       trimLeading = [],
       trimTrailing = []
     }: {
-        toLower?: boolean,
-        trimLeading?: string[],
-        trimTrailing?: string[]
-      },
+      toLower?: boolean,
+      trimLeading?: string[],
+      trimTrailing?: string[]
+    },
     {
-      maxLength = Infinity,
+      minLength = undefined,
+      maxLength = Infinity
     }: {
-        maxLength?: number
+      minLength?: number,
+      maxLength?: number
     },
     ...allowedChars: Char.CharInput[]
   ) {
@@ -29,7 +31,7 @@ class ValidUrlPart extends up_ValidString {
         trimTrailing: trimTrailing
       },
       {
-        minLength: 1,
+        minLength: minLength ?? 1,
         maxLength: maxLength
       },
       ...allowedChars

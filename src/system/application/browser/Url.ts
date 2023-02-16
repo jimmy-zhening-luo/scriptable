@@ -281,9 +281,7 @@ class Url {
         schemeOrHostportpath
         : "";
 
-    const hostport_path: string[] = Url.Paths
-      .trimPath(hostportpath)
-      .split("/");
+    const hostport_path: string[] = hostportpath.split("/");
     const hostport: string = hostport_path.shift() ?? "";
     urlStringParts.path = hostport_path.join("/");
 
@@ -365,10 +363,6 @@ class Url {
     return Url.Fragment;
   }
 
-  get Paths(): typeof Paths {
-    return Url.Paths;
-  }
-
   protected get SchemeHostPortPathQueryFragment(): typeof SchemeHostPortPathQueryFragment {
     return Url.SchemeHostPortPathQueryFragment;
   }
@@ -399,10 +393,6 @@ class Url {
 
   static get Fragment(): typeof Fragment {
     return Url.UrlParts.Fragment;
-  }
-
-  static get Paths(): typeof Paths {
-    return Url.Scheme.Paths;
   }
 
   protected static get SchemeHostPortPathQueryFragment(): typeof SchemeHostPortPathQueryFragment {

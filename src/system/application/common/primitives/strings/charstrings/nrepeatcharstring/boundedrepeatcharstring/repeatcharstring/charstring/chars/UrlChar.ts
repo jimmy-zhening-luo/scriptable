@@ -20,7 +20,7 @@ class UrlChar extends _Char {
     ];
   }
 
-  // RFC 3986: https://www.rfc-editor.org/rfc/rfc3986#appendix-A
+  // RFC 3986: https://www.rfc-edi  tor.org/rfc/rfc3986#appendix-A
   static get pchar(): string[] {
     return [
       ...this.unreserved,

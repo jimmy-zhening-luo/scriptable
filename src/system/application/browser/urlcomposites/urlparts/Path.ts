@@ -12,10 +12,10 @@ class Path extends pa_UrlPart {
   }
 
   protected parse(path: string): null | string {
-    path = Path.Paths.trimPath(path);
-    return path === "" ?
+    return path.trim() === "" ?
       null
       : path
+        .trim()
         .split("/")
         .map(pathRepeater => new this.PathRepeater(pathRepeater))
         .every(pathRepeater => pathRepeater.isValid) ?
@@ -29,12 +29,21 @@ class Path extends pa_UrlPart {
       | string
       | Path
   ) {
-    return new Path(
-      this.Paths.joinPaths(
-        this.toString(),
-        new Path(subpath).toString()
+    const subpathToUrl: UrlPart = new Path(subpath);
+    return subpathToUrl.isValid ?
+      new Path(
+        [
+          this.toString() as string,
+          subpathToUrl.toString()
+        ].join(
+          this.toString().endsWith("/") ?
+            ""
+            : subpathToUrl.toString().startsWith("/") ?
+              ""
+              : "/"
+        )
       )
-    );
+      : this;
   }
 
   protected get PathRepeater(): typeof PathRepeater {
