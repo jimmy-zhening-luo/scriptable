@@ -1,5 +1,5 @@
 class Paths {
-  
+
   static isValid(
     path:
       | string
@@ -11,7 +11,7 @@ class Paths {
         : path
     ).isValid;
   }
-  
+
   static trimPath(
     path: string
   ): null | string {
@@ -33,12 +33,12 @@ class Paths {
       ).cleaned
       : null;
   }
-  
+
   static cleanPath(
     path:
       | string
       | string[]
-  ): 
+  ):
     null | string
   {
     return Paths.isValid(
@@ -53,7 +53,7 @@ class Paths {
         : Paths.treeToPath(path)
       : null;
   }
-  
+
   static joinPaths(
     left:
       string
@@ -72,21 +72,21 @@ class Paths {
   }
 
   static walkPath(
-    currentPath: 
+    currentPath:
       | string
       | string[],
     relativePath: string = ""
   ): null | string {
     const relPathTree: string[] = typeof relativePath ===
-    
+
     Paths.pathToTree(
       Paths.trimPath(
         relativePath
       )
     );
-    
-    
-      
+
+
+
     const pathTree: string[] = (
       relPathTree
         .length > 0
@@ -104,7 +104,7 @@ class Paths {
                 path
               )
             );
-    
+
     relPathTree.forEach(
       (node) => {
         if (node.trim() === "..")
@@ -122,7 +122,7 @@ class Paths {
 
   static pathToTree(
     path: string
-  ): 
+  ):
     null | string[]
   {
     return Paths.isValid(path) ?
@@ -170,9 +170,11 @@ class Paths {
         : null;
   }
 
-  static get ValidString(): typeof ValidString {
-    return importModule("./system/application/common/primitives/strings/ValidString");
-  }
+
+
+}
+
+namespace {
 
 }
 
