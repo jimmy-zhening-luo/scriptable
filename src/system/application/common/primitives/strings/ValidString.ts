@@ -155,7 +155,7 @@ class ValidString {
     return ValidString.CharStrings.OneCharString;
   }
 
-  protected static get PositiveInteger(): typeof PositiveInteger {
+  static get PositiveInteger(): typeof PositiveInteger {
     return importModule("./system/application/common/primitives/numbers/PositiveInteger");
   }
 
