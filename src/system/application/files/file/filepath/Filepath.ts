@@ -12,7 +12,7 @@ class Filepath {
     this.raw = path === undefined ?
       ""
       : Array.isArray(path) ?
-        Filepath.flattenToString(path)
+        Filepath.joinArray(path)
         : typeof path === "string" ?
           path
           : path.toString();
@@ -33,10 +33,10 @@ class Filepath {
   }
 
   get path(): string {
-    return Filepath.flattenToString(this._path);
+    return Filepath.joinArray(this._path);
   }
 
-  get pathTree(): string[] {
+  get tree(): string[] {
     return this._path;
   }
 
@@ -48,7 +48,7 @@ class Filepath {
     return this.path;
   }
 
-  toTree(): typeof Filepath.prototype.pathTree {
+  toTree(): typeof Filepath.prototype.tree {
     return this.pathTree;
   }
 
@@ -70,53 +70,29 @@ class Filepath {
   }
 
   protected static identity(
-    path:
+    _path:
       | string
       | string[]
-  ): string | string[] {
-    return path;
-  }
+  ): void { }
 
-  protected static flattenToString(
+
+  private static joinArray(
     path: Parameters<typeof Filepath.identity>[0] = ""
-  ) {
+  ): string {
     return Array.isArray(path) ?
       path.join("/")
       : path;
-  }
+ }
 
-  protected static flattenToTuple(
+  private static unrollArray(
     path: Parameters<typeof Filepath.identity>[0] = ""
   ): string[] {
     return Filepath
-      .flattenToString(path)
+      .joinArray(path)
       .split("/");
   }
 
-  protected static trimEdges(
-    path: Parameters<typeof Filepath.identity>[0] = ""
-  ): string {
-    return Filepath.ValidString.clean(
-      Filepath.flattenToString(path),
-      {
-        trim: true,
-        trimLeading: [
-          ...Filepath.ValidString.Char.slash
-        ],
-        trimTrailing: [
-          ...Filepath.ValidString.Char.slash
-        ]
-      }
-    );
-  }
-
-  static trim(
-    path: Parameters<typeof Filepath.identity>[0] = ""
-  ): string {
-    return Filepath.trimEdges(path);
-  }
-
-  protected static trimNodes(
+  private static deepClean(
     path: Parameters<typeof Filepath.identity>[0] = ""
   ) {
     return new Filepath.StringSplitter(
@@ -132,11 +108,12 @@ class Filepath {
       .join("/");
   }
 
-  static clean(
-    path: Parameters<typeof Filepath.identity>[0] = ""
-  ): string {
-    return Filepath.trimNodes(path);
+  private static validate(
+    path: Parameters<typeof Filepath.identity>[0] = "",
+  ) {
+
   }
+
 
   static join(
     left: Parameters<typeof Filepath.identity>[0],
@@ -149,45 +126,21 @@ class Filepath {
   }
 
   static walk(
-    currentPath: Parameters<typeof Filepath.identity>[0],
+    path: Parameters<typeof Filepath.identity>[0],
     relativePath: Parameters<typeof Filepath.identity>[0] = ""
-  ): null | string {
-    const relPathTree: string[] = typeof relativePath ===
+  ): string {
+    path = new Filepath(path).tree;
+    for (const node of new Filepath(relativePath).tree) {
+      if (node.trim() === "..")
+        path
+          .pop();
+      else if (node.trim() !== "")
+        path.push(node);
+    }
 
-      Filepath.pathToTree(
-        Filepath.trimPath(
-          relativePath
-        )
-      );
+    return new Filepath(path).path;
 
-
-
-    const pathTree: string[] = (
-      relPathTree
-        .length > 0
-      && relPathTree
-        .find(node =>
-          node
-            .trim() !== ""
-        ).trim() === "."
-    ) ?
-      []
-      : Filepath
-        .pathToTree(
-          Filepath
-            .trimPath(
-              path
-            )
-        );
-
-    relPathTree.forEach(
-      (node) => {
-        if (node.trim() === "..")
-          pathTree
-            .pop();
-        else if (node.trim() !== "")
-          pathTree.push(node);
-      }
+   * 3
     );
 
     return Filepath.trimPath(
@@ -227,6 +180,11 @@ class Filepath {
     return Filepath.ValidFilepathRepeater.StringSplitter;
   }
 
+}
+
+namespace Filepath {
+  export type Path = string;
+  export type PathCandidate = string;
 }
 
 module.exports = Filepath;
