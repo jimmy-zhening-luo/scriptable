@@ -8,7 +8,7 @@ class Config {
   ) {
     this.file = new Config.ReadOnlyFile(
       this.configDirFile,
-      Config.Paths.joinPaths(
+      Config.Paths.join(
         configSubpath,
         [
           programName,

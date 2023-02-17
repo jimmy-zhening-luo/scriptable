@@ -1,41 +1,28 @@
 class StringSplitter {
 
   readonly string: string;
-  readonly separator: string;
-  readonly ignoreEmptyTokens: boolean;
-  readonly limit: number;
-  readonly mergeTo: StringSplitter.Direction;
-
   readonly split: string[];
   readonly merged: string[];
 
   constructor(
-    stringOrTokens: string | string[],
-    separator: string = "",
-    ignoreEmptyTokens: boolean = false,
-    limit: number = Infinity,
-    mergeTo: StringSplitter.Direction = StringSplitter.Direction.Right
+    stringOrTokens: Parameters<typeof StringSplitter.split>[0],
+    separator: Parameters<typeof StringSplitter.split>[1] = "",
+    splitOptions: Parameters<typeof StringSplitter.split>[2] = {},
+    mergeOptions: Parameters<typeof StringSplitter.merge>[3] = {}
   ) {
     this.string = Array.isArray(stringOrTokens) ?
       stringOrTokens.join(separator)
       : stringOrTokens;
-    this.separator = separator;
-    this.ignoreEmptyTokens = ignoreEmptyTokens;
-
     this.split = StringSplitter.split(
       this.string,
-      this.separator,
-      this.ignoreEmptyTokens
+      separator,
+      splitOptions
     );
-
-    this.limit = new this.PositiveInteger(limit).value ?? new StringSplitter("").limit;
-    this.mergeTo = mergeTo;
     this.merged = StringSplitter.merge(
       this.split,
-      this.separator,
-      this.ignoreEmptyTokens,
-      this.limit,
-      this.mergeTo,
+      separator,
+      splitOptions,
+      mergeOptions
     );
   }
 
@@ -60,114 +47,11 @@ class StringSplitter {
     return this.mergedLength < this.splitLength;
   }
 
-  static merge(
-    tokens:
-      ConstructorParameters<typeof StringSplitter>[0],
-    separator:
-      ConstructorParameters<typeof StringSplitter>[1]
-      = "",
-    ignoreEmptyTokens:
-      ConstructorParameters<typeof StringSplitter>[2]
-      = false,
-    limit:
-      ConstructorParameters<typeof StringSplitter>[3]
-      = Infinity,
-    mergeTo:
-      ConstructorParameters<typeof StringSplitter>[4]
-      = StringSplitter.Direction.Right
-  ): string[] {
-    return mergeTo === StringSplitter.Direction.Left ?
-      StringSplitter.mergeLeft(
-        tokens,
-        separator,
-        ignoreEmptyTokens,
-        limit
-      )
-      : StringSplitter.mergeRight(
-        tokens,
-        separator,
-        ignoreEmptyTokens,
-        limit
-      );
-  }
-
-  static mergeLeft(
-    stringOrTokens:
-      ConstructorParameters<typeof StringSplitter>[0],
-    separator:
-      ConstructorParameters<typeof StringSplitter>[1]
-      = "",
-    ignoreEmptyTokens:
-      ConstructorParameters<typeof StringSplitter>[2]
-      = false,
-    limit:
-      ConstructorParameters<typeof StringSplitter>[3]
-      = Infinity,
-  ): string[] {
-    const tokens: string[] = StringSplitter.split(
-      stringOrTokens,
-      separator,
-      ignoreEmptyTokens
-    );
-    return tokens.length === 0 ?
-      []
-      : [
-        tokens.slice(0, limit - 1).join(separator),
-        ...tokens.slice(limit - 1)
-      ];
-  }
-
-  static mergeRight(
-    stringOrTokens:
-      ConstructorParameters<typeof StringSplitter>[0],
-    separator:
-      ConstructorParameters<typeof StringSplitter>[1]
-      = "",
-    ignoreEmptyTokens:
-      ConstructorParameters<typeof StringSplitter>[2]
-      = false,
-    limit:
-      ConstructorParameters<typeof StringSplitter>[3]
-      = Infinity,
-  ): string[] {
-    const tokens: string[] = StringSplitter.split(
-      stringOrTokens,
-      separator,
-      ignoreEmptyTokens
-    );
-    return tokens.length === 0 ?
-      []
-      : [
-        ...tokens.slice(0, limit - 1),
-        tokens.slice(limit - 1).join(separator)
-      ];
-  }
-
-  static split(
-    stringOrTokens:
-      ConstructorParameters<typeof StringSplitter>[0],
-    separator:
-      ConstructorParameters<typeof StringSplitter>[1]
-      = "",
-    ignoreEmptyTokens:
-      ConstructorParameters<typeof StringSplitter>[2]
-      = false
-  ): string[] {
-    return StringSplitter
-      .tokenize(
-        stringOrTokens,
-        separator
-      ).filter(token =>
-        !ignoreEmptyTokens || token !== ""
-      );
-  }
-
   static tokenize(
     stringOrTokens:
-      ConstructorParameters<typeof StringSplitter>[0],
-    separator:
-      ConstructorParameters<typeof StringSplitter>[1]
-      = ""
+      | string
+      | string[],
+    separator: string = "",
   ): string[] {
     return Array.isArray(stringOrTokens) ?
       stringOrTokens
@@ -178,8 +62,107 @@ class StringSplitter {
           : stringOrTokens.split(separator);
   }
 
-  private get PositiveInteger(): typeof PositiveInteger {
-    return StringSplitter.PositiveInteger;
+  static aggregate(
+    stringOrTokens: Parameters<typeof StringSplitter.tokenize>[0],
+    separator: Parameters<typeof StringSplitter.tokenize>[1] = "",
+  ) {
+    return StringSplitter.tokenize(
+      stringOrTokens,
+      separator
+    ).join(separator);
+  }
+
+  static split(
+    stringOrTokens: Parameters<typeof StringSplitter.aggregate>[0],
+    separator: Parameters<typeof StringSplitter.aggregate>[1] = "",
+    {
+      trim = false,
+      trimTokens = false,
+      ignoreEmptyTokens = false,
+    }: {
+      trim?: boolean,
+      trimTokens?: boolean,
+      ignoreEmptyTokens?: boolean
+    }
+  ): typeof StringSplitter.prototype.split {
+    return StringSplitter.tokenize(
+      StringSplitter.aggregate(
+        stringOrTokens,
+        separator
+      )[trim ? "trim" : "toString"](),
+      separator
+    ).map(token => trimTokens ?
+      token.trim()
+      : token
+    ).filter(token => !ignoreEmptyTokens
+      || token !== ""
+    );
+  }
+
+  static merge(
+    stringOrTokens: Parameters<typeof StringSplitter.split>[0],
+    separator: Parameters<typeof StringSplitter.split>[1] = "",
+    splitOptions: Parameters<typeof StringSplitter.split>[2] = {},
+    {
+      limit = Infinity,
+      mergeTo = StringSplitter.Direction.Right
+    }: {
+      limit?: number,
+      mergeTo?: StringSplitter.Direction | keyof typeof StringSplitter.Direction
+    }
+  ): typeof StringSplitter.prototype.merged {
+    limit = new StringSplitter.PositiveInteger(limit).value ?? Infinity;
+    const tokens: string[] = StringSplitter.split(
+      stringOrTokens,
+      separator,
+      splitOptions
+    );
+    return tokens.length === 0 ?
+      []
+      : mergeTo === StringSplitter.Direction.Left
+        || mergeTo === StringSplitter.Direction.Left.toString() ?
+        [
+          tokens.slice(0, limit - 1).join(separator),
+          ...tokens.slice(limit - 1)
+        ]
+        : [
+          ...tokens.slice(0, limit - 1),
+          tokens.slice(limit - 1).join(separator)
+        ];
+  }
+
+  static mergeLeft(
+    stringOrTokens: Parameters<typeof StringSplitter.split>[0],
+    separator: Parameters<typeof StringSplitter.split>[1] = "",
+    splitOptions: Parameters<typeof StringSplitter.split>[2] = {},
+    mergeOptions: Exclude<Parameters<typeof StringSplitter.merge>[3], "mergeTo">
+  ): typeof StringSplitter.prototype.merged {
+    return StringSplitter.merge(
+      stringOrTokens,
+      separator,
+      splitOptions,
+      {
+        ...mergeOptions,
+        mergeTo: StringSplitter.Direction.Left
+      }
+    );
+  }
+
+  static mergeRight(
+    stringOrTokens: Parameters<typeof StringSplitter.split>[0],
+    separator: Parameters<typeof StringSplitter.split>[1] = "",
+    splitOptions: Parameters<typeof StringSplitter.split>[2] = {},
+    mergeOptions: Exclude<Parameters<typeof StringSplitter.merge>[3], "mergeTo">
+  ): typeof StringSplitter.prototype.merged {
+    return StringSplitter.merge(
+      stringOrTokens,
+      separator,
+      splitOptions,
+      {
+        ...mergeOptions,
+        mergeTo: StringSplitter.Direction.Right
+      }
+    );
   }
 
   static get ValidString(): typeof ValidString {

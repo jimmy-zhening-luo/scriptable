@@ -14,7 +14,7 @@ class File {
     }
     else if (base instanceof File) {
       this.bookmark = base.bookmark;
-      this.subpath = File.Filepath.walkPath(
+      this.subpath = File.Filepath.walk(
         base.subpath,
         subpath
       );
@@ -44,7 +44,7 @@ class File {
           []
           : this.ls.map(
             (leaf: string): string => (
-              File.Filepath.joinPaths(
+              File.Filepath.join(
                 this.subpath,
                 File.Filepath.trimPath(leaf)
               )
@@ -237,7 +237,7 @@ class File {
     relativePath: string
   ): string {
     return File.Filepath.trimPath(
-      File.Filepath.walkPath(
+      File.Filepath.walk(
         this.path,
         File.Filepath.trimPath(relativePath)
       )
@@ -252,7 +252,7 @@ class File {
     relativePath: string
   ): string {
     return File.Filepath.trimPath(
-      File.Filepath.walkPath(
+      File.Filepath.walk(
         this.subpath,
         File.Filepath.trimPath(relativePath)
       )

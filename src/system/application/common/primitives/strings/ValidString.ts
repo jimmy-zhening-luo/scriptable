@@ -9,21 +9,7 @@ class ValidString {
 
   constructor(
     string: string,
-    {
-      toLower = false,
-      trim = false,
-      trimLeadingExcept = false,
-      trimTrailingExcept = false,
-      trimLeading = [],
-      trimTrailing = [],
-    }: {
-      toLower?: boolean,
-      trim?: boolean,
-      trimLeadingExcept?: boolean,
-      trimTrailingExcept?: boolean,
-      trimLeading?: string[],
-      trimTrailing?: string[]
-    },
+    cleanOptions: Parameters<typeof ValidString.clean>[1] = {},
     {
       minLength = 0,
       maxLength = Infinity,
@@ -40,14 +26,7 @@ class ValidString {
     this.raw = string;
     this.cleaned = ValidString.clean(
       this.raw,
-      {
-        toLower,
-        trim,
-        trimLeading,
-        trimTrailing,
-        trimLeadingExcept,
-        trimTrailingExcept
-      }
+      cleanOptions
     );
 
     this.min = new ValidString.PositiveInteger(minLength).value ?? 0;
@@ -85,7 +64,7 @@ class ValidString {
   }
 
   static clean(
-    string: ConstructorParameters<typeof ValidString>[0],
+    string: string,
     {
       toLower = false,
       trim = false,
@@ -93,8 +72,15 @@ class ValidString {
       trimTrailingExcept = false,
       trimLeading = [],
       trimTrailing = [],
-    }: ConstructorParameters<typeof ValidString>[1]
-  ): string {
+    }: {
+      toLower?: boolean,
+      trim?: boolean,
+      trimLeadingExcept?: boolean,
+      trimTrailingExcept?: boolean,
+      trimLeading?: string[],
+      trimTrailing?: string[]
+    }
+  ): typeof ValidString.prototype.cleaned {
     string = toLower ? string.toLowerCase() : string;
     string = trim ? string.trim() : string;
     const preprocessed: string = string;
@@ -121,7 +107,7 @@ class ValidString {
   ): string {
     const isLeading: boolean =
       edge === ValidString.Edge.Leading
-      || edge === "Leading";
+      || edge === ValidString.Edge.Leading.toString();
     type LookPrototypeFunction =
       | "startsWith"
       | "endsWith";

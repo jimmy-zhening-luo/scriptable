@@ -1,111 +1,156 @@
 class Filepath {
 
-  private _path: string[];
+  readonly raw: string;
+  private readonly _path: Types.stringful[];
 
   constructor(
     path?:
-      | string
-      | string[]
+      | Parameters<typeof Filepath.identity>[0]
+      | Filepath,
+    requiredPathSegment: string = ""
   ) {
-
+    this.raw = path === undefined ?
+      ""
+      : Array.isArray(path) ?
+        Filepath.flattenToString(path)
+        : typeof path === "string" ?
+          path
+          : path.toString();
+    this._path = this.parse(
+      this.raw,
+      requiredPathSegment
+    );
   }
 
-
-
-
-
-
-  static isValid(
-    path: ConstructorParameters<typeof Filepath>[0]
-  ): boolean {
-    return new Filepath.StringSplitter(
-      path,
-
-    )
-  }
-
-  static expandTree(
-    tree: string[]
+  protected parse(
+    path: typeof Filepath.prototype.raw,
+    requiredPathSegment: typeof Filepath.prototype.requiredPathSegment
   ): string[] {
-    return tree
-      .map(node =>
-        node.includes("/") ?
-          node.split("/")
-          : node
-      ).flat(1);
-  }
-
-  static trimEdges(
-    path: string
-  ): string {
-    return Filepath.ValidString.clean(
+    return Filepath.validate(
       path,
-      {
-
-      }
+      requiredPathSegment
     )
-
-
-    return Filepath.isValid(path) ?
-      new Filepath.ValidString(
-        path,
-        {
-          trim: true,
-          trimLeading: [
-            ...Filepath.ValidString.Char
-              .slash
-          ],
-          trimTrailing: [
-            ...Filepath.ValidString.Char
-              .slash
-          ]
-        },
-        {}
-      ).cleaned
-      : null;
   }
 
-  static cleanPath(
+  get path(): string {
+    return Filepath.flattenToString(this._path);
+  }
+
+  get pathTree(): string[] {
+    return this._path;
+  }
+
+  get isValid(): boolean {
+    return this._path.length > 0;
+  }
+
+  toString(): typeof Filepath.prototype.path {
+    return this.path;
+  }
+
+  toTree(): typeof Filepath.prototype.pathTree {
+    return this.pathTree;
+  }
+
+  append(
+    subpath: ConstructorParameters<typeof Filepath>[0] = ""
+  ): Filepath {
+    return new Filepath(
+      Filepath.join(
+        this.path,
+        new Filepath(
+          subpath
+        ).path
+      )
+    );
+  }
+
+  cd() {
+
+  }
+
+  protected static identity(
     path:
       | string
       | string[]
-  ):
-    null | string {
-    return Filepath.isValid(
-      typeof path === "string" ?
-        path
-        : path.join("/")
-    ) ?
-      typeof path === "string" ?
-        Filepath.treeToPath(
-          Filepath.pathToTree(path)
-        )
-        : Filepath.treeToPath(path)
-      : null;
+  ): string | string[] {
+    return path;
   }
 
-  static joinPaths(
-    left:
-      string
-      | string[],
-    right: string = ""
-  ): null | string {
-    return Filepath.cleanPath(left) === null
-      || Filepath.cleanPath(right) === null ?
-      null
-      : Filepath.trimPath(
-        FileManager.iCloud().joinPath(
-          Filepath.cleanPath(left),
-          Filepath.cleanPath(right)
-        )
-      );
+  protected static flattenToString(
+    path: Parameters<typeof Filepath.identity>[0] = ""
+  ) {
+    return Array.isArray(path) ?
+      path.join("/")
+      : path;
   }
 
-  static walkPath(
-    currentPath:
-      | string
-      | string[],
-    relativePath: string = ""
+  protected static flattenToTuple(
+    path: Parameters<typeof Filepath.identity>[0] = ""
+  ): string[] {
+    return Filepath
+      .flattenToString(path)
+      .split("/");
+  }
+
+  protected static trimEdges(
+    path: Parameters<typeof Filepath.identity>[0] = ""
+  ): string {
+    return Filepath.ValidString.clean(
+      Filepath.flattenToString(path),
+      {
+        trim: true,
+        trimLeading: [
+          ...Filepath.ValidString.Char.slash
+        ],
+        trimTrailing: [
+          ...Filepath.ValidString.Char.slash
+        ]
+      }
+    );
+  }
+
+  static trim(
+    path: Parameters<typeof Filepath.identity>[0] = ""
+  ): string {
+    return Filepath.trimEdges(path);
+  }
+
+  protected static trimNodes(
+    path: Parameters<typeof Filepath.identity>[0] = ""
+  ) {
+    return new Filepath.StringSplitter(
+      path,
+      "/",
+      {
+        trim: true,
+        trimTokens: true,
+        ignoreEmptyTokens: true
+      }
+    )
+      .merged
+      .join("/");
+  }
+
+  static clean(
+    path: Parameters<typeof Filepath.identity>[0] = ""
+  ): string {
+    return Filepath.trimNodes(path);
+  }
+
+  static join(
+    left: Parameters<typeof Filepath.identity>[0],
+    right: Parameters<typeof Filepath.identity>[0] = ""
+  ): string {
+    return FileManager.iCloud().joinPath(
+      Filepath.clean(left),
+      Filepath.clean(right)
+    );
+  }
+
+  static walk(
+    currentPath: Parameters<typeof Filepath.identity>[0],
+    relativePath: Parameters<typeof Filepath.identity>[0] = ""
   ): null | string {
     const relPathTree: string[] = typeof relativePath ===
 
@@ -150,52 +195,16 @@ class Filepath {
     );
   }
 
-  static pathToTree(
-    path: string
-  ):
-    null | string[] {
-    return Filepath.isValid(path) ?
-      Filepath
-        .trim()
-        .split(
-          "/"
-        ).map(node =>
-          node
-            .trim()
-        ).filter(node =>
-          node !== ""
-        )
-      : null;
+  static toString(
+    path: Parameters<typeof Filepath.identity>[0] = ""
+  ): string {
+    return Filepath.clean(path);
   }
 
-  static treeToPath(
-    tree: string[]
-  ):
-    null | string {
-    return new Filepath.isValid(tree) ?
-      tree
-        .map(node =>
-          Filepath
-            .trimPath(
-              node
-            )
-        ).map(trimmedNode =>
-          trimmedNode
-            .includes(
-              "/"
-            ) ?
-            Filepath.
-              pathToTree(
-                trimmedNode
-              )
-            : trimmedNode
-        ).flat(1)
-        .filter(node =>
-          node !== ""
-        ).join(
-          "/"
-        )
-      : null;
+  static toTree(
+    path: Parameters<typeof Filepath.identity>[0] = ""
+  ): string[] {
+    return Filepath.toString(path).split("/");
   }
 
   protected get ValidString(): typeof ValidString {

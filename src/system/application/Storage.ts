@@ -11,8 +11,8 @@ class Storage {
   ) {
     this.file = new Storage.File(
       this.storageDirFile,
-      Storage.Paths.joinPaths(
-        Storage.Paths.joinPaths(
+      Storage.Paths.join(
+        Storage.Paths.join(
           storageSubpath,
           programName
         ),
