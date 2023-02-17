@@ -6,7 +6,7 @@ class File {
     base: Bookmark
       | File
       | string = new File.Bookmark(),
-    subpath: string = String()
+    subpath: string = ""
   ) {
     if (base instanceof File.Bookmark) {
       this.bookmark = base;
@@ -14,7 +14,7 @@ class File {
     }
     else if (base instanceof File) {
       this.bookmark = base.bookmark;
-      this.subpath = File.Paths.walkPath(
+      this.subpath = File.Filepath.walkPath(
         base.subpath,
         subpath
       );
@@ -44,9 +44,9 @@ class File {
           []
           : this.ls.map(
             (leaf: string): string => (
-              File.Paths.joinPaths(
+              File.Filepath.joinPaths(
                 this.subpath,
-                File.Paths.trimPath(leaf)
+                File.Filepath.trimPath(leaf)
               )
             )
           ).map(
@@ -107,7 +107,7 @@ class File {
   }
 
   get leaf(): string {
-    return File.Paths.trimPath(
+    return File.Filepath.trimPath(
       this.path
         .split("/")
         .slice(-1)
@@ -147,7 +147,7 @@ class File {
   }
 
   get parentSubpath(): string {
-    return File.Paths.trimPath(
+    return File.Filepath.trimPath(
       this.subpath
         .split("/")
         .slice(0, -1)
@@ -191,9 +191,9 @@ class File {
   cd(
     relativePath: string
   ): void {
-    this.subpath = File.Paths.trimPath(
+    this.subpath = File.Filepath.trimPath(
       this.subpathRelativeTo(
-        File.Paths.trimPath(relativePath)
+        File.Filepath.trimPath(relativePath)
       )
     );
   }
@@ -236,10 +236,10 @@ class File {
   pathRelativeTo(
     relativePath: string
   ): string {
-    return File.Paths.trimPath(
-      File.Paths.walkPath(
+    return File.Filepath.trimPath(
+      File.Filepath.walkPath(
         this.path,
-        File.Paths.trimPath(relativePath)
+        File.Filepath.trimPath(relativePath)
       )
     );
   }
@@ -251,10 +251,10 @@ class File {
   subpathRelativeTo(
     relativePath: string
   ): string {
-    return File.Paths.trimPath(
-      File.Paths.walkPath(
+    return File.Filepath.trimPath(
+      File.Filepath.walkPath(
         this.subpath,
-        File.Paths.trimPath(relativePath)
+        File.Filepath.trimPath(relativePath)
       )
     );
   }
@@ -295,16 +295,16 @@ class File {
     return File.Bookmark;
   }
 
-  get Paths(): typeof Paths {
-    return File.Paths;
+  get Filepath(): typeof Filepath {
+    return File.Filepath;
   }
 
   static get Bookmark(): typeof Bookmark {
     return importModule("bookmark/Bookmark");
   }
 
-  static get Paths(): typeof Paths {
-    return importModule("./system/application/common/paths/Paths");
+  static get Filepath(): typeof Filepath {
+    return importModule("filepath/Filepath");
   }
 
   protected static get m(): FileManager {

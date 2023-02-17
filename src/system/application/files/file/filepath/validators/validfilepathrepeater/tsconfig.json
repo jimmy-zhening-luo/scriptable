@@ -2,14 +2,14 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../primitives/**/*"
+    "../../../../../common/**/*"
   ],
   "references": [
     {
-      "path": "../primitives/tsconfig.json"
+      "path": "../../../../../common/tsconfig.json"
     }
   ],
   "compilerOptions": {
-    "rootDir": "../../../.."
+    "rootDir": "../../../../../../.."
   }
 }

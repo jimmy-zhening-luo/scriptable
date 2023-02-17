@@ -26,7 +26,7 @@ abstract class UrlPartRepeater {
     return this.value ?? "";
   }
 
-  get Paths(): typeof Paths {
+  get Paths(): typeof Filepath {
     return UrlPartRepeater.Paths;
   }
 
@@ -34,7 +34,7 @@ abstract class UrlPartRepeater {
     return UrlPartRepeater.UrlValidators;
   }
 
-  static get Paths(): typeof Paths {
+  static get Paths(): typeof Filepath {
     return importModule("./system/application/common/paths/Paths")
   }
 

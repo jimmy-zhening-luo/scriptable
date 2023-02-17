@@ -63,7 +63,7 @@ class Storage {
     return Storage.File;
   }
 
-  get Paths(): typeof Paths {
+  get Paths(): typeof Filepath {
     return Storage.Paths;
   }
 
@@ -71,7 +71,7 @@ class Storage {
     return importModule("files/file/File");
   }
 
-  static get Paths(): typeof Paths {
+  static get Paths(): typeof Filepath {
     return Storage.File.Paths;
   }
 

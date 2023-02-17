@@ -229,7 +229,7 @@ class Config {
     return Config.ReadOnlyFile;
   }
 
-  get Paths(): typeof Paths {
+  get Paths(): typeof Filepath {
     return Config.Paths;
   }
 
@@ -237,7 +237,7 @@ class Config {
     return importModule("files/ReadOnlyFile");
   }
 
-  static get Paths(): typeof Paths {
+  static get Paths(): typeof Filepath {
     return Config.ReadOnlyFile.Paths;
   }
 }

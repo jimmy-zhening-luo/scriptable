@@ -9,6 +9,9 @@
       "path": "bookmark/tsconfig.json"
     },
     {
+      "path": "filepath/tsconfig.json"
+    },
+    {
       "path": "../../common/tsconfig.json"
     }
   ],
