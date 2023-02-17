@@ -1,5 +1,9 @@
 class Strings {
 
+  static get StringSplitter(): typeof StringSplitter {
+    return importModule("StringSplitter");
+  }
+
   static get ValidString(): typeof ValidString {
     return importModule("ValidString");
   }
