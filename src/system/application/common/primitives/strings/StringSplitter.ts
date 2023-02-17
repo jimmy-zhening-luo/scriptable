@@ -1,112 +1,181 @@
 class StringSplitter {
 
-  readonly text: string;
+  readonly string: string;
   readonly separator: string;
+  readonly ignoreEmptyTokens: boolean;
   readonly limit: number;
   readonly mergeTo: StringSplitter.Direction;
-  readonly unmerged: string[];
+
+  readonly split: string[];
   readonly merged: string[];
 
   constructor(
-    text: string,
+    stringOrTokens: string | string[],
     separator: string = "",
+    ignoreEmptyTokens: boolean = false,
     limit: number = Infinity,
     mergeTo: StringSplitter.Direction = StringSplitter.Direction.Right
   ) {
-    this.text = text;
+    this.string = Array.isArray(stringOrTokens) ?
+      stringOrTokens.join(separator)
+      : stringOrTokens;
     this.separator = separator;
+    this.ignoreEmptyTokens = ignoreEmptyTokens;
+
+    this.split = StringSplitter.split(
+      this.string,
+      this.separator,
+      this.ignoreEmptyTokens
+    );
+
     this.limit = new this.PositiveInteger(limit).value ?? new StringSplitter("").limit;
     this.mergeTo = mergeTo;
-    this.unmerged = StringSplitter.tokenize(
-      this.text,
-      this.separator
-    );
     this.merged = StringSplitter.merge(
-      this.unmerged,
+      this.split,
       this.separator,
+      this.ignoreEmptyTokens,
       this.limit,
-      this.mergeTo
+      this.mergeTo,
     );
   }
 
-  get unmergedLength(): number {
-    return this.unmerged.length;
+  get splitLength(): number {
+    return this.split.length;
   }
 
   get mergedLength(): number {
     return this.merged.length;
   }
 
+  get length(): number {
+    return this.mergedLength;
+  }
+
   get didSplit(): boolean {
-    return this.unmergedLength !== 0
-      && this.unmergedLength !== 1;
+    return this.splitLength !== 0
+      && this.splitLength !== 1;
   }
 
   get didMerge(): boolean {
-    return this.mergedLength < this.unmergedLength;
-  }
-
-  static split(
-    text: string,
-    separator: string = "",
-    limit: number = Infinity,
-    mergeTo: StringSplitter.Direction = StringSplitter.Direction.Right
-  ): string[] {
-    return StringSplitter.merge(
-      StringSplitter.split(
-        text,
-        separator
-      ),
-      separator,
-      limit,
-      mergeTo
-    );
+    return this.mergedLength < this.splitLength;
   }
 
   static merge(
-    tokens: string[],
-    separator: string = "",
-    limit: number = Infinity,
-    mergeTo: StringSplitter.Direction = StringSplitter.Direction.Right
+    tokens:
+      ConstructorParameters<typeof StringSplitter>[0],
+    separator:
+      ConstructorParameters<typeof StringSplitter>[1]
+      = "",
+    ignoreEmptyTokens:
+      ConstructorParameters<typeof StringSplitter>[2]
+      = false,
+    limit:
+      ConstructorParameters<typeof StringSplitter>[3]
+      = Infinity,
+    mergeTo:
+      ConstructorParameters<typeof StringSplitter>[4]
+      = StringSplitter.Direction.Right
   ): string[] {
-    return tokens.length === 0 ?
-      []
-      : mergeTo === StringSplitter.Direction.Left ?
-        StringSplitter.mergeLeft(tokens, separator, limit)
-        : StringSplitter.mergeRight(tokens, separator, limit);
+    return mergeTo === StringSplitter.Direction.Left ?
+      StringSplitter.mergeLeft(
+        tokens,
+        separator,
+        ignoreEmptyTokens,
+        limit
+      )
+      : StringSplitter.mergeRight(
+        tokens,
+        separator,
+        ignoreEmptyTokens,
+        limit
+      );
   }
 
   static mergeLeft(
-    tokens: string[],
-    separator: string = "",
-    limit: number = Infinity,
+    stringOrTokens:
+      ConstructorParameters<typeof StringSplitter>[0],
+    separator:
+      ConstructorParameters<typeof StringSplitter>[1]
+      = "",
+    ignoreEmptyTokens:
+      ConstructorParameters<typeof StringSplitter>[2]
+      = false,
+    limit:
+      ConstructorParameters<typeof StringSplitter>[3]
+      = Infinity,
   ): string[] {
-    return [
-      tokens.slice(0, limit - 1).join(separator),
-      ...tokens.slice(limit - 1)
-    ];
+    const tokens: string[] = StringSplitter.split(
+      stringOrTokens,
+      separator,
+      ignoreEmptyTokens
+    );
+    return tokens.length === 0 ?
+      []
+      : [
+        tokens.slice(0, limit - 1).join(separator),
+        ...tokens.slice(limit - 1)
+      ];
   }
 
   static mergeRight(
-    tokens: string[],
-    separator: string = "",
-    limit: number = Infinity,
+    stringOrTokens:
+      ConstructorParameters<typeof StringSplitter>[0],
+    separator:
+      ConstructorParameters<typeof StringSplitter>[1]
+      = "",
+    ignoreEmptyTokens:
+      ConstructorParameters<typeof StringSplitter>[2]
+      = false,
+    limit:
+      ConstructorParameters<typeof StringSplitter>[3]
+      = Infinity,
   ): string[] {
-    return [
-      ...tokens.slice(0, limit - 1),
-      tokens.slice(limit - 1).join(separator)
-    ];
+    const tokens: string[] = StringSplitter.split(
+      stringOrTokens,
+      separator,
+      ignoreEmptyTokens
+    );
+    return tokens.length === 0 ?
+      []
+      : [
+        ...tokens.slice(0, limit - 1),
+        tokens.slice(limit - 1).join(separator)
+      ];
+  }
+
+  static split(
+    stringOrTokens:
+      ConstructorParameters<typeof StringSplitter>[0],
+    separator:
+      ConstructorParameters<typeof StringSplitter>[1]
+      = "",
+    ignoreEmptyTokens:
+      ConstructorParameters<typeof StringSplitter>[2]
+      = false
+  ): string[] {
+    return StringSplitter
+      .tokenize(
+        stringOrTokens,
+        separator
+      ).filter(token =>
+        !ignoreEmptyTokens || token !== ""
+      );
   }
 
   static tokenize(
-    text: string,
-    separator: string = ""
+    stringOrTokens:
+      ConstructorParameters<typeof StringSplitter>[0],
+    separator:
+      ConstructorParameters<typeof StringSplitter>[1]
+      = ""
   ): string[] {
-    return text === "" ?
-      []
-      : separator === "" ?
-        [...text]
-        : text.split(separator);
+    return Array.isArray(stringOrTokens) ?
+      stringOrTokens
+      : stringOrTokens === "" ?
+        []
+        : separator === "" ?
+          [...stringOrTokens]
+          : stringOrTokens.split(separator);
   }
 
   private get PositiveInteger(): typeof PositiveInteger {

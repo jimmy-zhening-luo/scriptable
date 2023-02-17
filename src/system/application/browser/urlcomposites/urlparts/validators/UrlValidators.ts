@@ -1,5 +1,9 @@
 class UrlValidators {
 
+  static get Char(): typeof Char {
+    return UrlValidators.Scheme.Char;
+  }
+
   static get Scheme(): typeof ValidScheme {
     return importModule("ValidScheme");
   }
@@ -26,7 +30,7 @@ class UrlValidators {
 
   static get Path(): {
     Repeaters: {
-      Path: typeof ValidPathRepeater
+      Path: typeof ValidFilepathRepeater
     }
   } {
     return {

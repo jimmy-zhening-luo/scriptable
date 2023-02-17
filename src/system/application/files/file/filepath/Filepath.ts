@@ -167,20 +167,12 @@ class Filepath {
       : null;
   }
 
-  get ValidPath(): typeof ValidPath {
-    return Filepath.ValidPath;
+  get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
+    return Filepath.ValidFilepathRepeater;
   }
 
-  get ValidPathSegment(): typeof ValidPathSegment {
-    return Filepath.ValidPathSegment;
-  }
-
-  static get ValidPath(): typeof ValidPath {
-    return importModule("validators/ValidPath");
-  }
-
-  static get ValidPathSegment(): typeof ValidPathSegment {
-    return Filepath.ValidPath.ValidPathSegment;
+  static get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
+    return importModule("validfilepathrepeater/ValidFilepathRepeater");
   }
 
 }

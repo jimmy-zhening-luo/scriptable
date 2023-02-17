@@ -17,6 +17,7 @@ class Path extends pa_UrlPart {
       : path
         .trim()
         .split("/")
+        .filter(segment => segment !== "")
         .map(pathRepeater => new this.PathRepeater(pathRepeater))
         .every(pathRepeater => pathRepeater.isValid) ?
         path
@@ -29,6 +30,7 @@ class Path extends pa_UrlPart {
       | string
       | Path
   ) {
+    const slash: string = this.UrlValidators.Char.slash[0];
     const subpathToUrl: UrlPart = new Path(subpath);
     return subpathToUrl.isValid ?
       new Path(
@@ -36,11 +38,10 @@ class Path extends pa_UrlPart {
           this.toString() as string,
           subpathToUrl.toString()
         ].join(
-          this.toString().endsWith("/") ?
+          this.toString().endsWith(slash)
+            || subpathToUrl.toString().startsWith(slash) ?
             ""
-            : subpathToUrl.toString().startsWith("/") ?
-              ""
-              : "/"
+            : slash
         )
       )
       : this;

@@ -1,6 +1,6 @@
 const pa_ValidUrlRepeater: typeof ValidUrlRepeater = importModule("validurlpart/ValidUrlRepeater");
 
-class ValidPathRepeater extends pa_ValidUrlRepeater {
+class ValidFilepathRepeater extends pa_ValidUrlRepeater {
 
   constructor(pathRepeater: string) {
     super(
@@ -18,4 +18,4 @@ class ValidPathRepeater extends pa_ValidUrlRepeater {
 
 }
 
-module.exports = ValidPathRepeater;
+module.exports = ValidFilepathRepeater;

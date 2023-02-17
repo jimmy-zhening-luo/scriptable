@@ -52,11 +52,11 @@ abstract class Application {
       .storage(subpath)
       .write(text);
   }
-  
+
   get Config(): typeof Config {
     return Application.Config;
   }
-  
+
   get Storage(): typeof Storage {
     return Application.Storage;
   }
@@ -113,12 +113,20 @@ abstract class Application {
     return importModule("files/Files");
   }
 
+  static get ReadOnlyFile(): typeof ReadOnlyFile {
+    return Application.Files.ReadOnlyFile;
+  }
+
   static get File(): typeof File {
     return Application.Files.File;
   }
 
-  static get ReadOnlyFile(): typeof ReadOnlyFile {
-    return Application.Files.ReadOnlyFile;
+  static get Bookmark(): typeof Bookmark {
+    return Application.File.Bookmark;
+  }
+
+  static get Filepath(): typeof Filepath {
+    return Application.File.Filepath;
   }
 
   static get Repositories(): typeof Repositories {
