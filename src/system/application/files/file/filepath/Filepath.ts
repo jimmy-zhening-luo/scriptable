@@ -1,26 +1,70 @@
 class Filepath {
 
   readonly raw: string;
-  private readonly _path: Types.stringful[];
+  readonly tree: Types.stringful[];
 
   constructor(
-    path?:
-      | Parameters<typeof Filepath.identity>[0]
-      | Filepath,
+    path: Filepath.ConstructorInput = "",
     requiredPathSegment: string = ""
   ) {
-    this.raw = path === undefined ?
-      ""
-      : Array.isArray(path) ?
-        Filepath.joinArray(path)
-        : typeof path === "string" ?
-          path
-          : path.toString();
-    this._path = this.parse(
+    this.raw = this.flatten(path);
+    this.tree = this.parse(
       this.raw,
       requiredPathSegment
     );
   }
+
+  private flatten(
+    path: Filepath.ConstructorInput
+  ): string {
+    return Array.isArray(path) ?
+      this.stringifyPathArray(path)
+      : typeof path === "string" ?
+        path
+        : path.toString();
+  }
+
+  private parse(
+    path: string,
+    requiredPathSegment: string
+  ) {
+
+  }
+
+  private stringifyPathArray(
+    path: Filepath.MutatorInput
+  ): string {
+    return Array.isArray(path) ?
+      path.join("/")
+      : path;
+  }
+
+  private unrollArray(
+    path: Parameters<typeof Filepath.identity>[0] = ""
+  ): string[] {
+    return this
+      .stringifyPathArray(path)
+      .split("/");
+  }
+
+  private static deepClean(
+    path: Parameters<typeof Filepath.identity>[0] = ""
+  ) {
+    return new Filepath.StringSplitter(
+      path,
+      "/",
+      {
+        trim: true,
+        trimTokens: true,
+        ignoreEmptyTokens: true
+      }
+    )
+      .merged
+      .join("/");
+  }
+
+
+
 
   protected parse(
     path: typeof Filepath.prototype.raw,
@@ -33,11 +77,7 @@ class Filepath {
   }
 
   get path(): string {
-    return Filepath.joinArray(this._path);
-  }
-
-  get tree(): string[] {
-    return this._path;
+    return Filepath.stringifyPathArray(this.tree);
   }
 
   get isValid(): boolean {
@@ -69,46 +109,8 @@ class Filepath {
 
   }
 
-  protected static identity(
-    _path:
-      | string
-      | string[]
-  ): void { }
 
-
-  private static joinArray(
-    path: Parameters<typeof Filepath.identity>[0] = ""
-  ): string {
-    return Array.isArray(path) ?
-      path.join("/")
-      : path;
- }
-
-  private static unrollArray(
-    path: Parameters<typeof Filepath.identity>[0] = ""
-  ): string[] {
-    return Filepath
-      .joinArray(path)
-      .split("/");
-  }
-
-  private static deepClean(
-    path: Parameters<typeof Filepath.identity>[0] = ""
-  ) {
-    return new Filepath.StringSplitter(
-      path,
-      "/",
-      {
-        trim: true,
-        trimTokens: true,
-        ignoreEmptyTokens: true
-      }
-    )
-      .merged
-      .join("/");
-  }
-
-  private static validate(
+  private validate(
     path: Parameters<typeof Filepath.identity>[0] = "",
   ) {
 
@@ -183,8 +185,13 @@ class Filepath {
 }
 
 namespace Filepath {
+
+  export type ConstructorInput = string | string[] | Filepath;
+  export type MutatorInput = string | string[];
+
   export type Path = string;
   export type PathCandidate = string;
+
 }
 
 module.exports = Filepath;

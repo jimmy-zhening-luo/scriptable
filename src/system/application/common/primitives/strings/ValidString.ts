@@ -1,36 +1,39 @@
 class ValidString {
 
   readonly raw: string;
-  readonly cleaned: string;
-  readonly value: null | string;
   readonly min: number;
   readonly max: number;
+
+  readonly cleaned: string;
+  readonly value: null | string;
   readonly isImplicitlyInvalid: boolean;
 
   constructor(
     string: string,
+    min:
+      | number
+      | Char.CharInput  = ValidString.MinDefault,
+    max:
+      | number
+      | Char.CharInput = ValidString.MaxDefault,
     cleanOptions: Parameters<typeof ValidString.clean>[1] = {},
     {
-      minLength = 0,
-      maxLength = Infinity,
       negateAllowedChars = false,
       isValid = true
     }: {
-      minLength?: number,
-      maxLength?: number,
       negateAllowedChars?: boolean,
       isValid?: boolean
     },
     ...allowedChars: Char.CharInput[]
   ) {
     this.raw = string;
+    this.min = this.parseBound(min, ValidString.MinDefault);
+    this.max = this.parseBound(max, ValidString.MaxDefault);
+
     this.cleaned = ValidString.clean(
       this.raw,
       cleanOptions
     );
-
-    this.min = new ValidString.PositiveInteger(minLength).value ?? 0;
-    this.max = new ValidString.PositiveInteger(maxLength).value ?? Infinity;
     this.isImplicitlyInvalid = !isValid;
 
     this.value = this.isImplicitlyInvalid
@@ -49,6 +52,15 @@ class ValidString {
         ) ?
         this.cleaned
         : null;
+  }
+
+  private parseBound(
+    bound: ConstructorParameters<typeof ValidString>[1],
+    fallback: number
+  ): typeof ValidString.prototype.min {
+    return typeof bound === "number" ?
+      new ValidString.PositiveInteger(bound).value ?? fallback
+      : fallback;
   }
 
   get isValid(): boolean {
@@ -195,6 +207,9 @@ class ValidString {
 }
 
 namespace ValidString {
+
+  export const MinDefault: number = 0;
+  export const MaxDefault: number = Infinity;
 
   export enum Edge {
     Leading,
