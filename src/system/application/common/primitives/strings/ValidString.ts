@@ -3,9 +3,12 @@ class ValidString {
   readonly raw: string;
   readonly cleaned: string;
   readonly value: null | string;
+  readonly min: number;
+  readonly max: number;
+  readonly isImplicitlyInvalid: boolean;
 
   constructor(
-    text: string,
+    string: string,
     {
       toLower = false,
       trim = false,
@@ -34,7 +37,7 @@ class ValidString {
     },
     ...allowedChars: Char.CharInput[]
   ) {
-    this.raw = text;
+    this.raw = string;
     this.cleaned = ValidString.clean(
       this.raw,
       {
@@ -47,13 +50,13 @@ class ValidString {
       }
     );
 
-    minLength = new ValidString.PositiveInteger(maxLength).value ?? 0;
+    this.min = new ValidString.PositiveInteger(minLength).value ?? 0;
+    this.max = new ValidString.PositiveInteger(maxLength).value ?? Infinity;
+    this.isImplicitlyInvalid = !isValid;
 
-    maxLength = new ValidString.PositiveInteger(maxLength).value ?? Infinity;
-
-    this.value = !isValid
-      || this.cleaned.length > maxLength
-      || this.cleaned.length < minLength
+    this.value = this.isImplicitlyInvalid
+      || this.cleaned.length > this.max
+      || this.cleaned.length < this.min
       ?
       null
       : ValidString.parseStringToOneGrams(this.cleaned)
@@ -74,48 +77,42 @@ class ValidString {
   }
 
   get length(): number {
-    return this
-      .value
-      ?.length ?? 0;
+    return this.value?.length ?? 0;
   }
 
   toString(): string {
     return this.value ?? "";
   }
 
-
-  static parseStringToOneGrams(
-    text: string
-  ): NGram[] {
-    return [...text]
-      .map(
-        char => new ValidString.OneGram(
-          char
-        )
-      );
-  }
-
   static clean(
-    text: string,
-    options?: ConstructorParameters<typeof ValidString>[1]
+    string: ConstructorParameters<typeof ValidString>[0],
+    {
+      toLower = false,
+      trim = false,
+      trimLeadingExcept = false,
+      trimTrailingExcept = false,
+      trimLeading = [],
+      trimTrailing = [],
+    }: ConstructorParameters<typeof ValidString>[1]
   ): string {
-    return options === undefined ?
-      text
-      : ValidString.trimEdge(
-        ValidString.trimEdge(
-          text,
-          options.trimLeading,
-          ValidString.Edge.Leading,
-          options.trimLeadingExcept
-        ),
-        options.trimTrailing,
-        ValidString.Edge.Trailing,
-        options.trimTrailingExcept
-      );
+    string = toLower ? string.toLowerCase() : string;
+    string = trim ? string.trim() : string;
+    const preprocessed: string = string;
+    return ValidString.trimEdge(
+      ValidString.trimEdge(
+        preprocessed,
+        trimLeading,
+        ValidString.Edge.Leading,
+        trimLeadingExcept
+      ),
+      trimTrailing,
+      ValidString.Edge.Trailing,
+      trimTrailingExcept
+    );
   }
 
   static trimEdge(
-    text: string,
+    string: ConstructorParameters<typeof ValidString>[0],
     wordsToTrim: string[] = [],
     edge:
       | ValidString.Edge
@@ -135,14 +132,14 @@ class ValidString {
     wordsToTrim
       .filter(word => word !== "")
       .forEach(word => {
-        while (text[lookFn](word) === lookCondition)
-          text = isLeading ?
-            text.slice(
+        while (string[lookFn](word) === lookCondition)
+          string = isLeading ?
+            string.slice(
               trimExcept ?
                 1
                 : word.length
             )
-            : text.slice(
+            : string.slice(
               0,
               0 - (
                 trimExcept ?
@@ -151,7 +148,18 @@ class ValidString {
               )
             );
       });
-    return text;
+    return string;
+  }
+
+  static parseStringToOneGrams(
+    string: ConstructorParameters<typeof ValidString>[0],
+  ): NGram[] {
+    return [...string]
+      .map(
+        char => new ValidString.OneGram(
+          char
+        )
+      );
   }
 
   get Chars(): typeof Chars {

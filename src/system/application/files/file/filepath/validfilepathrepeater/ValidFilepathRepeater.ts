@@ -1,6 +1,6 @@
-const vps_ValidString: typeof ValidString = importModule("./system/application/common/primitives/strings/ValidString");
+const vps_Strings: typeof Strings = importModule("./system/application/common/primitives/strings/Strings");
 
-class ValidFilepathRepeater extends vps_ValidString {
+class ValidFilepathRepeater extends (vps_Strings.ValidString) {
 
   constructor(
     pathSegment: string = "",
@@ -19,8 +19,16 @@ class ValidFilepathRepeater extends vps_ValidString {
     )
   }
 
+  static get Strings(): typeof Strings {
+    return vps_Strings;
+  }
+
   static get ValidString(): typeof ValidString {
-    return vps_ValidString;
+    return ValidFilepathRepeater.Strings.ValidString;
+  }
+
+  static get StringSplitter(): typeof StringSplitter {
+    return ValidFilepathRepeater.Strings.StringSplitter;
   }
 
 }

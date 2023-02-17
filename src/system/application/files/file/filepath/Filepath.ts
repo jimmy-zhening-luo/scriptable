@@ -1,20 +1,51 @@
 class Filepath {
 
-  static isValid(
-    path:
+  private _path: string[];
+
+  constructor(
+    path?:
       | string
       | string[]
-  ): boolean {
-    return new Filepath.ValidString(
-      Array.isArray(path) ?
-        path.join("/")
-        : path
-    ).isValid;
+  ) {
+
   }
 
-  static trimPath(
+
+
+
+
+
+  static isValid(
+    path: ConstructorParameters<typeof Filepath>[0]
+  ): boolean {
+    return new Filepath.StringSplitter(
+      path,
+
+    )
+  }
+
+  static expandTree(
+    tree: string[]
+  ): string[] {
+    return tree
+      .map(node =>
+        node.includes("/") ?
+          node.split("/")
+          : node
+      ).flat(1);
+  }
+
+  static trimEdges(
     path: string
-  ): null | string {
+  ): string {
+    return Filepath.ValidString.clean(
+      path,
+      {
+
+      }
+    )
+
+
     return Filepath.isValid(path) ?
       new Filepath.ValidString(
         path,
@@ -167,12 +198,24 @@ class Filepath {
       : null;
   }
 
-  get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
-    return Filepath.ValidFilepathRepeater;
+  protected get ValidString(): typeof ValidString {
+    return Filepath.ValidString;
+  }
+
+  protected get StringSplitter(): typeof StringSplitter {
+    return Filepath.StringSplitter;
   }
 
   static get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
     return importModule("validfilepathrepeater/ValidFilepathRepeater");
+  }
+
+  static get ValidString(): typeof ValidString {
+    return Filepath.ValidFilepathRepeater.ValidString;
+  }
+
+  static get StringSplitter(): typeof StringSplitter {
+    return Filepath.ValidFilepathRepeater.StringSplitter;
   }
 
 }
