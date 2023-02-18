@@ -15,24 +15,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jimmy-zhening-luo/iOS-scriptable-ecosystem.git"
+    "url": "git+https://github.com/zluojimmy/scriptable-wild.git"
   },
   "author": "Jimmy Zhening Luo",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jimmy-zhening-luo/iOS-scriptable-ecosystem/issues"
+    "url": "https://github.com/zluojimmy/scriptable-wild/issues"
   },
-  "homepage": "https://github.com/jimmy-zhening-luo/iOS-scriptable-ecosystem#readme",
+  "homepage": "https://github.com/zluojimmy/scriptable-wild#readme",
   "engines": {
-    "node": ">=18.12.1",
-    "npm": ">=9.3.1"
+    "node": ">=18.14.1",
+    "npm": ">=9.5.0"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.14.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
-    "rimraf": "^4.1.1"
+    "rimraf": "^4.1.2"
   }
 }
