@@ -74,12 +74,6 @@ declare type maxstring<
   : StringAccumulator
   ;
 
-
-
-
-
-
-
 declare namespace _stringhelpers {
 
   type stringlen<
