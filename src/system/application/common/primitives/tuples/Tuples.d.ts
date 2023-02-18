@@ -1,61 +1,112 @@
-declare type _BuildNTuple<
-  Current extends [...Type[]],
-  Type,
-  Count extends number
+declare type Tuple<
+  Type
 > =
-  Current["length"] extends Count ?
-  Current
-  : _BuildNTuple<[Type, ...Current], Type, Count>;
+  NTuple<
+    Type,
+    2
+  >
+  ;
 
-declare type _BuildMinTuple<
-  Current extends [...Type[]],
+declare type NTuple<
+  Type,
+  N extends number
+> =
+  _tuplehelpers.BuildNTuple<
+    [],
+    Type,
+    N
+  >
+  ;
+
+declare type MinTuple<
   Type,
   Min extends number
-> = Current["length"] extends Min ?
-  [...Current, ...Type[]]
-  : _BuildMinTuple<[Type, ...Current], Type, Min>;
+> =
+  _tuplehelpers.BuildMinTuple<
+    [],
+    Type,
+    Min
+  >
+  ;
 
-declare type _BuildMinMaxTuple<
-  Current extends [...(Type | undefined)[]],
+declare type MaxTuple<
+  Type,
+  Max extends number
+> =
+  _tuplehelpers.BuildMinMaxTuple<
+    [],
+    Type,
+    0,
+    Max
+  >
+  ;
+
+declare type MinMaxTuple<
   Type,
   Min extends number,
-  Max extends number,
-  ExceedsMin extends boolean = false
-> = ExceedsMin extends false ?
-  (
-    Min extends Current["length"] ?
-    _BuildMinMaxTuple<
-      Current,
-      Type,
-      Min,
-      Max,
-      true
-    >
-    : _BuildMinMaxTuple<
-      [...Current, Type],
-      Type,
-      Min,
-      Max,
-      false
-    >
-  ) : (
-    Max extends Current["length"] ?
+  Max extends number
+> =
+  _tuplehelpers.BuildMinMaxTuple<
+    [],
+    Type,
+    Min,
+    Max
+  >
+  ;
+
+declare namespace _tuplehelpers {
+
+  type BuildNTuple<
+    Current extends [...Type[]],
+    Type,
+    Count extends number
+  > =
+    Current["length"] extends Count ?
     Current
-    : _BuildMinMaxTuple<
-      [...Current, Type?],
-      Type,
-      Min,
-      Max,
-      true
-    >
-  );
+    : BuildNTuple<[Type, ...Current], Type, Count>;
 
-declare type NTuple<Type, N extends number> = _BuildNTuple<[], Type, N>;
+  type BuildMinTuple<
+    Current extends [...Type[]],
+    Type,
+    Min extends number
+  > = Current["length"] extends Min ?
+    [...Current, ...Type[]]
+    : BuildMinTuple<[Type, ...Current], Type, Min>;
 
-declare type Tuple<Type> = NTuple<Type, 2>;
+  type BuildMinMaxTuple<
+    Current extends [...(Type | undefined)[]],
+    Type,
+    Min extends number,
+    Max extends number,
+    ExceedsMin extends boolean = false
+  > = ExceedsMin extends false ?
+    (
+      Min extends Current["length"] ?
+      BuildMinMaxTuple<
+        Current,
+        Type,
+        Min,
+        Max,
+        true
+      >
+      : BuildMinMaxTuple<
+        [...Current, Type],
+        Type,
+        Min,
+        Max,
+        false
+      >
+    ) : (
+      Max extends Current["length"] ?
+      Current
+      : BuildMinMaxTuple<
+        [...Current, Type?],
+        Type,
+        Min,
+        Max,
+        true
+      >
+    );
 
-declare type MinTuple<Type, Min extends number> = _BuildMinTuple<[], Type, Min>;
 
-declare type MinMaxTuple<Type, Min extends number, Max extends number> = _BuildMinMaxTuple<[], Type, Min, Max>;
-
-declare type MaxTuple<Type, Max extends number> = _BuildMinMaxTuple<[], Type, 0, Max>;
+}

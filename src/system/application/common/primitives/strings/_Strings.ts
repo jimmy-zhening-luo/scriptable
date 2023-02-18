@@ -1,30 +1,25 @@
-
-declare type minmaxstring<
-  Min,
-  Max
-> = string & {
-  readonly minmaxstring: unique symbol
-};
-
-
+declare type nstring<
+  Value extends string,
+  Count extends number
+> =
+  _stringhelpers.stringlen<Value> extends Count ? Value
+  : never
+  ;
 
 declare type maxstring<
-  String extends string,
+  Value extends string,
   Max extends number,
   LengthCounter extends any[] = [],
-  StringAccumulator extends string = ""> =
+  StringAccumulator extends string = ""
+> =
   Max extends LengthCounter["length"] ?
   StringAccumulator
-  : String extends `${infer F}${infer R}` ?
+  : Value extends `${infer F}${infer R}` ?
   (
     maxstring<R, Max, [0, ...LengthCounter], `${StringAccumulator}${F}`>
   )
-  : StringAccumulator;
-
-const bogus = "";
-
-const nstringTest: maxstring<typeof bogus, 5> = bogus;
-
+  : StringAccumulator
+  ;
 
 
 //// char
@@ -37,4 +32,14 @@ declare namespace char {
 }
 declare function char<S extends string>(string: char.char<S>) {
   return string;
+}
+
+declare namespace _stringhelpers {
+  type stringlen<
+    Value extends string,
+    Accumulator extends 0[] = [],
+  > =
+    Value extends `${string}${infer $Rest}` ?
+    stringlen<$Rest, [...Accumulator, 0]>
+    : Accumulator["length"];
 }
