@@ -16,7 +16,6 @@ declare type charless<
   : Value
   ;
 
-
 declare type stringful<
   Value extends string
 > =

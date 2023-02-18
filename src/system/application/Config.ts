@@ -1,3 +1,4 @@
+/// <reference path = "./common/primitives/strings/Strings.d.ts" />
 const CONFIG_BOOKMARK: string = "#Config";
 
 class Config {
@@ -118,7 +119,7 @@ class Config {
       );
       const mergedSettingsMap:
         Map<
-          Types.stringful,
+          stringful,
           SettingValue
         > = new Map();
       for (const loser of keysUniqueToLosingSettings)
