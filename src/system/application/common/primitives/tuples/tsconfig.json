@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+    "../numbers/**/*",
+    "../strings/**/*"
+  ],
+  "references": [
+    {
+      "path": "../strings/tsconfig.json"
+    },
+    {
+      "path": "../numbers/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../.."
+  }
+}

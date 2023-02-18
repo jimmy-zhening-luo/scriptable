@@ -9,6 +9,9 @@
     },
     {
       "path": "strings/tsconfig.json"
+    },
+    {
+      "path": "tuples/tsconfig.json"
     }
   ],
   "compilerOptions": {
