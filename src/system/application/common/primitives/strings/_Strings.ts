@@ -1,3 +1,48 @@
+declare type char<
+  Value extends string
+> =
+  nstring<
+    Value,
+    1
+  >
+  ;
+
+declare type charless<
+  Value extends string,
+  Char extends string
+> =
+  Value extends `${string}${char<Char>}${string}` ?
+  never
+  : Value
+  ;
+
+
+declare type stringful<
+  Value extends string
+> =
+  Value extends "" ?
+  never
+  : Value
+  ;
+
+declare type dotless<
+  Value extends string
+> =
+  charless<
+    Value,
+    "."
+  >
+  ;
+
+declare type slashless<
+  Value extends string
+> =
+  charless<
+    Value,
+    "/"
+  >
+  ;
+
 declare type nstring<
   Value extends string,
   Count extends number
@@ -16,30 +61,40 @@ declare type maxstring<
   StringAccumulator
   : Value extends `${infer F}${infer R}` ?
   (
-    maxstring<R, Max, [0, ...LengthCounter], `${StringAccumulator}${F}`>
+    maxstring<
+      R,
+      Max,
+      [
+        0,
+        ...LengthCounter
+      ],
+      `${StringAccumulator}${F}`
+    >
   )
   : StringAccumulator
   ;
 
 
-//// char
-declare type char = char.char<string>;
-declare namespace char {
-  declare type char<S extends string> =
-    S extends `${string}${string}` ?
-    never
-    : S;
-}
-declare function char<S extends string>(string: char.char<S>) {
-  return string;
-}
+
+
+
+
 
 declare namespace _stringhelpers {
+
   type stringlen<
     Value extends string,
     Accumulator extends 0[] = [],
   > =
     Value extends `${string}${infer $Rest}` ?
-    stringlen<$Rest, [...Accumulator, 0]>
-    : Accumulator["length"];
+    stringlen<
+      $Rest,
+      [
+        ...Accumulator,
+        0
+      ]
+    >
+    : Accumulator["length"]
+    ;
+
 }
