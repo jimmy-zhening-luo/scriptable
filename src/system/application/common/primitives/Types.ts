@@ -10,11 +10,4 @@ class Types {
 
 }
 
-namespace Types {
-
-  // true primitives
-  export type primitive = string | number | boolean;
-
-}
-
 module.exports = Types;
