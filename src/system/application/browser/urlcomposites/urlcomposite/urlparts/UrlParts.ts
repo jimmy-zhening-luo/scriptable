@@ -1,5 +1,9 @@
 class UrlParts {
 
+  static get UrlPart(): typeof UrlPart {
+    return importModule("urlpart/UrlPart");
+  }
+
   static get Scheme(): typeof Scheme {
     return importModule("Scheme");
   }

@@ -1,11 +1,23 @@
 class UrlValidators {
 
-  static get Char(): typeof Char {
-    return UrlValidators.Scheme.Char;
+  static get ValidUrlPart(): typeof ValidUrlPart {
+    return importModule("validurlpart/ValidUrlPart");
+  }
+
+  static get ValidUrlRepeater(): typeof ValidUrlRepeater {
+    return importModule("validurlpart/ValidUrlRepeater");
   }
 
   static get Scheme(): typeof ValidScheme {
     return importModule("ValidScheme");
+  }
+
+  static get Char(): typeof Char {
+    return UrlValidators.ValidUrlPart.Char;
+  }
+
+  static get UrlChar(): typeof UrlChar {
+    return UrlValidators.ValidUrlPart.UrlChar;
   }
 
   static get Host(): {

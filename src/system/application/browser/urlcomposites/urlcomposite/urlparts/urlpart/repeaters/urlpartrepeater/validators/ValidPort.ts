@@ -5,12 +5,13 @@ class ValidPort extends po_ValidUrlPart {
   constructor(port: string) {
     super(
       port,
+      1,
+      Infinity,
       {
         trimLeading: [
           ...po_ValidUrlPart.UrlChar.colon
         ]
       },
-      {},
       po_ValidUrlPart.UrlChar.numbers
     );
   }

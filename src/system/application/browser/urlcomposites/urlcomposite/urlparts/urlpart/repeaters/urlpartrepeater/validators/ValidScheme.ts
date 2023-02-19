@@ -5,6 +5,8 @@ class ValidScheme extends sc_ValidUrlPart {
   constructor(scheme: string) {
     super(
       scheme,
+      1,
+      Infinity,
       {
         toLower: true,
         trimTrailing: [
@@ -12,7 +14,6 @@ class ValidScheme extends sc_ValidUrlPart {
           ...ValidScheme.UrlChar.colon
         ]
       },
-      {},
       ValidScheme.UrlChar.alphaNumericLower,
       ValidScheme.UrlChar.plus,
       ValidScheme.UrlChar.hyphen,

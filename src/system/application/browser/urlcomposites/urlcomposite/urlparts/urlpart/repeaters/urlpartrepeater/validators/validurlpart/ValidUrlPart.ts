@@ -1,9 +1,11 @@
-const up_ValidString: typeof ValidString = importModule("./system/application/common/primitives/strings/ValidString");
+const up_ValidString: typeof ValidString = importModule("./common/types/strings/ValidString");
 
 class ValidUrlPart extends up_ValidString {
 
   constructor(
     part: string,
+    minLength: number = 1,
+    maxLength: number = Infinity,
     {
       toLower = false,
       trimLeading = [],
@@ -13,27 +15,19 @@ class ValidUrlPart extends up_ValidString {
       trimLeading?: string[],
       trimTrailing?: string[]
     },
-    {
-      minLength = undefined,
-      maxLength = Infinity
-    }: {
-      minLength?: number,
-      maxLength?: number
-    },
     ...allowedChars: Char.CharInput[]
   ) {
     super(
       part,
+      minLength,
+      maxLength,
       {
-        toLower: toLower,
         trim: true,
+        toLower: toLower,
         trimLeading: trimLeading,
         trimTrailing: trimTrailing
       },
-      {
-        minLength: minLength ?? 1,
-        maxLength: maxLength
-      },
+      {},
       ...allowedChars
     );
   }

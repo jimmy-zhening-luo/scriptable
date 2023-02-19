@@ -5,9 +5,8 @@ class ValidFilepathRepeater extends pa_ValidUrlRepeater {
   constructor(pathRepeater: string) {
     super(
       pathRepeater,
-      {
-        minLength: 0
-      },
+      0,
+      Infinity,
       pa_ValidUrlRepeater.UrlChar.pchar
     );
   }

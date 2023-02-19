@@ -5,7 +5,8 @@ class ValidQueryRepeater extends qu_ValidUrlRepeater {
   constructor(queryRepeater: string) {
     super(
       queryRepeater,
-      {},
+      1,
+      Infinity,
       qu_ValidUrlRepeater.UrlChar.pchar,
       qu_ValidUrlRepeater.UrlChar.slash,
       qu_ValidUrlRepeater.UrlChar.question

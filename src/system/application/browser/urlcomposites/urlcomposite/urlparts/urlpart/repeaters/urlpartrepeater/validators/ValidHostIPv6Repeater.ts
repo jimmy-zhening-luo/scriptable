@@ -5,9 +5,8 @@ class ValidHostIPv6Repeater extends hips_ValidUrlRepeater {
   constructor(hostIPv6Repeater: string) {
     super(
       hostIPv6Repeater,
-      {
-        maxLength: 4
-      },
+      0,
+      4,
       hips_ValidUrlRepeater.UrlChar.hex
     );
   }

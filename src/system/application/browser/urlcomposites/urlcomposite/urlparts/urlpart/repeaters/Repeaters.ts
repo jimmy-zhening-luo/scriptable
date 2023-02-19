@@ -1,5 +1,13 @@
 class Repeaters {
 
+  static get UrlPartRepeater(): typeof UrlPartRepeater {
+    return importModule("urlpartrepeater/UrlPartRepeater");
+  }
+
+  static get UrlValidators(): typeof UrlValidators {
+    return Repeaters.UrlPartRepeater.UrlValidators;
+  }
+
   static get HostIPv4Repeater(): typeof HostIPv4Repeater {
     return importModule("HostIPv4Repeater");
   }

@@ -5,7 +5,8 @@ class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
   constructor(hostRegNameRepeater: string) {
     super(
       hostRegNameRepeater,
-      {},
+      1,
+      Infinity,
       hrn_ValidUrlRepeater.UrlChar.unreserved,
       hrn_ValidUrlRepeater.UrlChar.percentEncoded,
       hrn_ValidUrlRepeater.UrlChar.subDelims

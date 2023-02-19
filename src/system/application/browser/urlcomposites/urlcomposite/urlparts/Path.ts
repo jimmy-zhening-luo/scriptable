@@ -12,38 +12,39 @@ class Path extends pa_UrlPart {
   }
 
   protected parse(path: string): null | string {
-    return path.trim() === "" ?
+    const split: string[] = new this.StringSplitter(
+      path,
+      ...this.UrlValidators.Char.slash,
+      {
+        trim: true,
+        trimTokens: true,
+        ignoreEmptyTokens: true
+      }
+    ).toTuple();
+    return split.length === 0 ?
       null
-      : path
-        .trim()
-        .split("/")
-        .filter(segment => segment !== "")
-        .map(pathRepeater => new this.PathRepeater(pathRepeater))
-        .every(pathRepeater => pathRepeater.isValid) ?
-        path
+      : split
+        .every(pathRepeater => new this.PathRepeater(pathRepeater).isValid) ?
+        split.join(this.UrlValidators.Char.slash[0])
         : null;
   }
 
-  appendPath(
+  append(
     subpath:
-      | null | undefined
+      | null
+      | undefined
       | string
       | Path
-  ) {
-    const slash: string = this.UrlValidators.Char.slash[0];
-    const subpathToUrl: UrlPart = new Path(subpath);
-    return subpathToUrl.isValid ?
-      new Path(
-        [
-          this.toString() as string,
-          subpathToUrl.toString()
-        ].join(
-          this.toString().endsWith(slash)
-            || subpathToUrl.toString().startsWith(slash) ?
-            ""
-            : slash
-        )
-      )
+  ): Path {
+    const newPath: Path = new Path(
+      [
+        this.toString(),
+        new Path(subpath).toString()
+      ]
+        .join(this.UrlValidators.Char.slash[0])
+    );
+    return newPath.isValid ?
+      newPath
       : this;
   }
 
@@ -51,8 +52,16 @@ class Path extends pa_UrlPart {
     return this.Repeaters.PathRepeater;
   }
 
+  protected get StringSplitter(): typeof StringSplitter {
+    return Path.StringSplitter;
+  }
+
   static get UrlPart(): typeof UrlPart {
     return pa_UrlPart;
+  }
+
+  static get StringSplitter(): typeof StringSplitter {
+    return importModule("./common/types/strings/StringSplitter");
   }
 
 }

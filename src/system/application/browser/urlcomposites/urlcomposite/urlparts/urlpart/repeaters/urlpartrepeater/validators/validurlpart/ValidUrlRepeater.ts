@@ -4,21 +4,15 @@ class ValidUrlRepeater extends r_ValidUrlPart {
 
   constructor(
     part: string,
-    {
-      minLength = undefined,
-      maxLength = Infinity
-    }: {
-      minLength?: number,
-      maxLength?: number
-    },
+    minLength: number = 1,
+    maxLength: number = Infinity,
     ...allowedChars: Char.CharInput[]
   ) {
     super(
       part,
+      minLength,
+      maxLength,
       {},
-      {
-        maxLength: maxLength
-      },
       ...allowedChars
     );
   }

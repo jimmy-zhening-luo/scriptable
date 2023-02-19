@@ -40,20 +40,20 @@ abstract class UrlPart {
     );
   }
 
-  protected get UrlValidators(): typeof UrlValidators {
-    return UrlPart.UrlValidators;
-  }
-
   protected get Repeaters(): typeof Repeaters {
     return UrlPart.Repeaters;
   }
 
-  protected static get UrlValidators(): typeof UrlValidators {
-    return importModule("./system/application/browser/urlcomposites/urlparts/validators/UrlValidators");
+  protected get UrlValidators(): typeof UrlValidators {
+    return UrlPart.UrlValidators;
   }
 
   protected static get Repeaters(): typeof Repeaters {
-    return importModule("./system/application/browser/urlcomposites/urlparts/repeaters/Repeaters");
+    return importModule("repeaters/Repeaters");
+  }
+
+  protected static get UrlValidators(): typeof UrlValidators {
+    return UrlPart.Repeaters.UrlValidators;
   }
 
 }

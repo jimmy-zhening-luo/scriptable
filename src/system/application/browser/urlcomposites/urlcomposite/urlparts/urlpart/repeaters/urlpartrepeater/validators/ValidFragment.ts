@@ -5,12 +5,13 @@ class ValidFragment extends fr_ValidUrlPart {
   constructor(fragment: string) {
     super(
       fragment,
+      1,
+      Infinity,
       {
         trimLeading: [
           ...ValidFragment.UrlChar.hash
         ]
       },
-      {},
       ValidFragment.UrlChar.pchar,
       ValidFragment.UrlChar.slash,
       ValidFragment.UrlChar.question

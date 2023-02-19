@@ -11,7 +11,7 @@ abstract class UrlComposite {
   }
 
   static get UrlParts(): typeof UrlParts {
-    return importModule("./system/application/browser/urlcomposites/urlparts/UrlParts");
+    return importModule("urlparts/UrlParts");
   }
 
 }

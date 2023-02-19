@@ -26,14 +26,13 @@ abstract class UrlPartRepeater {
     return this.value ?? "";
   }
 
-
   protected get UrlValidators(): typeof UrlValidators {
     return UrlPartRepeater.UrlValidators;
   }
 
 
-  protected static get UrlValidators(): typeof UrlValidators {
-    return importModule("./system/application/browser/urlcomposites/urlparts/validators/UrlValidators");
+  static get UrlValidators(): typeof UrlValidators {
+    return importModule("validators/UrlValidators");
   }
 
 }

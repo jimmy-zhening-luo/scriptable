@@ -1,5 +1,9 @@
 class UrlComposites {
 
+  static get UrlComposite(): typeof UrlComposite {
+    return importModule("urlcomposite/UrlComposite");
+  }
+
   static get SchemeHostPortPathQueryFragment(): typeof SchemeHostPortPathQueryFragment {
     return importModule("SchemeHostPortPathQueryFragment");
   }
