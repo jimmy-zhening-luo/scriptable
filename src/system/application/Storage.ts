@@ -11,8 +11,8 @@ class Storage {
   ) {
     this.file = new Storage.File(
       this.storageDirFile,
-      Storage.Paths.join(
-        Storage.Paths.join(
+      this.File.join(
+        this.File.join(
           storageSubpath,
           programName
         ),
@@ -63,16 +63,8 @@ class Storage {
     return Storage.File;
   }
 
-  get Paths(): typeof Filepath {
-    return Storage.Paths;
-  }
-
   static get File(): typeof File {
     return importModule("files/file/File");
-  }
-
-  static get Paths(): typeof Filepath {
-    return Storage.File.Paths;
   }
 
 }

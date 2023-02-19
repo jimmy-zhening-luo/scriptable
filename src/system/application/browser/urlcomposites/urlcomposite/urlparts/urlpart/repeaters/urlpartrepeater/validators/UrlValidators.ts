@@ -42,7 +42,7 @@ class UrlValidators {
 
   static get Path(): {
     Repeaters: {
-      Path: typeof ValidFilepathRepeater
+      Path: typeof ValidPathRepeater
     }
   } {
     return {

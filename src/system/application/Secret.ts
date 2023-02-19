@@ -55,16 +55,8 @@ class Secret {
     return Secret.ReadOnlyFile;
   }
 
-  get Paths(): typeof Filepath {
-    return Secret.Paths;
-  }
-
   static get ReadOnlyFile(): typeof ReadOnlyFile {
     return importModule("files/ReadOnlyFile");
-  }
-
-  static get Paths(): typeof Filepath {
-    return Secret.ReadOnlyFile.Paths;
   }
 
 }

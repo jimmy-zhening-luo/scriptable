@@ -6,7 +6,7 @@ class PathRepeater extends pa_UrlPartRepeater {
     return new this.ValidPathRepeater(repeater).value;
   }
 
-  protected get ValidPathRepeater(): typeof ValidFilepathRepeater {
+  protected get ValidPathRepeater(): typeof ValidPathRepeater {
     return this.UrlValidators.Path.Repeaters.Path;
   }
 

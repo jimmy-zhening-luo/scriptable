@@ -129,18 +129,6 @@ abstract class Application {
     return Application.File.Filepath;
   }
 
-  static get Repositories(): typeof Repositories {
-    return importModule("gitclient/Repositories");
-  }
-
-  static get WorkingCopy(): typeof WorkingCopy {
-    return Application.Repositories.WorkingCopy;
-  }
-
-  static get Repository(): typeof Repository {
-    return Application.Repositories.Repository;
-  }
-
 }
 
 module.exports = Application;
