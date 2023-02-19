@@ -37,37 +37,6 @@ class Api {
       : 60;
   }
 
-  private handleRequest(): ResponseBody {
-    this._request.url = this.url;
-    return new Api.ApiResponse(
-      this._request.request()
-    );
-    request(): string {
-      var response: string = "";
-      const req: Request = new Request(this.url);
-      req.headers = this.headersStringObject;
-      req.body = this.bodyString;
-      req.method = this.method.toString();
-      req.timeoutInterval = this._timeoutSeconds;
-      req.loadString().then((_response) => {
-        response = _response ?? "";
-      });
-      return response;
-    }
-  }
-
-  request(): any {
-    return this.handleRequest().response;
-  }
-
-  requestObject(): any {
-    return this.handleRequest().toObject();
-  }
-
-  requestString(): string {
-    return this.handleRequest().toString();
-  }
-
   get url(): string {
     return this._url.toString();
   }
@@ -170,13 +139,17 @@ class Api {
     this._method = method.toString() as keyof typeof Api.Method;
   }
 
+  get hasAuth(): typeof RequestHeaders.prototype.hasAuth {
+    return this._requestHeaders.hasAuth;
+  }
+
   get authScheme(): typeof RequestHeaders.prototype.scheme {
     return this._requestHeaders.scheme;
   }
 
   set authScheme(
     scheme: typeof RequestHeaders.prototype.scheme
-  ): string {
+  ) {
     this._requestHeaders.scheme = scheme;
   }
 
@@ -186,7 +159,7 @@ class Api {
 
   set authToken(
     token: typeof RequestHeaders.prototype.token
-  ): string {
+  ) {
     this._requestHeaders.token = token;
   }
 
@@ -205,12 +178,85 @@ class Api {
     return this;
   }
 
+  get headers(): typeof RequestHeaders.prototype.headers {
+    return this._requestHeaders.headers;
+  }
+
+  get headersStringObject(): typeof Request.prototype.headers {
+    return Object.fromEntries(
+      [...this._requestHeaders.headers.entries()]
+        .map(
+          ([key, value]) => [key, value.toString()]
+      )
+    )
+  }
+
+  get headersString(): string {
+    return this._requestHeaders.toString();
+  }
+
   get headerKeys(): typeof RequestHeaders.prototype.keys {
     return this._requestHeaders.keys;
   }
 
-  get headers(): typeof RequestHeaders.prototype.headers {
-    return this._requestHeaders.headers;
+  hasHeader(
+    ...header: Parameters<RequestHeaders["hasHeader"]>
+  ): ReturnType<RequestHeaders["hasHeader"]> {
+    return this._requestHeaders.hasHeader(...header);
+  }
+
+  addHeader(
+    ...header: Parameters<RequestHeaders["addHeader"]>
+  ): this {
+    this._requestHeaders.addHeader(...header);
+    return this;
+  }
+
+  getValue(
+    ...header: Parameters<RequestHeaders["getValue"]>
+  ): ReturnType<RequestHeaders["getValue"]> {
+    return this._requestHeaders.getValue(...header);
+  }
+
+  getStringValue(
+    ...header: Parameters<RequestHeaders["getStringValue"]>
+  ): ReturnType<RequestHeaders["getStringValue"]> {
+    return this._requestHeaders.getStringValue(...header);
+  }
+
+  getNullableValue(
+    ...header: Parameters<RequestHeaders["getNullableValue"]>
+  ): ReturnType<RequestHeaders["getNullableValue"]> {
+    return this._requestHeaders.getNullableValue(...header);
+  }
+
+  getHeader(
+    ...header: Parameters<RequestHeaders["getHeader"]>
+  ): ReturnType<RequestHeaders["getHeader"]> {
+    return this._requestHeaders.getHeader(...header);
+  }
+
+  deleteHeader(
+    ...header: Parameters<RequestHeaders["deleteHeader"]>
+  ): this {
+    this._requestHeaders.deleteHeader(...header);
+    return this;
+  }
+
+  get body(): typeof Api.prototype.bodyString {
+    return this.bodyString;
+  }
+
+  get bodyString(): ReturnType<RequestBody["toString"]> {
+    return this._requestBody.toString();
+  }
+
+  get bodyObject(): ReturnType<RequestBody["toObject"]> {
+    return this._requestBody.toObject();
+  }
+
+  get bodyStringObject(): ReturnType<RequestBody["toStringObject"]> {
+    return this._requestBody.toStringObject();
   }
 
   get timeout(): number {
@@ -227,6 +273,32 @@ class Api {
     )
       this._timeoutSeconds = timeoutSeconds;
   }
+
+  request(): any {
+    return this.handleRequest().response;
+  }
+
+  requestObject(): any {
+    return this.handleRequest().toObject();
+  }
+
+  requestString(): string {
+    return this.handleRequest().toString();
+  }
+
+  private handleRequest(): ResponseBody {
+    var response: string = "";
+    const req: Request = new Request(this.url);
+    req.headers = this.headersStringObject;
+    req.body = this.body;
+    req.method = this.method;
+    req.timeoutInterval = this.timeout;
+    req.loadString().then((_response) => {
+      response = _response ?? "";
+    });
+    return new this.ResponseBody(response);
+  }
+
 
   get Url(): typeof Url {
     return Api.Url;

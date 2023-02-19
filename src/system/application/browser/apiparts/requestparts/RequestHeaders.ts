@@ -65,8 +65,7 @@ class RequestHeaders {
 
   addHeader(
     ...headers: ([string, primitive] | RequestHeaders)[]
-  ): Map<string, primitive> {
-    const newHeaders: Map<string, primitive> = new Map();
+  ): this {
     for (const header of headers) {
       if (Array.isArray(header)) {
         if (header[0] === "") { }
@@ -74,7 +73,7 @@ class RequestHeaders {
           this.auth = String(header[1]);
         }
         else
-          newHeaders.set(header[0], header[1]);
+          this._headers.set(header[0], header[1]);
       }
       else {
         for (const [key, value] of header.headers) {
@@ -82,7 +81,7 @@ class RequestHeaders {
         }
       }
     }
-    return newHeaders;
+    return this;
   }
 
   getValue(
@@ -111,6 +110,13 @@ class RequestHeaders {
     return this.hasHeader(key) ?
       [key, this.getValue(key)].join(": ")
       : "";
+  }
+
+  deleteHeader(
+    key: string
+  ): this {
+    this._headers.delete(key);
+    return this;
   }
 
   toString(): string {
