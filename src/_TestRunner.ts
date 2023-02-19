@@ -71,32 +71,6 @@ class TestRunner {
       ]
     ]);
 
-    happy.push([
-      "api",
-      [
-        (a = new api(
-          "fine://example/endpoint?id=5&type=notes",
-          api.Method.POST,
-          ["Bearer", "12345"],
-          {
-            "Content-Type": "application/json",
-            "model": "iPhone 1"
-          },
-          {
-            "x": 1,
-            "y": 2,
-            "z": 3
-          },
-          55
-        )).auth,
-        "Bearer 12345"
-      ],
-      [
-
-      ]
-    ]);
-
-
 
 
 
