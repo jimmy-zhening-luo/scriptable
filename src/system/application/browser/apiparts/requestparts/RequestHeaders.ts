@@ -1,306 +1,190 @@
 class RequestHeaders {
 
-  private readonly _headers: {
-    Authorization?: AuthRequestHeader,
-    [key: string]: GenericRequestHeader<primitive>
-  }
+  private _auth: {
+    scheme: "" | keyof typeof RequestHeaders.AuthScheme,
+    token: string
+  };
+
+  private _headers: Map<string, primitive>;
 
   constructor(
     authOrHeader?:
-      | ConstructorParameters<typeof AuthRequestHeader>[0]
-      | Parameters<RequestHeaders["addHeader"]>[0],
+      | ""
+      | keyof typeof RequestHeaders.AuthScheme
+      | [string, primitive]
+      | RequestHeaders,
     authToken?:
-      | ConstructorParameters<typeof AuthRequestHeader>[1]
-      | Parameters<RequestHeaders["addHeader"]>[0],
-    ...headers: Parameters<RequestHeaders["addHeader"]>
+      | string
+      | [string, primitive]
+      | RequestHeaders,
+    ...headers:
+      (
+        | [string, primitive]
+        | RequestHeaders
+      )[]
   ) {
-    this._headers = {};
-
-    if (
-      authOrAuthScheme === undefined
-      || authOrAuthScheme === null
-    ) { }
-
-    else if (typeof authOrAuthScheme === "string") {
-      if (
-        authToken === undefined
-        || authToken === null
-      ) {
-        const authString: string = authOrAuthScheme;
-        this.auth = authString;
-      }
-      else if (typeof authToken === "string") {
-        const authType: string = authOrAuthScheme;
-        this.setAuthTypeAndToken(
-          authType,
-          authToken
-        );
-        this.addHeader(
-          ...headers
-        );
-      }
-      else {
-        const authString: string = authOrAuthScheme;
-        this.auth = authString;
-        this.addHeader(
-          authToken,
-          ...headers
-        );
-      }
-    }
-
-    else if (Symbol.iterator in authOrAuthScheme) {
-      if (
-        authToken === undefined
-        || authToken === null
-        || typeof authToken === "string"
-      ) {
-        const header0: Parameters<RequestHeaders["addHeader"]>[0] = authOrAuthScheme;
-        this.addHeader(
-          header0,
-          ...headers
-        );
-      }
-      else {
-        const header0: Parameters<RequestHeaders["addHeader"]>[0] = authOrAuthScheme;
-        const header1: Parameters<RequestHeaders["addHeader"]>[0] = authToken;
-        this.addHeader(header0, header1, ...headers);
-      }
-    }
-
-    else if (
-      authOrAuthScheme instanceof this.AuthRequestHeader
-      || Reflect
-        .ownKeys(
-          new this.AuthRequestHeader()
-        ).every(
-          key => key in authOrAuthScheme
-        )
-      || Object.getPrototypeOf(authOrAuthScheme) === this.AuthRequestHeader.prototype
-    ) {
-      this.auth = authOrAuthScheme as AuthRequestHeader;
-    }
+    this._auth = {
+      scheme: "",
+      token: ""
+    };
+    this._headers = new Map<string, primitive>();
+    if (authOrHeader === undefined) { }
     else {
-      if (
-        authToken === undefined
-        || authToken === null
-        || typeof authToken === "string"
-      ) {
-        const header0: Parameters<RequestHeaders["addHeader"]>[0] = authOrAuthScheme;
-        this.addHeader(
-          header0,
-          ...headers
-        );
+      if (typeof authOrHeader === "string") {
+        this._auth.scheme = authOrHeader;
+        if (authToken === undefined) { }
+        else if (typeof authToken === "string") {
+          this._auth.token = authToken;
+          this.addHeader(...headers);
+        }
+        else
+          this.addHeader(authToken, ...headers);
       }
       else {
-        const header0: Parameters<RequestHeaders["addHeader"]>[0] = authOrAuthScheme;
-        const header1: Parameters<RequestHeaders["addHeader"]>[0] = authToken;
-        this.addHeader(
-          header0,
-          header1,
-          ...headers
-        );
+
       }
     }
-    this.clearEmptyParameters();
   }
 
-  protected clearEmptyParameters(): void {
-    for (const key in this._headers)
-      if (
-        key === ""
-        || this._headers[key].value === ""
-      )
-        delete this._headers[key];
+  get headers(): typeof RequestHeaders.prototype._headers {
+    const headers: Map<string, primitive> = new Map(this._headers);
+    if (this.hasAuth())
+      headers.set("Authorization", this.auth);
+    return this._headers;
   }
 
-  get auth(): typeof AuthRequestHeader.prototype.auth {
-    return "Authorization" in this._headers ?
-      this._headers.Authorization.auth
+  get keys(): string[] {
+    return [...this.headers.keys()];
+  }
+
+  hasHeader(
+    key: string
+  ) {
+    return this.headers.has(key);
+  }
+
+  addHeader(
+    ...headers: ([string, primitive] | RequestHeaders)[]
+  ): Map<string, primitive> {
+    const newHeaders: Map<string, primitive> = new Map();
+    for (const header of headers) {
+      if (Array.isArray(header)) {
+        if (header[0] === "") { }
+        else if (header[0] === "Authorization") {
+          this.auth = String(header[1]);
+        }
+        else
+          newHeaders.set(header[0], header[1]);
+      }
+      else {
+        for (const [key, value] of header.headers) {
+          this.addHeader([key, value]);
+        }
+      }
+    }
+    return newHeaders;
+  }
+
+  getValue(
+    key: string
+  ): ReturnType<typeof RequestHeaders.prototype.getStringValue> {
+    return this.getStringValue(key);
+  }
+
+  getStringValue(
+    key: string
+  ): string {
+    return this.hasHeader(key) ?
+      String(this.headers.get(key))
+      : "";
+  }
+
+  getNullableValue(
+    key: string
+  ): undefined | primitive {
+    return this.headers.get(key);
+  }
+
+  getHeader(
+    key: string
+  ): string {
+    return this.hasHeader(key) ?
+      [key, this.getValue(key)].join(": ")
+      : "";
+  }
+
+  toString(): string {
+    return this.keys.map(key => this.getHeader(key)).join("\r\n");
+  }
+
+  get scheme(): typeof RequestHeaders.prototype._auth.scheme {
+    return this._auth.scheme;
+  }
+
+  set scheme(
+    scheme: typeof RequestHeaders.prototype._auth.scheme
+  ) {
+    this._auth.scheme = scheme;
+  }
+
+  get token(): typeof RequestHeaders.prototype._auth.token {
+    return this._auth.token;
+  }
+
+  set token(
+    token: typeof RequestHeaders.prototype._auth.token
+  ) {
+    this._auth.token = token;
+  }
+
+  hasAuth(): boolean {
+    return this.token !== "";
+  }
+
+  get auth(): string {
+    return this.hasAuth() ?
+      this.scheme === "" ?
+        this.token
+        : [this.scheme, this.token].join(" ")
       : "";
   }
 
   set auth(
-    auth: ConstructorParameters<typeof AuthRequestHeader>[0]
+    auth: string
   ) {
-    this._headers.Authorization = new this.AuthRequestHeader(
-      auth
-    );
-    if (this._headers.Authorization.auth === "")
-      delete this._headers.Authorization;
-  }
-
-  hasAuth(): boolean {
-    return this.headers.has("Authorization");
-  }
-
-  setAuthTypeAndToken(
-    authType: string,
-    authToken: string
-  ): this {
-    this.auth = [
-      authType,
-      authToken
-    ]
-      .join(" ");
-    return this;
+    const authParts: string[] = auth.trim().split(" ");
+    if (authParts.length === 0) {
+      this.scheme = "";
+      this.token = "";
+    }
+    else if (authParts.length === 1) {
+      this.scheme = "";
+      this.token = authParts[0];
+    }
+    else {
+      if (authParts[0] === "" || authParts[0] in RequestHeaders.AuthScheme) {
+        this.scheme = authParts[0] as "" | keyof typeof RequestHeaders.AuthScheme;
+        this.token = authParts.slice(1).join(" ");
+      }
+      else {
+        this.scheme = "";
+        this.token = authParts.join(" ");
+      }
+    }
   }
 
   deleteAuth(): this {
-    this.auth = "";
+    this._auth.scheme = "";
+    this._auth.token = "";
     return this;
   }
 
+}
 
-  get keys(): string[] {
-    return Array.from(
-      this.headers.keys()
-    );
-  }
+namespace RequestHeaders {
 
-  get headers(): Map<string, primitive> {
-    return new Map(
-      Array.from(
-        Object.entries(
-          this._headers
-        )
-      ).map(
-        ([key, value]) => [key, value.value]
-      )
-    );
-  }
-
-  get stringHeaders(): Map<string, string> {
-    return new Map(
-      Array.from(
-        this.headers
-      ).map(
-        ([key, value]) => [key, value.toString()]
-      )
-    );
-  }
-
-  hasHeader(
-    headerKey: string
-  ): boolean {
-    return this.headers.has(headerKey);
-  }
-
-  getHeader(
-    headerKey: string
-  ): string {
-    return headerKey in this._headers ?
-      this._headers[headerKey].header
-      : "";
-  }
-
-  getHeaderValue(
-    headerKey: string
-  ): primitive {
-    return headerKey in this._headers ?
-      this._headers[headerKey].value
-      : "";
-  }
-
-  getHeaderValueString(
-    headerKey: string
-  ): string {
-    return headerKey in this._headers ?
-      this._headers[headerKey].stringValue
-      : "";
-  }
-
-  setHeader(
-    headerKey: string,
-    headerValue: primitive
-  ): this {
-    headerValue.toString() === "" ?
-      this.deleteHeader(headerKey)
-      : this._headers[headerKey] = new this.GenericRequestHeader(
-        headerKey, headerValue
-      );
-    return this;
-  }
-
-  deleteHeader(
-    key: string
-  ): this {
-    delete this._headers[
-      key
-    ];
-    return this;
-  }
-
-  addHeader(
-    ...headers: (
-      | [string, primitive]
-      | [string, primitive][]
-      | Record<string, primitive>
-      | Map<string, primitive>
-    )[]
-  ): this {
-    for (const header of headers) {
-      if (header instanceof Map) {
-        for (const [key, value] of header)
-          this.setHeader(key, value);
-      }
-      else if (!(Symbol.iterator in header)) {
-        for (const [key, value] of Array.from(Object.entries(header)))
-          this.setHeader(key, value);
-      }
-      else if (Array.isArray([header][0])
-      ) {
-        for (const [key, value] of header as [string, primitive][])
-          this.setHeader(key, value);
-      }
-      else {
-        this.setHeader(header[0] as string, header[1] as primitive);
-      }
-    }
-    this.clearEmptyParameters();
-    return this;
-  }
-
-  toMap(): typeof RequestHeaders.prototype.headers {
-    return this.headers;
-  }
-
-  toStringMap(): typeof RequestHeaders.prototype.stringHeaders {
-    return this.stringHeaders;
-  }
-
-  toString(): string {
-    return Array.from(
-      this.stringHeaders
-    ).map(
-      ([key, value]) => [key, value]
-        .join(": ")
-    )
-      .join("\r\n");
-  }
-
-  get RequestHeaderTypes(): typeof RequestHeaderTypes {
-    return RequestHeaders.RequestHeaderTypes;
-  }
-
-  get AuthRequestHeader(): typeof AuthRequestHeader {
-    return RequestHeaders.AuthRequestHeader;
-  }
-
-  get GenericRequestHeader(): typeof GenericRequestHeader {
-    return RequestHeaders.GenericRequestHeader;
-  }
-
-  static get RequestHeaderTypes(): typeof RequestHeaderTypes {
-    return importModule("requestheadertypes/RequestHeaderTypes");
-  }
-
-  static get AuthRequestHeader(): typeof AuthRequestHeader {
-    return RequestHeaders.RequestHeaderTypes.AuthRequestHeader;
-  }
-
-  static get GenericRequestHeader(): typeof GenericRequestHeader {
-    return RequestHeaders.RequestHeaderTypes.GenericRequestHeader;
+  export enum AuthScheme {
+    Bearer,
   }
 
 }

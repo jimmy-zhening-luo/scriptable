@@ -363,11 +363,11 @@ class Url {
     return Url.UrlComposites.SchemeHostPortPathQueryFragment;
   }
 
-  private static get UrlComposites(): typeof UrlComposites {
+  static get UrlComposites(): typeof UrlComposites {
     return importModule("urlcomposites/UrlComposites");
   }
 
-  private static get UrlParts(): typeof UrlParts {
+  static get UrlParts(): typeof UrlParts {
     return Url.UrlComposites.UrlComposite.UrlParts;
   }
 

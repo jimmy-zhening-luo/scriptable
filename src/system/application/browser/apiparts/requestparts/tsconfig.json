@@ -7,10 +7,7 @@
   "references": [
     {
       "path": "../../../../../common/tsconfig.json"
-    },
-    {
-      "path": "requestheadertypes/tsconfig.json"
-    },
+    }
   ],
   "compilerOptions": {
     "rootDir": "../../../../.."

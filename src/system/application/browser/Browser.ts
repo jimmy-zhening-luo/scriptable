@@ -20,10 +20,6 @@ class Browser {
     return importModule("Endpoint");
   }
 
-  static get Common(): typeof Common {
-    return importModule("./common/Common");
-  }
-
 }
 
 module.exports = Browser;
