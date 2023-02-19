@@ -1,13 +1,17 @@
 class Filepath {
 
-  private _tree: Filepath.PathTree;
+  readonly _nominalType: string = "Filepath";
+  private readonly _tree: Filepath.PathTree;
 
   constructor(
-    path: Filepath.ConstructorInput = "",
+    path:
+      | string
+      | string[]
+      | Filepath = "",
     requiredPathSegment: string = ""
   ) {
     this._tree = this.parse(
-      this.flattenRaw(path),
+      path,
       requiredPathSegment
     );
   }
@@ -24,28 +28,34 @@ class Filepath {
     return this.tree.length > 0;
   }
 
+  get parent(): string {
+    return this.cd("..").toString();
+  }
+
+  get leaf(): string {
+    return this.isValid ?
+      this.tree[this.tree.length - 1]
+      : "";
+  }
+
   append(
-    subpath: Filepath.MutatorInput,
+    subpath: ConstructorParameters<typeof Filepath>[0],
     requiredPathSegment: ConstructorParameters<typeof Filepath>[1] = ""
-  ): this {
-    this._tree = new Filepath(
+  ): Filepath {
+    return new Filepath(
       this.walk(subpath),
       requiredPathSegment
-    )
-      .toTree();
-    return this;
+    );
   }
 
   cd(
-    relativePath: Filepath.MutatorInput,
+    relativePath: ConstructorParameters<typeof Filepath>[0],
     requiredPathSegment: ConstructorParameters<typeof Filepath>[1] = ""
-  ): this {
-    this._tree = new Filepath(
+  ): Filepath {
+    return new Filepath(
       this.walk(relativePath, true),
       requiredPathSegment
-    )
-      .toTree();
-    return this;
+    );
   }
 
   toTree(): typeof Filepath.prototype.tree {
@@ -57,7 +67,7 @@ class Filepath {
   }
 
   private walk(
-    relativePath: Filepath.MutatorInput,
+    relativePath: ConstructorParameters<typeof Filepath>[0],
     backtrackOnDotDot: boolean = false
   ): string[] {
     const relativeTree: string[] = this.validate(relativePath);
@@ -75,7 +85,7 @@ class Filepath {
   }
 
   private parse(
-    path: Filepath.MutatorInput,
+    path: ConstructorParameters<typeof Filepath>[0],
     requiredPathSegment: string
   ): string[] {
     const parsed: string[] = this.validate(path);
@@ -85,7 +95,7 @@ class Filepath {
   }
 
   private validate(
-    path: Filepath.MutatorInput
+    path: ConstructorParameters<typeof Filepath>[0]
   ): string[] {
     return this
       .clean(path)
@@ -99,7 +109,7 @@ class Filepath {
   }
 
   private clean(
-    path: Filepath.MutatorInput
+    path: ConstructorParameters<typeof Filepath>[0]
   ): string[] {
     return new this.StringSplitter(
       this.treeifyRaw(path),
@@ -113,7 +123,7 @@ class Filepath {
   }
 
   private treeifyRaw(
-    path: Filepath.MutatorInput
+    path: ConstructorParameters<typeof Filepath>[0]
   ): string[] {
     return this
       .flattenRaw(path)
@@ -121,7 +131,7 @@ class Filepath {
   }
 
   private flattenRaw(
-    path: Filepath.ConstructorInput
+    path: ConstructorParameters<typeof Filepath>[0] = ""
   ): string {
     return Array.isArray(path) ?
       path.join("/")
@@ -131,8 +141,8 @@ class Filepath {
   }
 
   static join(
-    left: Filepath.ConstructorInput,
-    right: Filepath.MutatorInput = "",
+    left: ConstructorParameters<typeof Filepath>[0],
+    right: ConstructorParameters<typeof Filepath>[0] = "",
     requiredPathSegment: ConstructorParameters<typeof Filepath>[1] = ""
   ): string {
     return new Filepath(left)
@@ -141,8 +151,8 @@ class Filepath {
   }
 
   static mutate(
-    path: Filepath.ConstructorInput,
-    relativePath: Filepath.MutatorInput = "",
+    path: ConstructorParameters<typeof Filepath>[0],
+    relativePath: ConstructorParameters<typeof Filepath>[0] = "",
     requiredPathSegment: ConstructorParameters<typeof Filepath>[1] = ""
   ): string {
     return new Filepath(path)
@@ -151,15 +161,25 @@ class Filepath {
   }
 
   static toString(
-    path: Filepath.ConstructorInput
+    path: ConstructorParameters<typeof Filepath>[0]
   ): ReturnType<typeof Filepath.prototype.toString> {
     return new Filepath(path).toString();
   }
 
   static toTree(
-    path: Filepath.ConstructorInput
+    path: ConstructorParameters<typeof Filepath>[0]
   ): ReturnType<typeof Filepath.prototype.toTree> {
     return new Filepath(path).toTree();
+  }
+
+  static [Symbol.hasInstance](instance: any): boolean {
+    return (
+      instance !== null
+      && instance !== undefined
+      && typeof instance === "object"
+      && "_nominalType" in instance
+      && instance._nominalType === "Filepath"
+    );
   }
 
   private get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
@@ -182,8 +202,6 @@ class Filepath {
 
 namespace Filepath {
 
-  export type ConstructorInput = string | string[] | Filepath;
-  export type MutatorInput = string | string[];
   export type PathTree =
     MinTuple<
       stringful<string>,

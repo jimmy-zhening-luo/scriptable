@@ -1,38 +1,163 @@
 class File {
-  #subpath: string = String();
-  readonly bookmark: Bookmark;
+
+  readonly _nominalType: string = "File";
+  private readonly _base: Filepath;
+  private _subpath: Filepath;
 
   constructor(
-    base: Bookmark
+    base:
+      | string
+      | string[]
+      | Filepath
       | File
-      | string = new File.Bookmark(),
-    subpath: string = ""
+      | Bookmark = "",
+    subpath:
+      | string
+      | string[]
+      | Filepath = "",
   ) {
-    if (base instanceof File.Bookmark) {
-      this.bookmark = base;
-      this.subpath = subpath;
-    }
-    else if (base instanceof File) {
-      this.bookmark = base.bookmark;
-      this.subpath = File.Filepath.walk(
-        base.subpath,
-        subpath
-      );
-    }
-    else {
-      this.bookmark = new File.Bookmark();
-      this.subpath = base;
-    }
+    this._base = this.parse(base);
+    this._subpath = this.parse(subpath);
   }
 
-  get bookmarkedPath(): string {
-    return this.bookmark.path;
+  private parse(
+    path: ConstructorParameters<typeof File>[0],
+  ): Filepath {
+    return new File.Filepath(
+      typeof path === "string"
+        || Array.isArray(path)
+        || typeof path !== "string"
+        && path instanceof File.Filepath ?
+        path
+        : path instanceof File.Bookmark
+          || path instanceof File ?
+          path.path
+          : ""
+    );
   }
 
-  get data(): string {
-    return this.isReadable ?
-      File.m.readString(this.path)
-      : String();
+  get base(): string {
+    return this._base.toString();
+  }
+
+  get root(): typeof File.prototype.base {
+    return this.base;
+  }
+
+  get top(): typeof File.prototype.base {
+    return this.base;
+  }
+
+  get subpath(): string {
+    return this._subpath.toString();
+  }
+
+  set subpath(
+    subpath: ConstructorParameters<typeof File>[1]
+  ) {
+    this._subpath = new this.Filepath(subpath);
+  }
+
+  append(
+    subpath: ConstructorParameters<typeof File>[1]
+  ): this {
+    this.subpath = this._subpath.append(subpath);
+    return this;
+  }
+
+  cd(
+    relativePath: ConstructorParameters<typeof File>[1]
+  ): this {
+    this.subpath = this._subpath.cd(relativePath);
+    return this;
+  }
+
+  private get _path(): Filepath {
+    return this._base.append(this.subpath);
+  }
+
+  get path(): ReturnType<typeof Filepath.prototype.toString> {
+    return this._path.toString();
+  }
+
+  get tree(): ReturnType<typeof Filepath.prototype.toTree> {
+    return this._path.toTree();
+  }
+
+  toString(): typeof File.prototype.path {
+    return this.path;
+  }
+
+  toTree(): typeof File.prototype.tree {
+    return this.tree;
+  }
+
+  get leaf(): string {
+    return this.subpath === "" ?
+      this._base.leaf
+      : this._subpath.leaf;
+  }
+
+  get isTop(): boolean {
+    return this.subpath === "";
+  }
+
+  get isDirectory(): boolean {
+    return this.m.isDirectory(this.path);
+  }
+
+  get isFile(): boolean {
+    return this.parentIsDirectory
+      && this.m.fileExists(this.path)
+      && !this.isDirectory;
+  }
+
+  get exists(): boolean {
+    return this.isFile || this.isDirectory;
+  }
+
+  get isEnumerable(): boolean {
+    return this.isDirectory;
+  }
+
+  get isReadable(): boolean {
+    return this.isFile;
+  }
+
+  get parentSubpath(): string {
+    return this._subpath.parent;
+  }
+
+  get isOwnParent(): boolean {
+    return this.subpath === this.parentSubpath;
+  }
+
+  get parent(): File {
+    return new File(
+      this.base,
+      this.parentSubpath
+    );
+  }
+
+  get parentPath(): string {
+    return this.parent.path;
+  }
+
+  get parentIsDirectory(): boolean {
+    return this.parent.isDirectory;
+  }
+
+  get ls(): string[] {
+    return this.isDirectory ?
+      File.m.listContents(this.path)
+      : [];
+  }
+
+  get isBottom(): boolean {
+    return !this.exists
+      || this.isFile
+      || this.isDirectory
+      && this.ls.length === 0;
   }
 
   get descendants(): File[] {
@@ -40,162 +165,67 @@ class File {
       [this]
       : this.isBottom ?
         []
-        : !this.isDirectory ?
-          []
-          : this.ls.map(
-            (leaf: string): string => (
-              File.Filepath.join(
-                this.subpath,
-                File.Filepath.trimPath(leaf)
-              )
-            )
-          ).map(
-            (subpath: string): File => (
-              new File(subpath)
-            )
-          ).filter(
-            (file: File) => (
-              !this.path
-                .startsWith(
-                  file.path
-                )
-            )
-          ).map(
-            (file: File):
-              Array<File> => (
-              file.descendants
-            )
-          ).flat(1);
+        : this.ls.map(leaf =>
+          new File(this.base, this.subpath).append(leaf)
+        ).filter(child =>
+          !this.path.startsWith(child.path)
+        ).map(file =>
+            file.descendants
+        ).flat(1);
   }
 
-  get exists(): boolean {
-    return this.parentExists
-      && File.m
-        .fileExists(this.path);
+  get data(): string {
+    try {
+      if (!this.isReadable)
+        throw new ReferenceError(
+          "File:data: File is not readable. File must be a file and must exist."
+        );
+      return this.m.readString(this.path);
+    } catch (e) {
+      console.log(e);
+      return "";
+    }
   }
 
-  get isBottom(): boolean {
-    return this.isFile
-      || (
-        Array.isArray(this.ls)
-        && this.ls.length === 0
-      );
+  read(): typeof File.prototype.data {
+    return this.data;
   }
 
-  get isDirectory(): boolean {
-    return File.m
-      .isDirectory(this.path);
-  }
-
-  get isEnumerable(): boolean {
-    return this.isDirectory;
-  }
-
-  get isFile(): boolean {
-    return this.exists
-      && !this.isDirectory;
-  }
-
-  get isReadable(): boolean {
-    return this.isFile;
-  }
-
-  get isTop(): boolean {
-    return this
-      .subpath === this
-        .parentSubpath;
-  }
-
-  get leaf(): string {
-    return File.Filepath.trimPath(
-      this.path
-        .split("/")
-        .slice(-1)
-        .shift()
-      ?? String()
-    );
-  }
-
-  get ls(): Array<string> {
-    return this.isDirectory ?
-      File
-        .m.listContents(
-          this.path
-        )
-      : [];
-  }
-
-  get parent(): File {
-    return new File(
-      this.bookmark,
-      this.parentSubpath
-    );
-  }
-
-  get parentExists(): boolean {
-    return this.parent
-      .isDirectory;
-  }
-
-  get parentIsSelf(): boolean {
-    return this.isTop;
-  }
-
-  get parentPath(): string {
-    return this.parent
-      .path;
-  }
-
-  get parentSubpath(): string {
-    return File.Filepath.trimPath(
-      this.subpath
-        .split("/")
-        .slice(0, -1)
-        .join("/")
-    );
-  }
-
-  get path(): string {
-    return File
-      .Paths.joinPaths(
-        this.root,
-        this.subpath
-      );
-  }
-
-  get pathTree(): Array<string> {
-    return File
-      .Paths.pathToTree(this.path);
-  }
-
-  get root(): string {
-    return this.bookmarkedPath;
-  }
-
-  get subpath(): string {
-    return this.#subpath;
-  }
-
-  set subpath(
-    path: string
-  ) {
-    this.#subpath = File
-      .Paths.trimPath(path);
-  }
-
-  get subpathTree(): Array<string> {
-    return File
-      .Paths.pathToTree(this.subpath);
-  }
-
-  cd(
-    relativePath: string
-  ): void {
-    this.subpath = File.Filepath.trimPath(
-      this.subpathRelativeTo(
-        File.Filepath.trimPath(relativePath)
-      )
-    );
+  write(
+    data: typeof File.prototype.data,
+    overwrite: boolean = false
+  ): this {
+    try {
+      if (this.isDirectory)
+        throw new ReferenceError(
+          "File:write: File path points to a folder. Cannot write data to a folder."
+        );
+      else if (this.isReadable && !overwrite)
+        throw new ReferenceError(
+          "File:write: Overwrite is set to false. To overwrite an existing file, write must be called with overwrite === true."
+        );
+      else {
+        if (!this.parentIsDirectory)
+          try {
+            this.m.createDirectory(this.parentPath, true);
+          } catch (e) {
+            throw new ReferenceError(
+              "File:write: Could not create parent directory using Scriptable file manager.See previous error: " + e
+            );
+          }
+        try {
+          this.m.writeString(this.path, data);
+        } catch (e) {
+          throw new ReferenceError(
+            "File:write: Could not write data to file using Scriptable file manager. See previous error: " + e
+          );
+        }
+        return this;
+      }
+    } catch (e) {
+      console.error(e);
+      return this;
+    }
   }
 
   delete(
@@ -218,77 +248,23 @@ class File {
         confirm.addCancelAction(
           "Cancel"
         );
-        confirm.present().then(
-          (userChoice: number) => (
-            (userChoice === 0) ?
-              File.m.remove(
-                this.path
-              )
-              : console.log(
-                "User canceled file deletion."
-              )
-          )
+        confirm.present().then(userChoice =>
+          userChoice === 0 ?
+            File.m.remove(this.path)
+            : console.log("User canceled file deletion.")
         );
       }
     }
   }
 
-  pathRelativeTo(
-    relativePath: string
-  ): string {
-    return File.Filepath.trimPath(
-      File.Filepath.walk(
-        this.path,
-        File.Filepath.trimPath(relativePath)
-      )
+  static [Symbol.hasInstance](instance: any): boolean {
+    return (
+      instance !== null
+      && instance !== undefined
+      && typeof instance === "object"
+      && "_nominalType" in instance
+      && instance._nominalType === "File"
     );
-  }
-
-  read(): string {
-    return this.data;
-  }
-
-  subpathRelativeTo(
-    relativePath: string
-  ): string {
-    return File.Filepath.trimPath(
-      File.Filepath.walk(
-        this.subpath,
-        File.Filepath.trimPath(relativePath)
-      )
-    );
-  }
-
-  toString(): string {
-    return this.path;
-  }
-
-  write(
-    data: string,
-    overwrite: boolean = false
-  ): void {
-    if (this.isDirectory)
-      throw new ReferenceError(
-        "File:write: File path points to a folder. Cannot write data to a folder."
-      );
-    else if (
-      this.exists
-      && !overwrite
-    )
-      throw new ReferenceError(
-        "File:write: File already exists. To overwrite existing data, write must be called with overwrite === true."
-      );
-    else {
-      if (!this.parentExists)
-        File.m.createDirectory(
-          this.parentPath,
-          true
-        );
-      File.m.writeString(
-        this.path,
-        data
-      );
-    }
   }
 
   get Bookmark(): typeof Bookmark {
@@ -297,6 +273,10 @@ class File {
 
   get Filepath(): typeof Filepath {
     return File.Filepath;
+  }
+
+  protected get m(): FileManager {
+    return File.m;
   }
 
   static get Bookmark(): typeof Bookmark {

@@ -35,8 +35,8 @@ abstract class UrlPart {
       instance !== null
       && instance !== undefined
       && typeof instance === "object"
-      && "nominalType" in instance
-      && instance.nominalType === "UrlPart"
+      && "_nominalType" in instance
+      && instance._nominalType === "UrlPart"
     );
   }
 
