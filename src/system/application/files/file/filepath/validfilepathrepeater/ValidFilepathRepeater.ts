@@ -7,16 +7,15 @@ class ValidFilepathRepeater extends (vps_Strings.ValidString) {
   ) {
     super(
       pathSegment ?? "",
+      1,
+      255,
+      {},
       {
-        trim: true
-      },
-      {
-        minLength: 1,
-        maxLength: 255,
         negateAllowedChars: true
       },
-      ...ValidFilepathRepeater.Char.colon
-    )
+      ...ValidFilepathRepeater.Char.colon,
+      ...ValidFilepathRepeater.Char.slash
+    );
   }
 
   static get Strings(): typeof Strings {

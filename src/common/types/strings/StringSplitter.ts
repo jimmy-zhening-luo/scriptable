@@ -1,7 +1,7 @@
 class StringSplitter {
 
   readonly string: string;
-  readonly split: string[];
+  readonly unmerged: string[];
   readonly merged: string[];
 
   constructor(
@@ -13,13 +13,13 @@ class StringSplitter {
     this.string = Array.isArray(stringOrTokens) ?
       stringOrTokens.join(separator)
       : stringOrTokens;
-    this.split = StringSplitter.split(
+    this.unmerged = StringSplitter.split(
       this.string,
       separator,
       splitOptions
     );
     this.merged = StringSplitter.merge(
-      this.split,
+      this.unmerged,
       separator,
       splitOptions,
       mergeOptions
@@ -27,7 +27,7 @@ class StringSplitter {
   }
 
   get splitLength(): number {
-    return this.split.length;
+    return this.unmerged.length;
   }
 
   get mergedLength(): number {
@@ -45,6 +45,14 @@ class StringSplitter {
 
   get didMerge(): boolean {
     return this.mergedLength < this.splitLength;
+  }
+
+  toString(): string {
+    return this.string;
+  }
+
+  toTuple(): string[] {
+    return this.merged;
   }
 
   static tokenize(
@@ -84,7 +92,7 @@ class StringSplitter {
       trimTokens?: boolean,
       ignoreEmptyTokens?: boolean
     }
-  ): typeof StringSplitter.prototype.split {
+  ): typeof StringSplitter.prototype.unmerged {
     return StringSplitter.tokenize(
       StringSplitter.aggregate(
         stringOrTokens,
