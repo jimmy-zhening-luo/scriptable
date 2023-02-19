@@ -7,8 +7,20 @@ abstract class Shortcut extends _Application {
   }
 
   handleOutput(
-    output: any
-  ): any {
+    output?:
+      | null
+      | primitive
+      | File
+      | ShortcutDictionary
+  ): primitive | ShortcutDictionary {
+    if (output === undefined || output === null)
+      output = "";
+    else if (typeof output === "string"
+      || typeof output === "number"
+      || typeof output === "boolean")
+      output = output;
+    else if (output instanceof File)
+      output = output.path;
     Script.setShortcutOutput(output);
     return output;
   }
@@ -27,11 +39,11 @@ abstract class Shortcut extends _Application {
       ]
         .join("/");
   }
-  
+
   static get Application(): typeof Application {
     return _Application;
   }
-  
+
 }
 
 module.exports = Shortcut;
