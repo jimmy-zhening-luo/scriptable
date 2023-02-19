@@ -15,9 +15,9 @@ class Api {
       | [keyof typeof Api.AuthScheme, Api.AuthToken]
     |
     httpHeaders?:
-      | [Types.stringful, Types.primitive]
-      | [Types.stringful, Types.primitive][]
-      | { [key: Types.stringful]: Types.primitive },
+      | [string, string | number | boolean]
+      | [string, string | number | boolean][]
+      | { [key: string]: string | number | boolean },
     body?: ConstructorParameters<typeof RequestBody>[0],
     timeoutSeconds?: number = 60
   ) {

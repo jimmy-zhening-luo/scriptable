@@ -1,19 +1,19 @@
 {
   "extends": "../tsconfig.json",
   "include": [
+    "../../../../common/**/*",
     "**/*",
-    "../../common/**/*"
   ],
   "references": [
     {
-      "path": "../../common/tsconfig.json"
+      "path": "../../../../common/tsconfig.json"
+    },
+    {
+      "path": "responseparts/tsconfig.json"
     },
     {
       "path": "requestparts/tsconfig.json"
     },
-    {
-      "path": "responseparts/tsconfig.json"
-    }
   ],
   "compilerOptions": {
     "rootDir": "../../../.."

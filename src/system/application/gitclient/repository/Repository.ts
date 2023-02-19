@@ -6,17 +6,17 @@ abstract class Repository {
       Repository.Command,
       Map<
         Repository.Param,
-        Types.stringful
+        string
       >
     >;
 
   constructor(
-    scheme: Types.stringful,
+    scheme: string,
     host: string,
     secretParamName: string,
     secret: string,
-    repoParamName: Types.stringful,
-    repo: Types.stringful,
+    repoParamName: string,
+    repo: string,
     commandConfigs: Repository.CommandConfigMap
   ) {
     this.callbackBase = new Repository.Callback(
@@ -45,16 +45,16 @@ abstract class Repository {
 
   private configureCommands(
     commandConfigMap: Repository.CommandConfigMap,
-    secretParamName: Types.stringful,
-    repoParamName: Types.stringful
+    secretParamName: string,
+    repoParamName: string
   ):
     Record<
-      Types.stringful,
+      string,
       Callback.ActionConfig
     > {
     const actionMap:
       Map<
-        Types.stringful,
+        string,
         Callback.ActionConfig
       > = new Map();
 
@@ -84,7 +84,7 @@ abstract class Repository {
   private mapParamIdsToKeys(
     commandConfigMap: CommandConfigMap
   ): typeof Repository.prototype.paramIdToKey {
-    const keyMap: Map<Callback.Param, Types.stringful> = new Map();
+    const keyMap: Map<Callback.Param, string> = new Map();
     for (const command in Repository.Command) {
       const config: CommandConfig = commandConfigMap[command];
       actionMap[command.toString()] = {
@@ -99,7 +99,7 @@ abstract class Repository {
 
   protected executeCommand(
     command: Repository.Command,
-    params: Partial<Record<Repository.CommandParam, Types.stringful>> = {}
+    params: Partial<Record<Repository.CommandParam, string>> = {}
   ): any {
     this.callbackBase.requestAction(
       command.toString(),
@@ -119,7 +119,7 @@ abstract class Repository {
   }
 
   checkout(
-    branch: Types.stringful
+    branch: string
   ): any {
     return this.executeCommand(
       Repository.Command.Checkout,
@@ -136,7 +136,7 @@ abstract class Repository {
   }
 
   commit(
-    message: Types.stringful
+    message: string
   ): any {
     return this.executeCommand(
       Repository.Command.Commit,
@@ -193,22 +193,22 @@ namespace Repository {
   export interface CommandConfigInterface {
     readonly path: string,
     readonly query: string,
-    readonly otherRequiredParamKeys?: Partial<Record<CommandParam, Types.stringful>>,
-    readonly optionalParamKeys?: Partial<Record<CommandParam, Types.stringful>>
+    readonly otherRequiredParamKeys?: Partial<Record<CommandParam, string>>,
+    readonly optionalParamKeys?: Partial<Record<CommandParam, string>>
   }
 
   export abstract class CommandConfig implements CommandConfigInterface {
 
     readonly path: string;
     readonly query: string;
-    readonly otherRequiredParamKeys?: Partial<Record<CommandParam, Types.stringful>>;
-    readonly optionalParamKeys?: Partial<Record<CommandParam, Types.stringful>>;
+    readonly otherRequiredParamKeys?: Partial<Record<CommandParam, string>>;
+    readonly optionalParamKeys?: Partial<Record<CommandParam, string>>;
 
     constructor(
       path: string,
       query: string,
-      otherRequiredParamKeys: Partial<Record<CommandParam, Types.stringful>> = {},
-      optionalParamKeys: Partial<Record<CommandParam, Types.stringful>> = {}
+      otherRequiredParamKeys: Partial<Record<CommandParam, string>> = {},
+      optionalParamKeys: Partial<Record<CommandParam, string>> = {}
     ) {
       this.path = path;
       this.query = query;
@@ -222,7 +222,7 @@ namespace Repository {
       path: string,
       query: string,
       otherRequiredParamKeys: {
-        [Param.Branch]: Types.stringful
+        [Param.Branch]: string
       }
     ) {
       super(
@@ -250,7 +250,7 @@ namespace Repository {
       path: string,
       query: string,
       otherRequiredParamKeys: {
-        [Param.Message]: Types.stringful
+        [Param.Message]: string
       }
     ) {
       super(

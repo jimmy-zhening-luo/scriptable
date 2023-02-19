@@ -149,13 +149,13 @@ class RequestHeaders {
   }
 
 
-  get keys(): Types.stringful[] {
+  get keys(): string[] {
     return Array.from(
       this.headers.keys()
     );
   }
 
-  get headers(): Map<Types.stringful, Types.primitive> {
+  get headers(): Map<string, string | number | boolean> {
     return new Map(
       Array.from(
         Object.entries(
@@ -167,7 +167,7 @@ class RequestHeaders {
     );
   }
 
-  get stringHeaders(): Map<Types.stringful, string> {
+  get stringHeaders(): Map<string, string> {
     return new Map(
       Array.from(
         this.headers
@@ -178,13 +178,13 @@ class RequestHeaders {
   }
 
   hasHeader(
-    headerKey: Types.stringful
+    headerKey: string
   ): boolean {
     return this.headers.has(headerKey);
   }
 
   getHeader(
-    headerKey: Types.stringful
+    headerKey: string
   ): string {
     return headerKey in this._headers ?
       this._headers[headerKey].header
@@ -192,15 +192,15 @@ class RequestHeaders {
   }
 
   getHeaderValue(
-    headerKey: Types.stringful
-  ): Types.primitive {
+    headerKey: string
+  ): string | number | boolean {
     return headerKey in this._headers ?
       this._headers[headerKey].value
       : "";
   }
 
   getHeaderValueString(
-    headerKey: Types.stringful
+    headerKey: string
   ): string {
     return headerKey in this._headers ?
       this._headers[headerKey].stringValue
@@ -208,8 +208,8 @@ class RequestHeaders {
   }
 
   setHeader(
-    headerKey: Types.stringful,
-    headerValue: Types.primitive
+    headerKey: string,
+    headerValue: string | number | boolean
   ): this {
     headerValue.toString() === "" ?
       this.deleteHeader(headerKey)
@@ -220,7 +220,7 @@ class RequestHeaders {
   }
 
   deleteHeader(
-    key: Types.stringful
+    key: string
   ): this {
     delete this._headers[
       key
@@ -230,10 +230,10 @@ class RequestHeaders {
 
   addHeaders(
     ...headers: Array<
-      | [Types.stringful, Types.primitive]
-      | [Types.stringful, Types.primitive][]
-      | Record<Types.stringful, Types.primitive>
-      | Map<Types.stringful, Types.primitive>
+      | [string, string | number | boolean]
+      | [string, string | number | boolean][]
+      | Record<string, string | number | boolean>
+      | Map<string, string | number | boolean>
     >
   ): this {
     for (const header of headers) {
@@ -247,11 +247,11 @@ class RequestHeaders {
       }
       else if (Array.isArray([header][0])
       ) {
-        for (const [key, value] of header as [string, Types.primitive][])
+        for (const [key, value] of header as [string, string | number | boolean][])
           this.setHeader(key, value);
       }
       else {
-        this.setHeader(header[0] as Types.stringful, header[1] as Types.primitive);
+        this.setHeader(header[0] as string, header[1] as string | number | boolean);
       }
     }
     this.clearEmptyParameters();
@@ -306,13 +306,13 @@ namespace RequestHeaders {
 
   export type RequestHeaderRecordProto =
     Record<
-      Types.stringful,
-      RequestHeader<Types.primitive>
+      string,
+      RequestHeader<string | number | boolean>
     >;
 
   export interface RequestHeaderRecord extends RequestHeaderRecordProto {
     Authorization?: AuthRequestHeader,
-    [key: Types.stringful]: GenericRequestHeader<Types.primitive>
+    [key: string]: GenericRequestHeader<string | number | boolean>
   }
 
 }

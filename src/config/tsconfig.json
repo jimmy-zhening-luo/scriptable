@@ -1,8 +1,8 @@
 {
-  "include": [
-    "Shortcut/**/*.json"
-  ],
   "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+  ],
   "compilerOptions": {
     "rootDir": ".."
   }

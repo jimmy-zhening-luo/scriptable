@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*"
+  ],
+  "references": [
+    {
+      "path": "rational/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../.."
+  }
+}

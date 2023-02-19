@@ -1,16 +1,24 @@
 {
   "extends": "../tsconfig.json",
   "include": [
+    "../!boot/**/*",
+    "../common/**/*",
+    "../config/**/*",
     "**/*",
-    "../!boot/**/*"
   ],
   "references": [
     {
-      "path": "application/tsconfig.json"
+      "path": "../!boot/tsconfig.json"
     },
     {
-      "path": "../!boot/tsconfig.json"
-    }
+      "path": "../common/tsconfig.json"
+    },
+    {
+      "path": "../config/tsconfig.json"
+    },
+    {
+      "path": "application/tsconfig.json"
+    },
   ],
   "compilerOptions": {
     "rootDir": ".."

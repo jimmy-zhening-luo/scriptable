@@ -1,21 +1,21 @@
 class Endpoint {
 
   private readonly _callback: Callback;
-  readonly requiredParams: Set<Types.stringful>;
-  readonly optionalParams: Set<Types.stringful>;
+  readonly requiredParams: Set<string>;
+  readonly optionalParams: Set<string>;
 
   constructor(
     callbackBase: Callback,
     endpointSubpath: ConstructorParameters<typeof Path>[0] = "",
     endpointQueryBase: ConstructorParameters<typeof Query>[0] = "",
     requiredParams:
-      | Set<Types.stringful>
-      | Types.stringful
-      | Types.stringful[] = [],
+      | Set<string>
+      | string
+      | string[] = [],
     optionalParams:
-      | Set<Types.stringful>
-      | Types.stringful
-      | Types.stringful[] = []
+      | Set<string>
+      | string
+      | string[] = []
   ) {
     this._callback = callbackBase;
     this._callback.appendBasePath(endpointSubpath);

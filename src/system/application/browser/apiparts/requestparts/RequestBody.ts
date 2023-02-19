@@ -42,15 +42,15 @@ class RequestBody {
 namespace RequestBody {
 
   export interface RequestBodyRecord {
-    [key: Types.stringful]: RequestBodyValue
+    [key: string]: RequestBodyValue
   }
 
   export interface RequestBodyStringRecord {
-    [key: Types.stringful]: RequestBodyStringValue
+    [key: string]: RequestBodyStringValue
   }
 
   export type RequestBodyValue =
-    | Types.primitive
+    | string | number | boolean
     | RequestBodyRecord
     | RequestBodyValue[];
 

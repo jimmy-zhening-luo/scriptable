@@ -1,7 +1,7 @@
 class Filepath {
 
   readonly raw: string;
-  readonly tree: Types.stringful[];
+  readonly tree: string[];
 
   constructor(
     path: Filepath.ConstructorInput = "",

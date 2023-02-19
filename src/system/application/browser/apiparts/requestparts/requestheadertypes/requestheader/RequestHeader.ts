@@ -1,10 +1,10 @@
-abstract class RequestHeader<T extends Types.primitive> {
+abstract class RequestHeader<T extends string | number | boolean> {
 
-  key: Types.stringful;
+  key: string;
   value: T;
 
   constructor(
-    key: Types.stringful,
+    key: string,
     value: T
   ) {
     this.key = key;
@@ -12,7 +12,7 @@ abstract class RequestHeader<T extends Types.primitive> {
   }
 
   setKeyValue(
-    key: Types.stringful,
+    key: string,
     value: T
   ): this {
     this.key = key;
@@ -20,18 +20,18 @@ abstract class RequestHeader<T extends Types.primitive> {
     return this;
   }
 
-  get header(): Types.stringful {
+  get header(): string {
     return this.tuple.join(": ");
   }
 
-  get tuple(): [Types.stringful, T] {
+  get tuple(): [string, T] {
     return [
       this.key,
       this.value
     ];
   }
 
-  get stringTuple(): [Types.stringful, string] {
+  get stringTuple(): [string, string] {
     return [
       this.key,
       this.stringValue

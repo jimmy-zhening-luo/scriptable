@@ -1,24 +1,24 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*",
-    "../common/**/*",
+    "../../../common/**/*",
     "../files/**/*",
-    "../browser/**/*"
+    "../browser/**/*",
+    "**/*",
   ],
   "references": [
     {
-      "path": "repository/tsconfig.json"
-    },
-    {
-      "path": "../common/tsconfig.json"
+      "path": "../../../common/tsconfig.json"
     },
     {
       "path": "../files/tsconfig.json"
     },
     {
       "path": "../browser/tsconfig.json"
-    }
+    },
+    {
+      "path": "repository/tsconfig.json"
+    },
   ],
   "compilerOptions": {
     "rootDir": "../../.."

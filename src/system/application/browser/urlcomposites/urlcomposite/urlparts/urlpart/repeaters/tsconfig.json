@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "../../../../../../../../common/**/*",
+    "**/*",
+  ],
+  "references": [
+    {
+      "path": "../../../../../../../../common/tsconfig.json"
+    },
+    {
+      "path": "urlpartrepeater/tsconfig.json"
+    },
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../../../../.."
+  }
+}

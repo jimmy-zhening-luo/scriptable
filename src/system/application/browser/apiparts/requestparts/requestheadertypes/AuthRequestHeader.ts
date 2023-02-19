@@ -110,20 +110,8 @@ class AuthRequestHeader extends a_RequestHeader<string> {
       token === ""
     )
       this.value = ""
-
-  setAuthSchemeAndToken(
-    authOrAuthScheme: ConstructorParameters<typeof AuthRequestHeader>[0],
-    token:
-  ): this {
-    if (
-      this.value.split(" ").length >= 2
-      && this.value.split(" ")[0] in AuthRequestHeader.AuthScheme
-    ) {
-      const valueSplitBySpace: string[] = this.value.split(" ");
-      this._scheme = AuthRequestHeader.AuthScheme[valueSplitBySpace.shift() as keyof typeof AuthRequestHeader.AuthScheme];
-      this._token = valueSplitBySpace.join(" ");
-    }
   }
+
 
   static get RequestHeader(): typeof RequestHeader {
     return a_RequestHeader;

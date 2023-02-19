@@ -4,7 +4,7 @@ class Callback {
 
   constructor(
     schemeOrCallback:
-      | Types.stringful
+      | string
       | Scheme
       | Callback,
     host: ConstructorParameters<typeof Host>[0] = "",
@@ -27,11 +27,11 @@ class Callback {
       );
   }
 
-  get baseUrl(): Types.stringful {
+  get baseUrl(): string {
     return this._baseUrl.toString();
   }
 
-  get scheme(): Types.stringful {
+  get scheme(): string {
     return this._baseUrl.scheme;
   }
 

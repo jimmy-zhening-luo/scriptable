@@ -233,7 +233,7 @@ class Url {
         value
       );
     });
-    var response: Record<string, Types.primitive | null> = {};
+    var response: Record<string, string | number | boolean | null> = {};
     callbackUrl
       .open()
       .then((_response) => {

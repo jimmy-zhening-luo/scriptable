@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*"
+  ],
+  "references": [
+    {
+      "path": "bounds/tsconfig.json"
+    },
+    {
+      "path": "cardinality/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../../../.."
+  }
+}
