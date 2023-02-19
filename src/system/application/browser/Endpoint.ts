@@ -35,7 +35,7 @@ class Endpoint {
     const finalCallbackUrl: Url = new this.Url(
       this._callback
     )
-      .appendPath(subpath)
+      .append(subpath)
       .addParam(params);
 
     if (Array.from(

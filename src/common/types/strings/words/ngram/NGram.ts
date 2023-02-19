@@ -34,7 +34,7 @@ class NGram extends _Word {
   }
 
   protected static get PositiveInteger(): typeof PositiveInteger {
-    return importModule("./system/application/common/primitives/numbers/PositiveInteger");
+    return importModule("./common/types/numbers/PositiveInteger");
   }
 
   static get Word(): typeof Word {

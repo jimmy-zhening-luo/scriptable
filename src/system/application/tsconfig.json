@@ -22,9 +22,6 @@
     {
       "path": "browser/tsconfig.json"
     },
-    {
-      "utilities": "utilities/tsconfig.json"
-    },
   ],
   "compilerOptions": {
     "rootDir": "../.."

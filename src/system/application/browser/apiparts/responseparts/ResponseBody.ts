@@ -20,7 +20,6 @@ class ResponseBody {
     return response ?? "";
   }
 
-
   toObject(): Record<string, any> {
     try {
       return typeof this.response === "string" ?

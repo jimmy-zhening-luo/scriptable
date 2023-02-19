@@ -9,7 +9,7 @@ class Repositories {
   }
 
   static get Common(): typeof Common {
-    return importModule("./system/application/common/Common");
+    return importModule("./common/Common");
   }
 
 }

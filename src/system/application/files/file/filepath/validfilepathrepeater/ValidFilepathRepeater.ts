@@ -1,4 +1,4 @@
-const vps_Strings: typeof Strings = importModule("./system/application/common/primitives/strings/Strings");
+const vps_Strings: typeof Strings = importModule("./common/types/strings/Strings");
 
 class ValidFilepathRepeater extends (vps_Strings.ValidString) {
 

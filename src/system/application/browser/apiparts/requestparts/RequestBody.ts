@@ -38,7 +38,6 @@ class RequestBody {
 
 }
 
-
 namespace RequestBody {
 
   export interface RequestBodyRecord {
@@ -50,7 +49,7 @@ namespace RequestBody {
   }
 
   export type RequestBodyValue =
-    | string | number | boolean
+    | primitive
     | RequestBodyRecord
     | RequestBodyValue[];
 

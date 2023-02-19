@@ -1,15 +1,18 @@
 class RequestHeaders {
 
-  private readonly _headers: RequestHeaders.RequestHeaderRecord;
+  private readonly _headers: {
+    Authorization?: AuthRequestHeader,
+    [key: string]: GenericRequestHeader<primitive>
+  }
 
   constructor(
-    authOrAuthScheme?:
+    authOrHeader?:
       | ConstructorParameters<typeof AuthRequestHeader>[0]
-      | Parameters<RequestHeaders["addHeaders"]>[0],
+      | Parameters<RequestHeaders["addHeader"]>[0],
     authToken?:
       | ConstructorParameters<typeof AuthRequestHeader>[1]
-      | Parameters<RequestHeaders["addHeaders"]>[0],
-    ...headers: Parameters<RequestHeaders["addHeaders"]>
+      | Parameters<RequestHeaders["addHeader"]>[0],
+    ...headers: Parameters<RequestHeaders["addHeader"]>
   ) {
     this._headers = {};
 
@@ -32,14 +35,14 @@ class RequestHeaders {
           authType,
           authToken
         );
-        this.addHeaders(
+        this.addHeader(
           ...headers
         );
       }
       else {
         const authString: string = authOrAuthScheme;
         this.auth = authString;
-        this.addHeaders(
+        this.addHeader(
           authToken,
           ...headers
         );
@@ -52,16 +55,16 @@ class RequestHeaders {
         || authToken === null
         || typeof authToken === "string"
       ) {
-        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthScheme;
-        this.addHeaders(
+        const header0: Parameters<RequestHeaders["addHeader"]>[0] = authOrAuthScheme;
+        this.addHeader(
           header0,
           ...headers
         );
       }
       else {
-        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthScheme;
-        const header1: Parameters<RequestHeaders["addHeaders"]>[0] = authToken;
-        this.addHeaders(header0, header1, ...headers);
+        const header0: Parameters<RequestHeaders["addHeader"]>[0] = authOrAuthScheme;
+        const header1: Parameters<RequestHeaders["addHeader"]>[0] = authToken;
+        this.addHeader(header0, header1, ...headers);
       }
     }
 
@@ -72,7 +75,7 @@ class RequestHeaders {
           new this.AuthRequestHeader()
         ).every(
           key => key in authOrAuthScheme
-      )
+        )
       || Object.getPrototypeOf(authOrAuthScheme) === this.AuthRequestHeader.prototype
     ) {
       this.auth = authOrAuthScheme as AuthRequestHeader;
@@ -83,16 +86,16 @@ class RequestHeaders {
         || authToken === null
         || typeof authToken === "string"
       ) {
-        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthScheme;
-        this.addHeaders(
+        const header0: Parameters<RequestHeaders["addHeader"]>[0] = authOrAuthScheme;
+        this.addHeader(
           header0,
           ...headers
         );
       }
       else {
-        const header0: Parameters<RequestHeaders["addHeaders"]>[0] = authOrAuthScheme;
-        const header1: Parameters<RequestHeaders["addHeaders"]>[0] = authToken;
-        this.addHeaders(
+        const header0: Parameters<RequestHeaders["addHeader"]>[0] = authOrAuthScheme;
+        const header1: Parameters<RequestHeaders["addHeader"]>[0] = authToken;
+        this.addHeader(
           header0,
           header1,
           ...headers
@@ -155,7 +158,7 @@ class RequestHeaders {
     );
   }
 
-  get headers(): Map<string, string | number | boolean> {
+  get headers(): Map<string, primitive> {
     return new Map(
       Array.from(
         Object.entries(
@@ -193,7 +196,7 @@ class RequestHeaders {
 
   getHeaderValue(
     headerKey: string
-  ): string | number | boolean {
+  ): primitive {
     return headerKey in this._headers ?
       this._headers[headerKey].value
       : "";
@@ -209,7 +212,7 @@ class RequestHeaders {
 
   setHeader(
     headerKey: string,
-    headerValue: string | number | boolean
+    headerValue: primitive
   ): this {
     headerValue.toString() === "" ?
       this.deleteHeader(headerKey)
@@ -228,13 +231,13 @@ class RequestHeaders {
     return this;
   }
 
-  addHeaders(
-    ...headers: Array<
-      | [string, string | number | boolean]
-      | [string, string | number | boolean][]
-      | Record<string, string | number | boolean>
-      | Map<string, string | number | boolean>
-    >
+  addHeader(
+    ...headers: (
+      | [string, primitive]
+      | [string, primitive][]
+      | Record<string, primitive>
+      | Map<string, primitive>
+    )[]
   ): this {
     for (const header of headers) {
       if (header instanceof Map) {
@@ -247,11 +250,11 @@ class RequestHeaders {
       }
       else if (Array.isArray([header][0])
       ) {
-        for (const [key, value] of header as [string, string | number | boolean][])
+        for (const [key, value] of header as [string, primitive][])
           this.setHeader(key, value);
       }
       else {
-        this.setHeader(header[0] as string, header[1] as string | number | boolean);
+        this.setHeader(header[0] as string, header[1] as primitive);
       }
     }
     this.clearEmptyParameters();
@@ -301,21 +304,5 @@ class RequestHeaders {
   }
 
 }
-
-namespace RequestHeaders {
-
-  export type RequestHeaderRecordProto =
-    Record<
-      string,
-      RequestHeader<string | number | boolean>
-    >;
-
-  export interface RequestHeaderRecord extends RequestHeaderRecordProto {
-    Authorization?: AuthRequestHeader,
-    [key: string]: GenericRequestHeader<string | number | boolean>
-  }
-
-}
-
 
 module.exports = RequestHeaders;

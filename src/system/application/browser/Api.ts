@@ -15,9 +15,9 @@ class Api {
       | [keyof typeof Api.AuthScheme, Api.AuthToken]
     |
     httpHeaders?:
-      | [string, string | number | boolean]
-      | [string, string | number | boolean][]
-      | { [key: string]: string | number | boolean },
+      | [string, primitive]
+      | [string, primitive][]
+      | { [key: string]: primitive },
     body?: ConstructorParameters<typeof RequestBody>[0],
     timeoutSeconds?: number = 60
   ) {
@@ -328,7 +328,7 @@ class Api {
   }
 
   static get Common(): typeof Common {
-    return importModule("./system/application/common/Common");
+    return importModule("./common/Common");
   }
 
 }

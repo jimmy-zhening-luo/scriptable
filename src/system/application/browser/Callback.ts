@@ -62,9 +62,9 @@ class Callback {
   }
 
   appendBasePath(
-    ...path: Parameters<Url["appendPath"]>
+    ...path: Parameters<Url["append"]>
   ): this {
-    this._baseUrl.appendPath(...path);
+    this._baseUrl.append(...path);
     return this;
   }
 
@@ -131,7 +131,7 @@ class Callback {
     overrideCommonParams: boolean = true
   ): ReturnType<Url["xCallback"]> {
     const cUrl: Url = new Callback.Url(this._baseUrl);
-    cUrl.appendPath(path);
+    cUrl.append(path);
     if (attachCommonParams) {
       if (overrideCommonParams)
         cUrl.addParam(query);

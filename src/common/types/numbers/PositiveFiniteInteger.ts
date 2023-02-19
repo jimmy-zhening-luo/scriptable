@@ -1,25 +1,11 @@
-const pf_Integer: typeof Integer = importModule("integer/Integer");
+const p_FiniteInteger: typeof FiniteInteger = importModule("FiniteInteger");
 
-class PositiveFiniteInteger extends pf_Integer {
+class PositiveFiniteInteger extends p_FiniteInteger {
 
-  constructor(value: number | Rational) {
-    super(
-      value,
-      new PositiveFiniteInteger.Positive(),
-      new PositiveFiniteInteger.Finite()
-    );
-  }
+  override cardinality: Cardinality = new PositiveFiniteInteger.Cardinality.Positive();
 
-  static get Integer(): typeof Integer {
-    return pf_Integer;
-  }
-
-  static get Positive(): typeof Positive {
-    return PositiveFiniteInteger.Integer.Cardinality.Positive;
-  }
-
-  static get Finite(): typeof Finite {
-    return PositiveFiniteInteger.Integer.Bounds.Finite;
+  static get FiniteInteger(): typeof FiniteInteger {
+    return p_FiniteInteger;
   }
 
 }

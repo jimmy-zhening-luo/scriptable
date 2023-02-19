@@ -2,14 +2,12 @@ const n_Cardinality: typeof Cardinality = importModule("cardinality/Cardinality"
 
 class Negative extends n_Cardinality {
 
-  override isCardinal(
-    value: undefined | null | number
-  ): boolean {
+  override isCardinal(value: number): boolean {
     return super.isCardinal(value)
       && (
-        value as number === 0
-        || value as number === -0
-        || value as number < 0
+        value === 0
+        || value === -0
+        || value < 0
       );
   }
 

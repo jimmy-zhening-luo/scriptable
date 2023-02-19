@@ -36,7 +36,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
   }
 
   protected static get PositiveInteger(): typeof PositiveInteger {
-    return importModule("./system/application/common/primitives/numbers/PositiveInteger");
+    return importModule("./common/types/numbers/PositiveInteger");
   }
 
   static get RepeatCharString(): typeof RepeatCharString {

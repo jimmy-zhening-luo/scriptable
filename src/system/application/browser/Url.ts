@@ -130,10 +130,10 @@ class Url {
     this._path = new Url.Path(path);
   }
 
-  appendPath(
-    ...path: Parameters<Path["appendPath"]>
+  append(
+    ...path: Parameters<Path["append"]>
   ): this {
-    this.path = this._path.appendPath(...path);
+    this.path = this._path.append(...path);
     return this;
   }
 
@@ -233,7 +233,7 @@ class Url {
         value
       );
     });
-    var response: Record<string, string | number | boolean | null> = {};
+    var response: Record<string, primitive | null> = {};
     callbackUrl
       .open()
       .then((_response) => {
@@ -335,10 +335,6 @@ class Url {
       ?? String();
   }
 
-  get UrlParts(): typeof UrlParts {
-    return Url.UrlParts;
-  }
-
   get Scheme(): typeof Scheme {
     return Url.Scheme;
   }
@@ -363,12 +359,16 @@ class Url {
     return Url.Fragment;
   }
 
-  protected get SchemeHostPortPathQueryFragment(): typeof SchemeHostPortPathQueryFragment {
-    return Url.SchemeHostPortPathQueryFragment;
+  private get SchemeHostPortPathQueryFragment(): typeof SchemeHostPortPathQueryFragment {
+    return Url.UrlComposites.SchemeHostPortPathQueryFragment;
   }
 
-  static get UrlParts(): typeof UrlParts {
-    return importModule("urlcomposites/urlparts/UrlParts");
+  private static get UrlComposites(): typeof UrlComposites {
+    return importModule("urlcomposites/UrlComposites");
+  }
+
+  private static get UrlParts(): typeof UrlParts {
+    return Url.UrlComposites.UrlComposite.UrlParts;
   }
 
   static get Scheme(): typeof Scheme {
@@ -393,10 +393,6 @@ class Url {
 
   static get Fragment(): typeof Fragment {
     return Url.UrlParts.Fragment;
-  }
-
-  protected static get SchemeHostPortPathQueryFragment(): typeof SchemeHostPortPathQueryFragment {
-    return importModule("urlcomposites/SchemeHostPortPathQueryFragment");
   }
 
 }
