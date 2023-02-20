@@ -70,6 +70,8 @@ namespace _Distribution_Tool {
   }
 }
 
+const blobStoreContainerUrlTemplate: string = "https://<your-blob-store>.blob.core.windows.net/<your-container>";
+
 const azCopyScriptVariables: _Distribution_Tool.AzCopyScriptVariables = {
 
   executablePath:
@@ -81,7 +83,11 @@ const azCopyScriptVariables: _Distribution_Tool.AzCopyScriptVariables = {
 
   blobStoreContainerUrl:
     process.env.URL_AZURE_BLOB_STORE_CONTAINER
-    || "https://<your-blob-store>.blob.core.windows.net/<your-container>",
+    || blobStoreContainerUrlTemplate,
 
 }
-_Distribution_Tool.distribute(azCopyScriptVariables);
+
+if (azCopyScriptVariables.blobStoreContainerUrl === blobStoreContainerUrlTemplate)
+  console.warn("npm run distribute: Canceled distribution because no environment variable was set for URL_AZURE_BLOB_STORE_CONTAINER. Check your deployment environment variables or your .env file.");
+else
+  _Distribution_Tool.distribute(azCopyScriptVariables);
