@@ -260,25 +260,25 @@ class File {
   static join(
     ...paths: Parameters<typeof Filepath.join>
   ): ReturnType<typeof Filepath.join> {
-    return Filepath.join(...paths);
+    return File.Filepath.join(...paths);
   }
 
   static mutate(
     ...paths: Parameters<typeof Filepath.mutate>
   ): ReturnType<typeof Filepath.mutate> {
-    return Filepath.mutate(...paths);
+    return File.Filepath.mutate(...paths);
   }
 
   static toString(
     ...paths: Parameters<typeof Filepath.toString>
   ): ReturnType<typeof Filepath.toString> {
-    return Filepath.toString(...paths);
+    return File.Filepath.toString(...paths);
   }
 
   static toTree(
     ...paths: Parameters<typeof Filepath.toTree>
   ): ReturnType<typeof Filepath.toTree> {
-    return Filepath.toTree(...paths);
+    return File.Filepath.toTree(...paths);
   }
 
   static [Symbol.hasInstance](instance: any): boolean {
