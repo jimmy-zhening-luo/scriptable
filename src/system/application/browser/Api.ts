@@ -24,7 +24,7 @@ class Api {
   ) {
     this._url = new this.Url(url);
     this._method = typeof method === "string" ?
-      Api.Method[method as keyof typeof Api.Method] : method;
+      Api.Method[method as keyof typeof Api.Method] ?? Api.Method.GET : method;
     this._requestHeaders = new this.RequestHeaders(
       authScheme,
       authToken,
@@ -138,7 +138,7 @@ class Api {
 
   set method(method: keyof typeof Api.Method | Api.Method) {
 this._method = typeof method === "string" ?
-Api.Method[method as keyof typeof Api.Method] : method;
+Api.Method[method as keyof typeof Api.Method] ?? Api.Method.GET : method;
   }
 
   get hasAuth(): typeof RequestHeaders.prototype.hasAuth {
@@ -293,7 +293,7 @@ Api.Method[method as keyof typeof Api.Method] : method;
     const req: Request = new Request(this.url);
     req.headers = this.headersStringObject;
     req.body = this.body;
-    req.method = Api.Method[this.method];
+    req.method = Api.Method[this.method as keyof typeof Api.Method];
     req.timeoutInterval = this.timeout;
     req.loadString().then((_response) => {
       response = _response ?? "";

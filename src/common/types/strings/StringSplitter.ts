@@ -130,7 +130,7 @@ class StringSplitter {
       : limit === Infinity ?
         tokens
         : mergeTo === StringSplitter.Direction.Left
-          || StringSplitter.Direction[mergeTo] === StringSplitter.Direction.Left ?
+          || StringSplitter.Direction[mergeTo as keyof typeof StringSplitter.Direction] === StringSplitter.Direction.Left ?
           [
             tokens.slice(0, limit - 1).join(separator),
             ...tokens.slice(limit - 1)
