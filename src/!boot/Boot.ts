@@ -4,18 +4,20 @@ class Installer {
 
   private static clean(): void {
     const FM: FileManager = this.FM;
+    const specialPrefix: string = Installer.specialPrefix;
+    const runtimeRootPath: string = this.runtimeRootPath;
     FM
       .listContents(this.runtimeRootPath)
       .filter(child =>
         Installer.doProcess(
-          "clean",
+          specialPrefix,
           child
         )
-    ).forEach(child => {
+      ).forEach(child => {
         console.log("Boot: Installer: Cleaning: " + child);
         FM.remove(
           FM.joinPath(
-            this.runtimeRootPath,
+            runtimeRootPath,
             child
           )
         );
@@ -27,15 +29,17 @@ class Installer {
   ): void {
     this.clean();
     const FM: FileManager = this.FM;
+    const specialPrefix: string = Installer.specialPrefix;
     const builtSubpath: string = FM.joinPath(
       this.builtPath,
       subpath
     );
+    const runtimeRootPath: string = this.runtimeRootPath;
     FM
       .listContents(builtSubpath)
       .filter(child =>
         Installer.doProcess(
-          "install",
+          specialPrefix,
           child
         )
       ).forEach(child => {
@@ -45,7 +49,7 @@ class Installer {
         );
         console.log("Boot: Installer: Installing from: " + builtChild);
         const runtimeChild: string = FM.joinPath(
-          this.runtimeRootPath,
+          runtimeRootPath,
           child
         );
         console.log("Boot: Installer: Installing to: " + runtimeChild);
@@ -79,6 +83,10 @@ class Installer {
     return this.readConfig().boot.fileBookmarks.repo;
   }
 
+  private static get specialPrefix(): string {
+    return this.readConfig().boot.specialPrefix;
+  }
+
   static get runtimeRootPath(): string {
     return this.FM.bookmarkedPath(this.runtimeRootBookmarkName);
   }
@@ -91,82 +99,16 @@ class Installer {
     return this.FM.bookmarkedPath(this.repoSourceBookmarkName);
   }
 
-  private static hydrateBootPhaseSettings(
-    phase: keyof ScriptableBootPhaseRecords
-  ): BootPhaseSettings {
-    return this
-      .readConfig()
-      .boot
-      .phases[phase];
-  }
-
-  private static doProcess(phase: keyof ScriptableBootPhaseRecords, filename: string): boolean {
-
-    const fileCriteria: BootFileCriteria = this
-      .hydrateBootPhaseSettings(phase)
-      .files;
-    const inclusionCriteria: null | BootFilenameMatchCriteria = fileCriteria?.include ?? null;
-    const exclusionCriteria: null | BootFilenameMatchCriteria = fileCriteria?.exclude ?? null;
-
-    const useAllowList: boolean =
-      inclusionCriteria !== null
-      && (
-        fileCriteria.include?.prefix !== undefined
-        && fileCriteria.include.prefix.length > 0
-        || fileCriteria.include?.suffix !== undefined
-        && fileCriteria.include.suffix.length > 0
-        || fileCriteria.include?.directories === true
-      );
-
-    const defaultDecision: boolean = useAllowList ?
-      false
-      : true;
-    let doProcess: boolean = defaultDecision;
-
-    if (inclusionCriteria !== null) {
-      if (inclusionCriteria.directories === true) {
-        if (this.FM.isDirectory(filename)) {
-          doProcess = true;
-        }
-      }
-      if (inclusionCriteria.prefix !== undefined) {
-        if (inclusionCriteria.prefix.length > 0) {
-          if (inclusionCriteria.prefix.some(prefix => filename.startsWith(prefix))) {
-            doProcess = true;
-          }
-        }
-      }
-      if (inclusionCriteria.suffix !== undefined) {
-        if (inclusionCriteria.suffix.length > 0) {
-          if (inclusionCriteria.suffix.some(suffix => filename.endsWith(suffix))) {
-            doProcess = true;
-          }
-        }
-      }
+  private static doProcess(
+    specialPrefix: string,
+    filename: string
+  ): boolean {
+    if (filename.startsWith(specialPrefix)) {
+      console.log("Boot: Installer: Skipping: " + filename);
+      return false;
     }
-
-    if (exclusionCriteria !== null) {
-      if (exclusionCriteria.directories === true) {
-        if (this.FM.isDirectory(filename)) {
-          doProcess = false;
-        }
-      }
-      if (exclusionCriteria.prefix !== undefined) {
-        if (exclusionCriteria.prefix.length > 0) {
-          if (exclusionCriteria.prefix.some(prefix => filename.startsWith(prefix))) {
-            doProcess = false;
-          }
-        }
-      }
-      if (exclusionCriteria.suffix !== undefined) {
-        if (exclusionCriteria.suffix.length > 0) {
-          if (exclusionCriteria.suffix.some(suffix => filename.endsWith(suffix))) {
-            doProcess = false;
-          }
-        }
-      }
-    }
-    return doProcess;
+    else
+      return true;
   }
 
   private static get FM(): FileManager {
