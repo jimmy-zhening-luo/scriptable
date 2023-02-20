@@ -119,7 +119,7 @@ class ValidString {
   ): string {
     const isLeading: boolean =
       edge === ValidString.Edge.Leading
-      || edge === ValidString.Edge.Leading.toString();
+      || ValidString.Edge[edge] === ValidString.Edge.Leading;
     type LookPrototypeFunction =
       | "startsWith"
       | "endsWith";

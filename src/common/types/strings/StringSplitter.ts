@@ -127,16 +127,18 @@ class StringSplitter {
     );
     return tokens.length === 0 ?
       []
-      : mergeTo === StringSplitter.Direction.Left
-        || mergeTo === StringSplitter.Direction.Left.toString() ?
-        [
-          tokens.slice(0, limit - 1).join(separator),
-          ...tokens.slice(limit - 1)
-        ]
-        : [
-          ...tokens.slice(0, limit - 1),
-          tokens.slice(limit - 1).join(separator)
-        ];
+      : limit === Infinity ?
+        tokens
+        : mergeTo === StringSplitter.Direction.Left
+          || StringSplitter.Direction[mergeTo] === StringSplitter.Direction.Left ?
+          [
+            tokens.slice(0, limit - 1).join(separator),
+            ...tokens.slice(limit - 1)
+          ]
+          : [
+            ...tokens.slice(0, limit - 1),
+            tokens.slice(limit - 1).join(separator)
+          ];
   }
 
   static mergeLeft(
