@@ -20,7 +20,6 @@ class Installer {
           child
         )
       ).forEach(child => {
-        console.log("Boot: Installer: Cleaning: " + child);
         FM.remove(
           FM.joinPath(
             runtimeRootPath,
@@ -53,7 +52,6 @@ class Installer {
           builtSubpath,
           child
         );
-        console.log("Boot: Installer: Installing from: " + builtChild);
         const runtimeChild: string = FM.joinPath(
           runtimeRootPath,
           child
