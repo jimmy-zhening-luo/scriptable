@@ -29,5 +29,4 @@ if (
   && distFileCounter === 0
 )
   console.log(`npm run pack: After copying ${builtFileCounter} built files to dist, no dist files were found in './dist'`);
-else if (distFileCounter !== builtFileCounter)
-  console.log(`npm run pack: After copying ${builtFileCounter} built files to dist, there should be the same number of dist as built files. However, after copying, ${distFileCounter} files were found in './dist', compared to the ${builtFileCounter} files found in './built'`);
+  
