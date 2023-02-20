@@ -11,7 +11,8 @@ class Installer {
           "clean",
           child
         )
-      ).forEach(child => {
+    ).forEach(child => {
+        console.log("Boot: Installer: Cleaning: " + child);
         FM.remove(
           FM.joinPath(
             this.runtimeRootPath,
@@ -38,16 +39,18 @@ class Installer {
           child
         )
       ).forEach(child => {
-        const repoChild: string = FM.joinPath(
+        const builtChild: string = FM.joinPath(
           builtSubpath,
           child
         );
+        console.log("Boot: Installer: Installing from: " + builtChild);
         const runtimeChild: string = FM.joinPath(
           this.runtimeRootPath,
           child
         );
+        console.log("Boot: Installer: Installing to: " + runtimeChild);
         FM.copy(
-          repoChild,
+          builtChild,
           runtimeChild
         );
       });
@@ -55,7 +58,9 @@ class Installer {
 
   private static readConfig(): BootProto {
     const FM: FileManager = this.FM;
+    console.warn("Boot.ts: See User Configured Bookmark: CONST BOOT_CONFIG_BOOKMARK_NAME: " + BOOT_CONFIG_BOOKMARK_NAME);
     const configFilepath: string = FM.bookmarkedPath(BOOT_CONFIG_BOOKMARK_NAME);
+    console.warn("Boot.ts: See resolved path of " + BOOT_CONFIG_BOOKMARK_NAME + ": " + configFilepath);
     const config: BootProto = JSON.parse(
       FM.readString(configFilepath)
     );
