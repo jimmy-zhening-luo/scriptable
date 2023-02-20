@@ -1,7 +1,22 @@
-import * as shell from "shelljs";
+import { exec } from 'node:child_process';
 
-const CLOUD_BUILD_PATH: string = "C:\\Users\\zluo\\iCloudDrive\\CloudBuilds\\Scriptable\\main\\dist";
+import dotenv from 'dotenv';
+dotenv.config();
 
-shell.rm("-rf", CLOUD_BUILD_PATH);
-shell.mkdir("-p", CLOUD_BUILD_PATH);
-shell.cp("-R", "dist/*", CLOUD_BUILD_PATH);
+if (!process.env.BLOB_STORAGE_URL) {
+  console.error('BLOB_STORAGE_URL is not set');
+}
+else {
+  exec(`azcopy copy 'dist' '${process.env.BLOB_STORAGE_URL}' --recursive`, (error, stdout, stderr) => {
+    if (error) {
+      console.log(`error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.log(`stderr: ${stderr}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+  });
+
+}
