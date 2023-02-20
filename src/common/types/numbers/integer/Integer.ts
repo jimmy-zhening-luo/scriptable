@@ -4,7 +4,7 @@ class Integer extends _Rational {
 
   protected override qualifies(value: number): boolean {
     return super.qualifies(value)
-      && Rational.isInteger(value);
+      && Integer.Rational.isInteger(value);
   }
 
   static get Rational(): typeof Rational {

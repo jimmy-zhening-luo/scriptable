@@ -113,13 +113,11 @@ class ValidString {
     string: ConstructorParameters<typeof ValidString>[0],
     wordsToTrim: string[] = [],
     edge:
-      | ValidString.Edge
-      | keyof typeof ValidString.Edge = ValidString.Edge.Trailing,
+      | ValidString.Edge,
     trimExcept: boolean = false
   ): string {
     const isLeading: boolean =
-      edge === ValidString.Edge.Leading
-      || edge === ValidString.Edge.Leading.toString();
+      edge === ValidString.Edge.Leading;
     type LookPrototypeFunction =
       | "startsWith"
       | "endsWith";

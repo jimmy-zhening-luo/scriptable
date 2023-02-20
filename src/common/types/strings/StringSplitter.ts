@@ -116,7 +116,7 @@ class StringSplitter {
       mergeTo = StringSplitter.Direction.Right
     }: {
       limit?: number,
-      mergeTo?: StringSplitter.Direction | keyof typeof StringSplitter.Direction
+      mergeTo?: StringSplitter.Direction
     }
   ): typeof StringSplitter.prototype.merged {
     limit = new StringSplitter.PositiveInteger(limit).value ?? Infinity;
@@ -127,16 +127,17 @@ class StringSplitter {
     );
     return tokens.length === 0 ?
       []
-      : mergeTo === StringSplitter.Direction.Left
-        || mergeTo === StringSplitter.Direction.Left.toString() ?
-        [
-          tokens.slice(0, limit - 1).join(separator),
-          ...tokens.slice(limit - 1)
-        ]
-        : [
-          ...tokens.slice(0, limit - 1),
-          tokens.slice(limit - 1).join(separator)
-        ];
+      : limit === Infinity ?
+        tokens
+        : mergeTo === StringSplitter.Direction.Left ?
+          [
+            tokens.slice(0, limit - 1).join(separator),
+            ...tokens.slice(limit - 1)
+          ]
+          : [
+            ...tokens.slice(0, limit - 1),
+            tokens.slice(limit - 1).join(separator)
+          ];
   }
 
   static mergeLeft(
@@ -185,7 +186,7 @@ class StringSplitter {
 
 namespace StringSplitter {
 
-  export const enum Direction {
+  export enum Direction {
     Left,
     Right
   }
