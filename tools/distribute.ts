@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-namespace _Tools_Publish {
+namespace _Distribution_Tool {
 
   export type AzCopyScriptVariables = {
     executablePath: string;
@@ -11,7 +11,7 @@ namespace _Tools_Publish {
     blobStoreContainerUrl: string;
   }
 
-  export function publish(azCopyScriptVariables: AzCopyScriptVariables) {
+  export function distribute(azCopyScriptVariables: AzCopyScriptVariables) {
 
     type AzCopyScripts = {
       clean: string;
@@ -70,7 +70,7 @@ namespace _Tools_Publish {
   }
 }
 
-const azCopyScriptVariables: _Tools_Publish.AzCopyScriptVariables = {
+const azCopyScriptVariables: _Distribution_Tool.AzCopyScriptVariables = {
 
   executablePath:
     process.env.PATH_AZCOPY_EXECUTABLE
@@ -84,4 +84,4 @@ const azCopyScriptVariables: _Tools_Publish.AzCopyScriptVariables = {
     || "https://<your-blob-store>.blob.core.windows.net/<your-container>",
 
 }
-_Tools_Publish.publish(azCopyScriptVariables);
+_Distribution_Tool.distribute(azCopyScriptVariables);
