@@ -6,19 +6,20 @@
   "scripts": {
     "clean:dir:built": "rimraf built",
     "clean:dir:dist": "rimraf dist",
-    "clean": "npm run clean:dir:built && npm run clean:dir:dist",
+    "clean": "npm-run-all clean:dir:built clean:dir:dist",
     "tsc": "tsc --build",
     "build": "npm run tsc",
     "postbuild": "npm run pack",
     "prepack": "npm run clean:dir:dist",
     "pack": "ts-node tools/pack",
-    "prebuild:clean": "npm run clean",
-    "build:clean": "npm run build",
-    "prepublish": "npm run build:clean",
-    "publish": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./tools/publish.ps1",
+    "build:clean": "npm-run-all clean build",
+    "prepublish": "npm run build",
+    "publish": "pwsh -NoProfile -File ./tools/publish.ps1",
+    "publish:clean": "npm-run-all clean publish",
     "b": "npm run build",
     "cb": "npm run build:clean",
     "p": "npm run publish",
+    "cp": "npm run publish:clean",
     "test": ""
   },
   "repository": {
@@ -38,6 +39,8 @@
   "devDependencies": {
     "@types/node": "^18.14.0",
     "@types/shelljs": "^0.8.11",
+    "npm-run-all": "^4.1.5",
+    "pwsh": "^0.3.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
