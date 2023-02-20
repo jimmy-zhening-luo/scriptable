@@ -26,12 +26,12 @@ class Installer {
   ): void {
     this.clean();
     const FM: FileManager = this.FM;
-    const builtSourceSubpath: string = FM.joinPath(
-      this.builtSourcePath,
+    const builtSubpath: string = FM.joinPath(
+      this.builtPath,
       subpath
     );
     FM
-      .listContents(builtSourceSubpath)
+      .listContents(builtSubpath)
       .filter(child =>
         Installer.doProcess(
           "install",
@@ -39,7 +39,7 @@ class Installer {
         )
       ).forEach(child => {
         const repoChild: string = FM.joinPath(
-          builtSourceSubpath,
+          builtSubpath,
           child
         );
         const runtimeChild: string = FM.joinPath(
@@ -66,7 +66,7 @@ class Installer {
     return this.readConfig().boot.fileBookmarks.runtime;
   }
 
-  private static get builtSourceBookmarkName(): string {
+  private static get builtBookmarkName(): string {
     return this.readConfig().boot.fileBookmarks.built;
   }
 
@@ -78,8 +78,8 @@ class Installer {
     return this.FM.bookmarkedPath(this.runtimeRootBookmarkName);
   }
 
-  private static get builtSourcePath(): string {
-    return this.FM.bookmarkedPath(this.builtSourceBookmarkName);
+  private static get builtPath(): string {
+    return this.FM.bookmarkedPath(this.builtBookmarkName);
   }
 
   private static get repoSourcePath(): string {
