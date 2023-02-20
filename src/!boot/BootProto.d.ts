@@ -7,7 +7,6 @@ declare interface BootProto {
 
 declare interface ScriptableBootFileBookmarksRecords extends BootFileBookmarksRecordsProto {
   runtime: string,
-  repo: string,
   built: string,
 }
 

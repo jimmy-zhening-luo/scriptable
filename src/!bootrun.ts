@@ -3,4 +3,4 @@
 // always-run-in-app: true; icon-color: deep-gray;
 // icon-glyph: hdd;
 const installer: typeof Installer = importModule("!boot/Boot");
-installer.install("prod/dist");
+new installer().install("prod/dist");
