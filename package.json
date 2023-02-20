@@ -14,7 +14,7 @@
     "pack": "ts-node tools/pack",
     "build:clean": "npm-run-all clean build",
     "prepublish": "npm run build",
-    "publish": "pwsh -NoProfile -File ./tools/publish.ps1",
+    "publish": "ts-node tools/publish",
     "publish:clean": "npm-run-all clean publish",
     "b": "npm run build",
     "cb": "npm run build:clean",
@@ -39,6 +39,7 @@
   "devDependencies": {
     "@types/node": "^18.14.0",
     "@types/shelljs": "^0.8.11",
+    "dotenv": "^16.0.3",
     "npm-run-all": "^4.1.5",
     "pwsh": "^0.3.0",
     "ts-node": "^10.9.1",
