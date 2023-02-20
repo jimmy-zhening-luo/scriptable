@@ -8,7 +8,7 @@ class Api {
 
   constructor(
     url: ConstructorParameters<typeof Url>[0],
-    method: keyof typeof Api.Method | Api.Method = Api.Method.GET,
+    method: Api.Method = Api.Method.GET,
     {
       authScheme = "",
       authToken = "",
@@ -23,8 +23,7 @@ class Api {
     ...httpHeaders: Parameters<typeof RequestHeaders.prototype.addHeader>
   ) {
     this._url = new this.Url(url);
-    this._method = typeof method === "string" ?
-      Api.Method[method as keyof typeof Api.Method] ?? Api.Method.GET : method;
+    this._method = method;
     this._requestHeaders = new this.RequestHeaders(
       authScheme,
       authToken,
@@ -136,9 +135,8 @@ class Api {
     return this._method;
   }
 
-  set method(method: keyof typeof Api.Method | Api.Method) {
-this._method = typeof method === "string" ?
-Api.Method[method as keyof typeof Api.Method] ?? Api.Method.GET : method;
+  set method(method: Api.Method) {
+    this._method = method;
   }
 
   get hasAuth(): typeof RequestHeaders.prototype.hasAuth {
@@ -293,7 +291,7 @@ Api.Method[method as keyof typeof Api.Method] ?? Api.Method.GET : method;
     const req: Request = new Request(this.url);
     req.headers = this.headersStringObject;
     req.body = this.body;
-    req.method = Api.Method[this.method as keyof typeof Api.Method];
+    req.method = Api.Method[this.method];
     req.timeoutInterval = this.timeout;
     req.loadString().then((_response) => {
       response = _response ?? "";
