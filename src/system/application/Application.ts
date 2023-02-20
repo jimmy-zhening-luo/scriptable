@@ -27,7 +27,7 @@ abstract class Application {
   }
 
   protected storage(
-    subpath?: string | undefined
+    subpath?: string
   ): Storage {
     return new this.Storage(
       this.storageSubpath,
@@ -37,7 +37,7 @@ abstract class Application {
   }
 
   readStorage(
-    subpath?: string | undefined
+    subpath?: string
   ): string {
     return this
       .storage(subpath)
@@ -46,7 +46,7 @@ abstract class Application {
 
   writeStorage(
     text: string,
-    subpath?: string | undefined
+    subpath?: string
   ): void {
     this
       .storage(subpath)
