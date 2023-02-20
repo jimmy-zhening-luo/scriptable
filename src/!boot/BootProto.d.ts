@@ -1,5 +1,6 @@
 declare interface BootProto {
   boot: {
+    publishedUrl: string,
     fileBookmarks: ScriptableBootFileBookmarksRecords,
     specialPrefix: string,
   }
