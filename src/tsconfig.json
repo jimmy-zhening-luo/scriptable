@@ -5,9 +5,6 @@
   ],
   "references": [
     {
-      "path": "!boot/tsconfig.json"
-    },
-    {
       "path": "common/tsconfig.json"
     },
     {

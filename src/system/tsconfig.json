@@ -1,15 +1,11 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "../!boot/**/*",
     "../common/**/*",
     "../config/**/*",
     "**/*",
   ],
   "references": [
-    {
-      "path": "../!boot/tsconfig.json"
-    },
     {
       "path": "../common/tsconfig.json"
     },
