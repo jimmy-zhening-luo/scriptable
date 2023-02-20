@@ -46,21 +46,21 @@ class Config {
     }
   }
 
-  get parsed(): ConfigProto {
+  get parsed(): ShortcutConfigProto {
     return this.isParseable ?
       JSON.parse(this.file.data as string)
       : {}
   }
 
-  get unmerged(): ConfigProto {
+  get unmerged(): ShortcutConfigProto {
     return this.parsed;
   }
 
-  get app(): ConfigProto["app"] | undefined {
+  get app(): ShortcutConfigProto["app"] | undefined {
     return this.unmerged.app;
   }
 
-  get user(): ConfigProto["user"] | undefined {
+  get user(): ShortcutConfigProto["user"] | undefined {
     return this.unmerged.user;
   }
 

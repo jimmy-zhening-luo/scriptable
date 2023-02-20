@@ -1,36 +1,23 @@
-/*
-This built file (.js, not the .ts source file) must be manually copied from the repository into the boot dir.
-
-When Boot.Installer.install() is run by !bootrun.js from the Scriptable app root, this class loads the core system files from the repository.
-
-The CONST values at the top of namespace Boot are required, project-defined values for the Boot Installer to know from where and to where to install files.
-*/
-// v2.0.0
-const RUNTIME_ROOT_BOOKMARK_NAME: string = ">>ROOT";
-const REPO_SOURCE_BOOKMARK_NAME: string = "@REPO";
-const EXCLUDE_PREFIX: string = "!";
-const INCLUDE_POSTFIX: string = ".js";
-
+const BOOT_CONFIG_BOOKMARK_NAME: string = "@_BOOT_CONFIG";
 
 class Installer {
-  static clean(): void {
+
+  private static clean(): void {
     const FM: FileManager = this.FM;
     FM
-      .listContents(
-        this.runtimeRootPath
-      )
-      .filter(child => !child.startsWith(
-        this.excludePrefix
-      ))
-      .forEach(child => {
-        FM
-          .remove(
-            FM
-              .joinPath(
-                this.runtimeRootPath,
-                child
-              )
-          );
+      .listContents(this.runtimeRootPath)
+      .filter(child =>
+        Installer.doProcess(
+          "clean",
+          child
+        )
+      ).forEach(child => {
+        FM.remove(
+          FM.joinPath(
+            this.runtimeRootPath,
+            child
+          )
+        );
       });
   }
 
@@ -39,66 +26,142 @@ class Installer {
   ): void {
     this.clean();
     const FM: FileManager = this.FM;
-    const repoSourceSubpath: string = FM.joinPath(
-      this.repoSourcePath,
+    const builtSourceSubpath: string = FM.joinPath(
+      this.builtSourcePath,
       subpath
     );
     FM
-      .listContents(
-        repoSourceSubpath
-      )
-      .filter(child => !child.startsWith(
-        this.excludePrefix
-      ))
-      .forEach(child => {
-        const repoChild: string = FM
-          .joinPath(
-            repoSourceSubpath,
-            child
-          );
-        const runtimeChild: string = FM
-          .joinPath(
-            this.runtimeRootPath,
-            child
-          );
-        if (
-          FM.isDirectory(
-            repoChild
-          )
-          || repoChild.endsWith(
-            this.includePostfix
-          )
+      .listContents(builtSourceSubpath)
+      .filter(child =>
+        Installer.doProcess(
+          "install",
+          child
         )
-          FM
-            .copy(
-              repoChild,
-              runtimeChild
-            );
+      ).forEach(child => {
+        const repoChild: string = FM.joinPath(
+          builtSourceSubpath,
+          child
+        );
+        const runtimeChild: string = FM.joinPath(
+          this.runtimeRootPath,
+          child
+        );
+        FM.copy(
+          repoChild,
+          runtimeChild
+        );
       });
   }
 
-  static get runtimeRootBookmarkName(): string {
-    return RUNTIME_ROOT_BOOKMARK_NAME;
+  private static readConfig(): BootProto {
+    const FM: FileManager = this.FM;
+    const configFilepath: string = FM.bookmarkedPath(BOOT_CONFIG_BOOKMARK_NAME);
+    const config: BootProto = JSON.parse(
+      FM.readString(configFilepath)
+    );
+    return config;
   }
 
-  static get repoSourceBookmarkName(): string {
-    return REPO_SOURCE_BOOKMARK_NAME;
+  static get runtimeRootBookmarkName(): string {
+    return this.readConfig().boot.fileBookmarks.runtime;
+  }
+
+  private static get builtSourceBookmarkName(): string {
+    return this.readConfig().boot.fileBookmarks.built;
+  }
+
+  private static get repoSourceBookmarkName(): string {
+    return this.readConfig().boot.fileBookmarks.repo;
   }
 
   static get runtimeRootPath(): string {
     return this.FM.bookmarkedPath(this.runtimeRootBookmarkName);
   }
 
+  private static get builtSourcePath(): string {
+    return this.FM.bookmarkedPath(this.builtSourceBookmarkName);
+  }
+
   private static get repoSourcePath(): string {
     return this.FM.bookmarkedPath(this.repoSourceBookmarkName);
   }
 
-  private static get excludePrefix(): string {
-    return EXCLUDE_PREFIX;
+  private static hydrateBootPhaseSettings(
+    phase: keyof ScriptableBootPhaseRecords
+  ): BootPhaseSettings {
+    return this
+      .readConfig()
+      .boot
+      .phases[phase];
   }
 
-  private static get includePostfix(): string {
-    return INCLUDE_POSTFIX;
+  private static doProcess(phase: keyof ScriptableBootPhaseRecords, filename: string): boolean {
+
+    const fileCriteria: BootFileCriteria = this
+      .hydrateBootPhaseSettings(phase)
+      .files;
+    const inclusionCriteria: null | BootFilenameMatchCriteria = fileCriteria?.include ?? null;
+    const exclusionCriteria: null | BootFilenameMatchCriteria = fileCriteria?.exclude ?? null;
+
+    const useAllowList: boolean =
+      inclusionCriteria !== null
+      && (
+        fileCriteria.include?.prefix !== undefined
+        && fileCriteria.include.prefix.length > 0
+        || fileCriteria.include?.suffix !== undefined
+        && fileCriteria.include.suffix.length > 0
+        || fileCriteria.include?.directories === true
+      );
+
+    const defaultDecision: boolean = useAllowList ?
+      false
+      : true;
+    let doProcess: boolean = defaultDecision;
+
+    if (inclusionCriteria !== null) {
+      if (inclusionCriteria.directories === true) {
+        if (this.FM.isDirectory(filename)) {
+          doProcess = true;
+        }
+      }
+      if (inclusionCriteria.prefix !== undefined) {
+        if (inclusionCriteria.prefix.length > 0) {
+          if (inclusionCriteria.prefix.some(prefix => filename.startsWith(prefix))) {
+            doProcess = true;
+          }
+        }
+      }
+      if (inclusionCriteria.suffix !== undefined) {
+        if (inclusionCriteria.suffix.length > 0) {
+          if (inclusionCriteria.suffix.some(suffix => filename.endsWith(suffix))) {
+            doProcess = true;
+          }
+        }
+      }
+    }
+
+    if (exclusionCriteria !== null) {
+      if (exclusionCriteria.directories === true) {
+        if (this.FM.isDirectory(filename)) {
+          doProcess = false;
+        }
+      }
+      if (exclusionCriteria.prefix !== undefined) {
+        if (exclusionCriteria.prefix.length > 0) {
+          if (exclusionCriteria.prefix.some(prefix => filename.startsWith(prefix))) {
+            doProcess = false;
+          }
+        }
+      }
+      if (exclusionCriteria.suffix !== undefined) {
+        if (exclusionCriteria.suffix.length > 0) {
+          if (exclusionCriteria.suffix.some(suffix => filename.endsWith(suffix))) {
+            doProcess = false;
+          }
+        }
+      }
+    }
+    return doProcess;
   }
 
   private static get FM(): FileManager {
