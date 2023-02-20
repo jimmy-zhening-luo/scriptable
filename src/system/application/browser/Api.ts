@@ -131,11 +131,11 @@ class Api {
     this._url.scheme = scheme;
   }
 
-  get method(): typeof Api.prototype.method {
+  get method(): typeof Api.prototype._method {
     return this._method;
   }
 
-  set method(method: typeof Api.prototype.method) {
+  set method(method: typeof Api.prototype._method) {
     this._method = method;
   }
 
