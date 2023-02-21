@@ -1,7 +1,7 @@
-const STORAGE_BOOKMARK: string = "#Data";
-
 class Storage {
 
+  private readonly _APPLICATION_CONFIG_BOOKMARK: string = "@_APPLICATION_CONFIG";
+  
   readonly file: File;
 
   constructor(

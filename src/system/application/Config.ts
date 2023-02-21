@@ -1,7 +1,9 @@
-const CONFIG_BOOKMARK: string = "#Config";
-
 class Config {
+  
+  private readonly _APPLICATION_CONFIG_BOOKMARK: string = "@_APPLICATION_CONFIG";
+  
   protected file: ReadOnlyFile;
+  
   constructor(
     configSubpath: string,
     programName: string

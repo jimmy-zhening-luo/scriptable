@@ -1,6 +1,6 @@
-const EXTERNAL_SECRETS_BOOKMARK_NAME: string = "#Secrets";
-
 class Secret {
+  
+  private readonly _APPLICATION_CONFIG_BOOKMARK: string = "@_APPLICATION_CONFIG";
 
   private readonly file: ReadOnlyFile;
 
