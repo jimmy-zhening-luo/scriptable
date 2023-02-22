@@ -12,4 +12,4 @@ declare type SettingValue =
   | number
   | boolean
   | Setting
-  | SettingValue[]
+  | SettingValue[];

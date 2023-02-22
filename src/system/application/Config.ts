@@ -1,9 +1,9 @@
 class Config {
-  
+
   private readonly _APPLICATION_CONFIG_BOOKMARK: string = "@_APPLICATION_CONFIG";
-  
+
   protected file: ReadOnlyFile;
-  
+
   constructor(
     configSubpath: string,
     programName: string
@@ -29,8 +29,36 @@ class Config {
     );
   }
 
-  protected get configBookmark(): string {
-    return CONFIG_BOOKMARK;
+  private get configBookmark(): string {
+    return this._APPLICATION_CONFIG_BOOKMARK;
+  }
+
+  private get applicationConfigBookmark(): null | string {
+    return FileManager.iCloud().bookmarkExists(this.configBookmark) ?
+      this._APPLICATION_CONFIG_BOOKMARK
+      : null;
+  }
+
+  private get applicationConfig(): null | ApplicationConfigProto {
+    return this.applicationConfigBookmark === null ?
+      null
+      : FileManager.iCloud().fileExists(
+        FileManager.iCloud().bookmarkedPath(
+          this.applicationConfigBookmark
+        )
+      ) ?
+        try {
+      JSON.parse(
+        FileManager.iCloud().readString(
+          FileManager.iCloud().bookmarkedPath(
+            this.applicationConfigBookmark as string
+          )
+        )
+      )
+        } catch (e) {
+          console.error(`Config.js: error while parsing application config: ${e}`);
+          throw e;
+    }
   }
 
   get path(): string {
