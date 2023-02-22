@@ -30,43 +30,45 @@ class Config {
   }
 
   private get configBookmark(): string {
-    return this._APPLICATION_CONFIG_BOOKMARK;
+    return this.applicationConfig.Config;
   }
 
-  private get applicationConfigBookmark(): null | string {
-    return FileManager.iCloud().bookmarkExists(this.configBookmark) ?
-      this._APPLICATION_CONFIG_BOOKMARK
-      : null;
-  }
-
-  private get applicationConfig(): null | ApplicationConfigProto {
-    return this.applicationConfigBookmark === null ?
-      null
-      : FileManager.iCloud().fileExists(
-        FileManager.iCloud().bookmarkedPath(
-          this.applicationConfigBookmark
-        )
-      ) ?
-        try {
-      JSON.parse(
-        FileManager.iCloud().readString(
-          FileManager.iCloud().bookmarkedPath(
-            this.applicationConfigBookmark as string
-          )
-        )
-      )
-        } catch (e) {
-          console.error(`Config.js: error while parsing application config: ${e}`);
-          throw e;
+  private get applicationConfigBookmark(): string {
+    try {
+      if (!FileManager.iCloud().bookmarkExists(this._APPLICATION_CONFIG_BOOKMARK))
+        throw new ReferenceError(`Config.js: Application config bookmark '${this._APPLICATION_CONFIG_BOOKMARK}' does not exist in Scriptable. Check your application bookmark name and make sure that bookmark is created in Scriptable.`);
+      else if (!FileManager.iCloud().fileExists(FileManager.iCloud().bookmarkedPath(this._APPLICATION_CONFIG_BOOKMARK)))
+        throw new ReferenceError(`Config.js: Application config bookmark '${this._APPLICATION_CONFIG_BOOKMARK}' is an existing bookmark in Scriptable. However, the bookmark maps to a filepath that does not exist. Check your bookmark configuration in Scriptable to make sure that the bookmark maps to a valid filepath. It must map to the .json config file itself, not to a directory.`);
+      return this._APPLICATION_CONFIG_BOOKMARK;
+    } catch (e) {
+      console.error(`Config.js: Error getting preconfigured application config bookmark '${this._APPLICATION_CONFIG_BOOKMARK}': ${e}`);
+      throw e;
     }
   }
 
-  get path(): string {
-    return this.file.path as string;
+  private get applicationConfig(): ApplicationConfigProto {
+    try {
+      return JSON.parse(
+        FileManager.iCloud().readString(
+          FileManager.iCloud().bookmarkedPath(
+            this.applicationConfigBookmark
+          )
+        )
+      );
+    } catch (e) {
+      console.error(`Config.js: Error getting application config: ${e}`);
+      throw e;
+    }
+  }
+
+  get path(): typeof Config.prototype.file.path {
+    return this.file.path;
   }
 
   get isParseable(): boolean {
     try {
+      if (!this.file.exists)
+        throw new ReferenceError(`Config.js: Config file '${this.file.path}' does not exist.`);
       JSON.parse(
         this.file.data
       );
@@ -77,21 +79,40 @@ class Config {
   }
 
   get parsed(): ShortcutConfigProto {
-    return this.isParseable ?
-      JSON.parse(this.file.data as string)
-      : {}
+    try {
+      if (!this.isParseable)
+        throw new SyntaxError(`Config.js: Config file '${this.file.path}' is not parseable as JSON.`);
+      return JSON.parse(this.file.data);
+    } catch (e) {
+      console.error(`Config.js: Error parsing config file '${this.file.path}': ${e}`);
+      throw e;
+    }
   }
 
   get unmerged(): ShortcutConfigProto {
     return this.parsed;
   }
 
-  get app(): ShortcutConfigProto["app"] | undefined {
-    return this.unmerged.app;
+  get app(): ShortcutConfigProto["app"] {
+    try {
+      if (this.unmerged.app === undefined)
+        throw new ReferenceError(`Config.js: Config file '${this.file.path}' does not contain an 'app' property.`);
+      return this.unmerged.app;
+    } catch (e) {
+      console.error(`Config.js: Error getting 'app' property from config file '${this.file.path}': ${e}`);
+      throw e;
+    }
   }
 
-  get user(): ShortcutConfigProto["user"] | undefined {
-    return this.unmerged.user;
+  get user(): ShortcutConfigProto["user"] {
+    try {
+      if (this.unmerged.user === undefined)
+        throw new ReferenceError(`Config.js: Config file '${this.file.path}' does not contain a 'user' property.`);
+      return this.unmerged.user;
+    } catch (e) {
+      console.error(`Config.js: Error getting 'user' property from config file '${this.file.path}': ${e}`);
+      throw e;
+    }
   }
 
   get merged(): Setting {
@@ -108,8 +129,8 @@ class Config {
     );
   }
 
-  toString(): string {
-    return this.file.data as string;
+  toString(): typeof Config.prototype.file.data {
+    return this.file.data;
   }
 
   protected mergeSettings(

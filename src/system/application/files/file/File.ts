@@ -23,21 +23,31 @@ class File {
   private parse(
     path: ConstructorParameters<typeof File>[0],
   ): Filepath {
-    return new File.Filepath(
-      typeof path === "string"
-        || Array.isArray(path)
-        || typeof path !== "string"
-        && path instanceof File.Filepath ?
-        path
-        : path instanceof File.Bookmark
-          || path instanceof File ?
-          path.path
-          : ""
-    );
+    try {
+      return new File.Filepath(
+        typeof path === "string"
+          || Array.isArray(path)
+          || typeof path !== "string"
+          && path instanceof File.Filepath ?
+          path
+          : path instanceof File.Bookmark
+            || path instanceof File ?
+            path.path
+            : ""
+      );
+    } catch (e) {
+      console.error(`File: Error parsing constructor input: ${e}`);
+      throw e;
+    }
   }
 
-  get base(): string {
-    return this._base.toString();
+  get base(): ReturnType<typeof Filepath.prototype.toString> {
+    try {
+      return this._base.toString();
+    } catch (e) {
+      console.error(`File: Error getting base path: ${e}`);
+      throw e;
+    }
   }
 
   get root(): typeof File.prototype.base {
@@ -48,28 +58,48 @@ class File {
     return this.base;
   }
 
-  get subpath(): string {
-    return this._subpath.toString();
+  get subpath(): ReturnType<typeof Filepath.prototype.toString> {
+    try {
+      return this._subpath.toString();
+    } catch (e) {
+      console.error(`File: Error getting subpath: ${e}`);
+      throw e;
+    }
   }
 
   set subpath(
     subpath: ConstructorParameters<typeof File>[1]
   ) {
-    this._subpath = new this.Filepath(subpath);
+    try {
+      this._subpath = new this.Filepath(subpath);
+    } catch (e) {
+      console.error(`File: Error setting subpath: ${e}`);
+      throw e;
+    }
   }
 
   append(
     subpath: ConstructorParameters<typeof File>[1]
   ): this {
-    this.subpath = this._subpath.append(subpath);
-    return this;
+    try {
+      this.subpath = this._subpath.append(subpath);
+      return this;
+    } catch (e) {
+      console.error(`File: Error appending subpath: ${e}`);
+      throw e;
+    }
   }
 
   cd(
     relativePath: ConstructorParameters<typeof File>[1]
   ): this {
-    this.subpath = this._subpath.cd(relativePath);
-    return this;
+    try {
+      this.subpath = this._subpath.cd(relativePath);
+      return this;
+    } catch (e) {
+      console.error(`File: Error changing directory: ${e}`);
+      throw e;
+    }
   }
 
   private get _path(): Filepath {
@@ -77,11 +107,21 @@ class File {
   }
 
   get path(): ReturnType<typeof Filepath.prototype.toString> {
-    return this._path.toString();
+    try {
+      return this._path.toString();
+    } catch (e) {
+      console.error(`File: Error getting path: ${e}`);
+      throw e;
+    }
   }
 
   get tree(): ReturnType<typeof Filepath.prototype.toTree> {
-    return this._path.toTree();
+    try {
+      return this._path.toTree();
+    } catch (e) {
+      console.error(`File: Error getting path tree: ${e}`);
+      throw e;
+    }
   }
 
   toString(): typeof File.prototype.path {
@@ -93,9 +133,14 @@ class File {
   }
 
   get leaf(): string {
-    return this.subpath === "" ?
-      this._base.leaf
-      : this._subpath.leaf;
+    try {
+      return this.subpath === "" ?
+        this._base.leaf
+        : this._subpath.leaf;
+    } catch (e) {
+      console.error(`File: Error getting leaf: ${e}`);
+      throw e;
+    }
   }
 
   get isTop(): boolean {
@@ -103,13 +148,23 @@ class File {
   }
 
   get isDirectory(): boolean {
-    return this.m.isDirectory(this.path);
+    try {
+      return this.m.isDirectory(this.path);
+    } catch (e) {
+      console.error(`File: Error checking if path is directory: ${e}`);
+      throw e;
+    }
   }
 
   get isFile(): boolean {
-    return this.parentIsDirectory
-      && this.m.fileExists(this.path)
-      && !this.isDirectory;
+    try {
+      return this.parentIsDirectory
+        && this.m.fileExists(this.path)
+        && !this.isDirectory;
+    } catch (e) {
+      console.error(`File: Error checking if path is file: ${e}`);
+      throw e;
+    }
   }
 
   get exists(): boolean {
@@ -133,10 +188,15 @@ class File {
   }
 
   get parent(): File {
-    return new File(
-      this.base,
-      this.parentSubpath
-    );
+    try {
+      return new File(
+        this.base,
+        this.parentSubpath
+      );
+    } catch (e) {
+      console.error(`File: Error getting parent File object: ${e}`);
+      throw e;
+    }
   }
 
   get parentPath(): string {
@@ -148,9 +208,14 @@ class File {
   }
 
   get ls(): string[] {
-    return this.isDirectory ?
-      File.m.listContents(this.path)
-      : [];
+    try {
+      return this.isDirectory ?
+        File.m.listContents(this.path)
+        : [];
+    } catch (e) {
+      console.error(`File: Error listing contents of directory: ${e}`);
+      throw e;
+    }
   }
 
   get isBottom(): boolean {
@@ -161,17 +226,22 @@ class File {
   }
 
   get descendants(): File[] {
-    return this.isFile ?
-      [this]
-      : this.isBottom ?
-        []
-        : this.ls.map(leaf =>
-          new File(this.base, this.subpath).append(leaf)
-        ).filter(child =>
-          !this.path.startsWith(child.path)
-        ).map(file =>
+    try {
+      return this.isFile ?
+        [this]
+        : this.isBottom ?
+          []
+          : this.ls.map(leaf =>
+            new File(this.base, this.subpath).append(leaf)
+          ).filter(child =>
+            !this.path.startsWith(child.path)
+          ).map(file =>
             file.descendants
-        ).flat(1);
+          ).flat(1);
+    } catch (e) {
+      console.error(`File: Error getting descendants: ${e}`);
+      throw e;
+    }
   }
 
   get data(): string {
@@ -182,8 +252,8 @@ class File {
         );
       return this.m.readString(this.path);
     } catch (e) {
-      console.log(e);
-      return "";
+      console.error(`File: Error reading file: ${e}`);
+      throw e;
     }
   }
 
@@ -224,61 +294,87 @@ class File {
       }
     } catch (e) {
       console.error(e);
-      return this;
+      throw e;
     }
   }
 
   delete(
     force: boolean = false
-  ): void {
-    if (this.exists) {
-      if (force)
-        File.m.remove(
-          this.path
-        );
-      else {
-        const confirm: Alert = new Alert();
-        confirm.message = String(
-          "Are you sure you want to delete this file or folder (including all descendants)? Path: "
-          + this.path
-        );
-        confirm.addDestructiveAction(
-          "Yes, DELETE this file"
-        );
-        confirm.addCancelAction(
-          "Cancel"
-        );
-        confirm.present().then(userChoice =>
-          userChoice === 0 ?
-            File.m.remove(this.path)
-            : console.log("User canceled file deletion.")
-        );
+  ): this {
+    try {
+      if (this.exists) {
+        if (force)
+          File.m.remove(
+            this.path
+          );
+        else {
+          const confirm: Alert = new Alert();
+          confirm.message = String(
+            "Are you sure you want to delete this file or folder (including all descendants)? Path: "
+            + this.path
+          );
+          confirm.addDestructiveAction(
+            "Yes, DELETE this file"
+          );
+          confirm.addCancelAction(
+            "Cancel"
+          );
+          confirm.present().then(userChoice =>
+            userChoice === 0 ?
+              File.m.remove(this.path)
+              : console.log("User canceled file deletion.")
+          );
+        }
       }
+      return this;
+    } catch (e) {
+      console.error(`File: Error deleting file: ${e}`);
+      throw e;
     }
   }
 
   static join(
     ...paths: Parameters<typeof Filepath.join>
   ): ReturnType<typeof Filepath.join> {
-    return File.Filepath.join(...paths);
+    try {
+      return File.Filepath.join(...paths);
+    } catch (e) {
+      console.error(`File: static join: Error joining paths: ${e}`);
+      throw e;
+    }
   }
 
   static mutate(
     ...paths: Parameters<typeof Filepath.mutate>
   ): ReturnType<typeof Filepath.mutate> {
-    return File.Filepath.mutate(...paths);
+    try {
+      return File.Filepath.mutate(...paths);
+    } catch (e) {
+      console.error(`File: static mutate: Error mutating paths: ${e}`);
+      throw e;
+    }
   }
 
   static toString(
     ...paths: Parameters<typeof Filepath.toString>
   ): ReturnType<typeof Filepath.toString> {
-    return File.Filepath.toString(...paths);
+    try {
+      return File.Filepath.toString(...paths);
+    } catch (e) {
+      console.error(`File: static toString: Error converting paths to string: ${e}`);
+      throw e;
+    }
   }
 
   static toTree(
     ...paths: Parameters<typeof Filepath.toTree>
   ): ReturnType<typeof Filepath.toTree> {
-    return File.Filepath.toTree(...paths);
+    try {
+      return File.Filepath.toTree(...paths);
+    } catch (e) {
+      console.error(`File: static toTree: Error converting paths to tree: ${e}`);
+      throw e;
+    }
   }
 
   static [Symbol.hasInstance](instance: any): boolean {

@@ -4,53 +4,79 @@ abstract class Application {
   abstract handleOutput(output: any): any;
 
   run(): any {
-    return this.handleOutput(
-      this.runtime(
-        this.input
-      )
-    );
+    try {
+      return this.handleOutput(
+        this.runtime(
+          this.input
+        )
+      );
+    } catch (e) {
+      console.error(`Application: Error running application: ${e}`);
+      throw e;
+    }
   }
 
   protected get configSubpath(): string {
-    return String("");
+    return "";
   }
 
-  protected get storageSubpath(): string {
+  protected get storageSubpath(): typeof Application.prototype.configSubpath {
     return this.configSubpath;
   }
 
   get config(): Config {
-    return new this.Config(
-      this.configSubpath,
-      this.constructor.name
-    );
+    try {
+      return new this.Config(
+        this.configSubpath,
+        this.constructor.name
+      );
+    } catch (e) {
+      console.error(`Application: Error getting application config: ${e}`);
+      throw e;
+    }
   }
 
   protected storage(
     subpath?: string
   ): Storage {
-    return new this.Storage(
-      this.storageSubpath,
-      this.constructor.name,
-      subpath
-    );
+    try {
+      return new this.Storage(
+        this.storageSubpath,
+        this.constructor.name,
+        subpath
+      );
+    } catch (e) {
+      console.error(`Application: Error getting application storage File object: ${e}`);
+      throw e;
+    }
   }
 
   readStorage(
     subpath?: string
-  ): string {
-    return this
-      .storage(subpath)
-      .read();
+  ): ReturnType<typeof Storage.prototype.read> {
+    try {
+      return this
+        .storage(subpath)
+        .read();
+    } catch (e) {
+      console.error(`Application: Error reading application storage file '${this.storage(subpath).path}': ${e}`);
+      throw e;
+    }
   }
 
   writeStorage(
-    text: string,
+    data: string,
     subpath?: string
-  ): void {
-    this
-      .storage(subpath)
-      .write(text);
+  ): this {
+    try {
+      this
+        .storage(subpath)
+        .write(data);
+      return this;
+    } catch (e) {
+      console.error(`Application: Error writing to application storage file '${this.storage(subpath).path}': ${e}`);
+      throw e;
+    }
   }
 
   get Config(): typeof Config {

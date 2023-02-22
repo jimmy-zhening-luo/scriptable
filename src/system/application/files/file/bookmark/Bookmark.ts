@@ -7,11 +7,17 @@ class Bookmark {
   constructor(
     bookmark: string = ""
   ) {
-    this.bookmark = bookmark.trim();
-    this.path = this.bookmark === "" ?
-      ""
-      : FileManager.iCloud()
-        .bookmarkedPath(bookmark);
+    try {
+      this.bookmark = bookmark.trim();
+      this.path = this.bookmark === "" ?
+        ""
+        : FileManager.iCloud().bookmarkExists(bookmark) ?
+          FileManager.iCloud().bookmarkedPath(bookmark)
+          : "";
+    } catch (e) {
+      console.error(`Bookmark: Unhandled exception creating bookmark: ${e}`);
+      throw e;
+    }
   }
 
   toString(): string {
