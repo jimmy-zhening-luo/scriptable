@@ -1,53 +1,59 @@
 class File {
 
   readonly _nominalType: string = "File";
-  private readonly _base: Filepath;
-  private _subpath: Filepath;
+  private readonly _base: FilepathString;
+  private _subpath: FilepathString;
 
   constructor(
     base:
       | string
       | string[]
-      | Filepath
+      | FilepathString
       | File
       | Bookmark = "",
     subpath:
       | string
       | string[]
-      | Filepath = "",
+      | FilepathString = "",
   ) {
-    this._base = this.parse(base);
-    this._subpath = this.parse(subpath);
+    try {
+      try {
+        this._base = base instanceof File ?
+          new File.FilepathString(base.base)
+          : base instanceof Bookmark ?
+            new File.FilepathString(base.path)
+            : this.parse(base);
+      } catch (e) {
+        console.error(`Error parsing base: ${e}`);
+        throw e;
+      }
+      try {
+        this._subpath = this.parse(subpath);
+      } catch (e) {
+        console.error(`Error parsing subpath: ${e}`);
+        throw e;
+      }
+    } catch (e) {
+      console.error(`File: constructor: Error constructing File: ${e}`);
+      throw e;
+    }
   }
 
   private parse(
-    path: ConstructorParameters<typeof File>[0],
-  ): Filepath {
-    try {
-      return new File.Filepath(
-        typeof path === "string"
-          || Array.isArray(path)
-          || typeof path !== "string"
-          && path instanceof File.Filepath ?
-          path
-          : path instanceof File.Bookmark
-            || path instanceof File ?
-            path.path
-            : ""
-      );
-    } catch (e) {
-      console.error(`File: Error parsing constructor input: ${e}`);
-      throw e;
-    }
+    path: ConstructorParameters<typeof File>[1],
+  ): FilepathString {
+    return new File.FilepathString(
+      typeof path === "string"
+        || Array.isArray(path)
+        || typeof path !== "string"
+        && path instanceof File.FilepathString ?
+        path
+        : ""
+    );
   }
 
-  get base(): ReturnType<typeof Filepath.prototype.toString> {
-    try {
-      return this._base.toString();
-    } catch (e) {
-      console.error(`File: Error getting base path: ${e}`);
-      throw e;
-    }
+  get base(): ReturnType<typeof FilepathString.prototype.toString> {
+    return this._base.toString();
   }
 
   get root(): typeof File.prototype.base {
@@ -58,70 +64,40 @@ class File {
     return this.base;
   }
 
-  get subpath(): ReturnType<typeof Filepath.prototype.toString> {
-    try {
-      return this._subpath.toString();
-    } catch (e) {
-      console.error(`File: Error getting subpath: ${e}`);
-      throw e;
-    }
+  get subpath(): ReturnType<typeof FilepathString.prototype.toString> {
+    return this._subpath.toString();
   }
 
   set subpath(
     subpath: ConstructorParameters<typeof File>[1]
   ) {
-    try {
-      this._subpath = new this.Filepath(subpath);
-    } catch (e) {
-      console.error(`File: Error setting subpath: ${e}`);
-      throw e;
-    }
+    this._subpath = new this.Filepath(subpath);
   }
 
   append(
     subpath: ConstructorParameters<typeof File>[1]
   ): this {
-    try {
-      this.subpath = this._subpath.append(subpath);
-      return this;
-    } catch (e) {
-      console.error(`File: Error appending subpath: ${e}`);
-      throw e;
-    }
+    this.subpath = this._subpath.append(subpath);
+    return this;
   }
 
   cd(
     relativePath: ConstructorParameters<typeof File>[1]
   ): this {
-    try {
-      this.subpath = this._subpath.cd(relativePath);
-      return this;
-    } catch (e) {
-      console.error(`File: Error changing directory: ${e}`);
-      throw e;
-    }
+    this.subpath = this._subpath.cd(relativePath);
+    return this;
   }
 
-  private get _path(): Filepath {
+  private get _path(): FilepathString {
     return this._base.append(this.subpath);
   }
 
-  get path(): ReturnType<typeof Filepath.prototype.toString> {
-    try {
-      return this._path.toString();
-    } catch (e) {
-      console.error(`File: Error getting path: ${e}`);
-      throw e;
-    }
+  get path(): ReturnType<typeof FilepathString.prototype.toString> {
+    return this._path.toString();
   }
 
-  get tree(): ReturnType<typeof Filepath.prototype.toTree> {
-    try {
-      return this._path.toTree();
-    } catch (e) {
-      console.error(`File: Error getting path tree: ${e}`);
-      throw e;
-    }
+  get tree(): ReturnType<typeof FilepathString.prototype.toTree> {
+    return this._path.toTree();
   }
 
   toString(): typeof File.prototype.path {
@@ -133,14 +109,9 @@ class File {
   }
 
   get leaf(): string {
-    try {
-      return this.subpath === "" ?
-        this._base.leaf
-        : this._subpath.leaf;
-    } catch (e) {
-      console.error(`File: Error getting leaf: ${e}`);
-      throw e;
-    }
+    return this.subpath === "" ?
+      this._base.leaf
+      : this._subpath.leaf;
   }
 
   get isTop(): boolean {
@@ -149,9 +120,9 @@ class File {
 
   get isDirectory(): boolean {
     try {
-      return this.m.isDirectory(this.path);
+      return File.Manager.isDirectory(this.path);
     } catch (e) {
-      console.error(`File: Error checking if path is directory: ${e}`);
+      console.error(`File: isDirectory: Error using Scriptable FileManager class to check whether path is directory: ${e}`);
       throw e;
     }
   }
@@ -159,10 +130,10 @@ class File {
   get isFile(): boolean {
     try {
       return this.parentIsDirectory
-        && this.m.fileExists(this.path)
+        && File.Manager.fileExists(this.path)
         && !this.isDirectory;
     } catch (e) {
-      console.error(`File: Error checking if path is file: ${e}`);
+      console.error(`File: isFile: Error using Scriptable FileManager class to check whether path is file: ${e}`);
       throw e;
     }
   }
@@ -194,7 +165,7 @@ class File {
         this.parentSubpath
       );
     } catch (e) {
-      console.error(`File: Error getting parent File object: ${e}`);
+      console.error(`File: parent: Error getting parent File object: ${e}`);
       throw e;
     }
   }
@@ -210,10 +181,10 @@ class File {
   get ls(): string[] {
     try {
       return this.isDirectory ?
-        File.m.listContents(this.path)
+        File.Manager.listContents(this.path)
         : [];
     } catch (e) {
-      console.error(`File: Error listing contents of directory: ${e}`);
+      console.error(`File: ls: Error using Scriptable FileManager class to list contents of directory: ${e}`);
       throw e;
     }
   }
@@ -248,11 +219,13 @@ class File {
     try {
       if (!this.isReadable)
         throw new ReferenceError(
-          "File:data: File is not readable. File must be a file and must exist."
+          "File is not readable. File must be a file and must exist."
         );
-      return this.m.readString(this.path);
+      return File.Manager.readString(this.path);
     } catch (e) {
-      console.error(`File: Error reading file: ${e}`);
+      if (!(e instanceof ReferenceError))
+        e = new Error(`Caught unhandled exception while using Scriptable FileManager class to read data. See unhandled exception: ${e}`);
+      console.error(`File: data: Error reading file: ${e}`);
       throw e;
     }
   }
@@ -268,32 +241,34 @@ class File {
     try {
       if (this.isDirectory)
         throw new ReferenceError(
-          "File:write: File path points to a folder. Cannot write data to a folder."
+          "File path points to a folder. Cannot write data to a folder."
         );
       else if (this.isReadable && !overwrite)
         throw new ReferenceError(
-          "File:write: Overwrite is set to false. To overwrite an existing file, write must be called with overwrite === true."
+          "Overwrite is set to false. To overwrite an existing file, write must be called with overwrite === true."
         );
       else {
         if (!this.parentIsDirectory)
           try {
-            this.m.createDirectory(this.parentPath, true);
+            File.Manager.createDirectory(this.parentPath, true);
           } catch (e) {
             throw new ReferenceError(
-              "File:write: Could not create parent directory using Scriptable file manager.See previous error: " + e
+              `Could not create parent directory using Scriptable file manager.See previous error: ${e}`
             );
           }
         try {
-          this.m.writeString(this.path, data);
+          File.Manager.writeString(this.path, data);
         } catch (e) {
-          throw new ReferenceError(
-            "File:write: Could not write data to file using Scriptable file manager. See previous error: " + e
+          throw new Error(
+            `Caught unhandled exception trying to write data to file using Scriptable FileManager class. See unhandled exception: ${e}`
           );
         }
         return this;
       }
     } catch (e) {
-      console.error(e);
+      console.error(
+        `File: write: Error writing data to file: ${e}`
+      );
       throw e;
     }
   }
@@ -304,15 +279,10 @@ class File {
     try {
       if (this.exists) {
         if (force)
-          File.m.remove(
-            this.path
-          );
+          _deleteUsingFileManager(this.path);
         else {
           const confirm: Alert = new Alert();
-          confirm.message = String(
-            "Are you sure you want to delete this file or folder (including all descendants)? Path: "
-            + this.path
-          );
+          confirm.message = `Are you sure you want to delete this file or folder (including all descendants)? Path: ${this.path}`;
           confirm.addDestructiveAction(
             "Yes, DELETE this file"
           );
@@ -321,60 +291,61 @@ class File {
           );
           confirm.present().then(userChoice =>
             userChoice === 0 ?
-              File.m.remove(this.path)
-              : console.log("User canceled file deletion.")
+              _deleteUsingFileManager(this.path)
+              : console.warn(`User canceled file deletion of file or folder at path: ${this.path}`)
           );
         }
       }
+
+      function _deleteUsingFileManager(
+        path: string
+      ): void {
+        try {
+          File.Manager.remove(path)
+          if (File.Manager.fileExists(path))
+            throw new ReferenceError(
+              `File still exists after attempting to delete it using Scriptable FileManager class.`
+            );
+        } catch (e) {
+          if (!(e instanceof ReferenceError))
+            e = new Error(
+              `Caught unhandled exception trying to delete file using Scriptable FileManager class. See unhandled exception: ${e}`
+            );
+          throw new Error(
+            `_deleteUsingFileManager: ${e}`
+          );
+        }
+      }
+
       return this;
     } catch (e) {
-      console.error(`File: Error deleting file: ${e}`);
+      console.error(`File: delete: Error deleting file: ${e}`);
       throw e;
     }
   }
 
   static join(
-    ...paths: Parameters<typeof Filepath.join>
-  ): ReturnType<typeof Filepath.join> {
-    try {
-      return File.Filepath.join(...paths);
-    } catch (e) {
-      console.error(`File: static join: Error joining paths: ${e}`);
-      throw e;
-    }
+    ...paths: Parameters<typeof FilepathString.join>
+  ): ReturnType<typeof FilepathString.join> {
+    return File.FilepathString.join(...paths);
   }
 
   static mutate(
-    ...paths: Parameters<typeof Filepath.mutate>
-  ): ReturnType<typeof Filepath.mutate> {
-    try {
-      return File.Filepath.mutate(...paths);
-    } catch (e) {
-      console.error(`File: static mutate: Error mutating paths: ${e}`);
-      throw e;
-    }
+    ...paths: Parameters<typeof FilepathString.mutate>
+  ): ReturnType<typeof FilepathString.mutate> {
+    return File.FilepathString.mutate(...paths);
   }
 
   static toString(
-    ...paths: Parameters<typeof Filepath.toString>
-  ): ReturnType<typeof Filepath.toString> {
-    try {
-      return File.Filepath.toString(...paths);
-    } catch (e) {
-      console.error(`File: static toString: Error converting paths to string: ${e}`);
-      throw e;
-    }
+    ...paths: Parameters<typeof FilepathString.toString>
+  ): ReturnType<typeof FilepathString.toString> {
+    return File.FilepathString.toString(...paths);
   }
 
   static toTree(
-    ...paths: Parameters<typeof Filepath.toTree>
-  ): ReturnType<typeof Filepath.toTree> {
-    try {
-      return File.Filepath.toTree(...paths);
-    } catch (e) {
-      console.error(`File: static toTree: Error converting paths to tree: ${e}`);
-      throw e;
-    }
+    ...paths: Parameters<typeof FilepathString.toTree>
+  ): ReturnType<typeof FilepathString.toTree> {
+    return File.FilepathString.toTree(...paths);
   }
 
   static [Symbol.hasInstance](instance: any): boolean {
@@ -391,24 +362,30 @@ class File {
     return File.Bookmark;
   }
 
-  get Filepath(): typeof Filepath {
-    return File.Filepath;
-  }
-
-  protected get m(): FileManager {
-    return File.m;
+  get Filepath(): typeof FilepathString {
+    return File.FilepathString;
   }
 
   static get Bookmark(): typeof Bookmark {
-    return importModule("bookmark/Bookmark");
+    try {
+      return importModule("bookmark/Bookmark");
+    } catch (e) {
+      console.error(`File: Error importing Bookmark class: ${e}`);
+      throw e;
+    }
   }
 
-  static get Filepath(): typeof Filepath {
-    return importModule("filepath/Filepath");
+  static get FilepathString(): typeof FilepathString {
+    try {
+      return importModule("filepathstring/FilepathString");
+    } catch (e) {
+      console.error(`File: Error importing FilepathString class: ${e}`);
+      throw e;
+    }
   }
 
-  protected static get m(): FileManager {
-    return FileManager.iCloud();
+  static get Manager(): FileManager {
+    return File.Bookmark.Manager;
   }
 
 }

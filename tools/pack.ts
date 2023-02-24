@@ -18,7 +18,7 @@ namespace _Pack_Tool {
       try {
         shell.mkdir("dist");
         if (shell.ls(".").indexOf("dist") === -1)
-          throw new ReferenceError(`npm run pack: After executing function to create a './dist' folder, a dist folder should exist. However, could not find './dist' folder.`);
+          throw new ReferenceError(`After executing function to create a './dist' folder, a dist folder should exist. However, could not find './dist' folder.`);
       } catch (e) {
         console.error(`npm run pack: Error creating new './dist' folder: ${e}`);
         throw e;
@@ -31,7 +31,7 @@ namespace _Pack_Tool {
           shell.cp("-R", `built/${file}`, "dist");
         });
         if (builtFileCounter === 0)
-          throw new ReferenceError(`npm run pack: Pack should execute after Build to move built files to dist. However, no built files were found in './built. Are you sure that you have executed 'npm run build' before 'npm run pack'?`);
+          throw new ReferenceError(`Pack should execute after Build to move built files to dist. However, no built files were found in './built. Are you sure that you have executed 'npm run build' before 'npm run pack'?`);
       } catch (e) {
         console.error(`npm run pack: Error copying all built files to './dist': ${e}`);
         throw e;
@@ -54,7 +54,7 @@ namespace _Pack_Tool {
           builtFileCounter !== 0
           && distFileCounter === 0
         )
-          throw new ReferenceError(`npm run pack: After copying n=${builtFileCounter} top-level files or directories from './built' to './dist', there should be exactly n=${builtFileCounter} top-level items in './dist'. However, 0 top-level items were found in './dist'`);
+          throw new ReferenceError(`After copying n=${builtFileCounter} top-level files or directories from './built' to './dist', there should be exactly n=${builtFileCounter} top-level items in './dist'. However, 0 top-level items were found in './dist'`);
       } catch (e) {
         console.error(`npm run pack: Error filtering copied files in './dist': ${e}`);
         throw e;

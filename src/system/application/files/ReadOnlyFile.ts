@@ -11,7 +11,12 @@ class ReadOnlyFile extends _File {
   }
 
   static get File(): typeof File {
-    return _File;
+    try {
+      return _File;
+    } catch (e) {
+      console.error(`File::ReadOnlyFile: File: Failed to import module File: ${e}`);
+      throw e;
+    }
   }
 
 }

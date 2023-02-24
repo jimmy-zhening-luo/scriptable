@@ -1,4 +1,6 @@
-class Config {
+const co_Utility: typeof Utility = importModule("utility/Utility");
+
+class Config extends co_Utility {
 
   private readonly _APPLICATION_CONFIG_BOOKMARK: string = "@_APPLICATION_CONFIG";
 
@@ -8,6 +10,7 @@ class Config {
     configSubpath: string,
     programName: string
   ) {
+    super();
     this.file = new Config.ReadOnlyFile(
       this.configDirFile,
       this.ReadOnlyFile.join(
@@ -44,25 +47,6 @@ class Config {
       console.error(`Config.js: Error getting preconfigured application config bookmark '${this._APPLICATION_CONFIG_BOOKMARK}': ${e}`);
       throw e;
     }
-  }
-
-  private get applicationConfig(): ApplicationConfigProto {
-    try {
-      return JSON.parse(
-        FileManager.iCloud().readString(
-          FileManager.iCloud().bookmarkedPath(
-            this.applicationConfigBookmark
-          )
-        )
-      );
-    } catch (e) {
-      console.error(`Config.js: Error getting application config: ${e}`);
-      throw e;
-    }
-  }
-
-  get path(): typeof Config.prototype.file.path {
-    return this.file.path;
   }
 
   get isParseable(): boolean {
@@ -127,10 +111,6 @@ class Config {
       this.app,
       this.user
     );
-  }
-
-  toString(): typeof Config.prototype.file.data {
-    return this.file.data;
   }
 
   protected mergeSettings(
@@ -279,10 +259,6 @@ class Config {
 
   get ReadOnlyFile(): typeof ReadOnlyFile {
     return Config.ReadOnlyFile;
-  }
-
-  static get ReadOnlyFile(): typeof ReadOnlyFile {
-    return importModule("files/ReadOnlyFile");
   }
 
 }

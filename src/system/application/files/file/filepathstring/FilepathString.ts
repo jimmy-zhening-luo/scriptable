@@ -1,13 +1,13 @@
-class Filepath {
+class FilepathString {
 
-  readonly _nominalType: string = "Filepath";
-  private readonly _tree: Filepath.PathTree;
+  readonly _nominalType: string = "FilepathString";
+  private readonly _tree: FilepathString.PathTree;
 
   constructor(
     path:
       | string
       | string[]
-      | Filepath = "",
+      | FilepathString = "",
     requiredPathSegment: string = ""
   ) {
     this._tree = this.parse(
@@ -16,7 +16,7 @@ class Filepath {
     );
   }
 
-  get tree(): Filepath.PathTree {
+  get tree(): FilepathString.PathTree {
     return this._tree;
   }
 
@@ -24,8 +24,8 @@ class Filepath {
     return this.flattenRaw(this.tree);
   }
 
-  get isValid(): boolean {
-    return this.tree.length > 0;
+  get isEmpty(): boolean {
+    return this.tree.length === 0;
   }
 
   get parent(): string {
@@ -33,41 +33,41 @@ class Filepath {
   }
 
   get leaf(): string {
-    return this.isValid ?
+    return !this.isEmpty ?
       this.tree[this.tree.length - 1]
       : "";
   }
 
   append(
-    subpath: ConstructorParameters<typeof Filepath>[0],
-    requiredPathSegment: ConstructorParameters<typeof Filepath>[1] = ""
-  ): Filepath {
-    return new Filepath(
+    subpath: ConstructorParameters<typeof FilepathString>[0],
+    requiredPathSegment: ConstructorParameters<typeof FilepathString>[1] = ""
+  ): FilepathString {
+    return new FilepathString(
       this.walk(subpath),
       requiredPathSegment
     );
   }
 
   cd(
-    relativePath: ConstructorParameters<typeof Filepath>[0],
-    requiredPathSegment: ConstructorParameters<typeof Filepath>[1] = ""
-  ): Filepath {
-    return new Filepath(
+    relativePath: ConstructorParameters<typeof FilepathString>[0],
+    requiredPathSegment: ConstructorParameters<typeof FilepathString>[1] = ""
+  ): FilepathString {
+    return new FilepathString(
       this.walk(relativePath, true),
       requiredPathSegment
     );
   }
 
-  toTree(): typeof Filepath.prototype.tree {
+  toTree(): typeof FilepathString.prototype.tree {
     return this.tree;
   }
 
-  toString(): typeof Filepath.prototype.path {
+  toString(): typeof FilepathString.prototype.path {
     return this.path;
   }
 
   private walk(
-    relativePath: ConstructorParameters<typeof Filepath>[0],
+    relativePath: ConstructorParameters<typeof FilepathString>[0],
     backtrackOnDotDot: boolean = false
   ): string[] {
     const relativeTree: string[] = this.validate(relativePath);
@@ -81,11 +81,11 @@ class Filepath {
       else
         walked.push(node);
     }
-    return new Filepath(walked).toTree();
+    return new FilepathString(walked).toTree();
   }
 
   private parse(
-    path: ConstructorParameters<typeof Filepath>[0],
+    path: ConstructorParameters<typeof FilepathString>[0],
     requiredPathSegment: string
   ): string[] {
     const parsed: string[] = this.validate(path);
@@ -95,7 +95,7 @@ class Filepath {
   }
 
   private validate(
-    path: ConstructorParameters<typeof Filepath>[0]
+    path: ConstructorParameters<typeof FilepathString>[0]
   ): string[] {
     return this
       .clean(path)
@@ -109,7 +109,7 @@ class Filepath {
   }
 
   private clean(
-    path: ConstructorParameters<typeof Filepath>[0]
+    path: ConstructorParameters<typeof FilepathString>[0]
   ): string[] {
     return new this.StringSplitter(
       this.treeifyRaw(path),
@@ -123,7 +123,7 @@ class Filepath {
   }
 
   private treeifyRaw(
-    path: ConstructorParameters<typeof Filepath>[0]
+    path: ConstructorParameters<typeof FilepathString>[0]
   ): string[] {
     return this
       .flattenRaw(path)
@@ -131,7 +131,7 @@ class Filepath {
   }
 
   private flattenRaw(
-    path: ConstructorParameters<typeof Filepath>[0] = ""
+    path: ConstructorParameters<typeof FilepathString>[0] = ""
   ): string {
     return Array.isArray(path) ?
       path.join("/")
@@ -141,35 +141,35 @@ class Filepath {
   }
 
   static join(
-    left: ConstructorParameters<typeof Filepath>[0],
-    right: ConstructorParameters<typeof Filepath>[0] = "",
-    requiredPathSegment: ConstructorParameters<typeof Filepath>[1] = ""
+    left: ConstructorParameters<typeof FilepathString>[0],
+    right: ConstructorParameters<typeof FilepathString>[0] = "",
+    requiredPathSegment: ConstructorParameters<typeof FilepathString>[1] = ""
   ): string {
-    return new Filepath(left)
+    return new FilepathString(left)
       .append(right, requiredPathSegment)
       .toString();
   }
 
   static mutate(
-    path: ConstructorParameters<typeof Filepath>[0],
-    relativePath: ConstructorParameters<typeof Filepath>[0] = "",
-    requiredPathSegment: ConstructorParameters<typeof Filepath>[1] = ""
+    path: ConstructorParameters<typeof FilepathString>[0],
+    relativePath: ConstructorParameters<typeof FilepathString>[0] = "",
+    requiredPathSegment: ConstructorParameters<typeof FilepathString>[1] = ""
   ): string {
-    return new Filepath(path)
+    return new FilepathString(path)
       .cd(relativePath, requiredPathSegment)
       .toString();
   }
 
   static toString(
-    path: ConstructorParameters<typeof Filepath>[0]
-  ): ReturnType<typeof Filepath.prototype.toString> {
-    return new Filepath(path).toString();
+    path: ConstructorParameters<typeof FilepathString>[0]
+  ): ReturnType<typeof FilepathString.prototype.toString> {
+    return new FilepathString(path).toString();
   }
 
   static toTree(
-    path: ConstructorParameters<typeof Filepath>[0]
-  ): ReturnType<typeof Filepath.prototype.toTree> {
-    return new Filepath(path).toTree();
+    path: ConstructorParameters<typeof FilepathString>[0]
+  ): ReturnType<typeof FilepathString.prototype.toTree> {
+    return new FilepathString(path).toTree();
   }
 
   static [Symbol.hasInstance](instance: any): boolean {
@@ -178,29 +178,38 @@ class Filepath {
       && instance !== undefined
       && typeof instance === "object"
       && "_nominalType" in instance
-      && instance._nominalType === "Filepath"
+      && instance._nominalType === "FilepathString"
     );
   }
 
   private get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
-    return Filepath.ValidFilepathRepeater;
+    return FilepathString.ValidFilepathRepeater;
   }
 
   private get StringSplitter(): typeof StringSplitter {
-    return Filepath.StringSplitter;
+    return FilepathString.StringSplitter;
   }
 
   static get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
-    return importModule("validfilepathrepeater/ValidFilepathRepeater");
+    try {
+      return importModule("validfilepathrepeater/ValidFilepathRepeater");
+    } catch (e) {
+      console.error(`Filepath.ts: Failed to import module ValidFilepathRepeater: ${e}`);
+      throw e;
+    }
   }
 
   static get StringSplitter(): typeof StringSplitter {
-    return Filepath.ValidFilepathRepeater.StringSplitter;
+    return FilepathString.ValidFilepathRepeater.StringSplitter;
+  }
+
+  static get Manager(): FileManager {
+    return FileManager.iCloud();
   }
 
 }
 
-namespace Filepath {
+namespace FilepathString {
 
   export type PathTree =
     MinTuple<
@@ -210,4 +219,4 @@ namespace Filepath {
 
 }
 
-module.exports = Filepath;
+module.exports = FilepathString;
