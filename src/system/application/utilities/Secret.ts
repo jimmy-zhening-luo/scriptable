@@ -26,7 +26,7 @@ class Secret extends se_Utility {
   }
 
   private static get _secretBookmarkName(): string {
-    return Secret.applicationConfig.Secret;
+    return Secret._applicationConfig.Secret;
   }
 
 }

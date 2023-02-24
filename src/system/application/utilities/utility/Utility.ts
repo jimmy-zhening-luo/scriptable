@@ -5,11 +5,70 @@ abstract class Utility {
   protected readonly _file: File;
 
   constructor(
-    filetype: typeof File,
-    ...fileOrFilepath: ConstructorParameters<typeof File>
+    utilityName: string,
+    FileTypeConstructor: typeof File,
+    utilityFileSubpath: string
   ) {
-    this._file = new filetype(...fileOrFilepath);
+    try {
+      this._file = new FileTypeConstructor(
+        Utility._utilityRootBookmark(utilityName),
+        utilityFileSubpath
+      );
+    } catch (e) {
+      console.error(
+        `Utility: constructor: Caught unhandled exception while creating Utility file: ${e}`
+      );
+      throw e;
+    }
   }
+
+  private static _utilityRootBookmark(
+    utilityName: string
+  ): Bookmark {
+    try {
+      const utilityRootBookmarkName: string =
+        new Map<string, string>(
+          Object.entries(
+            Utility._applicationConfig
+          )
+        ).get(utilityName) ?? "";
+      if (utilityRootBookmarkName === "")
+        throw new ReferenceError(
+          `Utility class named '${utilityName}' is not configured in the application config. Each utility class should have a corresponding entry in the application config with [key: utility class name]: value: file root bookmark name.`
+        );
+      else {
+        return new Utility.Bookmark(utilityRootBookmarkName);
+      }
+    } catch (e) {
+      if (!(e instanceof ReferenceError))
+        e = new Error(
+          `Utility: _utilityRootBookmark: Caught unhandled exception while getting utility root bookmark name for the Utility class named '${utilityName}'. See unhandled exception: ${e}`
+        );
+      console.error(
+        `Utility: _utilityRootBookmark: Error while getting Utility root bookmark for the Utility class named '${utilityName}': ${e}`
+      );
+      throw e;
+    }
+  }
+
+  private static get _applicationConfig(): ApplicationConfigProto {
+    try {
+      return JSON.parse(
+        new Utility.ReadOnlyFile(
+          new Utility.Bookmark(
+            Utility._APPLICATION_CONFIG_BOOKMARK
+          )
+        )
+          .data
+      );
+    } catch (e) {
+      console.error(
+        `Utility: applicationConfig: Caught unhandled exception while parsing application config into JSON object: ${e}`
+      );
+      throw e;
+    }
+  }
+
   get exists(): boolean {
     return this._file.exists;
   }
@@ -30,7 +89,9 @@ abstract class Utility {
     try {
       return this._file.data;
     } catch (e) {
-      console.error(`Utility: data: Error getting data: ${e}`);
+      console.error(
+        `Utility: data: Error getting data: ${e}`
+      );
       throw e;
     }
   }
@@ -39,7 +100,9 @@ abstract class Utility {
     try {
       return this._file.read();
     } catch (e) {
-      console.error(`Utility: read: Error reading file: ${e}`);
+      console.error(
+        `Utility: read: Error reading file: ${e}`
+      );
       throw e;
     }
   }
@@ -48,31 +111,15 @@ abstract class Utility {
     return this.data;
   }
 
-  protected static get applicationConfig(): ApplicationConfigProto {
-    try {
-      return JSON.parse(Utility._applicationConfigFile.data);
-    } catch (e) {
-      console.error(`Utility: applicationConfig: Caught unhandled exception while parsing application config into JSON object: ${e}`);
-      throw e;
-    }
-  }
-
-  private static get _applicationConfigFile(): ReadOnlyFile {
-    try {
-      return new Utility.ReadOnlyFile(
-        new Utility.Bookmark(Utility._APPLICATION_CONFIG_BOOKMARK)
-      );
-    } catch (e) {
-      console.error(`Utility: _applicationConfig: Error getting application config: ${e}`);
-      throw e;
-    }
-  }
-
   static get Files(): typeof Files {
     try {
-      return importModule("./system/application/files/Files");
+      return importModule(
+        "./system/application/files/Files"
+      );
     } catch (e) {
-      console.error(`Utility: Files: Error importing Files module: ${e}`);
+      console.error(
+        `Utility: Files: Error importing Files module: ${e}`
+      );
       throw e;
     }
   }

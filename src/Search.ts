@@ -11,7 +11,7 @@ namespace Search {
       const query: SearchQuery = new SearchQuery(args
         .plainTexts
         ?.shift()
-        ?? String()
+        ?? ""
       );
 
       const searchShortcutConfig: SearchProto = this
@@ -20,8 +20,9 @@ namespace Search {
       const querytag: string = searchShortcutConfig
         .user
         .queryTag;
-      if (querytag === undefined
-        || query.searchKey === String()
+      if (
+        querytag === undefined
+        || query.searchKey === ""
       )
         return null;
       else {
@@ -74,7 +75,7 @@ namespace Search {
         .shift()
         ?.toLowerCase()
         ?.replace(".", "")
-        ?? String();
+        ?? "";
       this.searchTerms = tokens;
     }
 

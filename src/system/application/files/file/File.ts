@@ -24,17 +24,21 @@ class File {
             new File.FilepathString(base.path)
             : this.parse(base);
       } catch (e) {
-        console.error(`Error parsing base: ${e}`);
-        throw e;
+        throw new SyntaxError(
+          `Error parsing base: ${e}`
+        );
       }
       try {
         this._subpath = this.parse(subpath);
       } catch (e) {
-        console.error(`Error parsing subpath: ${e}`);
-        throw e;
+        throw new SyntaxError(
+          `Error parsing subpath: ${e}`
+        );
       }
     } catch (e) {
-      console.error(`File: constructor: Error constructing File: ${e}`);
+      console.error(
+        `File: constructor: Error constructing File: ${e}`
+      );
       throw e;
     }
   }
