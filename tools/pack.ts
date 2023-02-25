@@ -17,9 +17,11 @@ namespace _Pack_Tool {
         `${new Date().toTimeString()}: npm run pack: Pack job completed successfully`
       )
     } catch (e) {
-      console.error(
+      e = new Error(
         `npm run pack: Canceled job due to encountered error: ${e}`
-      );
+      )
+      console.error(e);
+      throw e;
     }
 
 

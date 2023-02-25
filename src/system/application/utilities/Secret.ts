@@ -9,10 +9,8 @@ class Secret extends se_Utility {
     subpath: string
   ) {
     super(
+      "Secret",
       Secret.ReadOnlyFile,
-      new Secret.ReadOnlyFile.Bookmark(
-        Secret._secretBookmarkName
-      ),
       subpath
     );
   }
@@ -23,10 +21,6 @@ class Secret extends se_Utility {
 
   get key(): typeof Secret.prototype.secret {
     return this.secret;
-  }
-
-  private static get _secretBookmarkName(): string {
-    return Secret._applicationConfig.Secret;
   }
 
 }

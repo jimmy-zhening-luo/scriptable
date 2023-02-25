@@ -1,61 +1,245 @@
 class FilepathString {
 
   readonly _nominalType: string = "FilepathString";
-  private readonly _tree: FilepathString.PathTree;
+  private _tree: string[];
 
   constructor(
     path:
       | string
       | string[]
-      | FilepathString = "",
+      | FilepathString = ""
+    ,
     requiredPathSegment: string = ""
+    ,
   ) {
-    this._tree = this.parse(
-      path,
-      requiredPathSegment
-    );
+    try {
+      this._tree = this._parse(
+        path,
+        requiredPathSegment
+      );
+    } catch (e) {
+      throw new Error(
+        `FilepathString: constructor: Caught unhandled exception while instantiating FilepathString by parsing path: ${e}`
+      );
+    }
   }
 
-  get tree(): FilepathString.PathTree {
-    return this._tree;
+  private _parse(
+    path:
+      ConstructorParameters<typeof FilepathString>[0]
+    ,
+    requiredPathSegment:
+      string
+    ,
+  ): string[] {
+    try {
+      const parsed: string[] = this
+        ._validate(path);
+      return this
+        ._flattenRaw(parsed)
+        .includes(requiredPathSegment) ?
+        parsed
+        : [];
+    } catch (e) {
+      throw new Error(
+        `FilepathString: _parse: Caught unhandled exception while parsing path: ${e}`
+      );
+    }
+  }
+
+  private _validate(
+    path:
+      ConstructorParameters<typeof FilepathString>[0]
+    ,
+  ): string[] {
+    try {
+      return this
+        ._clean(path)
+        .some(node =>
+          new this
+            .ValidFilepathRepeater(node)
+            .value === null
+        ) ?
+        []
+        : this._clean(path);
+    } catch (e) {
+      throw new Error(
+        `FilepathString: _validate: Caught unhandled exception while validating path: ${e}`
+      );
+    }
+  }
+
+  private _clean(
+    path: ConstructorParameters<typeof FilepathString>[0]
+  ): string[] {
+    try {
+      return new this.StringSplitter(
+        this._treeifyRaw(path),
+        "/",
+        {
+          trim: true,
+          trimTokens: true,
+          ignoreEmptyTokens: true
+        }
+      ).toTuple();
+    } catch (e) {
+      throw new Error(
+        `FilepathString: _clean: Caught unhandled exception while cleaning path using StringSplitter instance: ${e}`
+      );
+    }
+  }
+
+  private _treeifyRaw(
+    path: ConstructorParameters<typeof FilepathString>[0]
+  ): string[] {
+    try {
+    return this
+      ._flattenRaw(path)
+      .split("/");
+    } catch (e) {
+      throw new Error(
+        `FilepathString: _treeifyRaw: Caught unhandled exception while treeifying raw path: ${e}`
+      );
+    }
+  }
+
+  private _flattenRaw(
+    path: ConstructorParameters<typeof FilepathString>[0] = ""
+  ): string {
+    try {
+    return Array.isArray(path) ?
+      path.join("/")
+      : typeof path === "string" ?
+        path
+        : path.toString();
+    } catch (e) {
+      throw new Error(
+        `FilepathString: _flattenRaw: Caught unhandled exception while flattening raw path: ${e}`
+      );
+    }
+  }
+
+  private _walk(
+    relativePath:
+      ConstructorParameters<typeof FilepathString>[0]
+    ,
+    backtrackOnDotDot:
+      boolean = false
+    ,
+  ): string[] {
+    try {
+      const relativeTree: string[] =
+        this._validate(
+          relativePath
+        );
+      const walked: string[] =
+        this.tree;
+      for (const node of relativeTree) {
+        if (
+          node === ".."
+          && backtrackOnDotDot
+        )
+          walked.pop();
+        else
+          walked.push(
+            node
+          );
+      }
+      return new FilepathString(
+        walked
+      )
+        .toTree();
+    } catch (e) {
+      throw new Error(
+        `FilepathString: _walk: Caught unhandled exception while walking path: ${e}`
+      );
+    }
+  }
+
+  get tree(): typeof FilepathString.prototype._tree {
+    try {
+      return this._tree;
+    } catch (e) {
+      throw new Error(`FilepathString: get tree: Caught unhandled exception while getting tree: ${e}`);
+    }
   }
 
   get path(): string {
-    return this.flattenRaw(this.tree);
+    try {
+    return this._flattenRaw(
+      this.tree
+      );
+    } catch (e) {
+      throw new Error(`FilepathString: get path: Caught unhandled exception while getting path: ${e}`);
+    }
   }
 
   get isEmpty(): boolean {
-    return this.tree.length === 0;
+    try {
+    return this
+      .tree
+        .length === 0;
+    } catch (e) {
+      throw new Error(`FilepathString: get isEmpty: Caught unhandled exception while getting isEmpty: ${e}`);
+    }
   }
 
   get parent(): string {
-    return this.cd("..").toString();
+    try {
+    return this
+      .cd("..")
+        .toString();
+    } catch (e) {
+      throw new Error(`FilepathString: get parent: Caught unhandled exception while getting parent: ${e}`);
+    }
   }
 
   get leaf(): string {
+    try {
     return !this.isEmpty ?
       this.tree[this.tree.length - 1]
-      : "";
+        : "";
+    } catch (e) {
+      throw new Error(`FilepathString: get leaf: Caught unhandled exception while getting leaf: ${e}`);
+    }
   }
 
   append(
     subpath: ConstructorParameters<typeof FilepathString>[0],
     requiredPathSegment: ConstructorParameters<typeof FilepathString>[1] = ""
-  ): FilepathString {
-    return new FilepathString(
-      this.walk(subpath),
-      requiredPathSegment
-    );
+  ): this {
+    try {
+      this._tree = new FilepathString(
+        this._walk(
+          subpath
+        ),
+        requiredPathSegment
+      )
+        .tree;
+      return this;
+    } catch (e) {
+      throw new Error(`FilepathString: append: Caught unhandled exception while appending path by calling private FilepathString._walk(): ${e}`);
+    }
+
   }
 
   cd(
     relativePath: ConstructorParameters<typeof FilepathString>[0],
     requiredPathSegment: ConstructorParameters<typeof FilepathString>[1] = ""
-  ): FilepathString {
-    return new FilepathString(
-      this.walk(relativePath, true),
-      requiredPathSegment
-    );
+  ): this {
+    try {
+      this._tree = new FilepathString(
+        this._walk(
+          relativePath,
+          true
+        ),
+        requiredPathSegment
+      )
+        .tree;
+      return this;
+    } catch (e) {
+      throw new Error(`FilepathString: cd: Caught unhandled exception while changing directories by calling private FilepathString._walk(): ${e}`);
+    }
   }
 
   toTree(): typeof FilepathString.prototype.tree {
@@ -66,88 +250,18 @@ class FilepathString {
     return this.path;
   }
 
-  private walk(
-    relativePath: ConstructorParameters<typeof FilepathString>[0],
-    backtrackOnDotDot: boolean = false
-  ): string[] {
-    const relativeTree: string[] = this.validate(relativePath);
-    const walked: string[] = this.tree;
-    for (const node of relativeTree) {
-      if (
-        node === ".."
-        && backtrackOnDotDot
-      )
-        walked.pop();
-      else
-        walked.push(node);
-    }
-    return new FilepathString(walked).toTree();
-  }
-
-  private parse(
-    path: ConstructorParameters<typeof FilepathString>[0],
-    requiredPathSegment: string
-  ): string[] {
-    const parsed: string[] = this.validate(path);
-    return this.flattenRaw(parsed).includes(requiredPathSegment) ?
-      parsed
-      : [];
-  }
-
-  private validate(
-    path: ConstructorParameters<typeof FilepathString>[0]
-  ): string[] {
-    return this
-      .clean(path)
-      .some(node =>
-        new this
-          .ValidFilepathRepeater(node)
-          .value === null
-      ) ?
-      []
-      : this.clean(path);
-  }
-
-  private clean(
-    path: ConstructorParameters<typeof FilepathString>[0]
-  ): string[] {
-    return new this.StringSplitter(
-      this.treeifyRaw(path),
-      "/",
-      {
-        trim: true,
-        trimTokens: true,
-        ignoreEmptyTokens: true
-      }
-    ).toTuple();
-  }
-
-  private treeifyRaw(
-    path: ConstructorParameters<typeof FilepathString>[0]
-  ): string[] {
-    return this
-      .flattenRaw(path)
-      .split("/");
-  }
-
-  private flattenRaw(
-    path: ConstructorParameters<typeof FilepathString>[0] = ""
-  ): string {
-    return Array.isArray(path) ?
-      path.join("/")
-      : typeof path === "string" ?
-        path
-        : path.toString();
-  }
-
   static join(
     left: ConstructorParameters<typeof FilepathString>[0],
     right: ConstructorParameters<typeof FilepathString>[0] = "",
     requiredPathSegment: ConstructorParameters<typeof FilepathString>[1] = ""
   ): string {
-    return new FilepathString(left)
-      .append(right, requiredPathSegment)
-      .toString();
+    try {
+      return new FilepathString(left)
+        .append(right, requiredPathSegment)
+        .toString();
+    } catch (e) {
+      throw new Error(`FilepathString: join: Caught unhandled exception while creating a new FilepathString to join paths: ${e}`);
+    }
   }
 
   static mutate(
@@ -155,31 +269,47 @@ class FilepathString {
     relativePath: ConstructorParameters<typeof FilepathString>[0] = "",
     requiredPathSegment: ConstructorParameters<typeof FilepathString>[1] = ""
   ): string {
-    return new FilepathString(path)
-      .cd(relativePath, requiredPathSegment)
-      .toString();
+    try {
+      return new FilepathString(path)
+        .cd(relativePath, requiredPathSegment)
+        .toString();
+    } catch (e) {
+      throw new Error(`FilepathString: mutate: Caught unhandled exception while creating a new FilepathString to mutate path: ${e}`);
+    }
   }
 
   static toString(
     path: ConstructorParameters<typeof FilepathString>[0]
   ): ReturnType<typeof FilepathString.prototype.toString> {
-    return new FilepathString(path).toString();
+    try {
+      return new FilepathString(path).toString();
+    } catch (e) {
+      throw new Error(`FilepathString: toString: Caught unhandled exception while creating a new FilepathString to convert path to string: ${e}`);
+    }
   }
 
   static toTree(
     path: ConstructorParameters<typeof FilepathString>[0]
   ): ReturnType<typeof FilepathString.prototype.toTree> {
-    return new FilepathString(path).toTree();
+    try {
+      return new FilepathString(path).toTree();
+    } catch (e) {
+      throw new Error(`FilepathString: toTree: Caught unhandled exception while creating a new FilepathString to convert path to tree: ${e}`);
+    }
   }
 
   static [Symbol.hasInstance](instance: any): boolean {
+    try {
     return (
       instance !== null
       && instance !== undefined
       && typeof instance === "object"
       && "_nominalType" in instance
       && instance._nominalType === "FilepathString"
-    );
+      );
+    } catch (e) {
+      throw new Error(`FilepathString: [Symbol.hasInstance]: Caught unhandled exception while checking if instance is a FilepathString: ${e}`);
+    }
   }
 
   private get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
@@ -194,7 +324,8 @@ class FilepathString {
     try {
       return importModule("validfilepathrepeater/ValidFilepathRepeater");
     } catch (e) {
-      console.error(`Filepath.ts: Failed to import module ValidFilepathRepeater: ${e}`);
+      e = new Error(`Filepath: Failed to import module ValidFilepathRepeater: ${e}`);
+      console.error(e);
       throw e;
     }
   }
@@ -206,16 +337,6 @@ class FilepathString {
   static get Manager(): FileManager {
     return FileManager.iCloud();
   }
-
-}
-
-namespace FilepathString {
-
-  export type PathTree =
-    MinTuple<
-      stringful<string>,
-      0
-    >;
 
 }
 

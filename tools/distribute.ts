@@ -11,9 +11,10 @@ namespace _Distribution_Tool {
     try {
       _az_clean_upload(_hydrateEnv());
     } catch (e) {
-      console.error(
+      e = new Error(
         `npm run distribute: Canceled job due to encountered error: ${e}`
-      )
+      );
+      console.error(e)
       throw e;
     }
 

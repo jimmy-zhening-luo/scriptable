@@ -5,24 +5,33 @@ class ValidFilepathRepeater extends (vps_Strings.ValidString) {
   constructor(
     pathSegment: string = "",
   ) {
-    super(
-      pathSegment ?? "",
-      1,
-      255,
-      {},
-      {
-        negateAllowedChars: true
-      },
-      ...ValidFilepathRepeater.Char.colon,
-      ...ValidFilepathRepeater.Char.slash
-    );
+    try {
+      super(
+        pathSegment ?? "",
+        1,
+        255,
+        {},
+        {
+          negateAllowedChars: true
+        },
+        ...ValidFilepathRepeater.Char.colon,
+        ...ValidFilepathRepeater.Char.slash
+      );
+    } catch (e) {
+      throw new Error(
+        `ValidFilepathRepeater: constructor: Caught unhandled exception instantiating parent class ValidFilepathRepeater: ${e}`
+      );
+    }
   }
 
   static get Strings(): typeof Strings {
     try {
       return vps_Strings;
     } catch (e) {
-      console.error(`ValidFilepathRepeater: Strings: Error importing Strings class: ${e}`);
+      e = new Error(
+        `ValidFilepathRepeater: Strings: Caught unhandled exception while importing Strings class: ${e}`
+      );
+      console.error(e);
       throw e;
     }
   }

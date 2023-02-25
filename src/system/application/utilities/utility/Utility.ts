@@ -1,6 +1,8 @@
+const _APPLICATION_CONFIG_BOOKMARK: string = "@_APPLICATION_CONFIG";
+
 abstract class Utility {
 
-  private static readonly _APPLICATION_CONFIG_BOOKMARK: string = "@_APPLICATION_CONFIG";
+  private static readonly _APPLICATION_CONFIG_BOOKMARK: string = _APPLICATION_CONFIG_BOOKMARK;
 
   protected readonly _file: File;
 
@@ -11,14 +13,15 @@ abstract class Utility {
   ) {
     try {
       this._file = new FileTypeConstructor(
-        Utility._utilityRootBookmark(utilityName),
+        Utility._utilityRootBookmark(
+          utilityName
+        ),
         utilityFileSubpath
       );
     } catch (e) {
-      console.error(
+      throw new Error(
         `Utility: constructor: Caught unhandled exception while creating Utility file: ${e}`
       );
-      throw e;
     }
   }
 
@@ -31,23 +34,28 @@ abstract class Utility {
           Object.entries(
             Utility._applicationConfig
           )
-        ).get(utilityName) ?? "";
+        )
+          .get(
+            utilityName
+          )
+        ?? "";
       if (utilityRootBookmarkName === "")
         throw new ReferenceError(
           `Utility class named '${utilityName}' is not configured in the application config. Each utility class should have a corresponding entry in the application config with [key: utility class name]: value: file root bookmark name.`
         );
       else {
-        return new Utility.Bookmark(utilityRootBookmarkName);
+        return new Utility.Bookmark(
+          utilityRootBookmarkName
+        );
       }
     } catch (e) {
       if (!(e instanceof ReferenceError))
         e = new Error(
-          `Utility: _utilityRootBookmark: Caught unhandled exception while getting utility root bookmark name for the Utility class named '${utilityName}'. See unhandled exception: ${e}`
+          `Caught unhandled exception while getting utility root bookmark name for the Utility class named '${utilityName}'. See unhandled exception: ${e}`
         );
-      console.error(
-        `Utility: _utilityRootBookmark: Error while getting Utility root bookmark for the Utility class named '${utilityName}': ${e}`
+      throw new Error(
+        `Error while getting Utility root bookmark for the Utility class named '${utilityName}': ${e}`
       );
-      throw e;
     }
   }
 
@@ -62,10 +70,9 @@ abstract class Utility {
           .data
       );
     } catch (e) {
-      console.error(
+      throw new Error(
         `Utility: applicationConfig: Caught unhandled exception while parsing application config into JSON object: ${e}`
       );
-      throw e;
     }
   }
 
@@ -89,10 +96,9 @@ abstract class Utility {
     try {
       return this._file.data;
     } catch (e) {
-      console.error(
+      throw new Error(
         `Utility: data: Error getting data: ${e}`
       );
-      throw e;
     }
   }
 
@@ -100,10 +106,9 @@ abstract class Utility {
     try {
       return this._file.read();
     } catch (e) {
-      console.error(
+      throw new Error(
         `Utility: read: Error reading file: ${e}`
       );
-      throw e;
     }
   }
 
