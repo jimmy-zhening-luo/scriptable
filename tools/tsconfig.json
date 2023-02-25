@@ -1,0 +1,7 @@
+{
+  "include": ["**/*"],
+  "compilerOptions": {
+    "noEmit": false /* Disable emitting files from a compilation. */
+  },
+  "typeRoots": ["./node_modules/@types"]
+}

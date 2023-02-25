@@ -4,7 +4,7 @@ class Bookmark {
   readonly bookmark: string;
 
   constructor(
-    bookmark: string = ""
+    bookmark = ""
   ) {
     try {
       this.bookmark = bookmark.trim();

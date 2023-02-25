@@ -7,22 +7,21 @@ namespace _Distribution_Tool {
 
     console.log(
       `${new Date().toTimeString()}: npm run distribute: Starting distribution...`
-    )
+    );
     try {
       _az_clean_upload(_hydrateEnv());
     } catch (e) {
       e = new Error(
         `npm run distribute: Canceled job due to encountered error: ${e}`
       );
-      console.error(e)
+      console.error(e);
       throw e;
     }
 
     function _hydrateEnv(): AzCopyScriptVariables {
       try {
         dotenv.config();
-        const TEMPLATE_EXAMPLE_URL_BLOBSTORE_CONTAINER:
-          string =
+        const TEMPLATE_EXAMPLE_URL_BLOBSTORE_CONTAINER =
           "https://<your-blob-store>.blob.core.windows.net/<your-container>";
         const azCopyScriptVariables:
           AzCopyScriptVariables = {
@@ -87,7 +86,7 @@ namespace _Distribution_Tool {
             .clean,
           ps_exec_scripts
             .upload,
-        )
+        );
       } catch (e) {
         throw new Error(
           `npm run distribute: azure_clean_upload: Error while executing azcopy commands: ${e}`
@@ -120,7 +119,7 @@ namespace _Distribution_Tool {
               )
                 console.log(
                   `npm run distribute: azure_clean_upload: ps_exec: SUCCESS, completed script and Azure Storage Web API returned success without errors.`
-                )
+                );
               else
                 console.warn(
                   `_ps_exec: PARTIAL SUCCESS: Completed current script with errors: ${stdout}`
@@ -155,7 +154,7 @@ namespace _Distribution_Tool {
           `Number of File Transfers Skipped: 0`,
           `Number of Folder Transfers Skipped: 0`,
           `Final Job Status: Completed`
-        ]
+        ];
         return successCriteriaOutputLines
           .every(successOutputLine =>
             stdout.includes(
@@ -170,12 +169,12 @@ namespace _Distribution_Tool {
     executablePath: string;
     sourceDistPath: string;
     blobStoreContainerUrl: string;
-  }
+  };
 
   export type AzCopyScripts = {
     clean: string;
     upload: string;
-  }
+  };
 
 }
 

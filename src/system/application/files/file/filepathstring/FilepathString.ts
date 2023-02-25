@@ -93,9 +93,9 @@ class FilepathString {
     path: ConstructorParameters<typeof FilepathString>[0]
   ): string[] {
     try {
-    return this
-      ._flattenRaw(path)
-      .split("/");
+      return this
+        ._flattenRaw(path)
+        .split("/");
     } catch (e) {
       throw new Error(
         `FilepathString: _treeifyRaw: Caught unhandled exception while treeifying raw path: ${e}`
@@ -107,11 +107,11 @@ class FilepathString {
     path: ConstructorParameters<typeof FilepathString>[0] = ""
   ): string {
     try {
-    return Array.isArray(path) ?
-      path.join("/")
-      : typeof path === "string" ?
-        path
-        : path.toString();
+      return Array.isArray(path) ?
+        path.join("/")
+        : typeof path === "string" ?
+          path
+          : path.toString();
     } catch (e) {
       throw new Error(
         `FilepathString: _flattenRaw: Caught unhandled exception while flattening raw path: ${e}`
@@ -166,8 +166,8 @@ class FilepathString {
 
   get path(): string {
     try {
-    return this._flattenRaw(
-      this.tree
+      return this._flattenRaw(
+        this.tree
       );
     } catch (e) {
       throw new Error(`FilepathString: get path: Caught unhandled exception while getting path: ${e}`);
@@ -176,8 +176,8 @@ class FilepathString {
 
   get isEmpty(): boolean {
     try {
-    return this
-      .tree
+      return this
+        .tree
         .length === 0;
     } catch (e) {
       throw new Error(`FilepathString: get isEmpty: Caught unhandled exception while getting isEmpty: ${e}`);
@@ -186,8 +186,8 @@ class FilepathString {
 
   get parent(): string {
     try {
-    return this
-      .cd("..")
+      return this
+        .cd("..")
         .toString();
     } catch (e) {
       throw new Error(`FilepathString: get parent: Caught unhandled exception while getting parent: ${e}`);
@@ -196,8 +196,8 @@ class FilepathString {
 
   get leaf(): string {
     try {
-    return !this.isEmpty ?
-      this.tree[this.tree.length - 1]
+      return !this.isEmpty ?
+        this.tree[this.tree.length - 1]
         : "";
     } catch (e) {
       throw new Error(`FilepathString: get leaf: Caught unhandled exception while getting leaf: ${e}`);
@@ -300,12 +300,12 @@ class FilepathString {
 
   static [Symbol.hasInstance](instance: any): boolean {
     try {
-    return (
-      instance !== null
-      && instance !== undefined
-      && typeof instance === "object"
-      && "_nominalType" in instance
-      && instance._nominalType === "FilepathString"
+      return (
+        instance !== null
+        && instance !== undefined
+        && typeof instance === "object"
+        && "_nominalType" in instance
+        && instance._nominalType === "FilepathString"
       );
     } catch (e) {
       throw new Error(`FilepathString: [Symbol.hasInstance]: Caught unhandled exception while checking if instance is a FilepathString: ${e}`);

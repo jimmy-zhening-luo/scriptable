@@ -15,11 +15,11 @@ namespace _Pack_Tool {
       );
       console.log(
         `${new Date().toTimeString()}: npm run pack: Pack job completed successfully`
-      )
+      );
     } catch (e) {
       e = new Error(
         `npm run pack: Canceled job due to encountered error: ${e}`
-      )
+      );
       console.error(e);
       throw e;
     }
@@ -80,9 +80,9 @@ namespace _Pack_Tool {
             || file.endsWith(".d.ts.map")
             || file.endsWith(".js.map")
             || file.endsWith("tsconfig.tsbuildinfo")
-          ) {
+          )
             shell.rm("-rf", `dist/${file}`);
-          }
+
         });
         if (
           builtFileCounter !== 0
