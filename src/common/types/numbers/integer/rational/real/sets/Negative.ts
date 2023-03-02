@@ -4,13 +4,21 @@ const n_Cardinality: typeof Cardinality = importModule(
 
 class Negative extends n_Cardinality {
   override isCardinal(value: number): boolean {
-    return (
-      super.isCardinal(value) && (value === 0 || value === -0 || value < 0)
-    );
+    try {
+      return (
+        super.isCardinal(value) && (value === 0 || value === -0 || value < 0)
+      );
+    } catch (e) {
+      throw new Error("Negative: error calling isCardinal");
+    }
   }
 
   static get Cardinality(): typeof Cardinality {
-    return n_Cardinality;
+    try {
+      return n_Cardinality;
+    } catch (e) {
+      throw new ReferenceError("Negative: error importing Cardinality module");
+    }
   }
 }
 

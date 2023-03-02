@@ -7,186 +7,324 @@ class Rational extends _Real {
 
   constructor(value: number | string | Rational) {
     super();
-    value = this.parse(value);
-    this.value = this.qualifies(value) ? (value === -0 ? 0 : value) : null;
+    try {
+      value = this.parse(value);
+      this.value = this.qualifies(value) ? (value === -0 ? 0 : value) : null;
+    } catch (e) {
+      throw new Error("Rational: error constructing Rational");
+    }
   }
 
   private parse(value: ConstructorParameters<typeof Rational>[0]): number {
-    if (typeof value === "string") {
-      if (value === "Infinity") return Infinity;
-      else if (value === "-Infinity") return -Infinity;
-      else if (value === "NaN") return NaN;
-      else {
-        if (value.includes("."))
-          return Number.isNaN(Number.parseFloat(value))
-            ? NaN
-            : Number.parseFloat(value);
-        else
-          return Number.isNaN(Number.parseInt(value))
-            ? NaN
-            : Number.parseInt(value);
-      }
-    } else if (typeof value === "number") return value;
-    else if (value instanceof Object) return value.number;
-    else return NaN;
+    try {
+      if (typeof value === "string") {
+        if (value === "Infinity") return Infinity;
+        else if (value === "-Infinity") return -Infinity;
+        else if (value === "NaN") return NaN;
+        else {
+          if (value.includes("."))
+            return Number.isNaN(Number.parseFloat(value))
+              ? NaN
+              : Number.parseFloat(value);
+          else
+            return Number.isNaN(Number.parseInt(value))
+              ? NaN
+              : Number.parseInt(value);
+        }
+      } else if (typeof value === "number") return value;
+      else if (value instanceof Object) return value.number;
+      else return NaN;
+    } catch (e) {
+      throw new SyntaxError("Rational: error parsing value");
+    }
   }
 
   protected qualifies(value: number): boolean {
-    return this.bounds.isBounded(value) && this.cardinality.isCardinal(value);
+    try {
+      return this.bounds.isBounded(value) && this.cardinality.isCardinal(value);
+    } catch (e) {
+      throw new Error("Rational: error calling qualifies");
+    }
   }
 
   get isValidNumber(): boolean {
-    return this.value !== null && !Number.isNaN(this.value);
+    try {
+      return this.value !== null && !Number.isNaN(this.value);
+    } catch (e) {
+      throw new Error("Rational: error calling isValidNumber");
+    }
   }
 
   get number(): number {
-    return this.isValidNumber ? this.value! : NaN;
+    try {
+      return this.isValidNumber ? this.value! : NaN;
+    } catch (e) {
+      throw new Error("Rational: error calling number");
+    }
   }
 
   get isNaN(): boolean {
-    return Number.isNaN(this.number);
+    try {
+      return Number.isNaN(this.number);
+    } catch (e) {
+      throw new Error("Rational: error calling isNaN");
+    }
   }
 
   get isZero(): boolean {
-    return this.number === 0 || this.number === -0;
+    try {
+      return this.number === 0 || this.number === -0;
+    } catch (e) {
+      throw new Error("Rational: error calling isZero");
+    }
   }
 
   get isFinite(): boolean {
-    return Number.isFinite(this.number);
+    try {
+      return Number.isFinite(this.number);
+    } catch (e) {
+      throw new Error("Rational: error calling isFinite");
+    }
   }
 
   get isInfinite(): boolean {
-    return this.isPositiveInfinite || this.isNegativeInfinite;
+    try {
+      return this.isPositiveInfinite || this.isNegativeInfinite;
+    } catch (e) {
+      throw new Error("Rational: error calling isInfinite");
+    }
   }
 
   get isPositiveInfinite(): boolean {
-    return this.number === Infinity;
+    try {
+      return this.number === Infinity;
+    } catch (e) {
+      throw new Error("Rational: error calling isPositiveInfinite");
+    }
   }
 
   get isNegativeInfinite(): boolean {
-    return this.number === -Infinity;
+    try {
+      return this.number === -Infinity;
+    } catch (e) {
+      throw new Error("Rational: error calling isNegativeInfinite");
+    }
   }
 
   get isStrictlyPositive(): boolean {
-    return this.number > 0;
+    try {
+      return this.number > 0;
+    } catch (e) {
+      throw new Error("Rational: error calling isStrictlyPositive");
+    }
   }
 
   get isStrictlyNegative(): boolean {
-    return this.number < 0;
+    try {
+      return this.number < 0;
+    } catch (e) {
+      throw new Error("Rational: error calling isStrictlyNegative");
+    }
   }
 
   get isPositive(): boolean {
-    return this.isZero || this.isStrictlyPositive;
+    try {
+      return this.isZero || this.isStrictlyPositive;
+    } catch (e) {
+      throw new Error("Rational: error calling isPositive");
+    }
   }
 
   get isNegative(): boolean {
-    return this.isZero || this.isStrictlyNegative;
+    try {
+      return this.isZero || this.isStrictlyNegative;
+    } catch (e) {
+      throw new Error("Rational: error calling isNegative");
+    }
   }
 
   get isFiniteInteger(): boolean {
-    return Number.isSafeInteger(this.number);
+    try {
+      return Number.isSafeInteger(this.number);
+    } catch (e) {
+      throw new Error(
+        "Rational: error calling isFiniteInteger using static isSafeInteger",
+      );
+    }
   }
 
   get isInteger(): boolean {
-    return this.isFiniteInteger || this.isInfinite;
+    try {
+      return this.isFiniteInteger || this.isInfinite;
+    } catch (e) {
+      throw new Error("Rational: error calling isInteger");
+    }
   }
 
-  get string(): string {
-    return this.isValidNumber ? String() : String(this.value);
+  get stringValue(): string {
+    try {
+      return this.isValidNumber ? String() : String(this.value);
+    } catch (e) {
+      throw new Error("Rational: error calling string");
+    }
   }
 
   static isValidNumber(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isValidNumber {
-    return new Rational(value).isValidNumber;
+    try {
+      return new Rational(value).isValidNumber;
+    } catch (e) {
+      throw new Error("Rational: error calling static isValidNumber");
+    }
   }
 
   static number(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.number {
-    return new Rational(value).number;
+    try {
+      return new Rational(value).number;
+    } catch (e) {
+      throw new Error("Rational: error calling static number");
+    }
   }
 
   static isNaN(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isNaN {
-    return new Rational(value).isNaN;
+    try {
+      return new Rational(value).isNaN;
+    } catch (e) {
+      throw new Error("Rational: error calling static isNaN");
+    }
   }
 
   static isZero(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isZero {
-    return new Rational(value).isZero;
+    try {
+      return new Rational(value).isZero;
+    } catch (e) {
+      throw new Error("Rational: error calling static isZero");
+    }
   }
 
   static isFinite(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isFinite {
-    return new Rational(value).isFinite;
+    try {
+      return new Rational(value).isFinite;
+    } catch (e) {
+      throw new Error("Rational: error calling static isFinite");
+    }
   }
 
   static isInfinite(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isInfinite {
-    return new Rational(value).isInfinite;
+    try {
+      return new Rational(value).isInfinite;
+    } catch (e) {
+      throw new Error("Rational: error calling static isInfinite");
+    }
   }
 
   static isPositiveInfinite(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isPositiveInfinite {
-    return new Rational(value).isPositiveInfinite;
+    try {
+      return new Rational(value).isPositiveInfinite;
+    } catch (e) {
+      throw new Error("Rational: error calling static isPositiveInfinite");
+    }
   }
 
   static isNegativeInfinite(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isNegativeInfinite {
-    return new Rational(value).isNegativeInfinite;
+    try {
+      return new Rational(value).isNegativeInfinite;
+    } catch (e) {
+      throw new Error("Rational: error calling static isNegativeInfinite");
+    }
   }
 
   static isStrictlyPositive(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isStrictlyPositive {
-    return new Rational(value).isStrictlyPositive;
+    try {
+      return new Rational(value).isStrictlyPositive;
+    } catch (e) {
+      throw new Error("Rational: error calling static isStrictlyPositive");
+    }
   }
 
   static isStrictlyNegative(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isStrictlyNegative {
-    return new Rational(value).isStrictlyNegative;
+    try {
+      return new Rational(value).isStrictlyNegative;
+    } catch (e) {
+      throw new Error("Rational: error calling static isStrictlyNegative");
+    }
   }
 
   static isPositive(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isPositive {
-    return new Rational(value).isPositive;
+    try {
+      return new Rational(value).isPositive;
+    } catch (e) {
+      throw new Error("Rational: error calling static isPositive");
+    }
   }
 
   static isNegative(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isNegative {
-    return new Rational(value).isNegative;
+    try {
+      return new Rational(value).isNegative;
+    } catch (e) {
+      throw new Error("Rational: error calling static isNegative");
+    }
   }
 
   static isInteger(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isInteger {
-    return new Rational(value).isInteger;
+    try {
+      return new Rational(value).isInteger;
+    } catch (e) {
+      throw new Error("Rational: error calling static isInteger");
+    }
   }
 
   static isFiniteInteger(
     value: ConstructorParameters<typeof Rational>[0],
   ): typeof Rational.prototype.isFiniteInteger {
-    return new Rational(value).isFiniteInteger;
+    try {
+      return new Rational(value).isFiniteInteger;
+    } catch (e) {
+      throw new Error("Rational: error calling static isFiniteInteger");
+    }
   }
 
   static string(
     value: ConstructorParameters<typeof Rational>[0],
-  ): typeof Rational.prototype.string {
-    return new Rational(value).string;
+  ): typeof Rational.prototype.stringValue {
+    try {
+      return new Rational(value).stringValue;
+    } catch (e) {
+      throw new Error("Rational: error calling static string");
+    }
   }
 
   static get Real(): typeof Real {
-    return _Real;
+    try {
+      return _Real;
+    } catch (e) {
+      throw new ReferenceError("Rational: error importing module Real");
+    }
   }
 }
 

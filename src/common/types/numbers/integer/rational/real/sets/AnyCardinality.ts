@@ -4,7 +4,13 @@ const a_Cardinality: typeof Cardinality = importModule(
 
 class AnyCardinality extends a_Cardinality {
   static get Cardinality(): typeof Cardinality {
-    return a_Cardinality;
+    try {
+      return a_Cardinality;
+    } catch (e) {
+      throw new ReferenceError(
+        "AnyCardinality: error importing Cardinality module",
+      );
+    }
   }
 }
 

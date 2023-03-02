@@ -1,6 +1,10 @@
 abstract class Cardinality {
   isCardinal(value: number): boolean {
-    return !Number.isNaN(value);
+    try {
+      return !Number.isNaN(value);
+    } catch (e) {
+      throw new ReferenceError("Cardinality: error calling isCardinal");
+    }
   }
 }
 

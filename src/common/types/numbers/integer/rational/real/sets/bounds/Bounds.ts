@@ -1,6 +1,10 @@
 abstract class Bounds {
   isBounded(value: number): boolean {
-    return !Number.isNaN(value);
+    try {
+      return !Number.isNaN(value);
+    } catch (e) {
+      throw new ReferenceError("Bounds: error calling isBounded");
+    }
   }
 }
 
