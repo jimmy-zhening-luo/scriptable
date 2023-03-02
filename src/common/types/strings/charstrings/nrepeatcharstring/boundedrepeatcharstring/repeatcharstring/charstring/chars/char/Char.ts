@@ -1,19 +1,15 @@
 class Char {
-
   readonly charset: string[];
 
-  constructor(
-    ...charInputs: Char.CharInput[]
-  ) {
+  constructor(...charInputs: Char.CharInput[]) {
     this.charset = [];
     charInputs.forEach(input => {
-      input instanceof Char ?
-        this.charset.push(...input.charset)
-        : Array.isArray(input) ?
-          this.charset.push(...input)
-          : this.charset.push(input);
-      }
-    );
+      input instanceof Char
+        ? this.charset.push(...input.charset)
+        : Array.isArray(input)
+        ? this.charset.push(...input)
+        : this.charset.push(input);
+    });
   }
 
   includes(char: string): boolean {
@@ -25,46 +21,23 @@ class Char {
   }
 
   static get alphaNumeric(): string[] {
-    return [
-      ...this.numbers,
-      ...this.alpha
-    ];
+    return [...this.numbers, ...this.alpha];
   }
 
   static get alphaNumericLower(): string[] {
-    return [
-      ...this.numbers,
-      ...this.alphaLower
-    ];
+    return [...this.numbers, ...this.alphaLower];
   }
 
   static get alphaNumericUpper(): string[] {
-    return [
-      ...this.numbers,
-      ...this.alphaUpper
-    ];
+    return [...this.numbers, ...this.alphaUpper];
   }
 
   static get numbers(): string[] {
-    return [
-      "0",
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9"
-    ];
+    return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   }
 
   static get alpha(): string[] {
-    return [
-      ...this.alphaLower,
-      ...this.alphaUpper
-    ];
+    return [...this.alphaLower, ...this.alphaUpper];
   }
 
   static get alphaLower(): string[] {
@@ -94,7 +67,7 @@ class Char {
       "w",
       "x",
       "y",
-      "z"
+      "z",
     ];
   }
 
@@ -125,7 +98,7 @@ class Char {
       "W",
       "X",
       "Y",
-      "Z"
+      "Z",
     ];
   }
 
@@ -226,7 +199,7 @@ class Char {
   }
 
   static get doubleQuote(): string[] {
-    return ["\""];
+    return ['"'];
   }
 
   static get semicolon(): string[] {
@@ -260,7 +233,6 @@ class Char {
   static get space(): string[] {
     return [" "];
   }
-
 }
 
 namespace Char {

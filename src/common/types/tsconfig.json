@@ -1,8 +1,6 @@
 {
   "extends": "../tsconfig.json",
-  "include": [
-    "**/*"
-  ],
+  "include": ["**/*"],
   "references": [
     {
       "path": "primitive/tsconfig.json"
@@ -15,7 +13,7 @@
     },
     {
       "path": "strings/tsconfig.json"
-    },
+    }
   ],
   "compilerOptions": {
     "rootDir": "../.."

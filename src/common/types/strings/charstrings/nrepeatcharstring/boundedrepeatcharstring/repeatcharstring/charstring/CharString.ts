@@ -1,22 +1,13 @@
 abstract class CharString {
-
   readonly charstring: null | string;
   readonly ofChar: Char;
 
-  constructor(
-    charstring: string,
-    ...charsets: Char.CharInput[]
-  ) {
+  constructor(charstring: string, ...charsets: Char.CharInput[]) {
     this.ofChar = new this.Char(...charsets);
-    this.charstring = this
-      .qualifies(charstring) ?
-      charstring
-      : null;
+    this.charstring = this.qualifies(charstring) ? charstring : null;
   }
 
-  protected abstract qualifies(
-    candidateCharString: string
-  ): boolean;
+  protected abstract qualifies(candidateCharString: string): boolean;
 
   get Chars(): typeof Chars {
     return CharString.Chars;
@@ -35,8 +26,7 @@ abstract class CharString {
   }
 
   toString(): string {
-    return this.charstring
-      ?? "";
+    return this.charstring ?? "";
   }
 
   static get Chars(): typeof Chars {
@@ -50,7 +40,6 @@ abstract class CharString {
   static get UrlChar(): typeof UrlChar {
     return CharString.Chars.UrlChar;
   }
-
 }
 
 module.exports = CharString;

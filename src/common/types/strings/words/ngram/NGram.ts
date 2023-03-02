@@ -1,21 +1,17 @@
 const _Word: typeof Word = importModule("word/Word");
 
 class NGram extends _Word {
-
   readonly n: number;
   readonly remainder: string;
 
-  constructor(
-    text: string,
-    n: number
-  ) {
+  constructor(text: string, n: number) {
     const nInt: number = new NGram.PositiveInteger(n).value ?? 0;
     super(
-      nInt === Infinity ?
-        text
-        : text.length >= nInt ?
-          text.slice(0, nInt)
-          : String()
+      nInt === Infinity
+        ? text
+        : text.length >= nInt
+        ? text.slice(0, nInt)
+        : String(),
     );
     this.n = nInt;
     this.remainder = text.slice(this.length);
@@ -40,7 +36,6 @@ class NGram extends _Word {
   static get Word(): typeof Word {
     return _Word;
   }
-
 }
 
 module.exports = NGram;

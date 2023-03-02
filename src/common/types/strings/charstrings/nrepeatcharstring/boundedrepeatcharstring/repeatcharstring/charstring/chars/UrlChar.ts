@@ -1,7 +1,6 @@
 const _Char: typeof Char = importModule("char/Char");
 
 class UrlChar extends _Char {
-
   static get hex(): string[] {
     return [
       ...this.numbers,
@@ -16,7 +15,7 @@ class UrlChar extends _Char {
       "c",
       "d",
       "e",
-      "f"
+      "f",
     ];
   }
 
@@ -27,8 +26,8 @@ class UrlChar extends _Char {
       ...this.percentEncoded,
       ...this.subDelims,
       ...this.colon,
-      ...this.at
-    ]
+      ...this.at,
+    ];
   }
 
   static get unreserved(): string[] {
@@ -37,22 +36,16 @@ class UrlChar extends _Char {
       ...this.hyphen,
       ...this.dot,
       ...this.underscore,
-      ...this.tilde
+      ...this.tilde,
     ];
   }
 
   static get reserved(): string[] {
-    return [
-      ...this.genDelims,
-      ...this.subDelims
-    ];
+    return [...this.genDelims, ...this.subDelims];
   }
 
   static get percentEncoded(): string[] {
-    return [
-      ...this.percent,
-      ...this.hex
-    ];
+    return [...this.percent, ...this.hex];
   }
 
   static get genDelims(): string[] {
@@ -63,7 +56,7 @@ class UrlChar extends _Char {
       ...this.hash,
       ...this.leftBracket,
       ...this.rightBracket,
-      ...this.at
+      ...this.at,
     ];
   }
 
@@ -79,14 +72,13 @@ class UrlChar extends _Char {
       ...this.plus,
       ...this.comma,
       ...this.semicolon,
-      ...this.equal
+      ...this.equal,
     ];
   }
 
   static get Char(): typeof Char {
     return _Char;
   }
-
 }
 
 module.exports = UrlChar;

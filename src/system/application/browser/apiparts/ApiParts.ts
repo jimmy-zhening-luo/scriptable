@@ -1,5 +1,4 @@
 class ApiParts {
-
   static get RequestParts(): typeof RequestParts {
     return importModule("requestparts/RequestParts");
   }
@@ -19,7 +18,6 @@ class ApiParts {
   static get ResponseBody(): typeof ResponseBody {
     return this.ResponseParts.ResponseBody;
   }
-
 }
 
 module.exports = ApiParts;

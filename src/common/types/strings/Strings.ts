@@ -1,5 +1,4 @@
 class Strings {
-
   static get StringSplitter(): typeof StringSplitter {
     return importModule("StringSplitter");
   }
@@ -47,7 +46,6 @@ class Strings {
   static get NGram(): typeof NGram {
     return Strings.OneGram.NGram;
   }
-
 }
 
 module.exports = Strings;

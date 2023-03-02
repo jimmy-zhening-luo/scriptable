@@ -1,19 +1,12 @@
 abstract class UrlPartRepeater {
-
   readonly value: null | string;
 
-  constructor(
-    repeater?: null | string
-  ) {
-    this.value = (
-      repeater === null
-      || repeater === undefined
-      || repeater === ""
-    ) ?
-      null
-      : this.parse(repeater);
-    if (this.value === "")
-      this.value = null;
+  constructor(repeater?: null | string) {
+    this.value =
+      repeater === null || repeater === undefined || repeater === ""
+        ? null
+        : this.parse(repeater);
+    if (this.value === "") this.value = null;
   }
 
   protected abstract parse(repeater: string): null | string;
@@ -30,11 +23,9 @@ abstract class UrlPartRepeater {
     return UrlPartRepeater.UrlValidators;
   }
 
-
   static get UrlValidators(): typeof UrlValidators {
     return importModule("validators/UrlValidators");
   }
-
 }
 
 module.exports = UrlPartRepeater;

@@ -1,5 +1,4 @@
 class CharStrings {
-
   static get OneCharString(): typeof OneCharString {
     return importModule("OneCharString");
   }
@@ -23,7 +22,6 @@ class CharStrings {
   static get Chars(): typeof Chars {
     return CharStrings.CharString.Chars;
   }
-
 }
 
 module.exports = CharStrings;

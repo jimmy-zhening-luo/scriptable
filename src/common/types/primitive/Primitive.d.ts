@@ -1,5 +1,1 @@
-declare type primitive =
-  | string
-  | number
-  | boolean
-  ;
+declare type primitive = string | number | boolean;

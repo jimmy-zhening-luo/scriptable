@@ -1,5 +1,5 @@
 abstract class UrlComposite {
-  abstract readonly parts: Array<UrlPart|UrlComposite>;
+  abstract readonly parts: Array<UrlPart | UrlComposite>;
   abstract get composite(): string;
 
   get isValid(): boolean {
@@ -13,7 +13,6 @@ abstract class UrlComposite {
   static get UrlParts(): typeof UrlParts {
     return importModule("urlparts/UrlParts");
   }
-
 }
 
 module.exports = UrlComposite;

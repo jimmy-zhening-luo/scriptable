@@ -1,5 +1,4 @@
 class ValidString {
-
   readonly raw: string;
   readonly min: number;
   readonly max: number;
@@ -10,19 +9,15 @@ class ValidString {
 
   constructor(
     string: string,
-    min:
-      | number
-      | Char.CharInput  = ValidString.MinDefault,
-    max:
-      | number
-      | Char.CharInput = ValidString.MaxDefault,
+    min: number | Char.CharInput = ValidString.MinDefault,
+    max: number | Char.CharInput = ValidString.MaxDefault,
     cleanOptions: Parameters<typeof ValidString.clean>[1] = {},
     {
       negateAllowedChars = false,
-      isValid = true
+      isValid = true,
     }: {
-      negateAllowedChars?: boolean,
-      isValid?: boolean
+      negateAllowedChars?: boolean;
+      isValid?: boolean;
     },
     ...allowedChars: Char.CharInput[]
   ) {
@@ -30,36 +25,33 @@ class ValidString {
     this.min = this.parseBound(min, ValidString.MinDefault);
     this.max = this.parseBound(max, ValidString.MaxDefault);
 
-    this.cleaned = ValidString.clean(
-      this.raw,
-      cleanOptions
-    );
+    this.cleaned = ValidString.clean(this.raw, cleanOptions);
     this.isImplicitlyInvalid = !isValid;
 
-    this.value = this.isImplicitlyInvalid
-      || this.cleaned.length > this.max
-      || this.cleaned.length < this.min
-      ?
-      null
-      : ValidString.parseStringToOneGrams(this.cleaned)
-        .map(ngram =>
-          new ValidString.OneCharString(
-            ngram.toString(),
-            ...allowedChars
-          )
-        ).every(charstring =>
-          charstring.isValid === !negateAllowedChars
-        ) ?
-        this.cleaned
+    this.value =
+      this.isImplicitlyInvalid ||
+      this.cleaned.length > this.max ||
+      this.cleaned.length < this.min
+        ? null
+        : ValidString.parseStringToOneGrams(this.cleaned)
+            .map(
+              ngram =>
+                new ValidString.OneCharString(
+                  ngram.toString(),
+                  ...allowedChars,
+                ),
+            )
+            .every(charstring => charstring.isValid === !negateAllowedChars)
+        ? this.cleaned
         : null;
   }
 
   private parseBound(
     bound: ConstructorParameters<typeof ValidString>[1],
-    fallback: number
+    fallback: number,
   ): typeof ValidString.prototype.min {
-    return typeof bound === "number" ?
-      new ValidString.PositiveInteger(bound).value ?? fallback
+    return typeof bound === "number"
+      ? new ValidString.PositiveInteger(bound).value ?? fallback
       : fallback;
   }
 
@@ -85,13 +77,13 @@ class ValidString {
       trimLeading = [],
       trimTrailing = [],
     }: {
-      toLower?: boolean,
-      trim?: boolean,
-      trimLeadingExcept?: boolean,
-      trimTrailingExcept?: boolean,
-      trimLeading?: string[],
-      trimTrailing?: string[]
-    }
+      toLower?: boolean;
+      trim?: boolean;
+      trimLeadingExcept?: boolean;
+      trimTrailingExcept?: boolean;
+      trimLeading?: string[];
+      trimTrailing?: string[];
+    },
   ): typeof ValidString.prototype.cleaned {
     string = toLower ? string.toLowerCase() : string;
     string = trim ? string.trim() : string;
@@ -101,48 +93,31 @@ class ValidString {
         preprocessed,
         trimLeading,
         ValidString.Edge.Leading,
-        trimLeadingExcept
+        trimLeadingExcept,
       ),
       trimTrailing,
       ValidString.Edge.Trailing,
-      trimTrailingExcept
+      trimTrailingExcept,
     );
   }
 
   static trimEdge(
     string: ConstructorParameters<typeof ValidString>[0],
     wordsToTrim: string[] = [],
-    edge:
-      | ValidString.Edge,
-    trimExcept: boolean = false
+    edge: ValidString.Edge,
+    trimExcept: boolean = false,
   ): string {
-    const isLeading: boolean =
-      edge === ValidString.Edge.Leading;
-    type LookPrototypeFunction =
-      | "startsWith"
-      | "endsWith";
-    const lookFn: LookPrototypeFunction = isLeading ?
-      "startsWith"
-      : "endsWith";
+    const isLeading: boolean = edge === ValidString.Edge.Leading;
+    type LookPrototypeFunction = "startsWith" | "endsWith";
+    const lookFn: LookPrototypeFunction = isLeading ? "startsWith" : "endsWith";
     const lookCondition: boolean = !trimExcept;
     wordsToTrim
       .filter(word => word !== "")
       .forEach(word => {
         while (string[lookFn](word) === lookCondition)
-          string = isLeading ?
-            string.slice(
-              trimExcept ?
-                1
-                : word.length
-            )
-            : string.slice(
-              0,
-              0 - (
-                trimExcept ?
-                  1
-                  : word.length
-              )
-            );
+          string = isLeading
+            ? string.slice(trimExcept ? 1 : word.length)
+            : string.slice(0, 0 - (trimExcept ? 1 : word.length));
       });
     return string;
   }
@@ -150,12 +125,7 @@ class ValidString {
   static parseStringToOneGrams(
     string: ConstructorParameters<typeof ValidString>[0],
   ): NGram[] {
-    return [...string]
-      .map(
-        char => new ValidString.OneGram(
-          char
-        )
-      );
+    return [...string].map(char => new ValidString.OneGram(char));
   }
 
   get Chars(): typeof Chars {
@@ -201,19 +171,16 @@ class ValidString {
   static get PositiveInteger(): typeof PositiveInteger {
     return importModule("./common/types/numbers/PositiveInteger");
   }
-
 }
 
 namespace ValidString {
-
   export const MinDefault: number = 0;
   export const MaxDefault: number = Infinity;
 
   export enum Edge {
     Leading,
-    Trailing
+    Trailing,
   }
-
 }
 
 module.exports = ValidString;

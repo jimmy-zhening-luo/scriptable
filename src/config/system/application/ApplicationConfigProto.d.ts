@@ -1,5 +1,5 @@
 declare interface ApplicationConfigProto {
-  Config: string,
-  Storage: string,
-  Secret: string,
+  Config: string;
+  Storage: string;
+  Secret: string;
 }

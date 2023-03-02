@@ -1,5 +1,4 @@
 class UrlComposites {
-
   static get UrlComposite(): typeof UrlComposite {
     return importModule("urlcomposite/UrlComposite");
   }
@@ -23,7 +22,6 @@ class UrlComposites {
   static get PathQuery(): typeof PathQuery {
     return UrlComposites.PathQueryFragment.PathQuery;
   }
-
 }
 
 module.exports = UrlComposites;

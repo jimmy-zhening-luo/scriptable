@@ -1,7 +1,8 @@
-const up_ValidString: typeof ValidString = importModule("./common/types/strings/ValidString");
+const up_ValidString: typeof ValidString = importModule(
+  "./common/types/strings/ValidString",
+);
 
 class ValidUrlPart extends up_ValidString {
-
   constructor(
     part: string,
     minLength: number = 1,
@@ -9,11 +10,11 @@ class ValidUrlPart extends up_ValidString {
     {
       toLower = false,
       trimLeading = [],
-      trimTrailing = []
+      trimTrailing = [],
     }: {
-      toLower?: boolean,
-      trimLeading?: string[],
-      trimTrailing?: string[]
+      toLower?: boolean;
+      trimLeading?: string[];
+      trimTrailing?: string[];
     },
     ...allowedChars: Char.CharInput[]
   ) {
@@ -25,17 +26,16 @@ class ValidUrlPart extends up_ValidString {
         trim: true,
         toLower: toLower,
         trimLeading: trimLeading,
-        trimTrailing: trimTrailing
+        trimTrailing: trimTrailing,
       },
       {},
-      ...allowedChars
+      ...allowedChars,
     );
   }
 
   static get ValidString(): typeof ValidString {
     return up_ValidString;
   }
-
 }
 
 module.exports = ValidUrlPart;

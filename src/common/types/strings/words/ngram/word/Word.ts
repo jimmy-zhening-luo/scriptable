@@ -1,17 +1,9 @@
 abstract class Word {
-
   readonly word: null | string;
 
-  constructor(
-    word?: null | string
-  ) {
-    this.word = (
-      word === null
-      || word === undefined
-      || word === ""
-    ) ?
-      null
-      : word;
+  constructor(word?: null | string) {
+    this.word =
+      word === null || word === undefined || word === "" ? null : word;
   }
 
   get length(): number {
@@ -29,7 +21,6 @@ abstract class Word {
   toString(): string {
     return this.word ?? "";
   }
-
 }
 
 module.exports = Word;

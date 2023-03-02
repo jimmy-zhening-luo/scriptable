@@ -1,5 +1,4 @@
 class Words {
-
   static get OneGram(): typeof OneGram {
     return importModule("OneGram");
   }
@@ -11,7 +10,6 @@ class Words {
   static get Word(): typeof Word {
     return Words.NGram.Word;
   }
-
 }
 
 module.exports = Words;

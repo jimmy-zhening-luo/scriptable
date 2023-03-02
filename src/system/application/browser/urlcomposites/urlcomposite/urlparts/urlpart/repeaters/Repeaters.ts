@@ -1,5 +1,4 @@
 class Repeaters {
-
   static get UrlPartRepeater(): typeof UrlPartRepeater {
     return importModule("urlpartrepeater/UrlPartRepeater");
   }
@@ -27,7 +26,6 @@ class Repeaters {
   static get QueryRepeater(): typeof QueryRepeater {
     return importModule("QueryRepeater");
   }
-
 }
 
 module.exports = Repeaters;

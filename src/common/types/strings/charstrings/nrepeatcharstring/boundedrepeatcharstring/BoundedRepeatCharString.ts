@@ -1,7 +1,8 @@
-const _RepeatCharString: typeof RepeatCharString = importModule("repeatcharstring/RepeatCharString");
+const _RepeatCharString: typeof RepeatCharString = importModule(
+  "repeatcharstring/RepeatCharString",
+);
 
 class BoundedRepeatCharString extends _RepeatCharString {
-
   readonly min: number;
   readonly max: number;
 
@@ -11,25 +12,26 @@ class BoundedRepeatCharString extends _RepeatCharString {
     charstring: string,
     ...ofCharInputs: Char.CharInput[]
   ) {
-    let minInt: number = new BoundedRepeatCharString.PositiveInteger(min).toNumber();
-    let maxInt: number = new BoundedRepeatCharString.PositiveInteger(max).toNumber();
-    if (Number.isNaN(minInt)
-      || Number.isNaN(maxInt)
-    ) minInt = maxInt = 0;
+    let minInt: number = new BoundedRepeatCharString.PositiveInteger(
+      min,
+    ).toNumber();
+    let maxInt: number = new BoundedRepeatCharString.PositiveInteger(
+      max,
+    ).toNumber();
+    if (Number.isNaN(minInt) || Number.isNaN(maxInt)) minInt = maxInt = 0;
     else {
       if (minInt > maxInt) {
         const prevMinInt: number = minInt;
         minInt = maxInt;
         maxInt = prevMinInt;
       }
-      if (minInt === Infinity)
-        minInt = maxInt = 0;
+      if (minInt === Infinity) minInt = maxInt = 0;
     }
     super(
-      charstring.length >= minInt && charstring.length <= maxInt ?
-        charstring
+      charstring.length >= minInt && charstring.length <= maxInt
+        ? charstring
         : "",
-      ...ofCharInputs
+      ...ofCharInputs,
     );
     this.min = minInt;
     this.max = maxInt;
@@ -42,7 +44,6 @@ class BoundedRepeatCharString extends _RepeatCharString {
   static get RepeatCharString(): typeof RepeatCharString {
     return _RepeatCharString;
   }
-
 }
 
 module.exports = BoundedRepeatCharString;

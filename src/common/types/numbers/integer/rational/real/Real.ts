@@ -1,5 +1,4 @@
 abstract class Real {
-
   abstract get number(): number;
 
   toNumber(): number {
@@ -23,7 +22,6 @@ abstract class Real {
   static get Cardinality(): typeof Sets.Cardinality {
     return Real.Sets.Cardinality;
   }
-
 }
 
 module.exports = Real;

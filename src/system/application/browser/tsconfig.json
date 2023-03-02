@@ -1,9 +1,6 @@
 {
   "extends": "../tsconfig.json",
-  "include": [
-    "../../../common/**/*",
-    "**/*",
-  ],
+  "include": ["../../../common/**/*", "**/*"],
   "references": [
     {
       "path": "../../../common/tsconfig.json"
@@ -13,7 +10,7 @@
     },
     {
       "path": "apiparts/tsconfig.json"
-    },
+    }
   ],
   "compilerOptions": {
     "rootDir": "../../.."

@@ -1,5 +1,4 @@
 class Numbers {
-
   static get Real(): typeof Real {
     return Numbers.Rational.Real;
   }
@@ -63,7 +62,6 @@ class Numbers {
   static get NegativeFiniteInteger(): typeof NegativeFiniteInteger {
     return importModule("NegativeFiniteInteger");
   }
-
 }
 
 module.exports = Numbers;

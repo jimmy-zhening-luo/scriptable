@@ -1,5 +1,4 @@
 class UrlValidators {
-
   static get ValidUrlPart(): typeof ValidUrlPart {
     return importModule("validurlpart/ValidUrlPart");
   }
@@ -22,17 +21,17 @@ class UrlValidators {
 
   static get Host(): {
     Repeaters: {
-      IPv4: typeof ValidHostIPv4Repeater,
-      IPv6: typeof ValidHostIPv6Repeater,
-      RegName: typeof ValidHostRegNameRepeater
-    }
+      IPv4: typeof ValidHostIPv4Repeater;
+      IPv6: typeof ValidHostIPv6Repeater;
+      RegName: typeof ValidHostRegNameRepeater;
+    };
   } {
     return {
       Repeaters: {
         IPv4: importModule("ValidHostIPv4Repeater"),
         IPv6: importModule("ValidHostIPv6Repeater"),
-        RegName: importModule("ValidHostRegNameRepeater")
-      }
+        RegName: importModule("ValidHostRegNameRepeater"),
+      },
     };
   }
 
@@ -42,32 +41,31 @@ class UrlValidators {
 
   static get Path(): {
     Repeaters: {
-      Path: typeof ValidPathRepeater
-    }
+      Path: typeof ValidPathRepeater;
+    };
   } {
     return {
       Repeaters: {
-        Path: importModule("ValidPathRepeater")
-      }
+        Path: importModule("ValidPathRepeater"),
+      },
     };
   }
 
   static get Query(): {
     Repeaters: {
-      Query: typeof ValidQueryRepeater
-    }
+      Query: typeof ValidQueryRepeater;
+    };
   } {
     return {
       Repeaters: {
-        Query: importModule("ValidQueryRepeater")
-      }
+        Query: importModule("ValidQueryRepeater"),
+      },
     };
   }
 
   static get Fragment(): typeof ValidFragment {
     return importModule("ValidFragment");
   }
-
 }
 
 module.exports = UrlValidators;

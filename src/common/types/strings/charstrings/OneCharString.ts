@@ -1,14 +1,11 @@
-const _NRepeatCharString: typeof NRepeatCharString = importModule("nrepeatcharstring/NRepeatCharString");
+const _NRepeatCharString: typeof NRepeatCharString = importModule(
+  "nrepeatcharstring/NRepeatCharString",
+);
 
 class OneCharString extends _NRepeatCharString {
-
   constructor(
     charstring: string,
-    ...ofCharInputs:
-      | Char[]
-      | string[]
-      | string[][]
-      | Char.CharInput[]
+    ...ofCharInputs: Char[] | string[] | string[][] | Char.CharInput[]
   ) {
     super(1, charstring, ...ofCharInputs);
   }
@@ -16,7 +13,6 @@ class OneCharString extends _NRepeatCharString {
   static get NRepeatCharString(): typeof NRepeatCharString {
     return _NRepeatCharString;
   }
-
 }
 
 module.exports = OneCharString;

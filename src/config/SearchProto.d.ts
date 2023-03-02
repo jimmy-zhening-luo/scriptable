@@ -1,26 +1,24 @@
 declare interface SearchProto extends ShortcutConfigProto {
-  app: SearchAppSettings,
-  user: SearchUserSettings
+  app: SearchAppSettings;
+  user: SearchUserSettings;
 }
 
 declare interface SearchAppSettings extends Setting {
-  queryTag: string,
-  reservedKeys: Key[],
+  queryTag: string;
+  reservedKeys: Key[];
 }
 
 declare interface SearchUserSettings extends Setting {
-  queryTag: string,
-  engineKeys: Key[],
+  queryTag: string;
+  engineKeys: Key[];
 }
 
 declare interface Key extends Setting {
-  keys:
-  | string
-  | string[],
-  urls?: string[],
-  webview?: boolean,
-  app?: SupportedApp,
-  shortcut?: string,
+  keys: string | string[];
+  urls?: string[];
+  webview?: boolean;
+  app?: SupportedApp;
+  shortcut?: string;
 }
 
 declare type SupportedApp =
@@ -28,4 +26,4 @@ declare type SupportedApp =
   | "files"
   | "shortcuts"
   | "bear"
-  | "shortcut"
+  | "shortcut";

@@ -1,5 +1,4 @@
 class Utilities {
-
   static get Config(): typeof Config {
     try {
       return importModule("Config");
@@ -26,7 +25,6 @@ class Utilities {
       throw e;
     }
   }
-
 }
 
 module.exports = Utilities;

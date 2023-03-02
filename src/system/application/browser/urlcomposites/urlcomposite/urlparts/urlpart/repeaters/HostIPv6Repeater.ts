@@ -1,7 +1,8 @@
-const hips_UrlPartRepeater: typeof UrlPartRepeater = importModule("urlpartrepeater/UrlPartRepeater");
+const hips_UrlPartRepeater: typeof UrlPartRepeater = importModule(
+  "urlpartrepeater/UrlPartRepeater",
+);
 
 class HostIPv6Repeater extends hips_UrlPartRepeater {
-
   protected parse(repeater: string): null | string {
     return new this.ValidHostIPv6Repeater(repeater).value;
   }
@@ -13,7 +14,6 @@ class HostIPv6Repeater extends hips_UrlPartRepeater {
   static get UrlPartRepeater(): typeof UrlPartRepeater {
     return hips_UrlPartRepeater;
   }
-
 }
 
 module.exports = HostIPv6Repeater;

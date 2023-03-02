@@ -1,5 +1,4 @@
 class Browser {
-
   static get Url(): typeof Url {
     return importModule("Url");
   }
@@ -19,7 +18,6 @@ class Browser {
   static get Endpoint(): typeof Endpoint {
     return importModule("Endpoint");
   }
-
 }
 
 module.exports = Browser;

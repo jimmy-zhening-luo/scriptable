@@ -1,5 +1,4 @@
 class RequestParts {
-
   static get RequestBody(): typeof RequestBody {
     return importModule("RequestBody");
   }
@@ -7,7 +6,6 @@ class RequestParts {
   static get RequestHeaders(): typeof RequestHeaders {
     return importModule("RequestHeaders");
   }
-
 }
 
 module.exports = RequestParts;

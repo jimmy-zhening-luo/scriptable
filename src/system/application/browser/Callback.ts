@@ -1,29 +1,21 @@
 class Callback {
-
   private readonly _baseUrl: Url;
 
   constructor(
-    schemeOrCallback:
-      | string
-      | Scheme
-      | Callback,
+    schemeOrCallback: string | Scheme | Callback,
     host: ConstructorParameters<typeof Host>[0] = "",
     basePath: ConstructorParameters<typeof Path>[0] = "",
-    commonParams: ConstructorParameters<typeof Query>[0] = ""
+    commonParams: ConstructorParameters<typeof Query>[0] = "",
   ) {
     if (schemeOrCallback instanceof Callback)
-      this._baseUrl = new Url(
-        schemeOrCallback.baseUrl
-      );
+      this._baseUrl = new Url(schemeOrCallback.baseUrl);
     else
       this._baseUrl = new Callback.Url(
         schemeOrCallback,
         host,
         undefined,
         basePath,
-        new Callback.Query(
-          commonParams
-        )
+        new Callback.Query(commonParams),
       );
   }
 
@@ -35,9 +27,7 @@ class Callback {
     return this._baseUrl.scheme;
   }
 
-  set scheme(
-    scheme: ConstructorParameters<typeof Scheme>[0]
-  ) {
+  set scheme(scheme: ConstructorParameters<typeof Scheme>[0]) {
     this._baseUrl.scheme = scheme;
   }
 
@@ -45,9 +35,7 @@ class Callback {
     return this._baseUrl.host;
   }
 
-  set host(
-    host: ConstructorParameters<typeof Host>[0]
-  ) {
+  set host(host: ConstructorParameters<typeof Host>[0]) {
     this._baseUrl.host = host;
   }
 
@@ -55,15 +43,11 @@ class Callback {
     return this._baseUrl.path;
   }
 
-  set basePath(
-    path: ConstructorParameters<typeof Path>[0]
-  ) {
+  set basePath(path: ConstructorParameters<typeof Path>[0]) {
     this._baseUrl.path = path;
   }
 
-  appendBasePath(
-    ...path: Parameters<Url["append"]>
-  ): this {
+  appendBasePath(...path: Parameters<Url["append"]>): this {
     this._baseUrl.append(...path);
     return this;
   }
@@ -84,64 +68,48 @@ class Callback {
     return this._baseUrl.queryMap;
   }
 
-  set commonParams(
-    params: ConstructorParameters<typeof Query>[0]
-  ) {
+  set commonParams(params: ConstructorParameters<typeof Query>[0]) {
     this._baseUrl.query = params;
   }
 
-  addCommonParam(
-    ...params: Parameters<Url["addParam"]>
-  ): this {
-    this._baseUrl.addParam(
-      ...params
-    );
+  addCommonParam(...params: Parameters<Url["addParam"]>): this {
+    this._baseUrl.addParam(...params);
     return this;
   }
 
-  deleteCommonParam(
-    ...keys: Parameters<Url["deleteParam"]>
-  ): this {
-    this._baseUrl.deleteParam(
-      ...keys
-    );
+  deleteCommonParam(...keys: Parameters<Url["deleteParam"]>): this {
+    this._baseUrl.deleteParam(...keys);
     return this;
   }
 
   getCommonParam(
     ...key: Parameters<Url["getParam"]>
   ): ReturnType<Url["getParam"]> {
-    return this._baseUrl.getParam(
-      ...key
-    );
+    return this._baseUrl.getParam(...key);
   }
 
   hasCommonParam(
     ...key: Parameters<Url["hasParam"]>
   ): ReturnType<Url["hasParam"]> {
-    return this._baseUrl.hasParam(
-      ...key
-    );
+    return this._baseUrl.hasParam(...key);
   }
 
   request(
     path: ConstructorParameters<typeof Path>[0],
     query: ConstructorParameters<typeof Query>[0],
     attachCommonParams: boolean = true,
-    overrideCommonParams: boolean = true
+    overrideCommonParams: boolean = true,
   ): ReturnType<Url["xCallback"]> {
     const cUrl: Url = new Callback.Url(this._baseUrl);
     cUrl.append(path);
     if (attachCommonParams) {
-      if (overrideCommonParams)
-        cUrl.addParam(query);
+      if (overrideCommonParams) cUrl.addParam(query);
       else {
         const commonQuery: string = cUrl.query;
         cUrl.query = query;
         cUrl.addParam(commonQuery);
       }
-    }
-    else {
+    } else {
       cUrl.query = "";
       cUrl.query = query;
     }
@@ -167,7 +135,6 @@ class Callback {
   static get Query(): typeof Query {
     return Callback.Url.Query;
   }
-
 }
 
 module.exports = Callback;

@@ -1,5 +1,4 @@
 class UrlParts {
-
   static get UrlPart(): typeof UrlPart {
     return importModule("urlpart/UrlPart");
   }
@@ -27,7 +26,6 @@ class UrlParts {
   static get Fragment(): typeof Fragment {
     return importModule("Fragment");
   }
-
 }
 
 module.exports = UrlParts;

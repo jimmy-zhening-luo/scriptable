@@ -1,7 +1,8 @@
-const qu_UrlPartRepeater: typeof UrlPartRepeater = importModule("urlpartrepeater/UrlPartRepeater");
+const qu_UrlPartRepeater: typeof UrlPartRepeater = importModule(
+  "urlpartrepeater/UrlPartRepeater",
+);
 
 class QueryRepeater extends qu_UrlPartRepeater {
-
   protected parse(repeater: string): null | string {
     return new this.ValidQueryRepeater(repeater).value;
   }
@@ -13,7 +14,6 @@ class QueryRepeater extends qu_UrlPartRepeater {
   static get UrlPartRepeater(): typeof UrlPartRepeater {
     return qu_UrlPartRepeater;
   }
-
 }
 
 module.exports = QueryRepeater;

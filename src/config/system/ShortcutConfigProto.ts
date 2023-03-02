@@ -1,10 +1,10 @@
 declare interface ShortcutConfigProto {
-  app?: Setting,
-  user?: Setting
+  app?: Setting;
+  user?: Setting;
 }
 
 declare interface Setting {
-  [key: string]: SettingValue
+  [key: string]: SettingValue;
 }
 
 declare type SettingValue =
