@@ -9,29 +9,39 @@ abstract class Application {
     try {
       return this.handleOutput(this.runtime());
     } catch (e) {
-      console.error(
+      throw new Error(
         `Application: run: Caught unhandled exception during application runtime: ${e}`,
       );
-      throw e;
     }
   }
 
   protected get configSubpath(): string {
-    return "";
+    try {
+      return "";
+    } catch (e) {
+      throw new Error(
+        `Application: configSubpath: Error getting application config subpath: ${e}`,
+      );
+    }
   }
 
   protected get storageSubpath(): typeof Application.prototype.configSubpath {
-    return this.configSubpath;
+    try {
+      return this.configSubpath;
+    } catch (e) {
+      throw new Error(
+        `Application: storageSubpath: Error getting application storage subpath: ${e}`,
+      );
+    }
   }
 
   get config(): Config {
     try {
       return new this.Config(this.configSubpath, this.constructor.name);
     } catch (e) {
-      console.error(
+      throw new Error(
         `Application: config: Error getting application Config object: ${e}`,
       );
-      throw e;
     }
   }
 
@@ -43,10 +53,9 @@ abstract class Application {
         subpath,
       );
     } catch (e) {
-      console.error(
+      throw new Error(
         `Application: storage: Error getting application Storage object: ${e}`,
       );
-      throw e;
     }
   }
 
@@ -54,12 +63,11 @@ abstract class Application {
     try {
       return this.storage(subpath).read();
     } catch (e) {
-      console.error(
+      throw new Error(
         `Application: readStorage: Error reading application storage file at '${
           this.storage(subpath).path
         }': ${e}`,
       );
-      throw e;
     }
   }
 
@@ -68,29 +76,41 @@ abstract class Application {
       this.storage(subpath).write(data);
       return this;
     } catch (e) {
-      console.error(
+      throw new Error(
         `Application: writeStorage: Error writing to application storage file at '${
           this.storage(subpath).path
         }': ${e}`,
       );
-      throw e;
     }
   }
 
   get Config(): typeof Config {
-    return Application.Config;
+    try {
+      return Application.Config;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: Config: Error importing Config module: ${e}`,
+      );
+    }
   }
 
   get Storage(): typeof Storage {
-    return Application.Storage;
+    try {
+      return Application.Storage;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: Storage: Error importing Storage module: ${e}`,
+      );
+    }
   }
 
   static get Common(): typeof Common {
     try {
       return importModule("common/Common");
     } catch (e) {
-      console.error(`Application: Common: Error importing Common module: ${e}`);
-      throw e;
+      throw new ReferenceError(
+        `Application: Common: Error importing Common module: ${e}`,
+      );
     }
   }
 
@@ -98,8 +118,9 @@ abstract class Application {
     try {
       return importModule("files/Files");
     } catch (e) {
-      console.error(`Application: Files: Error importing Files module: ${e}`);
-      throw e;
+      throw new ReferenceError(
+        `Application: Files: Error importing Files module: ${e}`,
+      );
     }
   }
 
@@ -107,10 +128,9 @@ abstract class Application {
     try {
       return importModule("browser/Browser");
     } catch (e) {
-      console.error(
+      throw new ReferenceError(
         `Application: Browser: Error importing Browser module: ${e}`,
       );
-      throw e;
     }
   }
 
@@ -118,8 +138,9 @@ abstract class Application {
     try {
       return importModule("Config");
     } catch (e) {
-      console.error(`Application: Config: Error importing Config module: ${e}`);
-      throw e;
+      throw new ReferenceError(
+        `Application: Config: Error importing Config module: ${e}`,
+      );
     }
   }
 
@@ -127,10 +148,9 @@ abstract class Application {
     try {
       return importModule("Storage");
     } catch (e) {
-      console.error(
+      throw new ReferenceError(
         `Application: Storage: Error importing Storage module: ${e}`,
       );
-      throw e;
     }
   }
 
@@ -138,53 +158,120 @@ abstract class Application {
     try {
       return importModule("Secret");
     } catch (e) {
-      console.error(`Application: Secret: Error importing Secret module: ${e}`);
-      throw e;
+      throw new ReferenceError(
+        `Application: Secret: Error importing Secret module: ${e}`,
+      );
     }
   }
 
   static get Types(): typeof Types {
-    return Application.Common.Types;
+    try {
+      return Application.Common.Types;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: Types: Error importing Types module: ${e}`,
+      );
+    }
   }
 
   static get Strings(): typeof Strings {
-    return Application.Types.Strings;
+    try {
+      return Application.Types.Strings;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: Strings: Error importing Strings module: ${e}`,
+      );
+    }
   }
 
   static get Numbers(): typeof Numbers {
-    return Application.Types.Numbers;
+    try {
+      return Application.Types.Numbers;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: Numbers: Error importing Numbers module: ${e}`,
+      );
+    }
   }
 
   static get ReadOnlyFile(): typeof ReadOnlyFile {
-    return Application.Files.ReadOnlyFile;
+    try {
+      return Application.Files.ReadOnlyFile;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: ReadOnlyFile: Error importing ReadOnlyFile module: ${e}`,
+      );
+    }
   }
 
   static get File(): typeof File {
-    return Application.Files.File;
+    try {
+      return Application.Files.File;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: File: Error importing File module: ${e}`,
+      );
+    }
   }
 
   static get Bookmark(): typeof Bookmark {
-    return Application.File.Bookmark;
+    try {
+      return Application.File.Bookmark;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: Bookmark: Error importing Bookmark module: ${e}`,
+      );
+    }
   }
 
   static get Filepath(): typeof FilepathString {
-    return Application.File.FilepathString;
+    try {
+      return Application.File.FilepathString;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: Filepath: Error importing Filepath module: ${e}`,
+      );
+    }
   }
 
   static get Url(): typeof Url {
-    return Application.Browser.Url;
+    try {
+      return Application.Browser.Url;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: Url: Error importing Url module: ${e}`,
+      );
+    }
   }
 
   static get Api(): typeof Api {
-    return Application.Browser.Api;
+    try {
+      return Application.Browser.Api;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: Api: Error importing Api module: ${e}`,
+      );
+    }
   }
 
   static get Callback(): typeof Callback {
-    return Application.Browser.Callback;
+    try {
+      return Application.Browser.Callback;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: Callback: Error importing Callback module: ${e}`,
+      );
+    }
   }
 
   static get Endpoint(): typeof Endpoint {
-    return Application.Browser.Endpoint;
+    try {
+      return Application.Browser.Endpoint;
+    } catch (e) {
+      throw new ReferenceError(
+        `Application: Endpoint: Error importing Endpoint module: ${e}`,
+      );
+    }
   }
 }
 

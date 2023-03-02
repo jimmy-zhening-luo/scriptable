@@ -7,10 +7,9 @@ abstract class Shortcut extends _Application {
     try {
       return args;
     } catch (e) {
-      console.error(
+      throw new Error(
         `Shortcut.js: Error getting shortcut input from Scriptable 'args' object (which by design is loaded with any input parameters passed from Shortcuts when executing a Scriptable script): ${e}`,
       );
-      throw e;
     }
   }
 
@@ -29,13 +28,16 @@ abstract class Shortcut extends _Application {
       Script.setShortcutOutput(output);
       return output;
     } catch (e) {
-      console.error(`Shortcut.js: Error setting shortcut output: ${e}`);
-      throw e;
+      throw new Error(`Shortcut.js: Error setting shortcut output: ${e}`);
     }
   }
 
   private get shortcutSubpath(): string {
-    return "Shortcut";
+    try {
+      return "Shortcut";
+    } catch (e) {
+      throw new Error(`Shortcut.js: Error getting shortcut subpath: ${e}`);
+    }
   }
 
   protected override get configSubpath(): string {
@@ -44,13 +46,20 @@ abstract class Shortcut extends _Application {
         ? this.shortcutSubpath
         : [super.configSubpath, this.shortcutSubpath].join("/");
     } catch (e) {
-      console.error(`Shortcut.js: Error getting shortcut config subpath: ${e}`);
-      throw e;
+      throw new Error(
+        `Shortcut.js: Error getting shortcut config subpath: ${e}`,
+      );
     }
   }
 
   static get Application(): typeof Application {
-    return _Application;
+    try {
+      return _Application;
+    } catch (e) {
+      throw new ReferenceError(
+        `Shortcut.js: Error getting shortcut Application class: ${e}`,
+      );
+    }
   }
 }
 

@@ -3,8 +3,9 @@ class Utilities {
     try {
       return importModule("Config");
     } catch (e) {
-      console.error(`Utilities: Config: Error importing Config module: ${e}`);
-      throw e;
+      throw new ReferenceError(
+        `Utilities: Config: Error importing Config module: ${e}`,
+      );
     }
   }
 
@@ -12,8 +13,9 @@ class Utilities {
     try {
       return importModule("Storage");
     } catch (e) {
-      console.error(`Utilities: Storage: Error importing Storage module: ${e}`);
-      throw e;
+      throw new ReferenceError(
+        `Utilities: Storage: Error importing Storage module: ${e}`,
+      );
     }
   }
 
@@ -21,8 +23,9 @@ class Utilities {
     try {
       return importModule("Secret");
     } catch (e) {
-      console.error(`Utilities: Secret: Error importing Secret module: ${e}`);
-      throw e;
+      throw new ReferenceError(
+        `Utilities: Secret: Error importing Secret module: ${e}`,
+      );
     }
   }
 }

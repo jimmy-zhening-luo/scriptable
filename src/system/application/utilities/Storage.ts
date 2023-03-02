@@ -6,20 +6,30 @@ class Storage extends st_Utility {
     programName: string,
     subpath: string = "default.txt",
   ) {
-    super(
-      "Storage",
-      Storage.File,
-      Storage.File.join(
-        Storage.File.join(storageSubpath, programName),
-        subpath,
-      ),
-    );
+    try {
+      super(
+        "Storage",
+        Storage.File,
+        Storage.File.join(
+          Storage.File.join(storageSubpath, programName),
+          subpath,
+        ),
+      );
+    } catch (e) {
+      throw new Error(
+        `Storage: constructor: Error creating Storage object: ${e}`,
+      );
+    }
   }
 
   write(text: string): this {
-    const overwrite: boolean = true;
-    this._file.write(text, overwrite);
-    return this;
+    try {
+      const overwrite: boolean = true;
+      this._file.write(text, overwrite);
+      return this;
+    } catch (e) {
+      throw new Error(`Storage: write: Error writing to file: ${e}`);
+    }
   }
 }
 

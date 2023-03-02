@@ -41,24 +41,34 @@ class Bookmark {
         e = new Error(
           `Caught unhandled exception while using Scriptable FileManager class to get bookmarked path of the bookmark named '${this.bookmark}'. See unhandled exception: ${e}`,
         );
-      e = new Error(`Bookmark: path: Error getting bookmarked path: ${e}`);
-      console.error(e);
-      throw e;
+      throw new Error(`Bookmark: path: Error getting bookmarked path: ${e}`);
     }
   }
 
   toString(): string {
-    return this.path;
+    try {
+      return this.path;
+    } catch (e) {
+      throw new Error(
+        `Bookmark: toString: Caught unhandled exception while getting bookmarked path of the bookmark named '${this.bookmark}'. See unhandled exception: ${e}`,
+      );
+    }
   }
 
   static [Symbol.hasInstance](instance: any): boolean {
-    return (
-      instance !== null &&
-      instance !== undefined &&
-      typeof instance === "object" &&
-      "_nominalType" in instance &&
-      (instance as Bookmark)._nominalType === "Bookmark"
-    );
+    try {
+      return (
+        instance !== null &&
+        instance !== undefined &&
+        typeof instance === "object" &&
+        "_nominalType" in instance &&
+        (instance as Bookmark)._nominalType === "Bookmark"
+      );
+    } catch (e) {
+      throw new Error(
+        `Bookmark: [Symbol.hasInstance]: Caught unhandled exception while checking whether instance is an instance of Bookmark. See unhandled exception: ${e}`,
+      );
+    }
   }
 
   static get Manager(): FileManager {

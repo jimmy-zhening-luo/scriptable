@@ -3,17 +3,26 @@ class Files {
     try {
       return importModule("ReadOnlyFile");
     } catch (e) {
-      console.error(`Files: Error importing ReadOnlyFile class: ${e}`);
-      throw e;
+      throw new ReferenceError(
+        `Files: Error importing ReadOnlyFile class: ${e}`,
+      );
     }
   }
 
   static get File(): typeof File {
-    return Files.ReadOnlyFile.File;
+    try {
+      return Files.ReadOnlyFile.File;
+    } catch (e) {
+      throw new ReferenceError(`Files: Error importing File class: ${e}`);
+    }
   }
 
   static get Bookmark(): typeof Bookmark {
-    return Files.File.Bookmark;
+    try {
+      return Files.File.Bookmark;
+    } catch (e) {
+      throw new ReferenceError(`Files: Error importing Bookmark class: ${e}`);
+    }
   }
 }
 

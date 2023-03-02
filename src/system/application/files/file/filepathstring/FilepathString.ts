@@ -199,11 +199,23 @@ class FilepathString {
   }
 
   toTree(): typeof FilepathString.prototype.tree {
-    return this.tree;
+    try {
+      return this.tree;
+    } catch (e) {
+      throw new Error(
+        `FilepathString: toTree: Caught unhandled exception while getting tree: ${e}`,
+      );
+    }
   }
 
   toString(): typeof FilepathString.prototype.path {
-    return this.path;
+    try {
+      return this.path;
+    } catch (e) {
+      throw new Error(
+        `FilepathString: toString: Caught unhandled exception while getting path: ${e}`,
+      );
+    }
   }
 
   static join(
@@ -279,31 +291,51 @@ class FilepathString {
   }
 
   private get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
-    return FilepathString.ValidFilepathRepeater;
+    try {
+      return FilepathString.ValidFilepathRepeater;
+    } catch (e) {
+      throw new ReferenceError(
+        `Filepath: Failed to get ValidFilepathRepeater: ${e}`,
+      );
+    }
   }
 
   private get StringSplitter(): typeof StringSplitter {
-    return FilepathString.StringSplitter;
+    try {
+      return FilepathString.StringSplitter;
+    } catch (e) {
+      throw new ReferenceError(`Filepath: Failed to get StringSplitter: ${e}`);
+    }
   }
 
   static get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
     try {
       return importModule("validfilepathrepeater/ValidFilepathRepeater");
     } catch (e) {
-      e = new Error(
+      throw new ReferenceError(
         `Filepath: Failed to import module ValidFilepathRepeater: ${e}`,
       );
-      console.error(e);
-      throw e;
     }
   }
 
   static get StringSplitter(): typeof StringSplitter {
-    return FilepathString.ValidFilepathRepeater.StringSplitter;
+    try {
+      return FilepathString.ValidFilepathRepeater.StringSplitter;
+    } catch (e) {
+      throw new ReferenceError(
+        `Filepath: Failed to import module StringSplitter: ${e}`,
+      );
+    }
   }
 
   static get Manager(): FileManager {
-    return FileManager.iCloud();
+    try {
+      return FileManager.iCloud();
+    } catch (e) {
+      throw new ReferenceError(
+        `Filepath: Failed to get instance of Scriptable FileManager iCloud object: ${e}`,
+      );
+    }
   }
 }
 

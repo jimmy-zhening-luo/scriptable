@@ -62,19 +62,35 @@ abstract class Utility {
   }
 
   get exists(): boolean {
-    return this._file.exists;
+    try {
+      return this._file.exists;
+    } catch (e) {
+      throw new Error(`Utility: exists: Error checking if file exists: ${e}`);
+    }
   }
 
   get path(): typeof Utility.prototype._file.path {
-    return this._file.path;
+    try {
+      return this._file.path;
+    } catch (e) {
+      throw new Error(`Utility: path: Error getting path: ${e}`);
+    }
   }
 
   get subpath(): typeof Utility.prototype._file.subpath {
-    return this._file.subpath;
+    try {
+      return this._file.subpath;
+    } catch (e) {
+      throw new Error(`Utility: subpath: Error getting subpath: ${e}`);
+    }
   }
 
   get filename(): typeof Utility.prototype._file.leaf {
-    return this._file.leaf;
+    try {
+      return this._file.leaf;
+    } catch (e) {
+      throw new Error(`Utility: filename: Error getting filename: ${e}`);
+    }
   }
 
   get data(): typeof Utility.prototype._file.data {
@@ -94,28 +110,51 @@ abstract class Utility {
   }
 
   toString(): typeof Utility.prototype.data {
-    return this.data;
+    try {
+      return this.data;
+    } catch (e) {
+      throw new Error(`Utility: toString: Error getting data: ${e}`);
+    }
   }
 
   static get Files(): typeof Files {
     try {
       return importModule("./system/application/files/Files");
     } catch (e) {
-      console.error(`Utility: Files: Error importing Files module: ${e}`);
-      throw e;
+      throw new ReferenceError(
+        `Utility: Files: Error importing Files module: ${e}`,
+      );
     }
   }
 
   static get ReadOnlyFile(): typeof ReadOnlyFile {
-    return Utility.Files.ReadOnlyFile;
+    try {
+      return Utility.Files.ReadOnlyFile;
+    } catch (e) {
+      throw new ReferenceError(
+        `Utility: ReadOnlyFile: Error importing ReadOnlyFile class: ${e}`,
+      );
+    }
   }
 
   static get File(): typeof File {
-    return Utility.Files.File;
+    try {
+      return Utility.Files.File;
+    } catch (e) {
+      throw new ReferenceError(
+        `Utility: File: Error importing File class: ${e}`,
+      );
+    }
   }
 
   static get Bookmark(): typeof Bookmark {
-    return Utility.Files.Bookmark;
+    try {
+      return Utility.Files.Bookmark;
+    } catch (e) {
+      throw new ReferenceError(
+        `Utility: Bookmark: Error importing Bookmark class: ${e}`,
+      );
+    }
   }
 }
 

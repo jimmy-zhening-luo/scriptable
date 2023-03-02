@@ -24,87 +24,145 @@ class File {
         throw new SyntaxError(`Error parsing subpath: ${e}`);
       }
     } catch (e) {
-      console.error(`File: constructor: Error constructing File: ${e}`);
-      throw e;
+      throw new Error(`File: constructor: Error constructing File: ${e}`);
     }
   }
 
   private parse(path: ConstructorParameters<typeof File>[1]): FilepathString {
-    return new File.FilepathString(
-      typeof path === "string" ||
-      Array.isArray(path) ||
-      (typeof path !== "string" && path instanceof File.FilepathString)
-        ? path
-        : "",
-    );
+    try {
+      return new File.FilepathString(
+        typeof path === "string" ||
+        Array.isArray(path) ||
+        (typeof path !== "string" && path instanceof File.FilepathString)
+          ? path
+          : "",
+      );
+    } catch (e) {
+      throw new Error(`File: parse: Error parsing path: ${e}`);
+    }
   }
 
   get base(): ReturnType<typeof FilepathString.prototype.toString> {
-    return this._base.toString();
+    try {
+      return this._base.toString();
+    } catch (e) {
+      throw new Error(`File: base: Error getting base: ${e}`);
+    }
   }
 
   get root(): typeof File.prototype.base {
-    return this.base;
+    try {
+      return this.base;
+    } catch (e) {
+      throw new Error(`File: root: Error getting root: ${e}`);
+    }
   }
 
   get top(): typeof File.prototype.base {
-    return this.base;
+    try {
+      return this.base;
+    } catch (e) {
+      throw new Error(`File: top: Error getting top: ${e}`);
+    }
   }
 
   get subpath(): ReturnType<typeof FilepathString.prototype.toString> {
-    return this._subpath.toString();
+    try {
+      return this._subpath.toString();
+    } catch (e) {
+      throw new Error(`File: subpath: Error getting subpath: ${e}`);
+    }
   }
 
   set subpath(subpath: ConstructorParameters<typeof File>[1]) {
-    this._subpath = new this.Filepath(subpath);
+    try {
+      this._subpath = new this.Filepath(subpath);
+    } catch (e) {
+      throw new Error(`File: subpath: Error setting subpath: ${e}`);
+    }
   }
 
   append(subpath: ConstructorParameters<typeof File>[1]): this {
-    this.subpath = this._subpath.append(subpath);
-    return this;
+    try {
+      this.subpath = this._subpath.append(subpath);
+      return this;
+    } catch (e) {
+      throw new Error(`File: append: Error appending subpath: ${e}`);
+    }
   }
 
   cd(relativePath: ConstructorParameters<typeof File>[1]): this {
-    this.subpath = this._subpath.cd(relativePath);
-    return this;
+    try {
+      this.subpath = this._subpath.cd(relativePath);
+      return this;
+    } catch (e) {
+      throw new Error(`File: cd: Error changing directory: ${e}`);
+    }
   }
 
   private get _path(): FilepathString {
-    return this._base.append(this.subpath);
+    try {
+      return this._base.append(this.subpath);
+    } catch (e) {
+      throw new Error(`File: _path: Error getting path: ${e}`);
+    }
   }
 
   get path(): ReturnType<typeof FilepathString.prototype.toString> {
-    return this._path.toString();
+    try {
+      return this._path.toString();
+    } catch (e) {
+      throw new Error(`File: path: Error getting path: ${e}`);
+    }
   }
 
   get tree(): ReturnType<typeof FilepathString.prototype.toTree> {
-    return this._path.toTree();
+    try {
+      return this._path.toTree();
+    } catch (e) {
+      throw new Error(`File: tree: Error getting tree: ${e}`);
+    }
   }
 
   toString(): typeof File.prototype.path {
-    return this.path;
+    try {
+      return this.path;
+    } catch (e) {
+      throw new Error(`File: toString: Error getting path: ${e}`);
+    }
   }
 
   toTree(): typeof File.prototype.tree {
-    return this.tree;
+    try {
+      return this.tree;
+    } catch (e) {
+      throw new Error(`File: toTree: Error getting tree: ${e}`);
+    }
   }
 
   get leaf(): string {
-    return this.subpath === "" ? this._base.leaf : this._subpath.leaf;
+    try {
+      return this.subpath === "" ? this._base.leaf : this._subpath.leaf;
+    } catch (e) {
+      throw new Error(`File: leaf: Error getting leaf: ${e}`);
+    }
   }
 
   get isTop(): boolean {
-    return this.subpath === "";
+    try {
+      return this.subpath === "";
+    } catch (e) {
+      throw new Error(`File: isTop: Error checking whether file is top: ${e}`);
+    }
   }
 
   get isDirectory(): boolean {
     try {
       return File.Manager.isDirectory(this.path);
     } catch (e) {
-      console.error(
+      throw new Error(
         `File: isDirectory: Error using Scriptable FileManager class to check whether path is directory: ${e}`,
       );
-      throw e;
     }
   }
 
@@ -116,65 +174,108 @@ class File {
         !this.isDirectory
       );
     } catch (e) {
-      console.error(
+      throw new Error(
         `File: isFile: Error using Scriptable FileManager class to check whether path is file: ${e}`,
       );
-      throw e;
     }
   }
 
   get exists(): boolean {
-    return this.isFile || this.isDirectory;
+    try {
+      return this.isFile || this.isDirectory;
+    } catch (e) {
+      throw new Error(`File: exists: Error checking whether file exists: ${e}`);
+    }
   }
 
   get isEnumerable(): boolean {
-    return this.isDirectory;
+    try {
+      return this.isDirectory;
+    } catch (e) {
+      throw new Error(
+        `File: isEnumerable: Error checking whether file is enumerable: ${e}`,
+      );
+    }
   }
 
   get isReadable(): boolean {
-    return this.isFile;
+    try {
+      return this.isFile;
+    } catch (e) {
+      throw new Error(
+        `File: isReadable: Error checking whether file is readable: ${e}`,
+      );
+    }
   }
 
   get parentSubpath(): string {
-    return this._subpath.parent;
+    try {
+      return this._subpath.parent;
+    } catch (e) {
+      throw new Error(
+        `File: parentSubpath: Error getting parent subpath: ${e}`,
+      );
+    }
   }
 
   get isOwnParent(): boolean {
-    return this.subpath === this.parentSubpath;
+    try {
+      return this.subpath === this.parentSubpath;
+    } catch (e) {
+      throw new Error(
+        `File: isOwnParent: Error checking whether file is own parent: ${e}`,
+      );
+    }
   }
 
   get parent(): File {
     try {
       return new File(this.base, this.parentSubpath);
     } catch (e) {
-      console.error(`File: parent: Error getting parent File object: ${e}`);
-      throw e;
+      throw new Error(`File: parent: Error getting parent File object: ${e}`);
     }
   }
 
   get parentPath(): string {
-    return this.parent.path;
+    try {
+      return this.parent.path;
+    } catch (e) {
+      throw new Error(`File: parentPath: Error getting parent path: ${e}`);
+    }
   }
 
   get parentIsDirectory(): boolean {
-    return this.parent.isDirectory;
+    try {
+      return this.parent.isDirectory;
+    } catch (e) {
+      throw new Error(
+        `File: parentIsDirectory: Error checking whether parent is directory: ${e}`,
+      );
+    }
   }
 
   get ls(): string[] {
     try {
       return this.isDirectory ? File.Manager.listContents(this.path) : [];
     } catch (e) {
-      console.error(
+      throw new Error(
         `File: ls: Error using Scriptable FileManager class to list contents of directory: ${e}`,
       );
-      throw e;
     }
   }
 
   get isBottom(): boolean {
-    return (
-      !this.exists || this.isFile || (this.isDirectory && this.ls.length === 0)
-    );
+    try {
+      return (
+        !this.exists ||
+        this.isFile ||
+        (this.isDirectory && this.ls.length === 0)
+      );
+    } catch (e) {
+      throw new Error(
+        `File: isBottom: Error checking whether file is bottom: ${e}`,
+      );
+    }
   }
 
   get descendants(): File[] {
@@ -189,8 +290,7 @@ class File {
             .map(file => file.descendants)
             .flat(1);
     } catch (e) {
-      console.error(`File: Error getting descendants: ${e}`);
-      throw e;
+      throw new Error(`File: Error getting descendants: ${e}`);
     }
   }
 
@@ -206,8 +306,7 @@ class File {
         e = new Error(
           `Caught unhandled exception while using Scriptable FileManager class to read data. See unhandled exception: ${e}`,
         );
-      console.error(`File: data: Error reading file: ${e}`);
-      throw e;
+      throw new Error(`File: data: Error reading file: ${e}`);
     }
   }
 
@@ -244,8 +343,7 @@ class File {
         return this;
       }
     } catch (e) {
-      console.error(`File: write: Error writing data to file: ${e}`);
-      throw e;
+      throw new Error(`File: write: Error writing data to file: ${e}`);
     }
   }
 
@@ -286,59 +384,85 @@ class File {
 
       return this;
     } catch (e) {
-      console.error(`File: delete: Error deleting file: ${e}`);
-      throw e;
+      throw new Error(`File: delete: Error deleting file: ${e}`);
     }
   }
 
   static join(
     ...paths: Parameters<typeof FilepathString.join>
   ): ReturnType<typeof FilepathString.join> {
-    return File.FilepathString.join(...paths);
+    try {
+      return File.FilepathString.join(...paths);
+    } catch (e) {
+      throw new Error(`File: join: Error joining paths: ${e}`);
+    }
   }
 
   static mutate(
     ...paths: Parameters<typeof FilepathString.mutate>
   ): ReturnType<typeof FilepathString.mutate> {
-    return File.FilepathString.mutate(...paths);
+    try {
+      return File.FilepathString.mutate(...paths);
+    } catch (e) {
+      throw new Error(`File: mutate: Error mutating paths: ${e}`);
+    }
   }
 
   static toString(
     ...paths: Parameters<typeof FilepathString.toString>
   ): ReturnType<typeof FilepathString.toString> {
-    return File.FilepathString.toString(...paths);
+    try {
+      return File.FilepathString.toString(...paths);
+    } catch (e) {
+      throw new Error(`File: toString: Error converting paths to string: ${e}`);
+    }
   }
 
   static toTree(
     ...paths: Parameters<typeof FilepathString.toTree>
   ): ReturnType<typeof FilepathString.toTree> {
-    return File.FilepathString.toTree(...paths);
+    try {
+      return File.FilepathString.toTree(...paths);
+    } catch (e) {
+      throw new Error(`File: toTree: Error converting paths to tree: ${e}`);
+    }
   }
 
   static [Symbol.hasInstance](instance: any): boolean {
-    return (
-      instance !== null &&
-      instance !== undefined &&
-      typeof instance === "object" &&
-      "_nominalType" in instance &&
-      (instance as File)._nominalType === "File"
-    );
+    try {
+      return (
+        instance !== null &&
+        instance !== undefined &&
+        typeof instance === "object" &&
+        "_nominalType" in instance &&
+        (instance as File)._nominalType === "File"
+      );
+    } catch (e) {
+      throw new Error(`File: Error checking if instance is File: ${e}`);
+    }
   }
 
   get Bookmark(): typeof Bookmark {
-    return File.Bookmark;
+    try {
+      return File.Bookmark;
+    } catch (e) {
+      throw new Error(`File: Error getting Bookmark class: ${e}`);
+    }
   }
 
   get Filepath(): typeof FilepathString {
-    return File.FilepathString;
+    try {
+      return File.FilepathString;
+    } catch (e) {
+      throw new Error(`File: Error getting FilepathString class: ${e}`);
+    }
   }
 
   static get Bookmark(): typeof Bookmark {
     try {
       return importModule("bookmark/Bookmark");
     } catch (e) {
-      console.error(`File: Error importing Bookmark class: ${e}`);
-      throw e;
+      throw new Error(`File: Error importing Bookmark class: ${e}`);
     }
   }
 
@@ -346,13 +470,16 @@ class File {
     try {
       return importModule("filepathstring/FilepathString");
     } catch (e) {
-      console.error(`File: Error importing FilepathString class: ${e}`);
-      throw e;
+      throw new Error(`File: Error importing FilepathString class: ${e}`);
     }
   }
 
   static get Manager(): FileManager {
-    return File.Bookmark.Manager;
+    try {
+      return File.Bookmark.Manager;
+    } catch (e) {
+      throw new Error(`File: Error getting FileManager class: ${e}`);
+    }
   }
 }
 

@@ -27,20 +27,30 @@ class ValidFilepathRepeater extends vps_Strings.ValidString {
     try {
       return vps_Strings;
     } catch (e) {
-      e = new Error(
+      throw new Error(
         `ValidFilepathRepeater: Strings: Caught unhandled exception while importing Strings class: ${e}`,
       );
-      console.error(e);
-      throw e;
     }
   }
 
   static get ValidString(): typeof ValidString {
-    return ValidFilepathRepeater.Strings.ValidString;
+    try {
+      return ValidFilepathRepeater.Strings.ValidString;
+    } catch (e) {
+      throw new ReferenceError(
+        `ValidFilepathRepeater: ValidString: Caught unhandled exception while importing ValidString class: ${e}`,
+      );
+    }
   }
 
   static get StringSplitter(): typeof StringSplitter {
-    return ValidFilepathRepeater.Strings.StringSplitter;
+    try {
+      return ValidFilepathRepeater.Strings.StringSplitter;
+    } catch (e) {
+      throw new ReferenceError(
+        `ValidFilepathRepeater: StringSplitter: Caught unhandled exception while importing StringSplitter class: ${e}`,
+      );
+    }
   }
 }
 

@@ -1,6 +1,12 @@
 class System {
   static get Shortcut(): typeof Shortcut {
-    return importModule("Shortcut");
+    try {
+      return importModule("Shortcut");
+    } catch (e) {
+      throw new ReferenceError(
+        `System: Shortcut: Error importing Shortcut class: ${e}`,
+      );
+    }
   }
 }
 

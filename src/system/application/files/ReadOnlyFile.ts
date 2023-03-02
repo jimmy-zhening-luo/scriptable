@@ -17,10 +17,9 @@ class ReadOnlyFile extends _File {
     try {
       return _File;
     } catch (e) {
-      console.error(
+      throw new ReferenceError(
         `File::ReadOnlyFile: File: Failed to import module File: ${e}`,
       );
-      throw e;
     }
   }
 }

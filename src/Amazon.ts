@@ -6,18 +6,22 @@ namespace Amazon {
 
   export class Amazon extends shortcut {
     runtime(): boolean {
-      const storageFilename: string = "last-run.txt";
+      try {
+        const storageFilename: string = "last-run.txt";
 
-      const latestRunString: string = this.readStorage(storageFilename);
-      const latestRunTime: Date =
-        latestRunString === ""
-          ? new Date()
-          : new Date(latestRunString).toString() === "Invalid Date"
-          ? new Date()
-          : new Date(latestRunString);
+        const latestRunString: string = this.readStorage(storageFilename);
+        const latestRunTime: Date =
+          latestRunString === ""
+            ? new Date()
+            : new Date(latestRunString).toString() === "Invalid Date"
+            ? new Date()
+            : new Date(latestRunString);
 
-      this.writeStorage(new Date().toISOString(), storageFilename);
-      return Date.now() - latestRunTime.getTime() > 300000;
+        this.writeStorage(new Date().toISOString(), storageFilename);
+        return Date.now() - latestRunTime.getTime() > 300000;
+      } catch (e) {
+        throw new Error(`Amazon: runtime: Error running app: ${e}`);
+      }
     }
   }
 }
