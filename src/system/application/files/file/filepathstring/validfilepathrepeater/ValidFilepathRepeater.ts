@@ -1,25 +1,24 @@
-const vps_Strings: typeof Strings = importModule("./common/types/strings/Strings");
+const vps_Strings: typeof Strings = importModule(
+  "./common/types/strings/Strings",
+);
 
-class ValidFilepathRepeater extends (vps_Strings.ValidString) {
-
-  constructor(
-    pathSegment: string = "",
-  ) {
+class ValidFilepathRepeater extends vps_Strings.ValidString {
+  constructor(pathSegment: string = "") {
     try {
       super(
-        pathSegment ?? "",
+        pathSegment,
         1,
         255,
         {},
         {
-          negateAllowedChars: true
+          negateAllowedChars: true,
         },
         ...ValidFilepathRepeater.Char.colon,
-        ...ValidFilepathRepeater.Char.slash
+        ...ValidFilepathRepeater.Char.slash,
       );
     } catch (e) {
       throw new Error(
-        `ValidFilepathRepeater: constructor: Caught unhandled exception instantiating parent class ValidFilepathRepeater: ${e}`
+        `ValidFilepathRepeater: constructor: Caught unhandled exception instantiating parent class ValidFilepathRepeater: ${e}`,
       );
     }
   }
@@ -29,7 +28,7 @@ class ValidFilepathRepeater extends (vps_Strings.ValidString) {
       return vps_Strings;
     } catch (e) {
       e = new Error(
-        `ValidFilepathRepeater: Strings: Caught unhandled exception while importing Strings class: ${e}`
+        `ValidFilepathRepeater: Strings: Caught unhandled exception while importing Strings class: ${e}`,
       );
       console.error(e);
       throw e;
@@ -43,7 +42,6 @@ class ValidFilepathRepeater extends (vps_Strings.ValidString) {
   static get StringSplitter(): typeof StringSplitter {
     return ValidFilepathRepeater.Strings.StringSplitter;
   }
-
 }
 
 module.exports = ValidFilepathRepeater;

@@ -16,7 +16,7 @@ class TestRunner {
     let a: Api;
 
     // TESTS GO HERE
-    const happy: any = [];
+    const happy: any[] = [];
 
     happy.push([
       "url",
@@ -67,17 +67,17 @@ class TestRunner {
   }
 
   runAll(suppressLogging = false): boolean {
-    return this.suites.every((suite) => suite.run(suppressLogging) === true);
+    return this.suites.every(suite => suite.run(suppressLogging) === true);
   }
 
   private casesToSuites(
     ...suiteInputs: [string, ...([] | TestRunner.Case)[]][]
   ): TestRunner.Suites {
     return suiteInputs
-      .map((suite) =>
+      .map(suite =>
         suite.length === 0 ? null : new TestRunner.Suite(...suite),
       )
-      .filter((suite) => suite !== null) as TestRunner.Suites;
+      .filter(suite => suite !== null) as TestRunner.Suites;
   }
 
   private get Shortcut(): typeof Shortcut {
@@ -118,7 +118,7 @@ namespace TestRunner {
           "\n\n======\n" +
             this.id +
             ": " +
-            this.cases.length +
+            String(this.cases.length) +
             " " +
             (this.cases.length === 1 ? "case" : "cases") +
             ":\n",
@@ -152,7 +152,7 @@ namespace TestRunner {
 
       function arrCaseCasesToCases(moreCases: (Case | Cases)[]): Cases {
         const cases: Cases = [];
-        moreCases.forEach((caseOrCases) => {
+        moreCases.forEach(caseOrCases => {
           cases.push(...caseOrCasesToCases(caseOrCases));
         });
         return cases;

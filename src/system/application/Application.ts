@@ -1,17 +1,17 @@
 abstract class Application {
-  abstract get input(): any;
-  abstract runtime(input: any): any;
-  abstract handleOutput(output: any): any;
+  abstract get input(): unknown;
+  abstract runtime(): unknown;
+  abstract handleOutput(
+    output: ReturnType<typeof Application.prototype.runtime>,
+  ): unknown;
 
-  run(): any {
+  run(): ReturnType<typeof Application.prototype.handleOutput> {
     try {
-      return this.handleOutput(
-        this.runtime(
-          this.input
-        )
-      );
+      return this.handleOutput(this.runtime());
     } catch (e) {
-      console.error(`Application: run: Caught unhandled exception during application runtime: ${e}`);
+      console.error(
+        `Application: run: Caught unhandled exception during application runtime: ${e}`,
+      );
       throw e;
     }
   }
@@ -26,55 +26,53 @@ abstract class Application {
 
   get config(): Config {
     try {
-      return new this.Config(
-        this.configSubpath,
-        this.constructor.name
-      );
+      return new this.Config(this.configSubpath, this.constructor.name);
     } catch (e) {
-      console.error(`Application: config: Error getting application Config object: ${e}`);
+      console.error(
+        `Application: config: Error getting application Config object: ${e}`,
+      );
       throw e;
     }
   }
 
-  protected storage(
-    subpath?: string
-  ): Storage {
+  protected storage(subpath?: string): Storage {
     try {
       return new this.Storage(
         this.storageSubpath,
         this.constructor.name,
-        subpath
+        subpath,
       );
     } catch (e) {
-      console.error(`Application: storage: Error getting application Storage object: ${e}`);
+      console.error(
+        `Application: storage: Error getting application Storage object: ${e}`,
+      );
       throw e;
     }
   }
 
-  readStorage(
-    subpath?: string
-  ): ReturnType<typeof Storage.prototype.read> {
+  readStorage(subpath?: string): ReturnType<typeof Storage.prototype.read> {
     try {
-      return this
-        .storage(subpath)
-        .read();
+      return this.storage(subpath).read();
     } catch (e) {
-      console.error(`Application: readStorage: Error reading application storage file at '${this.storage(subpath).path}': ${e}`);
+      console.error(
+        `Application: readStorage: Error reading application storage file at '${
+          this.storage(subpath).path
+        }': ${e}`,
+      );
       throw e;
     }
   }
 
-  writeStorage(
-    data: string,
-    subpath?: string
-  ): this {
+  writeStorage(data: string, subpath?: string): this {
     try {
-      this
-        .storage(subpath)
-        .write(data);
+      this.storage(subpath).write(data);
       return this;
     } catch (e) {
-      console.error(`Application: writeStorage: Error writing to application storage file at '${this.storage(subpath).path}': ${e}`);
+      console.error(
+        `Application: writeStorage: Error writing to application storage file at '${
+          this.storage(subpath).path
+        }': ${e}`,
+      );
       throw e;
     }
   }
@@ -109,7 +107,9 @@ abstract class Application {
     try {
       return importModule("browser/Browser");
     } catch (e) {
-      console.error(`Application: Browser: Error importing Browser module: ${e}`);
+      console.error(
+        `Application: Browser: Error importing Browser module: ${e}`,
+      );
       throw e;
     }
   }
@@ -127,7 +127,9 @@ abstract class Application {
     try {
       return importModule("Storage");
     } catch (e) {
-      console.error(`Application: Storage: Error importing Storage module: ${e}`);
+      console.error(
+        `Application: Storage: Error importing Storage module: ${e}`,
+      );
       throw e;
     }
   }
@@ -184,8 +186,6 @@ abstract class Application {
   static get Endpoint(): typeof Endpoint {
     return Application.Browser.Endpoint;
   }
-
-
 }
 
 module.exports = Application;

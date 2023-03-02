@@ -1,5 +1,5 @@
 declare interface ShortcutDictionary {
-  [key: string]: DictionaryValue
+  [key: string]: DictionaryValue;
 }
 
 declare type DictionaryValue =

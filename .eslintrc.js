@@ -5,7 +5,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ["eslint:recommended", "prettier"],
+  extends: ["prettier"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
@@ -14,8 +14,8 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   plugins: ["@typescript-eslint"],
+  ignorePatterns: ["node_modules", "dist", "built", "typings"],
   rules: {
-    "@typescript-eslint/adjacent-overload-signatures": "error",
     "@typescript-eslint/await-thenable": "error",
     "@typescript-eslint/ban-ts-comment": "error",
     "@typescript-eslint/ban-types": "error",
@@ -23,10 +23,14 @@ module.exports = {
       "error",
       "type-annotation",
     ],
-    "@typescript-eslint/consistent-indexed-object-style": ["error", "record"],
-    "@typescript-eslint/consistent-type-assertions": ["error", "as"],
+    "@typescript-eslint/consistent-type-assertions": [
+      "error",
+      {
+        assertionStyle: "as",
+        objectLiteralTypeAssertions: "never",
+      },
+    ],
     "@typescript-eslint/explicit-function-return-type": "error",
-    "@typescript-eslint/explicit-module-boundary-types": "error",
     "@typescript-eslint/no-base-to-string": "error",
     "@typescript-eslint/no-confusing-non-null-assertion": "error",
     "@typescript-eslint/no-confusing-void-expression": "error",

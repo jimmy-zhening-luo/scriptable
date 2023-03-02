@@ -1,9 +1,8 @@
 class Api {
-
   private _url: Url;
   private _method: Api.Method;
-  private _requestHeaders: RequestHeaders;
-  private _requestBody: RequestBody;
+  private readonly _requestHeaders: RequestHeaders;
+  private readonly _requestBody: RequestBody;
   private _timeoutSeconds: number;
 
   constructor(
@@ -13,12 +12,12 @@ class Api {
       authScheme = "",
       authToken = "",
       requestBody = "",
-      timeoutSeconds = 60
+      timeoutSeconds = 60,
     }: {
-      authScheme?: ConstructorParameters<typeof RequestHeaders>[0],
-      authToken?: ConstructorParameters<typeof RequestHeaders>[1],
-      requestBody?: ConstructorParameters<typeof RequestBody>[0]
-      timeoutSeconds?: number
+      authScheme?: ConstructorParameters<typeof RequestHeaders>[0];
+      authToken?: ConstructorParameters<typeof RequestHeaders>[1];
+      requestBody?: ConstructorParameters<typeof RequestBody>[0];
+      timeoutSeconds?: number;
     },
     ...httpHeaders: Parameters<typeof RequestHeaders.prototype.addHeader>
   ) {
@@ -27,13 +26,12 @@ class Api {
     this._requestHeaders = new this.RequestHeaders(
       authScheme,
       authToken,
-      ...httpHeaders
+      ...httpHeaders,
     );
-    this._requestBody = new this.RequestBody(
-      requestBody
-    );
-    this._timeoutSeconds = new this.PositiveFiniteInteger(timeoutSeconds).isValidNumber ?
-      timeoutSeconds
+    this._requestBody = new this.RequestBody(requestBody);
+    this._timeoutSeconds = new this.PositiveFiniteInteger(timeoutSeconds)
+      .isValidNumber
+      ? timeoutSeconds
       : 60;
   }
 
@@ -41,9 +39,7 @@ class Api {
     return this._url.toString();
   }
 
-  set url(
-    url: ConstructorParameters<typeof Url>[0]
-  ) {
+  set url(url: ConstructorParameters<typeof Url>[0]) {
     this._url = new Url(url);
   }
 
@@ -51,9 +47,7 @@ class Api {
     return this._url.scheme;
   }
 
-  set scheme(
-    scheme: ConstructorParameters<typeof Scheme>[0]
-  ) {
+  set scheme(scheme: ConstructorParameters<typeof Scheme>[0]) {
     this._url.scheme = scheme;
   }
 
@@ -61,9 +55,7 @@ class Api {
     return this._url.host;
   }
 
-  set host(
-    host: ConstructorParameters<typeof Host>[0]
-  ) {
+  set host(host: ConstructorParameters<typeof Host>[0]) {
     this._url.host = host;
   }
 
@@ -71,9 +63,7 @@ class Api {
     return this._url.port;
   }
 
-  set port(
-    port: ConstructorParameters<typeof Port>[0]
-  ) {
+  set port(port: ConstructorParameters<typeof Port>[0]) {
     this._url.port = port;
   }
 
@@ -81,9 +71,7 @@ class Api {
     return this._url.path;
   }
 
-  set path(
-    path: ConstructorParameters<typeof Path>[0]
-  ) {
+  set path(path: ConstructorParameters<typeof Path>[0]) {
     this._url.path = path;
   }
 
@@ -91,35 +79,25 @@ class Api {
     return this._url.query;
   }
 
-  set query(
-    query: ConstructorParameters<typeof Query>[0]
-  ) {
+  set query(query: ConstructorParameters<typeof Query>[0]) {
     this._url.query = query;
   }
 
-  addParam(
-    ...param: Parameters<Url["addParam"]>
-  ): this {
+  addParam(...param: Parameters<Url["addParam"]>): this {
     this._url.addParam(...param);
     return this;
   }
 
-  deleteParam(
-    ...param: Parameters<Url["deleteParam"]>
-  ): this {
+  deleteParam(...param: Parameters<Url["deleteParam"]>): this {
     this._url.deleteParam(...param);
     return this;
   }
 
-  getParam(
-    ...param: Parameters<Url["getParam"]>
-  ): ReturnType<Url["getParam"]> {
+  getParam(...param: Parameters<Url["getParam"]>): ReturnType<Url["getParam"]> {
     return this._url.getParam(...param);
   }
 
-  hasParam(
-    ...param: Parameters<Url["hasParam"]>
-  ): ReturnType<Url["hasParam"]> {
+  hasParam(...param: Parameters<Url["hasParam"]>): ReturnType<Url["hasParam"]> {
     return this._url.hasParam(...param);
   }
 
@@ -147,9 +125,7 @@ class Api {
     return this._requestHeaders.scheme;
   }
 
-  set authScheme(
-    scheme: typeof RequestHeaders.prototype.scheme
-  ) {
+  set authScheme(scheme: typeof RequestHeaders.prototype.scheme) {
     this._requestHeaders.scheme = scheme;
   }
 
@@ -157,9 +133,7 @@ class Api {
     return this._requestHeaders.token;
   }
 
-  set authToken(
-    token: typeof RequestHeaders.prototype.token
-  ) {
+  set authToken(token: typeof RequestHeaders.prototype.token) {
     this._requestHeaders.token = token;
   }
 
@@ -167,9 +141,7 @@ class Api {
     return this._requestHeaders.auth;
   }
 
-  set auth(
-    auth: typeof RequestHeaders.prototype.auth
-  ) {
+  set auth(auth: typeof RequestHeaders.prototype.auth) {
     this._requestHeaders.auth = auth;
   }
 
@@ -184,11 +156,11 @@ class Api {
 
   get headersStringObject(): typeof Request.prototype.headers {
     return Object.fromEntries(
-      [...this._requestHeaders.headers.entries()]
-        .map(
-          ([key, value]) => [key, value.toString()]
-      )
-    )
+      [...this._requestHeaders.headers.entries()].map(([key, value]) => [
+        key,
+        value.toString(),
+      ]),
+    );
   }
 
   get headersString(): string {
@@ -205,9 +177,7 @@ class Api {
     return this._requestHeaders.hasHeader(...header);
   }
 
-  addHeader(
-    ...header: Parameters<RequestHeaders["addHeader"]>
-  ): this {
+  addHeader(...header: Parameters<RequestHeaders["addHeader"]>): this {
     this._requestHeaders.addHeader(...header);
     return this;
   }
@@ -236,9 +206,7 @@ class Api {
     return this._requestHeaders.getHeader(...header);
   }
 
-  deleteHeader(
-    ...header: Parameters<RequestHeaders["deleteHeader"]>
-  ): this {
+  deleteHeader(...header: Parameters<RequestHeaders["deleteHeader"]>): this {
     this._requestHeaders.deleteHeader(...header);
     return this;
   }
@@ -263,14 +231,8 @@ class Api {
     return this._timeoutSeconds;
   }
 
-  set timeout(
-    timeoutSeconds: number
-  ) {
-    if (
-      new this.PositiveFiniteInteger(
-        timeoutSeconds
-      ).isValidNumber
-    )
+  set timeout(timeoutSeconds: number) {
+    if (new this.PositiveFiniteInteger(timeoutSeconds).isValidNumber)
       this._timeoutSeconds = timeoutSeconds;
   }
 
@@ -293,12 +255,11 @@ class Api {
     req.body = this.body;
     req.method = Api.Method[this.method];
     req.timeoutInterval = this.timeout;
-    req.loadString().then((_response) => {
-      response = _response ?? "";
+    req.loadString().then(_response => {
+      response = _response;
     });
     return new this.ResponseBody(response);
   }
-
 
   get Url(): typeof Url {
     return Api.Url;
@@ -355,24 +316,21 @@ class Api {
   static get PositiveFiniteInteger(): typeof PositiveFiniteInteger {
     return Api.Types.Numbers.PositiveFiniteInteger;
   }
-
 }
 
 namespace Api {
-
   export enum Method {
     GET,
     POST,
     PUT,
-    DELETE
+    DELETE,
   }
 
   export enum AuthScheme {
     Bearer,
     Basic,
-    Digest
+    Digest,
   }
-
 }
 
 module.exports = Api;

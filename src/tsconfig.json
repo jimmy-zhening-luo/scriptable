@@ -1,8 +1,6 @@
 {
   "extends": "../tsconfig.json",
-  "include": [
-    "**/*"
-  ],
+  "include": ["**/*"],
   "references": [
     {
       "path": "common/tsconfig.json"
@@ -16,10 +14,6 @@
   ],
   "compilerOptions": {
     "outDir": "../built",
-    "rootDir": ".",
-    "typeRoots": [
-      "!typings",
-      "../node_modules/@types"
-    ]
+    "rootDir": "."
   }
 }
