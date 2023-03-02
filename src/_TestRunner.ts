@@ -9,11 +9,9 @@ class TestRunner {
   constructor() {
     // CLASS IMPORTS GO HERE
     const url: typeof Url = this.Shortcut.Url;
-    const api: typeof Api = this.Shortcut.Api;
 
     // TEST VARS GO HERE
     let u: Url = new url();
-    let a: Api;
 
     // TESTS GO HERE
     const happy: any[] = [];
