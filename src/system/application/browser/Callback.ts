@@ -7,32 +7,52 @@ class Callback {
     basePath: ConstructorParameters<typeof Path>[0] = "",
     commonParams: ConstructorParameters<typeof Query>[0] = "",
   ) {
-    if (schemeOrCallback instanceof Callback)
-      this._baseUrl = new Url(schemeOrCallback.baseUrl);
-    else
-      this._baseUrl = new Callback.Url(
-        schemeOrCallback,
-        host,
-        undefined,
-        basePath,
-        new Callback.Query(commonParams),
-      );
+    try {
+      if (schemeOrCallback instanceof Callback)
+        this._baseUrl = new Url(schemeOrCallback.baseUrl);
+      else
+        this._baseUrl = new Callback.Url(
+          schemeOrCallback,
+          host,
+          undefined,
+          basePath,
+          new Callback.Query(commonParams),
+        );
+    } catch (e) {
+      throw new Error(`Callback: constructor: error creating Callback: ${e}`);
+    }
   }
 
   get baseUrl(): string {
-    return this._baseUrl.toString();
+    try {
+      return this._baseUrl.toString();
+    } catch (e) {
+      throw new Error(`Callback: get baseUrl: error getting baseUrl: ${e}`);
+    }
   }
 
   get scheme(): string {
-    return this._baseUrl.scheme;
+    try {
+      return this._baseUrl.scheme;
+    } catch (e) {
+      throw new Error(`Callback: get scheme: error getting scheme: ${e}`);
+    }
   }
 
   set scheme(scheme: ConstructorParameters<typeof Scheme>[0]) {
-    this._baseUrl.scheme = scheme;
+    try {
+      this._baseUrl.scheme = scheme;
+    } catch (e) {
+      throw new Error(`Callback: set scheme: error setting scheme: ${e}`);
+    }
   }
 
   get host(): string {
-    return this._baseUrl.host;
+    try {
+      return this._baseUrl.host;
+    } catch (e) {
+      throw new Error(`Callback: get host: error getting host: ${e}`);
+    }
   }
 
   set host(host: ConstructorParameters<typeof Host>[0]) {

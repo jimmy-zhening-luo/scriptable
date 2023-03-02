@@ -5,11 +5,23 @@ class PositiveRational extends pr_Integer.Rational {
     new PositiveRational.Cardinality.Positive();
 
   static get Integer(): typeof Integer {
-    return pr_Integer;
+    try {
+      return pr_Integer;
+    } catch (e) {
+      throw new ReferenceError(
+        `PositiveRational: error loading parent Integer module: ${e}`,
+      );
+    }
   }
 
   static get Rational(): typeof Rational {
-    return PositiveRational.Integer.Rational;
+    try {
+      return PositiveRational.Integer.Rational;
+    } catch (e) {
+      throw new ReferenceError(
+        `PositiveRational: error loading Integer.Rational module: ${e}`,
+      );
+    }
   }
 }
 

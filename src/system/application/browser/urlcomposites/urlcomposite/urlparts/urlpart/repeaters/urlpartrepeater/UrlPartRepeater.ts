@@ -2,29 +2,59 @@ abstract class UrlPartRepeater {
   readonly value: null | string;
 
   constructor(repeater?: null | string) {
-    this.value =
-      repeater === null || repeater === undefined || repeater === ""
-        ? null
-        : this.parse(repeater);
-    if (this.value === "") this.value = null;
+    try {
+      this.value =
+        repeater === null || repeater === undefined || repeater === ""
+          ? null
+          : this.parse(repeater);
+      if (this.value === "") this.value = null;
+    } catch (e) {
+      throw new Error(
+        `UrlPartRepeater: constructor: error creating UrlPartRepeater: ${e}`,
+      );
+    }
   }
 
   protected abstract parse(repeater: string): null | string;
 
   get isValid(): boolean {
-    return this.value !== null;
+    try {
+      return this.value !== null;
+    } catch (e) {
+      throw new Error(
+        `UrlPartRepeater: isValid: error checking if UrlPartRepeater is valid: ${e}`,
+      );
+    }
   }
 
   toString(): string {
-    return this.value ?? "";
+    try {
+      return this.value ?? "";
+    } catch (e) {
+      throw new Error(
+        `UrlPartRepeater: toString: error converting UrlPartRepeater to string: ${e}`,
+      );
+    }
   }
 
   protected get UrlValidators(): typeof UrlValidators {
-    return UrlPartRepeater.UrlValidators;
+    try {
+      return UrlPartRepeater.UrlValidators;
+    } catch (e) {
+      throw new ReferenceError(
+        `UrlPartRepeater: error loading parent UrlValidators module: ${e}`,
+      );
+    }
   }
 
   static get UrlValidators(): typeof UrlValidators {
-    return importModule("validators/UrlValidators");
+    try {
+      return importModule("validators/UrlValidators");
+    } catch (e) {
+      throw new ReferenceError(
+        `UrlPartRepeater: error loading parent UrlValidators module: ${e}`,
+      );
+    }
   }
 }
 

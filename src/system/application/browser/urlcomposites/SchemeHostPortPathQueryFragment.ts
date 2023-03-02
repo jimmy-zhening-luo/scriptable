@@ -39,68 +39,110 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     pathQueryFragment?: PathQueryFragment,
   ) {
     super();
-    this.parts =
-      schemeHostPortOrSchemeHostPortPathQueryFragment === undefined
-        ? [new this.SchemeHostPort(), new this.PathQueryFragment()]
-        : schemeHostPortOrSchemeHostPortPathQueryFragment instanceof
-          SchemeHostPortPathQueryFragment
-        ? schemeHostPortOrSchemeHostPortPathQueryFragment.parts
-        : Array.isArray(schemeHostPortOrSchemeHostPortPathQueryFragment)
-        ? [
-            new this.SchemeHostPort(
-              schemeHostPortOrSchemeHostPortPathQueryFragment[0],
-              [
-                schemeHostPortOrSchemeHostPortPathQueryFragment[1],
-                schemeHostPortOrSchemeHostPortPathQueryFragment[2],
-              ],
-            ),
-            new this.PathQueryFragment(
-              [
-                schemeHostPortOrSchemeHostPortPathQueryFragment[3],
-                schemeHostPortOrSchemeHostPortPathQueryFragment[4],
-              ],
-              schemeHostPortOrSchemeHostPortPathQueryFragment[5],
-            ),
-          ]
-        : [
-            new this.SchemeHostPort(
-              schemeHostPortOrSchemeHostPortPathQueryFragment,
-            ),
-            new this.PathQueryFragment(pathQueryFragment),
-          ];
-    this.schemeHostPort = this.parts[0];
-    this.pathQueryFragment = this.parts[1];
+    try {
+      this.parts =
+        schemeHostPortOrSchemeHostPortPathQueryFragment === undefined
+          ? [new this.SchemeHostPort(), new this.PathQueryFragment()]
+          : schemeHostPortOrSchemeHostPortPathQueryFragment instanceof
+            SchemeHostPortPathQueryFragment
+          ? schemeHostPortOrSchemeHostPortPathQueryFragment.parts
+          : Array.isArray(schemeHostPortOrSchemeHostPortPathQueryFragment)
+          ? [
+              new this.SchemeHostPort(
+                schemeHostPortOrSchemeHostPortPathQueryFragment[0],
+                [
+                  schemeHostPortOrSchemeHostPortPathQueryFragment[1],
+                  schemeHostPortOrSchemeHostPortPathQueryFragment[2],
+                ],
+              ),
+              new this.PathQueryFragment(
+                [
+                  schemeHostPortOrSchemeHostPortPathQueryFragment[3],
+                  schemeHostPortOrSchemeHostPortPathQueryFragment[4],
+                ],
+                schemeHostPortOrSchemeHostPortPathQueryFragment[5],
+              ),
+            ]
+          : [
+              new this.SchemeHostPort(
+                schemeHostPortOrSchemeHostPortPathQueryFragment,
+              ),
+              new this.PathQueryFragment(pathQueryFragment),
+            ];
+      this.schemeHostPort = this.parts[0];
+      this.pathQueryFragment = this.parts[1];
+    } catch (e) {
+      throw new Error(
+        `SchemeHostPortPathQueryFragment: constructor: error creating SchemeHostPortPathQueryFragment: ${e}`,
+      );
+    }
   }
 
   get composite(): string {
-    return this.schemeHostPort.isValid
-      ? this.pathQueryFragment.isValid
-        ? [
-            this.schemeHostPort.toString(),
-            this.pathQueryFragment.toString(),
-          ].join("/")
-        : this.schemeHostPort.toString()
-      : "";
+    try {
+      return this.schemeHostPort.isValid
+        ? this.pathQueryFragment.isValid
+          ? [
+              this.schemeHostPort.toString(),
+              this.pathQueryFragment.toString(),
+            ].join("/")
+          : this.schemeHostPort.toString()
+        : "";
+    } catch (e) {
+      throw new Error(
+        `SchemeHostPortPathQueryFragment: get composite: error getting composite: ${e}`,
+      );
+    }
   }
 
   get SchemeHostPort(): typeof SchemeHostPort {
-    return SchemeHostPortPathQueryFragment.SchemeHostPort;
+    try {
+      return SchemeHostPortPathQueryFragment.SchemeHostPort;
+    } catch (e) {
+      throw new Error(
+        `SchemeHostPortPathQueryFragment: get SchemeHostPort: error getting SchemeHostPort: ${e}`,
+      );
+    }
   }
 
   get PathQueryFragment(): typeof PathQueryFragment {
-    return SchemeHostPortPathQueryFragment.PathQueryFragment;
+    try {
+      return SchemeHostPortPathQueryFragment.PathQueryFragment;
+    } catch (e) {
+      throw new Error(
+        `SchemeHostPortPathQueryFragment: get PathQueryFragment: error getting PathQueryFragment: ${e}`,
+      );
+    }
   }
 
   static get SchemeHostPort(): typeof SchemeHostPort {
-    return importModule("SchemeHostPort");
+    try {
+      return importModule("SchemeHostPort");
+    } catch (e) {
+      throw new Error(
+        `SchemeHostPortPathQueryFragment: get SchemeHostPort: error getting SchemeHostPort: ${e}`,
+      );
+    }
   }
 
   static get PathQueryFragment(): typeof PathQueryFragment {
-    return importModule("PathQueryFragment");
+    try {
+      return importModule("PathQueryFragment");
+    } catch (e) {
+      throw new Error(
+        `SchemeHostPortPathQueryFragment: get PathQueryFragment: error getting PathQueryFragment: ${e}`,
+      );
+    }
   }
 
   static get UrlComposite(): typeof UrlComposite {
-    return shppqf_UrlComposite;
+    try {
+      return shppqf_UrlComposite;
+    } catch (e) {
+      throw new Error(
+        `SchemeHostPortPathQueryFragment: get UrlComposite: error getting UrlComposite: ${e}`,
+      );
+    }
   }
 }
 

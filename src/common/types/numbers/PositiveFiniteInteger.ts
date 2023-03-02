@@ -5,7 +5,13 @@ class PositiveFiniteInteger extends p_FiniteInteger {
     new PositiveFiniteInteger.Cardinality.Positive();
 
   static get FiniteInteger(): typeof FiniteInteger {
-    return p_FiniteInteger;
+    try {
+      return p_FiniteInteger;
+    } catch (e) {
+      throw new ReferenceError(
+        `PositiveFiniteInteger: error loading parent FiniteInteger module: ${e}`,
+      );
+    }
   }
 }
 

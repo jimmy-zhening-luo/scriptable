@@ -4,11 +4,23 @@ class FiniteRational extends fr_Integer.Rational {
   override bounds: Bounds = new FiniteRational.Bounds.Finite();
 
   static get Integer(): typeof Integer {
-    return fr_Integer;
+    try {
+      return fr_Integer;
+    } catch (e) {
+      throw new ReferenceError(
+        `FiniteRational: error loading parent Integer module: ${e}`,
+      );
+    }
   }
 
   static get Rational(): typeof Rational {
-    return FiniteRational.Integer.Rational;
+    try {
+      return FiniteRational.Integer.Rational;
+    } catch (e) {
+      throw new ReferenceError(
+        `FiniteRational: error loading Integer.Rational module: ${e}`,
+      );
+    }
   }
 }
 

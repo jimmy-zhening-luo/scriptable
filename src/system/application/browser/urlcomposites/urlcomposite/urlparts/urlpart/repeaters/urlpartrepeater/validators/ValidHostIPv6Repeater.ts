@@ -4,7 +4,13 @@ const hips_ValidUrlRepeater: typeof ValidUrlRepeater = importModule(
 
 class ValidHostIPv6Repeater extends hips_ValidUrlRepeater {
   constructor(hostIPv6Repeater: string) {
-    super(hostIPv6Repeater, 0, 4, hips_ValidUrlRepeater.UrlChar.hex);
+    try {
+      super(hostIPv6Repeater, 0, 4, hips_ValidUrlRepeater.UrlChar.hex);
+    } catch (e) {
+      throw new Error(
+        `ValidHostIPv6Repeater: constructor: error creating ValidHostIPv6Repeater: ${e}`,
+      );
+    }
   }
 }
 

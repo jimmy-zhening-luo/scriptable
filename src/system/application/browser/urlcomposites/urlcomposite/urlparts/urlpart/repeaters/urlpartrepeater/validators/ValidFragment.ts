@@ -4,21 +4,33 @@ const fr_ValidUrlPart: typeof ValidUrlPart = importModule(
 
 class ValidFragment extends fr_ValidUrlPart {
   constructor(fragment: string) {
-    super(
-      fragment,
-      1,
-      Infinity,
-      {
-        trimLeading: [...ValidFragment.UrlChar.hash],
-      },
-      ValidFragment.UrlChar.pchar,
-      ValidFragment.UrlChar.slash,
-      ValidFragment.UrlChar.question,
-    );
+    try {
+      super(
+        fragment,
+        1,
+        Infinity,
+        {
+          trimLeading: [...ValidFragment.UrlChar.hash],
+        },
+        ValidFragment.UrlChar.pchar,
+        ValidFragment.UrlChar.slash,
+        ValidFragment.UrlChar.question,
+      );
+    } catch (e) {
+      throw new Error(
+        `ValidFragment: constructor: error creating ValidFragment: ${e}`,
+      );
+    }
   }
 
   static get ValidUrlPart(): typeof ValidUrlPart {
-    return fr_ValidUrlPart;
+    try {
+      return fr_ValidUrlPart;
+    } catch (e) {
+      throw new ReferenceError(
+        `ValidFragment: error loading parent ValidUrlPart module: ${e}`,
+      );
+    }
   }
 }
 

@@ -5,7 +5,13 @@ class NegativeFiniteInteger extends n_FiniteInteger {
     new NegativeFiniteInteger.Cardinality.Negative();
 
   static get FiniteInteger(): typeof FiniteInteger {
-    return n_FiniteInteger;
+    try {
+      return n_FiniteInteger;
+    } catch (e) {
+      throw new ReferenceError(
+        `NegativeFiniteInteger: error loading parent FiniteInteger module: ${e}`,
+      );
+    }
   }
 }
 

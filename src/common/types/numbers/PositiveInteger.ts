@@ -5,7 +5,13 @@ class PositiveInteger extends p_Integer {
     new PositiveInteger.Cardinality.Positive();
 
   static get Integer(): typeof Integer {
-    return p_Integer;
+    try {
+      return p_Integer;
+    } catch (e) {
+      throw new ReferenceError(
+        `PositiveInteger: error loading parent Integer module: ${e}`,
+      );
+    }
   }
 }
 

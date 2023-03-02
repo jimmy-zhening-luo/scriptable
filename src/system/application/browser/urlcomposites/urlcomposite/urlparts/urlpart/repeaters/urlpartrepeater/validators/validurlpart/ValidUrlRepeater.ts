@@ -7,11 +7,23 @@ class ValidUrlRepeater extends r_ValidUrlPart {
     maxLength: number = Infinity,
     ...allowedChars: Char.CharInput[]
   ) {
-    super(part, minLength, maxLength, {}, ...allowedChars);
+    try {
+      super(part, minLength, maxLength, {}, ...allowedChars);
+    } catch (e) {
+      throw new Error(
+        `ValidUrlRepeater: constructor: error creating ValidUrlRepeater: ${e}`,
+      );
+    }
   }
 
   static get ValidUrlPart(): typeof ValidUrlPart {
-    return r_ValidUrlPart;
+    try {
+      return r_ValidUrlPart;
+    } catch (e) {
+      throw new ReferenceError(
+        `ValidUrlRepeater: error loading parent ValidUrlPart module: ${e}`,
+      );
+    }
   }
 }
 

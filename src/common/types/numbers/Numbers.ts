@@ -1,66 +1,152 @@
 class Numbers {
   static get Real(): typeof Real {
-    return Numbers.Rational.Real;
+    try {
+      return Numbers.Rational.Real;
+    } catch (e) {
+      throw new ReferenceError(`Numbers: error loading Real module: ${e}`);
+    }
   }
 
   static get Sets(): typeof Sets {
-    return Numbers.Real.Sets;
+    try {
+      return Numbers.Real.Sets;
+    } catch (e) {
+      throw new ReferenceError(`Numbers: error loading Sets module: ${e}`);
+    }
   }
 
   static get Bounds(): typeof Sets.Bounds {
-    return Numbers.Sets.Bounds;
+    try {
+      return Numbers.Sets.Bounds;
+    } catch (e) {
+      throw new ReferenceError(`Numbers: error loading Bounds module: ${e}`);
+    }
   }
 
   static get Cardinality(): typeof Sets.Cardinality {
-    return Numbers.Sets.Cardinality;
+    try {
+      return Numbers.Sets.Cardinality;
+    } catch (e) {
+      throw new ReferenceError(
+        `Numbers: error loading Cardinality module: ${e}`,
+      );
+    }
   }
 
   static get Rational(): typeof Rational {
-    return Numbers.Integer.Rational;
+    try {
+      return Numbers.Integer.Rational;
+    } catch (e) {
+      throw new ReferenceError(`Numbers: error loading Rational module: ${e}`);
+    }
   }
 
   static get FiniteRational(): typeof FiniteRational {
-    return importModule("FiniteRational");
+    try {
+      return importModule("FiniteRational");
+    } catch (e) {
+      throw new ReferenceError(
+        `Numbers: error loading FiniteRational module: ${e}`,
+      );
+    }
   }
 
   static get Integer(): typeof Integer {
-    return importModule("integer/Integer");
+    try {
+      return importModule("integer/Integer");
+    } catch (e) {
+      throw new ReferenceError(`Numbers: error loading Integer module: ${e}`);
+    }
   }
 
   static get FiniteInteger(): typeof FiniteInteger {
-    return importModule("FiniteInteger");
+    try {
+      return importModule("FiniteInteger");
+    } catch (e) {
+      throw new ReferenceError(
+        `Numbers: error loading FiniteInteger module: ${e}`,
+      );
+    }
   }
 
   static get PositiveRational(): typeof PositiveRational {
-    return importModule("PositiveRational");
+    try {
+      return importModule("PositiveRational");
+    } catch (e) {
+      throw new ReferenceError(
+        `Numbers: error loading PositiveRational module: ${e}`,
+      );
+    }
   }
 
   static get NegativeRational(): typeof NegativeRational {
-    return importModule("NegativeRational");
+    try {
+      return importModule("NegativeRational");
+    } catch (e) {
+      throw new ReferenceError(
+        `Numbers: error loading NegativeRational module: ${e}`,
+      );
+    }
   }
 
   static get PositiveInteger(): typeof PositiveInteger {
-    return importModule("PositiveInteger");
+    try {
+      return importModule("PositiveInteger");
+    } catch (e) {
+      throw new ReferenceError(
+        `Numbers: error loading PositiveInteger module: ${e}`,
+      );
+    }
   }
 
   static get NegativeInteger(): typeof NegativeInteger {
-    return importModule("NegativeInteger");
+    try {
+      return importModule("NegativeInteger");
+    } catch (e) {
+      throw new ReferenceError(
+        `Numbers: error loading NegativeInteger module: ${e}`,
+      );
+    }
   }
 
   static get PositiveFiniteRational(): typeof PositiveFiniteRational {
-    return importModule("PositiveFiniteRational");
+    try {
+      return importModule("PositiveFiniteRational");
+    } catch (e) {
+      throw new ReferenceError(
+        `Numbers: error loading PositiveFiniteRational module: ${e}`,
+      );
+    }
   }
 
   static get NegativeFiniteRational(): typeof NegativeFiniteRational {
-    return importModule("NegativeFiniteRational");
+    try {
+      return importModule("NegativeFiniteRational");
+    } catch (e) {
+      throw new ReferenceError(
+        `Numbers: error loading NegativeFiniteRational module: ${e}`,
+      );
+    }
   }
 
   static get PositiveFiniteInteger(): typeof PositiveFiniteInteger {
-    return importModule("PositiveFiniteInteger");
+    try {
+      return importModule("PositiveFiniteInteger");
+    } catch (e) {
+      throw new ReferenceError(
+        `Numbers: error loading PositiveFiniteInteger module: ${e}`,
+      );
+    }
   }
 
   static get NegativeFiniteInteger(): typeof NegativeFiniteInteger {
-    return importModule("NegativeFiniteInteger");
+    try {
+      return importModule("NegativeFiniteInteger");
+    } catch (e) {
+      throw new ReferenceError(
+        `Numbers: error loading NegativeFiniteInteger module: ${e}`,
+      );
+    }
   }
 }
 

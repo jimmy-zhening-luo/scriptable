@@ -5,11 +5,23 @@ class NegativeRational extends nr_Integer.Rational {
     new NegativeRational.Cardinality.Negative();
 
   static get Integer(): typeof Integer {
-    return nr_Integer;
+    try {
+      return nr_Integer;
+    } catch (e) {
+      throw new ReferenceError(
+        `NegativeRational: error loading parent Integer module: ${e}`,
+      );
+    }
   }
 
   static get Rational(): typeof Rational {
-    return NegativeRational.Integer.Rational;
+    try {
+      return NegativeRational.Integer.Rational;
+    } catch (e) {
+      throw new ReferenceError(
+        `NegativeRational: error loading Integer.Rational module: ${e}`,
+      );
+    }
   }
 }
 

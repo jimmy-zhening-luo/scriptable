@@ -5,7 +5,13 @@ class NegativeInteger extends n_Integer {
     new NegativeInteger.Cardinality.Negative();
 
   static get Integer(): typeof Integer {
-    return n_Integer;
+    try {
+      return n_Integer;
+    } catch (e) {
+      throw new ReferenceError(
+        `NegativeInteger: error loading parent Integer module: ${e}`,
+      );
+    }
   }
 }
 

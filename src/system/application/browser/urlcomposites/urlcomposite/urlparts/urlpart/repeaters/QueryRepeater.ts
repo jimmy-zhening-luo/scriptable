@@ -4,15 +4,33 @@ const qu_UrlPartRepeater: typeof UrlPartRepeater = importModule(
 
 class QueryRepeater extends qu_UrlPartRepeater {
   protected parse(repeater: string): null | string {
-    return new this.ValidQueryRepeater(repeater).value;
+    try {
+      return new this.ValidQueryRepeater(repeater).value;
+    } catch (e) {
+      throw new Error(
+        `QueryRepeater: parse: error parsing QueryRepeater: ${e}`,
+      );
+    }
   }
 
   protected get ValidQueryRepeater(): typeof ValidQueryRepeater {
-    return this.UrlValidators.Query.Repeaters.Query;
+    try {
+      return this.UrlValidators.Query.Repeaters.Query;
+    } catch (e) {
+      throw new ReferenceError(
+        `QueryRepeater: error loading ValidQueryRepeater module: ${e}`,
+      );
+    }
   }
 
   static get UrlPartRepeater(): typeof UrlPartRepeater {
-    return qu_UrlPartRepeater;
+    try {
+      return qu_UrlPartRepeater;
+    } catch (e) {
+      throw new ReferenceError(
+        `QueryRepeater: error loading parent UrlPartRepeater module: ${e}`,
+      );
+    }
   }
 }
 

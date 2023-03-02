@@ -18,19 +18,25 @@ class ValidUrlPart extends up_ValidString {
     },
     ...allowedChars: Char.CharInput[]
   ) {
-    super(
-      part,
-      minLength,
-      maxLength,
-      {
-        trim: true,
-        toLower: toLower,
-        trimLeading: trimLeading,
-        trimTrailing: trimTrailing,
-      },
-      {},
-      ...allowedChars,
-    );
+    try {
+      super(
+        part,
+        minLength,
+        maxLength,
+        {
+          trim: true,
+          toLower: toLower,
+          trimLeading: trimLeading,
+          trimTrailing: trimTrailing,
+        },
+        {},
+        ...allowedChars,
+      );
+    } catch (e) {
+      throw new Error(
+        `ValidUrlPart: constructor: error creating ValidUrlPart: ${e}`,
+      );
+    }
   }
 
   static get ValidString(): typeof ValidString {

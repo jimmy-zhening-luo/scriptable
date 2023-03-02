@@ -4,19 +4,29 @@ const po_ValidUrlPart: typeof ValidUrlPart = importModule(
 
 class ValidPort extends po_ValidUrlPart {
   constructor(port: string) {
-    super(
-      port,
-      1,
-      Infinity,
-      {
-        trimLeading: [...po_ValidUrlPart.UrlChar.colon],
-      },
-      po_ValidUrlPart.UrlChar.numbers,
-    );
+    try {
+      super(
+        port,
+        1,
+        Infinity,
+        {
+          trimLeading: [...po_ValidUrlPart.UrlChar.colon],
+        },
+        po_ValidUrlPart.UrlChar.numbers,
+      );
+    } catch (e) {
+      throw new Error(`ValidPort: constructor: error creating ValidPort: ${e}`);
+    }
   }
 
   static get ValidUrlPart(): typeof ValidUrlPart {
-    return po_ValidUrlPart;
+    try {
+      return po_ValidUrlPart;
+    } catch (e) {
+      throw new ReferenceError(
+        `ValidPort: error loading parent ValidUrlPart module: ${e}`,
+      );
+    }
   }
 }
 

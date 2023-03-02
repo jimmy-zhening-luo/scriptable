@@ -4,18 +4,30 @@ const hrn_ValidUrlRepeater: typeof ValidUrlRepeater = importModule(
 
 class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
   constructor(hostRegNameRepeater: string) {
-    super(
-      hostRegNameRepeater,
-      1,
-      Infinity,
-      hrn_ValidUrlRepeater.UrlChar.unreserved,
-      hrn_ValidUrlRepeater.UrlChar.percentEncoded,
-      hrn_ValidUrlRepeater.UrlChar.subDelims,
-    );
+    try {
+      super(
+        hostRegNameRepeater,
+        1,
+        Infinity,
+        hrn_ValidUrlRepeater.UrlChar.unreserved,
+        hrn_ValidUrlRepeater.UrlChar.percentEncoded,
+        hrn_ValidUrlRepeater.UrlChar.subDelims,
+      );
+    } catch (e) {
+      throw new Error(
+        `ValidHostRegNameRepeater: constructor: error creating ValidHostRegNameRepeater: ${e}`,
+      );
+    }
   }
 
   static get ValidUrlRepeater(): typeof ValidUrlRepeater {
-    return hrn_ValidUrlRepeater;
+    try {
+      return hrn_ValidUrlRepeater;
+    } catch (e) {
+      throw new ReferenceError(
+        `ValidHostRegNameRepeater: error loading parent ValidUrlRepeater module: ${e}`,
+      );
+    }
   }
 }
 
