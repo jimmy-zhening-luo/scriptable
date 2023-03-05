@@ -56,62 +56,134 @@ class Callback {
   }
 
   set host(host: ConstructorParameters<typeof Host>[0]) {
-    this._baseUrl.host = host;
+    try {
+      this._baseUrl.host = host;
+    } catch (e) {
+      throw new Error(`Callback: set host: error setting host: ${e}`);
+    }
   }
 
   get basePath(): string {
-    return this._baseUrl.path;
+    try {
+      return this._baseUrl.path;
+    } catch (e) {
+      throw new Error(`Callback: get basePath: error getting basePath: ${e}`);
+    }
   }
 
   set basePath(path: ConstructorParameters<typeof Path>[0]) {
-    this._baseUrl.path = path;
+    try {
+      this._baseUrl.path = path;
+    } catch (e) {
+      throw new Error(`Callback: set basePath: error setting basePath: ${e}`);
+    }
   }
 
   appendBasePath(...path: Parameters<Url["append"]>): this {
-    this._baseUrl.append(...path);
-    return this;
+    try {
+      this._baseUrl.append(...path);
+      return this;
+    } catch (e) {
+      throw new Error(
+        `Callback: appendBasePath: error appending basePath: ${e}`,
+      );
+    }
   }
 
   get commonParams(): typeof Callback.prototype.commonParamMap {
-    return this.commonParamMap;
+    try {
+      return this.commonParamMap;
+    } catch (e) {
+      throw new Error(
+        `Callback: get commonParams: error getting commonParams: ${e}`,
+      );
+    }
   }
 
   get commonQuery(): typeof Url.prototype.query {
-    return this._baseUrl.query;
+    try {
+      return this._baseUrl.query;
+    } catch (e) {
+      throw new Error(
+        `Callback: get commonQuery: error getting commonQuery: ${e}`,
+      );
+    }
   }
 
   get commonParamTuples(): typeof Url.prototype.queryTuples {
-    return this._baseUrl.queryTuples;
+    try {
+      return this._baseUrl.queryTuples;
+    } catch (e) {
+      throw new Error(
+        `Callback: get commonParamTuples: error getting commonParamTuples: ${e}`,
+      );
+    }
   }
 
   get commonParamMap(): typeof Url.prototype.queryMap {
-    return this._baseUrl.queryMap;
+    try {
+      return this._baseUrl.queryMap;
+    } catch (e) {
+      throw new Error(
+        `Callback: get commonParamMap: error getting commonParamMap: ${e}`,
+      );
+    }
   }
 
   set commonParams(params: ConstructorParameters<typeof Query>[0]) {
-    this._baseUrl.query = params;
+    try {
+      this._baseUrl.query = params;
+    } catch (e) {
+      throw new Error(
+        `Callback: set commonParams: error setting commonParams: ${e}`,
+      );
+    }
   }
 
   addCommonParam(...params: Parameters<Url["addParam"]>): this {
-    this._baseUrl.addParam(...params);
-    return this;
+    try {
+      this._baseUrl.addParam(...params);
+      return this;
+    } catch (e) {
+      throw new Error(
+        `Callback: addCommonParam: error adding commonParam: ${e}`,
+      );
+    }
   }
 
   deleteCommonParam(...keys: Parameters<Url["deleteParam"]>): this {
-    this._baseUrl.deleteParam(...keys);
-    return this;
+    try {
+      this._baseUrl.deleteParam(...keys);
+      return this;
+    } catch (e) {
+      throw new Error(
+        `Callback: deleteCommonParam: error deleting commonParam: ${e}`,
+      );
+    }
   }
 
   getCommonParam(
     ...key: Parameters<Url["getParam"]>
   ): ReturnType<Url["getParam"]> {
-    return this._baseUrl.getParam(...key);
+    try {
+      return this._baseUrl.getParam(...key);
+    } catch (e) {
+      throw new Error(
+        `Callback: getCommonParam: error getting commonParam: ${e}`,
+      );
+    }
   }
 
   hasCommonParam(
     ...key: Parameters<Url["hasParam"]>
   ): ReturnType<Url["hasParam"]> {
-    return this._baseUrl.hasParam(...key);
+    try {
+      return this._baseUrl.hasParam(...key);
+    } catch (e) {
+      throw new Error(
+        `Callback: hasCommonParam: error checking commonParam: ${e}`,
+      );
+    }
   }
 
   request(
@@ -120,40 +192,72 @@ class Callback {
     attachCommonParams: boolean = true,
     overrideCommonParams: boolean = true,
   ): ReturnType<Url["xCallback"]> {
-    const cUrl: Url = new Callback.Url(this._baseUrl);
-    cUrl.append(path);
-    if (attachCommonParams) {
-      if (overrideCommonParams) cUrl.addParam(query);
-      else {
-        const commonQuery: string = cUrl.query;
+    try {
+      const cUrl: Url = new Callback.Url(this._baseUrl);
+      cUrl.append(path);
+      if (attachCommonParams) {
+        if (overrideCommonParams) cUrl.addParam(query);
+        else {
+          const commonQuery: string = cUrl.query;
+          cUrl.query = query;
+          cUrl.addParam(commonQuery);
+        }
+      } else {
+        cUrl.query = "";
         cUrl.query = query;
-        cUrl.addParam(commonQuery);
       }
-    } else {
-      cUrl.query = "";
-      cUrl.query = query;
+      return cUrl.xCallback();
+    } catch (e) {
+      throw new Error(`Callback: request: error making request: ${e}`);
     }
-    return cUrl.xCallback();
   }
 
   toString(): string {
-    return this.baseUrl;
+    try {
+      return this.baseUrl;
+    } catch (e) {
+      throw new Error(`Callback: toString: error converting to string: ${e}`);
+    }
   }
 
   get Url(): typeof Url {
-    return Callback.Url;
+    try {
+      return Callback.Url;
+    } catch (e) {
+      throw new ReferenceError(
+        `Callback: get Url: error loading Url module: ${e}`,
+      );
+    }
   }
 
   get Query(): typeof Query {
-    return Callback.Query;
+    try {
+      return Callback.Query;
+    } catch (e) {
+      throw new ReferenceError(
+        `Callback: get Query: error loading Query module: ${e}`,
+      );
+    }
   }
 
   static get Url(): typeof Url {
-    return importModule("Url");
+    try {
+      return importModule("Url");
+    } catch (e) {
+      throw new ReferenceError(
+        `Callback: get Url: error loading Url module: ${e}`,
+      );
+    }
   }
 
   static get Query(): typeof Query {
-    return Callback.Url.Query;
+    try {
+      return Callback.Url.Query;
+    } catch (e) {
+      throw new ReferenceError(
+        `Callback: get Query: error loading Query module: ${e}`,
+      );
+    }
   }
 }
 

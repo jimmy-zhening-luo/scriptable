@@ -10,64 +10,108 @@ class Endpoint {
     requiredParams: Set<string> | string | string[] = [],
     optionalParams: Set<string> | string | string[] = [],
   ) {
-    this._callback = callbackBase;
-    this._callback.appendBasePath(endpointSubpath);
-    this._callback.addCommonParam(endpointQueryBase);
-    this.requiredParams = new Set(
-      typeof requiredParams === "string" ? [requiredParams] : requiredParams,
-    );
-    this.optionalParams = new Set(
-      typeof optionalParams === "string" ? [optionalParams] : optionalParams,
-    );
+    try {
+      this._callback = callbackBase;
+      this._callback.appendBasePath(endpointSubpath);
+      this._callback.addCommonParam(endpointQueryBase);
+      this.requiredParams = new Set(
+        typeof requiredParams === "string" ? [requiredParams] : requiredParams,
+      );
+      this.optionalParams = new Set(
+        typeof optionalParams === "string" ? [optionalParams] : optionalParams,
+      );
+    } catch (e) {
+      throw new Error(`Endpoint: constructor: error creating Endpoint: ${e}`);
+    }
   }
 
   request(
     params: ConstructorParameters<typeof Query>[0] = "",
     subpath: ConstructorParameters<typeof Path>[0] = "",
   ): ReturnType<Callback["request"]> {
-    const finalCallbackUrl: Url = new this.Url(this._callback)
-      .append(subpath)
-      .addParam(params);
+    try {
+      const finalCallbackUrl: Url = new this.Url(this._callback)
+        .append(subpath)
+        .addParam(params);
 
-    if (
-      Array.from(this.requiredParams.keys()).every(key =>
-        finalCallbackUrl.hasParam(key),
+      if (
+        Array.from(this.requiredParams.keys()).every(key =>
+          finalCallbackUrl.hasParam(key),
+        )
       )
-    )
-      return this._callback.request(subpath, params);
-    else return {};
+        return this._callback.request(subpath, params);
+      else throw new Error("missing required params");
+    } catch (e) {
+      throw new Error(`Endpoint: request: error requesting Endpoint: ${e}`);
+    }
   }
 
   get Callback(): typeof Callback {
-    return Endpoint.Callback;
+    try {
+      return Endpoint.Callback;
+    } catch (e) {
+      throw new ReferenceError(
+        `Endpoint: Callback: error getting Callback: ${e}`,
+      );
+    }
   }
 
   get Url(): typeof Url {
-    return Endpoint.Url;
+    try {
+      return Endpoint.Url;
+    } catch (e) {
+      throw new ReferenceError(`Endpoint: Url: error getting Url: ${e}`);
+    }
   }
 
   get Path(): typeof Path {
-    return Endpoint.Path;
+    try {
+      return Endpoint.Path;
+    } catch (e) {
+      throw new ReferenceError(`Endpoint: Path: error getting Path: ${e}`);
+    }
   }
 
   get Query(): typeof Query {
-    return Endpoint.Query;
+    try {
+      return Endpoint.Query;
+    } catch (e) {
+      throw new ReferenceError(`Endpoint: Query: error getting Query: ${e}`);
+    }
   }
 
   static get Callback(): typeof Callback {
-    return importModule("Callback");
+    try {
+      return importModule("Callback");
+    } catch (e) {
+      throw new ReferenceError(
+        `Endpoint: Callback: error getting Callback: ${e}`,
+      );
+    }
   }
 
   static get Url(): typeof Url {
-    return Endpoint.Callback.Url;
+    try {
+      return Endpoint.Callback.Url;
+    } catch (e) {
+      throw new ReferenceError(`Endpoint: Url: error getting Url: ${e}`);
+    }
   }
 
   static get Path(): typeof Path {
-    return Endpoint.Url.Path;
+    try {
+      return Endpoint.Url.Path;
+    } catch (e) {
+      throw new ReferenceError(`Endpoint: Path: error getting Path: ${e}`);
+    }
   }
 
   static get Query(): typeof Query {
-    return Endpoint.Url.Query;
+    try {
+      return Endpoint.Url.Query;
+    } catch (e) {
+      throw new ReferenceError(`Endpoint: Query: error getting Query: ${e}`);
+    }
   }
 }
 
