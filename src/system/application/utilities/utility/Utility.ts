@@ -31,7 +31,9 @@ abstract class Utility {
         ) ?? "";
       if (utilityRootBookmarkName === "")
         throw new ReferenceError(
-          `Utility class named '${utilityName}' is not configured in the application config. Each utility class should have a corresponding entry in the application config with [key: utility class name]: value: file root bookmark name.`,
+          `Utility class named '${utilityName}' is not configured in the application config. Each utility class should have a corresponding entry in the application config with [key: utility class name]: value: file root bookmark name. See value of application config: ${JSON.stringify(
+            Utility._applicationConfig,
+          )}`,
         );
       else {
         return new Utility.Bookmark(utilityRootBookmarkName);
