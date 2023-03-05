@@ -2,15 +2,14 @@ abstract class UrlPart {
   readonly _nominalType: string = "UrlPart";
   readonly value: null | string;
 
-  constructor(part?: null | string | UrlPart) {
+  constructor(part: string | UrlPart = "") {
     try {
-      this.value =
-        part === null || part === undefined || part.toString() === ""
-          ? null
-          : this.parse(part.toString());
+      this.value = this.parse(part.toString());
       if (this.value === "") this.value = null;
     } catch (e) {
-      throw new Error(`UrlPart: constructor: error creating UrlPart: ${e}`);
+      throw new SyntaxError(
+        `UrlPart: constructor: error creating UrlPart: ${e}`,
+      );
     }
   }
 
@@ -20,7 +19,7 @@ abstract class UrlPart {
     try {
       return this.value !== null;
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `UrlPart: isValid: error checking if UrlPart is valid: ${e}`,
       );
     }
@@ -46,7 +45,7 @@ abstract class UrlPart {
         (instance as UrlPart)._nominalType === "UrlPart"
       );
     } catch (e) {
-      throw new Error(`UrlPart: error checking if object is UrlPart: ${e}`);
+      throw new EvalError(`UrlPart: error checking if object is UrlPart: ${e}`);
     }
   }
 

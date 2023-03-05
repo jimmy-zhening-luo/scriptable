@@ -2,30 +2,23 @@ const qu_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Query extends qu_UrlPart {
   constructor(
-    query?:
-      | null
+    query:
       | string
       | Query
       | Map<string, string>
       | Record<string, string>
       | [string, string]
-      | [string, string][],
+      | [string, string][] = "",
   ) {
     try {
-      if (
-        query === undefined ||
-        query === null ||
-        typeof query === "string" ||
-        query instanceof Query
-      )
-        super(query);
+      if (typeof query === "string" || query instanceof Query) super(query);
       else if (Array.isArray(query)) {
         if (
           query.length === 2 &&
           typeof query[0] === "string" &&
           typeof query[1] === "string"
         )
-          super(query.join("="));
+          super(`${query[0]}=${query[1]}`);
         else super(Query.tuplesToQueryString(query as [string, string][]));
       } else {
         super(Query.mapToQueryString(query));

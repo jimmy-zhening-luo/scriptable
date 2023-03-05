@@ -187,8 +187,8 @@ class Callback {
   }
 
   request(
-    path: ConstructorParameters<typeof Path>[0],
-    query: ConstructorParameters<typeof Query>[0],
+    path: ConstructorParameters<typeof Path>[0] = "",
+    query: ConstructorParameters<typeof Query>[0] = "",
     attachCommonParams: boolean = true,
     overrideCommonParams: boolean = true,
   ): ReturnType<Url["xCallback"]> {

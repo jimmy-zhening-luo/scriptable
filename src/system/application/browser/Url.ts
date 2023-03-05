@@ -7,7 +7,7 @@ class Url {
   private _fragment: Fragment = new Url.Fragment();
 
   constructor(
-    headOrScheme?: null | string | Scheme | Url | Url.UrlParts,
+    headUrl: string | Scheme | Url | Url.UrlRecords = "",
     host?: ConstructorParameters<typeof Host>[0],
     port?: ConstructorParameters<typeof Port>[0],
     path?: ConstructorParameters<typeof Path>[0],
@@ -15,21 +15,52 @@ class Url {
     fragment?: ConstructorParameters<typeof Fragment>[0],
   ) {
     try {
-      if (headOrScheme === undefined || headOrScheme === null) {
-      } else if (
-        headOrScheme instanceof UrlPart ||
-        (typeof headOrScheme === "string" && host !== undefined)
-      ) {
-        const scheme: string | Scheme = headOrScheme;
-        this.scheme = scheme;
+      if (typeof headUrl === "string") {
+        if (
+          host === undefined &&
+          port === undefined &&
+          path === undefined &&
+          query === undefined &&
+          fragment === undefined
+        )
+          this.url = headUrl;
+        else {
+          this.scheme = headUrl;
+          this.host = host;
+          this.port = port;
+          this.path = path;
+          this.query = query;
+          this.fragment = fragment;
+        }
+      } else if (headUrl instanceof Url.Scheme) {
+        this.scheme = headUrl;
         this.host = host;
         this.port = port;
         this.path = path;
         this.query = query;
         this.fragment = fragment;
       } else {
-        const url: string | Url | Url.UrlParts = headOrScheme;
-        this.url = url;
+        this.scheme = headUrl.scheme;
+        this.host = headUrl.host;
+        this.port = headUrl.port;
+        this.path = headUrl.path;
+        this.query = headUrl.query;
+        this.fragment = headUrl.fragment;
+        if (host !== undefined) {
+          this.host = host;
+          if (port !== undefined) {
+            this.port = port;
+            if (path !== undefined) {
+              this.path = path;
+              if (query !== undefined) {
+                this.query = query;
+                if (fragment !== undefined) {
+                  this.fragment = fragment;
+                }
+              }
+            }
+          }
+        }
       }
     } catch (e) {
       throw new Error(`Url: constructor: error creating Url: ${e}`);
@@ -53,29 +84,15 @@ class Url {
     }
   }
 
-  set url(url: ConstructorParameters<typeof Url>[0]) {
+  set url(url: string | Url | Url.UrlRecords) {
     try {
-      if (url === undefined || url === null) {
-      } else if (typeof url === "string") {
-        const parsedUrl: Url = this.parse(url);
-        this.scheme = parsedUrl.scheme;
-        this.host = parsedUrl.host;
-        this.port = parsedUrl.port;
-        this.path = parsedUrl.path;
-        this.query = parsedUrl.query;
-        this.fragment = parsedUrl.fragment;
-      } else if (url instanceof Scheme) {
-        const scheme: Scheme = url;
-        this.url = "";
-        this.url = scheme.toString();
-      } else {
-        this.scheme = url.scheme;
-        this.host = url.host;
-        this.port = url.port;
-        this.path = url.path;
-        this.query = url.query;
-        this.fragment = url.fragment;
-      }
+      const parsedUrl: Url.UrlRecords = this._parse(url);
+      this.scheme = parsedUrl.scheme;
+      this.host = parsedUrl.host;
+      this.port = parsedUrl.port;
+      this.path = parsedUrl.path;
+      this.query = parsedUrl.query;
+      this.fragment = parsedUrl.fragment;
     } catch (e) {
       throw new Error(`Url: set url: error setting url: ${e}`);
     }
@@ -290,52 +307,65 @@ class Url {
     }
   }
 
-  private parse(url: string): Url {
+  private _parse(url: string | Url | Url.UrlRecords): Url.UrlRecords {
     try {
-      let urlStringParts: Url.UrlParts = {};
+      let urlStringParts: Url.UrlRecords = {};
+      if (typeof url === "string") {
+        const url_fragment: string[] = url.trim().split("#");
+        const urlWithoutFragment = url_fragment.shift() ?? "";
+        urlStringParts.fragment = url_fragment.join("#");
 
-      const url_fragment: string[] = url.trim().split("#");
-      url = url_fragment.shift() ?? "";
-      urlStringParts.fragment = url_fragment.join("#");
-
-      const queryOrSchemehostportpath_query: string[] = url.split("?");
-      const queryOrSchemehostportpath: string =
-        queryOrSchemehostportpath_query.shift() ?? "";
-      const schemehostportpath: string = queryOrSchemehostportpath.includes("=")
-        ? ""
-        : queryOrSchemehostportpath;
-      urlStringParts.query = queryOrSchemehostportpath.includes("=")
-        ? [queryOrSchemehostportpath, ...queryOrSchemehostportpath_query].join(
-            "?",
-          )
-        : queryOrSchemehostportpath_query.join("?");
-
-      const scheme_hostportpath: string[] = schemehostportpath.split("://");
-      const schemeOrHostportpath: string = scheme_hostportpath.shift() ?? "";
-      urlStringParts.scheme =
-        scheme_hostportpath.length > 0
-          ? schemeOrHostportpath
-          : schemeOrHostportpath.includes(".") ||
-            schemeOrHostportpath.includes("/")
+        const queryOrSchemehostportpath_query: string[] =
+          urlWithoutFragment.split("?");
+        const queryOrSchemehostportpath: string =
+          queryOrSchemehostportpath_query.shift() ?? "";
+        const schemehostportpath: string = queryOrSchemehostportpath.includes(
+          "=",
+        )
           ? ""
-          : schemeOrHostportpath;
-      const hostportpath: string =
-        scheme_hostportpath.length > 0
-          ? scheme_hostportpath.join("://")
-          : urlStringParts.scheme === ""
-          ? schemeOrHostportpath
-          : "";
+          : queryOrSchemehostportpath;
+        urlStringParts.query = queryOrSchemehostportpath.includes("=")
+          ? [
+              queryOrSchemehostportpath,
+              ...queryOrSchemehostportpath_query,
+            ].join("?")
+          : queryOrSchemehostportpath_query.join("?");
 
-      const hostport_path: string[] = hostportpath.split("/");
-      const hostport: string = hostport_path.shift() ?? "";
-      urlStringParts.path = hostport_path.join("/");
+        const scheme_hostportpath: string[] = schemehostportpath.split("://");
+        const schemeOrHostportpath: string = scheme_hostportpath.shift() ?? "";
+        urlStringParts.scheme =
+          scheme_hostportpath.length > 0
+            ? schemeOrHostportpath
+            : schemeOrHostportpath.includes(".") ||
+              schemeOrHostportpath.includes("/")
+            ? ""
+            : schemeOrHostportpath;
+        const hostportpath: string =
+          scheme_hostportpath.length > 0
+            ? scheme_hostportpath.join("://")
+            : urlStringParts.scheme === ""
+            ? schemeOrHostportpath
+            : "";
 
-      const host_port: string[] = hostport.split(":");
-      urlStringParts.host = host_port.shift() ?? "";
-      urlStringParts.port =
-        urlStringParts.host === "" ? "" : host_port.join(":");
+        const hostport_path: string[] = hostportpath.split("/");
+        const hostport: string = hostport_path.shift() ?? "";
+        urlStringParts.path = hostport_path.join("/");
 
-      return new Url(urlStringParts);
+        const host_port: string[] = hostport.split(":");
+        urlStringParts.host = host_port.shift() ?? "";
+        urlStringParts.port =
+          urlStringParts.host === "" ? "" : host_port.join(":");
+      } else {
+        urlStringParts = {
+          scheme: url.scheme,
+          host: url.host,
+          port: url.port,
+          path: url.path,
+          query: url.query,
+          fragment: url.fragment,
+        };
+      }
+      return urlStringParts;
     } catch (e) {
       throw new Error(`Url: parse: error parsing url: ${e}`);
     }
@@ -381,11 +411,23 @@ class Url {
     }
   }
 
+  get UrlPart(): typeof UrlPart {
+    try {
+      return Url.UrlPart;
+    } catch (e) {
+      throw new ReferenceError(
+        `Url: get UrlPart: error loading UrlPart module: ${e}`,
+      );
+    }
+  }
+
   get Scheme(): typeof Scheme {
     try {
       return Url.Scheme;
     } catch (e) {
-      throw new ReferenceError(`Url: get Scheme: error getting scheme: ${e}`);
+      throw new ReferenceError(
+        `Url: get Scheme: error loading Scheme module: ${e}`,
+      );
     }
   }
 
@@ -393,7 +435,9 @@ class Url {
     try {
       return Url.Host;
     } catch (e) {
-      throw new ReferenceError(`Url: get Host: error getting host: ${e}`);
+      throw new ReferenceError(
+        `Url: get Host: error loading Host module: ${e}`,
+      );
     }
   }
 
@@ -401,7 +445,9 @@ class Url {
     try {
       return Url.Port;
     } catch (e) {
-      throw new ReferenceError(`Url: get Port: error getting port: ${e}`);
+      throw new ReferenceError(
+        `Url: get Port: error loading Port module: ${e}`,
+      );
     }
   }
 
@@ -409,7 +455,9 @@ class Url {
     try {
       return Url.Path;
     } catch (e) {
-      throw new ReferenceError(`Url: get Path: error getting path: ${e}`);
+      throw new ReferenceError(
+        `Url: get Path: error loading Path module: ${e}`,
+      );
     }
   }
 
@@ -417,7 +465,9 @@ class Url {
     try {
       return Url.Query;
     } catch (e) {
-      throw new ReferenceError(`Url: get Query: error getting query: ${e}`);
+      throw new ReferenceError(
+        `Url: get Query: error loading Query module: ${e}`,
+      );
     }
   }
 
@@ -426,7 +476,7 @@ class Url {
       return Url.Fragment;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get Fragment: error getting fragment: ${e}`,
+        `Url: get Fragment: error loading Fragment module: ${e}`,
       );
     }
   }
@@ -436,7 +486,7 @@ class Url {
       return Url.UrlComposites.SchemeHostPortPathQueryFragment;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get SchemeHostPortPathQueryFragment: error getting scheme host port path query fragment: ${e}`,
+        `Url: get SchemeHostPortPathQueryFragment: error loading SchemeHostPortPathQueryFragment module: ${e}`,
       );
     }
   }
@@ -446,7 +496,7 @@ class Url {
       return importModule("urlcomposites/UrlComposites");
     } catch (e) {
       throw new ReferenceError(
-        `Url: get UrlComposites: error getting url composites: ${e}`,
+        `Url: get UrlComposites: error loading UrlComposites module: ${e}`,
       );
     }
   }
@@ -456,7 +506,17 @@ class Url {
       return Url.UrlComposites.UrlComposite.UrlParts;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get UrlParts: error getting url parts: ${e}`,
+        `Url: get UrlParts: error loading UrlParts module: ${e}`,
+      );
+    }
+  }
+
+  static get UrlPart(): typeof UrlPart {
+    try {
+      return Url.UrlParts.UrlPart;
+    } catch (e) {
+      throw new ReferenceError(
+        `Url: get UrlPart: error loading UrlPart module: ${e}`,
       );
     }
   }
@@ -465,7 +525,9 @@ class Url {
     try {
       return Url.UrlParts.Scheme;
     } catch (e) {
-      throw new ReferenceError(`Url: get Scheme: error getting scheme: ${e}`);
+      throw new ReferenceError(
+        `Url: get Scheme: error loading Scheme module: ${e}`,
+      );
     }
   }
 
@@ -473,7 +535,9 @@ class Url {
     try {
       return Url.UrlParts.Host;
     } catch (e) {
-      throw new ReferenceError(`Url: get Host: error getting host: ${e}`);
+      throw new ReferenceError(
+        `Url: get Host: error loading Host module: ${e}`,
+      );
     }
   }
 
@@ -481,7 +545,9 @@ class Url {
     try {
       return Url.UrlParts.Port;
     } catch (e) {
-      throw new ReferenceError(`Url: get Port: error getting port: ${e}`);
+      throw new ReferenceError(
+        `Url: get Port: error loading Port module: ${e}`,
+      );
     }
   }
 
@@ -489,7 +555,9 @@ class Url {
     try {
       return Url.UrlParts.Path;
     } catch (e) {
-      throw new ReferenceError(`Url: get Path: error getting path: ${e}`);
+      throw new ReferenceError(
+        `Url: get Path: error loading Path module: ${e}`,
+      );
     }
   }
 
@@ -497,7 +565,9 @@ class Url {
     try {
       return Url.UrlParts.Query;
     } catch (e) {
-      throw new ReferenceError(`Url: get Query: error getting query: ${e}`);
+      throw new ReferenceError(
+        `Url: get Query: error loading Query module: ${e}`,
+      );
     }
   }
 
@@ -506,14 +576,14 @@ class Url {
       return Url.UrlParts.Fragment;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get Fragment: error getting fragment: ${e}`,
+        `Url: get Fragment: error loading Fragment module: ${e}`,
       );
     }
   }
 }
 
 namespace Url {
-  export interface UrlParts {
+  export interface UrlRecords {
     scheme?: ConstructorParameters<typeof Scheme>[0];
     host?: ConstructorParameters<typeof Host>[0];
     port?: ConstructorParameters<typeof Port>[0];

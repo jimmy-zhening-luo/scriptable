@@ -1,7 +1,7 @@
 const ho_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Host extends ho_UrlPart {
-  constructor(host?: null | string | Host) {
+  constructor(host?: string | Host) {
     try {
       super(host);
     } catch (e) {

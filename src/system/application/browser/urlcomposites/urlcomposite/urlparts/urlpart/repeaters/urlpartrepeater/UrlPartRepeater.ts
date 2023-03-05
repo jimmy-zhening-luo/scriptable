@@ -1,12 +1,10 @@
 abstract class UrlPartRepeater {
   readonly value: null | string;
 
-  constructor(repeater?: null | string) {
+  constructor(repeater: null | string) {
     try {
       this.value =
-        repeater === null || repeater === undefined || repeater === ""
-          ? null
-          : this.parse(repeater);
+        repeater === null || repeater === "" ? null : this.parse(repeater);
       if (this.value === "") this.value = null;
     } catch (e) {
       throw new Error(

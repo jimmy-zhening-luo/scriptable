@@ -12,7 +12,7 @@ class File {
         this._base =
           base instanceof File
             ? new File.FilepathString(base.base)
-            : base instanceof Bookmark
+            : base instanceof File.Bookmark
             ? new File.FilepathString(base.path)
             : this.parse(base);
       } catch (e) {
@@ -168,11 +168,7 @@ class File {
 
   get isFile(): boolean {
     try {
-      return (
-        this.parentIsDirectory &&
-        File.Manager.fileExists(this.path) &&
-        !this.isDirectory
-      );
+      return !this.isDirectory && File.Manager.fileExists(this.path);
     } catch (e) {
       throw new Error(
         `File: isFile: Error using Scriptable FileManager class to check whether path is file: ${e}`,
@@ -298,7 +294,7 @@ class File {
     try {
       if (!this.isReadable)
         throw new ReferenceError(
-          "File is not readable. File must be a file and must exist.",
+          `File is not readable. File must be a file and must exist.`,
         );
       return File.Manager.readString(this.path);
     } catch (e) {
@@ -306,12 +302,16 @@ class File {
         e = new Error(
           `Caught unhandled exception while using Scriptable FileManager class to read data. See unhandled exception: ${e}`,
         );
-      throw new Error(`File: data: Error reading file: ${e}`);
+      throw new Error(`File: data: Error reading file at "${this.path}": ${e}`);
     }
   }
 
   read(): typeof File.prototype.data {
-    return this.data;
+    try {
+      return this.data;
+    } catch (e) {
+      throw new Error(`File: read: Error reading file: ${e}`);
+    }
   }
 
   write(data: typeof File.prototype.data, overwrite: boolean = false): this {
@@ -343,7 +343,9 @@ class File {
         return this;
       }
     } catch (e) {
-      throw new Error(`File: write: Error writing data to file: ${e}`);
+      throw new Error(
+        `File: write: Error writing data to file "${this.path}": ${e}`,
+      );
     }
   }
 

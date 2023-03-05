@@ -1,7 +1,7 @@
 const sc_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Scheme extends sc_UrlPart {
-  constructor(scheme?: null | string | Scheme) {
+  constructor(scheme?: string | Scheme) {
     try {
       super(scheme);
     } catch (e) {

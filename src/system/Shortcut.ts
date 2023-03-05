@@ -24,7 +24,7 @@ abstract class Shortcut extends _Application {
         typeof output === "boolean"
       )
         output = output;
-      else if (output instanceof File) output = output.path;
+      else if (output instanceof Shortcut.File) output = output.path;
       Script.setShortcutOutput(output);
       return output;
     } catch (e) {

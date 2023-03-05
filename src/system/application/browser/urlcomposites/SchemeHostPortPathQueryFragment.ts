@@ -8,23 +8,6 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
   readonly pathQueryFragment: PathQueryFragment;
 
   constructor(
-    schemeHostPortPathQueryFragment?:
-      | SchemeHostPortPathQueryFragment
-      | [
-          string | Scheme,
-          string | Host,
-          string | number | Port,
-          string | Path,
-          string | Query,
-          string | Fragment,
-        ],
-  );
-  constructor(
-    schemeHostPort?: SchemeHostPort,
-    pathQueryFragment?: PathQueryFragment,
-  );
-
-  constructor(
     schemeHostPortOrSchemeHostPortPathQueryFragment?:
       | SchemeHostPort
       | SchemeHostPortPathQueryFragment
@@ -42,20 +25,23 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     try {
       this.parts =
         schemeHostPortOrSchemeHostPortPathQueryFragment === undefined
-          ? [new this.SchemeHostPort(), new this.PathQueryFragment()]
+          ? [
+              new SchemeHostPortPathQueryFragment.SchemeHostPort(),
+              new SchemeHostPortPathQueryFragment.PathQueryFragment(),
+            ]
           : schemeHostPortOrSchemeHostPortPathQueryFragment instanceof
             SchemeHostPortPathQueryFragment
           ? schemeHostPortOrSchemeHostPortPathQueryFragment.parts
           : Array.isArray(schemeHostPortOrSchemeHostPortPathQueryFragment)
           ? [
-              new this.SchemeHostPort(
+              new SchemeHostPortPathQueryFragment.SchemeHostPort(
                 schemeHostPortOrSchemeHostPortPathQueryFragment[0],
                 [
                   schemeHostPortOrSchemeHostPortPathQueryFragment[1],
                   schemeHostPortOrSchemeHostPortPathQueryFragment[2],
                 ],
               ),
-              new this.PathQueryFragment(
+              new SchemeHostPortPathQueryFragment.PathQueryFragment(
                 [
                   schemeHostPortOrSchemeHostPortPathQueryFragment[3],
                   schemeHostPortOrSchemeHostPortPathQueryFragment[4],
@@ -64,15 +50,17 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
               ),
             ]
           : [
-              new this.SchemeHostPort(
+              new SchemeHostPortPathQueryFragment.SchemeHostPort(
                 schemeHostPortOrSchemeHostPortPathQueryFragment,
               ),
-              new this.PathQueryFragment(pathQueryFragment),
+              new SchemeHostPortPathQueryFragment.PathQueryFragment(
+                pathQueryFragment,
+              ),
             ];
       this.schemeHostPort = this.parts[0];
       this.pathQueryFragment = this.parts[1];
     } catch (e) {
-      throw new Error(
+      throw new SyntaxError(
         `SchemeHostPortPathQueryFragment: constructor: error creating SchemeHostPortPathQueryFragment: ${e}`,
       );
     }
@@ -89,28 +77,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
           : this.schemeHostPort.toString()
         : "";
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `SchemeHostPortPathQueryFragment: get composite: error getting composite: ${e}`,
-      );
-    }
-  }
-
-  get SchemeHostPort(): typeof SchemeHostPort {
-    try {
-      return SchemeHostPortPathQueryFragment.SchemeHostPort;
-    } catch (e) {
-      throw new Error(
-        `SchemeHostPortPathQueryFragment: get SchemeHostPort: error getting SchemeHostPort: ${e}`,
-      );
-    }
-  }
-
-  get PathQueryFragment(): typeof PathQueryFragment {
-    try {
-      return SchemeHostPortPathQueryFragment.PathQueryFragment;
-    } catch (e) {
-      throw new Error(
-        `SchemeHostPortPathQueryFragment: get PathQueryFragment: error getting PathQueryFragment: ${e}`,
       );
     }
   }
@@ -119,8 +87,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     try {
       return importModule("SchemeHostPort");
     } catch (e) {
-      throw new Error(
-        `SchemeHostPortPathQueryFragment: get SchemeHostPort: error getting SchemeHostPort: ${e}`,
+      throw new ReferenceError(
+        `SchemeHostPortPathQueryFragment: get SchemeHostPort: error loading SchemeHostPort module: ${e}`,
       );
     }
   }
@@ -129,8 +97,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     try {
       return importModule("PathQueryFragment");
     } catch (e) {
-      throw new Error(
-        `SchemeHostPortPathQueryFragment: get PathQueryFragment: error getting PathQueryFragment: ${e}`,
+      throw new ReferenceError(
+        `SchemeHostPortPathQueryFragment: get PathQueryFragment: error loading PathQueryFragment module: ${e}`,
       );
     }
   }
@@ -139,8 +107,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     try {
       return shppqf_UrlComposite;
     } catch (e) {
-      throw new Error(
-        `SchemeHostPortPathQueryFragment: get UrlComposite: error getting UrlComposite: ${e}`,
+      throw new ReferenceError(
+        `SchemeHostPortPathQueryFragment: get UrlComposite: error loading UrlComposite module: ${e}`,
       );
     }
   }

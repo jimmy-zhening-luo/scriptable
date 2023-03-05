@@ -1,13 +1,13 @@
 const po_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Port extends po_UrlPart {
-  constructor(port?: null | string | number | Port) {
+  constructor(port?: string | number | Port) {
     try {
       super(
         typeof port === "number"
           ? Number.isInteger(port)
-            ? String(Math.trunc(port))
-            : null
+            ? String(Math.round(port))
+            : ""
           : port,
       );
     } catch (e) {
@@ -17,12 +17,14 @@ class Port extends po_UrlPart {
 
   protected parse(port: string): null | string {
     try {
-      const parsedString: string = new this.ValidPort(port).toString();
-      const parsedInt: number = Number.isInteger(Number.parseInt(parsedString))
-        ? Math.round(Number.parseInt(parsedString))
+      const parsedPortString: string = new this.ValidPort(port).toString();
+      const parsedPortInt: number = Number.isInteger(
+        Number.parseInt(parsedPortString),
+      )
+        ? Math.round(Number.parseInt(parsedPortString))
         : NaN;
-      return parsedInt >= 1 && parsedInt <= 65535
-        ? String(Math.round(parsedInt)).trim()
+      return parsedPortInt >= 1 && parsedPortInt <= 65535
+        ? String(Math.round(parsedPortInt))
         : null;
     } catch (e) {
       throw new Error(`Port: parse: error parsing Port: ${e}`);

@@ -7,12 +7,6 @@ class PathQueryFragment extends pqf_UrlComposite {
   readonly pathQuery: PathQuery;
   readonly fragment: Fragment;
 
-  constructor(pathQueryFragment?: PathQueryFragment);
-  constructor(
-    pathQuery?: PathQuery | [string | Path, string | Query],
-    fragment?: string | Fragment,
-  );
-
   constructor(
     pathOrPathQueryOrPathQueryFragment?:
       | PathQuery
@@ -24,25 +18,34 @@ class PathQueryFragment extends pqf_UrlComposite {
     try {
       this.parts =
         pathOrPathQueryOrPathQueryFragment === undefined
-          ? [new this.PathQuery(), new this.Fragment()]
+          ? [
+              new PathQueryFragment.PathQuery(),
+              new PathQueryFragment.Fragment(),
+            ]
           : pathOrPathQueryOrPathQueryFragment instanceof PathQueryFragment
           ? pathOrPathQueryOrPathQueryFragment.parts
           : Array.isArray(pathOrPathQueryOrPathQueryFragment)
           ? [
-              new this.PathQuery(
-                new this.PathQuery.Path(pathOrPathQueryOrPathQueryFragment[0]),
-                new this.PathQuery.Query(pathOrPathQueryOrPathQueryFragment[1]),
+              new PathQueryFragment.PathQuery(
+                new PathQueryFragment.PathQuery.Path(
+                  pathOrPathQueryOrPathQueryFragment[0],
+                ),
+                new PathQueryFragment.PathQuery.Query(
+                  pathOrPathQueryOrPathQueryFragment[1],
+                ),
               ),
-              new this.Fragment(fragment),
+              new PathQueryFragment.Fragment(fragment),
             ]
           : [
-              new this.PathQuery(pathOrPathQueryOrPathQueryFragment),
-              new this.Fragment(fragment),
+              new PathQueryFragment.PathQuery(
+                pathOrPathQueryOrPathQueryFragment,
+              ),
+              new PathQueryFragment.Fragment(fragment),
             ];
       this.pathQuery = this.parts[0];
       this.fragment = this.parts[1];
     } catch (e) {
-      throw new Error(
+      throw new SyntaxError(
         `PathQueryFragment: constructor: error creating PathQueryFragment: ${e}`,
       );
     }
@@ -54,28 +57,8 @@ class PathQueryFragment extends pqf_UrlComposite {
         ? [this.pathQuery.toString(), this.fragment.toString()].join("#")
         : this.pathQuery.toString();
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `PathQueryFragment: get composite: error getting composite: ${e}`,
-      );
-    }
-  }
-
-  get PathQuery(): typeof PathQuery {
-    try {
-      return PathQueryFragment.PathQuery;
-    } catch (e) {
-      throw new Error(
-        `PathQueryFragment: get PathQuery: error getting PathQuery: ${e}`,
-      );
-    }
-  }
-
-  get Fragment(): typeof Fragment {
-    try {
-      return PathQueryFragment.Fragment;
-    } catch (e) {
-      throw new Error(
-        `PathQueryFragment: get Fragment: error getting Fragment: ${e}`,
       );
     }
   }
@@ -84,8 +67,8 @@ class PathQueryFragment extends pqf_UrlComposite {
     try {
       return importModule("PathQuery");
     } catch (e) {
-      throw new Error(
-        `PathQueryFragment: get PathQuery: error getting PathQuery: ${e}`,
+      throw new ReferenceError(
+        `PathQueryFragment: get PathQuery: error loading PathQuery module: ${e}`,
       );
     }
   }
@@ -94,8 +77,8 @@ class PathQueryFragment extends pqf_UrlComposite {
     try {
       return this.UrlParts.Fragment;
     } catch (e) {
-      throw new Error(
-        `PathQueryFragment: get Fragment: error getting Fragment: ${e}`,
+      throw new ReferenceError(
+        `PathQueryFragment: get Fragment: error loading Fragment module: ${e}`,
       );
     }
   }
@@ -104,8 +87,8 @@ class PathQueryFragment extends pqf_UrlComposite {
     try {
       return pqf_UrlComposite;
     } catch (e) {
-      throw new Error(
-        `PathQueryFragment: get UrlComposite: error getting UrlComposite: ${e}`,
+      throw new ReferenceError(
+        `PathQueryFragment: get UrlComposite: error loading UrlComposite module: ${e}`,
       );
     }
   }

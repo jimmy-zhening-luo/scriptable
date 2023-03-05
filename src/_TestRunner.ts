@@ -4,86 +4,97 @@
 const SUPPRESS_LOGGING = false;
 
 class TestRunner {
-  private readonly suites: TestRunner.Suites;
+  private readonly _suites: TestRunner.Suites;
 
   constructor() {
-    // CLASS IMPORTS GO HERE
-    const url: typeof Url = this.Shortcut.Url;
+    try {
+      // CLASS IMPORTS GO HERE
+      const url: typeof Url = TestRunner.Shortcut.Url;
 
-    // TEST VARS GO HERE
-    let u: Url = new url();
+      // TEST VARS GO HERE
+      let u: Url = new url();
 
-    // TESTS GO HERE
-    const happy: any[] = [];
+      // TESTS GO HERE
+      this._suites = this._casesToSuites([
+        "url",
+        [(u = u).toString(), "https://"],
+        [
+          (u = new url(
+            "bongo",
+            "example.com",
+            500,
+            "a/b/c",
+            "x=1&y=2",
+            "#bingo",
+          )).toString(),
+          "bongo://example.com:500/a/b/c?x=1&y=2#bingo",
+        ],
+        [
+          (u = new url(u)).toString(),
+          "bongo://example.com:500/a/b/c?x=1&y=2#bingo",
+        ],
+        [
+          (u.url =
+            "leftduck.mano:999999/3/4/6?ea=15&eb=16#rightduck").toString(),
+          "leftduck.mano:999999/3/4/6?ea=15&eb=16#rightduck",
+        ],
+        [u.toString(), "https://leftduck.mano/3/4/6?ea=15&eb=16#rightduck"],
+        [
+          (u = new url(
+            "bongo://example.com:500/a/b/c?x=1&y=2#bingo",
+          )).toString(),
+          "bongo://example.com:500/a/b/c?x=1&y=2#bingo",
+        ],
+        [(u.port = 2111).toString(), "2111"],
+        [u.toString(), "bongo://example.com:2111/a/b/c?x=1&y=2#bingo"],
+        [
+          u.addParam("z", "3").toString(),
+          "bongo://example.com:2111/a/b/c?x=1&y=2&z=3#bingo",
+        ],
+        [
+          u.deleteParam("x").toString(),
+          "bongo://example.com:2111/a/b/c?y=2&z=3#bingo",
+        ],
 
-    happy.push([
-      "url",
-      [(u = u).toString(), "https://"],
-      [
-        (u = new url(
-          "bongo",
-          "example.com",
-          500,
-          "a/b/c",
-          "x=1&y=2",
-          "#bingo",
-        )).toString(),
-        "bongo://example.com:500/a/b/c?x=1&y=2#bingo",
-      ],
-      [
-        (u = new url(u)).toString(),
-        "bongo://example.com:500/a/b/c?x=1&y=2#bingo",
-      ],
-      [
-        (u.url = "leftduck.mano:999999/3/4/6?ea=15&eb=16#rightduck").toString(),
-        "leftduck.mano:999999/3/4/6?ea=15&eb=16#rightduck",
-      ],
-      [u.toString(), "https://leftduck.mano/3/4/6?ea=15&eb=16#rightduck"],
-      [
-        (u = new url("bongo://example.com:500/a/b/c?x=1&y=2#bingo")).toString(),
-        "bongo://example.com:500/a/b/c?x=1&y=2#bingo",
-      ],
-      [(u.port = 2111).toString(), "2111"],
-      [u.toString(), "bongo://example.com:2111/a/b/c?x=1&y=2#bingo"],
-      [
-        u.addParam("z", "3").toString(),
-        "bongo://example.com:2111/a/b/c?x=1&y=2&z=3#bingo",
-      ],
-      [
-        u.deleteParam("x").toString(),
-        "bongo://example.com:2111/a/b/c?y=2&z=3#bingo",
-      ],
-
-      [],
-    ]);
-
-    this.suites = this.casesToSuites(...happy);
+        [],
+      ]);
+    } catch (e) {
+      throw new SyntaxError(
+        `TestRunner: constructor: Failed to parse test matrix into Suite[] using _casesToSuites: ${e}`,
+      );
+    }
   }
-
   run(suppressLogging = false): boolean {
-    return this.runAll(suppressLogging);
+    try {
+      return this._suites.every(suite => suite.run(suppressLogging) === true);
+    } catch (e) {
+      throw new EvalError(`TestRunner: runAll: Failed to run all suites: ${e}`);
+    }
   }
 
-  runAll(suppressLogging = false): boolean {
-    return this.suites.every(suite => suite.run(suppressLogging) === true);
-  }
-
-  private casesToSuites(
+  private _casesToSuites(
     ...suiteInputs: [string, ...([] | TestRunner.Case)[]][]
   ): TestRunner.Suites {
-    return suiteInputs
-      .map(suite =>
-        suite.length === 0 ? null : new TestRunner.Suite(...suite),
-      )
-      .filter(suite => suite !== null) as TestRunner.Suites;
+    try {
+      return suiteInputs
+        .map(suite =>
+          suite.length === 0 ? null : new TestRunner.Suite(...suite),
+        )
+        .filter(suite => suite !== null) as TestRunner.Suites;
+    } catch (e) {
+      throw new SyntaxError(
+        `TestRunner: casesToSuites: Failed to parse suites: ${e}`,
+      );
+    }
   }
-
-  private get Shortcut(): typeof Shortcut {
-    return TestRunner.Shortcut;
-  }
-
   private static get Shortcut(): typeof Shortcut {
-    return importModule("system/Shortcut");
+    try {
+      return importModule("system/Shortcut");
+    } catch (e) {
+      throw new ReferenceError(
+        `TestRunner: Shortcut: Failed to import Shortcut module: ${e}`,
+      );
+    }
   }
 }
 
@@ -106,68 +117,111 @@ namespace TestRunner {
       suiteOrCaseOrCases?: Suite | Case | Cases,
       ...moreCases: (Case | Cases)[]
     ) {
-      this.id = id;
-      this.cases = this.parseInput(suiteOrCaseOrCases, ...moreCases);
+      try {
+        this.id = id;
+        this.cases = this._parseInput(suiteOrCaseOrCases, ...moreCases);
+      } catch (e) {
+        throw new SyntaxError(
+          `\nSuite: constructor: Failed to initialize Suite with id "${id}" using _parseInput method: ${e}`,
+        );
+      }
     }
 
     run(suppressLogging = false): boolean {
-      if (!suppressLogging) {
-        console.log(
-          "\n\n======\n" +
-            this.id +
-            ": " +
-            String(this.cases.length) +
-            " " +
-            (this.cases.length === 1 ? "case" : "cases") +
-            ":\n",
-        );
-        this.cases.forEach(([evaluate, result], i) => {
+      try {
+        if (!suppressLogging) {
           console.log(
-            [i, evaluate === result, [evaluate, result].join(", ")].join(": "),
+            "\n\n======\n" +
+              this.id +
+              ": " +
+              String(this.cases.length) +
+              " " +
+              (this.cases.length === 1 ? "case" : "cases") +
+              ":\n",
           );
-        });
+          this.cases.forEach(([evaluate, result], i) => {
+            console.log(
+              [i, evaluate === result, [evaluate, result].join(", ")].join(
+                ": ",
+              ),
+            );
+          });
+        }
+        return this.cases.every(([evaluate, result]) => evaluate === result);
+      } catch (e) {
+        throw new Error(`\nSuite: run: Suite "${this.id}" failed to run: ${e}`);
       }
-      return this.cases.every(([evaluate, result]) => evaluate === result);
     }
 
     addCase(
       cases?: Suite | Case | Cases,
       ...moreCases: (Case | Cases)[]
     ): void {
-      this.cases.push(...this.parseInput(cases, ...moreCases));
+      try {
+        this.cases.push(...this._parseInput(cases, ...moreCases));
+      } catch (e) {
+        throw new Error(
+          `\nSuite: addCase: Suite "${this.id}" failed to add case: ${e}`,
+        );
+      }
     }
 
-    private parseInput(
+    private _parseInput(
       cases?: Suite | Case | Cases,
       ...moreCases: (Case | Cases)[]
     ): Cases {
-      const joined: Cases = [];
-      if (cases === undefined) {
-      } else if (cases instanceof Suite) joined.push(...cases.cases);
-      else joined.push(...caseOrCasesToCases(cases));
-      joined.push(...arrCaseCasesToCases(moreCases));
-      return joined;
-
-      function arrCaseCasesToCases(moreCases: (Case | Cases)[]): Cases {
-        const cases: Cases = [];
-        moreCases.forEach(caseOrCases => {
-          cases.push(...caseOrCasesToCases(caseOrCases));
-        });
-        return cases;
+      try {
+        const joined: Cases = [];
+        if (cases === undefined) {
+        } else if (cases instanceof Suite) joined.push(...cases.cases);
+        else joined.push(..._caseOrCasesToCases(cases));
+        joined.push(..._arrCaseCasesToCases(moreCases));
+        return joined;
+      } catch (e) {
+        throw new Error(
+          `\nSuite: _parseInput: Suite "${this.id}" failed to parse input: ${e}`,
+        );
       }
 
-      function caseOrCasesToCases(caseOrCases: Case | Cases): Cases {
-        return caseOrCases.length === 0
-          ? []
-          : Array.isArray(caseOrCases[0])
-          ? [...caseOrCases]
-          : [caseOrCases];
+      function _arrCaseCasesToCases(moreCases: (Case | Cases)[]): Cases {
+        try {
+          const cases: Cases = [];
+          moreCases.forEach(caseOrCases => {
+            cases.push(..._caseOrCasesToCases(caseOrCases));
+          });
+          return cases;
+        } catch (e) {
+          throw new SyntaxError(
+            `\nSuite: _parseInput: _arrCaseCasesToCases: Failed to flatten an array of Case or Case[] to an array of Case: ${e}`,
+          );
+        }
+      }
+
+      function _caseOrCasesToCases(caseOrCases: Case | Cases): Cases {
+        try {
+          return caseOrCases.length === 0
+            ? []
+            : Array.isArray(caseOrCases[0])
+            ? [...caseOrCases]
+            : [caseOrCases];
+        } catch (e) {
+          throw new SyntaxError(
+            `\nSuite: _parseInput: _caseOrCasesToCases: Failed to convert Case or Case[] to Case[]: ${e}`,
+          );
+        }
       }
     }
   }
 }
 
-console.log(
-  "\n\n\nALL test cases passed? " +
-    String(new TestRunner().run(SUPPRESS_LOGGING)).toUpperCase(),
-);
+try {
+  console.log(
+    `\n\n\n_TestRunner.js: ALL test cases passed: ${String(
+      new TestRunner().run(SUPPRESS_LOGGING),
+    ).toUpperCase()}`,
+  );
+} catch (e) {
+  console.error(
+    `\n\n\n_TestRunner.js: Encountered an error while attempting to run all test cases: ${e}`,
+  );
+}

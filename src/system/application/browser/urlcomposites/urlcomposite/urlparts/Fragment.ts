@@ -1,11 +1,13 @@
 const fr_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Fragment extends fr_UrlPart {
-  constructor(fragment?: null | string | Fragment) {
+  constructor(fragment?: string | Fragment) {
     try {
       super(fragment);
     } catch (e) {
-      throw new Error(`Fragment: constructor: error creating Fragment: ${e}`);
+      throw new SyntaxError(
+        `Fragment: constructor: error creating Fragment: ${e}`,
+      );
     }
   }
 
@@ -15,7 +17,7 @@ class Fragment extends fr_UrlPart {
         ? null
         : new this.ValidFragment(fragment).value;
     } catch (e) {
-      throw new Error(`Fragment: parse: error parsing Fragment: ${e}`);
+      throw new SyntaxError(`Fragment: parse: error parsing Fragment: ${e}`);
     }
   }
 

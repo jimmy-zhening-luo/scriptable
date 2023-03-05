@@ -1,7 +1,7 @@
 const pa_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
 
 class Path extends pa_UrlPart {
-  constructor(path?: null | string | Path) {
+  constructor(path?: string | Path) {
     try {
       super(path);
     } catch (e) {
@@ -32,7 +32,7 @@ class Path extends pa_UrlPart {
     }
   }
 
-  append(subpath: null | undefined | string | Path): Path {
+  append(subpath: string | Path): Path {
     try {
       const newPath: Path = new Path(
         [this.toString(), new Path(subpath).toString()].join(
