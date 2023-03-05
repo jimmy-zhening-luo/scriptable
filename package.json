@@ -1,6 +1,6 @@
 {
   "name": "ios-scriptable-ecosystem",
-  "version": "2.0.0",
+  "version": "2.1.0beta",
   "description": "Building block classes and scripts to do complex automation on iOS.",
   "main": "",
   "scripts": {
