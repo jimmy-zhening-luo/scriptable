@@ -24,6 +24,16 @@ class Files {
       throw new ReferenceError(`Files: Error importing Bookmark class: ${e}`);
     }
   }
+
+  static get FilepathString(): typeof FilepathString {
+    try {
+      return Files.File.FilepathString;
+    } catch (e) {
+      throw new ReferenceError(
+        `Files: Error importing FilepathString class: ${e}`,
+      );
+    }
+  }
 }
 
 module.exports = Files;

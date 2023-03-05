@@ -1,4 +1,6 @@
-abstract class Application {
+const app_Utilities: typeof Utilities = importModule("utilities/Utilities");
+
+abstract class Application extends app_Utilities {
   abstract get input(): unknown;
   abstract runtime(): unknown;
   abstract handleOutput(
@@ -84,29 +86,9 @@ abstract class Application {
     }
   }
 
-  get Config(): typeof Config {
-    try {
-      return Application.Config;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Config: Error importing Config module: ${e}`,
-      );
-    }
-  }
-
-  get Storage(): typeof Storage {
-    try {
-      return Application.Storage;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Storage: Error importing Storage module: ${e}`,
-      );
-    }
-  }
-
   static get Common(): typeof Common {
     try {
-      return importModule("common/Common");
+      return importModule("./src/common/Common");
     } catch (e) {
       throw new ReferenceError(
         `Application: Common: Error importing Common module: ${e}`,
@@ -114,52 +96,12 @@ abstract class Application {
     }
   }
 
-  static get Files(): typeof Files {
+  static get Utilities(): typeof Utilities {
     try {
-      return importModule("files/Files");
+      return importModule("utilities/Utilities");
     } catch (e) {
       throw new ReferenceError(
-        `Application: Files: Error importing Files module: ${e}`,
-      );
-    }
-  }
-
-  static get Browser(): typeof Browser {
-    try {
-      return importModule("browser/Browser");
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Browser: Error importing Browser module: ${e}`,
-      );
-    }
-  }
-
-  static get Config(): typeof Config {
-    try {
-      return importModule("Config");
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Config: Error importing Config module: ${e}`,
-      );
-    }
-  }
-
-  static get Storage(): typeof Storage {
-    try {
-      return importModule("Storage");
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Storage: Error importing Storage module: ${e}`,
-      );
-    }
-  }
-
-  static get Secret(): typeof Secret {
-    try {
-      return importModule("Secret");
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Secret: Error importing Secret module: ${e}`,
+        `Application: Utilities: Error importing Utilities module: ${e}`,
       );
     }
   }
@@ -190,86 +132,6 @@ abstract class Application {
     } catch (e) {
       throw new ReferenceError(
         `Application: Numbers: Error importing Numbers module: ${e}`,
-      );
-    }
-  }
-
-  static get ReadOnlyFile(): typeof ReadOnlyFile {
-    try {
-      return Application.Files.ReadOnlyFile;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: ReadOnlyFile: Error importing ReadOnlyFile module: ${e}`,
-      );
-    }
-  }
-
-  static get File(): typeof File {
-    try {
-      return Application.Files.File;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: File: Error importing File module: ${e}`,
-      );
-    }
-  }
-
-  static get Bookmark(): typeof Bookmark {
-    try {
-      return Application.File.Bookmark;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Bookmark: Error importing Bookmark module: ${e}`,
-      );
-    }
-  }
-
-  static get Filepath(): typeof FilepathString {
-    try {
-      return Application.File.FilepathString;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Filepath: Error importing Filepath module: ${e}`,
-      );
-    }
-  }
-
-  static get Url(): typeof Url {
-    try {
-      return Application.Browser.Url;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Url: Error importing Url module: ${e}`,
-      );
-    }
-  }
-
-  static get Api(): typeof Api {
-    try {
-      return Application.Browser.Api;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Api: Error importing Api module: ${e}`,
-      );
-    }
-  }
-
-  static get Callback(): typeof Callback {
-    try {
-      return Application.Browser.Callback;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Callback: Error importing Callback module: ${e}`,
-      );
-    }
-  }
-
-  static get Endpoint(): typeof Endpoint {
-    try {
-      return Application.Browser.Endpoint;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Endpoint: Error importing Endpoint module: ${e}`,
       );
     }
   }
