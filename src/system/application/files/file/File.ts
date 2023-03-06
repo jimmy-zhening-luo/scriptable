@@ -8,37 +8,18 @@ class File {
     subpath: string | string[] | FilepathString = "",
   ) {
     try {
-      try {
-        this._base =
-          base instanceof File
-            ? new File.FilepathString(base.base)
-            : base instanceof File.Bookmark
-            ? new File.FilepathString(base.path)
-            : this.parse(base);
-      } catch (e) {
-        throw new SyntaxError(`Error parsing base: ${e}`);
-      }
-      try {
-        this._subpath = this.parse(subpath);
-      } catch (e) {
-        throw new SyntaxError(`Error parsing subpath: ${e}`);
+      if (base instanceof File) {
+        this._base = new File.FilepathString(base.base);
+        this._subpath = new File.FilepathString(base.subpath);
+      } else if (base instanceof File.Bookmark) {
+        this._base = new File.FilepathString(base.path);
+        this._subpath = new File.FilepathString(subpath);
+      } else {
+        this._base = new File.FilepathString(base);
+        this._subpath = new File.FilepathString(subpath);
       }
     } catch (e) {
-      throw new Error(`File: constructor: Error constructing File: ${e}`);
-    }
-  }
-
-  private parse(path: ConstructorParameters<typeof File>[1]): FilepathString {
-    try {
-      return new File.FilepathString(
-        typeof path === "string" ||
-        Array.isArray(path) ||
-        (typeof path !== "string" && path instanceof File.FilepathString)
-          ? path
-          : "",
-      );
-    } catch (e) {
-      throw new Error(`File: parse: Error parsing path: ${e}`);
+      throw new SyntaxError(`File: constructor: Error constructing File: ${e}`);
     }
   }
 
