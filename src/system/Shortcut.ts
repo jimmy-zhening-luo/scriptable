@@ -32,19 +32,11 @@ abstract class Shortcut extends _Application {
     }
   }
 
-  private get shortcutSubpath(): string {
-    try {
-      return "Shortcut";
-    } catch (e) {
-      throw new Error(`Shortcut.js: Error getting shortcut subpath: ${e}`);
-    }
-  }
-
   protected override get configSubpath(): string {
     try {
-      return super.configSubpath === ""
-        ? this.shortcutSubpath
-        : [super.configSubpath, this.shortcutSubpath].join("/");
+      const SHORTCUT_CONFIG_ROOT: string = "Shortcut";
+      if (super.configSubpath === "") return SHORTCUT_CONFIG_ROOT;
+      else return [super.configSubpath, SHORTCUT_CONFIG_ROOT].join("/");
     } catch (e) {
       throw new Error(
         `Shortcut.js: Error getting shortcut config subpath: ${e}`,

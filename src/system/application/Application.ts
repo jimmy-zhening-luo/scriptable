@@ -55,7 +55,7 @@ abstract class Application extends app_Utilities {
         subpath,
       );
     } catch (e) {
-      throw new Error(
+      throw new ReferenceError(
         `Application: storage: Error getting application Storage object: ${e}`,
       );
     }

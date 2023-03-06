@@ -24,8 +24,7 @@ class Storage extends st_Utility {
 
   write(text: string): this {
     try {
-      const overwrite: boolean = true;
-      this._file.write(text, overwrite);
+      this._file.write(text, true);
       return this;
     } catch (e) {
       throw new Error(`Storage: write: Error writing to file: ${e}`);
