@@ -1,47 +1,49 @@
 class File {
   readonly _nominalType: string = "File";
-  private readonly _base: FilepathString;
-  private _subpath: FilepathString;
+  private readonly _root: FilepathString = new File.FilepathString();
+  private _subpath: FilepathString = new File.FilepathString();
 
   constructor(
-    base: string | string[] | FilepathString | File | Bookmark = "",
-    subpath: string | string[] | FilepathString = "",
+    rootOrFile:
+      | ConstructorParameters<typeof FilepathString>[0]
+      | Bookmark
+      | File = "",
+    subpath?: ConstructorParameters<typeof FilepathString>[0],
+    treatFilepathAsRoot: boolean = false,
   ) {
     try {
-      if (base instanceof File) {
-        this._base = new File.FilepathString(base.base);
-        this._subpath = new File.FilepathString(base.subpath);
-      } else if (base instanceof File.Bookmark) {
-        this._base = new File.FilepathString(base.path);
-        this._subpath = new File.FilepathString(subpath);
+      if (rootOrFile instanceof File) {
+        if (treatFilepathAsRoot) {
+          this._root = new FilepathString(rootOrFile.path);
+          this.subpath = subpath;
+        } else {
+          this._root = new File.FilepathString(rootOrFile.root);
+          this.subpath = rootOrFile.subpath;
+          if (subpath !== undefined) this.subpath = subpath;
+        }
+      } else if (rootOrFile instanceof File.Bookmark) {
+        this._root = new File.FilepathString(rootOrFile.path);
+        this.subpath = subpath;
       } else {
-        this._base = new File.FilepathString(base);
-        this._subpath = new File.FilepathString(subpath);
+        this._root = new File.FilepathString(rootOrFile);
+        this.subpath = subpath;
       }
     } catch (e) {
       throw new SyntaxError(`File: constructor: Error constructing File: ${e}`);
     }
   }
 
-  get base(): ReturnType<typeof FilepathString.prototype.toString> {
+  get root(): ReturnType<typeof FilepathString.prototype.toString> {
     try {
-      return this._base.toString();
-    } catch (e) {
-      throw new Error(`File: base: Error getting base: ${e}`);
-    }
-  }
-
-  get root(): typeof File.prototype.base {
-    try {
-      return this.base;
+      return this._root.toString();
     } catch (e) {
       throw new Error(`File: root: Error getting root: ${e}`);
     }
   }
 
-  get top(): typeof File.prototype.base {
+  get top(): typeof File.prototype.root {
     try {
-      return this.base;
+      return this.root;
     } catch (e) {
       throw new Error(`File: top: Error getting top: ${e}`);
     }
@@ -55,15 +57,15 @@ class File {
     }
   }
 
-  set subpath(subpath: ConstructorParameters<typeof File>[1]) {
+  set subpath(subpath: ConstructorParameters<typeof FilepathString>[0]) {
     try {
-      this._subpath = new this.Filepath(subpath);
+      this._subpath = new File.FilepathString(subpath);
     } catch (e) {
       throw new Error(`File: subpath: Error setting subpath: ${e}`);
     }
   }
 
-  append(subpath: ConstructorParameters<typeof File>[1]): this {
+  append(subpath: Parameters<typeof FilepathString.prototype.append>[0]): this {
     try {
       this.subpath = this._subpath.append(subpath);
       return this;
@@ -72,7 +74,7 @@ class File {
     }
   }
 
-  cd(relativePath: ConstructorParameters<typeof File>[1]): this {
+  cd(relativePath: Parameters<typeof FilepathString.prototype.cd>[0]): this {
     try {
       this.subpath = this._subpath.cd(relativePath);
       return this;
@@ -83,7 +85,7 @@ class File {
 
   private get _path(): FilepathString {
     try {
-      return this._base.append(this.subpath);
+      return this._root.append(this.subpath);
     } catch (e) {
       throw new Error(`File: _path: Error getting path: ${e}`);
     }
@@ -123,7 +125,7 @@ class File {
 
   get leaf(): string {
     try {
-      return this.subpath === "" ? this._base.leaf : this._subpath.leaf;
+      return this.subpath === "" ? this._root.leaf : this._subpath.leaf;
     } catch (e) {
       throw new Error(`File: leaf: Error getting leaf: ${e}`);
     }
@@ -207,7 +209,7 @@ class File {
 
   get parent(): File {
     try {
-      return new File(this.base, this.parentSubpath);
+      return new File(this.root, this.parentSubpath);
     } catch (e) {
       throw new Error(`File: parent: Error getting parent File object: ${e}`);
     }
@@ -262,7 +264,7 @@ class File {
         : this.isBottom
         ? []
         : this.ls
-            .map(leaf => new File(this.base, this.subpath).append(leaf))
+            .map(leaf => new File(this.root, this.subpath).append(leaf))
             .filter(child => !this.path.startsWith(child.path))
             .map(file => file.descendants)
             .flat(1);
@@ -421,22 +423,6 @@ class File {
       );
     } catch (e) {
       throw new Error(`File: Error checking if instance is File: ${e}`);
-    }
-  }
-
-  get Bookmark(): typeof Bookmark {
-    try {
-      return File.Bookmark;
-    } catch (e) {
-      throw new Error(`File: Error getting Bookmark class: ${e}`);
-    }
-  }
-
-  get Filepath(): typeof FilepathString {
-    try {
-      return File.FilepathString;
-    } catch (e) {
-      throw new Error(`File: Error getting FilepathString class: ${e}`);
     }
   }
 
