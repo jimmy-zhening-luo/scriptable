@@ -2,7 +2,7 @@ class Bookmark {
   readonly _nominalType: string = "Bookmark";
   readonly bookmark: string;
 
-  constructor(bookmark = "") {
+  constructor(bookmark: string = "") {
     try {
       this.bookmark = bookmark.trim();
     } catch (e) {
@@ -60,7 +60,6 @@ class Bookmark {
       return (
         instance !== null &&
         instance !== undefined &&
-        typeof instance === "object" &&
         "_nominalType" in instance &&
         (instance as Bookmark)._nominalType === "Bookmark"
       );
