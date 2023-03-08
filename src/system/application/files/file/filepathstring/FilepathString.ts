@@ -275,6 +275,7 @@ class FilepathString {
       return (
         instance !== null &&
         instance !== undefined &&
+        typeof instance === "object" &&
         "_nominalType" in instance &&
         (instance as FilepathString)._nominalType === "FilepathString"
       );

@@ -418,6 +418,7 @@ class File {
       return (
         instance !== null &&
         instance !== undefined &&
+        typeof instance === "object" &&
         "_nominalType" in instance &&
         (instance as File)._nominalType === "File"
       );

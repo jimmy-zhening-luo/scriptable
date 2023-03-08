@@ -105,7 +105,7 @@ abstract class Utility {
 
   read(): ReturnType<typeof Utility.prototype._file.read> {
     try {
-      return this._file.read();
+      return this._file.isReadable ? this._file.read() : "";
     } catch (e) {
       throw new Error(`Utility: read: Error reading file: ${e}`);
     }

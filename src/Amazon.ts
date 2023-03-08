@@ -8,7 +8,6 @@ namespace Amazon {
     runtime(): boolean {
       try {
         const storageFilename: string = "last-run.txt";
-
         const latestRunString: string = this.readStorage(storageFilename);
         const latestRunTime: Date =
           latestRunString === ""
@@ -16,7 +15,6 @@ namespace Amazon {
             : new Date(latestRunString).toString() === "Invalid Date"
             ? new Date()
             : new Date(latestRunString);
-
         this.writeStorage(new Date().toISOString(), storageFilename);
         return Date.now() - latestRunTime.getTime() > 300000;
       } catch (e) {

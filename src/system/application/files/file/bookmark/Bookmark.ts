@@ -60,6 +60,7 @@ class Bookmark {
       return (
         instance !== null &&
         instance !== undefined &&
+        typeof instance === "object" &&
         "_nominalType" in instance &&
         (instance as Bookmark)._nominalType === "Bookmark"
       );
