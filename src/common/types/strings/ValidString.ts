@@ -94,9 +94,13 @@ class ValidString {
       );
     }
   }
+  
+  static validate(
+  
+  )
 
   static clean(
-    string: string,
+    raw: string,
     {
       toLower = false,
       trim = false,
@@ -114,9 +118,9 @@ class ValidString {
     },
   ): typeof ValidString.prototype.cleaned {
     try {
-      string = toLower ? string.toLowerCase() : string;
-      string = trim ? string.trim() : string;
-      const preprocessed: string = string;
+      if (toLower === true) raw = raw.toLowerCase();
+      if (trim === true) raw = raw.trim();
+      const preprocessed: string = raw;
       return ValidString.trimEdge(
         ValidString.trimEdge(
           preprocessed,
