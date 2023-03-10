@@ -30,7 +30,7 @@ class Config extends co_Utility {
     }
   }
 
-  get parsed(): ShortcutConfigProto {
+  get parsed(): ApplicationConfigProto {
     try {
       if (!this.isParseable)
         throw new SyntaxError(
@@ -44,7 +44,7 @@ class Config extends co_Utility {
     }
   }
 
-  get unmerged(): ShortcutConfigProto {
+  get unmerged(): ApplicationConfigProto {
     try {
       return this.parsed;
     } catch (e) {
@@ -54,7 +54,7 @@ class Config extends co_Utility {
     }
   }
 
-  get app(): ShortcutConfigProto["app"] {
+  get app(): ApplicationConfigProto["app"] {
     try {
       if (this.unmerged.app === undefined)
         throw new ReferenceError(
@@ -68,7 +68,7 @@ class Config extends co_Utility {
     }
   }
 
-  get user(): ShortcutConfigProto["user"] {
+  get user(): ApplicationConfigProto["user"] {
     try {
       if (this.unmerged.user === undefined)
         throw new ReferenceError(

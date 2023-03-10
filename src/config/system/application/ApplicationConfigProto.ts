@@ -1,4 +1,4 @@
-declare interface ShortcutConfigProto {
+declare interface ApplicationConfigProto {
   app?: Setting;
   user?: Setting;
 }

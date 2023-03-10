@@ -1,4 +1,4 @@
-declare interface SearchProto extends ShortcutConfigProto {
+declare interface SearchProto extends ApplicationConfigProto {
   app: SearchAppSettings;
   user: SearchUserSettings;
 }

@@ -1,19 +1,14 @@
-const _APPLICATION_CONFIG_BOOKMARK: string = "@_APPLICATION_CONFIG";
-
 abstract class Utility {
-  private static readonly _APPLICATION_CONFIG_BOOKMARK: string =
-    _APPLICATION_CONFIG_BOOKMARK;
-
   protected readonly _file: File;
 
   constructor(
-    utilityName: string,
+    utilityClassName: string,
     FileTypeConstructor: typeof File,
     utilityFileSubpath: string,
   ) {
     try {
       this._file = new FileTypeConstructor(
-        Utility._utilityRootBookmark(utilityName),
+        this._utilityClassNameToBookmark(utilityClassName),
         utilityFileSubpath,
       );
     } catch (e) {
@@ -23,42 +18,24 @@ abstract class Utility {
     }
   }
 
-  private static _utilityRootBookmark(utilityName: string): Bookmark {
+  private _utilityClassNameToBookmark(utilityClassName: string): Bookmark {
     try {
-      const utilityRootBookmarkName: string =
-        new Map<string, string>(Object.entries(Utility._applicationConfig)).get(
-          utilityName,
-        ) ?? "";
-      if (utilityRootBookmarkName === "")
-        throw new ReferenceError(
-          `Utility class named '${utilityName}' is not configured in the application config. Each utility class should have a corresponding entry in the application config with [key: utility class name]: value: file root bookmark name. See value of application config: ${JSON.stringify(
-            Utility._applicationConfig,
-          )}`,
+      if (utilityClassName === "")
+        throw new SyntaxError(
+          `Utility name passed to Utility abstract base class constructor was empty. Utility name must be a non-empty string.`
         );
       else {
-        return new Utility.File.Bookmark(utilityRootBookmarkName);
+        const utilityRootBookmarkName: string = ["#", utilityClassName].join("");
+        const utilityRootBookmark: Bookmark = new Utility.File.Bookmark(utilityRootBookmarkName);
+        if (!utilityRootBookmark.exists)
+          throw new ReferenceError(
+          `Utility root bookmark name '${utilityRootBookmarkName}' does not resolve to a Scriptable bookmark`,
+          );
+        else return utilityRootBookmark;
       }
     } catch (e) {
-      if (!(e instanceof ReferenceError))
-        e = new Error(
-          `Caught unhandled exception while getting utility root bookmark name for the Utility class named '${utilityName}'. See unhandled exception: \n${e}`,
-        );
-      throw new Error(
-        `Error while getting Utility root bookmark for the Utility class named '${utilityName}': \n${e}`,
-      );
-    }
-  }
-
-  private static get _applicationConfig(): ApplicationConfigProto {
-    try {
-      return JSON.parse(
-        new Utility.ReadOnlyFile(
-          new Utility.File.Bookmark(Utility._APPLICATION_CONFIG_BOOKMARK),
-        ).data,
-      );
-    } catch (e) {
-      throw new Error(
-        `Utility: applicationConfig: Caught unhandled exception while parsing application config into JSON object: \n${e}`,
+      throw new EvalError(
+        `Error while getting Utility root bookmark for the Utility class named '${utilityClassName}': \n${e}`,
       );
     }
   }
@@ -67,7 +44,7 @@ abstract class Utility {
     try {
       return this._file.exists;
     } catch (e) {
-      throw new Error(`Utility: exists: Error checking if file exists: \n${e}`);
+      throw new EvalError(`Utility: exists: Error checking if file exists: \n${e}`);
     }
   }
 
@@ -75,7 +52,7 @@ abstract class Utility {
     try {
       return this._file.path;
     } catch (e) {
-      throw new Error(`Utility: path: Error getting path: \n${e}`);
+      throw new EvalError(`Utility: path: Error getting path: \n${e}`);
     }
   }
 
@@ -83,7 +60,7 @@ abstract class Utility {
     try {
       return this._file.subpath;
     } catch (e) {
-      throw new Error(`Utility: subpath: Error getting subpath: \n${e}`);
+      throw new EvalError(`Utility: subpath: Error getting subpath: \n${e}`);
     }
   }
 
@@ -91,7 +68,7 @@ abstract class Utility {
     try {
       return this._file.leaf;
     } catch (e) {
-      throw new Error(`Utility: filename: Error getting filename: \n${e}`);
+      throw new EvalError(`Utility: filename: Error getting filename: \n${e}`);
     }
   }
 
@@ -99,7 +76,7 @@ abstract class Utility {
     try {
       return this._file.data;
     } catch (e) {
-      throw new Error(`Utility: data: Error getting data: \n${e}`);
+      throw new ReferenceError(`Utility: data: Error getting data: \n${e}`);
     }
   }
 
@@ -107,7 +84,7 @@ abstract class Utility {
     try {
       return this._file.isReadable ? this._file.read() : "";
     } catch (e) {
-      throw new Error(`Utility: read: Error reading file: \n${e}`);
+      throw new ReferenceError(`Utility: read: Error reading file: \n${e}`);
     }
   }
 
@@ -115,7 +92,7 @@ abstract class Utility {
     try {
       return this.data;
     } catch (e) {
-      throw new Error(`Utility: toString: Error getting data: \n${e}`);
+      throw new EvalError(`Utility: toString: Error getting data: \n${e}`);
     }
   }
 
