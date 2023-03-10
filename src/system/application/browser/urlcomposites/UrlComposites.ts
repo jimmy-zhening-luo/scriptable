@@ -1,7 +1,7 @@
 class UrlComposites {
   static get UrlComposite(): typeof UrlComposite {
     try {
-      return importModule("urlcomposite/UrlComposite");
+      return UrlComposites.SchemeHostPortPathQueryFragment.UrlComposite;
     } catch (e) {
       throw new Error(
         `UrlComposites: get UrlComposite: error getting UrlComposite: ${e}`,

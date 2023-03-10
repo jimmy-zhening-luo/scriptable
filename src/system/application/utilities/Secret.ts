@@ -26,6 +26,16 @@ class Secret extends se_Utility {
       throw new Error(`Secret: key: Error getting key: ${e}`);
     }
   }
+
+  static get Utility(): typeof Utility {
+    try {
+      return se_Utility;
+    } catch (e) {
+      throw new ReferenceError(
+        `Secret: Utility: Error importing Utility module: ${e}`,
+      );
+    }
+  }
 }
 
 module.exports = Secret;

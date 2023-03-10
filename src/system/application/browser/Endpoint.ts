@@ -30,7 +30,7 @@ class Endpoint {
     subpath: ConstructorParameters<typeof Path>[0] = "",
   ): ReturnType<Callback["request"]> {
     try {
-      const finalCallbackUrl: Url = new this.Url(this._callback)
+      const finalCallbackUrl: Url = new Endpoint.Url(this._callback)
         .append(subpath)
         .addParam(params);
 
@@ -43,40 +43,6 @@ class Endpoint {
       else throw new Error("missing required params");
     } catch (e) {
       throw new Error(`Endpoint: request: error requesting Endpoint: ${e}`);
-    }
-  }
-
-  get Callback(): typeof Callback {
-    try {
-      return Endpoint.Callback;
-    } catch (e) {
-      throw new ReferenceError(
-        `Endpoint: Callback: error getting Callback: ${e}`,
-      );
-    }
-  }
-
-  get Url(): typeof Url {
-    try {
-      return Endpoint.Url;
-    } catch (e) {
-      throw new ReferenceError(`Endpoint: Url: error getting Url: ${e}`);
-    }
-  }
-
-  get Path(): typeof Path {
-    try {
-      return Endpoint.Path;
-    } catch (e) {
-      throw new ReferenceError(`Endpoint: Path: error getting Path: ${e}`);
-    }
-  }
-
-  get Query(): typeof Query {
-    try {
-      return Endpoint.Query;
-    } catch (e) {
-      throw new ReferenceError(`Endpoint: Query: error getting Query: ${e}`);
     }
   }
 

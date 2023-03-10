@@ -8,15 +8,31 @@ class NRepeatCharString extends _BoundedRepeatCharString {
     charstring: string,
     ...ofCharInputs: Char[] | string[] | string[][] | Char.CharInput[]
   ) {
-    super(n, n, charstring, ...ofCharInputs);
+    try {
+      super(n, n, charstring, ...ofCharInputs);
+    } catch (e) {
+      throw new Error(
+        `NRepeatCharString: constructor: Error creating NRepeatCharString object: ${e}`,
+      );
+    }
   }
 
   get n(): number {
-    return this.max;
+    try {
+      return this.max;
+    } catch (e) {
+      throw new Error(`NRepeatCharString: n: Error getting n: ${e}`);
+    }
   }
 
   static get BoundedRepeatCharString(): typeof BoundedRepeatCharString {
-    return _BoundedRepeatCharString;
+    try {
+      return _BoundedRepeatCharString;
+    } catch (e) {
+      throw new ReferenceError(
+        `NRepeatCharString: BoundedRepeatCharString: Error importing BoundedRepeatCharString module: ${e}`,
+      );
+    }
   }
 }
 

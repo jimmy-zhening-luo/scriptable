@@ -3,42 +3,46 @@ abstract class CharString {
   readonly ofChar: Char;
 
   constructor(charstring: string, ...charsets: Char.CharInput[]) {
-    this.ofChar = new this.Char(...charsets);
-    this.charstring = this.qualifies(charstring) ? charstring : null;
+    try {
+      this.ofChar = new CharString.Chars.Char(...charsets);
+      this.charstring = this.qualifies(charstring) ? charstring : null;
+    } catch (e) {
+      throw new Error(
+        `CharString: constructor: Error creating CharString object: ${e}`,
+      );
+    }
   }
 
   protected abstract qualifies(candidateCharString: string): boolean;
 
-  get Chars(): typeof Chars {
-    return CharString.Chars;
-  }
-
-  get Char(): typeof Char {
-    return CharString.Char;
-  }
-
-  get UrlChar(): typeof UrlChar {
-    return CharString.UrlChar;
-  }
-
   get isValid(): boolean {
-    return this.charstring !== null;
+    try {
+      return this.charstring !== null;
+    } catch (e) {
+      throw new EvalError(
+        `CharString: isValid: Error checking if CharString is valid: ${e}`,
+      );
+    }
   }
 
   toString(): string {
-    return this.charstring ?? "";
+    try {
+      return this.charstring ?? "";
+    } catch (e) {
+      throw new EvalError(
+        `CharString: toString: Error converting CharString to string: ${e}`,
+      );
+    }
   }
 
   static get Chars(): typeof Chars {
-    return importModule("chars/Chars");
-  }
-
-  static get Char(): typeof Char {
-    return CharString.Chars.Char;
-  }
-
-  static get UrlChar(): typeof UrlChar {
-    return CharString.Chars.UrlChar;
+    try {
+      return importModule("chars/Chars");
+    } catch (e) {
+      throw new ReferenceError(
+        `CharString: Chars: Error importing Chars module: ${e}`,
+      );
+    }
   }
 }
 

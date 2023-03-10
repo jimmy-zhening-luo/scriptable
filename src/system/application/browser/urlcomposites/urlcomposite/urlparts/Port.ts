@@ -17,7 +17,7 @@ class Port extends po_UrlPart {
 
   protected parse(port: string): null | string {
     try {
-      const parsedPortString: string = new this.ValidPort(port).toString();
+      const parsedPortString: string = new Port.ValidPort(port).toString();
       const parsedPortInt: number = Number.isInteger(
         Number.parseInt(parsedPortString),
       )
@@ -43,9 +43,9 @@ class Port extends po_UrlPart {
     }
   }
 
-  protected get ValidPort(): typeof ValidPort {
+  static get ValidPort(): typeof ValidPort {
     try {
-      return this.UrlValidators.Port;
+      return Port.UrlValidators.Port;
     } catch (e) {
       throw new ReferenceError(`Port: error loading ValidPort module: ${e}`);
     }

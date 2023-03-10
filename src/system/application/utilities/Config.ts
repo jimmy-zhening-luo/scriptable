@@ -229,6 +229,14 @@ class Config extends co_Utility {
       }
     }
   }
+
+  static get Utility(): typeof Utility {
+    try {
+      return co_Utility;
+    } catch (e) {
+      throw new ReferenceError(`Config: Error importing Utility module: ${e}`);
+    }
+  }
 }
 
 module.exports = Config;

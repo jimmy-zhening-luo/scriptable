@@ -2,11 +2,23 @@ const _NGram: typeof NGram = importModule("ngram/NGram");
 
 class OneGram extends _NGram {
   constructor(text: string) {
-    super(text, 1);
+    try {
+      super(text, 1);
+    } catch (e) {
+      throw new Error(
+        `OneGram: constructor: Error creating OneGram object: ${e}`,
+      );
+    }
   }
 
   static get NGram(): typeof NGram {
-    return _NGram;
+    try {
+      return _NGram;
+    } catch (e) {
+      throw new ReferenceError(
+        `OneGram: NGram: Error importing NGram module: ${e}`,
+      );
+    }
   }
 }
 

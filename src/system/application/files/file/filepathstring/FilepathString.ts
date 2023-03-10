@@ -35,7 +35,7 @@ class FilepathString {
   ): string {
     try {
       return this._clean(path).some(
-        node => new this.ValidFilepathRepeater(node).value === null,
+        node => new FilepathString.ValidFilepathRepeater(node).value === null,
       )
         ? ""
         : this._flattenRaw(this._clean(path));
@@ -50,7 +50,7 @@ class FilepathString {
     path: ConstructorParameters<typeof FilepathString>[0],
   ): string[] {
     try {
-      return new this.StringSplitter(this._treeifyRaw(path), "/", {
+      return new FilepathString.StringSplitter(this._treeifyRaw(path), "/", {
         trim: true,
         trimTokens: true,
         ignoreEmptyTokens: true,
@@ -286,24 +286,6 @@ class FilepathString {
     }
   }
 
-  private get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
-    try {
-      return FilepathString.ValidFilepathRepeater;
-    } catch (e) {
-      throw new ReferenceError(
-        `Filepath: Failed to get ValidFilepathRepeater: ${e}`,
-      );
-    }
-  }
-
-  private get StringSplitter(): typeof StringSplitter {
-    try {
-      return FilepathString.StringSplitter;
-    } catch (e) {
-      throw new ReferenceError(`Filepath: Failed to get StringSplitter: ${e}`);
-    }
-  }
-
   static get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
     try {
       return importModule("validfilepathrepeater/ValidFilepathRepeater");
@@ -316,7 +298,7 @@ class FilepathString {
 
   static get StringSplitter(): typeof StringSplitter {
     try {
-      return FilepathString.ValidFilepathRepeater.StringSplitter;
+      return importModule("./common/types/strings/StringSplitter");
     } catch (e) {
       throw new ReferenceError(
         `Filepath: Failed to import module StringSplitter: ${e}`,

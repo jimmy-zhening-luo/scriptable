@@ -2,22 +2,40 @@ class Char {
   readonly charset: string[];
 
   constructor(...charInputs: Char.CharInput[]) {
-    this.charset = [];
-    charInputs.forEach(input => {
-      input instanceof Char
-        ? this.charset.push(...input.charset)
-        : Array.isArray(input)
-        ? this.charset.push(...input)
-        : this.charset.push(input);
-    });
+    try {
+      this.charset = [];
+      charInputs.forEach(input => {
+        input instanceof Char
+          ? this.charset.push(...input.charset)
+          : Array.isArray(input)
+          ? this.charset.push(...input)
+          : this.charset.push(input);
+      });
+    } catch (e) {
+      throw new SyntaxError(
+        `Char: constructor: Error creating Char object: ${e}`,
+      );
+    }
   }
 
   includes(char: string): boolean {
-    return this.charset.length === 0 || this.charset.includes(char);
+    try {
+      return this.charset.length === 0 || this.charset.includes(char);
+    } catch (e) {
+      throw new EvalError(
+        `Char: includes: Error checking if Char includes char: ${e}`,
+      );
+    }
   }
 
   toString(): string {
-    return this.charset.join(" | ");
+    try {
+      return this.charset.join(" | ");
+    } catch (e) {
+      throw new EvalError(
+        `Char: toString: Error converting Char to string: ${e}`,
+      );
+    }
   }
 
   static get alphaNumeric(): string[] {

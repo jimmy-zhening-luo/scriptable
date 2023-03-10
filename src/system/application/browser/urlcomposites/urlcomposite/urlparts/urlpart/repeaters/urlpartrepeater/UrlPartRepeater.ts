@@ -35,16 +35,6 @@ abstract class UrlPartRepeater {
     }
   }
 
-  protected get UrlValidators(): typeof UrlValidators {
-    try {
-      return UrlPartRepeater.UrlValidators;
-    } catch (e) {
-      throw new ReferenceError(
-        `UrlPartRepeater: error loading parent UrlValidators module: ${e}`,
-      );
-    }
-  }
-
   static get UrlValidators(): typeof UrlValidators {
     try {
       return importModule("validators/UrlValidators");

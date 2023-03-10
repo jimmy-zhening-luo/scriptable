@@ -1,7 +1,7 @@
 class UrlParts {
   static get UrlPart(): typeof UrlPart {
     try {
-      return importModule("urlpart/UrlPart");
+      return UrlParts.Scheme.UrlPart;
     } catch (e) {
       throw new ReferenceError(
         `UrlParts: error loading parent UrlPart module: ${e}`,

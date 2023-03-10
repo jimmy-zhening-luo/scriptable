@@ -11,8 +11,8 @@ class Scheme extends sc_UrlPart {
 
   protected parse(scheme: string): null | string {
     try {
-      const validScheme: string = new this.ValidScheme(scheme).toString();
-      const charSetAlpha: string[] = this.ValidScheme.UrlChar.alpha;
+      const validScheme: string = new Scheme.ValidScheme(scheme).toString();
+      const charSetAlpha: string[] = Scheme.ValidScheme.UrlChar.alpha;
       return validScheme === ""
         ? "https"
         : charSetAlpha.includes([...validScheme].shift() ?? "")
@@ -23,9 +23,9 @@ class Scheme extends sc_UrlPart {
     }
   }
 
-  protected get ValidScheme(): typeof ValidScheme {
+  static get ValidScheme(): typeof ValidScheme {
     try {
-      return this.UrlValidators.Scheme;
+      return Scheme.UrlValidators.Scheme;
     } catch (e) {
       throw new ReferenceError(
         `Scheme: error loading ValidScheme module: ${e}`,

@@ -39,7 +39,7 @@ abstract class Application extends app_Utilities {
 
   get config(): Config {
     try {
-      return new this.Config(this.configSubpath, this.constructor.name);
+      return new Application.Config(this.configSubpath, this.constructor.name);
     } catch (e) {
       throw new Error(
         `Application: config: Error getting application Config object: ${e}`,
@@ -49,7 +49,7 @@ abstract class Application extends app_Utilities {
 
   protected storage(subpath?: string): Storage {
     try {
-      return new this.Storage(
+      return new Application.Storage(
         this.storageSubpath,
         this.constructor.name,
         subpath,
@@ -86,19 +86,9 @@ abstract class Application extends app_Utilities {
     }
   }
 
-  static get Common(): typeof Common {
-    try {
-      return importModule("./src/common/Common");
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Common: Error importing Common module: ${e}`,
-      );
-    }
-  }
-
   static get Utilities(): typeof Utilities {
     try {
-      return importModule("utilities/Utilities");
+      return app_Utilities;
     } catch (e) {
       throw new ReferenceError(
         `Application: Utilities: Error importing Utilities module: ${e}`,
@@ -108,7 +98,7 @@ abstract class Application extends app_Utilities {
 
   static get Types(): typeof Types {
     try {
-      return Application.Common.Types;
+      return importModule("./common/types/Types");
     } catch (e) {
       throw new ReferenceError(
         `Application: Types: Error importing Types module: ${e}`,

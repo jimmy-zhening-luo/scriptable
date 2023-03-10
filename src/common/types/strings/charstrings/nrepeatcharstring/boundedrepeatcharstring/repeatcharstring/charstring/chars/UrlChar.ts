@@ -77,7 +77,13 @@ class UrlChar extends _Char {
   }
 
   static get Char(): typeof Char {
-    return _Char;
+    try {
+      return _Char;
+    } catch (e) {
+      throw new ReferenceError(
+        `UrlChar: Char: Error importing Char module: ${e}`,
+      );
+    }
   }
 }
 

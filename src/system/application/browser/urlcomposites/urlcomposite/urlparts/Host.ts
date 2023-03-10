@@ -20,7 +20,7 @@ class Host extends ho_UrlPart {
         : (host.split(".").length === 4 &&
             host
               .split(".")
-              .map(hostRepeater => new this.HostIPv4Repeater(hostRepeater))
+              .map(hostRepeater => new Host.HostIPv4Repeater(hostRepeater))
               .every(
                 hostRepeater =>
                   hostRepeater.isValid &&
@@ -30,12 +30,12 @@ class Host extends ho_UrlPart {
             host.split(":").length >= 3 &&
             host
               .split(":")
-              .map(hostRepeater => new this.HostIPv6Repeater(hostRepeater))
+              .map(hostRepeater => new Host.HostIPv6Repeater(hostRepeater))
               .every(hostRepeater => hostRepeater.isValid)) ||
           (host.split(".").length >= 1 &&
             host
               .split(".")
-              .map(hostRepeater => new this.HostRegNameRepeater(hostRepeater))
+              .map(hostRepeater => new Host.HostRegNameRepeater(hostRepeater))
               .every(hostRepeater => hostRepeater.isValid))
         ? host
         : null;
@@ -44,9 +44,9 @@ class Host extends ho_UrlPart {
     }
   }
 
-  protected get HostIPv4Repeater(): typeof HostIPv4Repeater {
+  static get HostIPv4Repeater(): typeof HostIPv4Repeater {
     try {
-      return this.Repeaters.HostIPv4Repeater;
+      return Host.Repeaters.HostIPv4Repeater;
     } catch (e) {
       throw new ReferenceError(
         `Host: error loading HostIPv4Repeater module: ${e}`,
@@ -54,9 +54,9 @@ class Host extends ho_UrlPart {
     }
   }
 
-  protected get HostIPv6Repeater(): typeof HostIPv6Repeater {
+  static get HostIPv6Repeater(): typeof HostIPv6Repeater {
     try {
-      return this.Repeaters.HostIPv6Repeater;
+      return Host.Repeaters.HostIPv6Repeater;
     } catch (e) {
       throw new ReferenceError(
         `Host: error loading HostIPv6Repeater module: ${e}`,
@@ -64,9 +64,9 @@ class Host extends ho_UrlPart {
     }
   }
 
-  protected get HostRegNameRepeater(): typeof HostRegNameRepeater {
+  static get HostRegNameRepeater(): typeof HostRegNameRepeater {
     try {
-      return this.Repeaters.HostRegNameRepeater;
+      return Host.Repeaters.HostRegNameRepeater;
     } catch (e) {
       throw new ReferenceError(
         `Host: error loading HostRegNameRepeater module: ${e}`,

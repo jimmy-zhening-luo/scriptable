@@ -37,7 +37,7 @@ class Query extends qu_UrlPart {
         : Query.mapToQueryString(Query.queryStringToMap(query))
             .split("&")
             .filter(keyValueString => keyValueString !== "")
-            .map(keyValueString => new this.QueryRepeater(keyValueString))
+            .map(keyValueString => new Query.QueryRepeater(keyValueString))
             .filter(queryRepeater => queryRepeater.isValid)
             .map(queryRepeater => queryRepeater.toString())
             .join("&");
@@ -227,9 +227,9 @@ class Query extends qu_UrlPart {
     }
   }
 
-  protected get QueryRepeater(): typeof QueryRepeater {
+  static get QueryRepeater(): typeof QueryRepeater {
     try {
-      return this.Repeaters.QueryRepeater;
+      return Query.Repeaters.QueryRepeater;
     } catch (e) {
       throw new Error(
         `Query: get QueryRepeater: error loading QueryRepeater module: ${e}`,

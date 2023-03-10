@@ -22,15 +22,15 @@ class Api {
     ...httpHeaders: Parameters<typeof RequestHeaders.prototype.addHeader>
   ) {
     try {
-      this._url = new this.Url(url);
+      this._url = new Api.Url(url);
       this._method = method;
-      this._requestHeaders = new this.RequestHeaders(
+      this._requestHeaders = new Api.RequestHeaders(
         authScheme,
         authToken,
         ...httpHeaders,
       );
-      this._requestBody = new this.RequestBody(requestBody);
-      this._timeoutSeconds = new this.PositiveFiniteInteger(timeoutSeconds)
+      this._requestBody = new Api.RequestBody(requestBody);
+      this._timeoutSeconds = new Api.PositiveFiniteInteger(timeoutSeconds)
         .isValidNumber
         ? timeoutSeconds
         : 60;
@@ -421,7 +421,7 @@ class Api {
 
   set timeout(timeoutSeconds: number) {
     try {
-      if (new this.PositiveFiniteInteger(timeoutSeconds).isValidNumber)
+      if (new Api.PositiveFiniteInteger(timeoutSeconds).isValidNumber)
         this._timeoutSeconds = timeoutSeconds;
     } catch (e) {
       throw new Error(`Api: set timeout: error setting timeout: ${e}`);
@@ -463,55 +463,9 @@ class Api {
       response = _response;
     });
     try {
-      return new this.ResponseBody(response);
+      return new Api.ResponseBody(response);
     } catch (e) {
       throw new Error(`Api: handleRequest: error handling request: ${e}`);
-    }
-  }
-
-  get Url(): typeof Url {
-    try {
-      return Api.Url;
-    } catch (e) {
-      throw new Error(`Api: get Url: error getting Url: ${e}`);
-    }
-  }
-
-  get RequestHeaders(): typeof RequestHeaders {
-    try {
-      return Api.RequestHeaders;
-    } catch (e) {
-      throw new Error(
-        `Api: get RequestHeaders: error getting RequestHeaders: ${e}`,
-      );
-    }
-  }
-
-  get RequestBody(): typeof RequestBody {
-    try {
-      return Api.RequestBody;
-    } catch (e) {
-      throw new Error(`Api: get RequestBody: error getting RequestBody: ${e}`);
-    }
-  }
-
-  get ResponseBody(): typeof ResponseBody {
-    try {
-      return Api.ResponseBody;
-    } catch (e) {
-      throw new Error(
-        `Api: get ResponseBody: error getting ResponseBody: ${e}`,
-      );
-    }
-  }
-
-  private get PositiveFiniteInteger(): typeof PositiveFiniteInteger {
-    try {
-      return Api.PositiveFiniteInteger;
-    } catch (e) {
-      throw new Error(
-        `Api: get PositiveFiniteInteger: error getting PositiveFiniteInteger: ${e}`,
-      );
     }
   }
 
@@ -579,17 +533,9 @@ class Api {
     }
   }
 
-  static get Types(): typeof Types {
-    try {
-      return importModule("./common/types/Types");
-    } catch (e) {
-      throw new Error(`Api: get Types: error getting Types: ${e}`);
-    }
-  }
-
   static get PositiveFiniteInteger(): typeof PositiveFiniteInteger {
     try {
-      return Api.Types.Numbers.PositiveFiniteInteger;
+      return importModule("./common/types/numbers/PositiveFiniteInteger");
     } catch (e) {
       throw new Error(
         `Api: get PositiveFiniteInteger: error getting PositiveFiniteInteger: ${e}`,

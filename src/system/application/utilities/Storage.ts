@@ -30,6 +30,16 @@ class Storage extends st_Utility {
       throw new Error(`Storage: write: Error writing to file: ${e}`);
     }
   }
+
+  static get Utility(): typeof Utility {
+    try {
+      return st_Utility;
+    } catch (e) {
+      throw new ReferenceError(
+        `Storage: get Utility: Error importing Utility module: ${e}`,
+      );
+    }
+  }
 }
 
 module.exports = Storage;

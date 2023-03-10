@@ -7,11 +7,23 @@ class OneCharString extends _NRepeatCharString {
     charstring: string,
     ...ofCharInputs: Char[] | string[] | string[][] | Char.CharInput[]
   ) {
-    super(1, charstring, ...ofCharInputs);
+    try {
+      super(1, charstring, ...ofCharInputs);
+    } catch (e) {
+      throw new Error(
+        `OneCharString: constructor: Error creating OneCharString object: ${e}`,
+      );
+    }
   }
 
   static get NRepeatCharString(): typeof NRepeatCharString {
-    return _NRepeatCharString;
+    try {
+      return _NRepeatCharString;
+    } catch (e) {
+      throw new ReferenceError(
+        `OneCharString: NRepeatCharString: Error importing NRepeatCharString module: ${e}`,
+      );
+    }
   }
 }
 

@@ -5,7 +5,7 @@ const qu_UrlPartRepeater: typeof UrlPartRepeater = importModule(
 class QueryRepeater extends qu_UrlPartRepeater {
   protected parse(repeater: string): null | string {
     try {
-      return new this.ValidQueryRepeater(repeater).value;
+      return new QueryRepeater.ValidQueryRepeater(repeater).value;
     } catch (e) {
       throw new Error(
         `QueryRepeater: parse: error parsing QueryRepeater: ${e}`,
@@ -13,9 +13,9 @@ class QueryRepeater extends qu_UrlPartRepeater {
     }
   }
 
-  protected get ValidQueryRepeater(): typeof ValidQueryRepeater {
+  static get ValidQueryRepeater(): typeof ValidQueryRepeater {
     try {
-      return this.UrlValidators.Query.Repeaters.Query;
+      return QueryRepeater.UrlValidators.Query.Repeaters.Query;
     } catch (e) {
       throw new ReferenceError(
         `QueryRepeater: error loading ValidQueryRepeater module: ${e}`,

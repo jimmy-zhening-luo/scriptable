@@ -15,15 +15,15 @@ class Fragment extends fr_UrlPart {
     try {
       return fragment.trim() === "#" || fragment.trim() === ""
         ? null
-        : new this.ValidFragment(fragment).value;
+        : new Fragment.ValidFragment(fragment).value;
     } catch (e) {
       throw new SyntaxError(`Fragment: parse: error parsing Fragment: ${e}`);
     }
   }
 
-  protected get ValidFragment(): typeof ValidFragment {
+  static get ValidFragment(): typeof ValidFragment {
     try {
-      return this.UrlValidators.Fragment;
+      return Fragment.UrlValidators.Fragment;
     } catch (e) {
       throw new ReferenceError(
         `Fragment: error loading ValidFragment module: ${e}`,

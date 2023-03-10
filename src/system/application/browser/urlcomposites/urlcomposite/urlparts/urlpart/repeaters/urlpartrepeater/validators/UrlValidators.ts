@@ -1,7 +1,7 @@
 class UrlValidators {
   static get ValidUrlPart(): typeof ValidUrlPart {
     try {
-      return importModule("validurlpart/ValidUrlPart");
+      return UrlValidators.ValidUrlRepeater.ValidUrlPart;
     } catch (e) {
       throw new ReferenceError(
         `UrlValidators: error loading ValidUrlPart module: ${e}`,

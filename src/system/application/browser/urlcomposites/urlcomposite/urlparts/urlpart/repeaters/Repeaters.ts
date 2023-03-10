@@ -1,7 +1,7 @@
 class Repeaters {
   static get UrlPartRepeater(): typeof UrlPartRepeater {
     try {
-      return importModule("urlpartrepeater/UrlPartRepeater");
+      return Repeaters.PathRepeater.UrlPartRepeater;
     } catch (e) {
       throw new ReferenceError(
         `Repeaters: error loading parent UrlPartRepeater module: ${e}`,

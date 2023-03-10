@@ -220,26 +220,6 @@ class Callback {
     }
   }
 
-  get Url(): typeof Url {
-    try {
-      return Callback.Url;
-    } catch (e) {
-      throw new ReferenceError(
-        `Callback: get Url: error loading Url module: ${e}`,
-      );
-    }
-  }
-
-  get Query(): typeof Query {
-    try {
-      return Callback.Query;
-    } catch (e) {
-      throw new ReferenceError(
-        `Callback: get Query: error loading Query module: ${e}`,
-      );
-    }
-  }
-
   static get Url(): typeof Url {
     try {
       return importModule("Url");

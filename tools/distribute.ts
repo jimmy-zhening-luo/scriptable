@@ -83,7 +83,7 @@ namespace _Distribution_Tool {
               if (stderr) throw new Error(stderr);
               if (_azCopySucceeded(stdout))
                 console.log(
-                  `npm run distribute: azure_clean_upload: ps_exec: SUCCESS, completed script and Azure Storage Web API returned success without errors.`,
+                  `npm run distribute: azure_clean_upload: ps_exec: SUCCESS`,
                 );
               else
                 console.warn(

@@ -5,7 +5,7 @@ const hips_UrlPartRepeater: typeof UrlPartRepeater = importModule(
 class HostIPv6Repeater extends hips_UrlPartRepeater {
   protected parse(repeater: string): null | string {
     try {
-      return new this.ValidHostIPv6Repeater(repeater).value;
+      return new HostIPv6Repeater.ValidHostIPv6Repeater(repeater).value;
     } catch (e) {
       throw new Error(
         `HostIPv6Repeater: parse: error parsing HostIPv6Repeater: ${e}`,
@@ -13,9 +13,9 @@ class HostIPv6Repeater extends hips_UrlPartRepeater {
     }
   }
 
-  protected get ValidHostIPv6Repeater(): typeof ValidHostIPv6Repeater {
+  static get ValidHostIPv6Repeater(): typeof ValidHostIPv6Repeater {
     try {
-      return this.UrlValidators.Host.Repeaters.IPv6;
+      return HostIPv6Repeater.UrlValidators.Host.Repeaters.IPv6;
     } catch (e) {
       throw new ReferenceError(
         `HostIPv6Repeater: error loading ValidHostIPv6Repeater module: ${e}`,

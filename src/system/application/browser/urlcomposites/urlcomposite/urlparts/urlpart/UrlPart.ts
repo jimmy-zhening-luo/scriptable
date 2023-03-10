@@ -49,27 +49,7 @@ abstract class UrlPart {
     }
   }
 
-  protected get Repeaters(): typeof Repeaters {
-    try {
-      return UrlPart.Repeaters;
-    } catch (e) {
-      throw new ReferenceError(
-        `UrlPart: error loading parent Repeaters module: ${e}`,
-      );
-    }
-  }
-
-  protected get UrlValidators(): typeof UrlValidators {
-    try {
-      return UrlPart.UrlValidators;
-    } catch (e) {
-      throw new ReferenceError(
-        `UrlPart: error loading parent UrlValidators module: ${e}`,
-      );
-    }
-  }
-
-  protected static get Repeaters(): typeof Repeaters {
+  static get Repeaters(): typeof Repeaters {
     try {
       return importModule("repeaters/Repeaters");
     } catch (e) {
@@ -79,7 +59,7 @@ abstract class UrlPart {
     }
   }
 
-  protected static get UrlValidators(): typeof UrlValidators {
+  static get UrlValidators(): typeof UrlValidators {
     try {
       return UrlPart.Repeaters.UrlValidators;
     } catch (e) {

@@ -11,9 +11,9 @@ class Path extends pa_UrlPart {
 
   protected parse(path: string): null | string {
     try {
-      const split: string[] = new this.StringSplitter(
+      const split: string[] = new Path.StringSplitter(
         path,
-        ...this.UrlValidators.Char.slash,
+        ...Path.UrlValidators.Char.slash,
         {
           trim: true,
           trimTokens: true,
@@ -23,9 +23,9 @@ class Path extends pa_UrlPart {
       return split.length === 0
         ? null
         : split.every(
-            pathRepeater => new this.PathRepeater(pathRepeater).isValid,
+            pathRepeater => new Path.PathRepeater(pathRepeater).isValid,
           )
-        ? split.join(this.UrlValidators.Char.slash[0])
+        ? split.join(Path.UrlValidators.Char.slash[0])
         : null;
     } catch (e) {
       throw new Error(`Path: parse: error parsing Path: ${e}`);
@@ -36,7 +36,7 @@ class Path extends pa_UrlPart {
     try {
       const newPath: Path = new Path(
         [this.toString(), new Path(subpath).toString()].join(
-          this.UrlValidators.Char.slash[0],
+          Path.UrlValidators.Char.slash[0],
         ),
       );
       return newPath.isValid ? newPath : this;
@@ -45,21 +45,11 @@ class Path extends pa_UrlPart {
     }
   }
 
-  protected get PathRepeater(): typeof PathRepeater {
+  static get PathRepeater(): typeof PathRepeater {
     try {
-      return this.Repeaters.PathRepeater;
+      return Path.Repeaters.PathRepeater;
     } catch (e) {
       throw new ReferenceError(`Path: error loading PathRepeater module: ${e}`);
-    }
-  }
-
-  protected get StringSplitter(): typeof StringSplitter {
-    try {
-      return Path.StringSplitter;
-    } catch (e) {
-      throw new ReferenceError(
-        `Path: error loading StringSplitter module: ${e}`,
-      );
     }
   }
 
