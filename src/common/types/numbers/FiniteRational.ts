@@ -8,7 +8,7 @@ class FiniteRational extends fr_Integer.Rational {
       return fr_Integer;
     } catch (e) {
       throw new ReferenceError(
-        `FiniteRational: error loading parent Integer module: ${e}`,
+        `FiniteRational: error loading parent Integer module: \n${e}`,
       );
     }
   }
@@ -18,7 +18,7 @@ class FiniteRational extends fr_Integer.Rational {
       return FiniteRational.Integer.Rational;
     } catch (e) {
       throw new ReferenceError(
-        `FiniteRational: error loading Integer.Rational module: ${e}`,
+        `FiniteRational: error loading Integer.Rational module: \n${e}`,
       );
     }
   }

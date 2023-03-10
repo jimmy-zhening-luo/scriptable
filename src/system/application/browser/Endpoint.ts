@@ -21,7 +21,7 @@ class Endpoint {
         typeof optionalParams === "string" ? [optionalParams] : optionalParams,
       );
     } catch (e) {
-      throw new Error(`Endpoint: constructor: error creating Endpoint: ${e}`);
+      throw new Error(`Endpoint: constructor: error creating Endpoint: \n${e}`);
     }
   }
 
@@ -42,7 +42,7 @@ class Endpoint {
         return this._callback.request(subpath, params);
       else throw new Error("missing required params");
     } catch (e) {
-      throw new Error(`Endpoint: request: error requesting Endpoint: ${e}`);
+      throw new Error(`Endpoint: request: error requesting Endpoint: \n${e}`);
     }
   }
 
@@ -51,7 +51,7 @@ class Endpoint {
       return importModule("Callback");
     } catch (e) {
       throw new ReferenceError(
-        `Endpoint: Callback: error getting Callback: ${e}`,
+        `Endpoint: Callback: error getting Callback: \n${e}`,
       );
     }
   }
@@ -60,7 +60,7 @@ class Endpoint {
     try {
       return Endpoint.Callback.Url;
     } catch (e) {
-      throw new ReferenceError(`Endpoint: Url: error getting Url: ${e}`);
+      throw new ReferenceError(`Endpoint: Url: error getting Url: \n${e}`);
     }
   }
 
@@ -68,7 +68,7 @@ class Endpoint {
     try {
       return Endpoint.Url.Path;
     } catch (e) {
-      throw new ReferenceError(`Endpoint: Path: error getting Path: ${e}`);
+      throw new ReferenceError(`Endpoint: Path: error getting Path: \n${e}`);
     }
   }
 
@@ -76,7 +76,7 @@ class Endpoint {
     try {
       return Endpoint.Url.Query;
     } catch (e) {
-      throw new ReferenceError(`Endpoint: Query: error getting Query: ${e}`);
+      throw new ReferenceError(`Endpoint: Query: error getting Query: \n${e}`);
     }
   }
 }

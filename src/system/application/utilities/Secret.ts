@@ -6,7 +6,7 @@ class Secret extends se_Utility {
       super("Secret", Secret.ReadOnlyFile, subpath);
     } catch (e) {
       throw new Error(
-        `Secret: constructor: Error creating Secret object: ${e}`,
+        `Secret: constructor: Error creating Secret object: \n${e}`,
       );
     }
   }
@@ -15,7 +15,7 @@ class Secret extends se_Utility {
     try {
       return this.data;
     } catch (e) {
-      throw new Error(`Secret: secret: Error getting secret: ${e}`);
+      throw new Error(`Secret: secret: Error getting secret: \n${e}`);
     }
   }
 
@@ -23,7 +23,7 @@ class Secret extends se_Utility {
     try {
       return this.secret;
     } catch (e) {
-      throw new Error(`Secret: key: Error getting key: ${e}`);
+      throw new Error(`Secret: key: Error getting key: \n${e}`);
     }
   }
 
@@ -32,7 +32,7 @@ class Secret extends se_Utility {
       return se_Utility;
     } catch (e) {
       throw new ReferenceError(
-        `Secret: Utility: Error importing Utility module: ${e}`,
+        `Secret: Utility: Error importing Utility module: \n${e}`,
       );
     }
   }

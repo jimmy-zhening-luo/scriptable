@@ -34,7 +34,7 @@ class ValidUrlPart extends up_ValidString {
       );
     } catch (e) {
       throw new Error(
-        `ValidUrlPart: constructor: error creating ValidUrlPart: ${e}`,
+        `ValidUrlPart: constructor: error creating ValidUrlPart: \n${e}`,
       );
     }
   }

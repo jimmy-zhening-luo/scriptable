@@ -4,7 +4,7 @@ class Files {
       return importModule("ReadOnlyFile");
     } catch (e) {
       throw new ReferenceError(
-        `Files: Error importing ReadOnlyFile class: ${e}`,
+        `Files: Error importing ReadOnlyFile class: \n${e}`,
       );
     }
   }
@@ -13,7 +13,7 @@ class Files {
     try {
       return Files.ReadOnlyFile.File;
     } catch (e) {
-      throw new ReferenceError(`Files: Error importing File class: ${e}`);
+      throw new ReferenceError(`Files: Error importing File class: \n${e}`);
     }
   }
 
@@ -21,7 +21,7 @@ class Files {
     try {
       return Files.File.Bookmark;
     } catch (e) {
-      throw new ReferenceError(`Files: Error importing Bookmark class: ${e}`);
+      throw new ReferenceError(`Files: Error importing Bookmark class: \n${e}`);
     }
   }
 
@@ -30,7 +30,7 @@ class Files {
       return Files.File.FilepathString;
     } catch (e) {
       throw new ReferenceError(
-        `Files: Error importing FilepathString class: ${e}`,
+        `Files: Error importing FilepathString class: \n${e}`,
       );
     }
   }

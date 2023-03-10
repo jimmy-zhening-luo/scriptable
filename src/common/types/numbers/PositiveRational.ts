@@ -9,7 +9,7 @@ class PositiveRational extends pr_Integer.Rational {
       return pr_Integer;
     } catch (e) {
       throw new ReferenceError(
-        `PositiveRational: error loading parent Integer module: ${e}`,
+        `PositiveRational: error loading parent Integer module: \n${e}`,
       );
     }
   }
@@ -19,7 +19,7 @@ class PositiveRational extends pr_Integer.Rational {
       return PositiveRational.Integer.Rational;
     } catch (e) {
       throw new ReferenceError(
-        `PositiveRational: error loading Integer.Rational module: ${e}`,
+        `PositiveRational: error loading Integer.Rational module: \n${e}`,
       );
     }
   }

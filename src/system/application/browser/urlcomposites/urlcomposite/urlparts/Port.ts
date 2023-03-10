@@ -11,7 +11,7 @@ class Port extends po_UrlPart {
           : port,
       );
     } catch (e) {
-      throw new Error(`Port: constructor: error creating Port: ${e}`);
+      throw new Error(`Port: constructor: error creating Port: \n${e}`);
     }
   }
 
@@ -27,7 +27,7 @@ class Port extends po_UrlPart {
         ? String(Math.round(parsedPortInt))
         : null;
     } catch (e) {
-      throw new Error(`Port: parse: error parsing Port: ${e}`);
+      throw new Error(`Port: parse: error parsing Port: \n${e}`);
     }
   }
 
@@ -39,7 +39,9 @@ class Port extends po_UrlPart {
         ? 0
         : NaN;
     } catch (e) {
-      throw new Error(`Port: toNumber: error converting Port to number: ${e}`);
+      throw new Error(
+        `Port: toNumber: error converting Port to number: \n${e}`,
+      );
     }
   }
 
@@ -47,7 +49,7 @@ class Port extends po_UrlPart {
     try {
       return Port.UrlValidators.Port;
     } catch (e) {
-      throw new ReferenceError(`Port: error loading ValidPort module: ${e}`);
+      throw new ReferenceError(`Port: error loading ValidPort module: \n${e}`);
     }
   }
 
@@ -55,7 +57,7 @@ class Port extends po_UrlPart {
     try {
       return po_UrlPart;
     } catch (e) {
-      throw new ReferenceError(`Port: error loading UrlPart module: ${e}`);
+      throw new ReferenceError(`Port: error loading UrlPart module: \n${e}`);
     }
   }
 }

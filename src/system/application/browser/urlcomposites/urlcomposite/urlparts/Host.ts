@@ -5,7 +5,7 @@ class Host extends ho_UrlPart {
     try {
       super(host);
     } catch (e) {
-      throw new Error(`Host: constructor: error creating Host: ${e}`);
+      throw new Error(`Host: constructor: error creating Host: \n${e}`);
     }
   }
 
@@ -40,7 +40,7 @@ class Host extends ho_UrlPart {
         ? host
         : null;
     } catch (e) {
-      throw new Error(`Host: parse: error parsing Host: ${e}`);
+      throw new Error(`Host: parse: error parsing Host: \n${e}`);
     }
   }
 
@@ -49,7 +49,7 @@ class Host extends ho_UrlPart {
       return Host.Repeaters.HostIPv4Repeater;
     } catch (e) {
       throw new ReferenceError(
-        `Host: error loading HostIPv4Repeater module: ${e}`,
+        `Host: error loading HostIPv4Repeater module: \n${e}`,
       );
     }
   }
@@ -59,7 +59,7 @@ class Host extends ho_UrlPart {
       return Host.Repeaters.HostIPv6Repeater;
     } catch (e) {
       throw new ReferenceError(
-        `Host: error loading HostIPv6Repeater module: ${e}`,
+        `Host: error loading HostIPv6Repeater module: \n${e}`,
       );
     }
   }
@@ -69,7 +69,7 @@ class Host extends ho_UrlPart {
       return Host.Repeaters.HostRegNameRepeater;
     } catch (e) {
       throw new ReferenceError(
-        `Host: error loading HostRegNameRepeater module: ${e}`,
+        `Host: error loading HostRegNameRepeater module: \n${e}`,
       );
     }
   }
@@ -79,7 +79,7 @@ class Host extends ho_UrlPart {
       return ho_UrlPart;
     } catch (e) {
       throw new ReferenceError(
-        `Host: error loading parent UrlPart module: ${e}`,
+        `Host: error loading parent UrlPart module: \n${e}`,
       );
     }
   }

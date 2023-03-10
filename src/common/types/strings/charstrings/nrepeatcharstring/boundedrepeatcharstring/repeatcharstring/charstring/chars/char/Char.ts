@@ -13,7 +13,7 @@ class Char {
       });
     } catch (e) {
       throw new SyntaxError(
-        `Char: constructor: Error creating Char object: ${e}`,
+        `Char: constructor: Error creating Char object: \n${e}`,
       );
     }
   }
@@ -23,7 +23,7 @@ class Char {
       return this.charset.length === 0 || this.charset.includes(char);
     } catch (e) {
       throw new EvalError(
-        `Char: includes: Error checking if Char includes char: ${e}`,
+        `Char: includes: Error checking if Char includes char: \n${e}`,
       );
     }
   }
@@ -33,7 +33,7 @@ class Char {
       return this.charset.join(" | ");
     } catch (e) {
       throw new EvalError(
-        `Char: toString: Error converting Char to string: ${e}`,
+        `Char: toString: Error converting Char to string: \n${e}`,
       );
     }
   }

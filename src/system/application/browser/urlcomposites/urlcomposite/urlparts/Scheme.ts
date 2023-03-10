@@ -5,7 +5,7 @@ class Scheme extends sc_UrlPart {
     try {
       super(scheme);
     } catch (e) {
-      throw new Error(`Scheme: constructor: error creating Scheme: ${e}`);
+      throw new Error(`Scheme: constructor: error creating Scheme: \n${e}`);
     }
   }
 
@@ -19,7 +19,7 @@ class Scheme extends sc_UrlPart {
         ? validScheme
         : "https";
     } catch (e) {
-      throw new Error(`Scheme: parse: error parsing Scheme: ${e}`);
+      throw new Error(`Scheme: parse: error parsing Scheme: \n${e}`);
     }
   }
 
@@ -28,7 +28,7 @@ class Scheme extends sc_UrlPart {
       return Scheme.UrlValidators.Scheme;
     } catch (e) {
       throw new ReferenceError(
-        `Scheme: error loading ValidScheme module: ${e}`,
+        `Scheme: error loading ValidScheme module: \n${e}`,
       );
     }
   }
@@ -38,7 +38,7 @@ class Scheme extends sc_UrlPart {
       return sc_UrlPart;
     } catch (e) {
       throw new ReferenceError(
-        `Scheme: error loading parent UrlPart module: ${e}`,
+        `Scheme: error loading parent UrlPart module: \n${e}`,
       );
     }
   }

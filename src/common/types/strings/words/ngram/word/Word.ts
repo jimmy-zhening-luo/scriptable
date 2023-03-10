@@ -6,7 +6,7 @@ abstract class Word {
       this.word = word === null || word === "" ? null : word;
     } catch (e) {
       throw new EvalError(
-        `Word: constructor: Error creating Word object: ${e}`,
+        `Word: constructor: Error creating Word object: \n${e}`,
       );
     }
   }
@@ -15,7 +15,7 @@ abstract class Word {
     try {
       return this.word?.length ?? 0;
     } catch (e) {
-      throw new EvalError(`Word: length: Error getting length of Word: ${e}`);
+      throw new EvalError(`Word: length: Error getting length of Word: \n${e}`);
     }
   }
 
@@ -23,7 +23,9 @@ abstract class Word {
     try {
       return this.word !== null;
     } catch (e) {
-      throw new EvalError(`Word: isWord: Error checking if Word is word: ${e}`);
+      throw new EvalError(
+        `Word: isWord: Error checking if Word is word: \n${e}`,
+      );
     }
   }
 
@@ -32,7 +34,7 @@ abstract class Word {
       return this.isWord;
     } catch (e) {
       throw new EvalError(
-        `Word: isValid: Error checking if Word is valid: ${e}`,
+        `Word: isValid: Error checking if Word is valid: \n${e}`,
       );
     }
   }
@@ -42,7 +44,7 @@ abstract class Word {
       return this.word ?? "";
     } catch (e) {
       throw new EvalError(
-        `Word: toString: Error converting Word to string: ${e}`,
+        `Word: toString: Error converting Word to string: \n${e}`,
       );
     }
   }

@@ -47,7 +47,7 @@ namespace Search {
             : userIntendedSearchEngine.parseQueryToAction(query);
         }
       } catch (e) {
-        throw new Error(`Search: runtime: Error running app: ${e}`);
+        throw new Error(`Search: runtime: Error running app: \n${e}`);
       }
     }
   }
@@ -63,7 +63,7 @@ namespace Search {
         this.searchTerms = tokens;
       } catch (e) {
         throw new Error(
-          `SearchQuery: constructor: Error creating SearchQuery object: ${e}`,
+          `SearchQuery: constructor: Error creating SearchQuery object: \n${e}`,
         );
       }
     }
@@ -93,7 +93,7 @@ namespace Search {
         ).map(key => key.toLowerCase());
       } catch (e) {
         throw new Error(
-          `SearchEngine: constructor: Error creating SearchEngine object: ${e}`,
+          `SearchEngine: constructor: Error creating SearchEngine object: \n${e}`,
         );
       }
     }
@@ -121,7 +121,7 @@ namespace Search {
         this.showWebview = showWebview;
       } catch (e) {
         throw new Error(
-          `BrowserSearchEngine: constructor: Error creating BrowserSearchEngine object: ${e}`,
+          `BrowserSearchEngine: constructor: Error creating BrowserSearchEngine object: \n${e}`,
         );
       }
     }
@@ -146,7 +146,7 @@ namespace Search {
         };
       } catch (e) {
         throw new Error(
-          `BrowserSearchEngine: parseQueryToAction: Error parsing query to action: ${e}`,
+          `BrowserSearchEngine: parseQueryToAction: Error parsing query to action: \n${e}`,
         );
       }
     }
@@ -164,7 +164,7 @@ namespace Search {
         this.app = app;
       } catch (e) {
         throw new Error(
-          `AppSearchEngine: constructor: Error creating AppSearchEngine object: ${e}`,
+          `AppSearchEngine: constructor: Error creating AppSearchEngine object: \n${e}`,
         );
       }
     }
@@ -177,7 +177,7 @@ namespace Search {
         };
       } catch (e) {
         throw new Error(
-          `AppSearchEngine: parseQueryToAction: Error parsing query to action: ${e}`,
+          `AppSearchEngine: parseQueryToAction: Error parsing query to action: \n${e}`,
         );
       }
     }

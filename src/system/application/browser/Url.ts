@@ -63,7 +63,7 @@ class Url {
         }
       }
     } catch (e) {
-      throw new Error(`Url: constructor: error creating Url: ${e}`);
+      throw new Error(`Url: constructor: error creating Url: \n${e}`);
     }
   }
 
@@ -80,7 +80,7 @@ class Url {
           ]).toString()
         : "";
     } catch (e) {
-      throw new Error(`Url: get url: error getting url: ${e}`);
+      throw new Error(`Url: get url: error getting url: \n${e}`);
     }
   }
 
@@ -94,7 +94,7 @@ class Url {
       this.query = parsedUrl.query;
       this.fragment = parsedUrl.fragment;
     } catch (e) {
-      throw new Error(`Url: set url: error setting url: ${e}`);
+      throw new Error(`Url: set url: error setting url: \n${e}`);
     }
   }
 
@@ -102,7 +102,7 @@ class Url {
     try {
       return this._scheme.toString();
     } catch (e) {
-      throw new Error(`Url: get scheme: error getting scheme: ${e}`);
+      throw new Error(`Url: get scheme: error getting scheme: \n${e}`);
     }
   }
 
@@ -111,7 +111,7 @@ class Url {
       this._scheme = new Url.Scheme(scheme);
       if (this.scheme === "") this._scheme = new Url.Scheme("https");
     } catch (e) {
-      throw new Error(`Url: set scheme: error setting scheme: ${e}`);
+      throw new Error(`Url: set scheme: error setting scheme: \n${e}`);
     }
   }
 
@@ -119,7 +119,7 @@ class Url {
     try {
       return this._host.toString();
     } catch (e) {
-      throw new Error(`Url: get host: error getting host: ${e}`);
+      throw new Error(`Url: get host: error getting host: \n${e}`);
     }
   }
 
@@ -127,7 +127,7 @@ class Url {
     try {
       this._host = new Url.Host(host);
     } catch (e) {
-      throw new Error(`Url: set host: error setting host: ${e}`);
+      throw new Error(`Url: set host: error setting host: \n${e}`);
     }
   }
 
@@ -135,7 +135,7 @@ class Url {
     try {
       return this._port.toString();
     } catch (e) {
-      throw new Error(`Url: get port: error getting port: ${e}`);
+      throw new Error(`Url: get port: error getting port: \n${e}`);
     }
   }
 
@@ -143,7 +143,7 @@ class Url {
     try {
       this._port = new Url.Port(port);
     } catch (e) {
-      throw new Error(`Url: set port: error setting port: ${e}`);
+      throw new Error(`Url: set port: error setting port: \n${e}`);
     }
   }
 
@@ -151,7 +151,7 @@ class Url {
     try {
       return this._path.toString();
     } catch (e) {
-      throw new Error(`Url: get path: error getting path: ${e}`);
+      throw new Error(`Url: get path: error getting path: \n${e}`);
     }
   }
 
@@ -159,7 +159,7 @@ class Url {
     try {
       this._path = new Url.Path(path);
     } catch (e) {
-      throw new Error(`Url: set path: error setting path: ${e}`);
+      throw new Error(`Url: set path: error setting path: \n${e}`);
     }
   }
 
@@ -168,7 +168,7 @@ class Url {
       this.path = this._path.append(...path);
       return this;
     } catch (e) {
-      throw new Error(`Url: append: error appending path: ${e}`);
+      throw new Error(`Url: append: error appending path: \n${e}`);
     }
   }
 
@@ -176,7 +176,7 @@ class Url {
     try {
       return this.queryString;
     } catch (e) {
-      throw new Error(`Url: get query: error getting query: ${e}`);
+      throw new Error(`Url: get query: error getting query: \n${e}`);
     }
   }
 
@@ -184,7 +184,9 @@ class Url {
     try {
       return this._query.toString();
     } catch (e) {
-      throw new Error(`Url: get queryString: error getting queryString: ${e}`);
+      throw new Error(
+        `Url: get queryString: error getting queryString: \n${e}`,
+      );
     }
   }
 
@@ -192,7 +194,9 @@ class Url {
     try {
       return this._query.toTuples();
     } catch (e) {
-      throw new Error(`Url: get queryTuples: error getting queryTuples: ${e}`);
+      throw new Error(
+        `Url: get queryTuples: error getting queryTuples: \n${e}`,
+      );
     }
   }
 
@@ -200,7 +204,7 @@ class Url {
     try {
       return this._query.toMap();
     } catch (e) {
-      throw new Error(`Url: get queryMap: error getting queryMap: ${e}`);
+      throw new Error(`Url: get queryMap: error getting queryMap: \n${e}`);
     }
   }
 
@@ -208,7 +212,7 @@ class Url {
     try {
       this._query = new Url.Query(query);
     } catch (e) {
-      throw new Error(`Url: set query: error setting query: ${e}`);
+      throw new Error(`Url: set query: error setting query: \n${e}`);
     }
   }
 
@@ -216,7 +220,9 @@ class Url {
     try {
       return this._query.hasParam(...key);
     } catch (e) {
-      throw new Error(`Url: hasParam: error checking if query has param: ${e}`);
+      throw new Error(
+        `Url: hasParam: error checking if query has param: \n${e}`,
+      );
     }
   }
 
@@ -224,7 +230,7 @@ class Url {
     try {
       return this._query.getParam(...key);
     } catch (e) {
-      throw new Error(`Url: getParam: error getting param: ${e}`);
+      throw new Error(`Url: getParam: error getting param: \n${e}`);
     }
   }
 
@@ -233,7 +239,7 @@ class Url {
       this.query = this._query.addParam(...params);
       return this;
     } catch (e) {
-      throw new Error(`Url: addParam: error adding param: ${e}`);
+      throw new Error(`Url: addParam: error adding param: \n${e}`);
     }
   }
 
@@ -242,7 +248,7 @@ class Url {
       this.query = this._query.deleteParam(...keys);
       return this;
     } catch (e) {
-      throw new Error(`Url: deleteParam: error deleting param: ${e}`);
+      throw new Error(`Url: deleteParam: error deleting param: \n${e}`);
     }
   }
 
@@ -250,7 +256,7 @@ class Url {
     try {
       return this._fragment.toString();
     } catch (e) {
-      throw new Error(`Url: get fragment: error getting fragment: ${e}`);
+      throw new Error(`Url: get fragment: error getting fragment: \n${e}`);
     }
   }
 
@@ -258,7 +264,7 @@ class Url {
     try {
       this._fragment = new Url.Fragment(fragment);
     } catch (e) {
-      throw new Error(`Url: set fragment: error setting fragment: ${e}`);
+      throw new Error(`Url: set fragment: error setting fragment: \n${e}`);
     }
   }
 
@@ -267,7 +273,7 @@ class Url {
       Safari.open(this.url);
       return this;
     } catch (e) {
-      throw new Error(`Url: open: error opening url: ${e}`);
+      throw new Error(`Url: open: error opening url: \n${e}`);
     }
   }
 
@@ -276,7 +282,7 @@ class Url {
       WebView.loadURL(this.url, undefined, fullScreen);
       return this;
     } catch (e) {
-      throw new Error(`Url: webview: error opening url: ${e}`);
+      throw new Error(`Url: webview: error opening url: \n${e}`);
     }
   }
 
@@ -295,7 +301,7 @@ class Url {
       });
       return response;
     } catch (e) {
-      throw new Error(`Url: xCallback: error opening url: ${e}`);
+      throw new Error(`Url: xCallback: error opening url: \n${e}`);
     }
   }
 
@@ -303,7 +309,7 @@ class Url {
     try {
       return this._scheme.isValid;
     } catch (e) {
-      throw new Error(`Url: isValid: error checking validity: ${e}`);
+      throw new Error(`Url: isValid: error checking validity: \n${e}`);
     }
   }
 
@@ -367,7 +373,7 @@ class Url {
       }
       return urlStringParts;
     } catch (e) {
-      throw new Error(`Url: parse: error parsing url: ${e}`);
+      throw new Error(`Url: parse: error parsing url: \n${e}`);
     }
   }
 
@@ -375,7 +381,7 @@ class Url {
     try {
       return this.url;
     } catch (e) {
-      throw new Error(`Url: toString: error getting url: ${e}`);
+      throw new Error(`Url: toString: error getting url: \n${e}`);
     }
   }
 
@@ -383,7 +389,7 @@ class Url {
     try {
       return encodeURI(url.trim()).trim();
     } catch (e) {
-      throw new Error(`Url: encode: error encoding url: ${e}`);
+      throw new Error(`Url: encode: error encoding url: \n${e}`);
     }
   }
 
@@ -391,7 +397,7 @@ class Url {
     try {
       return decodeURI(url.trim()).trim();
     } catch (e) {
-      throw new Error(`Url: decode: error decoding url: ${e}`);
+      throw new Error(`Url: decode: error decoding url: \n${e}`);
     }
   }
 
@@ -399,7 +405,7 @@ class Url {
     try {
       return encodeURIComponent(part.trim()).trim();
     } catch (e) {
-      throw new Error(`Url: encodePart: error encoding part: ${e}`);
+      throw new Error(`Url: encodePart: error encoding part: \n${e}`);
     }
   }
 
@@ -407,7 +413,7 @@ class Url {
     try {
       return decodeURIComponent(part.trim()).trim();
     } catch (e) {
-      throw new Error(`Url: decodePart: error decoding part: ${e}`);
+      throw new Error(`Url: decodePart: error decoding part: \n${e}`);
     }
   }
 
@@ -416,7 +422,7 @@ class Url {
       return Url.UrlComposites.SchemeHostPortPathQueryFragment;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get SchemeHostPortPathQueryFragment: error loading SchemeHostPortPathQueryFragment module: ${e}`,
+        `Url: get SchemeHostPortPathQueryFragment: error loading SchemeHostPortPathQueryFragment module: \n${e}`,
       );
     }
   }
@@ -426,7 +432,7 @@ class Url {
       return importModule("urlcomposites/UrlComposites");
     } catch (e) {
       throw new ReferenceError(
-        `Url: get UrlComposites: error loading UrlComposites module: ${e}`,
+        `Url: get UrlComposites: error loading UrlComposites module: \n${e}`,
       );
     }
   }
@@ -436,7 +442,7 @@ class Url {
       return Url.UrlComposites.UrlComposite.UrlParts;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get UrlParts: error loading UrlParts module: ${e}`,
+        `Url: get UrlParts: error loading UrlParts module: \n${e}`,
       );
     }
   }
@@ -446,7 +452,7 @@ class Url {
       return Url.UrlParts.UrlPart;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get UrlPart: error loading UrlPart module: ${e}`,
+        `Url: get UrlPart: error loading UrlPart module: \n${e}`,
       );
     }
   }
@@ -456,7 +462,7 @@ class Url {
       return Url.UrlParts.Scheme;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get Scheme: error loading Scheme module: ${e}`,
+        `Url: get Scheme: error loading Scheme module: \n${e}`,
       );
     }
   }
@@ -466,7 +472,7 @@ class Url {
       return Url.UrlParts.Host;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get Host: error loading Host module: ${e}`,
+        `Url: get Host: error loading Host module: \n${e}`,
       );
     }
   }
@@ -476,7 +482,7 @@ class Url {
       return Url.UrlParts.Port;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get Port: error loading Port module: ${e}`,
+        `Url: get Port: error loading Port module: \n${e}`,
       );
     }
   }
@@ -486,7 +492,7 @@ class Url {
       return Url.UrlParts.Path;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get Path: error loading Path module: ${e}`,
+        `Url: get Path: error loading Path module: \n${e}`,
       );
     }
   }
@@ -496,7 +502,7 @@ class Url {
       return Url.UrlParts.Query;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get Query: error loading Query module: ${e}`,
+        `Url: get Query: error loading Query module: \n${e}`,
       );
     }
   }
@@ -506,7 +512,7 @@ class Url {
       return Url.UrlParts.Fragment;
     } catch (e) {
       throw new ReferenceError(
-        `Url: get Fragment: error loading Fragment module: ${e}`,
+        `Url: get Fragment: error loading Fragment module: \n${e}`,
       );
     }
   }

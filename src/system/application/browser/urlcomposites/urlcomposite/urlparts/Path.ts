@@ -5,7 +5,7 @@ class Path extends pa_UrlPart {
     try {
       super(path);
     } catch (e) {
-      throw new Error(`Path: constructor: error creating Path: ${e}`);
+      throw new Error(`Path: constructor: error creating Path: \n${e}`);
     }
   }
 
@@ -28,7 +28,7 @@ class Path extends pa_UrlPart {
         ? split.join(Path.UrlValidators.Char.slash[0])
         : null;
     } catch (e) {
-      throw new Error(`Path: parse: error parsing Path: ${e}`);
+      throw new Error(`Path: parse: error parsing Path: \n${e}`);
     }
   }
 
@@ -41,7 +41,7 @@ class Path extends pa_UrlPart {
       );
       return newPath.isValid ? newPath : this;
     } catch (e) {
-      throw new Error(`Path: append: error appending Path: ${e}`);
+      throw new Error(`Path: append: error appending Path: \n${e}`);
     }
   }
 
@@ -49,7 +49,9 @@ class Path extends pa_UrlPart {
     try {
       return Path.Repeaters.PathRepeater;
     } catch (e) {
-      throw new ReferenceError(`Path: error loading PathRepeater module: ${e}`);
+      throw new ReferenceError(
+        `Path: error loading PathRepeater module: \n${e}`,
+      );
     }
   }
 
@@ -57,7 +59,7 @@ class Path extends pa_UrlPart {
     try {
       return pa_UrlPart;
     } catch (e) {
-      throw new ReferenceError(`Path: error loading UrlPart module: ${e}`);
+      throw new ReferenceError(`Path: error loading UrlPart module: \n${e}`);
     }
   }
 
@@ -66,7 +68,7 @@ class Path extends pa_UrlPart {
       return importModule("./common/types/strings/StringSplitter");
     } catch (e) {
       throw new ReferenceError(
-        `Path: error loading StringSplitter module: ${e}`,
+        `Path: error loading StringSplitter module: \n${e}`,
       );
     }
   }

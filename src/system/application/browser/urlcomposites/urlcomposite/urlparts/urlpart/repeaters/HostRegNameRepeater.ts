@@ -8,7 +8,7 @@ class HostRegNameRepeater extends hrn_UrlPartRepeater {
       return new HostRegNameRepeater.ValidHostRegNameRepeater(repeater).value;
     } catch (e) {
       throw new Error(
-        `HostRegNameRepeater: parse: error parsing HostRegNameRepeater: ${e}`,
+        `HostRegNameRepeater: parse: error parsing HostRegNameRepeater: \n${e}`,
       );
     }
   }
@@ -18,7 +18,7 @@ class HostRegNameRepeater extends hrn_UrlPartRepeater {
       return HostRegNameRepeater.UrlValidators.Host.Repeaters.RegName;
     } catch (e) {
       throw new ReferenceError(
-        `HostRegNameRepeater: error loading ValidHostRegNameRepeater module: ${e}`,
+        `HostRegNameRepeater: error loading ValidHostRegNameRepeater module: \n${e}`,
       );
     }
   }
@@ -28,7 +28,7 @@ class HostRegNameRepeater extends hrn_UrlPartRepeater {
       return hrn_UrlPartRepeater;
     } catch (e) {
       throw new ReferenceError(
-        `HostRegNameRepeater: error loading parent UrlPartRepeater module: ${e}`,
+        `HostRegNameRepeater: error loading parent UrlPartRepeater module: \n${e}`,
       );
     }
   }

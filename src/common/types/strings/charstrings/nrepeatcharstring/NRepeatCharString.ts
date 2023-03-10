@@ -12,7 +12,7 @@ class NRepeatCharString extends _BoundedRepeatCharString {
       super(n, n, charstring, ...ofCharInputs);
     } catch (e) {
       throw new Error(
-        `NRepeatCharString: constructor: Error creating NRepeatCharString object: ${e}`,
+        `NRepeatCharString: constructor: Error creating NRepeatCharString object: \n${e}`,
       );
     }
   }
@@ -21,7 +21,7 @@ class NRepeatCharString extends _BoundedRepeatCharString {
     try {
       return this.max;
     } catch (e) {
-      throw new Error(`NRepeatCharString: n: Error getting n: ${e}`);
+      throw new Error(`NRepeatCharString: n: Error getting n: \n${e}`);
     }
   }
 
@@ -30,7 +30,7 @@ class NRepeatCharString extends _BoundedRepeatCharString {
       return _BoundedRepeatCharString;
     } catch (e) {
       throw new ReferenceError(
-        `NRepeatCharString: BoundedRepeatCharString: Error importing BoundedRepeatCharString module: ${e}`,
+        `NRepeatCharString: BoundedRepeatCharString: Error importing BoundedRepeatCharString module: \n${e}`,
       );
     }
   }

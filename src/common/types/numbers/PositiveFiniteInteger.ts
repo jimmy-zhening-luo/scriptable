@@ -9,7 +9,7 @@ class PositiveFiniteInteger extends p_FiniteInteger {
       return p_FiniteInteger;
     } catch (e) {
       throw new ReferenceError(
-        `PositiveFiniteInteger: error loading parent FiniteInteger module: ${e}`,
+        `PositiveFiniteInteger: error loading parent FiniteInteger module: \n${e}`,
       );
     }
   }

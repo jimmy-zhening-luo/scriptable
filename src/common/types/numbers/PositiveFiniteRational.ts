@@ -9,7 +9,7 @@ class PositiveFiniteRational extends p_FiniteRational {
       return p_FiniteRational;
     } catch (e) {
       throw new ReferenceError(
-        `PositiveFiniteRational: error loading parent FiniteRational module: ${e}`,
+        `PositiveFiniteRational: error loading parent FiniteRational module: \n${e}`,
       );
     }
   }

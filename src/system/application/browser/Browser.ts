@@ -3,7 +3,7 @@ class Browser {
     try {
       return importModule("Url");
     } catch (e) {
-      throw new Error(`Browser: get Url: error getting Url: ${e}`);
+      throw new Error(`Browser: get Url: error getting Url: \n${e}`);
     }
   }
 
@@ -11,7 +11,7 @@ class Browser {
     try {
       return Browser.Url.UrlParts;
     } catch (e) {
-      throw new Error(`Browser: get UrlParts: error getting UrlParts: ${e}`);
+      throw new Error(`Browser: get UrlParts: error getting UrlParts: \n${e}`);
     }
   }
 
@@ -19,7 +19,7 @@ class Browser {
     try {
       return importModule("Api");
     } catch (e) {
-      throw new Error(`Browser: get Api: error getting Api: ${e}`);
+      throw new Error(`Browser: get Api: error getting Api: \n${e}`);
     }
   }
 
@@ -27,7 +27,7 @@ class Browser {
     try {
       return importModule("Callback");
     } catch (e) {
-      throw new Error(`Browser: get Callback: error getting Callback: ${e}`);
+      throw new Error(`Browser: get Callback: error getting Callback: \n${e}`);
     }
   }
 
@@ -35,7 +35,7 @@ class Browser {
     try {
       return importModule("Endpoint");
     } catch (e) {
-      throw new Error(`Browser: get Endpoint: error getting Endpoint: ${e}`);
+      throw new Error(`Browser: get Endpoint: error getting Endpoint: \n${e}`);
     }
   }
 }

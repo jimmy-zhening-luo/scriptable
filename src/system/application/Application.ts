@@ -12,7 +12,7 @@ abstract class Application extends app_Utilities {
       return this.handleOutput(this.runtime());
     } catch (e) {
       throw new Error(
-        `Application: run: Caught unhandled exception during application runtime: ${e}`,
+        `Application: run: Caught unhandled exception during application runtime: \n${e}`,
       );
     }
   }
@@ -22,7 +22,7 @@ abstract class Application extends app_Utilities {
       return "";
     } catch (e) {
       throw new Error(
-        `Application: configSubpath: Error getting application config subpath: ${e}`,
+        `Application: configSubpath: Error getting application config subpath: \n${e}`,
       );
     }
   }
@@ -32,7 +32,7 @@ abstract class Application extends app_Utilities {
       return this.configSubpath;
     } catch (e) {
       throw new Error(
-        `Application: storageSubpath: Error getting application storage subpath: ${e}`,
+        `Application: storageSubpath: Error getting application storage subpath: \n${e}`,
       );
     }
   }
@@ -42,7 +42,7 @@ abstract class Application extends app_Utilities {
       return new Application.Config(this.configSubpath, this.constructor.name);
     } catch (e) {
       throw new Error(
-        `Application: config: Error getting application Config object: ${e}`,
+        `Application: config: Error getting application Config object: \n${e}`,
       );
     }
   }
@@ -56,7 +56,7 @@ abstract class Application extends app_Utilities {
       );
     } catch (e) {
       throw new ReferenceError(
-        `Application: storage: Error getting application Storage object: ${e}`,
+        `Application: storage: Error getting application Storage object: \n${e}`,
       );
     }
   }
@@ -68,7 +68,7 @@ abstract class Application extends app_Utilities {
       throw new Error(
         `Application: readStorage: Error reading application storage file at '${
           this.storage(subpath).path
-        }': ${e}`,
+        }': \n${e}`,
       );
     }
   }
@@ -81,7 +81,7 @@ abstract class Application extends app_Utilities {
       throw new Error(
         `Application: writeStorage: Error writing to application storage file at '${
           this.storage(subpath).path
-        }': ${e}`,
+        }': \n${e}`,
       );
     }
   }
@@ -91,7 +91,7 @@ abstract class Application extends app_Utilities {
       return app_Utilities;
     } catch (e) {
       throw new ReferenceError(
-        `Application: Utilities: Error importing Utilities module: ${e}`,
+        `Application: Utilities: Error importing Utilities module: \n${e}`,
       );
     }
   }
@@ -101,7 +101,7 @@ abstract class Application extends app_Utilities {
       return importModule("./common/types/Types");
     } catch (e) {
       throw new ReferenceError(
-        `Application: Types: Error importing Types module: ${e}`,
+        `Application: Types: Error importing Types module: \n${e}`,
       );
     }
   }
@@ -111,7 +111,7 @@ abstract class Application extends app_Utilities {
       return Application.Types.Strings;
     } catch (e) {
       throw new ReferenceError(
-        `Application: Strings: Error importing Strings module: ${e}`,
+        `Application: Strings: Error importing Strings module: \n${e}`,
       );
     }
   }
@@ -121,7 +121,7 @@ abstract class Application extends app_Utilities {
       return Application.Types.Numbers;
     } catch (e) {
       throw new ReferenceError(
-        `Application: Numbers: Error importing Numbers module: ${e}`,
+        `Application: Numbers: Error importing Numbers module: \n${e}`,
       );
     }
   }

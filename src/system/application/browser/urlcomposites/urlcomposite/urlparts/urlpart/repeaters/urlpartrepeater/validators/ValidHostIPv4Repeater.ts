@@ -8,7 +8,7 @@ class ValidHostIPv4Repeater extends hipf_ValidUrlRepeater {
       super(hostIPv4Repeater, 1, 3, hipf_ValidUrlRepeater.UrlChar.numbers);
     } catch (e) {
       throw new Error(
-        `ValidHostIPv4Repeater: constructor: error creating ValidHostIPv4Repeater: ${e}`,
+        `ValidHostIPv4Repeater: constructor: error creating ValidHostIPv4Repeater: \n${e}`,
       );
     }
   }
@@ -18,7 +18,7 @@ class ValidHostIPv4Repeater extends hipf_ValidUrlRepeater {
       return hipf_ValidUrlRepeater;
     } catch (e) {
       throw new ReferenceError(
-        `ValidHostIPv4Repeater: error loading parent ValidUrlRepeater module: ${e}`,
+        `ValidHostIPv4Repeater: error loading parent ValidUrlRepeater module: \n${e}`,
       );
     }
   }

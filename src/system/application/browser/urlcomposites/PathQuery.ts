@@ -23,7 +23,7 @@ class PathQuery extends pq_UrlComposite {
       this.query = this.parts[1];
     } catch (e) {
       throw new SyntaxError(
-        `PathQuery: constructor: error creating PathQuery: ${e}`,
+        `PathQuery: constructor: error creating PathQuery: \n${e}`,
       );
     }
   }
@@ -35,7 +35,7 @@ class PathQuery extends pq_UrlComposite {
         : this.path.toString();
     } catch (e) {
       throw new EvalError(
-        `PathQuery: get composite: error getting composite: ${e}`,
+        `PathQuery: get composite: error getting composite: \n${e}`,
       );
     }
   }
@@ -45,7 +45,7 @@ class PathQuery extends pq_UrlComposite {
       return this.UrlParts.Path;
     } catch (e) {
       throw new ReferenceError(
-        `PathQuery: get Path: error loading Path module: ${e}`,
+        `PathQuery: get Path: error loading Path module: \n${e}`,
       );
     }
   }
@@ -55,7 +55,7 @@ class PathQuery extends pq_UrlComposite {
       return this.UrlParts.Query;
     } catch (e) {
       throw new ReferenceError(
-        `PathQuery: get Query: error loading Query module: ${e}`,
+        `PathQuery: get Query: error loading Query module: \n${e}`,
       );
     }
   }
@@ -65,7 +65,7 @@ class PathQuery extends pq_UrlComposite {
       return pq_UrlComposite;
     } catch (e) {
       throw new ReferenceError(
-        `PathQuery: get UrlComposite: error loading UrlComposite module: ${e}`,
+        `PathQuery: get UrlComposite: error loading UrlComposite module: \n${e}`,
       );
     }
   }

@@ -8,7 +8,7 @@ class HostIPv4Repeater extends hipf_UrlPartRepeater {
       return new HostIPv4Repeater.ValidHostIPv4Repeater(repeater).value;
     } catch (e) {
       throw new Error(
-        `HostIPv4Repeater: parse: error parsing HostIPv4Repeater: ${e}`,
+        `HostIPv4Repeater: parse: error parsing HostIPv4Repeater: \n${e}`,
       );
     }
   }
@@ -18,7 +18,7 @@ class HostIPv4Repeater extends hipf_UrlPartRepeater {
       return HostIPv4Repeater.UrlValidators.Host.Repeaters.IPv4;
     } catch (e) {
       throw new ReferenceError(
-        `HostIPv4Repeater: error loading ValidHostIPv4Repeater module: ${e}`,
+        `HostIPv4Repeater: error loading ValidHostIPv4Repeater module: \n${e}`,
       );
     }
   }
@@ -28,7 +28,7 @@ class HostIPv4Repeater extends hipf_UrlPartRepeater {
       return hipf_UrlPartRepeater;
     } catch (e) {
       throw new ReferenceError(
-        `HostIPv4Repeater: error loading parent UrlPartRepeater module: ${e}`,
+        `HostIPv4Repeater: error loading parent UrlPartRepeater module: \n${e}`,
       );
     }
   }

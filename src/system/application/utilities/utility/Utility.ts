@@ -18,7 +18,7 @@ abstract class Utility {
       );
     } catch (e) {
       throw new Error(
-        `Utility: constructor: Caught unhandled exception while creating Utility file: ${e}`,
+        `Utility: constructor: Caught unhandled exception while creating Utility file: \n${e}`,
       );
     }
   }
@@ -41,10 +41,10 @@ abstract class Utility {
     } catch (e) {
       if (!(e instanceof ReferenceError))
         e = new Error(
-          `Caught unhandled exception while getting utility root bookmark name for the Utility class named '${utilityName}'. See unhandled exception: ${e}`,
+          `Caught unhandled exception while getting utility root bookmark name for the Utility class named '${utilityName}'. See unhandled exception: \n${e}`,
         );
       throw new Error(
-        `Error while getting Utility root bookmark for the Utility class named '${utilityName}': ${e}`,
+        `Error while getting Utility root bookmark for the Utility class named '${utilityName}': \n${e}`,
       );
     }
   }
@@ -58,7 +58,7 @@ abstract class Utility {
       );
     } catch (e) {
       throw new Error(
-        `Utility: applicationConfig: Caught unhandled exception while parsing application config into JSON object: ${e}`,
+        `Utility: applicationConfig: Caught unhandled exception while parsing application config into JSON object: \n${e}`,
       );
     }
   }
@@ -67,7 +67,7 @@ abstract class Utility {
     try {
       return this._file.exists;
     } catch (e) {
-      throw new Error(`Utility: exists: Error checking if file exists: ${e}`);
+      throw new Error(`Utility: exists: Error checking if file exists: \n${e}`);
     }
   }
 
@@ -75,7 +75,7 @@ abstract class Utility {
     try {
       return this._file.path;
     } catch (e) {
-      throw new Error(`Utility: path: Error getting path: ${e}`);
+      throw new Error(`Utility: path: Error getting path: \n${e}`);
     }
   }
 
@@ -83,7 +83,7 @@ abstract class Utility {
     try {
       return this._file.subpath;
     } catch (e) {
-      throw new Error(`Utility: subpath: Error getting subpath: ${e}`);
+      throw new Error(`Utility: subpath: Error getting subpath: \n${e}`);
     }
   }
 
@@ -91,7 +91,7 @@ abstract class Utility {
     try {
       return this._file.leaf;
     } catch (e) {
-      throw new Error(`Utility: filename: Error getting filename: ${e}`);
+      throw new Error(`Utility: filename: Error getting filename: \n${e}`);
     }
   }
 
@@ -99,7 +99,7 @@ abstract class Utility {
     try {
       return this._file.data;
     } catch (e) {
-      throw new Error(`Utility: data: Error getting data: ${e}`);
+      throw new Error(`Utility: data: Error getting data: \n${e}`);
     }
   }
 
@@ -107,7 +107,7 @@ abstract class Utility {
     try {
       return this._file.isReadable ? this._file.read() : "";
     } catch (e) {
-      throw new Error(`Utility: read: Error reading file: ${e}`);
+      throw new Error(`Utility: read: Error reading file: \n${e}`);
     }
   }
 
@@ -115,7 +115,7 @@ abstract class Utility {
     try {
       return this.data;
     } catch (e) {
-      throw new Error(`Utility: toString: Error getting data: ${e}`);
+      throw new Error(`Utility: toString: Error getting data: \n${e}`);
     }
   }
 
@@ -124,7 +124,7 @@ abstract class Utility {
       return importModule("./system/application/files/Files");
     } catch (e) {
       throw new ReferenceError(
-        `Utility: Files: Error importing Files module: ${e}`,
+        `Utility: Files: Error importing Files module: \n${e}`,
       );
     }
   }
@@ -134,7 +134,7 @@ abstract class Utility {
       return importModule("./system/application/browser/Browser");
     } catch (e) {
       throw new ReferenceError(
-        `Utility: Browser: Error importing Browser module: ${e}`,
+        `Utility: Browser: Error importing Browser module: \n${e}`,
       );
     }
   }
@@ -144,7 +144,7 @@ abstract class Utility {
       return Utility.Files.ReadOnlyFile;
     } catch (e) {
       throw new ReferenceError(
-        `Utility: ReadOnlyFile: Error importing ReadOnlyFile class: ${e}`,
+        `Utility: ReadOnlyFile: Error importing ReadOnlyFile class: \n${e}`,
       );
     }
   }
@@ -154,7 +154,7 @@ abstract class Utility {
       return Utility.Files.File;
     } catch (e) {
       throw new ReferenceError(
-        `Utility: File: Error importing File class: ${e}`,
+        `Utility: File: Error importing File class: \n${e}`,
       );
     }
   }
@@ -164,7 +164,7 @@ abstract class Utility {
       return Utility.Files.Bookmark;
     } catch (e) {
       throw new ReferenceError(
-        `Utility: Bookmark: Error importing Bookmark class: ${e}`,
+        `Utility: Bookmark: Error importing Bookmark class: \n${e}`,
       );
     }
   }
@@ -174,7 +174,7 @@ abstract class Utility {
       return Utility.Files.FilepathString;
     } catch (e) {
       throw new ReferenceError(
-        `Utility: Filepaths: Error importing Filepaths class: ${e}`,
+        `Utility: Filepaths: Error importing Filepaths class: \n${e}`,
       );
     }
   }
@@ -183,7 +183,9 @@ abstract class Utility {
     try {
       return Utility.Browser.Url;
     } catch (e) {
-      throw new ReferenceError(`Utility: Url: Error importing Url class: ${e}`);
+      throw new ReferenceError(
+        `Utility: Url: Error importing Url class: \n${e}`,
+      );
     }
   }
 
@@ -191,7 +193,9 @@ abstract class Utility {
     try {
       return Utility.Browser.Api;
     } catch (e) {
-      throw new ReferenceError(`Utility: Api: Error importing Api class: ${e}`);
+      throw new ReferenceError(
+        `Utility: Api: Error importing Api class: \n${e}`,
+      );
     }
   }
 
@@ -200,7 +204,7 @@ abstract class Utility {
       return Utility.Browser.Callback;
     } catch (e) {
       throw new ReferenceError(
-        `Utility: Callback: Error importing Callback class: ${e}`,
+        `Utility: Callback: Error importing Callback class: \n${e}`,
       );
     }
   }
@@ -210,7 +214,7 @@ abstract class Utility {
       return Utility.Browser.Endpoint;
     } catch (e) {
       throw new ReferenceError(
-        `Utility: Endpoint: Error importing Endpoint class: ${e}`,
+        `Utility: Endpoint: Error importing Endpoint class: \n${e}`,
       );
     }
   }

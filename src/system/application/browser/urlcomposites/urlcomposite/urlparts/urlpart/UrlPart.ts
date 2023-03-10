@@ -8,7 +8,7 @@ abstract class UrlPart {
       if (this.value === "") this.value = null;
     } catch (e) {
       throw new SyntaxError(
-        `UrlPart: constructor: error creating UrlPart: ${e}`,
+        `UrlPart: constructor: error creating UrlPart: \n${e}`,
       );
     }
   }
@@ -20,7 +20,7 @@ abstract class UrlPart {
       return this.value !== null;
     } catch (e) {
       throw new EvalError(
-        `UrlPart: isValid: error checking if UrlPart is valid: ${e}`,
+        `UrlPart: isValid: error checking if UrlPart is valid: \n${e}`,
       );
     }
   }
@@ -30,7 +30,7 @@ abstract class UrlPart {
       return this.value ?? "";
     } catch (e) {
       throw new Error(
-        `UrlPart: toString: error converting UrlPart to string: ${e}`,
+        `UrlPart: toString: error converting UrlPart to string: \n${e}`,
       );
     }
   }
@@ -45,7 +45,9 @@ abstract class UrlPart {
         (instance as UrlPart)._nominalType === "UrlPart"
       );
     } catch (e) {
-      throw new EvalError(`UrlPart: error checking if object is UrlPart: ${e}`);
+      throw new EvalError(
+        `UrlPart: error checking if object is UrlPart: \n${e}`,
+      );
     }
   }
 
@@ -54,7 +56,7 @@ abstract class UrlPart {
       return importModule("repeaters/Repeaters");
     } catch (e) {
       throw new ReferenceError(
-        `UrlPart: error loading parent Repeaters module: ${e}`,
+        `UrlPart: error loading parent Repeaters module: \n${e}`,
       );
     }
   }
@@ -64,7 +66,7 @@ abstract class UrlPart {
       return UrlPart.Repeaters.UrlValidators;
     } catch (e) {
       throw new ReferenceError(
-        `UrlPart: error loading parent UrlValidators module: ${e}`,
+        `UrlPart: error loading parent UrlValidators module: \n${e}`,
       );
     }
   }

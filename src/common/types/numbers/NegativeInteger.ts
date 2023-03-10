@@ -9,7 +9,7 @@ class NegativeInteger extends n_Integer {
       return n_Integer;
     } catch (e) {
       throw new ReferenceError(
-        `NegativeInteger: error loading parent Integer module: ${e}`,
+        `NegativeInteger: error loading parent Integer module: \n${e}`,
       );
     }
   }

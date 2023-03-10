@@ -4,7 +4,7 @@ class UrlParts {
       return UrlParts.Scheme.UrlPart;
     } catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent UrlPart module: ${e}`,
+        `UrlParts: error loading parent UrlPart module: \n${e}`,
       );
     }
   }
@@ -14,7 +14,7 @@ class UrlParts {
       return importModule("Scheme");
     } catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Scheme module: ${e}`,
+        `UrlParts: error loading parent Scheme module: \n${e}`,
       );
     }
   }
@@ -24,7 +24,7 @@ class UrlParts {
       return importModule("Host");
     } catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Host module: ${e}`,
+        `UrlParts: error loading parent Host module: \n${e}`,
       );
     }
   }
@@ -34,7 +34,7 @@ class UrlParts {
       return importModule("Port");
     } catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Port module: ${e}`,
+        `UrlParts: error loading parent Port module: \n${e}`,
       );
     }
   }
@@ -44,7 +44,7 @@ class UrlParts {
       return importModule("Path");
     } catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Path module: ${e}`,
+        `UrlParts: error loading parent Path module: \n${e}`,
       );
     }
   }
@@ -54,7 +54,7 @@ class UrlParts {
       return importModule("Query");
     } catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Query module: ${e}`,
+        `UrlParts: error loading parent Query module: \n${e}`,
       );
     }
   }
@@ -64,7 +64,7 @@ class UrlParts {
       return importModule("Fragment");
     } catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Fragment module: ${e}`,
+        `UrlParts: error loading parent Fragment module: \n${e}`,
       );
     }
   }

@@ -18,7 +18,7 @@ namespace Amazon {
         this.writeStorage(new Date().toISOString(), storageFilename);
         return Date.now() - latestRunTime.getTime() > 300000;
       } catch (e) {
-        throw new Error(`Amazon: runtime: Error running app: ${e}`);
+        throw new Error(`Amazon: runtime: Error running app: \n${e}`);
       }
     }
   }

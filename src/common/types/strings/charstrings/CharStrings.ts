@@ -4,7 +4,7 @@ class CharStrings {
       return importModule("OneCharString");
     } catch (e) {
       throw new ReferenceError(
-        `CharStrings: OneCharString: Error importing OneCharString module: ${e}`,
+        `CharStrings: OneCharString: Error importing OneCharString module: \n${e}`,
       );
     }
   }
@@ -14,7 +14,7 @@ class CharStrings {
       return CharStrings.OneCharString.NRepeatCharString;
     } catch (e) {
       throw new ReferenceError(
-        `CharStrings: NRepeatCharString: Error importing NRepeatCharString module: ${e}`,
+        `CharStrings: NRepeatCharString: Error importing NRepeatCharString module: \n${e}`,
       );
     }
   }
@@ -24,7 +24,7 @@ class CharStrings {
       return CharStrings.NRepeatCharString.BoundedRepeatCharString;
     } catch (e) {
       throw new ReferenceError(
-        `CharStrings: BoundedRepeatCharString: Error importing BoundedRepeatCharString module: ${e}`,
+        `CharStrings: BoundedRepeatCharString: Error importing BoundedRepeatCharString module: \n${e}`,
       );
     }
   }
@@ -34,7 +34,7 @@ class CharStrings {
       return CharStrings.BoundedRepeatCharString.RepeatCharString;
     } catch (e) {
       throw new ReferenceError(
-        `CharStrings: RepeatCharString: Error importing RepeatCharString module: ${e}`,
+        `CharStrings: RepeatCharString: Error importing RepeatCharString module: \n${e}`,
       );
     }
   }
@@ -44,7 +44,7 @@ class CharStrings {
       return CharStrings.RepeatCharString.CharString;
     } catch (e) {
       throw new ReferenceError(
-        `CharStrings: CharString: Error importing CharString module: ${e}`,
+        `CharStrings: CharString: Error importing CharString module: \n${e}`,
       );
     }
   }
@@ -54,7 +54,7 @@ class CharStrings {
       return CharStrings.CharString.Chars;
     } catch (e) {
       throw new ReferenceError(
-        `CharStrings: Chars: Error importing Chars module: ${e}`,
+        `CharStrings: Chars: Error importing Chars module: \n${e}`,
       );
     }
   }

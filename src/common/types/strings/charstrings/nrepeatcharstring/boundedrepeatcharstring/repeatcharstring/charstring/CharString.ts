@@ -8,7 +8,7 @@ abstract class CharString {
       this.charstring = this.qualifies(charstring) ? charstring : null;
     } catch (e) {
       throw new Error(
-        `CharString: constructor: Error creating CharString object: ${e}`,
+        `CharString: constructor: Error creating CharString object: \n${e}`,
       );
     }
   }
@@ -20,7 +20,7 @@ abstract class CharString {
       return this.charstring !== null;
     } catch (e) {
       throw new EvalError(
-        `CharString: isValid: Error checking if CharString is valid: ${e}`,
+        `CharString: isValid: Error checking if CharString is valid: \n${e}`,
       );
     }
   }
@@ -30,7 +30,7 @@ abstract class CharString {
       return this.charstring ?? "";
     } catch (e) {
       throw new EvalError(
-        `CharString: toString: Error converting CharString to string: ${e}`,
+        `CharString: toString: Error converting CharString to string: \n${e}`,
       );
     }
   }
@@ -40,7 +40,7 @@ abstract class CharString {
       return importModule("chars/Chars");
     } catch (e) {
       throw new ReferenceError(
-        `CharString: Chars: Error importing Chars module: ${e}`,
+        `CharString: Chars: Error importing Chars module: \n${e}`,
       );
     }
   }

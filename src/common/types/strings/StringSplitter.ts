@@ -26,7 +26,7 @@ class StringSplitter {
       );
     } catch (e) {
       throw new Error(
-        `StringSplitter: constructor: Error creating StringSplitter object: ${e}`,
+        `StringSplitter: constructor: Error creating StringSplitter object: \n${e}`,
       );
     }
   }
@@ -36,7 +36,7 @@ class StringSplitter {
       return this.unmerged.length;
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: splitLength: Error getting split length: ${e}`,
+        `StringSplitter: splitLength: Error getting split length: \n${e}`,
       );
     }
   }
@@ -46,7 +46,7 @@ class StringSplitter {
       return this.merged.length;
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: mergedLength: Error getting merged length: ${e}`,
+        `StringSplitter: mergedLength: Error getting merged length: \n${e}`,
       );
     }
   }
@@ -55,7 +55,9 @@ class StringSplitter {
     try {
       return this.mergedLength;
     } catch (e) {
-      throw new EvalError(`StringSplitter: length: Error getting length: ${e}`);
+      throw new EvalError(
+        `StringSplitter: length: Error getting length: \n${e}`,
+      );
     }
   }
 
@@ -64,7 +66,7 @@ class StringSplitter {
       return this.splitLength !== 0 && this.splitLength !== 1;
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: didSplit: Error checking if split: ${e}`,
+        `StringSplitter: didSplit: Error checking if split: \n${e}`,
       );
     }
   }
@@ -74,7 +76,7 @@ class StringSplitter {
       return this.mergedLength < this.splitLength;
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: didMerge: Error checking if merge occurred during construction: ${e}`,
+        `StringSplitter: didMerge: Error checking if merge occurred during construction: \n${e}`,
       );
     }
   }
@@ -84,7 +86,7 @@ class StringSplitter {
       return this.string;
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: toString: Error converting to string: ${e}`,
+        `StringSplitter: toString: Error converting to string: \n${e}`,
       );
     }
   }
@@ -94,7 +96,7 @@ class StringSplitter {
       return this.merged;
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: toTuple: Error converting to tuple: ${e}`,
+        `StringSplitter: toTuple: Error converting to tuple: \n${e}`,
       );
     }
   }
@@ -113,7 +115,7 @@ class StringSplitter {
         : stringOrTokens.split(separator);
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: tokenize: Error tokenizing string: ${e}`,
+        `StringSplitter: tokenize: Error tokenizing string: \n${e}`,
       );
     }
   }
@@ -126,7 +128,7 @@ class StringSplitter {
       return StringSplitter.tokenize(stringOrTokens, separator).join(separator);
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: aggregate: Error aggregating tokens: ${e}`,
+        `StringSplitter: aggregate: Error aggregating tokens: \n${e}`,
       );
     }
   }
@@ -155,7 +157,7 @@ class StringSplitter {
         .filter(token => !ignoreEmptyTokens || token !== "");
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: split: Error splitting string: ${e}`,
+        `StringSplitter: split: Error splitting string: \n${e}`,
       );
     }
   }
@@ -193,7 +195,9 @@ class StringSplitter {
             tokens.slice(limit - 1).join(separator),
           ];
     } catch (e) {
-      throw new EvalError(`StringSplitter: merge: Error merging tokens: ${e}`);
+      throw new EvalError(
+        `StringSplitter: merge: Error merging tokens: \n${e}`,
+      );
     }
   }
 
@@ -213,7 +217,7 @@ class StringSplitter {
       });
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: mergeLeft: Error merging tokens to the left: ${e}`,
+        `StringSplitter: mergeLeft: Error merging tokens to the left: \n${e}`,
       );
     }
   }
@@ -234,7 +238,7 @@ class StringSplitter {
       });
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: mergeRight: Error merging tokens to the right: ${e}`,
+        `StringSplitter: mergeRight: Error merging tokens to the right: \n${e}`,
       );
     }
   }
@@ -244,7 +248,7 @@ class StringSplitter {
       return importModule("./common/types/numbers/PositiveInteger");
     } catch (e) {
       throw new ReferenceError(
-        `StringSplitter: error importing PositiveInteger module: ${e}`,
+        `StringSplitter: error importing PositiveInteger module: \n${e}`,
       );
     }
   }

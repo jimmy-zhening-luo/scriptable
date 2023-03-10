@@ -11,7 +11,7 @@ class ValidUrlRepeater extends r_ValidUrlPart {
       super(part, minLength, maxLength, {}, ...allowedChars);
     } catch (e) {
       throw new Error(
-        `ValidUrlRepeater: constructor: error creating ValidUrlRepeater: ${e}`,
+        `ValidUrlRepeater: constructor: error creating ValidUrlRepeater: \n${e}`,
       );
     }
   }
@@ -21,7 +21,7 @@ class ValidUrlRepeater extends r_ValidUrlPart {
       return r_ValidUrlPart;
     } catch (e) {
       throw new ReferenceError(
-        `ValidUrlRepeater: error loading parent ValidUrlPart module: ${e}`,
+        `ValidUrlRepeater: error loading parent ValidUrlPart module: \n${e}`,
       );
     }
   }

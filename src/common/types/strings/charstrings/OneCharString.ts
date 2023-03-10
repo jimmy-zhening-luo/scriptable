@@ -11,7 +11,7 @@ class OneCharString extends _NRepeatCharString {
       super(1, charstring, ...ofCharInputs);
     } catch (e) {
       throw new Error(
-        `OneCharString: constructor: Error creating OneCharString object: ${e}`,
+        `OneCharString: constructor: Error creating OneCharString object: \n${e}`,
       );
     }
   }
@@ -21,7 +21,7 @@ class OneCharString extends _NRepeatCharString {
       return _NRepeatCharString;
     } catch (e) {
       throw new ReferenceError(
-        `OneCharString: NRepeatCharString: Error importing NRepeatCharString module: ${e}`,
+        `OneCharString: NRepeatCharString: Error importing NRepeatCharString module: \n${e}`,
       );
     }
   }

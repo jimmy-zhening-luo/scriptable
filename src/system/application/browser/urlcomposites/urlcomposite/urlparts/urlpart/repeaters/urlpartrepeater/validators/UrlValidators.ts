@@ -4,7 +4,7 @@ class UrlValidators {
       return UrlValidators.ValidUrlRepeater.ValidUrlPart;
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading ValidUrlPart module: ${e}`,
+        `UrlValidators: error loading ValidUrlPart module: \n${e}`,
       );
     }
   }
@@ -14,7 +14,7 @@ class UrlValidators {
       return importModule("validurlpart/ValidUrlRepeater");
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading ValidUrlRepeater module: ${e}`,
+        `UrlValidators: error loading ValidUrlRepeater module: \n${e}`,
       );
     }
   }
@@ -24,7 +24,7 @@ class UrlValidators {
       return importModule("ValidScheme");
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading ValidScheme module: ${e}`,
+        `UrlValidators: error loading ValidScheme module: \n${e}`,
       );
     }
   }
@@ -34,7 +34,7 @@ class UrlValidators {
       return UrlValidators.ValidUrlPart.Char;
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading Char module: ${e}`,
+        `UrlValidators: error loading Char module: \n${e}`,
       );
     }
   }
@@ -44,7 +44,7 @@ class UrlValidators {
       return UrlValidators.ValidUrlPart.UrlChar;
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading UrlChar module: ${e}`,
+        `UrlValidators: error loading UrlChar module: \n${e}`,
       );
     }
   }
@@ -66,7 +66,7 @@ class UrlValidators {
       };
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading Host module: ${e}`,
+        `UrlValidators: error loading Host module: \n${e}`,
       );
     }
   }
@@ -76,7 +76,7 @@ class UrlValidators {
       return importModule("ValidPort");
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading ValidPort module: ${e}`,
+        `UrlValidators: error loading ValidPort module: \n${e}`,
       );
     }
   }
@@ -94,7 +94,7 @@ class UrlValidators {
       };
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading Path module: ${e}`,
+        `UrlValidators: error loading Path module: \n${e}`,
       );
     }
   }
@@ -112,7 +112,7 @@ class UrlValidators {
       };
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading Query module: ${e}`,
+        `UrlValidators: error loading Query module: \n${e}`,
       );
     }
   }
@@ -122,7 +122,7 @@ class UrlValidators {
       return importModule("ValidFragment");
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading ValidFragment module: ${e}`,
+        `UrlValidators: error loading ValidFragment module: \n${e}`,
       );
     }
   }

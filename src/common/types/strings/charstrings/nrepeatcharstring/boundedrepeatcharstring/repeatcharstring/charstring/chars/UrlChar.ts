@@ -81,7 +81,7 @@ class UrlChar extends _Char {
       return _Char;
     } catch (e) {
       throw new ReferenceError(
-        `UrlChar: Char: Error importing Char module: ${e}`,
+        `UrlChar: Char: Error importing Char module: \n${e}`,
       );
     }
   }

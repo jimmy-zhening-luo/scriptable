@@ -4,7 +4,7 @@ class Chars {
       return importModule("UrlChar");
     } catch (e) {
       throw new ReferenceError(
-        `Chars: UrlChar: Error importing UrlChar module: ${e}`,
+        `Chars: UrlChar: Error importing UrlChar module: \n${e}`,
       );
     }
   }
@@ -14,7 +14,7 @@ class Chars {
       return Chars.UrlChar.Char;
     } catch (e) {
       throw new ReferenceError(
-        `Chars: Char: Error importing Char module: ${e}`,
+        `Chars: Char: Error importing Char module: \n${e}`,
       );
     }
   }

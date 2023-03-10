@@ -7,7 +7,7 @@ abstract class UrlComposite {
       return this.composite !== "";
     } catch (e) {
       throw new Error(
-        `UrlComposite: isValid: error checking validity of composite: ${e}`,
+        `UrlComposite: isValid: error checking validity of composite: \n${e}`,
       );
     }
   }
@@ -17,7 +17,7 @@ abstract class UrlComposite {
       return this.composite;
     } catch (e) {
       throw new Error(
-        `UrlComposite: toString: error converting composite to string: ${e}`,
+        `UrlComposite: toString: error converting composite to string: \n${e}`,
       );
     }
   }
@@ -27,7 +27,7 @@ abstract class UrlComposite {
       return importModule("urlparts/UrlParts");
     } catch (e) {
       throw new ReferenceError(
-        `UrlComposite: error loading UrlParts module: ${e}`,
+        `UrlComposite: error loading UrlParts module: \n${e}`,
       );
     }
   }

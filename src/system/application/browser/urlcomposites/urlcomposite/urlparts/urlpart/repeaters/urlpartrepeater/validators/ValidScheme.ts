@@ -23,7 +23,7 @@ class ValidScheme extends sc_ValidUrlPart {
       );
     } catch (e) {
       throw new Error(
-        `ValidScheme: constructor: error creating ValidScheme: ${e}`,
+        `ValidScheme: constructor: error creating ValidScheme: \n${e}`,
       );
     }
   }
@@ -33,7 +33,7 @@ class ValidScheme extends sc_ValidUrlPart {
       return sc_ValidUrlPart;
     } catch (e) {
       throw new ReferenceError(
-        `ValidScheme: error loading parent ValidUrlPart module: ${e}`,
+        `ValidScheme: error loading parent ValidUrlPart module: \n${e}`,
       );
     }
   }

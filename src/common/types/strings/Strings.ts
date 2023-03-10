@@ -4,7 +4,7 @@ class Strings {
       return importModule("StringSplitter");
     } catch (e) {
       throw new ReferenceError(
-        `Strings: StringSplitter: Error importing StringSplitter module: ${e}`,
+        `Strings: StringSplitter: Error importing StringSplitter module: \n${e}`,
       );
     }
   }
@@ -14,7 +14,7 @@ class Strings {
       return importModule("ValidString");
     } catch (e) {
       throw new ReferenceError(
-        `Strings: ValidString: Error importing ValidString module: ${e}`,
+        `Strings: ValidString: Error importing ValidString module: \n${e}`,
       );
     }
   }
@@ -24,7 +24,7 @@ class Strings {
       return Strings.ValidString.CharStrings;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: CharStrings: Error importing CharStrings module: ${e}`,
+        `Strings: CharStrings: Error importing CharStrings module: \n${e}`,
       );
     }
   }
@@ -34,7 +34,7 @@ class Strings {
       return Strings.CharStrings.OneCharString;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: OneCharString: Error importing OneCharString module: ${e}`,
+        `Strings: OneCharString: Error importing OneCharString module: \n${e}`,
       );
     }
   }
@@ -44,7 +44,7 @@ class Strings {
       return Strings.OneCharString.NRepeatCharString;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: NRepeatCharString: Error importing NRepeatCharString module: ${e}`,
+        `Strings: NRepeatCharString: Error importing NRepeatCharString module: \n${e}`,
       );
     }
   }
@@ -54,7 +54,7 @@ class Strings {
       return Strings.NRepeatCharString.RepeatCharString;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: RepeatCharString: Error importing RepeatCharString module: ${e}`,
+        `Strings: RepeatCharString: Error importing RepeatCharString module: \n${e}`,
       );
     }
   }
@@ -64,7 +64,7 @@ class Strings {
       return Strings.CharStrings.Chars;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: Chars: Error importing Chars module: ${e}`,
+        `Strings: Chars: Error importing Chars module: \n${e}`,
       );
     }
   }
@@ -74,7 +74,7 @@ class Strings {
       return Strings.Chars.Char;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: Char: Error importing Char module: ${e}`,
+        `Strings: Char: Error importing Char module: \n${e}`,
       );
     }
   }
@@ -84,7 +84,7 @@ class Strings {
       return Strings.Chars.UrlChar;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: UrlChar: Error importing UrlChar module: ${e}`,
+        `Strings: UrlChar: Error importing UrlChar module: \n${e}`,
       );
     }
   }
@@ -94,7 +94,7 @@ class Strings {
       return Strings.ValidString.OneGram;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: OneGram: Error importing OneGram module: ${e}`,
+        `Strings: OneGram: Error importing OneGram module: \n${e}`,
       );
     }
   }
@@ -104,7 +104,7 @@ class Strings {
       return Strings.OneGram.NGram;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: NGram: Error importing NGram module: ${e}`,
+        `Strings: NGram: Error importing NGram module: \n${e}`,
       );
     }
   }
@@ -114,7 +114,7 @@ class Strings {
       return Strings.NGram.PositiveInteger;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: PositiveInteger: Error importing PositiveInteger module: ${e}`,
+        `Strings: PositiveInteger: Error importing PositiveInteger module: \n${e}`,
       );
     }
   }

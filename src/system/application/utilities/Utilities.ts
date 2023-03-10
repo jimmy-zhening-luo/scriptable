@@ -4,7 +4,7 @@ class Utilities {
       return importModule("Config");
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: Config: Error importing Config module: ${e}`,
+        `Utilities: Config: Error importing Config module: \n${e}`,
       );
     }
   }
@@ -14,7 +14,7 @@ class Utilities {
       return importModule("Storage");
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: Storage: Error importing Storage module: ${e}`,
+        `Utilities: Storage: Error importing Storage module: \n${e}`,
       );
     }
   }
@@ -24,7 +24,7 @@ class Utilities {
       return importModule("Secret");
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: Secret: Error importing Secret module: ${e}`,
+        `Utilities: Secret: Error importing Secret module: \n${e}`,
       );
     }
   }
@@ -34,7 +34,7 @@ class Utilities {
       return Utilities.Storage.Utility;
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: Utility: Error importing Utility module: ${e}`,
+        `Utilities: Utility: Error importing Utility module: \n${e}`,
       );
     }
   }
@@ -44,7 +44,7 @@ class Utilities {
       return Utilities.Utility.Files;
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: Files: Error importing Files module: ${e}`,
+        `Utilities: Files: Error importing Files module: \n${e}`,
       );
     }
   }
@@ -54,7 +54,7 @@ class Utilities {
       return Utilities.Utility.Browser;
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: Browser: Error importing Browser module: ${e}`,
+        `Utilities: Browser: Error importing Browser module: \n${e}`,
       );
     }
   }
@@ -64,7 +64,7 @@ class Utilities {
       return Utilities.Utility.ReadOnlyFile;
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: ReadOnlyFile: Error importing ReadOnlyFile class: ${e}`,
+        `Utilities: ReadOnlyFile: Error importing ReadOnlyFile class: \n${e}`,
       );
     }
   }
@@ -74,7 +74,7 @@ class Utilities {
       return Utilities.Utility.File;
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: File: Error importing File class: ${e}`,
+        `Utilities: File: Error importing File class: \n${e}`,
       );
     }
   }
@@ -84,7 +84,7 @@ class Utilities {
       return Utilities.Utility.Bookmark;
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: Bookmark: Error importing Bookmark class: ${e}`,
+        `Utilities: Bookmark: Error importing Bookmark class: \n${e}`,
       );
     }
   }
@@ -94,7 +94,7 @@ class Utilities {
       return Utilities.Utility.FilepathString;
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: FilepathString: Error importing FilepathString class: ${e}`,
+        `Utilities: FilepathString: Error importing FilepathString class: \n${e}`,
       );
     }
   }
@@ -104,7 +104,7 @@ class Utilities {
       return Utilities.Utility.Url;
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: Url: Error importing Url class: ${e}`,
+        `Utilities: Url: Error importing Url class: \n${e}`,
       );
     }
   }
@@ -114,7 +114,7 @@ class Utilities {
       return Utilities.Utility.Api;
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: Api: Error importing Api class: ${e}`,
+        `Utilities: Api: Error importing Api class: \n${e}`,
       );
     }
   }
@@ -124,7 +124,7 @@ class Utilities {
       return Utilities.Utility.Callback;
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: Callback: Error importing Callback class: ${e}`,
+        `Utilities: Callback: Error importing Callback class: \n${e}`,
       );
     }
   }
@@ -134,7 +134,7 @@ class Utilities {
       return Utilities.Utility.Endpoint;
     } catch (e) {
       throw new ReferenceError(
-        `Utilities: Endpoint: Error importing Endpoint class: ${e}`,
+        `Utilities: Endpoint: Error importing Endpoint class: \n${e}`,
       );
     }
   }

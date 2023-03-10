@@ -9,7 +9,7 @@ class NegativeFiniteInteger extends n_FiniteInteger {
       return n_FiniteInteger;
     } catch (e) {
       throw new ReferenceError(
-        `NegativeFiniteInteger: error loading parent FiniteInteger module: ${e}`,
+        `NegativeFiniteInteger: error loading parent FiniteInteger module: \n${e}`,
       );
     }
   }

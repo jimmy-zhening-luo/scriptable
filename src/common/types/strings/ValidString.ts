@@ -37,7 +37,7 @@ class ValidString {
           : ValidString.parseStringToOneGrams(this.cleaned)
               .map(
                 ngram =>
-                  new ValidString.OneCharString(
+                  new ValidString.CharStrings.OneCharString(
                     ngram.toString(),
                     ...allowedChars,
                   ),
@@ -47,7 +47,7 @@ class ValidString {
           : null;
     } catch (e) {
       throw new Error(
-        `ValidString: constructor: Error creating ValidString object: ${e}`,
+        `ValidString: constructor: Error creating ValidString object: \n${e}`,
       );
     }
   }
@@ -62,7 +62,7 @@ class ValidString {
         : fallback;
     } catch (e) {
       throw new EvalError(
-        `ValidString: _parseBoundsNumber: Error parsing bounds number: ${e}`,
+        `ValidString: _parseBoundsNumber: Error parsing bounds number: \n${e}`,
       );
     }
   }
@@ -71,7 +71,9 @@ class ValidString {
     try {
       return this.value !== null;
     } catch (e) {
-      throw new EvalError(`ValidString: isValid: Error getting validity: ${e}`);
+      throw new EvalError(
+        `ValidString: isValid: Error getting validity: \n${e}`,
+      );
     }
   }
 
@@ -79,7 +81,7 @@ class ValidString {
     try {
       return this.value?.length ?? 0;
     } catch (e) {
-      throw new EvalError(`ValidString: length: Error getting length: ${e}`);
+      throw new EvalError(`ValidString: length: Error getting length: \n${e}`);
     }
   }
 
@@ -88,7 +90,7 @@ class ValidString {
       return this.value ?? "";
     } catch (e) {
       throw new EvalError(
-        `ValidString: toString: Error converting to string: ${e}`,
+        `ValidString: toString: Error converting to string: \n${e}`,
       );
     }
   }
@@ -127,7 +129,7 @@ class ValidString {
         trimTrailingExcept,
       );
     } catch (e) {
-      throw new EvalError(`ValidString: clean: Error cleaning string: ${e}`);
+      throw new EvalError(`ValidString: clean: Error cleaning string: \n${e}`);
     }
   }
 
@@ -154,7 +156,7 @@ class ValidString {
         });
       return string;
     } catch (e) {
-      throw new EvalError(`ValidString: trimEdge: Error trimming edge: ${e}`);
+      throw new EvalError(`ValidString: trimEdge: Error trimming edge: \n${e}`);
     }
   }
 
@@ -165,7 +167,37 @@ class ValidString {
       return [...string].map(char => new ValidString.OneGram(char));
     } catch (e) {
       throw new EvalError(
-        `ValidString: parseStringToOneGrams: Error parsing string to one grams: ${e}`,
+        `ValidString: parseStringToOneGrams: Error parsing string to one grams: \n${e}`,
+      );
+    }
+  }
+
+  static get OneGram(): typeof OneGram {
+    try {
+      return importModule("words/OneGram");
+    } catch (e) {
+      throw new ReferenceError(
+        `ValidString: error importing OneGram module: \n${e}`,
+      );
+    }
+  }
+
+  static get NGram(): typeof NGram {
+    try {
+      return ValidString.OneGram.NGram;
+    } catch (e) {
+      throw new ReferenceError(
+        `ValidString: error importing NGram module: \n${e}`,
+      );
+    }
+  }
+
+  static get PositiveInteger(): typeof PositiveInteger {
+    try {
+      return ValidString.OneGram.NGram.PositiveInteger;
+    } catch (e) {
+      throw new ReferenceError(
+        `ValidString: error importing PositiveInteger module: \n${e}`,
       );
     }
   }
@@ -175,7 +207,7 @@ class ValidString {
       return importModule("charstrings/CharStrings");
     } catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing CharStrings module: ${e}`,
+        `ValidString: error importing CharStrings module: \n${e}`,
       );
     }
   }
@@ -185,7 +217,7 @@ class ValidString {
       return ValidString.CharStrings.Chars;
     } catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing Chars module: ${e}`,
+        `ValidString: error importing Chars module: \n${e}`,
       );
     }
   }
@@ -195,7 +227,7 @@ class ValidString {
       return ValidString.Chars.Char;
     } catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing Char module: ${e}`,
+        `ValidString: error importing Char module: \n${e}`,
       );
     }
   }
@@ -205,36 +237,7 @@ class ValidString {
       return ValidString.Chars.UrlChar;
     } catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing UrlChar module: ${e}`,
-      );
-    }
-  }
-
-  static get OneGram(): typeof OneGram {
-    try {
-      return importModule("words/ngram/NGram");
-    } catch (e) {
-      throw new ReferenceError(
-        `ValidString: error importing OneGram module: ${e}`,
-      );
-    }
-  }
-
-  static get OneCharString(): typeof OneCharString {
-    try {
-      return ValidString.CharStrings.OneCharString;
-    } catch (e) {
-      throw new ReferenceError(
-        `ValidString: error importing OneCharString module: ${e}`,
-      );
-    }
-  }
-  static get PositiveInteger(): typeof PositiveInteger {
-    try {
-      return ValidString.OneGram.NGram.PositiveInteger;
-    } catch (e) {
-      throw new ReferenceError(
-        `ValidString: error importing PositiveInteger module: ${e}`,
+        `ValidString: error importing UrlChar module: \n${e}`,
       );
     }
   }

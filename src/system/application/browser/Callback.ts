@@ -19,7 +19,7 @@ class Callback {
           new Callback.Query(commonParams),
         );
     } catch (e) {
-      throw new Error(`Callback: constructor: error creating Callback: ${e}`);
+      throw new Error(`Callback: constructor: error creating Callback: \n${e}`);
     }
   }
 
@@ -27,7 +27,7 @@ class Callback {
     try {
       return this._baseUrl.toString();
     } catch (e) {
-      throw new Error(`Callback: get baseUrl: error getting baseUrl: ${e}`);
+      throw new Error(`Callback: get baseUrl: error getting baseUrl: \n${e}`);
     }
   }
 
@@ -35,7 +35,7 @@ class Callback {
     try {
       return this._baseUrl.scheme;
     } catch (e) {
-      throw new Error(`Callback: get scheme: error getting scheme: ${e}`);
+      throw new Error(`Callback: get scheme: error getting scheme: \n${e}`);
     }
   }
 
@@ -43,7 +43,7 @@ class Callback {
     try {
       this._baseUrl.scheme = scheme;
     } catch (e) {
-      throw new Error(`Callback: set scheme: error setting scheme: ${e}`);
+      throw new Error(`Callback: set scheme: error setting scheme: \n${e}`);
     }
   }
 
@@ -51,7 +51,7 @@ class Callback {
     try {
       return this._baseUrl.host;
     } catch (e) {
-      throw new Error(`Callback: get host: error getting host: ${e}`);
+      throw new Error(`Callback: get host: error getting host: \n${e}`);
     }
   }
 
@@ -59,7 +59,7 @@ class Callback {
     try {
       this._baseUrl.host = host;
     } catch (e) {
-      throw new Error(`Callback: set host: error setting host: ${e}`);
+      throw new Error(`Callback: set host: error setting host: \n${e}`);
     }
   }
 
@@ -67,7 +67,7 @@ class Callback {
     try {
       return this._baseUrl.path;
     } catch (e) {
-      throw new Error(`Callback: get basePath: error getting basePath: ${e}`);
+      throw new Error(`Callback: get basePath: error getting basePath: \n${e}`);
     }
   }
 
@@ -75,7 +75,7 @@ class Callback {
     try {
       this._baseUrl.path = path;
     } catch (e) {
-      throw new Error(`Callback: set basePath: error setting basePath: ${e}`);
+      throw new Error(`Callback: set basePath: error setting basePath: \n${e}`);
     }
   }
 
@@ -85,7 +85,7 @@ class Callback {
       return this;
     } catch (e) {
       throw new Error(
-        `Callback: appendBasePath: error appending basePath: ${e}`,
+        `Callback: appendBasePath: error appending basePath: \n${e}`,
       );
     }
   }
@@ -95,7 +95,7 @@ class Callback {
       return this.commonParamMap;
     } catch (e) {
       throw new Error(
-        `Callback: get commonParams: error getting commonParams: ${e}`,
+        `Callback: get commonParams: error getting commonParams: \n${e}`,
       );
     }
   }
@@ -105,7 +105,7 @@ class Callback {
       return this._baseUrl.query;
     } catch (e) {
       throw new Error(
-        `Callback: get commonQuery: error getting commonQuery: ${e}`,
+        `Callback: get commonQuery: error getting commonQuery: \n${e}`,
       );
     }
   }
@@ -115,7 +115,7 @@ class Callback {
       return this._baseUrl.queryTuples;
     } catch (e) {
       throw new Error(
-        `Callback: get commonParamTuples: error getting commonParamTuples: ${e}`,
+        `Callback: get commonParamTuples: error getting commonParamTuples: \n${e}`,
       );
     }
   }
@@ -125,7 +125,7 @@ class Callback {
       return this._baseUrl.queryMap;
     } catch (e) {
       throw new Error(
-        `Callback: get commonParamMap: error getting commonParamMap: ${e}`,
+        `Callback: get commonParamMap: error getting commonParamMap: \n${e}`,
       );
     }
   }
@@ -135,7 +135,7 @@ class Callback {
       this._baseUrl.query = params;
     } catch (e) {
       throw new Error(
-        `Callback: set commonParams: error setting commonParams: ${e}`,
+        `Callback: set commonParams: error setting commonParams: \n${e}`,
       );
     }
   }
@@ -146,7 +146,7 @@ class Callback {
       return this;
     } catch (e) {
       throw new Error(
-        `Callback: addCommonParam: error adding commonParam: ${e}`,
+        `Callback: addCommonParam: error adding commonParam: \n${e}`,
       );
     }
   }
@@ -157,7 +157,7 @@ class Callback {
       return this;
     } catch (e) {
       throw new Error(
-        `Callback: deleteCommonParam: error deleting commonParam: ${e}`,
+        `Callback: deleteCommonParam: error deleting commonParam: \n${e}`,
       );
     }
   }
@@ -169,7 +169,7 @@ class Callback {
       return this._baseUrl.getParam(...key);
     } catch (e) {
       throw new Error(
-        `Callback: getCommonParam: error getting commonParam: ${e}`,
+        `Callback: getCommonParam: error getting commonParam: \n${e}`,
       );
     }
   }
@@ -181,7 +181,7 @@ class Callback {
       return this._baseUrl.hasParam(...key);
     } catch (e) {
       throw new Error(
-        `Callback: hasCommonParam: error checking commonParam: ${e}`,
+        `Callback: hasCommonParam: error checking commonParam: \n${e}`,
       );
     }
   }
@@ -208,7 +208,7 @@ class Callback {
       }
       return cUrl.xCallback();
     } catch (e) {
-      throw new Error(`Callback: request: error making request: ${e}`);
+      throw new Error(`Callback: request: error making request: \n${e}`);
     }
   }
 
@@ -216,7 +216,7 @@ class Callback {
     try {
       return this.baseUrl;
     } catch (e) {
-      throw new Error(`Callback: toString: error converting to string: ${e}`);
+      throw new Error(`Callback: toString: error converting to string: \n${e}`);
     }
   }
 
@@ -225,7 +225,7 @@ class Callback {
       return importModule("Url");
     } catch (e) {
       throw new ReferenceError(
-        `Callback: get Url: error loading Url module: ${e}`,
+        `Callback: get Url: error loading Url module: \n${e}`,
       );
     }
   }
@@ -235,7 +235,7 @@ class Callback {
       return Callback.Url.Query;
     } catch (e) {
       throw new ReferenceError(
-        `Callback: get Query: error loading Query module: ${e}`,
+        `Callback: get Query: error loading Query module: \n${e}`,
       );
     }
   }

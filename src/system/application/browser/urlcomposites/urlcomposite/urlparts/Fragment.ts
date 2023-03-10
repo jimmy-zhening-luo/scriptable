@@ -6,7 +6,7 @@ class Fragment extends fr_UrlPart {
       super(fragment);
     } catch (e) {
       throw new SyntaxError(
-        `Fragment: constructor: error creating Fragment: ${e}`,
+        `Fragment: constructor: error creating Fragment: \n${e}`,
       );
     }
   }
@@ -17,7 +17,7 @@ class Fragment extends fr_UrlPart {
         ? null
         : new Fragment.ValidFragment(fragment).value;
     } catch (e) {
-      throw new SyntaxError(`Fragment: parse: error parsing Fragment: ${e}`);
+      throw new SyntaxError(`Fragment: parse: error parsing Fragment: \n${e}`);
     }
   }
 
@@ -26,7 +26,7 @@ class Fragment extends fr_UrlPart {
       return Fragment.UrlValidators.Fragment;
     } catch (e) {
       throw new ReferenceError(
-        `Fragment: error loading ValidFragment module: ${e}`,
+        `Fragment: error loading ValidFragment module: \n${e}`,
       );
     }
   }
@@ -36,7 +36,7 @@ class Fragment extends fr_UrlPart {
       return fr_UrlPart;
     } catch (e) {
       throw new ReferenceError(
-        `Fragment: error loading parent UrlPart module: ${e}`,
+        `Fragment: error loading parent UrlPart module: \n${e}`,
       );
     }
   }

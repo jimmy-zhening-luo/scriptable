@@ -6,7 +6,7 @@ class RepeatCharString extends _CharString {
       return [...candidateCharString].every(char => this.ofChar.includes(char));
     } catch (e) {
       throw new EvalError(
-        `RepeatCharString: qualifies: Error checking if CharString qualifies: ${e}`,
+        `RepeatCharString: qualifies: Error checking if CharString qualifies: \n${e}`,
       );
     }
   }
@@ -16,7 +16,7 @@ class RepeatCharString extends _CharString {
       return _CharString;
     } catch (e) {
       throw new ReferenceError(
-        `RepeatCharString: CharString: Error importing CharString module: ${e}`,
+        `RepeatCharString: CharString: Error importing CharString module: \n${e}`,
       );
     }
   }

@@ -11,7 +11,7 @@ class FilepathString {
       this._path = this._parse(path, requiredPathSegment);
     } catch (e) {
       throw new Error(
-        `FilepathString: constructor: Caught unhandled exception while instantiating FilepathString by parsing path: ${e}`,
+        `FilepathString: constructor: Caught unhandled exception while instantiating FilepathString by parsing path: \n${e}`,
       );
     }
   }
@@ -25,7 +25,7 @@ class FilepathString {
       return parsed.includes(requiredPathSegment) ? parsed : "";
     } catch (e) {
       throw new Error(
-        `FilepathString: _parse: Caught unhandled exception while parsing path: ${e}`,
+        `FilepathString: _parse: Caught unhandled exception while parsing path: \n${e}`,
       );
     }
   }
@@ -41,7 +41,7 @@ class FilepathString {
         : this._flattenRaw(this._clean(path));
     } catch (e) {
       throw new Error(
-        `FilepathString: _validate: Caught unhandled exception while validating path: ${e}`,
+        `FilepathString: _validate: Caught unhandled exception while validating path: \n${e}`,
       );
     }
   }
@@ -57,7 +57,7 @@ class FilepathString {
       }).toTuple();
     } catch (e) {
       throw new Error(
-        `FilepathString: _clean: Caught unhandled exception while cleaning path using StringSplitter instance: ${e}`,
+        `FilepathString: _clean: Caught unhandled exception while cleaning path using StringSplitter instance: \n${e}`,
       );
     }
   }
@@ -69,7 +69,7 @@ class FilepathString {
       return this._flattenRaw(path).split("/");
     } catch (e) {
       throw new Error(
-        `FilepathString: _treeifyRaw: Caught unhandled exception while treeifying raw path: ${e}`,
+        `FilepathString: _treeifyRaw: Caught unhandled exception while treeifying raw path: \n${e}`,
       );
     }
   }
@@ -85,7 +85,7 @@ class FilepathString {
         : path.toString();
     } catch (e) {
       throw new Error(
-        `FilepathString: _flattenRaw: Caught unhandled exception while flattening raw path: ${e}`,
+        `FilepathString: _flattenRaw: Caught unhandled exception while flattening raw path: \n${e}`,
       );
     }
   }
@@ -106,7 +106,7 @@ class FilepathString {
       return new FilepathString(walked).toTree();
     } catch (e) {
       throw new Error(
-        `FilepathString: _walk: Caught unhandled exception while walking path: ${e}`,
+        `FilepathString: _walk: Caught unhandled exception while walking path: \n${e}`,
       );
     }
   }
@@ -116,7 +116,7 @@ class FilepathString {
       return this._treeifyRaw(this._path);
     } catch (e) {
       throw new Error(
-        `FilepathString: get tree: Caught unhandled exception while getting tree: ${e}`,
+        `FilepathString: get tree: Caught unhandled exception while getting tree: \n${e}`,
       );
     }
   }
@@ -126,7 +126,7 @@ class FilepathString {
       return this._path;
     } catch (e) {
       throw new Error(
-        `FilepathString: get path: Caught unhandled exception while getting path: ${e}`,
+        `FilepathString: get path: Caught unhandled exception while getting path: \n${e}`,
       );
     }
   }
@@ -140,7 +140,7 @@ class FilepathString {
       );
     } catch (e) {
       throw new Error(
-        `FilepathString: get isEmpty: Caught unhandled exception while getting isEmpty: ${e}`,
+        `FilepathString: get isEmpty: Caught unhandled exception while getting isEmpty: \n${e}`,
       );
     }
   }
@@ -150,7 +150,7 @@ class FilepathString {
       return this.cd("..").toString();
     } catch (e) {
       throw new Error(
-        `FilepathString: get parent: Caught unhandled exception while getting parent: ${e}`,
+        `FilepathString: get parent: Caught unhandled exception while getting parent: \n${e}`,
       );
     }
   }
@@ -160,7 +160,7 @@ class FilepathString {
       return !this.isEmpty ? this.tree[this.tree.length - 1]! : "";
     } catch (e) {
       throw new Error(
-        `FilepathString: get leaf: Caught unhandled exception while getting leaf: ${e}`,
+        `FilepathString: get leaf: Caught unhandled exception while getting leaf: \n${e}`,
       );
     }
   }
@@ -173,7 +173,7 @@ class FilepathString {
       return new FilepathString(this._walk(subpath), requiredPathSegment);
     } catch (e) {
       throw new Error(
-        `FilepathString: append: Caught unhandled exception while appending path by calling private FilepathString._walk(): ${e}`,
+        `FilepathString: append: Caught unhandled exception while appending path by calling private FilepathString._walk(): \n${e}`,
       );
     }
   }
@@ -189,7 +189,7 @@ class FilepathString {
       );
     } catch (e) {
       throw new Error(
-        `FilepathString: cd: Caught unhandled exception while changing directories by calling private FilepathString._walk(): ${e}`,
+        `FilepathString: cd: Caught unhandled exception while changing directories by calling private FilepathString._walk(): \n${e}`,
       );
     }
   }
@@ -199,7 +199,7 @@ class FilepathString {
       return this.tree;
     } catch (e) {
       throw new Error(
-        `FilepathString: toTree: Caught unhandled exception while getting tree: ${e}`,
+        `FilepathString: toTree: Caught unhandled exception while getting tree: \n${e}`,
       );
     }
   }
@@ -209,7 +209,7 @@ class FilepathString {
       return this.path;
     } catch (e) {
       throw new Error(
-        `FilepathString: toString: Caught unhandled exception while getting path: ${e}`,
+        `FilepathString: toString: Caught unhandled exception while getting path: \n${e}`,
       );
     }
   }
@@ -225,7 +225,7 @@ class FilepathString {
         .toString();
     } catch (e) {
       throw new Error(
-        `FilepathString: join: Caught unhandled exception while creating a new FilepathString to join paths: ${e}`,
+        `FilepathString: join: Caught unhandled exception while creating a new FilepathString to join paths: \n${e}`,
       );
     }
   }
@@ -241,7 +241,7 @@ class FilepathString {
         .toString();
     } catch (e) {
       throw new Error(
-        `FilepathString: mutate: Caught unhandled exception while creating a new FilepathString to mutate path: ${e}`,
+        `FilepathString: mutate: Caught unhandled exception while creating a new FilepathString to mutate path: \n${e}`,
       );
     }
   }
@@ -253,7 +253,7 @@ class FilepathString {
       return new FilepathString(path).toString();
     } catch (e) {
       throw new Error(
-        `FilepathString: toString: Caught unhandled exception while creating a new FilepathString to convert path to string: ${e}`,
+        `FilepathString: toString: Caught unhandled exception while creating a new FilepathString to convert path to string: \n${e}`,
       );
     }
   }
@@ -265,7 +265,7 @@ class FilepathString {
       return new FilepathString(path).toTree();
     } catch (e) {
       throw new Error(
-        `FilepathString: toTree: Caught unhandled exception while creating a new FilepathString to convert path to tree: ${e}`,
+        `FilepathString: toTree: Caught unhandled exception while creating a new FilepathString to convert path to tree: \n${e}`,
       );
     }
   }
@@ -281,7 +281,7 @@ class FilepathString {
       );
     } catch (e) {
       throw new Error(
-        `FilepathString: [Symbol.hasInstance]: Caught unhandled exception while checking if instance is a FilepathString: ${e}`,
+        `FilepathString: [Symbol.hasInstance]: Caught unhandled exception while checking if instance is a FilepathString: \n${e}`,
       );
     }
   }
@@ -291,7 +291,7 @@ class FilepathString {
       return importModule("validfilepathrepeater/ValidFilepathRepeater");
     } catch (e) {
       throw new ReferenceError(
-        `Filepath: Failed to import module ValidFilepathRepeater: ${e}`,
+        `Filepath: Failed to import module ValidFilepathRepeater: \n${e}`,
       );
     }
   }
@@ -301,7 +301,7 @@ class FilepathString {
       return importModule("./common/types/strings/StringSplitter");
     } catch (e) {
       throw new ReferenceError(
-        `Filepath: Failed to import module StringSplitter: ${e}`,
+        `Filepath: Failed to import module StringSplitter: \n${e}`,
       );
     }
   }
@@ -311,7 +311,7 @@ class FilepathString {
       return FileManager.iCloud();
     } catch (e) {
       throw new ReferenceError(
-        `Filepath: Failed to get instance of Scriptable FileManager iCloud object: ${e}`,
+        `Filepath: Failed to get instance of Scriptable FileManager iCloud object: \n${e}`,
       );
     }
   }

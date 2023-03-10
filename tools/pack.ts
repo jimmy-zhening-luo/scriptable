@@ -15,7 +15,7 @@ namespace _Pack_Tool {
       );
     } catch (e) {
       e = new Error(
-        `npm run pack: Canceled job due to encountered error: ${e}`,
+        `npm run pack: Canceled job due to encountered error: \n${e}`,
       );
       console.error(e);
       throw e;
@@ -26,7 +26,7 @@ namespace _Pack_Tool {
         rimraf.sync("dist");
       } catch (e) {
         throw new Error(
-          `Error deleting './dist' folder using npm package 'rimraf': ${e}`,
+          `Error deleting './dist' folder using npm package 'rimraf': \n${e}`,
         );
       }
     }
@@ -39,7 +39,7 @@ namespace _Pack_Tool {
             `After executing function to create a './dist' folder, a dist folder should exist. However, could not find './dist' folder.`,
           );
       } catch (e) {
-        throw new Error(`Error creating new './dist' folder: ${e}`);
+        throw new Error(`Error creating new './dist' folder: \n${e}`);
       }
     }
 
@@ -56,7 +56,7 @@ namespace _Pack_Tool {
           );
         else return builtFileCounter;
       } catch (e) {
-        throw new Error(`Error copying all built files to './dist': ${e}`);
+        throw new Error(`Error copying all built files to './dist': \n${e}`);
       }
     }
 
@@ -78,7 +78,7 @@ namespace _Pack_Tool {
             `After copying n=${builtFileCounter} top-level files or directories from './built' to './dist', there should be exactly n=${builtFileCounter} top-level items in './dist'. However, 0 top-level items were found in './dist'`,
           );
       } catch (e) {
-        throw new Error(`Error filtering copied files in './dist': ${e}`);
+        throw new Error(`Error filtering copied files in './dist': \n${e}`);
       }
     }
   }

@@ -10,7 +10,7 @@ namespace _Distribution_Tool {
       _az_clean_upload(_hydrateEnv());
     } catch (e) {
       e = new Error(
-        `npm run distribute: Canceled job due to encountered error: ${e}`,
+        `npm run distribute: Canceled job due to encountered error: \n${e}`,
       );
       console.error(e);
       throw e;
@@ -39,7 +39,7 @@ namespace _Distribution_Tool {
         return azCopyScriptVariables;
       } catch (e) {
         throw new ReferenceError(
-          `npm run distribute: hydrateEnv: Error while loading environmental variables to specify where to distribute the packed files: ${e}`,
+          `npm run distribute: hydrateEnv: Error while loading environmental variables to specify where to distribute the packed files: \n${e}`,
         );
       }
     }
@@ -67,7 +67,7 @@ namespace _Distribution_Tool {
         _ps_exec(ps_exec_scripts.clean, ps_exec_scripts.upload);
       } catch (e) {
         throw new Error(
-          `npm run distribute: azure_clean_upload: Error while executing azcopy commands: ${e}`,
+          `npm run distribute: azure_clean_upload: Error while executing azcopy commands: \n${e}`,
         );
       }
 
@@ -98,7 +98,7 @@ namespace _Distribution_Tool {
             },
           );
         } catch (e) {
-          throw new Error(`_ps_exec: Error while executing powershell: ${e}`);
+          throw new Error(`_ps_exec: Error while executing powershell: \n${e}`);
         }
       }
 

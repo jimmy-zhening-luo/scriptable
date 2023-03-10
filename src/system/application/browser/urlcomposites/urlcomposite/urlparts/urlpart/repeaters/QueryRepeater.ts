@@ -8,7 +8,7 @@ class QueryRepeater extends qu_UrlPartRepeater {
       return new QueryRepeater.ValidQueryRepeater(repeater).value;
     } catch (e) {
       throw new Error(
-        `QueryRepeater: parse: error parsing QueryRepeater: ${e}`,
+        `QueryRepeater: parse: error parsing QueryRepeater: \n${e}`,
       );
     }
   }
@@ -18,7 +18,7 @@ class QueryRepeater extends qu_UrlPartRepeater {
       return QueryRepeater.UrlValidators.Query.Repeaters.Query;
     } catch (e) {
       throw new ReferenceError(
-        `QueryRepeater: error loading ValidQueryRepeater module: ${e}`,
+        `QueryRepeater: error loading ValidQueryRepeater module: \n${e}`,
       );
     }
   }
@@ -28,7 +28,7 @@ class QueryRepeater extends qu_UrlPartRepeater {
       return qu_UrlPartRepeater;
     } catch (e) {
       throw new ReferenceError(
-        `QueryRepeater: error loading parent UrlPartRepeater module: ${e}`,
+        `QueryRepeater: error loading parent UrlPartRepeater module: \n${e}`,
       );
     }
   }

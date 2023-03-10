@@ -8,7 +8,7 @@ abstract class UrlPartRepeater {
       if (this.value === "") this.value = null;
     } catch (e) {
       throw new Error(
-        `UrlPartRepeater: constructor: error creating UrlPartRepeater: ${e}`,
+        `UrlPartRepeater: constructor: error creating UrlPartRepeater: \n${e}`,
       );
     }
   }
@@ -20,7 +20,7 @@ abstract class UrlPartRepeater {
       return this.value !== null;
     } catch (e) {
       throw new Error(
-        `UrlPartRepeater: isValid: error checking if UrlPartRepeater is valid: ${e}`,
+        `UrlPartRepeater: isValid: error checking if UrlPartRepeater is valid: \n${e}`,
       );
     }
   }
@@ -30,7 +30,7 @@ abstract class UrlPartRepeater {
       return this.value ?? "";
     } catch (e) {
       throw new Error(
-        `UrlPartRepeater: toString: error converting UrlPartRepeater to string: ${e}`,
+        `UrlPartRepeater: toString: error converting UrlPartRepeater to string: \n${e}`,
       );
     }
   }
@@ -40,7 +40,7 @@ abstract class UrlPartRepeater {
       return importModule("validators/UrlValidators");
     } catch (e) {
       throw new ReferenceError(
-        `UrlPartRepeater: error loading parent UrlValidators module: ${e}`,
+        `UrlPartRepeater: error loading parent UrlValidators module: \n${e}`,
       );
     }
   }

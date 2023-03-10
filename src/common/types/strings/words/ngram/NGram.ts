@@ -17,7 +17,9 @@ class NGram extends _Word {
       this.n = nInt;
       this.remainder = text.slice(this.length);
     } catch (e) {
-      throw new Error(`NGram: constructor: Error creating NGram object: ${e}`);
+      throw new Error(
+        `NGram: constructor: Error creating NGram object: \n${e}`,
+      );
     }
   }
 
@@ -26,7 +28,7 @@ class NGram extends _Word {
       return this.isValid && !this.hasRemainder;
     } catch (e) {
       throw new EvalError(
-        `NGram: isValidAndFullyConsumed: Error checking if NGram is valid and fully consumed: ${e}`,
+        `NGram: isValidAndFullyConsumed: Error checking if NGram is valid and fully consumed: \n${e}`,
       );
     }
   }
@@ -36,7 +38,7 @@ class NGram extends _Word {
       return this.n !== Infinity;
     } catch (e) {
       throw new EvalError(
-        `NGram: hasFixedLength: Error checking if NGram has fixed length: ${e}`,
+        `NGram: hasFixedLength: Error checking if NGram has fixed length: \n${e}`,
       );
     }
   }
@@ -46,7 +48,7 @@ class NGram extends _Word {
       return this.remainder.length > 0;
     } catch (e) {
       throw new EvalError(
-        `NGram: hasRemainder: Error checking if NGram has remainder: ${e}`,
+        `NGram: hasRemainder: Error checking if NGram has remainder: \n${e}`,
       );
     }
   }
@@ -56,7 +58,7 @@ class NGram extends _Word {
       return importModule("./common/types/numbers/PositiveInteger");
     } catch (e) {
       throw new ReferenceError(
-        `NGram: PositiveInteger: Error importing PositiveInteger module: ${e}`,
+        `NGram: PositiveInteger: Error importing PositiveInteger module: \n${e}`,
       );
     }
   }
@@ -66,7 +68,7 @@ class NGram extends _Word {
       return _Word;
     } catch (e) {
       throw new ReferenceError(
-        `NGram: Word: Error importing Word module: ${e}`,
+        `NGram: Word: Error importing Word module: \n${e}`,
       );
     }
   }

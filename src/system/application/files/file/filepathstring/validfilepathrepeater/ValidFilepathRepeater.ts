@@ -18,7 +18,7 @@ class ValidFilepathRepeater extends fpr_ValidString {
       );
     } catch (e) {
       throw new Error(
-        `ValidFilepathRepeater: constructor: Caught unhandled exception instantiating parent class ValidFilepathRepeater: ${e}`,
+        `ValidFilepathRepeater: constructor: Caught unhandled exception instantiating parent class ValidFilepathRepeater: \n${e}`,
       );
     }
   }
@@ -28,7 +28,7 @@ class ValidFilepathRepeater extends fpr_ValidString {
       return fpr_ValidString;
     } catch (e) {
       throw new ReferenceError(
-        `ValidFilepathRepeater: ValidString: Failed to import ValidString module: ${e}`,
+        `ValidFilepathRepeater: ValidString: Failed to import ValidString module: \n${e}`,
       );
     }
   }

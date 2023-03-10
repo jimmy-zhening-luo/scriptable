@@ -4,7 +4,7 @@ class System {
       return importModule("Shortcut");
     } catch (e) {
       throw new ReferenceError(
-        `System: Shortcut: Error importing Shortcut class: ${e}`,
+        `System: Shortcut: Error importing Shortcut class: \n${e}`,
       );
     }
   }

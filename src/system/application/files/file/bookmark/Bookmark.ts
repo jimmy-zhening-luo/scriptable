@@ -7,7 +7,7 @@ class Bookmark {
       this.bookmark = bookmark.trim();
     } catch (e) {
       throw new Error(
-        `Bookmark: constructor: Caught unhandled exception while instantiating Bookmark. See unhandled exception: ${e}`,
+        `Bookmark: constructor: Caught unhandled exception while instantiating Bookmark. See unhandled exception: \n${e}`,
       );
     }
   }
@@ -19,7 +19,7 @@ class Bookmark {
       );
     } catch (e) {
       throw new Error(
-        `Bookmark: exists: Caught unhandled exception while using Scriptable FileManager class to check whether bookmark exists. See unhandled exception: ${e}`,
+        `Bookmark: exists: Caught unhandled exception while using Scriptable FileManager class to check whether bookmark exists. See unhandled exception: \n${e}`,
       );
     }
   }
@@ -39,9 +39,9 @@ class Bookmark {
     } catch (e) {
       if (!(e instanceof ReferenceError))
         e = new Error(
-          `Caught unhandled exception while using Scriptable FileManager class to get bookmarked path of the bookmark named '${this.bookmark}'. See unhandled exception: ${e}`,
+          `Caught unhandled exception while using Scriptable FileManager class to get bookmarked path of the bookmark named '${this.bookmark}'. See unhandled exception: \n${e}`,
         );
-      throw new Error(`Bookmark: path: Error getting bookmarked path: ${e}`);
+      throw new Error(`Bookmark: path: Error getting bookmarked path: \n${e}`);
     }
   }
 
@@ -50,7 +50,7 @@ class Bookmark {
       return this.path;
     } catch (e) {
       throw new Error(
-        `Bookmark: toString: Caught unhandled exception while getting bookmarked path of the bookmark named '${this.bookmark}'. See unhandled exception: ${e}`,
+        `Bookmark: toString: Caught unhandled exception while getting bookmarked path of the bookmark named '${this.bookmark}'. See unhandled exception: \n${e}`,
       );
     }
   }
@@ -66,7 +66,7 @@ class Bookmark {
       );
     } catch (e) {
       throw new Error(
-        `Bookmark: [Symbol.hasInstance]: Caught unhandled exception while checking whether instance is an instance of Bookmark. See unhandled exception: ${e}`,
+        `Bookmark: [Symbol.hasInstance]: Caught unhandled exception while checking whether instance is an instance of Bookmark. See unhandled exception: \n${e}`,
       );
     }
   }
@@ -76,7 +76,7 @@ class Bookmark {
       return FileManager.iCloud();
     } catch (e) {
       e = new Error(
-        `Bookmark: Manager: Caught unhandled exception while getting Scriptable FileManager.iCloud() instance. See unhandled exception: ${e}`,
+        `Bookmark: Manager: Caught unhandled exception while getting Scriptable FileManager.iCloud() instance. See unhandled exception: \n${e}`,
       );
       console.error(e);
       throw e;

@@ -29,7 +29,9 @@ class File {
         this.subpath = subpath;
       }
     } catch (e) {
-      throw new SyntaxError(`File: constructor: Error constructing File: ${e}`);
+      throw new SyntaxError(
+        `File: constructor: Error constructing File: \n${e}`,
+      );
     }
   }
 
@@ -37,7 +39,7 @@ class File {
     try {
       return this._root.toString();
     } catch (e) {
-      throw new Error(`File: root: Error getting root: ${e}`);
+      throw new Error(`File: root: Error getting root: \n${e}`);
     }
   }
 
@@ -45,7 +47,7 @@ class File {
     try {
       return this.root;
     } catch (e) {
-      throw new Error(`File: top: Error getting top: ${e}`);
+      throw new Error(`File: top: Error getting top: \n${e}`);
     }
   }
 
@@ -53,7 +55,7 @@ class File {
     try {
       return this._subpath.toString();
     } catch (e) {
-      throw new Error(`File: subpath: Error getting subpath: ${e}`);
+      throw new Error(`File: subpath: Error getting subpath: \n${e}`);
     }
   }
 
@@ -61,7 +63,7 @@ class File {
     try {
       this._subpath = new File.FilepathString(subpath);
     } catch (e) {
-      throw new Error(`File: subpath: Error setting subpath: ${e}`);
+      throw new Error(`File: subpath: Error setting subpath: \n${e}`);
     }
   }
 
@@ -70,7 +72,7 @@ class File {
       this.subpath = this._subpath.append(subpath);
       return this;
     } catch (e) {
-      throw new Error(`File: append: Error appending subpath: ${e}`);
+      throw new Error(`File: append: Error appending subpath: \n${e}`);
     }
   }
 
@@ -79,7 +81,7 @@ class File {
       this.subpath = this._subpath.cd(relativePath);
       return this;
     } catch (e) {
-      throw new Error(`File: cd: Error changing directory: ${e}`);
+      throw new Error(`File: cd: Error changing directory: \n${e}`);
     }
   }
 
@@ -87,7 +89,7 @@ class File {
     try {
       return this._root.append(this.subpath);
     } catch (e) {
-      throw new Error(`File: _path: Error getting path: ${e}`);
+      throw new Error(`File: _path: Error getting path: \n${e}`);
     }
   }
 
@@ -95,7 +97,7 @@ class File {
     try {
       return this._path.toString();
     } catch (e) {
-      throw new Error(`File: path: Error getting path: ${e}`);
+      throw new Error(`File: path: Error getting path: \n${e}`);
     }
   }
 
@@ -103,7 +105,7 @@ class File {
     try {
       return this._path.toTree();
     } catch (e) {
-      throw new Error(`File: tree: Error getting tree: ${e}`);
+      throw new Error(`File: tree: Error getting tree: \n${e}`);
     }
   }
 
@@ -111,7 +113,7 @@ class File {
     try {
       return this.path;
     } catch (e) {
-      throw new Error(`File: toString: Error getting path: ${e}`);
+      throw new Error(`File: toString: Error getting path: \n${e}`);
     }
   }
 
@@ -119,7 +121,7 @@ class File {
     try {
       return this.tree;
     } catch (e) {
-      throw new Error(`File: toTree: Error getting tree: ${e}`);
+      throw new Error(`File: toTree: Error getting tree: \n${e}`);
     }
   }
 
@@ -127,7 +129,7 @@ class File {
     try {
       return this.subpath === "" ? this._root.leaf : this._subpath.leaf;
     } catch (e) {
-      throw new Error(`File: leaf: Error getting leaf: ${e}`);
+      throw new Error(`File: leaf: Error getting leaf: \n${e}`);
     }
   }
 
@@ -135,7 +137,9 @@ class File {
     try {
       return this.subpath === "";
     } catch (e) {
-      throw new Error(`File: isTop: Error checking whether file is top: ${e}`);
+      throw new Error(
+        `File: isTop: Error checking whether file is top: \n${e}`,
+      );
     }
   }
 
@@ -144,7 +148,7 @@ class File {
       return File.Manager.isDirectory(this.path);
     } catch (e) {
       throw new Error(
-        `File: isDirectory: Error using Scriptable FileManager class to check whether path is directory: ${e}`,
+        `File: isDirectory: Error using Scriptable FileManager class to check whether path is directory: \n${e}`,
       );
     }
   }
@@ -154,7 +158,7 @@ class File {
       return !this.isDirectory && File.Manager.fileExists(this.path);
     } catch (e) {
       throw new Error(
-        `File: isFile: Error using Scriptable FileManager class to check whether path is file: ${e}`,
+        `File: isFile: Error using Scriptable FileManager class to check whether path is file: \n${e}`,
       );
     }
   }
@@ -163,7 +167,9 @@ class File {
     try {
       return this.isFile || this.isDirectory;
     } catch (e) {
-      throw new Error(`File: exists: Error checking whether file exists: ${e}`);
+      throw new Error(
+        `File: exists: Error checking whether file exists: \n${e}`,
+      );
     }
   }
 
@@ -172,7 +178,7 @@ class File {
       return this.isDirectory;
     } catch (e) {
       throw new Error(
-        `File: isEnumerable: Error checking whether file is enumerable: ${e}`,
+        `File: isEnumerable: Error checking whether file is enumerable: \n${e}`,
       );
     }
   }
@@ -182,7 +188,7 @@ class File {
       return this.isFile;
     } catch (e) {
       throw new Error(
-        `File: isReadable: Error checking whether file is readable: ${e}`,
+        `File: isReadable: Error checking whether file is readable: \n${e}`,
       );
     }
   }
@@ -192,7 +198,7 @@ class File {
       return this._subpath.parent;
     } catch (e) {
       throw new Error(
-        `File: parentSubpath: Error getting parent subpath: ${e}`,
+        `File: parentSubpath: Error getting parent subpath: \n${e}`,
       );
     }
   }
@@ -202,7 +208,7 @@ class File {
       return this.subpath === this.parentSubpath;
     } catch (e) {
       throw new Error(
-        `File: isOwnParent: Error checking whether file is own parent: ${e}`,
+        `File: isOwnParent: Error checking whether file is own parent: \n${e}`,
       );
     }
   }
@@ -211,7 +217,7 @@ class File {
     try {
       return new File(this.root, this.parentSubpath);
     } catch (e) {
-      throw new Error(`File: parent: Error getting parent File object: ${e}`);
+      throw new Error(`File: parent: Error getting parent File object: \n${e}`);
     }
   }
 
@@ -219,7 +225,7 @@ class File {
     try {
       return this.parent.path;
     } catch (e) {
-      throw new Error(`File: parentPath: Error getting parent path: ${e}`);
+      throw new Error(`File: parentPath: Error getting parent path: \n${e}`);
     }
   }
 
@@ -228,7 +234,7 @@ class File {
       return this.parent.isDirectory;
     } catch (e) {
       throw new Error(
-        `File: parentIsDirectory: Error checking whether parent is directory: ${e}`,
+        `File: parentIsDirectory: Error checking whether parent is directory: \n${e}`,
       );
     }
   }
@@ -238,7 +244,7 @@ class File {
       return this.isDirectory ? File.Manager.listContents(this.path) : [];
     } catch (e) {
       throw new Error(
-        `File: ls: Error using Scriptable FileManager class to list contents of directory: ${e}`,
+        `File: ls: Error using Scriptable FileManager class to list contents of directory: \n${e}`,
       );
     }
   }
@@ -252,7 +258,7 @@ class File {
       );
     } catch (e) {
       throw new Error(
-        `File: isBottom: Error checking whether file is bottom: ${e}`,
+        `File: isBottom: Error checking whether file is bottom: \n${e}`,
       );
     }
   }
@@ -269,7 +275,7 @@ class File {
             .map(file => file.descendants)
             .flat(1);
     } catch (e) {
-      throw new Error(`File: Error getting descendants: ${e}`);
+      throw new Error(`File: Error getting descendants: \n${e}`);
     }
   }
 
@@ -283,9 +289,11 @@ class File {
     } catch (e) {
       if (!(e instanceof ReferenceError))
         e = new Error(
-          `Caught unhandled exception while using Scriptable FileManager class to read data. See unhandled exception: ${e}`,
+          `Caught unhandled exception while using Scriptable FileManager class to read data. See unhandled exception: \n${e}`,
         );
-      throw new Error(`File: data: Error reading file at "${this.path}": ${e}`);
+      throw new Error(
+        `File: data: Error reading file at "${this.path}": \n${e}`,
+      );
     }
   }
 
@@ -293,7 +301,7 @@ class File {
     try {
       return this.data;
     } catch (e) {
-      throw new Error(`File: read: Error reading file: ${e}`);
+      throw new Error(`File: read: Error reading file: \n${e}`);
     }
   }
 
@@ -313,21 +321,21 @@ class File {
             File.Manager.createDirectory(this.parentPath, true);
           } catch (e) {
             throw new ReferenceError(
-              `Could not create parent directory using Scriptable file manager.See previous error: ${e}`,
+              `Could not create parent directory using Scriptable file manager.See previous error: \n${e}`,
             );
           }
         try {
           File.Manager.writeString(this.path, data);
         } catch (e) {
           throw new Error(
-            `Caught unhandled exception trying to write data to file using Scriptable FileManager class. See unhandled exception: ${e}`,
+            `Caught unhandled exception trying to write data to file using Scriptable FileManager class. See unhandled exception: \n${e}`,
           );
         }
         return this;
       }
     } catch (e) {
       throw new Error(
-        `File: write: Error writing data to file "${this.path}": ${e}`,
+        `File: write: Error writing data to file "${this.path}": \n${e}`,
       );
     }
   }
@@ -361,15 +369,15 @@ class File {
         } catch (e) {
           if (!(e instanceof ReferenceError))
             e = new Error(
-              `Caught unhandled exception trying to delete file using Scriptable FileManager class. See unhandled exception: ${e}`,
+              `Caught unhandled exception trying to delete file using Scriptable FileManager class. See unhandled exception: \n${e}`,
             );
-          throw new Error(`_deleteUsingFileManager: ${e}`);
+          throw new Error(`_deleteUsingFileManager: \n${e}`);
         }
       }
 
       return this;
     } catch (e) {
-      throw new Error(`File: delete: Error deleting file: ${e}`);
+      throw new Error(`File: delete: Error deleting file: \n${e}`);
     }
   }
 
@@ -379,7 +387,7 @@ class File {
     try {
       return File.FilepathString.join(...paths);
     } catch (e) {
-      throw new Error(`File: join: Error joining paths: ${e}`);
+      throw new Error(`File: join: Error joining paths: \n${e}`);
     }
   }
 
@@ -389,7 +397,7 @@ class File {
     try {
       return File.FilepathString.mutate(...paths);
     } catch (e) {
-      throw new Error(`File: mutate: Error mutating paths: ${e}`);
+      throw new Error(`File: mutate: Error mutating paths: \n${e}`);
     }
   }
 
@@ -399,7 +407,9 @@ class File {
     try {
       return File.FilepathString.toString(...paths);
     } catch (e) {
-      throw new Error(`File: toString: Error converting paths to string: ${e}`);
+      throw new Error(
+        `File: toString: Error converting paths to string: \n${e}`,
+      );
     }
   }
 
@@ -409,7 +419,7 @@ class File {
     try {
       return File.FilepathString.toTree(...paths);
     } catch (e) {
-      throw new Error(`File: toTree: Error converting paths to tree: ${e}`);
+      throw new Error(`File: toTree: Error converting paths to tree: \n${e}`);
     }
   }
 
@@ -423,7 +433,7 @@ class File {
         (instance as File)._nominalType === "File"
       );
     } catch (e) {
-      throw new Error(`File: Error checking if instance is File: ${e}`);
+      throw new Error(`File: Error checking if instance is File: \n${e}`);
     }
   }
 
@@ -431,7 +441,7 @@ class File {
     try {
       return importModule("bookmark/Bookmark");
     } catch (e) {
-      throw new Error(`File: Error importing Bookmark class: ${e}`);
+      throw new Error(`File: Error importing Bookmark class: \n${e}`);
     }
   }
 
@@ -439,7 +449,7 @@ class File {
     try {
       return importModule("filepathstring/FilepathString");
     } catch (e) {
-      throw new Error(`File: Error importing FilepathString class: ${e}`);
+      throw new Error(`File: Error importing FilepathString class: \n${e}`);
     }
   }
 
@@ -447,7 +457,7 @@ class File {
     try {
       return File.Bookmark.Manager;
     } catch (e) {
-      throw new Error(`File: Error getting FileManager class: ${e}`);
+      throw new Error(`File: Error getting FileManager class: \n${e}`);
     }
   }
 }

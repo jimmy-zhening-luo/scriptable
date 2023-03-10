@@ -9,7 +9,7 @@ class PositiveInteger extends p_Integer {
       return p_Integer;
     } catch (e) {
       throw new ReferenceError(
-        `PositiveInteger: error loading parent Integer module: ${e}`,
+        `PositiveInteger: error loading parent Integer module: \n${e}`,
       );
     }
   }

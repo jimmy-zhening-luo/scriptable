@@ -24,7 +24,7 @@ class Query extends qu_UrlPart {
         super(Query.mapToQueryString(query));
       }
     } catch (e) {
-      throw new Error(`Query: constructor: error creating Query: ${e}`);
+      throw new Error(`Query: constructor: error creating Query: \n${e}`);
     }
   }
 
@@ -42,7 +42,7 @@ class Query extends qu_UrlPart {
             .map(queryRepeater => queryRepeater.toString())
             .join("&");
     } catch (e) {
-      throw new Error(`Query: parse: error parsing Query: ${e}`);
+      throw new Error(`Query: parse: error parsing Query: \n${e}`);
     }
   }
 
@@ -50,7 +50,7 @@ class Query extends qu_UrlPart {
     try {
       return this.queryString;
     } catch (e) {
-      throw new Error(`Query: get query: error getting query: ${e}`);
+      throw new Error(`Query: get query: error getting query: \n${e}`);
     }
   }
 
@@ -59,7 +59,7 @@ class Query extends qu_UrlPart {
       return this.toString();
     } catch (e) {
       throw new Error(
-        `Query: get queryString: error getting queryString: ${e}`,
+        `Query: get queryString: error getting queryString: \n${e}`,
       );
     }
   }
@@ -69,7 +69,7 @@ class Query extends qu_UrlPart {
       return Query.queryStringToTuples(this.query);
     } catch (e) {
       throw new Error(
-        `Query: get queryTuples: error getting queryTuples: ${e}`,
+        `Query: get queryTuples: error getting queryTuples: \n${e}`,
       );
     }
   }
@@ -78,7 +78,7 @@ class Query extends qu_UrlPart {
     try {
       return Query.queryStringToMap(this.query);
     } catch (e) {
-      throw new Error(`Query: get queryMap: error getting queryMap: ${e}`);
+      throw new Error(`Query: get queryMap: error getting queryMap: \n${e}`);
     }
   }
 
@@ -86,7 +86,7 @@ class Query extends qu_UrlPart {
     try {
       return this.queryMap.has(key) && this.queryMap.get(key) !== "";
     } catch (e) {
-      throw new Error(`Query: hasParam: error checking param: ${e}`);
+      throw new Error(`Query: hasParam: error checking param: \n${e}`);
     }
   }
 
@@ -94,7 +94,7 @@ class Query extends qu_UrlPart {
     try {
       return this.queryMap.get(key) ?? "";
     } catch (e) {
-      throw new Error(`Query: getParam: error getting param: ${e}`);
+      throw new Error(`Query: getParam: error getting param: \n${e}`);
     }
   }
 
@@ -118,7 +118,7 @@ class Query extends qu_UrlPart {
         });
       return new Query(queryMapCopy);
     } catch (e) {
-      throw new Error(`Query: addParam: error adding param: ${e}`);
+      throw new Error(`Query: addParam: error adding param: \n${e}`);
     }
   }
 
@@ -132,7 +132,7 @@ class Query extends qu_UrlPart {
         : (newQuery = newQuery.addParam(keys, ""));
       return newQuery;
     } catch (e) {
-      throw new Error(`Query: deleteParam: error deleting param: ${e}`);
+      throw new Error(`Query: deleteParam: error deleting param: \n${e}`);
     }
   }
 
@@ -140,7 +140,7 @@ class Query extends qu_UrlPart {
     try {
       return this.queryTuples;
     } catch (e) {
-      throw new Error(`Query: toTuples: error converting to tuples: ${e}`);
+      throw new Error(`Query: toTuples: error converting to tuples: \n${e}`);
     }
   }
 
@@ -148,7 +148,7 @@ class Query extends qu_UrlPart {
     try {
       return this.queryMap;
     } catch (e) {
-      throw new Error(`Query: toMap: error converting to map: ${e}`);
+      throw new Error(`Query: toMap: error converting to map: \n${e}`);
     }
   }
 
@@ -167,7 +167,7 @@ class Query extends qu_UrlPart {
       ).filter(tuple => tuple[0] !== "" && tuple[1] !== "");
     } catch (e) {
       throw new Error(
-        `Query: queryStringToTuples: error converting to tuples: ${e}`,
+        `Query: queryStringToTuples: error converting to tuples: \n${e}`,
       );
     }
   }
@@ -178,7 +178,7 @@ class Query extends qu_UrlPart {
         tuples.filter(tuple => tuple[0] !== "" && tuple[1] !== ""),
       );
     } catch (e) {
-      throw new Error(`Query: tuplesToMap: error converting to map: ${e}`);
+      throw new Error(`Query: tuplesToMap: error converting to map: \n${e}`);
     }
   }
 
@@ -186,7 +186,9 @@ class Query extends qu_UrlPart {
     try {
       return Query.tuplesToMap(Query.queryStringToTuples(query));
     } catch (e) {
-      throw new Error(`Query: queryStringToMap: error converting to map: ${e}`);
+      throw new Error(
+        `Query: queryStringToMap: error converting to map: \n${e}`,
+      );
     }
   }
 
@@ -198,7 +200,7 @@ class Query extends qu_UrlPart {
         tuple => tuple[0] !== "" && tuple[1] !== "",
       );
     } catch (e) {
-      throw new Error(`Query: mapToTuples: error converting to tuples: ${e}`);
+      throw new Error(`Query: mapToTuples: error converting to tuples: \n${e}`);
     }
   }
 
@@ -210,7 +212,7 @@ class Query extends qu_UrlPart {
         .join("&");
     } catch (e) {
       throw new Error(
-        `Query: tuplesToQueryString: error converting to query string: ${e}`,
+        `Query: tuplesToQueryString: error converting to query string: \n${e}`,
       );
     }
   }
@@ -222,7 +224,7 @@ class Query extends qu_UrlPart {
       return Query.tuplesToQueryString(Query.mapToTuples(record));
     } catch (e) {
       throw new Error(
-        `Query: mapToQueryString: error converting to query string: ${e}`,
+        `Query: mapToQueryString: error converting to query string: \n${e}`,
       );
     }
   }
@@ -232,7 +234,7 @@ class Query extends qu_UrlPart {
       return Query.Repeaters.QueryRepeater;
     } catch (e) {
       throw new Error(
-        `Query: get QueryRepeater: error loading QueryRepeater module: ${e}`,
+        `Query: get QueryRepeater: error loading QueryRepeater module: \n${e}`,
       );
     }
   }
@@ -241,7 +243,7 @@ class Query extends qu_UrlPart {
     try {
       return qu_UrlPart;
     } catch (e) {
-      throw new Error(`Query: get UrlPart: error getting UrlPart: ${e}`);
+      throw new Error(`Query: get UrlPart: error getting UrlPart: \n${e}`);
     }
   }
 }

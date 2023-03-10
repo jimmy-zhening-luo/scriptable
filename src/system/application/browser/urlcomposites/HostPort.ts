@@ -22,7 +22,7 @@ class HostPort extends hp_UrlComposite {
       this.port = this.parts[1];
     } catch (e) {
       throw new SyntaxError(
-        `HostPort: constructor: error creating HostPort: ${e}`,
+        `HostPort: constructor: error creating HostPort: \n${e}`,
       );
     }
   }
@@ -36,7 +36,7 @@ class HostPort extends hp_UrlComposite {
         : "";
     } catch (e) {
       throw new EvalError(
-        `HostPort: get composite: error getting composite: ${e}`,
+        `HostPort: get composite: error getting composite: \n${e}`,
       );
     }
   }
@@ -46,7 +46,7 @@ class HostPort extends hp_UrlComposite {
       return HostPort.UrlParts.Host;
     } catch (e) {
       throw new ReferenceError(
-        `HostPort: get Host: error loading Host module: ${e}`,
+        `HostPort: get Host: error loading Host module: \n${e}`,
       );
     }
   }
@@ -56,7 +56,7 @@ class HostPort extends hp_UrlComposite {
       return HostPort.UrlParts.Port;
     } catch (e) {
       throw new ReferenceError(
-        `HostPort: get Port: error loading Port module: ${e}`,
+        `HostPort: get Port: error loading Port module: \n${e}`,
       );
     }
   }
@@ -66,7 +66,7 @@ class HostPort extends hp_UrlComposite {
       return hp_UrlComposite;
     } catch (e) {
       throw new ReferenceError(
-        `HostPort: get UrlComposite: error loading UrlComposite module: ${e}`,
+        `HostPort: get UrlComposite: error loading UrlComposite module: \n${e}`,
       );
     }
   }

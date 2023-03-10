@@ -18,7 +18,7 @@ class ReadOnlyFile extends _File {
       return _File;
     } catch (e) {
       throw new ReferenceError(
-        `File::ReadOnlyFile: File: Failed to import module File: ${e}`,
+        `File::ReadOnlyFile: File: Failed to import module File: \n${e}`,
       );
     }
   }

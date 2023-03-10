@@ -6,7 +6,7 @@ class OneGram extends _NGram {
       super(text, 1);
     } catch (e) {
       throw new Error(
-        `OneGram: constructor: Error creating OneGram object: ${e}`,
+        `OneGram: constructor: Error creating OneGram object: \n${e}`,
       );
     }
   }
@@ -16,7 +16,7 @@ class OneGram extends _NGram {
       return _NGram;
     } catch (e) {
       throw new ReferenceError(
-        `OneGram: NGram: Error importing NGram module: ${e}`,
+        `OneGram: NGram: Error importing NGram module: \n${e}`,
       );
     }
   }

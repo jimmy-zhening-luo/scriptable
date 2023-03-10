@@ -35,7 +35,7 @@ class Api {
         ? timeoutSeconds
         : 60;
     } catch (e) {
-      throw new Error(`Api: constructor: error creating Api: ${e}`);
+      throw new Error(`Api: constructor: error creating Api: \n${e}`);
     }
   }
 
@@ -43,7 +43,7 @@ class Api {
     try {
       return this._url.toString();
     } catch (e) {
-      throw new Error(`Api: get url: error getting url: ${e}`);
+      throw new Error(`Api: get url: error getting url: \n${e}`);
     }
   }
 
@@ -51,7 +51,7 @@ class Api {
     try {
       this._url = new Url(url);
     } catch (e) {
-      throw new Error(`Api: set url: error setting url: ${e}`);
+      throw new Error(`Api: set url: error setting url: \n${e}`);
     }
   }
 
@@ -59,7 +59,7 @@ class Api {
     try {
       return this._url.scheme;
     } catch (e) {
-      throw new Error(`Api: get scheme: error getting scheme: ${e}`);
+      throw new Error(`Api: get scheme: error getting scheme: \n${e}`);
     }
   }
 
@@ -67,7 +67,7 @@ class Api {
     try {
       this._url.scheme = scheme;
     } catch (e) {
-      throw new Error(`Api: set scheme: error setting scheme: ${e}`);
+      throw new Error(`Api: set scheme: error setting scheme: \n${e}`);
     }
   }
 
@@ -75,7 +75,7 @@ class Api {
     try {
       return this._url.host;
     } catch (e) {
-      throw new Error(`Api: get host: error getting host: ${e}`);
+      throw new Error(`Api: get host: error getting host: \n${e}`);
     }
   }
 
@@ -83,7 +83,7 @@ class Api {
     try {
       this._url.host = host;
     } catch (e) {
-      throw new Error(`Api: set host: error setting host: ${e}`);
+      throw new Error(`Api: set host: error setting host: \n${e}`);
     }
   }
 
@@ -91,7 +91,7 @@ class Api {
     try {
       return this._url.port;
     } catch (e) {
-      throw new Error(`Api: get port: error getting port: ${e}`);
+      throw new Error(`Api: get port: error getting port: \n${e}`);
     }
   }
 
@@ -99,7 +99,7 @@ class Api {
     try {
       this._url.port = port;
     } catch (e) {
-      throw new Error(`Api: set port: error setting port: ${e}`);
+      throw new Error(`Api: set port: error setting port: \n${e}`);
     }
   }
 
@@ -107,7 +107,7 @@ class Api {
     try {
       return this._url.path;
     } catch (e) {
-      throw new Error(`Api: get path: error getting path: ${e}`);
+      throw new Error(`Api: get path: error getting path: \n${e}`);
     }
   }
 
@@ -115,7 +115,7 @@ class Api {
     try {
       this._url.path = path;
     } catch (e) {
-      throw new Error(`Api: set path: error setting path: ${e}`);
+      throw new Error(`Api: set path: error setting path: \n${e}`);
     }
   }
 
@@ -123,7 +123,7 @@ class Api {
     try {
       return this._url.query;
     } catch (e) {
-      throw new Error(`Api: get query: error getting query: ${e}`);
+      throw new Error(`Api: get query: error getting query: \n${e}`);
     }
   }
 
@@ -131,7 +131,7 @@ class Api {
     try {
       this._url.query = query;
     } catch (e) {
-      throw new Error(`Api: set query: error setting query: ${e}`);
+      throw new Error(`Api: set query: error setting query: \n${e}`);
     }
   }
 
@@ -140,7 +140,7 @@ class Api {
       this._url.addParam(...param);
       return this;
     } catch (e) {
-      throw new Error(`Api: addParam: error adding param: ${e}`);
+      throw new Error(`Api: addParam: error adding param: \n${e}`);
     }
   }
 
@@ -149,7 +149,7 @@ class Api {
       this._url.deleteParam(...param);
       return this;
     } catch (e) {
-      throw new Error(`Api: deleteParam: error deleting param: ${e}`);
+      throw new Error(`Api: deleteParam: error deleting param: \n${e}`);
     }
   }
 
@@ -157,7 +157,7 @@ class Api {
     try {
       return this._url.getParam(...param);
     } catch (e) {
-      throw new Error(`Api: getParam: error getting param: ${e}`);
+      throw new Error(`Api: getParam: error getting param: \n${e}`);
     }
   }
 
@@ -165,7 +165,7 @@ class Api {
     try {
       return this._url.hasParam(...param);
     } catch (e) {
-      throw new Error(`Api: hasParam: error checking param: ${e}`);
+      throw new Error(`Api: hasParam: error checking param: \n${e}`);
     }
   }
 
@@ -173,7 +173,7 @@ class Api {
     try {
       return this._url.fragment;
     } catch (e) {
-      throw new Error(`Api: get fragment: error getting fragment: ${e}`);
+      throw new Error(`Api: get fragment: error getting fragment: \n${e}`);
     }
   }
 
@@ -181,7 +181,7 @@ class Api {
     try {
       this._url.scheme = scheme;
     } catch (e) {
-      throw new Error(`Api: set fragment: error setting fragment: ${e}`);
+      throw new Error(`Api: set fragment: error setting fragment: \n${e}`);
     }
   }
 
@@ -189,7 +189,7 @@ class Api {
     try {
       return this._method;
     } catch (e) {
-      throw new Error(`Api: get method: error getting method: ${e}`);
+      throw new Error(`Api: get method: error getting method: \n${e}`);
     }
   }
 
@@ -197,7 +197,7 @@ class Api {
     try {
       this._method = method;
     } catch (e) {
-      throw new Error(`Api: set method: error setting method: ${e}`);
+      throw new Error(`Api: set method: error setting method: \n${e}`);
     }
   }
 
@@ -205,7 +205,7 @@ class Api {
     try {
       return this._requestHeaders.hasAuth;
     } catch (e) {
-      throw new Error(`Api: get hasAuth: error getting hasAuth: ${e}`);
+      throw new Error(`Api: get hasAuth: error getting hasAuth: \n${e}`);
     }
   }
 
@@ -213,7 +213,7 @@ class Api {
     try {
       return this._requestHeaders.scheme;
     } catch (e) {
-      throw new Error(`Api: get authScheme: error getting authScheme: ${e}`);
+      throw new Error(`Api: get authScheme: error getting authScheme: \n${e}`);
     }
   }
 
@@ -221,7 +221,7 @@ class Api {
     try {
       this._requestHeaders.scheme = scheme;
     } catch (e) {
-      throw new Error(`Api: set authScheme: error setting authScheme: ${e}`);
+      throw new Error(`Api: set authScheme: error setting authScheme: \n${e}`);
     }
   }
 
@@ -229,7 +229,7 @@ class Api {
     try {
       return this._requestHeaders.token;
     } catch (e) {
-      throw new Error(`Api: get authToken: error getting authToken: ${e}`);
+      throw new Error(`Api: get authToken: error getting authToken: \n${e}`);
     }
   }
 
@@ -237,7 +237,7 @@ class Api {
     try {
       this._requestHeaders.token = token;
     } catch (e) {
-      throw new Error(`Api: set authToken: error setting authToken: ${e}`);
+      throw new Error(`Api: set authToken: error setting authToken: \n${e}`);
     }
   }
 
@@ -245,7 +245,7 @@ class Api {
     try {
       return this._requestHeaders.auth;
     } catch (e) {
-      throw new Error(`Api: get auth: error getting auth: ${e}`);
+      throw new Error(`Api: get auth: error getting auth: \n${e}`);
     }
   }
 
@@ -253,7 +253,7 @@ class Api {
     try {
       this._requestHeaders.auth = auth;
     } catch (e) {
-      throw new Error(`Api: set auth: error setting auth: ${e}`);
+      throw new Error(`Api: set auth: error setting auth: \n${e}`);
     }
   }
 
@@ -262,7 +262,7 @@ class Api {
       this._requestHeaders.deleteAuth();
       return this;
     } catch (e) {
-      throw new Error(`Api: deleteAuth: error deleting auth: ${e}`);
+      throw new Error(`Api: deleteAuth: error deleting auth: \n${e}`);
     }
   }
 
@@ -270,7 +270,7 @@ class Api {
     try {
       return this._requestHeaders.headers;
     } catch (e) {
-      throw new Error(`Api: get headers: error getting headers: ${e}`);
+      throw new Error(`Api: get headers: error getting headers: \n${e}`);
     }
   }
 
@@ -284,7 +284,7 @@ class Api {
       );
     } catch (e) {
       throw new Error(
-        `Api: get headersStringObject: error getting headersStringObject: ${e}`,
+        `Api: get headersStringObject: error getting headersStringObject: \n${e}`,
       );
     }
   }
@@ -294,7 +294,7 @@ class Api {
       return this._requestHeaders.toString();
     } catch (e) {
       throw new Error(
-        `Api: get headersString: error getting headersString: ${e}`,
+        `Api: get headersString: error getting headersString: \n${e}`,
       );
     }
   }
@@ -303,7 +303,7 @@ class Api {
     try {
       return this._requestHeaders.keys;
     } catch (e) {
-      throw new Error(`Api: get headerKeys: error getting headerKeys: ${e}`);
+      throw new Error(`Api: get headerKeys: error getting headerKeys: \n${e}`);
     }
   }
 
@@ -313,7 +313,7 @@ class Api {
     try {
       return this._requestHeaders.hasHeader(...header);
     } catch (e) {
-      throw new Error(`Api: hasHeader: error checking header: ${e}`);
+      throw new Error(`Api: hasHeader: error checking header: \n${e}`);
     }
   }
 
@@ -322,7 +322,7 @@ class Api {
       this._requestHeaders.addHeader(...header);
       return this;
     } catch (e) {
-      throw new Error(`Api: addHeader: error adding header: ${e}`);
+      throw new Error(`Api: addHeader: error adding header: \n${e}`);
     }
   }
 
@@ -332,7 +332,7 @@ class Api {
     try {
       return this._requestHeaders.getValue(...header);
     } catch (e) {
-      throw new Error(`Api: getValue: error getting header value: ${e}`);
+      throw new Error(`Api: getValue: error getting header value: \n${e}`);
     }
   }
 
@@ -342,7 +342,9 @@ class Api {
     try {
       return this._requestHeaders.getStringValue(...header);
     } catch (e) {
-      throw new Error(`Api: getStringValue: error getting header value: ${e}`);
+      throw new Error(
+        `Api: getStringValue: error getting header value: \n${e}`,
+      );
     }
   }
 
@@ -353,7 +355,7 @@ class Api {
       return this._requestHeaders.getNullableValue(...header);
     } catch (e) {
       throw new Error(
-        `Api: getNullableValue: error getting header value: ${e}`,
+        `Api: getNullableValue: error getting header value: \n${e}`,
       );
     }
   }
@@ -364,7 +366,7 @@ class Api {
     try {
       return this._requestHeaders.getHeader(...header);
     } catch (e) {
-      throw new Error(`Api: getHeader: error getting header: ${e}`);
+      throw new Error(`Api: getHeader: error getting header: \n${e}`);
     }
   }
 
@@ -373,7 +375,7 @@ class Api {
       this._requestHeaders.deleteHeader(...header);
       return this;
     } catch (e) {
-      throw new Error(`Api: deleteHeader: error deleting header: ${e}`);
+      throw new Error(`Api: deleteHeader: error deleting header: \n${e}`);
     }
   }
 
@@ -381,7 +383,7 @@ class Api {
     try {
       return this.bodyString;
     } catch (e) {
-      throw new Error(`Api: get body: error getting body: ${e}`);
+      throw new Error(`Api: get body: error getting body: \n${e}`);
     }
   }
 
@@ -389,7 +391,7 @@ class Api {
     try {
       return this._requestBody.toString();
     } catch (e) {
-      throw new Error(`Api: get bodyString: error getting bodyString: ${e}`);
+      throw new Error(`Api: get bodyString: error getting bodyString: \n${e}`);
     }
   }
 
@@ -397,7 +399,7 @@ class Api {
     try {
       return this._requestBody.toObject();
     } catch (e) {
-      throw new Error(`Api: get bodyObject: error getting bodyObject: ${e}`);
+      throw new Error(`Api: get bodyObject: error getting bodyObject: \n${e}`);
     }
   }
 
@@ -406,7 +408,7 @@ class Api {
       return this._requestBody.toStringObject();
     } catch (e) {
       throw new Error(
-        `Api: get bodyStringObject: error getting bodyStringObject: ${e}`,
+        `Api: get bodyStringObject: error getting bodyStringObject: \n${e}`,
       );
     }
   }
@@ -415,7 +417,7 @@ class Api {
     try {
       return this._timeoutSeconds;
     } catch (e) {
-      throw new Error(`Api: get timeout: error getting timeout: ${e}`);
+      throw new Error(`Api: get timeout: error getting timeout: \n${e}`);
     }
   }
 
@@ -424,7 +426,7 @@ class Api {
       if (new Api.PositiveFiniteInteger(timeoutSeconds).isValidNumber)
         this._timeoutSeconds = timeoutSeconds;
     } catch (e) {
-      throw new Error(`Api: set timeout: error setting timeout: ${e}`);
+      throw new Error(`Api: set timeout: error setting timeout: \n${e}`);
     }
   }
 
@@ -432,7 +434,7 @@ class Api {
     try {
       return this.handleRequest().response;
     } catch (e) {
-      throw new Error(`Api: request: error making request: ${e}`);
+      throw new Error(`Api: request: error making request: \n${e}`);
     }
   }
 
@@ -440,7 +442,7 @@ class Api {
     try {
       return this.handleRequest().toObject();
     } catch (e) {
-      throw new Error(`Api: requestObject: error making request: ${e}`);
+      throw new Error(`Api: requestObject: error making request: \n${e}`);
     }
   }
 
@@ -448,7 +450,7 @@ class Api {
     try {
       return this.handleRequest().toString();
     } catch (e) {
-      throw new Error(`Api: requestString: error making request: ${e}`);
+      throw new Error(`Api: requestString: error making request: \n${e}`);
     }
   }
 
@@ -465,7 +467,7 @@ class Api {
     try {
       return new Api.ResponseBody(response);
     } catch (e) {
-      throw new Error(`Api: handleRequest: error handling request: ${e}`);
+      throw new Error(`Api: handleRequest: error handling request: \n${e}`);
     }
   }
 
@@ -473,7 +475,7 @@ class Api {
     try {
       return importModule("Url");
     } catch (e) {
-      throw new Error(`Api: get Url: error getting Url: ${e}`);
+      throw new Error(`Api: get Url: error getting Url: \n${e}`);
     }
   }
 
@@ -481,7 +483,7 @@ class Api {
     try {
       return importModule("apiparts/ApiParts");
     } catch (e) {
-      throw new Error(`Api: get ApiParts: error getting ApiParts: ${e}`);
+      throw new Error(`Api: get ApiParts: error getting ApiParts: \n${e}`);
     }
   }
 
@@ -490,7 +492,7 @@ class Api {
       return Api.ApiParts.RequestParts;
     } catch (e) {
       throw new Error(
-        `Api: get RequestParts: error getting RequestParts: ${e}`,
+        `Api: get RequestParts: error getting RequestParts: \n${e}`,
       );
     }
   }
@@ -500,7 +502,7 @@ class Api {
       return Api.RequestParts.RequestHeaders;
     } catch (e) {
       throw new Error(
-        `Api: get RequestHeaders: error getting RequestHeaders: ${e}`,
+        `Api: get RequestHeaders: error getting RequestHeaders: \n${e}`,
       );
     }
   }
@@ -509,7 +511,9 @@ class Api {
     try {
       return Api.RequestParts.RequestBody;
     } catch (e) {
-      throw new Error(`Api: get RequestBody: error getting RequestBody: ${e}`);
+      throw new Error(
+        `Api: get RequestBody: error getting RequestBody: \n${e}`,
+      );
     }
   }
 
@@ -518,7 +522,7 @@ class Api {
       return Api.ApiParts.ResponseParts;
     } catch (e) {
       throw new Error(
-        `Api: get ResponseParts: error getting ResponseParts: ${e}`,
+        `Api: get ResponseParts: error getting ResponseParts: \n${e}`,
       );
     }
   }
@@ -528,7 +532,7 @@ class Api {
       return Api.ResponseParts.ResponseBody;
     } catch (e) {
       throw new Error(
-        `Api: get ResponseBody: error getting ResponseBody: ${e}`,
+        `Api: get ResponseBody: error getting ResponseBody: \n${e}`,
       );
     }
   }
@@ -538,7 +542,7 @@ class Api {
       return importModule("./common/types/numbers/PositiveFiniteInteger");
     } catch (e) {
       throw new Error(
-        `Api: get PositiveFiniteInteger: error getting PositiveFiniteInteger: ${e}`,
+        `Api: get PositiveFiniteInteger: error getting PositiveFiniteInteger: \n${e}`,
       );
     }
   }

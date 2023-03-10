@@ -4,7 +4,7 @@ class UrlComposites {
       return UrlComposites.SchemeHostPortPathQueryFragment.UrlComposite;
     } catch (e) {
       throw new Error(
-        `UrlComposites: get UrlComposite: error getting UrlComposite: ${e}`,
+        `UrlComposites: get UrlComposite: error getting UrlComposite: \n${e}`,
       );
     }
   }
@@ -14,7 +14,7 @@ class UrlComposites {
       return importModule("SchemeHostPortPathQueryFragment");
     } catch (e) {
       throw new Error(
-        `UrlComposites: get SchemeHostPortPathQueryFragment: error getting SchemeHostPortPathQueryFragment: ${e}`,
+        `UrlComposites: get SchemeHostPortPathQueryFragment: error getting SchemeHostPortPathQueryFragment: \n${e}`,
       );
     }
   }
@@ -24,7 +24,7 @@ class UrlComposites {
       return UrlComposites.SchemeHostPortPathQueryFragment.SchemeHostPort;
     } catch (e) {
       throw new Error(
-        `UrlComposites: get SchemeHostPort: error getting SchemeHostPort: ${e}`,
+        `UrlComposites: get SchemeHostPort: error getting SchemeHostPort: \n${e}`,
       );
     }
   }
@@ -34,7 +34,7 @@ class UrlComposites {
       return UrlComposites.SchemeHostPortPathQueryFragment.PathQueryFragment;
     } catch (e) {
       throw new Error(
-        `UrlComposites: get PathQueryFragment: error getting PathQueryFragment: ${e}`,
+        `UrlComposites: get PathQueryFragment: error getting PathQueryFragment: \n${e}`,
       );
     }
   }
@@ -44,7 +44,7 @@ class UrlComposites {
       return UrlComposites.SchemeHostPort.HostPort;
     } catch (e) {
       throw new Error(
-        `UrlComposites: get HostPort: error getting HostPort: ${e}`,
+        `UrlComposites: get HostPort: error getting HostPort: \n${e}`,
       );
     }
   }
@@ -54,7 +54,7 @@ class UrlComposites {
       return UrlComposites.PathQueryFragment.PathQuery;
     } catch (e) {
       throw new Error(
-        `UrlComposites: get PathQuery: error getting PathQuery: ${e}`,
+        `UrlComposites: get PathQuery: error getting PathQuery: \n${e}`,
       );
     }
   }

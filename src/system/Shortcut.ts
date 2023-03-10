@@ -8,7 +8,7 @@ abstract class Shortcut extends _Application {
       return args;
     } catch (e) {
       throw new Error(
-        `Shortcut.js: Error getting shortcut input from Scriptable 'args' object (which by design is loaded with any input parameters passed from Shortcuts when executing a Scriptable script): ${e}`,
+        `Shortcut.js: Error getting shortcut input from Scriptable 'args' object (which by design is loaded with any input parameters passed from Shortcuts when executing a Scriptable script): \n${e}`,
       );
     }
   }
@@ -28,7 +28,7 @@ abstract class Shortcut extends _Application {
       Script.setShortcutOutput(output);
       return output;
     } catch (e) {
-      throw new Error(`Shortcut.js: Error setting shortcut output: ${e}`);
+      throw new Error(`Shortcut.js: Error setting shortcut output: \n${e}`);
     }
   }
 
@@ -39,7 +39,7 @@ abstract class Shortcut extends _Application {
       else return [super.configSubpath, SHORTCUT_CONFIG_ROOT].join("/");
     } catch (e) {
       throw new Error(
-        `Shortcut.js: Error getting shortcut config subpath: ${e}`,
+        `Shortcut.js: Error getting shortcut config subpath: \n${e}`,
       );
     }
   }
@@ -49,7 +49,7 @@ abstract class Shortcut extends _Application {
       return _Application;
     } catch (e) {
       throw new ReferenceError(
-        `Shortcut.js: Error getting shortcut Application class: ${e}`,
+        `Shortcut.js: Error getting shortcut Application class: \n${e}`,
       );
     }
   }

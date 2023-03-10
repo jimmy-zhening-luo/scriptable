@@ -31,7 +31,7 @@ class SchemeHostPort extends shp_UrlComposite {
       this.hostPort = this.parts[1];
     } catch (e) {
       throw new SyntaxError(
-        `SchemeHostPort: constructor: error creating SchemeHostPort: ${e}`,
+        `SchemeHostPort: constructor: error creating SchemeHostPort: \n${e}`,
       );
     }
   }
@@ -41,7 +41,7 @@ class SchemeHostPort extends shp_UrlComposite {
       return [this.scheme.toString(), this.hostPort.toString()].join("://");
     } catch (e) {
       throw new EvalError(
-        `SchemeHostPort: get composite: error getting composite: ${e}`,
+        `SchemeHostPort: get composite: error getting composite: \n${e}`,
       );
     }
   }
@@ -51,7 +51,7 @@ class SchemeHostPort extends shp_UrlComposite {
       return this.UrlParts.Scheme;
     } catch (e) {
       throw new ReferenceError(
-        `SchemeHostPort: get Scheme: error loading Scheme module: ${e}`,
+        `SchemeHostPort: get Scheme: error loading Scheme module: \n${e}`,
       );
     }
   }
@@ -61,7 +61,7 @@ class SchemeHostPort extends shp_UrlComposite {
       return importModule("HostPort");
     } catch (e) {
       throw new ReferenceError(
-        `SchemeHostPort: get HostPort: error loading HostPort module: ${e}`,
+        `SchemeHostPort: get HostPort: error loading HostPort module: \n${e}`,
       );
     }
   }
@@ -71,7 +71,7 @@ class SchemeHostPort extends shp_UrlComposite {
       return shp_UrlComposite;
     } catch (e) {
       throw new ReferenceError(
-        `SchemeHostPort: get UrlComposite: error loading UrlComposite module: ${e}`,
+        `SchemeHostPort: get UrlComposite: error loading UrlComposite module: \n${e}`,
       );
     }
   }

@@ -17,7 +17,7 @@ class Storage extends st_Utility {
       );
     } catch (e) {
       throw new Error(
-        `Storage: constructor: Error creating Storage object: ${e}`,
+        `Storage: constructor: Error creating Storage object: \n${e}`,
       );
     }
   }
@@ -27,7 +27,7 @@ class Storage extends st_Utility {
       this._file.write(text, true);
       return this;
     } catch (e) {
-      throw new Error(`Storage: write: Error writing to file: ${e}`);
+      throw new Error(`Storage: write: Error writing to file: \n${e}`);
     }
   }
 
@@ -36,7 +36,7 @@ class Storage extends st_Utility {
       return st_Utility;
     } catch (e) {
       throw new ReferenceError(
-        `Storage: get Utility: Error importing Utility module: ${e}`,
+        `Storage: get Utility: Error importing Utility module: \n${e}`,
       );
     }
   }

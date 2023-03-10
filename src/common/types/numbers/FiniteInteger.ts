@@ -8,7 +8,7 @@ class FiniteInteger extends f_Integer {
       return f_Integer;
     } catch (e) {
       throw new ReferenceError(
-        `FiniteInteger: error loading parent Integer module: ${e}`,
+        `FiniteInteger: error loading parent Integer module: \n${e}`,
       );
     }
   }

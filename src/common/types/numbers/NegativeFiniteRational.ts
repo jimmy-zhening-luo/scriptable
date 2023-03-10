@@ -9,7 +9,7 @@ class NegativeFiniteRational extends n_FiniteRational {
       return n_FiniteRational;
     } catch (e) {
       throw new ReferenceError(
-        `NegativeFiniteRational: error loading parent FiniteRational module: ${e}`,
+        `NegativeFiniteRational: error loading parent FiniteRational module: \n${e}`,
       );
     }
   }

@@ -9,7 +9,7 @@ class NegativeRational extends nr_Integer.Rational {
       return nr_Integer;
     } catch (e) {
       throw new ReferenceError(
-        `NegativeRational: error loading parent Integer module: ${e}`,
+        `NegativeRational: error loading parent Integer module: \n${e}`,
       );
     }
   }
@@ -19,7 +19,7 @@ class NegativeRational extends nr_Integer.Rational {
       return NegativeRational.Integer.Rational;
     } catch (e) {
       throw new ReferenceError(
-        `NegativeRational: error loading Integer.Rational module: ${e}`,
+        `NegativeRational: error loading Integer.Rational module: \n${e}`,
       );
     }
   }

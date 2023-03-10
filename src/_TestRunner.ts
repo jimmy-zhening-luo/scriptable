@@ -60,7 +60,7 @@ class TestRunner {
       ]);
     } catch (e) {
       throw new SyntaxError(
-        `TestRunner: constructor: Failed to parse test matrix into Suite[] using _casesToSuites: ${e}`,
+        `TestRunner: constructor: Failed to parse test matrix into Suite[] using _casesToSuites: \n${e}`,
       );
     }
   }
@@ -68,7 +68,9 @@ class TestRunner {
     try {
       return this._suites.every(suite => suite.run(suppressLogging) === true);
     } catch (e) {
-      throw new EvalError(`TestRunner: runAll: Failed to run all suites: ${e}`);
+      throw new EvalError(
+        `TestRunner: runAll: Failed to run all suites: \n${e}`,
+      );
     }
   }
 
@@ -83,7 +85,7 @@ class TestRunner {
         .filter(suite => suite !== null) as TestRunner.Suites;
     } catch (e) {
       throw new SyntaxError(
-        `TestRunner: casesToSuites: Failed to parse suites: ${e}`,
+        `TestRunner: casesToSuites: Failed to parse suites: \n${e}`,
       );
     }
   }
@@ -92,7 +94,7 @@ class TestRunner {
       return importModule("system/Shortcut");
     } catch (e) {
       throw new ReferenceError(
-        `TestRunner: Shortcut: Failed to import Shortcut module: ${e}`,
+        `TestRunner: Shortcut: Failed to import Shortcut module: \n${e}`,
       );
     }
   }
@@ -122,7 +124,7 @@ namespace TestRunner {
         this.cases = this._parseInput(suiteOrCaseOrCases, ...moreCases);
       } catch (e) {
         throw new SyntaxError(
-          `\nSuite: constructor: Failed to initialize Suite with id "${id}" using _parseInput method: ${e}`,
+          `\nSuite: constructor: Failed to initialize Suite with id "${id}" using _parseInput method: \n${e}`,
         );
       }
     }
@@ -149,7 +151,9 @@ namespace TestRunner {
         }
         return this.cases.every(([evaluate, result]) => evaluate === result);
       } catch (e) {
-        throw new Error(`\nSuite: run: Suite "${this.id}" failed to run: ${e}`);
+        throw new Error(
+          `\nSuite: run: Suite "${this.id}" failed to run: \n${e}`,
+        );
       }
     }
 
@@ -161,7 +165,7 @@ namespace TestRunner {
         this.cases.push(...this._parseInput(cases, ...moreCases));
       } catch (e) {
         throw new Error(
-          `\nSuite: addCase: Suite "${this.id}" failed to add case: ${e}`,
+          `\nSuite: addCase: Suite "${this.id}" failed to add case: \n${e}`,
         );
       }
     }
@@ -179,7 +183,7 @@ namespace TestRunner {
         return joined;
       } catch (e) {
         throw new Error(
-          `\nSuite: _parseInput: Suite "${this.id}" failed to parse input: ${e}`,
+          `\nSuite: _parseInput: Suite "${this.id}" failed to parse input: \n${e}`,
         );
       }
 
@@ -192,7 +196,7 @@ namespace TestRunner {
           return cases;
         } catch (e) {
           throw new SyntaxError(
-            `\nSuite: _parseInput: _arrCaseCasesToCases: Failed to flatten an array of Case or Case[] to an array of Case: ${e}`,
+            `\nSuite: _parseInput: _arrCaseCasesToCases: Failed to flatten an array of Case or Case[] to an array of Case: \n${e}`,
           );
         }
       }
@@ -206,7 +210,7 @@ namespace TestRunner {
             : [caseOrCases];
         } catch (e) {
           throw new SyntaxError(
-            `\nSuite: _parseInput: _caseOrCasesToCases: Failed to convert Case or Case[] to Case[]: ${e}`,
+            `\nSuite: _parseInput: _caseOrCasesToCases: Failed to convert Case or Case[] to Case[]: \n${e}`,
           );
         }
       }
@@ -222,6 +226,6 @@ try {
   );
 } catch (e) {
   console.error(
-    `\n\n\n_TestRunner.js: Encountered an error while attempting to run all test cases: ${e}`,
+    `\n\n\n_TestRunner.js: Encountered an error while attempting to run all test cases: \n${e}`,
   );
 }

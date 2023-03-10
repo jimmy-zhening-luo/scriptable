@@ -13,7 +13,7 @@ class Config extends co_Utility {
       );
     } catch (e) {
       throw new Error(
-        `Config: constructor: Error creating Config object: ${e}`,
+        `Config: constructor: Error creating Config object: \n${e}`,
       );
     }
   }
@@ -42,7 +42,7 @@ class Config extends co_Utility {
       else return JSON.parse(this._file.data);
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error parsing config file '${this._file.path}': ${e}`,
+        `Config.js: Error parsing config file '${this._file.path}': \n${e}`,
       );
     }
   }
@@ -52,7 +52,7 @@ class Config extends co_Utility {
       return this.parsed;
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error getting unmerged config file '${this._file.path}': ${e}`,
+        `Config.js: Error getting unmerged config file '${this._file.path}': \n${e}`,
       );
     }
   }
@@ -66,7 +66,7 @@ class Config extends co_Utility {
       else return this.unmerged.app;
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error getting 'app' property from config file '${this._file.path}': ${e}`,
+        `Config.js: Error getting 'app' property from config file '${this._file.path}': \n${e}`,
       );
     }
   }
@@ -80,7 +80,7 @@ class Config extends co_Utility {
       else return this.unmerged.user;
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error getting 'user' property from config file '${this._file.path}': ${e}`,
+        `Config.js: Error getting 'user' property from config file '${this._file.path}': \n${e}`,
       );
     }
   }
@@ -90,7 +90,7 @@ class Config extends co_Utility {
       return this.mergeSettings(this.user, this.app);
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error merging 'user' and 'app' properties from config file '${this._file.path}': ${e}`,
+        `Config.js: Error merging 'user' and 'app' properties from config file '${this._file.path}': \n${e}`,
       );
     }
   }
@@ -100,7 +100,7 @@ class Config extends co_Utility {
       return this.mergeSettings(this.app, this.user);
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error merging 'user' and 'app' properties from config file '${this._file.path}': ${e}`,
+        `Config.js: Error merging 'user' and 'app' properties from config file '${this._file.path}': \n${e}`,
       );
     }
   }
@@ -184,7 +184,7 @@ class Config extends co_Utility {
       } else return {};
     } catch (e) {
       throw new Error(
-        `Config.js: Error merging settings from config file '${this._file.path}': ${e}`,
+        `Config.js: Error merging settings from config file '${this._file.path}': \n${e}`,
       );
     }
 
@@ -197,7 +197,7 @@ class Config extends co_Utility {
         );
       } catch (e) {
         throw new Error(
-          `Config.js: Error determining if object is primitive: ${e}`,
+          `Config.js: Error determining if object is primitive: \n${e}`,
         );
       }
     }
@@ -209,7 +209,7 @@ class Config extends co_Utility {
       try {
         return winner.concat(loser);
       } catch (e) {
-        throw new Error(`Config.js: Error merging arrays: ${e}`);
+        throw new Error(`Config.js: Error merging arrays: \n${e}`);
       }
     }
 
@@ -217,7 +217,7 @@ class Config extends co_Utility {
       try {
         return Object.keys(a).filter(keyOfA => Object.keys(b).includes(keyOfA));
       } catch (e) {
-        throw new Error(`Config.js: Error intersecting keys: ${e}`);
+        throw new Error(`Config.js: Error intersecting keys: \n${e}`);
       }
     }
 
@@ -225,7 +225,9 @@ class Config extends co_Utility {
       try {
         return Object.keys(obj).filter(objKey => !sharedKeys.includes(objKey));
       } catch (e) {
-        throw new Error(`Config.js: Error getting unique keys of object: ${e}`);
+        throw new Error(
+          `Config.js: Error getting unique keys of object: \n${e}`,
+        );
       }
     }
   }
@@ -234,7 +236,9 @@ class Config extends co_Utility {
     try {
       return co_Utility;
     } catch (e) {
-      throw new ReferenceError(`Config: Error importing Utility module: ${e}`);
+      throw new ReferenceError(
+        `Config: Error importing Utility module: \n${e}`,
+      );
     }
   }
 }

@@ -38,7 +38,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
       this.max = maxInt;
     } catch (e) {
       throw new Error(
-        `BoundedRepeatCharString: constructor: Error creating BoundedRepeatCharString object: ${e}`,
+        `BoundedRepeatCharString: constructor: Error creating BoundedRepeatCharString object: \n${e}`,
       );
     }
   }
@@ -48,7 +48,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
       return importModule("./common/types/numbers/PositiveInteger");
     } catch (e) {
       throw new ReferenceError(
-        `BoundedRepeatCharString: PositiveInteger: Error importing PositiveInteger module: ${e}`,
+        `BoundedRepeatCharString: PositiveInteger: Error importing PositiveInteger module: \n${e}`,
       );
     }
   }
@@ -58,7 +58,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
       return _RepeatCharString;
     } catch (e) {
       throw new ReferenceError(
-        `BoundedRepeatCharString: RepeatCharString: Error importing RepeatCharString module: ${e}`,
+        `BoundedRepeatCharString: RepeatCharString: Error importing RepeatCharString module: \n${e}`,
       );
     }
   }
