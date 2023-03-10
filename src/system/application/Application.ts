@@ -95,36 +95,6 @@ abstract class Application extends app_Utilities {
       );
     }
   }
-
-  static get Types(): typeof Types {
-    try {
-      return importModule("./common/types/Types");
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Types: Error importing Types module: \n${e}`,
-      );
-    }
-  }
-
-  static get Strings(): typeof Strings {
-    try {
-      return Application.Types.Strings;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Strings: Error importing Strings module: \n${e}`,
-      );
-    }
-  }
-
-  static get Numbers(): typeof Numbers {
-    try {
-      return Application.Types.Numbers;
-    } catch (e) {
-      throw new ReferenceError(
-        `Application: Numbers: Error importing Numbers module: \n${e}`,
-      );
-    }
-  }
 }
 
 module.exports = Application;
