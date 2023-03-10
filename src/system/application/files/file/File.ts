@@ -14,7 +14,7 @@ class File {
     try {
       if (rootOrFile instanceof File) {
         if (treatFilepathAsRoot) {
-          this._root = new FilepathString(rootOrFile.path);
+          this._root = new File.FilepathString(rootOrFile.path);
           this.subpath = subpath;
         } else {
           this._root = new File.FilepathString(rootOrFile.root);
