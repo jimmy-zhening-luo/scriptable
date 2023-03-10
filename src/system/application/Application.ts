@@ -1,6 +1,4 @@
-const app_Utilities: typeof Utilities = importModule("utilities/Utilities");
-
-abstract class Application extends app_Utilities {
+abstract class Application {
   abstract get input(): unknown;
   abstract runtime(): unknown;
   abstract handleOutput(
@@ -39,7 +37,10 @@ abstract class Application extends app_Utilities {
 
   get config(): Config {
     try {
-      return new Application.Config(this.configSubpath, this.constructor.name);
+      return new Application.Utilities.Config(
+        this.configSubpath,
+        this.constructor.name,
+      );
     } catch (e) {
       throw new Error(
         `Application: config: Error getting application Config object: \n${e}`,
@@ -49,7 +50,7 @@ abstract class Application extends app_Utilities {
 
   protected storage(subpath?: string): Storage {
     try {
-      return new Application.Storage(
+      return new Application.Utilities.Storage(
         this.storageSubpath,
         this.constructor.name,
         subpath,
@@ -88,7 +89,7 @@ abstract class Application extends app_Utilities {
 
   static get Utilities(): typeof Utilities {
     try {
-      return app_Utilities;
+      return importModule("utilities/Utilities");
     } catch (e) {
       throw new ReferenceError(
         `Application: Utilities: Error importing Utilities module: \n${e}`,

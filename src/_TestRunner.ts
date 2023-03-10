@@ -9,7 +9,7 @@ class TestRunner {
   constructor() {
     try {
       // CLASS IMPORTS GO HERE
-      const url: typeof Url = TestRunner.Shortcut.Url;
+      const url: typeof Url = importModule("./system/application/browser/Url");
 
       // TEST VARS GO HERE
       let u: Url = new url();
@@ -86,15 +86,6 @@ class TestRunner {
     } catch (e) {
       throw new SyntaxError(
         `TestRunner: casesToSuites: Failed to parse suites: \n${e}`,
-      );
-    }
-  }
-  private static get Shortcut(): typeof Shortcut {
-    try {
-      return importModule("system/Shortcut");
-    } catch (e) {
-      throw new ReferenceError(
-        `TestRunner: Shortcut: Failed to import Shortcut module: \n${e}`,
       );
     }
   }

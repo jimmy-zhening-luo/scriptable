@@ -14,19 +14,20 @@ abstract class Shortcut extends _Application {
   }
 
   handleOutput(
-    output?: null | primitive | File | ShortcutDictionary,
+    _output: null | primitive | File | ShortcutDictionary = "",
   ): primitive | ShortcutDictionary {
     try {
-      if (output === undefined || output === null) output = "";
+      if (_output === null) _output = "";
       else if (
-        typeof output === "string" ||
-        typeof output === "number" ||
-        typeof output === "boolean"
+        typeof _output === "string" ||
+        typeof _output === "number" ||
+        typeof _output === "boolean"
       )
-        output = output;
-      else if (output instanceof Shortcut.File) output = output.path;
-      Script.setShortcutOutput(output);
-      return output;
+        _output = _output;
+      else if (_output instanceof Shortcut.Utilities.Files.File)
+        _output = _output.path;
+      Script.setShortcutOutput(_output);
+      return _output;
     } catch (e) {
       throw new Error(`Shortcut.js: Error setting shortcut output: \n${e}`);
     }

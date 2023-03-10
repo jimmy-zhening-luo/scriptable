@@ -6,10 +6,7 @@ class Config extends co_Utility {
       super(
         "Config",
         Config.ReadOnlyFile,
-        Config.ReadOnlyFile.join(
-          configSubpath,
-          [programName, "json"].join("."),
-        ),
+        Config.File.join(configSubpath, [programName, "json"].join(".")),
       );
     } catch (e) {
       throw new Error(

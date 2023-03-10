@@ -36,7 +36,7 @@ abstract class Utility {
           )}`,
         );
       else {
-        return new Utility.Bookmark(utilityRootBookmarkName);
+        return new Utility.File.Bookmark(utilityRootBookmarkName);
       }
     } catch (e) {
       if (!(e instanceof ReferenceError))
@@ -53,7 +53,7 @@ abstract class Utility {
     try {
       return JSON.parse(
         new Utility.ReadOnlyFile(
-          new Utility.Bookmark(Utility._APPLICATION_CONFIG_BOOKMARK),
+          new Utility.File.Bookmark(Utility._APPLICATION_CONFIG_BOOKMARK),
         ).data,
       );
     } catch (e) {
@@ -129,16 +129,6 @@ abstract class Utility {
     }
   }
 
-  static get Browser(): typeof Browser {
-    try {
-      return importModule("./system/application/browser/Browser");
-    } catch (e) {
-      throw new ReferenceError(
-        `Utility: Browser: Error importing Browser module: \n${e}`,
-      );
-    }
-  }
-
   static get ReadOnlyFile(): typeof ReadOnlyFile {
     try {
       return Utility.Files.ReadOnlyFile;
@@ -155,66 +145,6 @@ abstract class Utility {
     } catch (e) {
       throw new ReferenceError(
         `Utility: File: Error importing File class: \n${e}`,
-      );
-    }
-  }
-
-  static get Bookmark(): typeof Bookmark {
-    try {
-      return Utility.Files.Bookmark;
-    } catch (e) {
-      throw new ReferenceError(
-        `Utility: Bookmark: Error importing Bookmark class: \n${e}`,
-      );
-    }
-  }
-
-  static get FilepathString(): typeof FilepathString {
-    try {
-      return Utility.Files.FilepathString;
-    } catch (e) {
-      throw new ReferenceError(
-        `Utility: Filepaths: Error importing Filepaths class: \n${e}`,
-      );
-    }
-  }
-
-  static get Url(): typeof Url {
-    try {
-      return Utility.Browser.Url;
-    } catch (e) {
-      throw new ReferenceError(
-        `Utility: Url: Error importing Url class: \n${e}`,
-      );
-    }
-  }
-
-  static get Api(): typeof Api {
-    try {
-      return Utility.Browser.Api;
-    } catch (e) {
-      throw new ReferenceError(
-        `Utility: Api: Error importing Api class: \n${e}`,
-      );
-    }
-  }
-
-  static get Callback(): typeof Callback {
-    try {
-      return Utility.Browser.Callback;
-    } catch (e) {
-      throw new ReferenceError(
-        `Utility: Callback: Error importing Callback class: \n${e}`,
-      );
-    }
-  }
-
-  static get Endpoint(): typeof Endpoint {
-    try {
-      return Utility.Browser.Endpoint;
-    } catch (e) {
-      throw new ReferenceError(
-        `Utility: Endpoint: Error importing Endpoint class: \n${e}`,
       );
     }
   }
