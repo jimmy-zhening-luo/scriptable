@@ -29,22 +29,22 @@ class UrlValidators {
     }
   }
 
-  static get Char(): typeof Char {
+  static get CharSet(): typeof CharSet {
     try {
-      return UrlValidators.ValidUrlPart.Char;
+      return UrlValidators.ValidUrlPart.CharSet;
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading Char module: \n${e}`,
+        `UrlValidators: error loading CharSet module: \n${e}`,
       );
     }
   }
 
-  static get UrlChar(): typeof UrlChar {
+  static get UrlCharSet(): typeof UrlCharSet {
     try {
-      return UrlValidators.ValidUrlPart.UrlChar;
+      return UrlValidators.ValidUrlPart.UrlCharSet;
     } catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading UrlChar module: \n${e}`,
+        `UrlValidators: error loading UrlCharSet module: \n${e}`,
       );
     }
   }

@@ -69,22 +69,22 @@ class Strings {
     }
   }
 
-  static get Char(): typeof Char {
+  static get CharSet(): typeof CharSet {
     try {
-      return Strings.Chars.Char;
+      return Strings.Chars.CharSet;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: Char: Error importing Char module: \n${e}`,
+        `Strings: CharSet: Error importing CharSet module: \n${e}`,
       );
     }
   }
 
-  static get UrlChar(): typeof UrlChar {
+  static get UrlCharSet(): typeof UrlCharSet {
     try {
-      return Strings.Chars.UrlChar;
+      return Strings.Chars.UrlCharSet;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: UrlChar: Error importing UrlChar module: \n${e}`,
+        `Strings: UrlCharSet: Error importing UrlCharSet module: \n${e}`,
       );
     }
   }

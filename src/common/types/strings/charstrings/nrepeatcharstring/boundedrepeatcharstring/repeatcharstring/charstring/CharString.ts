@@ -1,10 +1,19 @@
 abstract class CharString {
   readonly charstring: null | string;
-  readonly ofChar: Char;
+  readonly ofChar: CharSet;
+  readonly negate: boolean = false;
 
-  constructor(charstring: string, ...charsets: Char.CharInput[]) {
+  constructor(
+    charstring: string,
+    negate?: boolean | CharSet.CharInput,
+    ...charsets: CharSet.CharInput[]
+  ) {
     try {
-      this.ofChar = new CharString.Chars.Char(...charsets);
+      if (negate === undefined) negate = false;
+      else if (typeof negate === "boolean") this.negate = negate;
+      else charsets.unshift(negate);
+
+      this.ofChar = new CharString.Chars.CharSet(...charsets);
       this.charstring = this.qualifies(charstring) ? charstring : null;
     } catch (e) {
       throw new Error(

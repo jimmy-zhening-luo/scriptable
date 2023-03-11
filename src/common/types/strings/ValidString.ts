@@ -9,8 +9,8 @@ class ValidString {
 
   constructor(
     string: string,
-    min: number | Char.CharInput = ValidString.MinDefault,
-    max: number | Char.CharInput = ValidString.MaxDefault,
+    min: number | CharSet.CharInput = ValidString.MinDefault,
+    max: number | CharSet.CharInput = ValidString.MaxDefault,
     cleanOptions: Parameters<typeof ValidString.clean>[1] = {},
     {
       negateAllowedChars = false,
@@ -19,7 +19,7 @@ class ValidString {
       negateAllowedChars?: boolean;
       isValid?: boolean;
     },
-    ...allowedChars: Char.CharInput[]
+    ...allowedChars: CharSet.CharInput[]
   ) {
     try {
       this.raw = string;
@@ -94,10 +94,6 @@ class ValidString {
       );
     }
   }
-  
-  static validate(
-  
-  )
 
   static clean(
     raw: string,
@@ -226,22 +222,22 @@ class ValidString {
     }
   }
 
-  static get Char(): typeof Char {
+  static get CharSet(): typeof CharSet {
     try {
-      return ValidString.Chars.Char;
+      return ValidString.Chars.CharSet;
     } catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing Char module: \n${e}`,
+        `ValidString: error importing CharSet module: \n${e}`,
       );
     }
   }
 
-  static get UrlChar(): typeof UrlChar {
+  static get UrlCharSet(): typeof UrlCharSet {
     try {
-      return ValidString.Chars.UrlChar;
+      return ValidString.Chars.UrlCharSet;
     } catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing UrlChar module: \n${e}`,
+        `ValidString: error importing UrlCharSet module: \n${e}`,
       );
     }
   }

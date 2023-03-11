@@ -9,9 +9,9 @@ class ValidQueryRepeater extends qu_ValidUrlRepeater {
         queryRepeater,
         1,
         Infinity,
-        qu_ValidUrlRepeater.UrlChar.pchar,
-        qu_ValidUrlRepeater.UrlChar.slash,
-        qu_ValidUrlRepeater.UrlChar.question,
+        qu_ValidUrlRepeater.UrlCharSet.pchar,
+        qu_ValidUrlRepeater.UrlCharSet.slash,
+        qu_ValidUrlRepeater.UrlCharSet.question,
       );
     } catch (e) {
       throw new Error(

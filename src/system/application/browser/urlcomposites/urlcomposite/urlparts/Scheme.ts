@@ -12,7 +12,7 @@ class Scheme extends sc_UrlPart {
   protected parse(scheme: string): null | string {
     try {
       const validScheme: string = new Scheme.ValidScheme(scheme).toString();
-      const charSetAlpha: string[] = Scheme.ValidScheme.UrlChar.alpha;
+      const charSetAlpha: string[] = Scheme.ValidScheme.UrlCharSet.alpha;
       return validScheme === ""
         ? "https"
         : charSetAlpha.includes([...validScheme].shift() ?? "")

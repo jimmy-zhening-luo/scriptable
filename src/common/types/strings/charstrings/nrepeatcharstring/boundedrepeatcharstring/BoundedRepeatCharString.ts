@@ -10,7 +10,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
     min: number,
     max: number,
     charstring: string,
-    ...ofCharInputs: Char.CharInput[]
+    ...ofCharInputs: CharSet.CharInput[]
   ) {
     try {
       let minInt: number = new BoundedRepeatCharString.PositiveInteger(

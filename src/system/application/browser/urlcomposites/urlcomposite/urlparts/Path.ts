@@ -13,7 +13,7 @@ class Path extends pa_UrlPart {
     try {
       const split: string[] = new Path.StringSplitter(
         path,
-        ...Path.UrlValidators.Char.slash,
+        ...Path.UrlValidators.CharSet.slash,
         {
           trim: true,
           trimTokens: true,
@@ -25,7 +25,7 @@ class Path extends pa_UrlPart {
         : split.every(
             pathRepeater => new Path.PathRepeater(pathRepeater).isValid,
           )
-        ? split.join(Path.UrlValidators.Char.slash[0])
+        ? split.join(Path.UrlValidators.CharSet.slash[0])
         : null;
     } catch (e) {
       throw new Error(`Path: parse: error parsing Path: \n${e}`);
@@ -36,7 +36,7 @@ class Path extends pa_UrlPart {
     try {
       const newPath: Path = new Path(
         [this.toString(), new Path(subpath).toString()].join(
-          Path.UrlValidators.Char.slash[0],
+          Path.UrlValidators.CharSet.slash[0],
         ),
       );
       return newPath.isValid ? newPath : this;

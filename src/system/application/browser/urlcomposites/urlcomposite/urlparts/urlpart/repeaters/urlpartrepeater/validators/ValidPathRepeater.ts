@@ -5,7 +5,7 @@ const pa_ValidUrlRepeater: typeof ValidUrlRepeater = importModule(
 class ValidPathRepeater extends pa_ValidUrlRepeater {
   constructor(pathRepeater: string) {
     try {
-      super(pathRepeater, 0, Infinity, pa_ValidUrlRepeater.UrlChar.pchar);
+      super(pathRepeater, 0, Infinity, pa_ValidUrlRepeater.UrlCharSet.pchar);
     } catch (e) {
       throw new Error(
         `ValidPathRepeater: constructor: error creating ValidPathRepeater: \n${e}`,

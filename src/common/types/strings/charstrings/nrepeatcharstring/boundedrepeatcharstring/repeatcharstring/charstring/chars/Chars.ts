@@ -1,20 +1,20 @@
 class Chars {
-  static get UrlChar(): typeof UrlChar {
+  static get UrlCharSet(): typeof UrlCharSet {
     try {
-      return importModule("UrlChar");
+      return importModule("UrlCharSet");
     } catch (e) {
       throw new ReferenceError(
-        `Chars: UrlChar: Error importing UrlChar module: \n${e}`,
+        `Chars: UrlCharSet: Error importing UrlCharSet module: \n${e}`,
       );
     }
   }
 
-  static get Char(): typeof Char {
+  static get CharSet(): typeof CharSet {
     try {
-      return Chars.UrlChar.Char;
+      return Chars.UrlCharSet.CharSet;
     } catch (e) {
       throw new ReferenceError(
-        `Chars: Char: Error importing Char module: \n${e}`,
+        `Chars: CharSet: Error importing CharSet module: \n${e}`,
       );
     }
   }

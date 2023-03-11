@@ -5,7 +5,7 @@ const hipf_ValidUrlRepeater: typeof ValidUrlRepeater = importModule(
 class ValidHostIPv4Repeater extends hipf_ValidUrlRepeater {
   constructor(hostIPv4Repeater: string) {
     try {
-      super(hostIPv4Repeater, 1, 3, hipf_ValidUrlRepeater.UrlChar.numbers);
+      super(hostIPv4Repeater, 1, 3, hipf_ValidUrlRepeater.UrlCharSet.numbers);
     } catch (e) {
       throw new Error(
         `ValidHostIPv4Repeater: constructor: error creating ValidHostIPv4Repeater: \n${e}`,

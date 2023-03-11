@@ -6,7 +6,7 @@ class NRepeatCharString extends _BoundedRepeatCharString {
   constructor(
     n: number,
     charstring: string,
-    ...ofCharInputs: Char[] | string[] | string[][] | Char.CharInput[]
+    ...ofCharInputs: CharSet[] | string[] | string[][] | CharSet.CharInput[]
   ) {
     try {
       super(n, n, charstring, ...ofCharInputs);

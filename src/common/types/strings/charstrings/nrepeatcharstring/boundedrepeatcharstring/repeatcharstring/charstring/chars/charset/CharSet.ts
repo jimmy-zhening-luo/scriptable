@@ -1,11 +1,17 @@
-class Char {
-  readonly charset: string[];
+class CharSet {
+  readonly charset: string[] = [];
+  readonly negate: boolean = false;
 
-  constructor(...charInputs: Char.CharInput[]) {
+  constructor(
+    negate?: boolean | CharSet.CharInput,
+    ...charInputs: CharSet.CharInput[]
+  ) {
     try {
-      this.charset = [];
+      if (negate === undefined) negate = false;
+      else if (typeof negate === "boolean") this.negate = negate;
+      else charInputs.unshift(negate);
       charInputs.forEach(input => {
-        input instanceof Char
+        input instanceof CharSet
           ? this.charset.push(...input.charset)
           : Array.isArray(input)
           ? this.charset.push(...input)
@@ -13,7 +19,7 @@ class Char {
       });
     } catch (e) {
       throw new SyntaxError(
-        `Char: constructor: Error creating Char object: \n${e}`,
+        `CharSet: constructor: Error creating CharSet object: \n${e}`,
       );
     }
   }
@@ -23,7 +29,7 @@ class Char {
       return this.charset.length === 0 || this.charset.includes(char);
     } catch (e) {
       throw new EvalError(
-        `Char: includes: Error checking if Char includes char: \n${e}`,
+        `CharSet: includes: Error checking if CharSet includes char: \n${e}`,
       );
     }
   }
@@ -33,7 +39,7 @@ class Char {
       return this.charset.join(" | ");
     } catch (e) {
       throw new EvalError(
-        `Char: toString: Error converting Char to string: \n${e}`,
+        `CharSet: toString: Error converting CharSet to string: \n${e}`,
       );
     }
   }
@@ -253,8 +259,8 @@ class Char {
   }
 }
 
-namespace Char {
-  export type CharInput = Char | string | string[];
+namespace CharSet {
+  export type CharInput = CharSet | string | string[];
 }
 
-module.exports = Char;
+module.exports = CharSet;

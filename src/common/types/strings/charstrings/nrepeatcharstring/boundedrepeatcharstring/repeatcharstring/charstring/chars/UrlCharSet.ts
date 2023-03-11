@@ -1,6 +1,6 @@
-const _Char: typeof Char = importModule("char/Char");
+const u_CharSet: typeof CharSet = importModule("charset/CharSet");
 
-class UrlChar extends _Char {
+class UrlCharSet extends u_CharSet {
   static get hex(): string[] {
     return [
       ...this.numbers,
@@ -76,15 +76,15 @@ class UrlChar extends _Char {
     ];
   }
 
-  static get Char(): typeof Char {
+  static get CharSet(): typeof CharSet {
     try {
-      return _Char;
+      return u_CharSet;
     } catch (e) {
       throw new ReferenceError(
-        `UrlChar: Char: Error importing Char module: \n${e}`,
+        `UrlCharSet: CharSet: Error importing CharSet module: \n${e}`,
       );
     }
   }
 }
 
-module.exports = UrlChar;
+module.exports = UrlCharSet;

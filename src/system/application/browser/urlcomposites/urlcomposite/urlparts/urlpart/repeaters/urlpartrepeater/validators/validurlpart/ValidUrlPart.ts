@@ -16,7 +16,7 @@ class ValidUrlPart extends up_ValidString {
       trimLeading?: string[];
       trimTrailing?: string[];
     },
-    ...allowedChars: Char.CharInput[]
+    ...allowedChars: CharSet.CharInput[]
   ) {
     try {
       super(

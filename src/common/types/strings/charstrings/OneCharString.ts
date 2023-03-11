@@ -5,7 +5,7 @@ const _NRepeatCharString: typeof NRepeatCharString = importModule(
 class OneCharString extends _NRepeatCharString {
   constructor(
     charstring: string,
-    ...ofCharInputs: Char[] | string[] | string[][] | Char.CharInput[]
+    ...ofCharInputs: CharSet[] | string[] | string[][] | CharSet.CharInput[]
   ) {
     try {
       super(1, charstring, ...ofCharInputs);
