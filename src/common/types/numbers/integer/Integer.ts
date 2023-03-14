@@ -1,9 +1,11 @@
 const _Rational: typeof Rational = importModule("rational/Rational");
 
 class Integer extends _Rational {
-  protected override qualifies(value: number): boolean {
+  protected override _qualifies(rawNumber: number): boolean {
     try {
-      return super.qualifies(value) && Integer.Rational.isInteger(value);
+      return (
+        super._qualifies(rawNumber) && new Integer.Rational(rawNumber).isInteger
+      );
     } catch (e) {
       throw new Error(`Integer.qualifies: \n${e}`);
     }

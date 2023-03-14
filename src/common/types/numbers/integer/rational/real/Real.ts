@@ -1,21 +1,37 @@
 abstract class Real {
-  abstract get number(): number;
+  protected abstract readonly _raw: number;
 
-  toNumber(): number {
+  protected abstract _qualifies(rawNumber: number): boolean;
+
+  get isValid(): boolean {
     try {
-      return this.number;
+      return this._qualifies(this._raw);
     } catch (e) {
-      throw new Error("Real: error calling toNumber");
+      throw new EvalError("Real: error calling isValid");
     }
   }
 
-  abstract get stringValue(): string;
+  get value(): null | number {
+    try {
+      return this.isValid ? this._raw : null;
+    } catch (e) {
+      throw new EvalError("Rational: error calling number");
+    }
+  }
+
+  toNumber(): number {
+    try {
+      return this.value ?? NaN;
+    } catch (e) {
+      throw new EvalError("Real: error calling toNumber");
+    }
+  }
 
   toString(): string {
     try {
-      return this.stringValue;
+      return this.isValid ? String(this.toNumber()) : "";
     } catch (e) {
-      throw new Error("Real: error calling toString");
+      throw new EvalError("Real: error calling toString");
     }
   }
 

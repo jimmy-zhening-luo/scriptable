@@ -1,9 +1,9 @@
-const _CharString: typeof CharString = importModule("charstring/CharString");
+const rp_CharString: typeof CharString = importModule("charstring/CharString");
 
-class RepeatCharString extends _CharString {
-  protected qualifies(candidateCharString: string): boolean {
+class RepeatCharString extends rp_CharString {
+  protected _qualifies(candidateCharString: string): boolean {
     try {
-      return [...candidateCharString].every(char => this.ofChar.includes(char));
+      return [...candidateCharString].every(char => this.charset.allows(char));
     } catch (e) {
       throw new EvalError(
         `RepeatCharString: qualifies: Error checking if CharString qualifies: \n${e}`,
@@ -13,7 +13,7 @@ class RepeatCharString extends _CharString {
 
   static get CharString(): typeof CharString {
     try {
-      return _CharString;
+      return rp_CharString;
     } catch (e) {
       throw new ReferenceError(
         `RepeatCharString: CharString: Error importing CharString module: \n${e}`,

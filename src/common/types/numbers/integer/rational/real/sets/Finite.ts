@@ -7,7 +7,7 @@ class Finite extends f_Bounds {
         super.isBounded(value) && value !== Infinity && value !== -Infinity
       );
     } catch (e) {
-      throw new ReferenceError("Finite: error calling isBounded");
+      throw new EvalError("Finite: error calling isBounded");
     }
   }
 

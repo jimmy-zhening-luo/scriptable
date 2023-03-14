@@ -5,7 +5,7 @@ class ValidUrlRepeater extends r_ValidUrlPart {
     part: string,
     minLength: number = 1,
     maxLength: number = Infinity,
-    ...allowedChars: CharSet.CharInput[]
+    ...allowedChars: ConstructorParameters<typeof ValidUrlPart>[4][]
   ) {
     try {
       super(part, minLength, maxLength, {}, ...allowedChars);

@@ -9,7 +9,7 @@ class Negative extends n_Cardinality {
         super.isCardinal(value) && (value === 0 || value === -0 || value < 0)
       );
     } catch (e) {
-      throw new Error("Negative: error calling isCardinal");
+      throw new EvalError("Negative: error calling isCardinal");
     }
   }
 

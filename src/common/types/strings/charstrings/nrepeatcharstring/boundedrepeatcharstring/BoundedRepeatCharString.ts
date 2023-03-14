@@ -7,43 +7,56 @@ class BoundedRepeatCharString extends _RepeatCharString {
   readonly max: number;
 
   constructor(
-    min: number,
-    max: number,
-    charstring: string,
-    ...ofCharInputs: CharSet.CharInput[]
+    min: number = 0,
+    max: number = Infinity,
+    ...repeatCharStringCtorParams: ConstructorParameters<
+      typeof RepeatCharString
+    >
   ) {
     try {
-      let minInt: number = new BoundedRepeatCharString.PositiveInteger(
+      super(...repeatCharStringCtorParams);
+      for (const bound of [min, max]) {
+        if (!new BoundedRepeatCharString.PositiveInteger(bound).isValid)
+          throw SyntaxError(
+            `the value ${bound} of min ${min} or max ${max} is not a valid positive integer`,
+          );
+      }
+      let minIntToNum: number = new BoundedRepeatCharString.PositiveInteger(
         min,
       ).toNumber();
-      let maxInt: number = new BoundedRepeatCharString.PositiveInteger(
+      let maxIntToNum: number = new BoundedRepeatCharString.PositiveInteger(
         max,
       ).toNumber();
-      if (Number.isNaN(minInt) || Number.isNaN(maxInt)) minInt = maxInt = 0;
-      else {
-        if (minInt > maxInt) {
-          const prevMinInt: number = minInt;
-          minInt = maxInt;
-          maxInt = prevMinInt;
-        }
-        if (minInt === Infinity) minInt = maxInt = 0;
+      if (minIntToNum > maxIntToNum) {
+        const tmp: number = minIntToNum;
+        minIntToNum = maxIntToNum;
+        maxIntToNum = tmp;
       }
-      super(
-        charstring.length >= minInt && charstring.length <= maxInt
-          ? charstring
-          : "",
-        ...ofCharInputs,
-      );
-      this.min = minInt;
-      this.max = maxInt;
+      if (minIntToNum === Infinity) minIntToNum = maxIntToNum = 0;
+      this.min = minIntToNum;
+      this.max = maxIntToNum;
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `BoundedRepeatCharString: constructor: Error creating BoundedRepeatCharString object: \n${e}`,
       );
     }
   }
 
-  protected static get PositiveInteger(): typeof PositiveInteger {
+  protected override _qualifies(candidateCharString: string): boolean {
+    try {
+      return (
+        super._qualifies(candidateCharString) &&
+        candidateCharString.length >= this.min &&
+        candidateCharString.length <= this.max
+      );
+    } catch (e) {
+      throw new EvalError(
+        `BoundedRepeatCharString: _qualifies: Error calling _qualifies: \n${e}`,
+      );
+    }
+  }
+
+  static get PositiveInteger(): typeof PositiveInteger {
     try {
       return importModule("./common/types/numbers/PositiveInteger");
     } catch (e) {

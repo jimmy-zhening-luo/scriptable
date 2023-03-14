@@ -16,24 +16,25 @@ class ValidUrlPart extends up_ValidString {
       trimLeading?: string[];
       trimTrailing?: string[];
     },
-    ...allowedChars: CharSet.CharInput[]
+    ...allowedChars: ConstructorParameters<typeof CharSet>[1][]
   ) {
     try {
       super(
         part,
-        minLength,
-        maxLength,
+        {
+          min: minLength,
+          max: maxLength,
+          allowedChars: allowedChars,
+        },
         {
           trim: true,
           toLower: toLower,
           trimLeading: trimLeading,
           trimTrailing: trimTrailing,
         },
-        {},
-        ...allowedChars,
       );
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `ValidUrlPart: constructor: error creating ValidUrlPart: \n${e}`,
       );
     }

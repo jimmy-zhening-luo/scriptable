@@ -59,19 +59,19 @@ class Strings {
     }
   }
 
-  static get Chars(): typeof Chars {
+  static get CharSets(): typeof CharSets {
     try {
-      return Strings.CharStrings.Chars;
+      return Strings.CharStrings.CharSets;
     } catch (e) {
       throw new ReferenceError(
-        `Strings: Chars: Error importing Chars module: \n${e}`,
+        `Strings: CharSets: Error importing CharSets module: \n${e}`,
       );
     }
   }
 
   static get CharSet(): typeof CharSet {
     try {
-      return Strings.Chars.CharSet;
+      return Strings.CharSets.CharSet;
     } catch (e) {
       throw new ReferenceError(
         `Strings: CharSet: Error importing CharSet module: \n${e}`,
@@ -81,40 +81,10 @@ class Strings {
 
   static get UrlCharSet(): typeof UrlCharSet {
     try {
-      return Strings.Chars.UrlCharSet;
+      return Strings.CharSets.UrlCharSet;
     } catch (e) {
       throw new ReferenceError(
         `Strings: UrlCharSet: Error importing UrlCharSet module: \n${e}`,
-      );
-    }
-  }
-
-  static get OneGram(): typeof OneGram {
-    try {
-      return Strings.ValidString.OneGram;
-    } catch (e) {
-      throw new ReferenceError(
-        `Strings: OneGram: Error importing OneGram module: \n${e}`,
-      );
-    }
-  }
-
-  static get NGram(): typeof NGram {
-    try {
-      return Strings.OneGram.NGram;
-    } catch (e) {
-      throw new ReferenceError(
-        `Strings: NGram: Error importing NGram module: \n${e}`,
-      );
-    }
-  }
-
-  static get PositiveInteger(): typeof PositiveInteger {
-    try {
-      return Strings.NGram.PositiveInteger;
-    } catch (e) {
-      throw new ReferenceError(
-        `Strings: PositiveInteger: Error importing PositiveInteger module: \n${e}`,
       );
     }
   }

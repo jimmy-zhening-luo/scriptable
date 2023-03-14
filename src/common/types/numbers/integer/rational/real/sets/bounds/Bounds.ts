@@ -3,7 +3,7 @@ abstract class Bounds {
     try {
       return !Number.isNaN(value);
     } catch (e) {
-      throw new ReferenceError("Bounds: error calling isBounded");
+      throw new EvalError("Bounds: error calling isBounded");
     }
   }
 }

@@ -4,13 +4,14 @@ const _NRepeatCharString: typeof NRepeatCharString = importModule(
 
 class OneCharString extends _NRepeatCharString {
   constructor(
-    charstring: string,
-    ...ofCharInputs: CharSet[] | string[] | string[][] | CharSet.CharInput[]
+    ...repeatCharStringCtorParams: ConstructorParameters<
+      typeof RepeatCharString
+    >
   ) {
     try {
-      super(1, charstring, ...ofCharInputs);
+      super(1, ...repeatCharStringCtorParams);
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `OneCharString: constructor: Error creating OneCharString object: \n${e}`,
       );
     }

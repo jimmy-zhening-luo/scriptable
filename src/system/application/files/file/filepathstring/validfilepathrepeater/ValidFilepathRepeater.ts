@@ -5,19 +5,17 @@ const fpr_ValidString: typeof ValidString = importModule(
 class ValidFilepathRepeater extends fpr_ValidString {
   constructor(pathSegment: string = "") {
     try {
-      super(
-        pathSegment,
-        1,
-        255,
-        {},
-        {
-          negateAllowedChars: true,
-        },
-        ...ValidFilepathRepeater.CharSet.colon,
-        ...ValidFilepathRepeater.CharSet.slash,
-      );
+      super(pathSegment, {
+        min: 1,
+        max: 255,
+        negate: true,
+        allowedChars: [
+          ...ValidFilepathRepeater.CharSet.colon,
+          ...ValidFilepathRepeater.CharSet.slash,
+        ],
+      });
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `ValidFilepathRepeater: constructor: Caught unhandled exception instantiating parent class ValidFilepathRepeater: \n${e}`,
       );
     }

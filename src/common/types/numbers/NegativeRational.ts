@@ -1,7 +1,7 @@
 const nr_Integer: typeof Integer = importModule("integer/Integer");
 
 class NegativeRational extends nr_Integer.Rational {
-  override cardinality: Cardinality =
+  protected override cardinality: Cardinality =
     new NegativeRational.Cardinality.Negative();
 
   static get Integer(): typeof Integer {

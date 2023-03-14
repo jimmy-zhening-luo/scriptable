@@ -6,9 +6,6 @@
       "path": "charstrings/tsconfig.json"
     },
     {
-      "path": "words/tsconfig.json"
-    },
-    {
       "path": "../numbers/tsconfig.json"
     }
   ],

@@ -31,7 +31,7 @@ class Api {
       );
       this._requestBody = new Api.RequestBody(requestBody);
       this._timeoutSeconds = new Api.PositiveFiniteInteger(timeoutSeconds)
-        .isValidNumber
+        .isValid
         ? timeoutSeconds
         : 60;
     } catch (e) {
@@ -423,7 +423,7 @@ class Api {
 
   set timeout(timeoutSeconds: number) {
     try {
-      if (new Api.PositiveFiniteInteger(timeoutSeconds).isValidNumber)
+      if (new Api.PositiveFiniteInteger(timeoutSeconds).isValid)
         this._timeoutSeconds = timeoutSeconds;
     } catch (e) {
       throw new Error(`Api: set timeout: error setting timeout: \n${e}`);

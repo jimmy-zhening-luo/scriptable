@@ -3,8 +3,8 @@ class CharSet {
   readonly negate: boolean = false;
 
   constructor(
-    negate?: boolean | CharSet.CharInput,
-    ...charInputs: CharSet.CharInput[]
+    negate?: boolean | CharSet | string | string[],
+    ...charInputs: (CharSet | string | string[])[]
   ) {
     try {
       if (negate === undefined) negate = false;
@@ -17,6 +17,7 @@ class CharSet {
           ? this.charset.push(...input)
           : this.charset.push(input);
       });
+      this.charset.filter(char => char.length === 1);
     } catch (e) {
       throw new SyntaxError(
         `CharSet: constructor: Error creating CharSet object: \n${e}`,
@@ -24,12 +25,16 @@ class CharSet {
     }
   }
 
-  includes(char: string): boolean {
+  allows(char: string): boolean {
     try {
-      return this.charset.length === 0 || this.charset.includes(char);
+      return (
+        char.length === 1 &&
+        ((this.negate === false && this.charset.includes(char)) ||
+          (this.negate === true && !this.charset.includes(char)))
+      );
     } catch (e) {
       throw new EvalError(
-        `CharSet: includes: Error checking if CharSet includes char: \n${e}`,
+        `CharSet: includes: Error checking if CharSet allows char: \n${e}`,
       );
     }
   }
@@ -257,10 +262,6 @@ class CharSet {
   static get space(): string[] {
     return [" "];
   }
-}
-
-namespace CharSet {
-  export type CharInput = CharSet | string | string[];
 }
 
 module.exports = CharSet;

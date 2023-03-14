@@ -3,7 +3,7 @@ abstract class Cardinality {
     try {
       return !Number.isNaN(value);
     } catch (e) {
-      throw new ReferenceError("Cardinality: error calling isCardinal");
+      throw new EvalError("Cardinality: error calling isCardinal");
     }
   }
 }

@@ -4,24 +4,25 @@ const _BoundedRepeatCharString: typeof BoundedRepeatCharString = importModule(
 
 class NRepeatCharString extends _BoundedRepeatCharString {
   constructor(
-    n: number,
-    charstring: string,
-    ...ofCharInputs: CharSet[] | string[] | string[][] | CharSet.CharInput[]
+    n: ConstructorParameters<typeof BoundedRepeatCharString>[0],
+    ...repeatCharStringCtorParams: ConstructorParameters<
+      typeof RepeatCharString
+    >
   ) {
     try {
-      super(n, n, charstring, ...ofCharInputs);
+      super(n, n, ...repeatCharStringCtorParams);
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `NRepeatCharString: constructor: Error creating NRepeatCharString object: \n${e}`,
       );
     }
   }
 
-  get n(): number {
+  get n(): typeof NRepeatCharString.prototype.max {
     try {
       return this.max;
     } catch (e) {
-      throw new Error(`NRepeatCharString: n: Error getting n: \n${e}`);
+      throw new EvalError(`NRepeatCharString: n: Error getting n: \n${e}`);
     }
   }
 

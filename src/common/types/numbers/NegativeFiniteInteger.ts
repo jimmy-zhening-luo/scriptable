@@ -1,7 +1,7 @@
 const n_FiniteInteger: typeof FiniteInteger = importModule("FiniteInteger");
 
 class NegativeFiniteInteger extends n_FiniteInteger {
-  override cardinality: Cardinality =
+  protected override cardinality: Cardinality =
     new NegativeFiniteInteger.Cardinality.Negative();
 
   static get FiniteInteger(): typeof FiniteInteger {

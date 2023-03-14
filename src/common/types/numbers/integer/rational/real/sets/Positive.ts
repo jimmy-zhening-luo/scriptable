@@ -9,7 +9,7 @@ class Positive extends p_Cardinality {
         super.isCardinal(value) && (value === 0 || value === -0 || value > 0)
       );
     } catch (e) {
-      throw new Error("Positive: error calling isCardinal");
+      throw new EvalError("Positive: error calling isCardinal");
     }
   }
 

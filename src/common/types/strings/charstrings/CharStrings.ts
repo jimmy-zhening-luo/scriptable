@@ -49,12 +49,12 @@ class CharStrings {
     }
   }
 
-  static get Chars(): typeof Chars {
+  static get CharSets(): typeof CharSets {
     try {
-      return CharStrings.CharString.Chars;
+      return CharStrings.CharString.CharSets;
     } catch (e) {
       throw new ReferenceError(
-        `CharStrings: Chars: Error importing Chars module: \n${e}`,
+        `CharStrings: CharSets: Error importing CharSets module: \n${e}`,
       );
     }
   }

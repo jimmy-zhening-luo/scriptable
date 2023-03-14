@@ -1,50 +1,31 @@
 class ValidString {
-  readonly raw: string;
-  readonly min: number;
-  readonly max: number;
-
   readonly cleaned: string;
-  readonly value: null | string;
-  readonly isImplicitlyInvalid: boolean;
-
+  private readonly _boundedRepeatCharString: BoundedRepeatCharString;
   constructor(
-    string: string,
-    min: number | CharSet.CharInput = ValidString.MinDefault,
-    max: number | CharSet.CharInput = ValidString.MaxDefault,
-    cleanOptions: Parameters<typeof ValidString.clean>[1] = {},
+    candidateString: string = "",
     {
-      negateAllowedChars = false,
-      isValid = true,
+      min = 0,
+      max = Infinity,
+      negate = false,
+      allowedChars = [],
     }: {
-      negateAllowedChars?: boolean;
-      isValid?: boolean;
-    },
-    ...allowedChars: CharSet.CharInput[]
+      min?: number;
+      max?: number;
+      negate?: boolean;
+      allowedChars?: ConstructorParameters<typeof BoundedRepeatCharString>[4][];
+    } = {},
+    cleanOptions: Parameters<typeof ValidString._clean>[1] = {},
   ) {
     try {
-      this.raw = string;
-      this.min = this._parseBoundsNumber(min, ValidString.MinDefault);
-      this.max = this._parseBoundsNumber(max, ValidString.MaxDefault);
-
-      this.cleaned = ValidString.clean(this.raw, cleanOptions);
-      this.isImplicitlyInvalid = !isValid;
-
-      this.value =
-        this.isImplicitlyInvalid ||
-        this.cleaned.length > this.max ||
-        this.cleaned.length < this.min
-          ? null
-          : ValidString.parseStringToOneGrams(this.cleaned)
-              .map(
-                ngram =>
-                  new ValidString.CharStrings.OneCharString(
-                    ngram.toString(),
-                    ...allowedChars,
-                  ),
-              )
-              .every(charstring => charstring.isValid === !negateAllowedChars)
-          ? this.cleaned
-          : null;
+      this.cleaned = ValidString._clean(candidateString, cleanOptions);
+      this._boundedRepeatCharString =
+        new ValidString.CharStrings.BoundedRepeatCharString(
+          min,
+          max,
+          this.cleaned,
+          negate,
+          ...allowedChars,
+        );
     } catch (e) {
       throw new Error(
         `ValidString: constructor: Error creating ValidString object: \n${e}`,
@@ -52,19 +33,8 @@ class ValidString {
     }
   }
 
-  private _parseBoundsNumber(
-    bound: ConstructorParameters<typeof ValidString>[1],
-    fallback: number,
-  ): typeof ValidString.prototype.min {
-    try {
-      return typeof bound === "number"
-        ? new ValidString.PositiveInteger(bound).value ?? fallback
-        : fallback;
-    } catch (e) {
-      throw new EvalError(
-        `ValidString: _parseBoundsNumber: Error parsing bounds number: \n${e}`,
-      );
-    }
+  get value(): typeof BoundedRepeatCharString.prototype.value {
+    return this._boundedRepeatCharString.value;
   }
 
   get isValid(): boolean {
@@ -77,11 +47,19 @@ class ValidString {
     }
   }
 
-  get length(): number {
+  get min(): number {
     try {
-      return this.value?.length ?? 0;
+      return this._boundedRepeatCharString.min;
     } catch (e) {
-      throw new EvalError(`ValidString: length: Error getting length: \n${e}`);
+      throw new EvalError(`ValidString: min: Error getting min: \n${e}`);
+    }
+  }
+
+  get max(): number {
+    try {
+      return this._boundedRepeatCharString.max;
+    } catch (e) {
+      throw new EvalError(`ValidString: max: Error getting max: \n${e}`);
     }
   }
 
@@ -95,7 +73,7 @@ class ValidString {
     }
   }
 
-  static clean(
+  private static _clean(
     raw: string,
     {
       toLower = false,
@@ -117,8 +95,8 @@ class ValidString {
       if (toLower === true) raw = raw.toLowerCase();
       if (trim === true) raw = raw.trim();
       const preprocessed: string = raw;
-      return ValidString.trimEdge(
-        ValidString.trimEdge(
+      return ValidString._trimEdge(
+        ValidString._trimEdge(
           preprocessed,
           trimLeading,
           ValidString.Edge.Leading,
@@ -133,8 +111,8 @@ class ValidString {
     }
   }
 
-  static trimEdge(
-    string: ConstructorParameters<typeof ValidString>[0],
+  private static _trimEdge(
+    string: string,
     wordsToTrim: string[] = [],
     edge: ValidString.Edge,
     trimExcept: boolean = false,
@@ -160,48 +138,6 @@ class ValidString {
     }
   }
 
-  static parseStringToOneGrams(
-    string: ConstructorParameters<typeof ValidString>[0],
-  ): NGram[] {
-    try {
-      return [...string].map(char => new ValidString.OneGram(char));
-    } catch (e) {
-      throw new EvalError(
-        `ValidString: parseStringToOneGrams: Error parsing string to one grams: \n${e}`,
-      );
-    }
-  }
-
-  static get OneGram(): typeof OneGram {
-    try {
-      return importModule("words/OneGram");
-    } catch (e) {
-      throw new ReferenceError(
-        `ValidString: error importing OneGram module: \n${e}`,
-      );
-    }
-  }
-
-  static get NGram(): typeof NGram {
-    try {
-      return ValidString.OneGram.NGram;
-    } catch (e) {
-      throw new ReferenceError(
-        `ValidString: error importing NGram module: \n${e}`,
-      );
-    }
-  }
-
-  static get PositiveInteger(): typeof PositiveInteger {
-    try {
-      return ValidString.OneGram.NGram.PositiveInteger;
-    } catch (e) {
-      throw new ReferenceError(
-        `ValidString: error importing PositiveInteger module: \n${e}`,
-      );
-    }
-  }
-
   static get CharStrings(): typeof CharStrings {
     try {
       return importModule("charstrings/CharStrings");
@@ -212,19 +148,19 @@ class ValidString {
     }
   }
 
-  static get Chars(): typeof Chars {
+  static get CharSets(): typeof CharSets {
     try {
-      return ValidString.CharStrings.Chars;
+      return ValidString.CharStrings.CharSets;
     } catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing Chars module: \n${e}`,
+        `ValidString: error importing CharSets module: \n${e}`,
       );
     }
   }
 
   static get CharSet(): typeof CharSet {
     try {
-      return ValidString.Chars.CharSet;
+      return ValidString.CharSets.CharSet;
     } catch (e) {
       throw new ReferenceError(
         `ValidString: error importing CharSet module: \n${e}`,
@@ -234,7 +170,7 @@ class ValidString {
 
   static get UrlCharSet(): typeof UrlCharSet {
     try {
-      return ValidString.Chars.UrlCharSet;
+      return ValidString.CharSets.UrlCharSet;
     } catch (e) {
       throw new ReferenceError(
         `ValidString: error importing UrlCharSet module: \n${e}`,
@@ -244,9 +180,6 @@ class ValidString {
 }
 
 namespace ValidString {
-  export const MinDefault: number = 0;
-  export const MaxDefault: number = Infinity;
-
   export enum Edge {
     Leading,
     Trailing,
