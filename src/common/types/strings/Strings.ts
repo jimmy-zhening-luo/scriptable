@@ -19,49 +19,9 @@ class Strings {
     }
   }
 
-  static get CharStrings(): typeof CharStrings {
-    try {
-      return Strings.ValidString.CharStrings;
-    } catch (e) {
-      throw new ReferenceError(
-        `Strings: CharStrings: Error importing CharStrings module: \n${e}`,
-      );
-    }
-  }
-
-  static get OneCharString(): typeof OneCharString {
-    try {
-      return Strings.CharStrings.OneCharString;
-    } catch (e) {
-      throw new ReferenceError(
-        `Strings: OneCharString: Error importing OneCharString module: \n${e}`,
-      );
-    }
-  }
-
-  static get NRepeatCharString(): typeof NRepeatCharString {
-    try {
-      return Strings.OneCharString.NRepeatCharString;
-    } catch (e) {
-      throw new ReferenceError(
-        `Strings: NRepeatCharString: Error importing NRepeatCharString module: \n${e}`,
-      );
-    }
-  }
-
-  static get RepeatCharString(): typeof RepeatCharString {
-    try {
-      return Strings.NRepeatCharString.RepeatCharString;
-    } catch (e) {
-      throw new ReferenceError(
-        `Strings: RepeatCharString: Error importing RepeatCharString module: \n${e}`,
-      );
-    }
-  }
-
   static get CharSets(): typeof CharSets {
     try {
-      return Strings.CharStrings.CharSets;
+      return Strings.ValidString.CharSets;
     } catch (e) {
       throw new ReferenceError(
         `Strings: CharSets: Error importing CharSets module: \n${e}`,

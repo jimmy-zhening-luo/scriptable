@@ -18,14 +18,13 @@ class ValidString {
   ) {
     try {
       this.cleaned = ValidString._clean(candidateString, cleanOptions);
-      this._boundedRepeatCharString =
-        new ValidString.CharStrings.BoundedRepeatCharString(
-          min,
-          max,
-          this.cleaned,
-          negate,
-          ...allowedChars,
-        );
+      this._boundedRepeatCharString = new ValidString.BoundedRepeatCharString(
+        min,
+        max,
+        this.cleaned,
+        negate,
+        ...allowedChars,
+      );
     } catch (e) {
       throw new Error(
         `ValidString: constructor: Error creating ValidString object: \n${e}`,
@@ -138,19 +137,19 @@ class ValidString {
     }
   }
 
-  static get CharStrings(): typeof CharStrings {
+  static get BoundedRepeatCharString(): typeof BoundedRepeatCharString {
     try {
-      return importModule("charstrings/CharStrings");
+      return importModule("charstrings/BoundedRepeatCharString");
     } catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing CharStrings module: \n${e}`,
+        `ValidString: error importing BoundedRepeatCharString module: \n${e}`,
       );
     }
   }
 
   static get CharSets(): typeof CharSets {
     try {
-      return ValidString.CharStrings.CharSets;
+      return ValidString.BoundedRepeatCharString.CharSets;
     } catch (e) {
       throw new ReferenceError(
         `ValidString: error importing CharSets module: \n${e}`,

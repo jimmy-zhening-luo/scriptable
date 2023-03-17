@@ -3,9 +3,6 @@
   "include": ["**/*", "../../../../../../numbers/**/*"],
   "references": [
     {
-      "path": "charsets/tsconfig.json"
-    },
-    {
       "path": "../../../../../../numbers/tsconfig.json"
     }
   ],

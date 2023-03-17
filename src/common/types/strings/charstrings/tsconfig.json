@@ -3,7 +3,7 @@
   "include": ["**/*", "../../numbers/**/*"],
   "references": [
     {
-      "path": "nrepeatcharstring/tsconfig.json"
+      "path": "repeatcharstring/tsconfig.json"
     },
     {
       "path": "../../numbers/tsconfig.json"
