@@ -15,7 +15,7 @@ class ValidFilepathRepeater extends fpr_ValidString {
         ],
       });
     } catch (e) {
-      throw new EvalError(
+      throw new SyntaxError(
         `ValidFilepathRepeater: constructor: Caught unhandled exception instantiating parent class ValidFilepathRepeater: \n${e}`,
       );
     }
