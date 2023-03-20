@@ -6,7 +6,7 @@ class Bookmark {
     try {
       this.bookmark = bookmark.trim();
     } catch (e) {
-      throw new Error(
+      throw new SyntaxError(
         `Bookmark: constructor: Caught unhandled exception while instantiating Bookmark. See unhandled exception: \n${e}`,
       );
     }
@@ -18,7 +18,7 @@ class Bookmark {
         this.bookmark !== "" && Bookmark.Manager.bookmarkExists(this.bookmark)
       );
     } catch (e) {
-      throw new Error(
+      throw new ReferenceError(
         `Bookmark: exists: Caught unhandled exception while using Scriptable FileManager class to check whether bookmark exists. See unhandled exception: \n${e}`,
       );
     }
@@ -41,7 +41,9 @@ class Bookmark {
         e = new Error(
           `Caught unhandled exception while using Scriptable FileManager class to get bookmarked path of the bookmark named '${this.bookmark}'. See unhandled exception: \n${e}`,
         );
-      throw new Error(`Bookmark: path: Error getting bookmarked path: \n${e}`);
+      throw new ReferenceError(
+        `Bookmark: path: Error getting bookmarked path: \n${e}`,
+      );
     }
   }
 
@@ -49,7 +51,7 @@ class Bookmark {
     try {
       return this.path;
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `Bookmark: toString: Caught unhandled exception while getting bookmarked path of the bookmark named '${this.bookmark}'. See unhandled exception: \n${e}`,
       );
     }
@@ -65,7 +67,7 @@ class Bookmark {
         (instance as Bookmark)._nominalType === "Bookmark"
       );
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `Bookmark: [Symbol.hasInstance]: Caught unhandled exception while checking whether instance is an instance of Bookmark. See unhandled exception: \n${e}`,
       );
     }
@@ -75,11 +77,9 @@ class Bookmark {
     try {
       return FileManager.iCloud();
     } catch (e) {
-      e = new Error(
+      throw new ReferenceError(
         `Bookmark: Manager: Caught unhandled exception while getting Scriptable FileManager.iCloud() instance. See unhandled exception: \n${e}`,
       );
-      console.error(e);
-      throw e;
     }
   }
 }
