@@ -1,26 +1,18 @@
 class StringSplitter {
-  readonly string: string;
-  readonly unmerged: string[];
-  readonly merged: string[];
+  readonly separator: string;
+  private readonly _merged: string[];
 
   constructor(
-    stringOrTokens: Parameters<typeof StringSplitter.split>[0],
-    separator: Parameters<typeof StringSplitter.split>[1] = "",
-    splitOptions: Parameters<typeof StringSplitter.split>[2] = {},
-    mergeOptions: Parameters<typeof StringSplitter.merge>[3] = {},
+    stringOrTokens: Parameters<typeof StringSplitter._split>[0],
+    separator: Parameters<typeof StringSplitter._split>[1] = "",
+    splitOptions: Parameters<typeof StringSplitter._split>[2] = {},
+    mergeOptions: Parameters<typeof StringSplitter._merge>[3] = {},
   ) {
     try {
-      this.string = Array.isArray(stringOrTokens)
-        ? stringOrTokens.join(separator)
-        : stringOrTokens;
-      this.unmerged = StringSplitter.split(
-        this.string,
-        separator,
-        splitOptions,
-      );
-      this.merged = StringSplitter.merge(
-        this.unmerged,
-        separator,
+      this.separator = separator;
+      this._merged = StringSplitter._merge(
+        stringOrTokens,
+        this.separator,
         splitOptions,
         mergeOptions,
       );
@@ -31,111 +23,51 @@ class StringSplitter {
     }
   }
 
-  get splitLength(): number {
-    try {
-      return this.unmerged.length;
-    } catch (e) {
-      throw new EvalError(
-        `StringSplitter: splitLength: Error getting split length: \n${e}`,
-      );
-    }
-  }
-
-  get mergedLength(): number {
-    try {
-      return this.merged.length;
-    } catch (e) {
-      throw new EvalError(
-        `StringSplitter: mergedLength: Error getting merged length: \n${e}`,
-      );
-    }
-  }
-
-  get length(): typeof StringSplitter.prototype.mergedLength {
-    try {
-      return this.mergedLength;
-    } catch (e) {
-      throw new EvalError(
-        `StringSplitter: length: Error getting length: \n${e}`,
-      );
-    }
-  }
-
-  get didSplit(): boolean {
-    try {
-      return this.splitLength !== 0 && this.splitLength !== 1;
-    } catch (e) {
-      throw new EvalError(
-        `StringSplitter: didSplit: Error checking if split: \n${e}`,
-      );
-    }
-  }
-
-  get didMerge(): boolean {
-    try {
-      return this.mergedLength < this.splitLength;
-    } catch (e) {
-      throw new EvalError(
-        `StringSplitter: didMerge: Error checking if merge occurred during construction: \n${e}`,
-      );
-    }
-  }
-
-  toString(): string {
-    try {
-      return this.string;
-    } catch (e) {
-      throw new EvalError(
-        `StringSplitter: toString: Error converting to string: \n${e}`,
-      );
-    }
-  }
-
-  toTuple(): string[] {
-    try {
-      return this.merged;
-    } catch (e) {
-      throw new EvalError(
-        `StringSplitter: toTuple: Error converting to tuple: \n${e}`,
-      );
-    }
-  }
-
-  static tokenize(
-    stringOrTokens: string | string[],
-    separator: string = "",
+  private static _merge(
+    stringOrTokens: Parameters<typeof StringSplitter._split>[0],
+    separator: Parameters<typeof StringSplitter._split>[1] = "",
+    splitOptions: Parameters<typeof StringSplitter._split>[2] = {},
+    {
+      limit = Infinity,
+      mergeTo = StringSplitter.Direction.Right,
+    }: {
+      limit?: number;
+      mergeTo?: StringSplitter.Direction;
+    },
   ): string[] {
     try {
-      return Array.isArray(stringOrTokens)
-        ? stringOrTokens
-        : stringOrTokens === ""
-        ? []
-        : separator === ""
-        ? [...stringOrTokens]
-        : stringOrTokens.split(separator);
+      limit = new StringSplitter.PositiveInteger(limit).value ?? Infinity;
+      const tokens: string[] = StringSplitter._split(
+        stringOrTokens,
+        separator,
+        splitOptions,
+      );
+      if (tokens.length === 0) return [];
+      else {
+        if (limit === Infinity) return tokens;
+        else {
+          if (mergeTo === StringSplitter.Direction.Left)
+            return [
+              tokens.slice(0, limit - 1).join(separator),
+              ...tokens.slice(limit - 1),
+            ];
+          else
+            return [
+              ...tokens.slice(0, limit - 1),
+              tokens.slice(limit - 1).join(separator),
+            ];
+        }
+      }
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: tokenize: Error tokenizing string: \n${e}`,
+        `StringSplitter: merge: Error merging tokens: \n${e}`,
       );
     }
   }
 
-  static aggregate(
-    stringOrTokens: Parameters<typeof StringSplitter.tokenize>[0],
-    separator: Parameters<typeof StringSplitter.tokenize>[1] = "",
-  ): string {
-    try {
-      return StringSplitter.tokenize(stringOrTokens, separator).join(separator);
-    } catch (e) {
-      throw new EvalError(
-        `StringSplitter: aggregate: Error aggregating tokens: \n${e}`,
-      );
-    }
-  }
-
-  static split(
-    stringOrTokens: Parameters<typeof StringSplitter.aggregate>[0],
-    separator: Parameters<typeof StringSplitter.aggregate>[1] = "",
+  private static _split(
+    stringOrTokens: Parameters<typeof StringSplitter.__aggregate>[0],
+    separator: Parameters<typeof StringSplitter.__aggregate>[1] = "",
     {
       trim = false,
       trimTokens = false,
@@ -145,10 +77,10 @@ class StringSplitter {
       trimTokens?: boolean;
       ignoreEmptyTokens?: boolean;
     },
-  ): typeof StringSplitter.prototype.unmerged {
+  ): string[] {
     try {
-      return StringSplitter.tokenize(
-        StringSplitter.aggregate(stringOrTokens, separator)[
+      return StringSplitter.__tokenize(
+        StringSplitter.__aggregate(stringOrTokens, separator)[
           trim ? "trim" : "toString"
         ](),
         separator,
@@ -162,83 +94,88 @@ class StringSplitter {
     }
   }
 
-  static merge(
-    stringOrTokens: Parameters<typeof StringSplitter.split>[0],
-    separator: Parameters<typeof StringSplitter.split>[1] = "",
-    splitOptions: Parameters<typeof StringSplitter.split>[2] = {},
-    {
-      limit = Infinity,
-      mergeTo = StringSplitter.Direction.Right,
-    }: {
-      limit?: number;
-      mergeTo?: StringSplitter.Direction;
-    },
-  ): typeof StringSplitter.prototype.merged {
+  private static __aggregate(
+    stringOrTokens: Parameters<typeof StringSplitter.__tokenize>[0],
+    separator: Parameters<typeof StringSplitter.__tokenize>[1] = "",
+  ): string {
     try {
-      limit = new StringSplitter.PositiveInteger(limit).value ?? Infinity;
-      const tokens: string[] = StringSplitter.split(
-        stringOrTokens,
+      return StringSplitter.__tokenize(stringOrTokens, separator).join(
         separator,
-        splitOptions,
       );
-      return tokens.length === 0
-        ? []
-        : limit === Infinity
-        ? tokens
-        : mergeTo === StringSplitter.Direction.Left
-        ? [
-            tokens.slice(0, limit - 1).join(separator),
-            ...tokens.slice(limit - 1),
-          ]
-        : [
-            ...tokens.slice(0, limit - 1),
-            tokens.slice(limit - 1).join(separator),
-          ];
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: merge: Error merging tokens: \n${e}`,
+        `StringSplitter: aggregate: Error aggregating tokens: \n${e}`,
       );
     }
   }
 
-  static mergeLeft(
-    stringOrTokens: Parameters<typeof StringSplitter.split>[0],
-    separator: Parameters<typeof StringSplitter.split>[1] = "",
-    splitOptions: Parameters<typeof StringSplitter.split>[2] = {},
-    mergeOptions: Exclude<
-      Parameters<typeof StringSplitter.merge>[3],
-      "mergeTo"
-    >,
-  ): typeof StringSplitter.prototype.merged {
+  private static __tokenize(
+    stringOrTokens: string | string[],
+    separator: string = "",
+  ): string[] {
     try {
-      return StringSplitter.merge(stringOrTokens, separator, splitOptions, {
-        ...mergeOptions,
-        mergeTo: StringSplitter.Direction.Left,
-      });
+      if (typeof stringOrTokens === "string") {
+        if (stringOrTokens === "") return [];
+        else {
+          if (separator === "") return [...stringOrTokens];
+          else return stringOrTokens.split(separator);
+        }
+      } else return [...stringOrTokens];
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: mergeLeft: Error merging tokens to the left: \n${e}`,
+        `StringSplitter: tokenize: Error tokenizing string: \n${e}`,
       );
     }
   }
 
-  static mergeRight(
-    stringOrTokens: Parameters<typeof StringSplitter.split>[0],
-    separator: Parameters<typeof StringSplitter.split>[1] = "",
-    splitOptions: Parameters<typeof StringSplitter.split>[2] = {},
-    mergeOptions: Exclude<
-      Parameters<typeof StringSplitter.merge>[3],
-      "mergeTo"
-    >,
-  ): typeof StringSplitter.prototype.merged {
+  get numTokens(): number {
     try {
-      return StringSplitter.merge(stringOrTokens, separator, splitOptions, {
-        ...mergeOptions,
-        mergeTo: StringSplitter.Direction.Right,
-      });
+      return this.separator === ""
+        ? this.toString().length
+        : this.toString().split(this.separator).length;
     } catch (e) {
       throw new EvalError(
-        `StringSplitter: mergeRight: Error merging tokens to the right: \n${e}`,
+        `StringSplitter: numTokens: Error getting number of raw tokens: \n${e}`,
+      );
+    }
+  }
+
+  get length(): number {
+    try {
+      return this.toTuple().length;
+    } catch (e) {
+      throw new EvalError(
+        `StringSplitter: length: Error getting length of merged array: \n${e}`,
+      );
+    }
+  }
+
+  get wasMerged(): boolean {
+    try {
+      return this.length < this.numTokens;
+    } catch (e) {
+      throw new EvalError(
+        `StringSplitter: didMerge: Error checking if merge occurred during construction: \n${e}`,
+      );
+    }
+  }
+
+  toTuple(): string[] {
+    try {
+      return [...this._merged];
+    } catch (e) {
+      throw new EvalError(
+        `StringSplitter: toTuple: Error converting to tuple: \n${e}`,
+      );
+    }
+  }
+
+  toString(): string {
+    try {
+      return this.toTuple().join(this.separator);
+    } catch (e) {
+      throw new EvalError(
+        `StringSplitter: toString: Error converting to string: \n${e}`,
       );
     }
   }
