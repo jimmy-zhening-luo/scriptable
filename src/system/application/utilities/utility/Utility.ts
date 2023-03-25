@@ -3,8 +3,8 @@ abstract class Utility {
 
   constructor(
     utilityClassName: string,
-    FileTypeConstructor: typeof File,
     utilityFileSubpath: string,
+    FileTypeConstructor: typeof File = Utility.ReadOnlyFile,
   ) {
     try {
       this._file = new FileTypeConstructor(
@@ -12,7 +12,7 @@ abstract class Utility {
         utilityFileSubpath,
       );
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `Utility: constructor: Caught unhandled exception while creating Utility file: \n${e}`,
       );
     }
@@ -72,7 +72,7 @@ abstract class Utility {
 
   get filename(): typeof Utility.prototype._file.leaf {
     try {
-      return this._file.leaf;
+      return this._file.isFile ? this._file.leaf : "";
     } catch (e) {
       throw new EvalError(`Utility: filename: Error getting filename: \n${e}`);
     }
