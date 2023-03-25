@@ -65,17 +65,21 @@ class File {
     }
   }
 
-  get root(): File {
+  get root(): this {
     try {
-      return this.constructor(this._root);
+      return new (this.constructor as new (
+        ...args: ConstructorParameters<typeof File>
+      ) => this)(this._root);
     } catch (e) {
       throw new EvalError(`File: root: Error getting root: \n${e}`);
     }
   }
 
-  get parent(): File {
+  get parent(): this {
     try {
-      return this.constructor(this.root, this._subpath.parent);
+      return new (this.constructor as new (
+        ...args: ConstructorParameters<typeof File>
+      ) => this)(this.root, this._subpath.parent);
     } catch (e) {
       throw new ReferenceError(
         `File: parent: Error getting parent File object: \n${e}`,
@@ -167,9 +171,11 @@ class File {
 
   append(
     ...filepaths: Parameters<typeof FilepathString.prototype.append>
-  ): File {
+  ): this {
     try {
-      return this.constructor(this.root, this._subpath.append(...filepaths));
+      return new (this.constructor as new (
+        ...args: ConstructorParameters<typeof File>
+      ) => this)(this.root, this._subpath.append(...filepaths));
     } catch (e) {
       throw new EvalError(`File: append: Error appending subpath: \n${e}`);
     }
