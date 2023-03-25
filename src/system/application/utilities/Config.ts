@@ -3,11 +3,7 @@ const co_Utility: typeof Utility = importModule("utility/Utility");
 class Config extends co_Utility {
   constructor(configSubpath: string, programName: string) {
     try {
-      super(
-        "Config",
-        Config.ReadOnlyFile,
-        Config.File.join(configSubpath, [programName, "json"].join(".")),
-      );
+      super("Config", Config.File.join(configSubpath, `${programName}.json`));
     } catch (e) {
       throw new EvalError(
         `Config: constructor: Error creating Config object: \n${e}`,

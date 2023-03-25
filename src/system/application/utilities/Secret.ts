@@ -3,7 +3,7 @@ const se_Utility: typeof Utility = importModule("utility/Utility");
 class Secret extends se_Utility {
   constructor(subpath: string) {
     try {
-      super("Secret", Secret.ReadOnlyFile, subpath);
+      super("Secret", subpath);
     } catch (e) {
       throw new EvalError(
         `Secret: constructor: Error creating Secret object: \n${e}`,

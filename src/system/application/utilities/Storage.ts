@@ -9,14 +9,11 @@ class Storage extends st_Utility {
     try {
       super(
         "Storage",
+        Storage.File.join(storageSubpath, programName, subpath),
         Storage.File,
-        Storage.File.join(
-          Storage.File.join(storageSubpath, programName),
-          subpath,
-        ),
       );
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `Storage: constructor: Error creating Storage object: \n${e}`,
       );
     }
@@ -27,7 +24,7 @@ class Storage extends st_Utility {
       this._file.write(text, true);
       return this;
     } catch (e) {
-      throw new Error(`Storage: write: Error writing to file: \n${e}`);
+      throw new EvalError(`Storage: write: Error writing to file: \n${e}`);
     }
   }
 
