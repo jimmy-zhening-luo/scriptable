@@ -9,7 +9,7 @@ class Config extends co_Utility {
         Config.File.join(configSubpath, [programName, "json"].join(".")),
       );
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `Config: constructor: Error creating Config object: \n${e}`,
       );
     }
@@ -17,12 +17,12 @@ class Config extends co_Utility {
 
   get isParseable(): boolean {
     try {
-      if (!this._file.exists)
+      if (!this.isFile)
         throw new ReferenceError(
-          `Config.js: Config file '${this._file.path}' does not exist.`,
+          `Config.js: Config file '${this.path}' does not exist.`,
         );
       else {
-        JSON.parse(this._file.data);
+        JSON.parse(this.read());
         return true;
       }
     } catch {
@@ -34,12 +34,12 @@ class Config extends co_Utility {
     try {
       if (!this.isParseable)
         throw new SyntaxError(
-          `Config.js: Config file '${this._file.path}' is not parseable as JSON.`,
+          `Config.js: Config file '${this.path}' is not parseable as JSON.`,
         );
-      else return JSON.parse(this._file.data);
+      else return JSON.parse(this.read());
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error parsing config file '${this._file.path}': \n${e}`,
+        `Config.js: Error parsing config file '${this.path}': \n${e}`,
       );
     }
   }
@@ -49,7 +49,7 @@ class Config extends co_Utility {
       return this.parsed;
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error getting unmerged config file '${this._file.path}': \n${e}`,
+        `Config.js: Error getting unmerged config file '${this.path}': \n${e}`,
       );
     }
   }
@@ -58,12 +58,12 @@ class Config extends co_Utility {
     try {
       if (this.unmerged.app === undefined)
         throw new ReferenceError(
-          `Config.js: Config file '${this._file.path}' does not contain an 'app' property.`,
+          `Config.js: Config file '${this.path}' does not contain an 'app' property.`,
         );
       else return this.unmerged.app;
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error getting 'app' property from config file '${this._file.path}': \n${e}`,
+        `Config.js: Error getting 'app' property from config file '${this.path}': \n${e}`,
       );
     }
   }
@@ -72,12 +72,12 @@ class Config extends co_Utility {
     try {
       if (this.unmerged.user === undefined)
         throw new ReferenceError(
-          `Config.js: Config file '${this._file.path}' does not contain a 'user' property.`,
+          `Config.js: Config file '${this.path}' does not contain a 'user' property.`,
         );
       else return this.unmerged.user;
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error getting 'user' property from config file '${this._file.path}': \n${e}`,
+        `Config.js: Error getting 'user' property from config file '${this.path}': \n${e}`,
       );
     }
   }
@@ -87,7 +87,7 @@ class Config extends co_Utility {
       return this.mergeSettings(this.user, this.app);
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error merging 'user' and 'app' properties from config file '${this._file.path}': \n${e}`,
+        `Config.js: Error merging 'user' and 'app' properties from config file '${this.path}': \n${e}`,
       );
     }
   }
@@ -97,7 +97,7 @@ class Config extends co_Utility {
       return this.mergeSettings(this.app, this.user);
     } catch (e) {
       throw new SyntaxError(
-        `Config.js: Error merging 'user' and 'app' properties from config file '${this._file.path}': \n${e}`,
+        `Config.js: Error merging 'user' and 'app' properties from config file '${this.path}': \n${e}`,
       );
     }
   }
@@ -180,8 +180,8 @@ class Config extends co_Utility {
         return Object.fromEntries(mergedSettingsMap);
       } else return {};
     } catch (e) {
-      throw new Error(
-        `Config.js: Error merging settings from config file '${this._file.path}': \n${e}`,
+      throw new SyntaxError(
+        `Config.js: Error merging settings from config file '${this.path}': \n${e}`,
       );
     }
 
@@ -193,7 +193,7 @@ class Config extends co_Utility {
           typeof obj === "boolean"
         );
       } catch (e) {
-        throw new Error(
+        throw new EvalError(
           `Config.js: Error determining if object is primitive: \n${e}`,
         );
       }
@@ -206,7 +206,7 @@ class Config extends co_Utility {
       try {
         return winner.concat(loser);
       } catch (e) {
-        throw new Error(`Config.js: Error merging arrays: \n${e}`);
+        throw new EvalError(`Config.js: Error merging arrays: \n${e}`);
       }
     }
 
@@ -214,7 +214,7 @@ class Config extends co_Utility {
       try {
         return Object.keys(a).filter(keyOfA => Object.keys(b).includes(keyOfA));
       } catch (e) {
-        throw new Error(`Config.js: Error intersecting keys: \n${e}`);
+        throw new EvalError(`Config.js: Error intersecting keys: \n${e}`);
       }
     }
 
@@ -222,7 +222,7 @@ class Config extends co_Utility {
       try {
         return Object.keys(obj).filter(objKey => !sharedKeys.includes(objKey));
       } catch (e) {
-        throw new Error(
+        throw new EvalError(
           `Config.js: Error getting unique keys of object: \n${e}`,
         );
       }
