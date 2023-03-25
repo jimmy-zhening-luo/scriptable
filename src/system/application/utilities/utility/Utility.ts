@@ -22,14 +22,18 @@ abstract class Utility {
     try {
       if (utilityClassName === "")
         throw new SyntaxError(
-          `Utility name passed to Utility abstract base class constructor was empty. Utility name must be a non-empty string.`
+          `Utility name passed to Utility abstract base class constructor was empty. Utility name must be a non-empty string.`,
         );
       else {
-        const utilityRootBookmarkName: string = ["#", utilityClassName].join("");
-        const utilityRootBookmark: Bookmark = new Utility.File.Bookmark(utilityRootBookmarkName);
+        const utilityRootBookmarkName: string = ["#", utilityClassName].join(
+          "",
+        );
+        const utilityRootBookmark: Bookmark = new Utility.File.Bookmark(
+          utilityRootBookmarkName,
+        );
         if (!utilityRootBookmark.exists)
           throw new ReferenceError(
-          `Utility root bookmark name '${utilityRootBookmarkName}' does not resolve to a Scriptable bookmark`,
+            `Utility root bookmark name '${utilityRootBookmarkName}' does not resolve to a Scriptable bookmark`,
           );
         else return utilityRootBookmark;
       }
@@ -40,11 +44,13 @@ abstract class Utility {
     }
   }
 
-  get exists(): boolean {
+  get isFile(): boolean {
     try {
-      return this._file.exists;
+      return this._file.isFile;
     } catch (e) {
-      throw new EvalError(`Utility: exists: Error checking if file exists: \n${e}`);
+      throw new EvalError(
+        `Utility: isFile: Error checking if file exists and is a file, not a directory: \n${e}`,
+      );
     }
   }
 
@@ -72,25 +78,17 @@ abstract class Utility {
     }
   }
 
-  get data(): typeof Utility.prototype._file.data {
-    try {
-      return this._file.data;
-    } catch (e) {
-      throw new ReferenceError(`Utility: data: Error getting data: \n${e}`);
-    }
-  }
-
   read(): ReturnType<typeof Utility.prototype._file.read> {
     try {
-      return this._file.isReadable ? this._file.read() : "";
+      return this._file.isFile ? this._file.read() : "";
     } catch (e) {
       throw new ReferenceError(`Utility: read: Error reading file: \n${e}`);
     }
   }
 
-  toString(): typeof Utility.prototype.data {
+  toString(): ReturnType<typeof Utility.prototype.read> {
     try {
-      return this.data;
+      return this.read();
     } catch (e) {
       throw new EvalError(`Utility: toString: Error getting data: \n${e}`);
     }
