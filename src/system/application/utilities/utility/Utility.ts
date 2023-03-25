@@ -31,7 +31,7 @@ abstract class Utility {
         const utilityRootBookmark: Bookmark = new Utility.File.Bookmark(
           utilityRootBookmarkName,
         );
-        if (!utilityRootBookmark.exists)
+        if (!utilityRootBookmark.resolves)
           throw new ReferenceError(
             `Utility root bookmark name '${utilityRootBookmarkName}' does not resolve to a Scriptable bookmark`,
           );
