@@ -9,7 +9,7 @@ abstract class Application {
     try {
       return this.handleOutput(this.runtime());
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `Application: run: Caught unhandled exception during application runtime: \n${e}`,
       );
     }
@@ -19,7 +19,7 @@ abstract class Application {
     try {
       return "";
     } catch (e) {
-      throw new Error(
+      throw new ReferenceError(
         `Application: configSubpath: Error getting application config subpath: \n${e}`,
       );
     }
@@ -29,7 +29,7 @@ abstract class Application {
     try {
       return this.configSubpath;
     } catch (e) {
-      throw new Error(
+      throw new ReferenceError(
         `Application: storageSubpath: Error getting application storage subpath: \n${e}`,
       );
     }
@@ -42,7 +42,7 @@ abstract class Application {
         this.constructor.name,
       );
     } catch (e) {
-      throw new Error(
+      throw new ReferenceError(
         `Application: config: Error getting application Config object: \n${e}`,
       );
     }
@@ -66,7 +66,7 @@ abstract class Application {
     try {
       return this.storage(subpath).read();
     } catch (e) {
-      throw new Error(
+      throw new ReferenceError(
         `Application: readStorage: Error reading application storage file at '${
           this.storage(subpath).path
         }': \n${e}`,
@@ -79,7 +79,7 @@ abstract class Application {
       this.storage(subpath).write(data);
       return this;
     } catch (e) {
-      throw new Error(
+      throw new ReferenceError(
         `Application: writeStorage: Error writing to application storage file at '${
           this.storage(subpath).path
         }': \n${e}`,
