@@ -1,45 +1,47 @@
-const _Application: typeof Application = importModule(
+const sh_Application: typeof Application = importModule(
   "application/Application",
 );
 
-abstract class Shortcut extends _Application {
+abstract class Shortcut extends sh_Application {
   get input(): typeof args {
     try {
       return args;
     } catch (e) {
-      throw new Error(
+      throw new ReferenceError(
         `Shortcut.js: Error getting shortcut input from Scriptable 'args' object (which by design is loaded with any input parameters passed from Shortcuts when executing a Scriptable script): \n${e}`,
       );
     }
   }
 
   handleOutput(
-    _output: null | primitive | File | ShortcutDictionary = "",
+    output: null | primitive | File | ShortcutDictionary = "",
   ): primitive | ShortcutDictionary {
     try {
-      if (_output === null) _output = "";
+      if (output === null) output = "";
       else if (
-        typeof _output === "string" ||
-        typeof _output === "number" ||
-        typeof _output === "boolean"
+        typeof output === "string" ||
+        typeof output === "number" ||
+        typeof output === "boolean"
       )
-        _output = _output;
-      else if (_output instanceof Shortcut.Filetypes.File)
-        _output = _output.path;
-      Script.setShortcutOutput(_output);
-      return _output;
+        output = output;
+      else if (output instanceof Shortcut.Filetypes.File) output = output.path;
+      Script.setShortcutOutput(output);
+      return output;
     } catch (e) {
-      throw new Error(`Shortcut.js: Error setting shortcut output: \n${e}`);
+      throw new SyntaxError(
+        `Shortcut.js: Error setting shortcut output: \n${e}`,
+      );
     }
   }
 
   protected override get configSubpath(): string {
     try {
-      const SHORTCUT_CONFIG_ROOT: string = "Shortcut";
-      if (super.configSubpath === "") return SHORTCUT_CONFIG_ROOT;
-      else return [super.configSubpath, SHORTCUT_CONFIG_ROOT].join("/");
+      const SHORTCUT_CONFIG_SUBPATH_ROOT: string = "Shortcut";
+      return super.configSubpath === ""
+        ? SHORTCUT_CONFIG_SUBPATH_ROOT
+        : `${super.configSubpath}/${SHORTCUT_CONFIG_SUBPATH_ROOT}`;
     } catch (e) {
-      throw new Error(
+      throw new EvalError(
         `Shortcut.js: Error getting shortcut config subpath: \n${e}`,
       );
     }
@@ -47,7 +49,7 @@ abstract class Shortcut extends _Application {
 
   static get Application(): typeof Application {
     try {
-      return _Application;
+      return sh_Application;
     } catch (e) {
       throw new ReferenceError(
         `Shortcut.js: Error getting shortcut Application class: \n${e}`,
