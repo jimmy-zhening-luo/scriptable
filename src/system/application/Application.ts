@@ -37,7 +37,7 @@ abstract class Application {
 
   get config(): Config {
     try {
-      return new Application.Utilities.Config(
+      return new Application.Filetypes.Config(
         this.configSubpath,
         this.constructor.name,
       );
@@ -50,7 +50,7 @@ abstract class Application {
 
   protected storage(subpath?: string): Storage {
     try {
-      return new Application.Utilities.Storage(
+      return new Application.Filetypes.Storage(
         this.storageSubpath,
         this.constructor.name,
         subpath,
@@ -87,12 +87,12 @@ abstract class Application {
     }
   }
 
-  static get Utilities(): typeof Utilities {
+  static get Filetypes(): typeof Filetypes {
     try {
-      return importModule("utilities/Utilities");
+      return importModule("filetypes/Filetypes");
     } catch (e) {
       throw new ReferenceError(
-        `Application: Utilities: Error importing Utilities module: \n${e}`,
+        `Application: Filetypes: Error importing Filetypes module: \n${e}`,
       );
     }
   }

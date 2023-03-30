@@ -1,6 +1,6 @@
-const st_Utility: typeof Utility = importModule("utility/Utility");
+const stor_Filetype: typeof Filetype = importModule("filetype/Filetype");
 
-class Storage extends st_Utility {
+class Storage extends stor_Filetype {
   constructor(
     storageSubpath: string,
     programName: string,
@@ -28,9 +28,9 @@ class Storage extends st_Utility {
     }
   }
 
-  static get Utility(): typeof Utility {
+  static get Filetype(): typeof Filetype {
     try {
-      return st_Utility;
+      return stor_Filetype;
     } catch (e) {
       throw new ReferenceError(
         `Storage: get Utility: Error importing Utility module: \n${e}`,

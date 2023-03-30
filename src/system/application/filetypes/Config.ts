@@ -1,6 +1,6 @@
-const co_Utility: typeof Utility = importModule("utility/Utility");
+const cfg_Filetype: typeof Filetype = importModule("filetype/Filetype");
 
-class Config extends co_Utility {
+class Config extends cfg_Filetype {
   constructor(configSubpath: string, programName: string) {
     try {
       super("Config", Config.File.join(configSubpath, `${programName}.json`));
@@ -225,9 +225,9 @@ class Config extends co_Utility {
     }
   }
 
-  static get Utility(): typeof Utility {
+  static get Filetype(): typeof Filetype {
     try {
-      return co_Utility;
+      return cfg_Filetype;
     } catch (e) {
       throw new ReferenceError(
         `Config: Error importing Utility module: \n${e}`,

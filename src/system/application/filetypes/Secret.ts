@@ -1,6 +1,6 @@
-const se_Utility: typeof Utility = importModule("utility/Utility");
+const key_Filetype: typeof Filetype = importModule("filetype/Filetype");
 
-class Secret extends se_Utility {
+class Secret extends key_Filetype {
   constructor(subpath: string) {
     try {
       super("Secret", subpath);
@@ -11,9 +11,9 @@ class Secret extends se_Utility {
     }
   }
 
-  static get Utility(): typeof Utility {
+  static get Filetype(): typeof Filetype {
     try {
-      return se_Utility;
+      return key_Filetype;
     } catch (e) {
       throw new ReferenceError(
         `Secret: Utility: Error importing Utility module: \n${e}`,

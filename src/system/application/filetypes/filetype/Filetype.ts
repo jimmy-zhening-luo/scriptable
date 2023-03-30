@@ -1,10 +1,10 @@
-abstract class Utility {
+abstract class Filetype {
   protected readonly _file: File;
 
   constructor(
     utilityClassName: string,
     utilityFileSubpath: string,
-    FileTypeConstructor: typeof File = Utility.ReadOnlyFile,
+    FileTypeConstructor: typeof File = Filetype.ReadOnlyFile,
   ) {
     try {
       this._file = new FileTypeConstructor(
@@ -28,7 +28,7 @@ abstract class Utility {
         const utilityRootBookmarkName: string = ["#", utilityClassName].join(
           "",
         );
-        const utilityRootBookmark: Bookmark = new Utility.File.Bookmark(
+        const utilityRootBookmark: Bookmark = new Filetype.File.Bookmark(
           utilityRootBookmarkName,
         );
         if (!utilityRootBookmark.resolves)
@@ -54,7 +54,7 @@ abstract class Utility {
     }
   }
 
-  get path(): typeof Utility.prototype._file.path {
+  get path(): typeof Filetype.prototype._file.path {
     try {
       return this._file.path;
     } catch (e) {
@@ -62,7 +62,7 @@ abstract class Utility {
     }
   }
 
-  get subpath(): typeof Utility.prototype._file.subpath {
+  get subpath(): typeof Filetype.prototype._file.subpath {
     try {
       return this._file.subpath;
     } catch (e) {
@@ -70,7 +70,7 @@ abstract class Utility {
     }
   }
 
-  get filename(): typeof Utility.prototype._file.leaf {
+  get filename(): typeof Filetype.prototype._file.leaf {
     try {
       return this._file.isFile ? this._file.leaf : "";
     } catch (e) {
@@ -78,7 +78,7 @@ abstract class Utility {
     }
   }
 
-  read(): ReturnType<typeof Utility.prototype._file.read> {
+  read(): ReturnType<typeof Filetype.prototype._file.read> {
     try {
       return this._file.isFile ? this._file.read() : "";
     } catch (e) {
@@ -86,7 +86,7 @@ abstract class Utility {
     }
   }
 
-  toString(): ReturnType<typeof Utility.prototype.read> {
+  toString(): ReturnType<typeof Filetype.prototype.read> {
     try {
       return this.read();
     } catch (e) {
@@ -96,7 +96,7 @@ abstract class Utility {
 
   static get Files(): typeof Files {
     try {
-      return importModule("./system/application/files/Files");
+      return importModule("files/Files");
     } catch (e) {
       throw new ReferenceError(
         `Utility: Files: Error importing Files module: \n${e}`,
@@ -106,7 +106,7 @@ abstract class Utility {
 
   static get ReadOnlyFile(): typeof ReadOnlyFile {
     try {
-      return Utility.Files.ReadOnlyFile;
+      return Filetype.Files.ReadOnlyFile;
     } catch (e) {
       throw new ReferenceError(
         `Utility: ReadOnlyFile: Error importing ReadOnlyFile class: \n${e}`,
@@ -116,7 +116,7 @@ abstract class Utility {
 
   static get File(): typeof File {
     try {
-      return Utility.Files.File;
+      return Filetype.Files.File;
     } catch (e) {
       throw new ReferenceError(
         `Utility: File: Error importing File class: \n${e}`,
@@ -125,4 +125,4 @@ abstract class Utility {
   }
 }
 
-module.exports = Utility;
+module.exports = Filetype;
