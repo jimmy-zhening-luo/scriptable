@@ -9,9 +9,15 @@ abstract class Scriptable extends sc_Application {
     );
   }
 
-  handleOutput(output: string): void {
+  handleOutput(output: string): string {
     try {
       console.log(output);
+      const outputDialog: Alert = new Alert();
+      outputDialog.title = this.constructor.name;
+      outputDialog.message = output;
+      outputDialog.addAction("OK");
+      outputDialog.presentAlert();
+      return output;
     } catch (e) {
       throw new EvalError(
         `Scriptable.js: Error setting Scriptable script output: \n${e}`,
@@ -19,12 +25,12 @@ abstract class Scriptable extends sc_Application {
     }
   }
 
-  protected override get configSubpath(): string {
+  protected override get configSubpathRoot(): string {
     try {
       const SCRIPTABLE_CONFIG_SUBPATH_ROOT: string = "Scriptable";
-      return super.configSubpath === ""
+      return super.configSubpathRoot === ""
         ? SCRIPTABLE_CONFIG_SUBPATH_ROOT
-        : `${super.configSubpath}/${SCRIPTABLE_CONFIG_SUBPATH_ROOT}`;
+        : `${super.configSubpathRoot}/${SCRIPTABLE_CONFIG_SUBPATH_ROOT}`;
     } catch (e) {
       throw new EvalError(
         `Scriptable.js: Error getting shortcut config subpath: \n${e}`,

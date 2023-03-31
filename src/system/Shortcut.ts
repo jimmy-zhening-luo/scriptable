@@ -34,12 +34,12 @@ abstract class Shortcut extends sh_Application {
     }
   }
 
-  protected override get configSubpath(): string {
+  protected override get configSubpathRoot(): string {
     try {
       const SHORTCUT_CONFIG_SUBPATH_ROOT: string = "Shortcut";
-      return super.configSubpath === ""
+      return super.configSubpathRoot === ""
         ? SHORTCUT_CONFIG_SUBPATH_ROOT
-        : `${super.configSubpath}/${SHORTCUT_CONFIG_SUBPATH_ROOT}`;
+        : `${super.configSubpathRoot}/${SHORTCUT_CONFIG_SUBPATH_ROOT}`;
     } catch (e) {
       throw new EvalError(
         `Shortcut.js: Error getting shortcut config subpath: \n${e}`,

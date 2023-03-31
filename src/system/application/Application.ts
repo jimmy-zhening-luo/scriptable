@@ -15,7 +15,7 @@ abstract class Application {
     }
   }
 
-  protected get configSubpath(): string {
+  protected get configSubpathRoot(): string {
     try {
       return "";
     } catch (e) {
@@ -25,9 +25,9 @@ abstract class Application {
     }
   }
 
-  protected get storageSubpath(): typeof Application.prototype.configSubpath {
+  protected get storageSubpathRoot(): typeof Application.prototype.configSubpathRoot {
     try {
-      return this.configSubpath;
+      return this.configSubpathRoot;
     } catch (e) {
       throw new ReferenceError(
         `Application: storageSubpath: Error getting application storage subpath: \n${e}`,
@@ -38,7 +38,7 @@ abstract class Application {
   get config(): Config {
     try {
       return new Application.Filetypes.Config(
-        this.configSubpath,
+        this.configSubpathRoot,
         this.constructor.name,
       );
     } catch (e) {
@@ -51,7 +51,7 @@ abstract class Application {
   protected storage(subpath?: string): Storage {
     try {
       return new Application.Filetypes.Storage(
-        this.storageSubpath,
+        this.storageSubpathRoot,
         this.constructor.name,
         subpath,
       );
