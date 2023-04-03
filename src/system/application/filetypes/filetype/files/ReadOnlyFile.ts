@@ -1,13 +1,13 @@
 const _File: typeof File = importModule("file/File");
 
 class ReadOnlyFile extends _File {
-  override delete(): this {
+  override delete(): never {
     throw new ReferenceError(
       `File::ReadOnlyFile:delete(): Cannot delete a read-only file or folder.`,
     );
   }
 
-  override write(): this {
+  override write(): never {
     throw new ReferenceError(
       `File::ReadOnlyFile:write(): Cannot write to or overwrite a read-only file.`,
     );
