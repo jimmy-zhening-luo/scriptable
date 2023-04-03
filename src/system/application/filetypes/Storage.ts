@@ -28,6 +28,15 @@ class Storage extends stor_Filetype {
     }
   }
 
+  delete(): this {
+    try {
+      this._file.delete();
+      return this;
+    } catch (e) {
+      throw new EvalError(`Storage: delete: Error deleting file: \n${e}`);
+    }
+  }
+
   static get Filetype(): typeof Filetype {
     try {
       return stor_Filetype;
