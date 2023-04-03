@@ -10,8 +10,24 @@ namespace TestRunner {
   namespace Tests {
     export const Tests: Protos.TestSuiteProto[] = [
       {
-        name: "TestSuite",
+        name: "Storage",
         cases: [["foo", 1, 1]],
+      },
+      {
+        name: "Config",
+        cases: [["bar", 2, 2]],
+      },
+      {
+        name: "ReadOnlyFile",
+        cases: [["baz", 3, 3]],
+      },
+      {
+        name: "File",
+        cases: [["bin", 4, 4]],
+      },
+      {
+        name: "Url",
+        cases: [["fizz", 5, 5]],
       },
     ];
   }
