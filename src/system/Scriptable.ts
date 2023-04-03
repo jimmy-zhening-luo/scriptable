@@ -9,21 +9,7 @@ abstract class Scriptable extends sc_Application {
     );
   }
 
-  handleOutput(output: string): string {
-    try {
-      console.log(output);
-      const outputDialog: Alert = new Alert();
-      outputDialog.title = this.constructor.name;
-      outputDialog.message = output;
-      outputDialog.addAction("OK");
-      outputDialog.presentAlert();
-      return output;
-    } catch (e) {
-      throw new EvalError(
-        `Scriptable.js: Error setting Scriptable script output: \n${e}`,
-      );
-    }
-  }
+  handleOutput(): void {}
 
   protected override get configSubpathRoot(): string {
     try {
