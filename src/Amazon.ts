@@ -26,3 +26,4 @@ namespace Amazon {
 }
 
 new Amazon.Amazon().run();
+Script.complete();

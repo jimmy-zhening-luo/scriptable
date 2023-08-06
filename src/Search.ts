@@ -186,3 +186,4 @@ namespace Search {
 }
 
 new Search.Search().run();
+Script.complete();
