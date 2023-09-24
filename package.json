@@ -4,21 +4,23 @@
   "description": "Building block classes and scripts to do complex automation on iOS.",
   "main": "",
   "scripts": {
-    "clean": "rimraf built",
+    "clean": "npm run clean:built && npm run clean:packed",
+    "clean:built": "rimraf built",
+    "clean:packed": "rimraf packed",
+
     "lint": "eslint --ext .ts .",
     "prebuild": "npm run lint",
     "build": "tsc --build",
-    "postbuild": "ts-node tools/pack",
-    "prebuild:clean": "npm run clean",
-    "build:clean": "npm run build",
-    "predistribute": "npm run build",
-    "distribute": "ts-node tools/distribute",
-    "predistribute:clean": "npm run clean",
-    "distribute:clean": "npm run distribute",
+
+    "prepack": "npm run clean && npm run build",
+    "pack": "ts-node tools/pack",
+    "prepublish": "npm run pack",
+    "publish": "ts-node tools/publish",
+
     "b": "npm run build",
-    "cb": "npm run build:clean",
-    "p": "npm run distribute",
-    "cp": "npm run distribute:clean",
+    "cb": "npm run clean:built && npm run build",
+    "p": "npm run publish",
+
     "test": "No tests configured."
   },
   "repository": {

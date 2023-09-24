@@ -1,16 +1,16 @@
 import { exec } from "child_process";
 import dotenv from "dotenv";
 
-namespace _Distribution_Tool {
-  export function distribute(): void {
+namespace _Project_Tool_Publish {
+  export function publish(): void {
     console.log(
-      `${new Date().toTimeString()}: npm run distribute: Starting distribution...`,
+      `${new Date().toTimeString()}: npm run publish: Starting publish...`,
     );
     try {
       _az_clean_upload(_hydrateEnv());
     } catch (e) {
       e = new Error(
-        `npm run distribute: Canceled job due to encountered error: \n${e}`,
+        `npm run publish: Canceled job due to encountered error: \n${e}`,
       );
       console.error(e);
       throw e;
@@ -23,8 +23,8 @@ namespace _Distribution_Tool {
           "https://<your-blob-store>.blob.core.windows.net/<your-container>";
         const azCopyScriptVariables: AzCopyScriptVariables = {
           executablePath:
-            process.env.PATH_AZCOPY_EXECUTABLE ?? "C:\\azcopy\\azcopy.exe",
-          sourceDistPath: "dist",
+            process.env.PATH_AZCOPY_EXECUTABLE ?? "azcopy",
+          packedPath: "packed",
           blobStoreContainerUrl:
             process.env.URL_AZURE_BLOB_STORE_CONTAINER ??
             TEMPLATE_EXAMPLE_URL_BLOBSTORE_CONTAINER,
@@ -39,7 +39,7 @@ namespace _Distribution_Tool {
         return azCopyScriptVariables;
       } catch (e) {
         throw new ReferenceError(
-          `npm run distribute: hydrateEnv: Error while loading environmental variables to specify where to distribute the packed files: \n${e}`,
+          `npm run publish: hydrateEnv: Error while loading environmental variables to specify where to publish the packed files: \n${e}`,
         );
       }
     }
@@ -57,7 +57,7 @@ namespace _Distribution_Tool {
         upload: [
           `${azCopyScriptVariables.executablePath}`,
           `copy`,
-          `"${azCopyScriptVariables.sourceDistPath}"`,
+          `"${azCopyScriptVariables.packedPath}"`,
           `"${azCopyScriptVariables.blobStoreContainerUrl}"`,
           "--recursive;",
         ].join(" "),
@@ -67,7 +67,7 @@ namespace _Distribution_Tool {
         _ps_exec(ps_exec_scripts.clean, ps_exec_scripts.upload);
       } catch (e) {
         throw new Error(
-          `npm run distribute: azure_clean_upload: Error while executing azcopy commands: \n${e}`,
+          `npm run publish: azure_clean_upload: Error while executing azcopy commands: \n${e}`,
         );
       }
 
@@ -83,7 +83,7 @@ namespace _Distribution_Tool {
               if (stderr) throw new Error(stderr);
               if (_azCopySucceeded(stdout))
                 console.log(
-                  `npm run distribute: azure_clean_upload: ps_exec: SUCCESS`,
+                  `npm run publish: azure_clean_upload: ps_exec: SUCCESS`,
                 );
               else
                 console.warn(
@@ -93,7 +93,7 @@ namespace _Distribution_Tool {
                 _ps_exec(nextScript[0], ...nextScript.slice(1));
               else
                 console.log(
-                  `${new Date().toTimeString()}: npm run distribute: Job completed (check logging above for any partial completions or errors).`,
+                  `${new Date().toTimeString()}: npm run publish: Job completed (check logging above for any partial completions or errors).`,
                 );
             },
           );
@@ -119,7 +119,7 @@ namespace _Distribution_Tool {
 
   export type AzCopyScriptVariables = {
     executablePath: string;
-    sourceDistPath: string;
+    packedPath: string;
     blobStoreContainerUrl: string;
   };
 
@@ -129,4 +129,4 @@ namespace _Distribution_Tool {
   };
 }
 
-_Distribution_Tool.distribute();
+_Project_Tool_Publish.publish();
