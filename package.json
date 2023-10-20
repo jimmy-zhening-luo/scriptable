@@ -25,14 +25,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zluojimmy/scriptable-wild.git"
+    "url": "git+https://github.com/jimmy-zhening-luo/scriptable-wild.git"
   },
   "author": "Jimmy Zhening Luo",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zluojimmy/scriptable-wild/issues"
+    "url": "https://github.com/jimmy-zhening-luo/scriptable-wild/issues"
   },
-  "homepage": "https://github.com/zluojimmy/scriptable-wild#readme",
+  "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "engines": {
     "node": ">=18.18.0",
     "npm": ">=10.1.0"
