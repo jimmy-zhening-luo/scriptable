@@ -11,14 +11,13 @@
     "lint": "eslint --ext .ts .",
     "prebuild": "npm run lint",
     "build": "tsc --build",
+    "b": "npm run build",
+    "cb": "npm run clean:built && npm run build",
 
     "prepack": "npm run clean && npm run build",
     "pack": "ts-node tools/pack",
     "prepublish": "npm run pack",
     "publish": "ts-node tools/publish",
-
-    "b": "npm run build",
-    "cb": "npm run clean:built && npm run build",
     "p": "npm run publish",
 
     "test": "No tests configured."
