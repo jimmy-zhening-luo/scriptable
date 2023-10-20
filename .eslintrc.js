@@ -14,7 +14,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   plugins: ["@typescript-eslint"],
-  ignorePatterns: ["node_modules", "dist", "built", "typings"],
+  ignorePatterns: ["node_modules", "dist", "built", "packed", "typings"],
   rules: {
     "@typescript-eslint/await-thenable": "error",
     "@typescript-eslint/ban-ts-comment": "error",
