@@ -1,6 +1,6 @@
 {
   "name": "scriptable-wild",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Building block classes and scripts to do complex automation on iOS.",
   "main": "",
   "scripts": {
@@ -34,11 +34,11 @@
     "npm": ">=10.1.0"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11",
-    "@types/shelljs": "^0.8.11",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.2",
-    "eslint": "^8.50.0",
+    "@types/node": "^18.18.0",
+    "@types/shelljs": "^0.8.14",
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
+    "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "dotenv": "^16.3.1",
-    "rimraf": "^5.0.1",
+    "rimraf": "^5.0.5",
     "shelljs": "^0.8.5"
   }
 }
