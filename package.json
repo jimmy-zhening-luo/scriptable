@@ -1,21 +1,22 @@
 {
   "name": "scriptable-wild",
-  "version": "5.0.2",
+  "version": "5.1.0",
   "description": "Building block classes and scripts to do complex automation on iOS.",
+  "type": "module",
   "main": "",
   "scripts": {
     "clean": "npm run clean:built && npm run clean:packed",
     "clean:built": "rimraf built",
     "clean:packed": "rimraf packed",
-    "lint": "eslint --cache --ext .ts .",
+    "lint": "eslint --cache --cache-strategy content -c eslint.config.js src/**/*.ts",
     "prebuild": "npm run lint",
     "build": "tsc --build",
     "b": "npm run build",
     "cb": "npm run clean:built && npm run build",
     "prepack": "npm run clean && npm run build",
-    "pack": "ts-node tools/pack",
+    "pack": "ts-node --esm tools/pack.ts",
     "prepub": "npm run pack",
-    "pub": "ts-node tools/publish",
+    "pub": "ts-node --esm tools/publish.ts",
     "p": "npm run pub",
     "test": "No tests configured."
   },
@@ -33,6 +34,11 @@
     "node": ">=18.18.0",
     "npm": ">=10.1.0"
   },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "rimraf": "^5.0.5",
+    "shelljs": "^0.8.5"
+  },
   "devDependencies": {
     "@types/node": "^18.18.0",
     "@types/shelljs": "^0.8.14",
@@ -40,13 +46,9 @@
     "@typescript-eslint/parser": "^6.8.0",
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
     "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "dotenv": "^16.3.1",
-    "rimraf": "^5.0.5",
-    "shelljs": "^0.8.5"
   }
 }

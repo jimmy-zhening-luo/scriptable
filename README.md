@@ -1,6 +1,6 @@
 # scriptable-wild
 
-v5.0.2
+v5.1.0
 
 <br/>
 
