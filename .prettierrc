@@ -5,8 +5,17 @@
   "semi": true,
   "singleQuote": false,
   "quoteProps": "as-needed",
+  "jsxSingleQuote": false,
   "trailingComma": "all",
   "bracketSpacing": true,
+  "bracketSameLine": false,
   "arrowParens": "avoid",
-  "endOfLine": "auto"
+  "requirePragma": false,
+  "insertPragma": false,
+  "proseWrap": "preserve",
+  "htmlWhitespaceSensitivity": "css",
+  "vueIndentScriptAndStyle": true,
+  "endOfLine": "auto",
+  "embeddedLanguageFormatting": "auto",
+  "singleAttributePerLine": true
 }
