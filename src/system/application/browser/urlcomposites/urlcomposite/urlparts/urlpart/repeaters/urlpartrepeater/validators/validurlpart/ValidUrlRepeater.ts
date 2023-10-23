@@ -1,4 +1,6 @@
-const r_ValidUrlPart: typeof ValidUrlPart = importModule("ValidUrlPart");
+const r_ValidUrlPart: typeof ValidUrlPart = importModule(
+  "ValidUrlPart",
+) as typeof ValidUrlPart;
 
 class ValidUrlRepeater extends r_ValidUrlPart {
   constructor(

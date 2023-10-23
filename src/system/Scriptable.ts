@@ -1,6 +1,6 @@
 const sc_Application: typeof Application = importModule(
   "application/Application",
-);
+) as typeof Application;
 
 abstract class Scriptable extends sc_Application {
   get input(): never {

@@ -3,7 +3,9 @@
 // icon-color: blue; icon-glyph: search;
 "use strict";
 namespace Search {
-  const shortcut: typeof Shortcut = importModule("system/Shortcut");
+  const shortcut: typeof Shortcut = importModule(
+    "system/Shortcut",
+  ) as typeof Shortcut;
 
   export class Search extends shortcut {
     runtime(): SearchResponse | null {

@@ -1,6 +1,6 @@
 const hrn_ValidUrlRepeater: typeof ValidUrlRepeater = importModule(
   "validurlpart/ValidUrlRepeater",
-);
+) as typeof ValidUrlRepeater;
 
 class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
   constructor(hostRegNameRepeater: string) {

@@ -1,7 +1,7 @@
 class Files {
   static get ReadOnlyFile(): typeof ReadOnlyFile {
     try {
-      return importModule("ReadOnlyFile");
+      return importModule("ReadOnlyFile") as typeof ReadOnlyFile;
     } catch (e) {
       throw new ReferenceError(
         `Files: Error importing ReadOnlyFile class: \n${e}`,

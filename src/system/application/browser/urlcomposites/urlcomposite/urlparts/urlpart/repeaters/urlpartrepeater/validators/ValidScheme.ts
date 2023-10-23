@@ -1,6 +1,6 @@
 const sc_ValidUrlPart: typeof ValidUrlPart = importModule(
   "validurlpart/ValidUrlPart",
-);
+) as typeof ValidUrlPart;
 
 class ValidScheme extends sc_ValidUrlPart {
   constructor(scheme: string) {

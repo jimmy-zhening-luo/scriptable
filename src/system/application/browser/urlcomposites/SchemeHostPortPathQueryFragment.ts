@@ -1,6 +1,6 @@
 const shppqf_UrlComposite: typeof UrlComposite = importModule(
   "urlcomposite/UrlComposite",
-);
+) as typeof UrlComposite;
 
 class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
   readonly parts: [SchemeHostPort, PathQueryFragment];
@@ -85,7 +85,7 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
 
   static get SchemeHostPort(): typeof SchemeHostPort {
     try {
-      return importModule("SchemeHostPort");
+      return importModule("SchemeHostPort") as typeof SchemeHostPort;
     } catch (e) {
       throw new ReferenceError(
         `SchemeHostPortPathQueryFragment: get SchemeHostPort: error loading SchemeHostPort module: \n${e}`,
@@ -95,7 +95,7 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
 
   static get PathQueryFragment(): typeof PathQueryFragment {
     try {
-      return importModule("PathQueryFragment");
+      return importModule("PathQueryFragment") as typeof PathQueryFragment;
     } catch (e) {
       throw new ReferenceError(
         `SchemeHostPortPathQueryFragment: get PathQueryFragment: error loading PathQueryFragment module: \n${e}`,

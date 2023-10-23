@@ -1,4 +1,6 @@
-const ho_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
+const ho_UrlPart: typeof UrlPart = importModule(
+  "urlpart/UrlPart",
+) as typeof UrlPart;
 
 class Host extends ho_UrlPart {
   constructor(host?: string | Host) {

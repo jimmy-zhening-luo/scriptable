@@ -89,7 +89,7 @@ abstract class Application {
 
   static get Filetypes(): typeof Filetypes {
     try {
-      return importModule("filetypes/Filetypes");
+      return importModule("filetypes/Filetypes") as typeof Filetypes;
     } catch (e) {
       throw new ReferenceError(
         `Application: Filetypes: Error importing Filetypes module: \n${e}`,

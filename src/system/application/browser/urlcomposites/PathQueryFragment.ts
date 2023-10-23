@@ -1,6 +1,6 @@
 const pqf_UrlComposite: typeof UrlComposite = importModule(
   "urlcomposite/UrlComposite",
-);
+) as typeof UrlComposite;
 
 class PathQueryFragment extends pqf_UrlComposite {
   readonly parts: [PathQuery, Fragment];
@@ -65,7 +65,7 @@ class PathQueryFragment extends pqf_UrlComposite {
 
   static get PathQuery(): typeof PathQuery {
     try {
-      return importModule("PathQuery");
+      return importModule("PathQuery") as typeof PathQuery;
     } catch (e) {
       throw new ReferenceError(
         `PathQueryFragment: get PathQuery: error loading PathQuery module: \n${e}`,

@@ -1,6 +1,6 @@
 const hips_ValidUrlRepeater: typeof ValidUrlRepeater = importModule(
   "validurlpart/ValidUrlRepeater",
-);
+) as typeof ValidUrlRepeater;
 
 class ValidHostIPv6Repeater extends hips_ValidUrlRepeater {
   constructor(hostIPv6Repeater: string) {

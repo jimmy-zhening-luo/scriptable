@@ -29,8 +29,8 @@ class CharSet {
     try {
       return (
         char.length === 1 &&
-        ((this.negate === false && this.charset.includes(char)) ||
-          (this.negate === true && !this.charset.includes(char)))
+        ((!this.negate && this.charset.includes(char)) ||
+          (this.negate && !this.charset.includes(char)))
       );
     } catch (e) {
       throw new EvalError(

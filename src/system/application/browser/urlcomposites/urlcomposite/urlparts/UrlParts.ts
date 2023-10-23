@@ -11,7 +11,7 @@ class UrlParts {
 
   static get Scheme(): typeof Scheme {
     try {
-      return importModule("Scheme");
+      return importModule("Scheme") as typeof Scheme;
     } catch (e) {
       throw new ReferenceError(
         `UrlParts: error loading parent Scheme module: \n${e}`,
@@ -21,7 +21,7 @@ class UrlParts {
 
   static get Host(): typeof Host {
     try {
-      return importModule("Host");
+      return importModule("Host") as typeof Host;
     } catch (e) {
       throw new ReferenceError(
         `UrlParts: error loading parent Host module: \n${e}`,
@@ -31,7 +31,7 @@ class UrlParts {
 
   static get Port(): typeof Port {
     try {
-      return importModule("Port");
+      return importModule("Port") as typeof Port;
     } catch (e) {
       throw new ReferenceError(
         `UrlParts: error loading parent Port module: \n${e}`,
@@ -41,7 +41,7 @@ class UrlParts {
 
   static get Path(): typeof Path {
     try {
-      return importModule("Path");
+      return importModule("Path") as typeof Path;
     } catch (e) {
       throw new ReferenceError(
         `UrlParts: error loading parent Path module: \n${e}`,
@@ -51,7 +51,7 @@ class UrlParts {
 
   static get Query(): typeof Query {
     try {
-      return importModule("Query");
+      return importModule("Query") as typeof Query;
     } catch (e) {
       throw new ReferenceError(
         `UrlParts: error loading parent Query module: \n${e}`,
@@ -61,7 +61,7 @@ class UrlParts {
 
   static get Fragment(): typeof Fragment {
     try {
-      return importModule("Fragment");
+      return importModule("Fragment") as typeof Fragment;
     } catch (e) {
       throw new ReferenceError(
         `UrlParts: error loading parent Fragment module: \n${e}`,

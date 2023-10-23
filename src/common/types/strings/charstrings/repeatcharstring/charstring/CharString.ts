@@ -49,7 +49,7 @@ abstract class CharString {
 
   static get CharSets(): typeof CharSets {
     try {
-      return importModule("charsets/CharSets");
+      return importModule("charsets/CharSets") as typeof CharSets;
     } catch (e) {
       throw new ReferenceError(
         `CharString: CharSets: Error importing CharSets module: \n${e}`,

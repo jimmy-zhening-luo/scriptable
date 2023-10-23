@@ -1,4 +1,4 @@
-const f_Bounds: typeof Bounds = importModule("bounds/Bounds");
+const f_Bounds: typeof Bounds = importModule("bounds/Bounds") as typeof Bounds;
 
 class Finite extends f_Bounds {
   override isBounded(value: number): boolean {

@@ -24,7 +24,7 @@ abstract class UrlComposite {
 
   static get UrlParts(): typeof UrlParts {
     try {
-      return importModule("urlparts/UrlParts");
+      return importModule("urlparts/UrlParts") as typeof UrlParts;
     } catch (e) {
       throw new ReferenceError(
         `UrlComposite: error loading UrlParts module: \n${e}`,

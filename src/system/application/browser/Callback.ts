@@ -90,6 +90,16 @@ class Callback {
     }
   }
 
+  get commonQuery(): typeof Url.prototype.query {
+    try {
+      return this._baseUrl.query;
+    } catch (e) {
+      throw new Error(
+        `Callback: get commonQuery: error getting commonQuery: \n${e}`,
+      );
+    }
+  }
+
   get commonParams(): typeof Callback.prototype.commonParamMap {
     try {
       return this.commonParamMap;
@@ -99,13 +109,12 @@ class Callback {
       );
     }
   }
-
-  get commonQuery(): typeof Url.prototype.query {
+  set commonParams(params: ConstructorParameters<typeof Query>[0]) {
     try {
-      return this._baseUrl.query;
+      this._baseUrl.query = params;
     } catch (e) {
       throw new Error(
-        `Callback: get commonQuery: error getting commonQuery: \n${e}`,
+        `Callback: set commonParams: error setting commonParams: \n${e}`,
       );
     }
   }
@@ -126,16 +135,6 @@ class Callback {
     } catch (e) {
       throw new Error(
         `Callback: get commonParamMap: error getting commonParamMap: \n${e}`,
-      );
-    }
-  }
-
-  set commonParams(params: ConstructorParameters<typeof Query>[0]) {
-    try {
-      this._baseUrl.query = params;
-    } catch (e) {
-      throw new Error(
-        `Callback: set commonParams: error setting commonParams: \n${e}`,
       );
     }
   }
@@ -222,7 +221,7 @@ class Callback {
 
   static get Url(): typeof Url {
     try {
-      return importModule("Url");
+      return importModule("Url") as typeof Url;
     } catch (e) {
       throw new ReferenceError(
         `Callback: get Url: error loading Url module: \n${e}`,

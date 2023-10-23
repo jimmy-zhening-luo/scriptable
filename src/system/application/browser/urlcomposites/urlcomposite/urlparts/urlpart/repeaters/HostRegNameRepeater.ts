@@ -1,6 +1,6 @@
 const hrn_UrlPartRepeater: typeof UrlPartRepeater = importModule(
   "urlpartrepeater/UrlPartRepeater",
-);
+) as typeof UrlPartRepeater;
 
 class HostRegNameRepeater extends hrn_UrlPartRepeater {
   protected parse(repeater: string): null | string {

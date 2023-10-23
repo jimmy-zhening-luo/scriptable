@@ -1,21 +1,45 @@
 class ResponseBody {
-  readonly response: Exclude<any, null | undefined>;
+  readonly response: unknown;
 
-  constructor(response?: any) {
+  constructor(response?: unknown) {
     this.response = this.parseResponse(response);
   }
 
-  parseResponse(response?: any): typeof ResponseBody.prototype.response {
+  parseResponse(response?: unknown): typeof ResponseBody.prototype.response {
     return response ?? "";
   }
 
-  toObject(): Record<string, any> {
+  toObject(): unknown {
     try {
-      return typeof this.response === "string"
-        ? JSON.parse(this.response)
-        : JSON.parse(JSON.stringify(this.response));
+      if (typeof this.response === "string") {
+        try {
+          const parsedJson: unknown = JSON.parse(this.response);
+          if (_validate(parsedJson)) return parsedJson;
+          else
+            throw new SyntaxError(
+              `ResponseBody: toObject: this.response's string representation is valid JSON but not a valid Response Body syntax.`,
+            );
+
+          function _validate(parsedJson: unknown): boolean {
+            try {
+              // TO-DO: Validate JSON schema.
+              return parsedJson !== undefined;
+            } catch {
+              throw new EvalError(
+                `ResponseBody: toObject: Error while validating whether parsed JSON is matches the ResponseBodyRecord schema.`,
+              );
+            }
+          }
+        } catch {
+          throw new SyntaxError(
+            `ResponseBody: toObject: this.response's string representation is not a valid Response Body syntax.`,
+          );
+        }
+      } else return this.response;
     } catch {
-      return {};
+      throw new EvalError(
+        `ResponseBody: toObject: Error while getting the object form of response body.`,
+      );
     }
   }
 

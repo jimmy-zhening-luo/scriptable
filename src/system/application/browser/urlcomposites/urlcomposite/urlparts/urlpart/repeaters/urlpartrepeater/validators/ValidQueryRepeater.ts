@@ -1,6 +1,6 @@
 const qu_ValidUrlRepeater: typeof ValidUrlRepeater = importModule(
   "validurlpart/ValidUrlRepeater",
-);
+) as typeof ValidUrlRepeater;
 
 class ValidQueryRepeater extends qu_ValidUrlRepeater {
   constructor(queryRepeater: string) {

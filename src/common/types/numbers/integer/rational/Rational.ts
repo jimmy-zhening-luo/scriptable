@@ -1,4 +1,4 @@
-const r_Real: typeof Real = importModule("real/Real");
+const r_Real: typeof Real = importModule("real/Real") as typeof Real;
 
 class Rational extends r_Real {
   protected readonly _raw: number;

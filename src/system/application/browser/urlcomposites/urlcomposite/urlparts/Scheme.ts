@@ -1,4 +1,6 @@
-const sc_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
+const sc_UrlPart: typeof UrlPart = importModule(
+  "urlpart/UrlPart",
+) as typeof UrlPart;
 
 class Scheme extends sc_UrlPart {
   constructor(scheme?: string | Scheme) {

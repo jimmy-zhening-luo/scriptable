@@ -1,6 +1,6 @@
 const n_Cardinality: typeof Cardinality = importModule(
   "cardinality/Cardinality",
-);
+) as typeof Cardinality;
 
 class Negative extends n_Cardinality {
   override isCardinal(value: number): boolean {

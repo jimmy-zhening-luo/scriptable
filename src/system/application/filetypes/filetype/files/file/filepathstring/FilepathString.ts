@@ -183,7 +183,9 @@ class FilepathString {
 
   static get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
     try {
-      return importModule("validfilepathrepeater/ValidFilepathRepeater");
+      return importModule(
+        "validfilepathrepeater/ValidFilepathRepeater",
+      ) as typeof ValidFilepathRepeater;
     } catch (e) {
       throw new ReferenceError(
         `Filepath: Failed to import module ValidFilepathRepeater: \n${e}`,
@@ -193,7 +195,9 @@ class FilepathString {
 
   static get StringSplitter(): typeof StringSplitter {
     try {
-      return importModule("./common/types/strings/StringSplitter");
+      return importModule(
+        "./common/types/strings/StringSplitter",
+      ) as typeof StringSplitter;
     } catch (e) {
       throw new ReferenceError(
         `Filepath: Failed to import module StringSplitter: \n${e}`,

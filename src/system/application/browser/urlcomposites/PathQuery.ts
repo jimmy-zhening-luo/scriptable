@@ -1,6 +1,6 @@
 const pq_UrlComposite: typeof UrlComposite = importModule(
   "urlcomposite/UrlComposite",
-);
+) as typeof UrlComposite;
 
 class PathQuery extends pq_UrlComposite {
   readonly parts: [Path, Query];

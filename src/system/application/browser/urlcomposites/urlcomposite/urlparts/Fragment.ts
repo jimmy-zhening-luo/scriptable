@@ -1,4 +1,6 @@
-const fr_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
+const fr_UrlPart: typeof UrlPart = importModule(
+  "urlpart/UrlPart",
+) as typeof UrlPart;
 
 class Fragment extends fr_UrlPart {
   constructor(fragment?: string | Fragment) {

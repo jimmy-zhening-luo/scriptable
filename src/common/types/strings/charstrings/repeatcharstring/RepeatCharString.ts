@@ -1,4 +1,6 @@
-const rp_CharString: typeof CharString = importModule("charstring/CharString");
+const rp_CharString: typeof CharString = importModule(
+  "charstring/CharString",
+) as typeof CharString;
 
 class RepeatCharString extends rp_CharString {
   protected _qualifies(candidateCharString: string): boolean {

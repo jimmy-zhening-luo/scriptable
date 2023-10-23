@@ -1,4 +1,6 @@
-const p_FiniteInteger: typeof FiniteInteger = importModule("FiniteInteger");
+const p_FiniteInteger: typeof FiniteInteger = importModule(
+  "FiniteInteger",
+) as typeof FiniteInteger;
 
 class PositiveFiniteInteger extends p_FiniteInteger {
   protected override cardinality: Cardinality =

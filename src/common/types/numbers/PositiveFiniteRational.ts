@@ -1,4 +1,6 @@
-const p_FiniteRational: typeof FiniteRational = importModule("FiniteRational");
+const p_FiniteRational: typeof FiniteRational = importModule(
+  "FiniteRational",
+) as typeof FiniteRational;
 
 class PositiveFiniteRational extends p_FiniteRational {
   protected override cardinality: Cardinality =

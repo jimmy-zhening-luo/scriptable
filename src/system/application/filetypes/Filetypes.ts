@@ -1,14 +1,14 @@
 class Filetypes {
   static get Config(): typeof Config {
-    return importModule("Config");
+    return importModule("Config") as typeof Config;
   }
 
   static get Secret(): typeof Secret {
-    return importModule("Secret");
+    return importModule("Secret") as typeof Secret;
   }
 
   static get Storage(): typeof Storage {
-    return importModule("Storage");
+    return importModule("Storage") as typeof Storage;
   }
 
   static get Filetype(): typeof Filetype {

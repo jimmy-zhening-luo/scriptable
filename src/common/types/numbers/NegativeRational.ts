@@ -1,4 +1,6 @@
-const nr_Integer: typeof Integer = importModule("integer/Integer");
+const nr_Integer: typeof Integer = importModule(
+  "integer/Integer",
+) as typeof Integer;
 
 class NegativeRational extends nr_Integer.Rational {
   protected override cardinality: Cardinality =

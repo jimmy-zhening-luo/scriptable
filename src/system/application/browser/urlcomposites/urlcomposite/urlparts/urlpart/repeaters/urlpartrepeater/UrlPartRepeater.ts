@@ -37,7 +37,7 @@ abstract class UrlPartRepeater {
 
   static get UrlValidators(): typeof UrlValidators {
     try {
-      return importModule("validators/UrlValidators");
+      return importModule("validators/UrlValidators") as typeof UrlValidators;
     } catch (e) {
       throw new ReferenceError(
         `UrlPartRepeater: error loading parent UrlValidators module: \n${e}`,

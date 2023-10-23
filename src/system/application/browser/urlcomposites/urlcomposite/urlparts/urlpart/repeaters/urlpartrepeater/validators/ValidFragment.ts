@@ -1,6 +1,6 @@
 const fr_ValidUrlPart: typeof ValidUrlPart = importModule(
   "validurlpart/ValidUrlPart",
-);
+) as typeof ValidUrlPart;
 
 class ValidFragment extends fr_ValidUrlPart {
   constructor(fragment: string) {

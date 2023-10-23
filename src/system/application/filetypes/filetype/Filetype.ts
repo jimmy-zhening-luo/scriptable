@@ -96,7 +96,7 @@ abstract class Filetype {
 
   static get Files(): typeof Files {
     try {
-      return importModule("files/Files");
+      return importModule("files/Files") as typeof Files;
     } catch (e) {
       throw new ReferenceError(
         `Utility: Files: Error importing Files module: \n${e}`,

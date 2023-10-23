@@ -1,6 +1,6 @@
 const sh_Application: typeof Application = importModule(
   "application/Application",
-);
+) as typeof Application;
 
 abstract class Shortcut extends sh_Application {
   get input(): typeof args {

@@ -1,6 +1,9 @@
-const cfg_Filetype: typeof Filetype = importModule("filetype/Filetype");
+const cfg_Filetype: typeof Filetype = importModule(
+  "filetype/Filetype",
+) as typeof Filetype;
 
 class Config extends cfg_Filetype {
+  private _cachedConfig?: ApplicationConfigProto;
   constructor(configSubpath: string, programName: string) {
     try {
       super("Config", Config.File.join(configSubpath, `${programName}.json`));
@@ -28,14 +31,37 @@ class Config extends cfg_Filetype {
 
   get parsed(): ApplicationConfigProto {
     try {
-      if (!this.isParseable)
-        throw new SyntaxError(
-          `Config.js: Config file '${this.path}' is not parseable as JSON.`,
-        );
-      else return JSON.parse(this.read());
+      if (this._cachedConfig !== undefined) return this._cachedConfig;
+      else {
+        if (!this.isParseable)
+          throw new SyntaxError(
+            `Config.js: Config file '${this.path}' is not parseable as JSON.`,
+          );
+        else {
+          const parsedJson: unknown = JSON.parse(this.read());
+          if (_validate(parsedJson)) {
+            this._cachedConfig = parsedJson as ApplicationConfigProto;
+            return this._cachedConfig;
+          } else
+            throw new SyntaxError(
+              `Config.js: Config file '${this.path}' is valid JSON but not a valid Application Config.`,
+            );
+
+          function _validate(parsedJson: unknown): boolean {
+            try {
+              // TO-DO: Validate JSON schema.
+              return parsedJson !== undefined;
+            } catch (e) {
+              throw new EvalError(
+                `Config.js: Error while validating whether parsed JSON is matches the ApplicationConfigProto: \n${e}`,
+              );
+            }
+          }
+        }
+      }
     } catch (e) {
-      throw new SyntaxError(
-        `Config.js: Error parsing config file '${this.path}': \n${e}`,
+      throw new EvalError(
+        `Config.js: Error while parsing config file '${this.path}': \n${e}`,
       );
     }
   }
@@ -44,7 +70,7 @@ class Config extends cfg_Filetype {
     try {
       return this.parsed;
     } catch (e) {
-      throw new SyntaxError(
+      throw new EvalError(
         `Config.js: Error getting unmerged config file '${this.path}': \n${e}`,
       );
     }
@@ -58,7 +84,7 @@ class Config extends cfg_Filetype {
         );
       else return this.unmerged.app;
     } catch (e) {
-      throw new SyntaxError(
+      throw new EvalError(
         `Config.js: Error getting 'app' property from config file '${this.path}': \n${e}`,
       );
     }
@@ -72,7 +98,7 @@ class Config extends cfg_Filetype {
         );
       else return this.unmerged.user;
     } catch (e) {
-      throw new SyntaxError(
+      throw new EvalError(
         `Config.js: Error getting 'user' property from config file '${this.path}': \n${e}`,
       );
     }
@@ -82,7 +108,7 @@ class Config extends cfg_Filetype {
     try {
       return this.mergeSettings(this.user, this.app);
     } catch (e) {
-      throw new SyntaxError(
+      throw new EvalError(
         `Config.js: Error merging 'user' and 'app' properties from config file '${this.path}': \n${e}`,
       );
     }
@@ -92,7 +118,7 @@ class Config extends cfg_Filetype {
     try {
       return this.mergeSettings(this.app, this.user);
     } catch (e) {
-      throw new SyntaxError(
+      throw new EvalError(
         `Config.js: Error merging 'user' and 'app' properties from config file '${this.path}': \n${e}`,
       );
     }
@@ -190,7 +216,7 @@ class Config extends cfg_Filetype {
         );
       } catch (e) {
         throw new EvalError(
-          `Config.js: Error determining if object is primitive: \n${e}`,
+          `Config.js: Error determining whether object is primitive: \n${e}`,
         );
       }
     }

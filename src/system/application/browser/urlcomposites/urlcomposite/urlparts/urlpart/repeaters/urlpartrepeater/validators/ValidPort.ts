@@ -1,6 +1,6 @@
 const po_ValidUrlPart: typeof ValidUrlPart = importModule(
   "validurlpart/ValidUrlPart",
-);
+) as typeof ValidUrlPart;
 
 class ValidPort extends po_ValidUrlPart {
   constructor(port: string) {

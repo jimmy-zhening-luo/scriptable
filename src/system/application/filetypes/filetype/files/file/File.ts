@@ -323,7 +323,7 @@ class File {
 
   static get Bookmark(): typeof Bookmark {
     try {
-      return importModule("bookmark/Bookmark");
+      return importModule("bookmark/Bookmark") as typeof Bookmark;
     } catch (e) {
       throw new ReferenceError(`File: Error importing Bookmark class: \n${e}`);
     }
@@ -331,7 +331,9 @@ class File {
 
   static get FilepathString(): typeof FilepathString {
     try {
-      return importModule("filepathstring/FilepathString");
+      return importModule(
+        "filepathstring/FilepathString",
+      ) as typeof FilepathString;
     } catch (e) {
       throw new ReferenceError(
         `File: Error importing FilepathString class: \n${e}`,

@@ -1,4 +1,4 @@
-const i_Bounds: typeof Bounds = importModule("bounds/Bounds");
+const i_Bounds: typeof Bounds = importModule("bounds/Bounds") as typeof Bounds;
 
 class Infinite extends i_Bounds {
   static get Bounds(): typeof Bounds {

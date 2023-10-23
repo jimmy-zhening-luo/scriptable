@@ -1,4 +1,6 @@
-const po_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
+const po_UrlPart: typeof UrlPart = importModule(
+  "urlpart/UrlPart",
+) as typeof UrlPart;
 
 class Port extends po_UrlPart {
   constructor(port?: string | number | Port) {

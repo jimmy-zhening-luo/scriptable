@@ -1,6 +1,6 @@
 const pa_ValidUrlRepeater: typeof ValidUrlRepeater = importModule(
   "validurlpart/ValidUrlRepeater",
-);
+) as typeof ValidUrlRepeater;
 
 class ValidPathRepeater extends pa_ValidUrlRepeater {
   constructor(pathRepeater: string) {

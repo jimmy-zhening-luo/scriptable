@@ -1,28 +1,12 @@
 class Sets {
-  static get Base(): {
-    Bounds: typeof Bounds;
-    Cardinality: typeof Cardinality;
-  } {
-    try {
-      return {
-        Bounds: importModule("bounds/Bounds"),
-        Cardinality: importModule("cardinality/Cardinality"),
-      };
-    } catch (e) {
-      throw new ReferenceError(
-        "Sets: error importing Bounds or Cardinality module",
-      );
-    }
-  }
-
   static get Bounds(): {
     Finite: typeof Finite;
     Infinite: typeof Infinite;
   } {
     try {
       return {
-        Finite: importModule("Finite"),
-        Infinite: importModule("Infinite"),
+        Finite: importModule("Finite") as typeof Finite,
+        Infinite: importModule("Infinite") as typeof Infinite,
       };
     } catch (e) {
       throw new ReferenceError(
@@ -38,13 +22,29 @@ class Sets {
   } {
     try {
       return {
-        AnyCardinality: importModule("AnyCardinality"),
-        Positive: importModule("Positive"),
-        Negative: importModule("Negative"),
+        AnyCardinality: importModule("AnyCardinality") as typeof AnyCardinality,
+        Positive: importModule("Positive") as typeof Positive,
+        Negative: importModule("Negative") as typeof Negative,
       };
     } catch (e) {
       throw new ReferenceError(
         "Sets: error importing AnyCardinality, Positive, or Negative module",
+      );
+    }
+  }
+
+  static get Base(): {
+    Bounds: typeof Bounds;
+    Cardinality: typeof Cardinality;
+  } {
+    try {
+      return {
+        Bounds: Sets.Bounds.Infinite.Bounds,
+        Cardinality: Sets.Cardinality.AnyCardinality.Cardinality,
+      };
+    } catch (e) {
+      throw new ReferenceError(
+        "Sets: error importing Bounds or Cardinality module",
       );
     }
   }

@@ -45,7 +45,7 @@ class Numbers {
 
   static get FiniteRational(): typeof FiniteRational {
     try {
-      return importModule("FiniteRational");
+      return Numbers.PositiveFiniteRational.FiniteRational;
     } catch (e) {
       throw new ReferenceError(
         `Numbers: error loading FiniteRational module: \n${e}`,
@@ -55,7 +55,7 @@ class Numbers {
 
   static get Integer(): typeof Integer {
     try {
-      return importModule("integer/Integer");
+      return Numbers.FiniteInteger.Integer;
     } catch (e) {
       throw new ReferenceError(`Numbers: error loading Integer module: \n${e}`);
     }
@@ -63,7 +63,7 @@ class Numbers {
 
   static get FiniteInteger(): typeof FiniteInteger {
     try {
-      return importModule("FiniteInteger");
+      return Numbers.PositiveFiniteInteger.FiniteInteger;
     } catch (e) {
       throw new ReferenceError(
         `Numbers: error loading FiniteInteger module: \n${e}`,
@@ -73,7 +73,7 @@ class Numbers {
 
   static get PositiveRational(): typeof PositiveRational {
     try {
-      return importModule("PositiveRational");
+      return importModule("PositiveRational") as typeof PositiveRational;
     } catch (e) {
       throw new ReferenceError(
         `Numbers: error loading PositiveRational module: \n${e}`,
@@ -83,7 +83,7 @@ class Numbers {
 
   static get NegativeRational(): typeof NegativeRational {
     try {
-      return importModule("NegativeRational");
+      return importModule("NegativeRational") as typeof NegativeRational;
     } catch (e) {
       throw new ReferenceError(
         `Numbers: error loading NegativeRational module: \n${e}`,
@@ -93,7 +93,7 @@ class Numbers {
 
   static get PositiveInteger(): typeof PositiveInteger {
     try {
-      return importModule("PositiveInteger");
+      return importModule("PositiveInteger") as typeof PositiveInteger;
     } catch (e) {
       throw new ReferenceError(
         `Numbers: error loading PositiveInteger module: \n${e}`,
@@ -103,7 +103,7 @@ class Numbers {
 
   static get NegativeInteger(): typeof NegativeInteger {
     try {
-      return importModule("NegativeInteger");
+      return importModule("NegativeInteger") as typeof NegativeInteger;
     } catch (e) {
       throw new ReferenceError(
         `Numbers: error loading NegativeInteger module: \n${e}`,
@@ -113,7 +113,9 @@ class Numbers {
 
   static get PositiveFiniteRational(): typeof PositiveFiniteRational {
     try {
-      return importModule("PositiveFiniteRational");
+      return importModule(
+        "PositiveFiniteRational",
+      ) as typeof PositiveFiniteRational;
     } catch (e) {
       throw new ReferenceError(
         `Numbers: error loading PositiveFiniteRational module: \n${e}`,
@@ -123,7 +125,9 @@ class Numbers {
 
   static get NegativeFiniteRational(): typeof NegativeFiniteRational {
     try {
-      return importModule("NegativeFiniteRational");
+      return importModule(
+        "NegativeFiniteRational",
+      ) as typeof NegativeFiniteRational;
     } catch (e) {
       throw new ReferenceError(
         `Numbers: error loading NegativeFiniteRational module: \n${e}`,
@@ -133,7 +137,9 @@ class Numbers {
 
   static get PositiveFiniteInteger(): typeof PositiveFiniteInteger {
     try {
-      return importModule("PositiveFiniteInteger");
+      return importModule(
+        "PositiveFiniteInteger",
+      ) as typeof PositiveFiniteInteger;
     } catch (e) {
       throw new ReferenceError(
         `Numbers: error loading PositiveFiniteInteger module: \n${e}`,
@@ -143,7 +149,9 @@ class Numbers {
 
   static get NegativeFiniteInteger(): typeof NegativeFiniteInteger {
     try {
-      return importModule("NegativeFiniteInteger");
+      return importModule(
+        "NegativeFiniteInteger",
+      ) as typeof NegativeFiniteInteger;
     } catch (e) {
       throw new ReferenceError(
         `Numbers: error loading NegativeFiniteInteger module: \n${e}`,

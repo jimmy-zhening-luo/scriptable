@@ -1,6 +1,6 @@
 const shp_UrlComposite: typeof UrlComposite = importModule(
   "urlcomposite/UrlComposite",
-);
+) as typeof UrlComposite;
 
 class SchemeHostPort extends shp_UrlComposite {
   readonly parts: [Scheme, HostPort];
@@ -58,7 +58,7 @@ class SchemeHostPort extends shp_UrlComposite {
 
   static get HostPort(): typeof HostPort {
     try {
-      return importModule("HostPort");
+      return importModule("HostPort") as typeof HostPort;
     } catch (e) {
       throw new ReferenceError(
         `SchemeHostPort: get HostPort: error loading HostPort module: \n${e}`,

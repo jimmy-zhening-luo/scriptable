@@ -402,17 +402,6 @@ class Api {
       throw new Error(`Api: get bodyObject: error getting bodyObject: \n${e}`);
     }
   }
-
-  get bodyStringObject(): ReturnType<RequestBody["toStringObject"]> {
-    try {
-      return this._requestBody.toStringObject();
-    } catch (e) {
-      throw new Error(
-        `Api: get bodyStringObject: error getting bodyStringObject: \n${e}`,
-      );
-    }
-  }
-
   get timeout(): number {
     try {
       return this._timeoutSeconds;
@@ -473,7 +462,7 @@ class Api {
 
   static get Url(): typeof Url {
     try {
-      return importModule("Url");
+      return importModule("Url") as typeof Url;
     } catch (e) {
       throw new Error(`Api: get Url: error getting Url: \n${e}`);
     }
@@ -481,7 +470,7 @@ class Api {
 
   static get ApiParts(): typeof ApiParts {
     try {
-      return importModule("apiparts/ApiParts");
+      return importModule("apiparts/ApiParts") as typeof ApiParts;
     } catch (e) {
       throw new Error(`Api: get ApiParts: error getting ApiParts: \n${e}`);
     }
@@ -539,7 +528,9 @@ class Api {
 
   static get PositiveFiniteInteger(): typeof PositiveFiniteInteger {
     try {
-      return importModule("./common/types/numbers/PositiveFiniteInteger");
+      return importModule(
+        "./common/types/numbers/PositiveFiniteInteger",
+      ) as typeof PositiveFiniteInteger;
     } catch (e) {
       throw new Error(
         `Api: get PositiveFiniteInteger: error getting PositiveFiniteInteger: \n${e}`,

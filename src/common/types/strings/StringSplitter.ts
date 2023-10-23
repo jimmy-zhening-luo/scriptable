@@ -182,7 +182,9 @@ class StringSplitter {
 
   static get PositiveInteger(): typeof PositiveInteger {
     try {
-      return importModule("./common/types/numbers/PositiveInteger");
+      return importModule(
+        "./common/types/numbers/PositiveInteger",
+      ) as typeof PositiveInteger;
     } catch (e) {
       throw new ReferenceError(
         `StringSplitter: error importing PositiveInteger module: \n${e}`,

@@ -21,7 +21,7 @@ class Repeaters {
 
   static get HostIPv4Repeater(): typeof HostIPv4Repeater {
     try {
-      return importModule("HostIPv4Repeater");
+      return importModule("HostIPv4Repeater") as typeof HostIPv4Repeater;
     } catch (e) {
       throw new ReferenceError(
         `Repeaters: error loading HostIPv4Repeater module: \n${e}`,
@@ -31,7 +31,7 @@ class Repeaters {
 
   static get HostIPv6Repeater(): typeof HostIPv6Repeater {
     try {
-      return importModule("HostIPv6Repeater");
+      return importModule("HostIPv6Repeater") as typeof HostIPv6Repeater;
     } catch (e) {
       throw new ReferenceError(
         `Repeaters: error loading HostIPv6Repeater module: \n${e}`,
@@ -41,7 +41,7 @@ class Repeaters {
 
   static get HostRegNameRepeater(): typeof HostRegNameRepeater {
     try {
-      return importModule("HostRegNameRepeater");
+      return importModule("HostRegNameRepeater") as typeof HostRegNameRepeater;
     } catch (e) {
       throw new ReferenceError(
         `Repeaters: error loading HostRegNameRepeater module: \n${e}`,
@@ -51,7 +51,7 @@ class Repeaters {
 
   static get PathRepeater(): typeof PathRepeater {
     try {
-      return importModule("PathRepeater");
+      return importModule("PathRepeater") as typeof PathRepeater;
     } catch (e) {
       throw new ReferenceError(
         `Repeaters: error loading PathRepeater module: \n${e}`,
@@ -61,7 +61,7 @@ class Repeaters {
 
   static get QueryRepeater(): typeof QueryRepeater {
     try {
-      return importModule("QueryRepeater");
+      return importModule("QueryRepeater") as typeof QueryRepeater;
     } catch (e) {
       throw new ReferenceError(
         `Repeaters: error loading QueryRepeater module: \n${e}`,

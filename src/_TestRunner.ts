@@ -2,10 +2,11 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-purple; icon-glyph: bug;
 "use strict";
-const SUPPRESS_LOGGING = false;
 
 namespace TestRunner {
-  const scriptable: typeof Scriptable = importModule("system/Scriptable");
+  const scriptable: typeof Scriptable = importModule(
+    "system/Scriptable",
+  ) as typeof Scriptable;
 
   namespace Tests {
     export const Tests: Protos.TestSuiteProto[] = [

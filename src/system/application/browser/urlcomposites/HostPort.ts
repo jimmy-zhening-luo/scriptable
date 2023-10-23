@@ -1,6 +1,6 @@
 const hp_UrlComposite: typeof UrlComposite = importModule(
   "urlcomposite/UrlComposite",
-);
+) as typeof UrlComposite;
 
 class HostPort extends hp_UrlComposite {
   readonly parts: [Host, Port];

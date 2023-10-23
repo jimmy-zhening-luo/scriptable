@@ -1,4 +1,6 @@
-const f_Integer: typeof Integer = importModule("integer/Integer");
+const f_Integer: typeof Integer = importModule(
+  "integer/Integer",
+) as typeof Integer;
 
 class FiniteInteger extends f_Integer {
   protected override bounds: Bounds = new FiniteRational.Bounds.Finite();

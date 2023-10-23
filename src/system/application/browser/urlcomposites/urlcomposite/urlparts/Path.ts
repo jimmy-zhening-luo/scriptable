@@ -1,4 +1,6 @@
-const pa_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
+const pa_UrlPart: typeof UrlPart = importModule(
+  "urlpart/UrlPart",
+) as typeof UrlPart;
 
 class Path extends pa_UrlPart {
   constructor(path?: string | Path) {
@@ -65,7 +67,9 @@ class Path extends pa_UrlPart {
 
   static get StringSplitter(): typeof StringSplitter {
     try {
-      return importModule("./common/types/strings/StringSplitter");
+      return importModule(
+        "./common/types/strings/StringSplitter",
+      ) as typeof StringSplitter;
     } catch (e) {
       throw new ReferenceError(
         `Path: error loading StringSplitter module: \n${e}`,

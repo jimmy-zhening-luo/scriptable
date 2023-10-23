@@ -11,7 +11,9 @@ class UrlValidators {
 
   static get ValidUrlRepeater(): typeof ValidUrlRepeater {
     try {
-      return importModule("validurlpart/ValidUrlRepeater");
+      return importModule(
+        "validurlpart/ValidUrlRepeater",
+      ) as typeof ValidUrlRepeater;
     } catch (e) {
       throw new ReferenceError(
         `UrlValidators: error loading ValidUrlRepeater module: \n${e}`,
@@ -21,7 +23,7 @@ class UrlValidators {
 
   static get Scheme(): typeof ValidScheme {
     try {
-      return importModule("ValidScheme");
+      return importModule("ValidScheme") as typeof ValidScheme;
     } catch (e) {
       throw new ReferenceError(
         `UrlValidators: error loading ValidScheme module: \n${e}`,
@@ -59,9 +61,15 @@ class UrlValidators {
     try {
       return {
         Repeaters: {
-          IPv4: importModule("ValidHostIPv4Repeater"),
-          IPv6: importModule("ValidHostIPv6Repeater"),
-          RegName: importModule("ValidHostRegNameRepeater"),
+          IPv4: importModule(
+            "ValidHostIPv4Repeater",
+          ) as typeof ValidHostIPv4Repeater,
+          IPv6: importModule(
+            "ValidHostIPv6Repeater",
+          ) as typeof ValidHostIPv6Repeater,
+          RegName: importModule(
+            "ValidHostRegNameRepeater",
+          ) as typeof ValidHostRegNameRepeater,
         },
       };
     } catch (e) {
@@ -73,7 +81,7 @@ class UrlValidators {
 
   static get Port(): typeof ValidPort {
     try {
-      return importModule("ValidPort");
+      return importModule("ValidPort") as typeof ValidPort;
     } catch (e) {
       throw new ReferenceError(
         `UrlValidators: error loading ValidPort module: \n${e}`,
@@ -89,7 +97,7 @@ class UrlValidators {
     try {
       return {
         Repeaters: {
-          Path: importModule("ValidPathRepeater"),
+          Path: importModule("ValidPathRepeater") as typeof ValidPathRepeater,
         },
       };
     } catch (e) {
@@ -107,7 +115,9 @@ class UrlValidators {
     try {
       return {
         Repeaters: {
-          Query: importModule("ValidQueryRepeater"),
+          Query: importModule(
+            "ValidQueryRepeater",
+          ) as typeof ValidQueryRepeater,
         },
       };
     } catch (e) {
@@ -119,7 +129,7 @@ class UrlValidators {
 
   static get Fragment(): typeof ValidFragment {
     try {
-      return importModule("ValidFragment");
+      return importModule("ValidFragment") as typeof ValidFragment;
     } catch (e) {
       throw new ReferenceError(
         `UrlValidators: error loading ValidFragment module: \n${e}`,

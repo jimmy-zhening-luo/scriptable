@@ -1,6 +1,6 @@
 const qu_UrlPartRepeater: typeof UrlPartRepeater = importModule(
   "urlpartrepeater/UrlPartRepeater",
-);
+) as typeof UrlPartRepeater;
 
 class QueryRepeater extends qu_UrlPartRepeater {
   protected parse(repeater: string): null | string {

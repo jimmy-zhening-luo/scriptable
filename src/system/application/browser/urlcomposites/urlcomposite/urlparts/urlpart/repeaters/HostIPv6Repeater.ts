@@ -1,6 +1,6 @@
 const hips_UrlPartRepeater: typeof UrlPartRepeater = importModule(
   "urlpartrepeater/UrlPartRepeater",
-);
+) as typeof UrlPartRepeater;
 
 class HostIPv6Repeater extends hips_UrlPartRepeater {
   protected parse(repeater: string): null | string {

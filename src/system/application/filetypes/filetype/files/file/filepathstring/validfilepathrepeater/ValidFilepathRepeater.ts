@@ -1,6 +1,6 @@
 const fpr_ValidString: typeof ValidString = importModule(
   "./common/types/strings/ValidString",
-);
+) as typeof ValidString;
 
 class ValidFilepathRepeater extends fpr_ValidString {
   constructor(pathSegment: string = "") {

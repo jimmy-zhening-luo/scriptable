@@ -1,6 +1,6 @@
 const _RepeatCharString: typeof RepeatCharString = importModule(
   "repeatcharstring/RepeatCharString",
-);
+) as typeof RepeatCharString;
 
 class BoundedRepeatCharString extends _RepeatCharString {
   readonly min: number;
@@ -58,7 +58,9 @@ class BoundedRepeatCharString extends _RepeatCharString {
 
   static get PositiveInteger(): typeof PositiveInteger {
     try {
-      return importModule("./common/types/numbers/PositiveInteger");
+      return importModule(
+        "./common/types/numbers/PositiveInteger",
+      ) as typeof PositiveInteger;
     } catch (e) {
       throw new ReferenceError(
         `BoundedRepeatCharString: PositiveInteger: Error importing PositiveInteger module: \n${e}`,

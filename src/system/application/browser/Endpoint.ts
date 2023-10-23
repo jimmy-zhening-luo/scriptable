@@ -48,7 +48,7 @@ class Endpoint {
 
   static get Callback(): typeof Callback {
     try {
-      return importModule("Callback");
+      return importModule("Callback") as typeof Callback;
     } catch (e) {
       throw new ReferenceError(
         `Endpoint: Callback: error getting Callback: \n${e}`,

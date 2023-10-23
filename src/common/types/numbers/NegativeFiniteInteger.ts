@@ -1,4 +1,6 @@
-const n_FiniteInteger: typeof FiniteInteger = importModule("FiniteInteger");
+const n_FiniteInteger: typeof FiniteInteger = importModule(
+  "FiniteInteger",
+) as typeof FiniteInteger;
 
 class NegativeFiniteInteger extends n_FiniteInteger {
   protected override cardinality: Cardinality =

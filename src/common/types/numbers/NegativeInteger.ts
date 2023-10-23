@@ -1,4 +1,6 @@
-const n_Integer: typeof Integer = importModule("integer/Integer");
+const n_Integer: typeof Integer = importModule(
+  "integer/Integer",
+) as typeof Integer;
 
 class NegativeInteger extends n_Integer {
   protected override cardinality: Cardinality =

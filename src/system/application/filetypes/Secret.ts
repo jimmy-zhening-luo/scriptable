@@ -1,4 +1,6 @@
-const key_Filetype: typeof Filetype = importModule("filetype/Filetype");
+const key_Filetype: typeof Filetype = importModule(
+  "filetype/Filetype",
+) as typeof Filetype;
 
 class Secret extends key_Filetype {
   constructor(subpath: string) {

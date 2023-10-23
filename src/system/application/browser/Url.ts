@@ -180,6 +180,14 @@ class Url {
     }
   }
 
+  set query(query: ConstructorParameters<typeof Query>[0]) {
+    try {
+      this._query = new Url.Query(query);
+    } catch (e) {
+      throw new Error(`Url: set query: error setting query: \n${e}`);
+    }
+  }
+
   get queryString(): typeof Query.prototype.queryString {
     try {
       return this._query.toString();
@@ -205,14 +213,6 @@ class Url {
       return this._query.toMap();
     } catch (e) {
       throw new Error(`Url: get queryMap: error getting queryMap: \n${e}`);
-    }
-  }
-
-  set query(query: ConstructorParameters<typeof Query>[0]) {
-    try {
-      this._query = new Url.Query(query);
-    } catch (e) {
-      throw new Error(`Url: set query: error setting query: \n${e}`);
     }
   }
 
@@ -429,7 +429,9 @@ class Url {
 
   static get UrlComposites(): typeof UrlComposites {
     try {
-      return importModule("urlcomposites/UrlComposites");
+      return importModule(
+        "urlcomposites/UrlComposites",
+      ) as typeof UrlComposites;
     } catch (e) {
       throw new ReferenceError(
         `Url: get UrlComposites: error loading UrlComposites module: \n${e}`,

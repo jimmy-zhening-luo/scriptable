@@ -3,7 +3,9 @@
 // icon-color: orange; icon-glyph: share;
 "use strict";
 namespace Amazon {
-  const shortcut: typeof Shortcut = importModule("system/Shortcut");
+  const shortcut: typeof Shortcut = importModule(
+    "system/Shortcut",
+  ) as typeof Shortcut;
 
   export class Amazon extends shortcut {
     runtime(): boolean {

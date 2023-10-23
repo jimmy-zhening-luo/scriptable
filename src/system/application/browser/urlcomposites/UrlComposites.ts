@@ -11,7 +11,9 @@ class UrlComposites {
 
   static get SchemeHostPortPathQueryFragment(): typeof SchemeHostPortPathQueryFragment {
     try {
-      return importModule("SchemeHostPortPathQueryFragment");
+      return importModule(
+        "SchemeHostPortPathQueryFragment",
+      ) as typeof SchemeHostPortPathQueryFragment;
     } catch (e) {
       throw new Error(
         `UrlComposites: get SchemeHostPortPathQueryFragment: error getting SchemeHostPortPathQueryFragment: \n${e}`,

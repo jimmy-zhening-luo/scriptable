@@ -1,4 +1,6 @@
-const stor_Filetype: typeof Filetype = importModule("filetype/Filetype");
+const stor_Filetype: typeof Filetype = importModule(
+  "filetype/Filetype",
+) as typeof Filetype;
 
 class Storage extends stor_Filetype {
   constructor(

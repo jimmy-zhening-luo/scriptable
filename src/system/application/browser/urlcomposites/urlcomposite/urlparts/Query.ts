@@ -1,4 +1,6 @@
-const qu_UrlPart: typeof UrlPart = importModule("urlpart/UrlPart");
+const qu_UrlPart: typeof UrlPart = importModule(
+  "urlpart/UrlPart",
+) as typeof UrlPart;
 
 class Query extends qu_UrlPart {
   constructor(
@@ -196,9 +198,9 @@ class Query extends qu_UrlPart {
     record: Map<string, string> | Record<string, string>,
   ): [string, string][] {
     try {
-      return Array.from(Object.entries(record)).filter(
-        tuple => tuple[0] !== "" && tuple[1] !== "",
-      );
+      return Array.from(
+        record instanceof Map ? record.entries() : Object.entries(record),
+      ).filter(tuple => tuple[0] !== "" && tuple[1] !== "");
     } catch (e) {
       throw new Error(`Query: mapToTuples: error converting to tuples: \n${e}`);
     }

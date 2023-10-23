@@ -56,10 +56,11 @@ namespace _Project_Tool_Publish {
         ].join(" "),
         upload: [
           `${azCopyScriptVariables.executablePath}`,
-          `copy`,
+          `cp`,
           `"${azCopyScriptVariables.packedPath}"`,
           `"${azCopyScriptVariables.blobStoreContainerUrl}"`,
-          "--recursive;",
+          `--recursive=true`,
+          `--exclude-pattern="tsconfig.tsbuildinfo"`,
         ].join(" "),
       };
 

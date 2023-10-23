@@ -53,7 +53,7 @@ abstract class UrlPart {
 
   static get Repeaters(): typeof Repeaters {
     try {
-      return importModule("repeaters/Repeaters");
+      return importModule("repeaters/Repeaters") as typeof Repeaters;
     } catch (e) {
       throw new ReferenceError(
         `UrlPart: error loading parent Repeaters module: \n${e}`,

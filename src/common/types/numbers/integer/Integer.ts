@@ -1,4 +1,6 @@
-const _Rational: typeof Rational = importModule("rational/Rational");
+const _Rational: typeof Rational = importModule(
+  "rational/Rational",
+) as typeof Rational;
 
 class Integer extends _Rational {
   protected override _qualifies(rawNumber: number): boolean {

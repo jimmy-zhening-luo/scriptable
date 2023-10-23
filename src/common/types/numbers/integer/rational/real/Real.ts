@@ -37,7 +37,7 @@ abstract class Real {
 
   static get Sets(): typeof Sets {
     try {
-      return importModule("sets/Sets");
+      return importModule("sets/Sets") as typeof Sets;
     } catch (e) {
       throw new ReferenceError("Real: error importing Sets module");
     }

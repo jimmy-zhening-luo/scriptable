@@ -1,7 +1,7 @@
 class Strings {
   static get StringSplitter(): typeof StringSplitter {
     try {
-      return importModule("StringSplitter");
+      return importModule("StringSplitter") as typeof StringSplitter;
     } catch (e) {
       throw new ReferenceError(
         `Strings: StringSplitter: Error importing StringSplitter module: \n${e}`,
@@ -11,7 +11,7 @@ class Strings {
 
   static get ValidString(): typeof ValidString {
     try {
-      return importModule("ValidString");
+      return importModule("ValidString") as typeof ValidString;
     } catch (e) {
       throw new ReferenceError(
         `Strings: ValidString: Error importing ValidString module: \n${e}`,

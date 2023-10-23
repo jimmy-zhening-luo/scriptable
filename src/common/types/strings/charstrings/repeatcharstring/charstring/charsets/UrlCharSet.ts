@@ -1,4 +1,6 @@
-const u_CharSet: typeof CharSet = importModule("charset/CharSet");
+const u_CharSet: typeof CharSet = importModule(
+  "charset/CharSet",
+) as typeof CharSet;
 
 class UrlCharSet extends u_CharSet {
   static get hex(): string[] {

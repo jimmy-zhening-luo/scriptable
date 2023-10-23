@@ -91,8 +91,8 @@ class ValidString {
     },
   ): typeof ValidString.prototype.cleaned {
     try {
-      if (toLower === true) raw = raw.toLowerCase();
-      if (trim === true) raw = raw.trim();
+      if (toLower) raw = raw.toLowerCase();
+      if (trim) raw = raw.trim();
       const preprocessed: string = raw;
       return ValidString._trimEdge(
         ValidString._trimEdge(
@@ -139,7 +139,9 @@ class ValidString {
 
   static get BoundedRepeatCharString(): typeof BoundedRepeatCharString {
     try {
-      return importModule("charstrings/BoundedRepeatCharString");
+      return importModule(
+        "charstrings/BoundedRepeatCharString",
+      ) as typeof BoundedRepeatCharString;
     } catch (e) {
       throw new ReferenceError(
         `ValidString: error importing BoundedRepeatCharString module: \n${e}`,
