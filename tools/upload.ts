@@ -2,15 +2,15 @@ import { exec } from "child_process";
 import dotenv from "dotenv";
 
 namespace _Project_Tool_Publish {
-  export function publish(): void {
+  export function upload(): void {
     console.log(
-      `${new Date().toTimeString()}: npm run publish: Starting publish...`,
+      `${new Date().toTimeString()}: npm run upload: Starting upload...`,
     );
     try {
       _az_clean_upload(_hydrateEnv());
     } catch (e) {
       e = new Error(
-        `npm run publish: Canceled job due to encountered error: \n${e}`,
+        `npm run upload: Canceled job due to encountered error: \n${e}`,
       );
       console.error(e);
       throw e;
@@ -39,7 +39,7 @@ namespace _Project_Tool_Publish {
         return azCopyScriptVariables;
       } catch (e) {
         throw new ReferenceError(
-          `npm run publish: hydrateEnv: Error while loading environmental variables to specify where to publish the packed files: \n${e}`,
+          `npm run upload: hydrateEnv: Error while loading environmental variables to specify where to upload the packed files: \n${e}`,
         );
       }
     }
@@ -68,7 +68,7 @@ namespace _Project_Tool_Publish {
         _ps_exec(ps_exec_scripts.clean, ps_exec_scripts.upload);
       } catch (e) {
         throw new Error(
-          `npm run publish: azure_clean_upload: Error while executing azcopy commands: \n${e}`,
+          `npm run upload: azure_clean_upload: Error while executing azcopy commands: \n${e}`,
         );
       }
 
@@ -84,7 +84,7 @@ namespace _Project_Tool_Publish {
               if (stderr) throw new Error(stderr);
               if (_azCopySucceeded(stdout))
                 console.log(
-                  `npm run publish: azure_clean_upload: ps_exec: SUCCESS`,
+                  `npm run upload: azure_clean_upload: ps_exec: SUCCESS`,
                 );
               else
                 console.warn(
@@ -94,7 +94,7 @@ namespace _Project_Tool_Publish {
                 _ps_exec(nextScript[0], ...nextScript.slice(1));
               else
                 console.log(
-                  `${new Date().toTimeString()}: npm run publish: Job completed (check logging above for any partial completions or errors).`,
+                  `${new Date().toTimeString()}: npm run upload: Job completed (check logging above for any partial completions or errors).`,
                 );
             },
           );
@@ -130,4 +130,4 @@ namespace _Project_Tool_Publish {
   };
 }
 
-_Project_Tool_Publish.publish();
+_Project_Tool_Publish.upload();
