@@ -1,9 +1,5 @@
 # scriptable-wild
 
-v5.2.0
-
-<br/>
-
 ## What is Scriptable?
 
 A compelling use of Scriptable is using JavaScript to control custom iOS actions (see iOS Shortcuts), device-side and home automation, and on-screen Widgets.
