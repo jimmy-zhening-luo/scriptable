@@ -12,8 +12,6 @@
     "prebuild": "npm run lint",
     "build": "tsc --build",
     "build:clean": "npm run clean:built && npm run build",
-    "b": "npm run build",
-    "cb": "npm run build:clean",
     "prepack": "npm run clean:packed && npm run build",
     "pack": "npm run pack:mkdir && npm run pack:cp",
     "pack:mkdir": "shx mkdir packed",
@@ -21,8 +19,6 @@
     "prepub": "npm run pack",
     "pub": "ts-node --esm tools/publish.ts",
     "pub:clean": "npm run clean:built && npm run pub",
-    "p": "npm run pub",
-    "cp": "npm run pub:clean",
     "test": "No tests configured."
   },
   "repository": {
