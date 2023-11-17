@@ -4,9 +4,9 @@
 "use strict";
 
 namespace TestRunner {
-  const scriptable: typeof Scriptable = importModule(
-    "system/Scriptable",
-  ) as typeof Scriptable;
+  const nativeScript: typeof NativeScript = importModule(
+    "system/NativeScript",
+  ) as typeof NativeScript;
 
   namespace Tests {
     export const Tests: Protos.TestSuiteProto[] = [
@@ -42,7 +42,7 @@ namespace TestRunner {
     export type TestCaseTriple = [string, primitive, primitive];
   }
 
-  export class TestRunner extends scriptable {
+  export class TestRunner extends nativeScript {
     runtime(): void {
       try {
         const suites: Classes.TestSuite[] = Tests.Tests.map(testSuiteProto => {
