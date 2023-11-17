@@ -38,8 +38,8 @@ class Port extends po_UrlPart {
       return this.isValid
         ? Math.abs(Math.round(Number.parseInt(this.toString())))
         : coerceEmptyPortToZero
-        ? 0
-        : NaN;
+          ? 0
+          : NaN;
     } catch (e) {
       throw new Error(
         `Port: toNumber: error converting Port to number: \n${e}`,

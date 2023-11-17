@@ -25,10 +25,10 @@ class Path extends pa_UrlPart {
       return split.length === 0
         ? null
         : split.every(
-            pathRepeater => new Path.PathRepeater(pathRepeater).isValid,
-          )
-        ? split.join(Path.UrlValidators.CharSet.slash[0])
-        : null;
+              pathRepeater => new Path.PathRepeater(pathRepeater).isValid,
+            )
+          ? split.join(Path.UrlValidators.CharSet.slash[0])
+          : null;
     } catch (e) {
       throw new Error(`Path: parse: error parsing Path: \n${e}`);
     }

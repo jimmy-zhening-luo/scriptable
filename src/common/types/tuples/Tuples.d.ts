@@ -51,6 +51,6 @@ declare namespace _tuplehelpers {
       ? BuildMinMaxTuple<Current, Type, Min, Max, true>
       : BuildMinMaxTuple<[...Current, Type], Type, Min, Max>
     : Max extends Current["length"]
-    ? Current
-    : BuildMinMaxTuple<[...Current, Type?], Type, Min, Max, true>;
+      ? Current
+      : BuildMinMaxTuple<[...Current, Type?], Type, Min, Max, true>;
 }

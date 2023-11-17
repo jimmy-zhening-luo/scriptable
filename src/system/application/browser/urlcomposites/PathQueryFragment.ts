@@ -23,25 +23,25 @@ class PathQueryFragment extends pqf_UrlComposite {
               new PathQueryFragment.Fragment(),
             ]
           : pathOrPathQueryOrPathQueryFragment instanceof PathQueryFragment
-          ? pathOrPathQueryOrPathQueryFragment.parts
-          : Array.isArray(pathOrPathQueryOrPathQueryFragment)
-          ? [
-              new PathQueryFragment.PathQuery(
-                new PathQueryFragment.PathQuery.Path(
-                  pathOrPathQueryOrPathQueryFragment[0],
-                ),
-                new PathQueryFragment.PathQuery.Query(
-                  pathOrPathQueryOrPathQueryFragment[1],
-                ),
-              ),
-              new PathQueryFragment.Fragment(fragment),
-            ]
-          : [
-              new PathQueryFragment.PathQuery(
-                pathOrPathQueryOrPathQueryFragment,
-              ),
-              new PathQueryFragment.Fragment(fragment),
-            ];
+            ? pathOrPathQueryOrPathQueryFragment.parts
+            : Array.isArray(pathOrPathQueryOrPathQueryFragment)
+              ? [
+                  new PathQueryFragment.PathQuery(
+                    new PathQueryFragment.PathQuery.Path(
+                      pathOrPathQueryOrPathQueryFragment[0],
+                    ),
+                    new PathQueryFragment.PathQuery.Query(
+                      pathOrPathQueryOrPathQueryFragment[1],
+                    ),
+                  ),
+                  new PathQueryFragment.Fragment(fragment),
+                ]
+              : [
+                  new PathQueryFragment.PathQuery(
+                    pathOrPathQueryOrPathQueryFragment,
+                  ),
+                  new PathQueryFragment.Fragment(fragment),
+                ];
       this.pathQuery = this.parts[0];
       this.fragment = this.parts[1];
     } catch (e) {

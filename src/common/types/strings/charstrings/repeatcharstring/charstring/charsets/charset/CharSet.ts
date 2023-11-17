@@ -14,8 +14,8 @@ class CharSet {
         input instanceof CharSet
           ? this.charset.push(...input.charset)
           : Array.isArray(input)
-          ? this.charset.push(...input)
-          : this.charset.push(input);
+            ? this.charset.push(...input)
+            : this.charset.push(input);
       });
       this.charset.filter(char => char.length === 1);
     } catch (e) {

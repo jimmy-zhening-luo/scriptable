@@ -30,15 +30,15 @@ namespace Search {
                       engine.webview ?? false,
                     )
                   : engine.app === undefined
-                  ? null
-                  : engine.app in SupportedAppSearchEngine
-                  ? new AppSearchEngine(
-                      typeof engine.keys === "string"
-                        ? [engine.keys]
-                        : engine.keys,
-                      engine.app,
-                    )
-                  : null,
+                    ? null
+                    : engine.app in SupportedAppSearchEngine
+                      ? new AppSearchEngine(
+                          typeof engine.keys === "string"
+                            ? [engine.keys]
+                            : engine.keys,
+                          engine.app,
+                        )
+                      : null,
               )
               .filter(engine => engine !== null) as SearchEngine[];
           const userIntendedSearchEngine: SearchEngine | undefined =

@@ -343,15 +343,15 @@ class Url {
           scheme_hostportpath.length > 0
             ? schemeOrHostportpath
             : schemeOrHostportpath.includes(".") ||
-              schemeOrHostportpath.includes("/")
-            ? ""
-            : schemeOrHostportpath;
+                schemeOrHostportpath.includes("/")
+              ? ""
+              : schemeOrHostportpath;
         const hostportpath: string =
           scheme_hostportpath.length > 0
             ? scheme_hostportpath.join("://")
             : urlStringParts.scheme === ""
-            ? schemeOrHostportpath
-            : "";
+              ? schemeOrHostportpath
+              : "";
 
         const hostport_path: string[] = hostportpath.split("/");
         const hostport: string = hostport_path.shift() ?? "";

@@ -158,12 +158,12 @@ class File {
       return this.isFile
         ? [this]
         : this.isLeaf
-        ? []
-        : this.ls
-            .map(leaf => this.append(leaf))
-            .filter(child => !this.path.startsWith(child.path))
-            .map(file => file.descendants)
-            .flat(1);
+          ? []
+          : this.ls
+              .map(leaf => this.append(leaf))
+              .filter(child => !this.path.startsWith(child.path))
+              .map(file => file.descendants)
+              .flat(1);
     } catch (e) {
       throw new ReferenceError(`File: Error getting descendants: \n${e}`);
     }

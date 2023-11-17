@@ -18,8 +18,8 @@ class Scheme extends sc_UrlPart {
       return validScheme === ""
         ? "https"
         : charSetAlpha.includes([...validScheme].shift() ?? "")
-        ? validScheme
-        : "https";
+          ? validScheme
+          : "https";
     } catch (e) {
       throw new Error(`Scheme: parse: error parsing Scheme: \n${e}`);
     }

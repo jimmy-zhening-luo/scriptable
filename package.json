@@ -6,6 +6,7 @@
   "main": "",
   "scripts": {
     "lint": "eslint --cache --cache-strategy content -c eslint.config.js src/**/*.ts",
+    "lint:fix": "shx rm -rf .eslintcache && eslint --fix --cache --cache-strategy content -c eslint.config.js src/**/*.ts",
     "clean:built": "shx rm -rf built",
     "clean:packed": "shx rm -rf packed",
     "clean": "npm run clean:built && npm run clean:packed",
@@ -26,14 +27,14 @@
   },
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "engines": {
-    "node": ">=20.9.0",
-    "npm": ">=10.1.0"
+    "node": ">=18.18.2",
+    "npm": ">=10.2.4"
   },
   "dependencies": {
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
-    "@types/node": "^20.9.1",
+    "@types/node": "^18.18.9",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
     "eslint": "^8.53.0",

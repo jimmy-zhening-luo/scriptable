@@ -20,27 +20,27 @@ class Host extends ho_UrlPart {
       return host === ""
         ? null
         : (host.split(".").length === 4 &&
-            host
-              .split(".")
-              .map(hostRepeater => new Host.HostIPv4Repeater(hostRepeater))
-              .every(
-                hostRepeater =>
-                  hostRepeater.isValid &&
-                  Number.parseInt(hostRepeater.toString()) <= 255,
-              )) ||
-          (host.split(":").length <= 8 &&
-            host.split(":").length >= 3 &&
-            host
-              .split(":")
-              .map(hostRepeater => new Host.HostIPv6Repeater(hostRepeater))
-              .every(hostRepeater => hostRepeater.isValid)) ||
-          (host.split(".").length >= 1 &&
-            host
-              .split(".")
-              .map(hostRepeater => new Host.HostRegNameRepeater(hostRepeater))
-              .every(hostRepeater => hostRepeater.isValid))
-        ? host
-        : null;
+              host
+                .split(".")
+                .map(hostRepeater => new Host.HostIPv4Repeater(hostRepeater))
+                .every(
+                  hostRepeater =>
+                    hostRepeater.isValid &&
+                    Number.parseInt(hostRepeater.toString()) <= 255,
+                )) ||
+            (host.split(":").length <= 8 &&
+              host.split(":").length >= 3 &&
+              host
+                .split(":")
+                .map(hostRepeater => new Host.HostIPv6Repeater(hostRepeater))
+                .every(hostRepeater => hostRepeater.isValid)) ||
+            (host.split(".").length >= 1 &&
+              host
+                .split(".")
+                .map(hostRepeater => new Host.HostRegNameRepeater(hostRepeater))
+                .every(hostRepeater => hostRepeater.isValid))
+          ? host
+          : null;
     } catch (e) {
       throw new Error(`Host: parse: error parsing Host: \n${e}`);
     }

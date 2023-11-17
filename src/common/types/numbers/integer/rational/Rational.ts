@@ -14,15 +14,15 @@ class Rational extends r_Real {
           ? number.trim().toLowerCase() === "infinity"
             ? Infinity
             : number.trim().toLowerCase() === "-infinity"
-            ? -Infinity
-            : number.trim().toLowerCase() === "nan"
-            ? NaN
-            : number.includes(".")
-            ? Number.parseFloat(number)
-            : Number.parseInt(number)
+              ? -Infinity
+              : number.trim().toLowerCase() === "nan"
+                ? NaN
+                : number.includes(".")
+                  ? Number.parseFloat(number)
+                  : Number.parseInt(number)
           : typeof number === "number"
-          ? number
-          : number.toNumber();
+            ? number
+            : number.toNumber();
     } catch (e) {
       throw new SyntaxError("Rational: error constructing Rational");
     }
