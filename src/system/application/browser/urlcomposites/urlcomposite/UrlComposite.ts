@@ -5,7 +5,8 @@ abstract class UrlComposite {
   get isValid(): boolean {
     try {
       return this.composite !== "";
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `UrlComposite: isValid: error checking validity of composite: \n${e}`,
       );
@@ -15,7 +16,8 @@ abstract class UrlComposite {
   toString(): string {
     try {
       return this.composite;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `UrlComposite: toString: error converting composite to string: \n${e}`,
       );
@@ -25,7 +27,8 @@ abstract class UrlComposite {
   static get UrlParts(): typeof UrlParts {
     try {
       return importModule("urlparts/UrlParts") as typeof UrlParts;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `UrlComposite: error loading UrlParts module: \n${e}`,
       );

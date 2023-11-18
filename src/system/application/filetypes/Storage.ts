@@ -14,7 +14,8 @@ class Storage extends stor_Filetype {
         Storage.File.join(storageSubpath, programName, subpath),
         Storage.File,
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `Storage: constructor: Error creating Storage object: \n${e}`,
       );
@@ -24,8 +25,10 @@ class Storage extends stor_Filetype {
   write(text: string): this {
     try {
       this._file.write(text, true);
+
       return this;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`Storage: write: Error writing to file: \n${e}`);
     }
   }
@@ -33,8 +36,10 @@ class Storage extends stor_Filetype {
   delete(): this {
     try {
       this._file.delete();
+
       return this;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`Storage: delete: Error deleting file: \n${e}`);
     }
   }
@@ -42,7 +47,8 @@ class Storage extends stor_Filetype {
   static get Filetype(): typeof Filetype {
     try {
       return stor_Filetype;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `Storage: get Utility: Error importing Utility module: \n${e}`,
       );

@@ -5,20 +5,21 @@ class File {
 
   constructor(
     base:
-      | File
-      | Bookmark
-      | ConstructorParameters<typeof FilepathString>[0] = "",
+    | File
+    | Bookmark
+    | ConstructorParameters<typeof FilepathString>[0] = "",
     ...subpaths: ConstructorParameters<typeof FilepathString>
   ) {
     try {
-      this._root =
-        base instanceof File
+      this._root
+        = base instanceof File
           ? base._path
           : new File.FilepathString(
-              base instanceof File.Bookmark ? base.path : base,
-            );
+            base instanceof File.Bookmark ? base.path : base,
+          );
       this._subpath = new File.FilepathString(...subpaths);
-    } catch (e) {
+    }
+    catch (e) {
       throw new SyntaxError(
         `File: constructor: Error constructing File: \n${e}`,
       );
@@ -28,7 +29,8 @@ class File {
   get subpath(): string {
     try {
       return this._subpath.toString();
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`File: subpath: Error getting subpath: \n${e}`);
     }
   }
@@ -36,7 +38,8 @@ class File {
   set subpath(subpath: ConstructorParameters<typeof FilepathString>[0]) {
     try {
       this._subpath = new File.FilepathString(subpath);
-    } catch (e) {
+    }
+    catch (e) {
       throw new SyntaxError(`File: subpath: Error setting subpath: \n${e}`);
     }
   }
@@ -44,7 +47,8 @@ class File {
   private get _path(): FilepathString {
     try {
       return this._root.append(this._subpath);
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`File: _path: Error getting path: \n${e}`);
     }
   }
@@ -52,7 +56,8 @@ class File {
   get path(): string {
     try {
       return this._path.toString();
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`File: path: Error getting path: \n${e}`);
     }
   }
@@ -60,7 +65,8 @@ class File {
   get leaf(): string {
     try {
       return this._path.leaf;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`File: leaf: Error getting leaf: \n${e}`);
     }
   }
@@ -70,7 +76,8 @@ class File {
       return new (this.constructor as new (
         ...args: ConstructorParameters<typeof File>
       ) => this)(this._root);
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`File: root: Error getting root: \n${e}`);
     }
   }
@@ -80,7 +87,8 @@ class File {
       return new (this.constructor as new (
         ...args: ConstructorParameters<typeof File>
       ) => this)(this.root, this._subpath.parent);
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `File: parent: Error getting parent File object: \n${e}`,
       );
@@ -90,7 +98,8 @@ class File {
   get exists(): boolean {
     try {
       return this.isFile || this.isDirectory;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `File: exists: Error checking whether file exists: \n${e}`,
       );
@@ -99,8 +108,10 @@ class File {
 
   get isFile(): boolean {
     try {
-      return FileManager.iCloud().fileExists(this.path) && !this.isDirectory;
-    } catch (e) {
+      return FileManager.iCloud()
+        .fileExists(this.path) && !this.isDirectory;
+    }
+    catch (e) {
       throw new ReferenceError(
         `File: isFile: Error using Scriptable FileManager class to check whether path is file: \n${e}`,
       );
@@ -109,8 +120,10 @@ class File {
 
   get isDirectory(): boolean {
     try {
-      return FileManager.iCloud().isDirectory(this.path);
-    } catch (e) {
+      return FileManager.iCloud()
+        .isDirectory(this.path);
+    }
+    catch (e) {
       throw new ReferenceError(
         `File: isDirectory: Error using Scriptable FileManager class to check whether path is directory: \n${e}`,
       );
@@ -120,7 +133,8 @@ class File {
   get isRoot(): boolean {
     try {
       return this._subpath.isEmpty;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `File: isRoot: Error checking whether file is root (empty subpath): \n${e}`,
       );
@@ -130,11 +144,12 @@ class File {
   get isLeaf(): boolean {
     try {
       return (
-        !this.exists ||
-        this.isFile ||
-        (this.isDirectory && this.ls.length === 0)
+        !this.exists
+        || this.isFile
+        || this.isDirectory && this.ls.length === 0
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `File: isLeaf: Error checking whether file is leaf: \n${e}`,
       );
@@ -144,9 +159,11 @@ class File {
   get ls(): string[] {
     try {
       return this.isDirectory
-        ? FileManager.iCloud().listContents(this.path)
+        ? FileManager.iCloud()
+          .listContents(this.path)
         : [];
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `File: ls: Error using Scriptable FileManager class to list contents of directory: \n${e}`,
       );
@@ -160,11 +177,12 @@ class File {
         : this.isLeaf
           ? []
           : this.ls
-              .map(leaf => this.append(leaf))
-              .filter(child => !this.path.startsWith(child.path))
-              .map(file => file.descendants)
-              .flat(1);
-    } catch (e) {
+            .map(leaf => this.append(leaf))
+            .filter(child => !this.path.startsWith(child.path))
+            .map(file => file.descendants)
+            .flat(1);
+    }
+    catch (e) {
       throw new ReferenceError(`File: Error getting descendants: \n${e}`);
     }
   }
@@ -176,7 +194,8 @@ class File {
       return new (this.constructor as new (
         ...args: ConstructorParameters<typeof File>
       ) => this)(this.root, this._subpath.append(...filepaths));
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`File: append: Error appending subpath: \n${e}`);
     }
   }
@@ -186,8 +205,10 @@ class File {
   ): this {
     try {
       this._subpath.cd(...relativeFilepath);
+
       return this;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`File: cd: Error changing directory: \n${e}`);
     }
   }
@@ -195,8 +216,11 @@ class File {
   read(): string {
     try {
       if (!this.isFile) throw new ReferenceError(`File does not exist.`);
-      return FileManager.iCloud().readString(this.path);
-    } catch (e) {
+
+      return FileManager.iCloud()
+        .readString(this.path);
+    }
+    catch (e) {
       throw new EvalError(
         `File: read: Error reading file at "${this.path}": \n${e}`,
       );
@@ -216,22 +240,28 @@ class File {
       else {
         if (!this.parent.isDirectory)
           try {
-            FileManager.iCloud().createDirectory(this.parent.path, true);
-          } catch (e) {
+            FileManager.iCloud()
+              .createDirectory(this.parent.path, true);
+          }
+          catch (e) {
             throw new EvalError(
               `Could not create parent directory using Scriptable FileManager class. See caught error: \n${e}`,
             );
           }
         try {
-          FileManager.iCloud().writeString(this.path, data);
-        } catch (e) {
+          FileManager.iCloud()
+            .writeString(this.path, data);
+        }
+        catch (e) {
           throw new EvalError(
             `Could not write data to file using Scriptable FileManager class. See caught error: \n${e}`,
           );
         }
+
         return this;
       }
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `File: write: Error writing data to file "${this.path}": \n${e}`,
       );
@@ -244,27 +274,32 @@ class File {
         if (force) __deleteUsingFileManager(this.path);
         else {
           const confirm: Alert = new Alert();
+
           confirm.message = `Are you sure you want to delete this file or folder (including all descendants)? Path: ${this.path}`;
           confirm.addDestructiveAction("Yes, DELETE this file");
           confirm.addCancelAction("Cancel");
-          confirm.present().then(userChoice => {
-            userChoice === 0
-              ? __deleteUsingFileManager(this.path)
-              : console.warn(
+          confirm.present()
+            .then(userChoice => {
+              userChoice === 0
+                ? __deleteUsingFileManager(this.path)
+                : console.warn(
                   `User canceled file deletion of file or folder at path: ${this.path}`,
                 );
-          });
+            });
         }
       }
 
       function __deleteUsingFileManager(path: string): void {
         try {
-          FileManager.iCloud().remove(path);
-          if (FileManager.iCloud().fileExists(path))
+          FileManager.iCloud()
+            .remove(path);
+          if (FileManager.iCloud()
+            .fileExists(path))
             throw new ReferenceError(
               `File still exists after using Scriptable FileManager class to delete it.`,
             );
-        } catch (e) {
+        }
+        catch (e) {
           if (!(e instanceof ReferenceError))
             e = new EvalError(
               `Could not delete file using Scriptable FileManager class. See caught error: \n${e}`,
@@ -274,7 +309,8 @@ class File {
       }
 
       return this;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `File: delete: Error deleting file at path "${this.path}": \n${e}`,
       );
@@ -284,7 +320,8 @@ class File {
   toString(): string {
     try {
       return this.path;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`File: toString: Error getting path: \n${e}`);
     }
   }
@@ -292,7 +329,8 @@ class File {
   toTree(): string[] {
     try {
       return this._path.toTree();
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`File: toTree: Error getting tree: \n${e}`);
     }
   }
@@ -302,7 +340,8 @@ class File {
   ): ReturnType<typeof FilepathString.join> {
     try {
       return File.FilepathString.join(...filepaths);
-    } catch (e) {
+    }
+    catch (e) {
       throw new SyntaxError(`File: static join: Error joining paths: \n${e}`);
     }
   }
@@ -310,13 +349,14 @@ class File {
   static [Symbol.hasInstance](instance: any): boolean {
     try {
       return (
-        instance !== null &&
-        instance !== undefined &&
-        typeof instance === "object" &&
-        "_nominalType" in instance &&
-        (instance as File)._nominalType === "File"
+        instance !== null
+        && instance !== undefined
+        && typeof instance === "object"
+        && "_nominalType" in instance
+        && (instance as File)._nominalType === "File"
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(`File: Error checking if object is File: \n${e}`);
     }
   }
@@ -324,7 +364,8 @@ class File {
   static get Bookmark(): typeof Bookmark {
     try {
       return importModule("bookmark/Bookmark") as typeof Bookmark;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(`File: Error importing Bookmark class: \n${e}`);
     }
   }
@@ -334,7 +375,8 @@ class File {
       return importModule(
         "filepathstring/FilepathString",
       ) as typeof FilepathString;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `File: Error importing FilepathString class: \n${e}`,
       );

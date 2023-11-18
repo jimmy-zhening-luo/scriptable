@@ -21,7 +21,8 @@ class ValidScheme extends sc_ValidUrlPart {
         ValidScheme.UrlCharSet.hyphen,
         ValidScheme.UrlCharSet.dot,
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `ValidScheme: constructor: error creating ValidScheme: \n${e}`,
       );
@@ -31,7 +32,8 @@ class ValidScheme extends sc_ValidUrlPart {
   static get ValidUrlPart(): typeof ValidUrlPart {
     try {
       return sc_ValidUrlPart;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `ValidScheme: error loading parent ValidUrlPart module: \n${e}`,
       );

@@ -6,7 +6,8 @@ class ValidHostIPv4Repeater extends hipf_ValidUrlRepeater {
   constructor(hostIPv4Repeater: string) {
     try {
       super(hostIPv4Repeater, 1, 3, hipf_ValidUrlRepeater.UrlCharSet.numbers);
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `ValidHostIPv4Repeater: constructor: error creating ValidHostIPv4Repeater: \n${e}`,
       );
@@ -16,7 +17,8 @@ class ValidHostIPv4Repeater extends hipf_ValidUrlRepeater {
   static get ValidUrlRepeater(): typeof ValidUrlRepeater {
     try {
       return hipf_ValidUrlRepeater;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `ValidHostIPv4Repeater: error loading parent ValidUrlRepeater module: \n${e}`,
       );

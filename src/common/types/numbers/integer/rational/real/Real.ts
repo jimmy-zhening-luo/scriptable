@@ -6,7 +6,8 @@ abstract class Real {
   get isValid(): boolean {
     try {
       return this._qualifies(this._raw);
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError("Real: error calling isValid");
     }
   }
@@ -14,7 +15,8 @@ abstract class Real {
   get value(): null | number {
     try {
       return this.isValid ? this._raw : null;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError("Rational: error calling number");
     }
   }
@@ -22,7 +24,8 @@ abstract class Real {
   toNumber(): number {
     try {
       return this.value ?? NaN;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError("Real: error calling toNumber");
     }
   }
@@ -30,7 +33,8 @@ abstract class Real {
   toString(): string {
     try {
       return this.isValid ? String(this.toNumber()) : "";
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError("Real: error calling toString");
     }
   }
@@ -38,7 +42,8 @@ abstract class Real {
   static get Sets(): typeof Sets {
     try {
       return importModule("sets/Sets") as typeof Sets;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError("Real: error importing Sets module");
     }
   }
@@ -46,7 +51,8 @@ abstract class Real {
   static get Bounds(): typeof Sets.Bounds {
     try {
       return Real.Sets.Bounds;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError("Real: error importing Bounds module");
     }
   }
@@ -54,7 +60,8 @@ abstract class Real {
   static get Cardinality(): typeof Sets.Cardinality {
     try {
       return Real.Sets.Cardinality;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError("Real: error importing Cardinality module");
     }
   }

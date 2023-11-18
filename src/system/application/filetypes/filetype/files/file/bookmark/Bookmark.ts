@@ -5,7 +5,8 @@ class Bookmark {
   constructor(bookmark: string = "") {
     try {
       this.alias = bookmark.trim();
-    } catch (e) {
+    }
+    catch (e) {
       throw new SyntaxError(
         `Bookmark: constructor: Caught unhandled exception while instantiating Bookmark. See unhandled exception: \n${e}`,
       );
@@ -15,9 +16,11 @@ class Bookmark {
   get resolves(): boolean {
     try {
       return (
-        this.alias !== "" && FileManager.iCloud().bookmarkExists(this.alias)
+        this.alias !== "" && FileManager.iCloud()
+          .bookmarkExists(this.alias)
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `Bookmark: exists: Caught unhandled exception while using Scriptable FileManager class to check whether bookmark exists. See unhandled exception: \n${e}`,
       );
@@ -33,10 +36,13 @@ class Bookmark {
           throw new ReferenceError(
             `Bookmark '${this.alias}' is not configured in Scriptable.`,
           );
-      } else {
-        return FileManager.iCloud().bookmarkedPath(this.alias);
       }
-    } catch (e) {
+      else {
+        return FileManager.iCloud()
+          .bookmarkedPath(this.alias);
+      }
+    }
+    catch (e) {
       throw new ReferenceError(
         `Bookmark: path: Error getting bookmarked path: \n${e}`,
       );
@@ -46,7 +52,8 @@ class Bookmark {
   toString(): string {
     try {
       return this.path;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `Bookmark: toString: Caught unhandled exception while getting bookmarked path of the bookmark named '${this.alias}'. See unhandled exception: \n${e}`,
       );
@@ -56,13 +63,14 @@ class Bookmark {
   static [Symbol.hasInstance](instance: any): boolean {
     try {
       return (
-        instance !== null &&
-        instance !== undefined &&
-        typeof instance === "object" &&
-        "_nominalType" in instance &&
-        (instance as Bookmark)._nominalType === "Bookmark"
+        instance !== null
+        && instance !== undefined
+        && typeof instance === "object"
+        && "_nominalType" in instance
+        && (instance as Bookmark)._nominalType === "Bookmark"
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `Bookmark: [Symbol.hasInstance]: Caught unhandled exception while checking whether instance is an instance of Bookmark. See unhandled exception: \n${e}`,
       );

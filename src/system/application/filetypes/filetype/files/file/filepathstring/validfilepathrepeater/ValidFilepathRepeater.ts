@@ -14,7 +14,8 @@ class ValidFilepathRepeater extends fpr_ValidString {
           ...ValidFilepathRepeater.CharSet.slash,
         ],
       });
-    } catch (e) {
+    }
+    catch (e) {
       throw new SyntaxError(
         `ValidFilepathRepeater: constructor: Caught unhandled exception instantiating parent class ValidFilepathRepeater: \n${e}`,
       );
@@ -24,7 +25,8 @@ class ValidFilepathRepeater extends fpr_ValidString {
   static get ValidString(): typeof ValidString {
     try {
       return fpr_ValidString;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `ValidFilepathRepeater: ValidString: Failed to import ValidString module: \n${e}`,
       );

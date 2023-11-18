@@ -9,28 +9,28 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
 
   constructor(
     schemeHostPortOrSchemeHostPortPathQueryFragment?:
-      | SchemeHostPort
-      | SchemeHostPortPathQueryFragment
-      | [
-          string | Scheme,
-          string | Host,
-          string | number | Port,
-          string | Path,
-          string | Query,
-          string | Fragment,
-        ],
+    | SchemeHostPort
+    | SchemeHostPortPathQueryFragment
+    | [
+      string | Scheme,
+      string | Host,
+      string | number | Port,
+      string | Path,
+      string | Query,
+      string | Fragment,
+    ],
     pathQueryFragment?: PathQueryFragment,
   ) {
     super();
     try {
-      this.parts =
-        schemeHostPortOrSchemeHostPortPathQueryFragment === undefined
+      this.parts
+        = schemeHostPortOrSchemeHostPortPathQueryFragment === undefined
           ? [
               new SchemeHostPortPathQueryFragment.SchemeHostPort(),
               new SchemeHostPortPathQueryFragment.PathQueryFragment(),
             ]
-          : schemeHostPortOrSchemeHostPortPathQueryFragment instanceof
-              SchemeHostPortPathQueryFragment
+          : schemeHostPortOrSchemeHostPortPathQueryFragment
+              instanceof SchemeHostPortPathQueryFragment
             ? schemeHostPortOrSchemeHostPortPathQueryFragment.parts
             : Array.isArray(schemeHostPortOrSchemeHostPortPathQueryFragment)
               ? [
@@ -59,7 +59,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
                 ];
       this.schemeHostPort = this.parts[0];
       this.pathQueryFragment = this.parts[1];
-    } catch (e) {
+    }
+    catch (e) {
       throw new SyntaxError(
         `SchemeHostPortPathQueryFragment: constructor: error creating SchemeHostPortPathQueryFragment: \n${e}`,
       );
@@ -76,7 +77,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
             ].join("/")
           : this.schemeHostPort.toString()
         : "";
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `SchemeHostPortPathQueryFragment: get composite: error getting composite: \n${e}`,
       );
@@ -86,7 +88,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
   static get SchemeHostPort(): typeof SchemeHostPort {
     try {
       return importModule("SchemeHostPort") as typeof SchemeHostPort;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `SchemeHostPortPathQueryFragment: get SchemeHostPort: error loading SchemeHostPort module: \n${e}`,
       );
@@ -96,7 +99,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
   static get PathQueryFragment(): typeof PathQueryFragment {
     try {
       return importModule("PathQueryFragment") as typeof PathQueryFragment;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `SchemeHostPortPathQueryFragment: get PathQueryFragment: error loading PathQueryFragment module: \n${e}`,
       );
@@ -106,7 +110,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
   static get UrlComposite(): typeof UrlComposite {
     try {
       return shppqf_UrlComposite;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `SchemeHostPortPathQueryFragment: get UrlComposite: error loading UrlComposite module: \n${e}`,
       );

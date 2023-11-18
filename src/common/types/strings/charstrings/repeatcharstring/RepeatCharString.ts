@@ -6,7 +6,8 @@ class RepeatCharString extends rp_CharString {
   protected _qualifies(candidateCharString: string): boolean {
     try {
       return [...candidateCharString].every(char => this.charset.allows(char));
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `RepeatCharString: qualifies: Error checking if CharString qualifies: \n${e}`,
       );
@@ -16,7 +17,8 @@ class RepeatCharString extends rp_CharString {
   static get CharString(): typeof CharString {
     try {
       return rp_CharString;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `RepeatCharString: CharString: Error importing CharString module: \n${e}`,
       );

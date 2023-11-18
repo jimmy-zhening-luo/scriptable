@@ -8,7 +8,8 @@ abstract class Application {
   run(): ReturnType<typeof Application.prototype.handleOutput> {
     try {
       return this.handleOutput(this.runtime());
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `Application: run: Caught unhandled exception during application runtime: \n${e}`,
       );
@@ -18,17 +19,21 @@ abstract class Application {
   protected get configSubpathRoot(): string {
     try {
       return "";
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `Application: configSubpath: Error getting application config subpath: \n${e}`,
       );
     }
   }
 
-  protected get storageSubpathRoot(): typeof Application.prototype.configSubpathRoot {
+  protected get storageSubpathRoot(): typeof Application
+    .prototype
+    .configSubpathRoot {
     try {
       return this.configSubpathRoot;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `Application: storageSubpath: Error getting application storage subpath: \n${e}`,
       );
@@ -41,7 +46,8 @@ abstract class Application {
         this.configSubpathRoot,
         this.constructor.name,
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `Application: config: Error getting application Config object: \n${e}`,
       );
@@ -55,7 +61,8 @@ abstract class Application {
         this.constructor.name,
         subpath,
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `Application: storage: Error getting application Storage object: \n${e}`,
       );
@@ -64,8 +71,10 @@ abstract class Application {
 
   readStorage(subpath?: string): ReturnType<typeof Storage.prototype.read> {
     try {
-      return this.storage(subpath).read();
-    } catch (e) {
+      return this.storage(subpath)
+        .read();
+    }
+    catch (e) {
       throw new ReferenceError(
         `Application: readStorage: Error reading application storage file at '${
           this.storage(subpath).path
@@ -76,9 +85,12 @@ abstract class Application {
 
   writeStorage(data: string, subpath?: string): this {
     try {
-      this.storage(subpath).write(data);
+      this.storage(subpath)
+        .write(data);
+
       return this;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `Application: writeStorage: Error writing to application storage file at '${
           this.storage(subpath).path
@@ -90,7 +102,8 @@ abstract class Application {
   static get Filetypes(): typeof Filetypes {
     try {
       return importModule("filetypes/Filetypes") as typeof Filetypes;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `Application: Filetypes: Error importing Filetypes module: \n${e}`,
       );

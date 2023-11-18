@@ -16,7 +16,8 @@ class ValidFragment extends fr_ValidUrlPart {
         ValidFragment.UrlCharSet.slash,
         ValidFragment.UrlCharSet.question,
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `ValidFragment: constructor: error creating ValidFragment: \n${e}`,
       );
@@ -26,7 +27,8 @@ class ValidFragment extends fr_ValidUrlPart {
   static get ValidUrlPart(): typeof ValidUrlPart {
     try {
       return fr_ValidUrlPart;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `ValidFragment: error loading parent ValidUrlPart module: \n${e}`,
       );

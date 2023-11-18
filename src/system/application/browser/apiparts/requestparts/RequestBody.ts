@@ -10,6 +10,7 @@ class RequestBody {
       if (typeof this._body === "string") {
         try {
           const parsedJson: unknown = JSON.parse(this._body);
+
           if (_validate(parsedJson))
             return parsedJson as RequestBody.RequestBodyRecord;
           else
@@ -21,19 +22,23 @@ class RequestBody {
             try {
               // TO-DO: Validate JSON schema.
               return parsedJson !== undefined;
-            } catch (e) {
+            }
+            catch (e) {
               throw new EvalError(
                 `RequestBody: Error while validating whether parsed JSON is matches the RequestBodyRecord schema: \n${e}`,
               );
             }
           }
-        } catch (e) {
+        }
+        catch (e) {
           throw new SyntaxError(
             `RequestBody.ts: toStringObject: this._body's string representation is not a valid Request Body syntax: \n${e}`,
           );
         }
-      } else return this._body;
-    } catch (e) {
+      }
+      else return this._body;
+    }
+    catch (e) {
       throw new EvalError(
         `RequestBody.ts: toStringObject: Error while parsing RequestBody to string object: \n${e}`,
       );

@@ -9,15 +9,15 @@ class PathQueryFragment extends pqf_UrlComposite {
 
   constructor(
     pathOrPathQueryOrPathQueryFragment?:
-      | PathQuery
-      | [string | Path, string | Query]
-      | PathQueryFragment,
+    | PathQuery
+    | [string | Path, string | Query]
+    | PathQueryFragment,
     fragment?: string | Fragment,
   ) {
     super();
     try {
-      this.parts =
-        pathOrPathQueryOrPathQueryFragment === undefined
+      this.parts
+        = pathOrPathQueryOrPathQueryFragment === undefined
           ? [
               new PathQueryFragment.PathQuery(),
               new PathQueryFragment.Fragment(),
@@ -44,7 +44,8 @@ class PathQueryFragment extends pqf_UrlComposite {
                 ];
       this.pathQuery = this.parts[0];
       this.fragment = this.parts[1];
-    } catch (e) {
+    }
+    catch (e) {
       throw new SyntaxError(
         `PathQueryFragment: constructor: error creating PathQueryFragment: \n${e}`,
       );
@@ -54,9 +55,13 @@ class PathQueryFragment extends pqf_UrlComposite {
   get composite(): string {
     try {
       return this.fragment.isValid
-        ? [this.pathQuery.toString(), this.fragment.toString()].join("#")
+        ? [
+            this.pathQuery.toString(),
+            this.fragment.toString(),
+          ].join("#")
         : this.pathQuery.toString();
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `PathQueryFragment: get composite: error getting composite: \n${e}`,
       );
@@ -66,7 +71,8 @@ class PathQueryFragment extends pqf_UrlComposite {
   static get PathQuery(): typeof PathQuery {
     try {
       return importModule("PathQuery") as typeof PathQuery;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `PathQueryFragment: get PathQuery: error loading PathQuery module: \n${e}`,
       );
@@ -76,7 +82,8 @@ class PathQueryFragment extends pqf_UrlComposite {
   static get Fragment(): typeof Fragment {
     try {
       return this.UrlParts.Fragment;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `PathQueryFragment: get Fragment: error loading Fragment module: \n${e}`,
       );
@@ -86,7 +93,8 @@ class PathQueryFragment extends pqf_UrlComposite {
   static get UrlComposite(): typeof UrlComposite {
     try {
       return pqf_UrlComposite;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `PathQueryFragment: get UrlComposite: error loading UrlComposite module: \n${e}`,
       );

@@ -3,13 +3,14 @@ const p_FiniteRational: typeof FiniteRational = importModule(
 ) as typeof FiniteRational;
 
 class PositiveFiniteRational extends p_FiniteRational {
-  protected override cardinality: Cardinality =
-    new PositiveFiniteRational.Cardinality.Positive();
+  protected override cardinality: Cardinality
+    = new PositiveFiniteRational.Cardinality.Positive();
 
   static get FiniteRational(): typeof FiniteRational {
     try {
       return p_FiniteRational;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `PositiveFiniteRational: error loading parent FiniteRational module: \n${e}`,
       );

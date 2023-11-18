@@ -43,11 +43,17 @@ class UrlCharSet extends u_CharSet {
   }
 
   static get reserved(): string[] {
-    return [...this.genDelims, ...this.subDelims];
+    return [
+      ...this.genDelims,
+      ...this.subDelims,
+    ];
   }
 
   static get percentEncoded(): string[] {
-    return [...this.percent, ...this.hex];
+    return [
+      ...this.percent,
+      ...this.hex,
+    ];
   }
 
   static get genDelims(): string[] {
@@ -81,7 +87,8 @@ class UrlCharSet extends u_CharSet {
   static get CharSet(): typeof CharSet {
     try {
       return u_CharSet;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `UrlCharSet: CharSet: Error importing CharSet module: \n${e}`,
       );

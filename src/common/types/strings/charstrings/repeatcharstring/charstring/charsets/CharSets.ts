@@ -2,7 +2,8 @@ class CharSets {
   static get UrlCharSet(): typeof UrlCharSet {
     try {
       return importModule("UrlCharSet") as typeof UrlCharSet;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `CharSets: UrlCharSet: Error importing UrlCharSet module: \n${e}`,
       );
@@ -12,7 +13,8 @@ class CharSets {
   static get CharSet(): typeof CharSet {
     try {
       return CharSets.UrlCharSet.CharSet;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `CharSets: CharSet: Error importing CharSet module: \n${e}`,
       );

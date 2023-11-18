@@ -3,13 +3,14 @@ const p_FiniteInteger: typeof FiniteInteger = importModule(
 ) as typeof FiniteInteger;
 
 class PositiveFiniteInteger extends p_FiniteInteger {
-  protected override cardinality: Cardinality =
-    new PositiveFiniteInteger.Cardinality.Positive();
+  protected override cardinality: Cardinality
+    = new PositiveFiniteInteger.Cardinality.Positive();
 
   static get FiniteInteger(): typeof FiniteInteger {
     try {
       return p_FiniteInteger;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `PositiveFiniteInteger: error loading parent FiniteInteger module: \n${e}`,
       );

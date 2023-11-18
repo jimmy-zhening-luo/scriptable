@@ -2,6 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: blue; icon-glyph: search;
 "use strict";
+
 namespace Search {
   const shortcut: typeof Shortcut = importModule(
     "system/Shortcut",
@@ -17,39 +18,40 @@ namespace Search {
         const searchShortcutConfig: SearchProto = this.config
           .unmerged as SearchProto;
         const querytag: undefined | string = searchShortcutConfig.user.queryTag;
+
         if (querytag === "" || query.searchKey === "") return null;
         else {
-          const configuredSearchEngines: SearchEngine[] =
-            searchShortcutConfig.user.engineKeys
+          const configuredSearchEngines: SearchEngine[]
+            = searchShortcutConfig.user.engineKeys
               .map(engine =>
                 engine.urls
                   ? new BrowserSearchEngine(
-                      engine.keys,
-                      engine.urls,
-                      querytag,
-                      engine.webview ?? false,
-                    )
+                    engine.keys,
+                    engine.urls,
+                    querytag,
+                    engine.webview ?? false,
+                  )
                   : engine.app === undefined
                     ? null
                     : engine.app in SupportedAppSearchEngine
                       ? new AppSearchEngine(
-                          typeof engine.keys === "string"
-                            ? [engine.keys]
-                            : engine.keys,
-                          engine.app,
-                        )
-                      : null,
-              )
+                        typeof engine.keys === "string"
+                          ? [engine.keys]
+                          : engine.keys,
+                        engine.app,
+                      )
+                      : null)
               .filter(engine => engine !== null) as SearchEngine[];
-          const userIntendedSearchEngine: SearchEngine | undefined =
-            configuredSearchEngines.find(engine =>
-              engine.engineKeys.includes(query.searchKey),
-            );
+          const userIntendedSearchEngine: SearchEngine | undefined
+            = configuredSearchEngines.find(engine =>
+              engine.engineKeys.includes(query.searchKey));
+
           return userIntendedSearchEngine === undefined
             ? null
             : userIntendedSearchEngine.parseQueryToAction(query);
         }
-      } catch (e) {
+      }
+      catch (e) {
         throw new EvalError(`Search: runtime: Error running app: \n${e}`);
       }
     }
@@ -61,10 +63,15 @@ namespace Search {
 
     constructor(query: string) {
       try {
-        const tokens: string[] = query.trim().split(" ");
-        this.searchKey = tokens.shift()?.toLowerCase()?.replace(".", "") ?? "";
+        const tokens: string[] = query.trim()
+          .split(" ");
+
+        this.searchKey = tokens.shift()
+          ?.toLowerCase()
+          ?.replace(".", "") ?? "";
         this.searchTerms = tokens;
-      } catch (e) {
+      }
+      catch (e) {
         throw new SyntaxError(
           `SearchQuery: constructor: Error creating SearchQuery object: \n${e}`,
         );
@@ -94,7 +101,8 @@ namespace Search {
         this.engineKeys = (
           Array.isArray(configuredKeys) ? configuredKeys : [configuredKeys]
         ).map(key => key.toLowerCase());
-      } catch (e) {
+      }
+      catch (e) {
         throw new EvalError(
           `SearchEngine: constructor: Error creating SearchEngine object: \n${e}`,
         );
@@ -122,7 +130,8 @@ namespace Search {
           : [configuredUrls];
         this.querytag = querytag;
         this.showWebview = showWebview;
-      } catch (e) {
+      }
+      catch (e) {
         throw new EvalError(
           `BrowserSearchEngine: constructor: Error creating BrowserSearchEngine object: \n${e}`,
         );
@@ -136,18 +145,18 @@ namespace Search {
             term
               .split("+")
               .map(operand => encodeURI(operand))
-              .join("%2B"),
-          )
+              .join("%2B"))
           .join("+");
         const actions: string[] = this.engineUrls.map(url =>
-          url.replace(this.querytag, urlEncodedQueryTerms),
-        );
+          url.replace(this.querytag, urlEncodedQueryTerms));
+
         return {
           app: "Safari",
           actions: this.showWebview ? actions : actions.reverse(),
           showWebview: this.showWebview,
         };
-      } catch (e) {
+      }
+      catch (e) {
         throw new SyntaxError(
           `BrowserSearchEngine: parseQueryToAction: Error parsing query to action: \n${e}`,
         );
@@ -165,7 +174,8 @@ namespace Search {
       try {
         super(configuredKeys);
         this.app = app;
-      } catch (e) {
+      }
+      catch (e) {
         throw new EvalError(
           `AppSearchEngine: constructor: Error creating AppSearchEngine object: \n${e}`,
         );
@@ -178,7 +188,8 @@ namespace Search {
           app: this.app,
           actions: [query.searchTerms.join(" ")],
         };
-      } catch (e) {
+      }
+      catch (e) {
         throw new SyntaxError(
           `AppSearchEngine: parseQueryToAction: Error parsing query to action: \n${e}`,
         );
@@ -187,5 +198,6 @@ namespace Search {
   }
 }
 
-new Search.Search().run();
+new Search.Search()
+  .run();
 Script.complete();

@@ -8,7 +8,8 @@ class Sets {
         Finite: importModule("Finite") as typeof Finite,
         Infinite: importModule("Infinite") as typeof Infinite,
       };
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         "Sets: error importing Finite or Infinite module",
       );
@@ -26,7 +27,8 @@ class Sets {
         Positive: importModule("Positive") as typeof Positive,
         Negative: importModule("Negative") as typeof Negative,
       };
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         "Sets: error importing AnyCardinality, Positive, or Negative module",
       );
@@ -42,7 +44,8 @@ class Sets {
         Bounds: Sets.Bounds.Infinite.Bounds,
         Cardinality: Sets.Cardinality.AnyCardinality.Cardinality,
       };
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         "Sets: error importing Bounds or Cardinality module",
       );

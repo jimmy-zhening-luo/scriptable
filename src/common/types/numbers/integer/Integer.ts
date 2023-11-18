@@ -8,7 +8,8 @@ class Integer extends _Rational {
       return (
         super._qualifies(rawNumber) && new Integer.Rational(rawNumber).isInteger
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(`Integer.qualifies: \n${e}`);
     }
   }
@@ -16,7 +17,8 @@ class Integer extends _Rational {
   static get Rational(): typeof Rational {
     try {
       return _Rational;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `Integer: error loading parent Rational module: \n${e}`,
       );

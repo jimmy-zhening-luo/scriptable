@@ -4,7 +4,8 @@ class Infinite extends i_Bounds {
   static get Bounds(): typeof Bounds {
     try {
       return i_Bounds;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError("Infinite: error importing Bounds module");
     }
   }

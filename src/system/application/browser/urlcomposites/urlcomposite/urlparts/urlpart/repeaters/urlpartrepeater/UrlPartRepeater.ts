@@ -3,10 +3,11 @@ abstract class UrlPartRepeater {
 
   constructor(repeater: null | string) {
     try {
-      this.value =
-        repeater === null || repeater === "" ? null : this.parse(repeater);
+      this.value
+        = repeater === null || repeater === "" ? null : this.parse(repeater);
       if (this.value === "") this.value = null;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `UrlPartRepeater: constructor: error creating UrlPartRepeater: \n${e}`,
       );
@@ -18,7 +19,8 @@ abstract class UrlPartRepeater {
   get isValid(): boolean {
     try {
       return this.value !== null;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `UrlPartRepeater: isValid: error checking if UrlPartRepeater is valid: \n${e}`,
       );
@@ -28,7 +30,8 @@ abstract class UrlPartRepeater {
   toString(): string {
     try {
       return this.value ?? "";
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `UrlPartRepeater: toString: error converting UrlPartRepeater to string: \n${e}`,
       );
@@ -38,7 +41,8 @@ abstract class UrlPartRepeater {
   static get UrlValidators(): typeof UrlValidators {
     try {
       return importModule("validators/UrlValidators") as typeof UrlValidators;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `UrlPartRepeater: error loading parent UrlValidators module: \n${e}`,
       );

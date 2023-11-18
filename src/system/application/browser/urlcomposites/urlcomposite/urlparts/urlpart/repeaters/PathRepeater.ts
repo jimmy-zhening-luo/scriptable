@@ -6,7 +6,8 @@ class PathRepeater extends pa_UrlPartRepeater {
   protected parse(repeater: string): null | string {
     try {
       return new PathRepeater.ValidPathRepeater(repeater).value;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `PathRepeater: parse: error parsing PathRepeater: \n${e}`,
       );
@@ -16,7 +17,8 @@ class PathRepeater extends pa_UrlPartRepeater {
   static get ValidPathRepeater(): typeof ValidPathRepeater {
     try {
       return PathRepeater.UrlValidators.Path.Repeaters.Path;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `PathRepeater: error loading ValidPathRepeater module: \n${e}`,
       );
@@ -26,7 +28,8 @@ class PathRepeater extends pa_UrlPartRepeater {
   static get UrlPartRepeater(): typeof UrlPartRepeater {
     try {
       return pa_UrlPartRepeater;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `PathRepeater: error loading parent UrlPartRepeater module: \n${e}`,
       );

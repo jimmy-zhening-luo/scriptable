@@ -18,7 +18,8 @@ class CharSet {
             : this.charset.push(input);
       });
       this.charset.filter(char => char.length === 1);
-    } catch (e) {
+    }
+    catch (e) {
       throw new SyntaxError(
         `CharSet: constructor: Error creating CharSet object: \n${e}`,
       );
@@ -28,11 +29,12 @@ class CharSet {
   allows(char: string): boolean {
     try {
       return (
-        char.length === 1 &&
-        ((!this.negate && this.charset.includes(char)) ||
-          (this.negate && !this.charset.includes(char)))
+        char.length === 1
+        && (!this.negate && this.charset.includes(char)
+          || this.negate && !this.charset.includes(char))
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `CharSet: includes: Error checking if CharSet allows char: \n${e}`,
       );
@@ -42,7 +44,8 @@ class CharSet {
   toString(): string {
     try {
       return this.charset.join(" | ");
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `CharSet: toString: Error converting CharSet to string: \n${e}`,
       );
@@ -50,23 +53,46 @@ class CharSet {
   }
 
   static get alphaNumeric(): string[] {
-    return [...this.numbers, ...this.alpha];
+    return [
+      ...this.numbers,
+      ...this.alpha,
+    ];
   }
 
   static get alphaNumericLower(): string[] {
-    return [...this.numbers, ...this.alphaLower];
+    return [
+      ...this.numbers,
+      ...this.alphaLower,
+    ];
   }
 
   static get alphaNumericUpper(): string[] {
-    return [...this.numbers, ...this.alphaUpper];
+    return [
+      ...this.numbers,
+      ...this.alphaUpper,
+    ];
   }
 
   static get numbers(): string[] {
-    return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    return [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+    ];
   }
 
   static get alpha(): string[] {
-    return [...this.alphaLower, ...this.alphaUpper];
+    return [
+      ...this.alphaLower,
+      ...this.alphaUpper,
+    ];
   }
 
   static get alphaLower(): string[] {

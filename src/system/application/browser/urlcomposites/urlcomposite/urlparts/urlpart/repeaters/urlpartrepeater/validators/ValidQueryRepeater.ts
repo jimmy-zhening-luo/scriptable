@@ -13,7 +13,8 @@ class ValidQueryRepeater extends qu_ValidUrlRepeater {
         qu_ValidUrlRepeater.UrlCharSet.slash,
         qu_ValidUrlRepeater.UrlCharSet.question,
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `ValidQueryRepeater: constructor: error creating ValidQueryRepeater: \n${e}`,
       );
@@ -23,7 +24,8 @@ class ValidQueryRepeater extends qu_ValidUrlRepeater {
   static get ValidUrlRepeater(): typeof ValidUrlRepeater {
     try {
       return qu_ValidUrlRepeater;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `ValidQueryRepeater: error loading parent ValidUrlRepeater module: \n${e}`,
       );

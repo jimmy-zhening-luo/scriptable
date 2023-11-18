@@ -14,10 +14,12 @@ abstract class NativeScript extends sc_Application {
   protected override get configSubpathRoot(): string {
     try {
       const SCRIPTABLE_CONFIG_SUBPATH_ROOT: string = "NativeScript";
+
       return super.configSubpathRoot === ""
         ? SCRIPTABLE_CONFIG_SUBPATH_ROOT
         : `${super.configSubpathRoot}/${SCRIPTABLE_CONFIG_SUBPATH_ROOT}`;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `NativeScript.js: Error getting shortcut config subpath: \n${e}`,
       );
@@ -27,7 +29,8 @@ abstract class NativeScript extends sc_Application {
   static get Application(): typeof Application {
     try {
       return sc_Application;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `NativeScript.js: Error getting shortcut Application class: \n${e}`,
       );

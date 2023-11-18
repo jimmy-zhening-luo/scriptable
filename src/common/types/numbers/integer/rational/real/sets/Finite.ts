@@ -6,7 +6,8 @@ class Finite extends f_Bounds {
       return (
         super.isBounded(value) && value !== Infinity && value !== -Infinity
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError("Finite: error calling isBounded");
     }
   }
@@ -14,7 +15,8 @@ class Finite extends f_Bounds {
   static get Bounds(): typeof Bounds {
     try {
       return f_Bounds;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError("Finite: error importing Bounds module");
     }
   }

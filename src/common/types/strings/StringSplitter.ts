@@ -16,7 +16,8 @@ class StringSplitter {
         splitOptions,
         mergeOptions,
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `StringSplitter: constructor: Error creating StringSplitter object: \n${e}`,
       );
@@ -42,23 +43,27 @@ class StringSplitter {
         separator,
         splitOptions,
       );
+
       if (tokens.length === 0) return [];
       else {
         if (limit === Infinity) return tokens;
         else {
           if (mergeTo === StringSplitter.Direction.Left)
             return [
-              tokens.slice(0, limit - 1).join(separator),
+              tokens.slice(0, limit - 1)
+                .join(separator),
               ...tokens.slice(limit - 1),
             ];
           else
             return [
               ...tokens.slice(0, limit - 1),
-              tokens.slice(limit - 1).join(separator),
+              tokens.slice(limit - 1)
+                .join(separator),
             ];
         }
       }
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `StringSplitter: merge: Error merging tokens: \n${e}`,
       );
@@ -85,9 +90,10 @@ class StringSplitter {
         ](),
         separator,
       )
-        .map(token => (trimTokens ? token.trim() : token))
+        .map(token => trimTokens ? token.trim() : token)
         .filter(token => !ignoreEmptyTokens || token !== "");
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `StringSplitter: split: Error splitting string: \n${e}`,
       );
@@ -99,10 +105,12 @@ class StringSplitter {
     separator: Parameters<typeof StringSplitter.__tokenize>[1] = "",
   ): string {
     try {
-      return StringSplitter.__tokenize(stringOrTokens, separator).join(
-        separator,
-      );
-    } catch (e) {
+      return StringSplitter.__tokenize(stringOrTokens, separator)
+        .join(
+          separator,
+        );
+    }
+    catch (e) {
       throw new EvalError(
         `StringSplitter: aggregate: Error aggregating tokens: \n${e}`,
       );
@@ -120,8 +128,10 @@ class StringSplitter {
           if (separator === "") return [...stringOrTokens];
           else return stringOrTokens.split(separator);
         }
-      } else return [...stringOrTokens];
-    } catch (e) {
+      }
+      else return [...stringOrTokens];
+    }
+    catch (e) {
       throw new EvalError(
         `StringSplitter: tokenize: Error tokenizing string: \n${e}`,
       );
@@ -132,8 +142,10 @@ class StringSplitter {
     try {
       return this.separator === ""
         ? this.toString().length
-        : this.toString().split(this.separator).length;
-    } catch (e) {
+        : this.toString()
+          .split(this.separator).length;
+    }
+    catch (e) {
       throw new EvalError(
         `StringSplitter: numTokens: Error getting number of raw tokens: \n${e}`,
       );
@@ -143,7 +155,8 @@ class StringSplitter {
   get length(): number {
     try {
       return this.toTuple().length;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `StringSplitter: length: Error getting length of merged array: \n${e}`,
       );
@@ -153,7 +166,8 @@ class StringSplitter {
   get wasMerged(): boolean {
     try {
       return this.length < this.numTokens;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `StringSplitter: didMerge: Error checking if merge occurred during construction: \n${e}`,
       );
@@ -163,7 +177,8 @@ class StringSplitter {
   toTuple(): string[] {
     try {
       return [...this._merged];
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `StringSplitter: toTuple: Error converting to tuple: \n${e}`,
       );
@@ -172,8 +187,10 @@ class StringSplitter {
 
   toString(): string {
     try {
-      return this.toTuple().join(this.separator);
-    } catch (e) {
+      return this.toTuple()
+        .join(this.separator);
+    }
+    catch (e) {
       throw new EvalError(
         `StringSplitter: toString: Error converting to string: \n${e}`,
       );
@@ -185,7 +202,8 @@ class StringSplitter {
       return importModule(
         "./common/types/numbers/PositiveInteger",
       ) as typeof PositiveInteger;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `StringSplitter: error importing PositiveInteger module: \n${e}`,
       );

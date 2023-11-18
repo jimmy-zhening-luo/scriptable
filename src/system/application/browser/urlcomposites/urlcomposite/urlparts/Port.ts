@@ -12,23 +12,27 @@ class Port extends po_UrlPart {
             : ""
           : port,
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(`Port: constructor: error creating Port: \n${e}`);
     }
   }
 
   protected parse(port: string): null | string {
     try {
-      const parsedPortString: string = new Port.ValidPort(port).toString();
+      const parsedPortString: string = new Port.ValidPort(port)
+        .toString();
       const parsedPortInt: number = Number.isInteger(
         Number.parseInt(parsedPortString),
       )
         ? Math.round(Number.parseInt(parsedPortString))
         : NaN;
+
       return parsedPortInt >= 1 && parsedPortInt <= 65535
         ? String(Math.round(parsedPortInt))
         : null;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(`Port: parse: error parsing Port: \n${e}`);
     }
   }
@@ -40,7 +44,8 @@ class Port extends po_UrlPart {
         : coerceEmptyPortToZero
           ? 0
           : NaN;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `Port: toNumber: error converting Port to number: \n${e}`,
       );
@@ -50,7 +55,8 @@ class Port extends po_UrlPart {
   static get ValidPort(): typeof ValidPort {
     try {
       return Port.UrlValidators.Port;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(`Port: error loading ValidPort module: \n${e}`);
     }
   }
@@ -58,7 +64,8 @@ class Port extends po_UrlPart {
   static get UrlPart(): typeof UrlPart {
     try {
       return po_UrlPart;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(`Port: error loading UrlPart module: \n${e}`);
     }
   }

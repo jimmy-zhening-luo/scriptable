@@ -6,7 +6,8 @@ class ValidPathRepeater extends pa_ValidUrlRepeater {
   constructor(pathRepeater: string) {
     try {
       super(pathRepeater, 0, Infinity, pa_ValidUrlRepeater.UrlCharSet.pchar);
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `ValidPathRepeater: constructor: error creating ValidPathRepeater: \n${e}`,
       );
@@ -16,7 +17,8 @@ class ValidPathRepeater extends pa_ValidUrlRepeater {
   static get ValidUrlRepeater(): typeof ValidUrlRepeater {
     try {
       return pa_ValidUrlRepeater;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `ValidPathRepeater: error loading parent ValidUrlRepeater module: \n${e}`,
       );

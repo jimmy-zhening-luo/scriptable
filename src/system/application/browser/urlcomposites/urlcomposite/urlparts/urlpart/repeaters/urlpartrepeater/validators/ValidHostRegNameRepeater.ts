@@ -13,7 +13,8 @@ class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
         hrn_ValidUrlRepeater.UrlCharSet.percentEncoded,
         hrn_ValidUrlRepeater.UrlCharSet.subDelims,
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `ValidHostRegNameRepeater: constructor: error creating ValidHostRegNameRepeater: \n${e}`,
       );
@@ -23,7 +24,8 @@ class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
   static get ValidUrlRepeater(): typeof ValidUrlRepeater {
     try {
       return hrn_ValidUrlRepeater;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `ValidHostRegNameRepeater: error loading parent ValidUrlRepeater module: \n${e}`,
       );

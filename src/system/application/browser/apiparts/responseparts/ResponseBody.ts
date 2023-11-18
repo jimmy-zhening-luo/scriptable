@@ -14,6 +14,7 @@ class ResponseBody {
       if (typeof this.response === "string") {
         try {
           const parsedJson: unknown = JSON.parse(this.response);
+
           if (_validate(parsedJson)) return parsedJson;
           else
             throw new SyntaxError(
@@ -24,19 +25,23 @@ class ResponseBody {
             try {
               // TO-DO: Validate JSON schema.
               return parsedJson !== undefined;
-            } catch {
+            }
+            catch {
               throw new EvalError(
                 `ResponseBody: toObject: Error while validating whether parsed JSON is matches the ResponseBodyRecord schema.`,
               );
             }
           }
-        } catch {
+        }
+        catch {
           throw new SyntaxError(
             `ResponseBody: toObject: this.response's string representation is not a valid Response Body syntax.`,
           );
         }
-      } else return this.response;
-    } catch {
+      }
+      else return this.response;
+    }
+    catch {
       throw new EvalError(
         `ResponseBody: toObject: Error while getting the object form of response body.`,
       );

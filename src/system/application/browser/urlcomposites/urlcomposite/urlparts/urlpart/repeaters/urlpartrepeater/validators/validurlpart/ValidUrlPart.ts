@@ -33,7 +33,8 @@ class ValidUrlPart extends up_ValidString {
           trimTrailing: trimTrailing,
         },
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `ValidUrlPart: constructor: error creating ValidUrlPart: \n${e}`,
       );

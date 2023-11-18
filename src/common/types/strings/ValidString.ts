@@ -1,6 +1,7 @@
 class ValidString {
   readonly cleaned: string;
   private readonly _boundedRepeatCharString: BoundedRepeatCharString;
+
   constructor(
     candidateString: string = "",
     {
@@ -25,7 +26,8 @@ class ValidString {
         negate,
         ...allowedChars,
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `ValidString: constructor: Error creating ValidString object: \n${e}`,
       );
@@ -39,7 +41,8 @@ class ValidString {
   get isValid(): boolean {
     try {
       return this.value !== null;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `ValidString: isValid: Error getting validity: \n${e}`,
       );
@@ -49,7 +52,8 @@ class ValidString {
   get min(): number {
     try {
       return this._boundedRepeatCharString.min;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`ValidString: min: Error getting min: \n${e}`);
     }
   }
@@ -57,7 +61,8 @@ class ValidString {
   get max(): number {
     try {
       return this._boundedRepeatCharString.max;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`ValidString: max: Error getting max: \n${e}`);
     }
   }
@@ -65,7 +70,8 @@ class ValidString {
   toString(): string {
     try {
       return this.value ?? "";
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `ValidString: toString: Error converting to string: \n${e}`,
       );
@@ -94,6 +100,7 @@ class ValidString {
       if (toLower) raw = raw.toLowerCase();
       if (trim) raw = raw.trim();
       const preprocessed: string = raw;
+
       return ValidString._trimEdge(
         ValidString._trimEdge(
           preprocessed,
@@ -105,7 +112,8 @@ class ValidString {
         ValidString.Edge.Trailing,
         trimTrailingExcept,
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`ValidString: clean: Error cleaning string: \n${e}`);
     }
   }
@@ -118,11 +126,13 @@ class ValidString {
   ): string {
     try {
       const isLeading: boolean = edge === ValidString.Edge.Leading;
+
       type LookPrototypeFunction = "startsWith" | "endsWith";
       const lookFn: LookPrototypeFunction = isLeading
         ? "startsWith"
         : "endsWith";
       const lookCondition: boolean = !trimExcept;
+
       wordsToTrim
         .filter(word => word !== "")
         .forEach(word => {
@@ -131,8 +141,10 @@ class ValidString {
               ? string.slice(trimExcept ? 1 : word.length)
               : string.slice(0, 0 - (trimExcept ? 1 : word.length));
         });
+
       return string;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(`ValidString: trimEdge: Error trimming edge: \n${e}`);
     }
   }
@@ -142,7 +154,8 @@ class ValidString {
       return importModule(
         "charstrings/BoundedRepeatCharString",
       ) as typeof BoundedRepeatCharString;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `ValidString: error importing BoundedRepeatCharString module: \n${e}`,
       );
@@ -152,7 +165,8 @@ class ValidString {
   static get CharSets(): typeof CharSets {
     try {
       return ValidString.BoundedRepeatCharString.CharSets;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `ValidString: error importing CharSets module: \n${e}`,
       );
@@ -162,7 +176,8 @@ class ValidString {
   static get CharSet(): typeof CharSet {
     try {
       return ValidString.CharSets.CharSet;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `ValidString: error importing CharSet module: \n${e}`,
       );
@@ -172,7 +187,8 @@ class ValidString {
   static get UrlCharSet(): typeof UrlCharSet {
     try {
       return ValidString.CharSets.UrlCharSet;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `ValidString: error importing UrlCharSet module: \n${e}`,
       );

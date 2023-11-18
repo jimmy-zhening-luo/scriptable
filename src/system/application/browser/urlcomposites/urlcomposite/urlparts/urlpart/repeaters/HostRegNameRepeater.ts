@@ -6,7 +6,8 @@ class HostRegNameRepeater extends hrn_UrlPartRepeater {
   protected parse(repeater: string): null | string {
     try {
       return new HostRegNameRepeater.ValidHostRegNameRepeater(repeater).value;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `HostRegNameRepeater: parse: error parsing HostRegNameRepeater: \n${e}`,
       );
@@ -16,7 +17,8 @@ class HostRegNameRepeater extends hrn_UrlPartRepeater {
   static get ValidHostRegNameRepeater(): typeof ValidHostRegNameRepeater {
     try {
       return HostRegNameRepeater.UrlValidators.Host.Repeaters.RegName;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `HostRegNameRepeater: error loading ValidHostRegNameRepeater module: \n${e}`,
       );
@@ -26,7 +28,8 @@ class HostRegNameRepeater extends hrn_UrlPartRepeater {
   static get UrlPartRepeater(): typeof UrlPartRepeater {
     try {
       return hrn_UrlPartRepeater;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `HostRegNameRepeater: error loading parent UrlPartRepeater module: \n${e}`,
       );

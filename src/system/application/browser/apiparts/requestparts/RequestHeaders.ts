@@ -3,15 +3,14 @@ class RequestHeaders {
     scheme: "" | keyof typeof RequestHeaders.AuthScheme;
     token: string;
   };
-
   private readonly _headers: Map<string, primitive>;
 
   constructor(
     authOrHeader?:
-      | ""
-      | keyof typeof RequestHeaders.AuthScheme
-      | [string, primitive]
-      | RequestHeaders,
+    | ""
+    | keyof typeof RequestHeaders.AuthScheme
+    | [string, primitive]
+    | RequestHeaders,
     authToken?: string | [string, primitive] | RequestHeaders,
     ...headers: ([string, primitive] | RequestHeaders)[]
   ) {
@@ -21,22 +20,28 @@ class RequestHeaders {
     };
     this._headers = new Map<string, primitive>();
     if (authOrHeader === undefined) {
-    } else {
+    }
+    else {
       if (typeof authOrHeader === "string") {
         this._auth.scheme = authOrHeader;
         if (authToken === undefined) {
-        } else if (typeof authToken === "string") {
+        }
+        else if (typeof authToken === "string") {
           this._auth.token = authToken;
           this.addHeader(...headers);
-        } else this.addHeader(authToken, ...headers);
-      } else {
+        }
+        else this.addHeader(authToken, ...headers);
+      }
+      else {
       }
     }
   }
 
   get headers(): typeof RequestHeaders.prototype._headers {
     const headers: Map<string, primitive> = new Map(this._headers);
+
     if (this.hasAuth()) headers.set("Authorization", this.auth);
+
     return this._headers;
   }
 
@@ -52,15 +57,25 @@ class RequestHeaders {
     for (const header of headers) {
       if (Array.isArray(header)) {
         if (header[0] === "") {
-        } else if (header[0] === "Authorization") {
+        }
+        else if (header[0] === "Authorization") {
           this.auth = String(header[1]);
-        } else this._headers.set(header[0], header[1]);
-      } else {
-        for (const [key, value] of header.headers) {
-          this.addHeader([key, value]);
+        }
+        else this._headers.set(header[0], header[1]);
+      }
+      else {
+        for (const [
+          key,
+          value,
+        ] of header.headers) {
+          this.addHeader([
+            key,
+            value,
+          ]);
         }
       }
     }
+
     return this;
   }
 
@@ -79,16 +94,23 @@ class RequestHeaders {
   }
 
   getHeader(key: string): string {
-    return this.hasHeader(key) ? [key, this.getValue(key)].join(": ") : "";
+    return this.hasHeader(key)
+      ? [
+          key,
+          this.getValue(key),
+        ].join(": ")
+      : "";
   }
 
   deleteHeader(key: string): this {
     this._headers.delete(key);
+
     return this;
   }
 
   toString(): string {
-    return this.keys.map(key => this.getHeader(key)).join("\r\n");
+    return this.keys.map(key => this.getHeader(key))
+      .join("\r\n");
   }
 
   get scheme(): typeof RequestHeaders.prototype._auth.scheme {
@@ -115,28 +137,37 @@ class RequestHeaders {
     return this.hasAuth()
       ? this.scheme === ""
         ? this.token
-        : [this.scheme, this.token].join(" ")
+        : [
+            this.scheme,
+            this.token,
+          ].join(" ")
       : "";
   }
 
   set auth(auth: string) {
-    const authParts: string[] = auth.trim().split(" ");
+    const authParts: string[] = auth.trim()
+      .split(" ");
+
     if (authParts.length === 0) {
       this.scheme = "";
       this.token = "";
-    } else if (authParts.length === 1) {
+    }
+    else if (authParts.length === 1) {
       this.scheme = "";
       this.token = authParts[0] ?? "";
-    } else {
+    }
+    else {
       if (
-        authParts[0] === "" ||
-        (authParts[0] ?? "") in RequestHeaders.AuthScheme
+        authParts[0] === ""
+        || (authParts[0] ?? "") in RequestHeaders.AuthScheme
       ) {
         this.scheme = authParts[0] as
           | ""
           | keyof typeof RequestHeaders.AuthScheme;
-        this.token = authParts.slice(1).join(" ");
-      } else {
+        this.token = authParts.slice(1)
+          .join(" ");
+      }
+      else {
         this.scheme = "";
         this.token = authParts.join(" ");
       }
@@ -146,6 +177,7 @@ class RequestHeaders {
   deleteAuth(): this {
     this._auth.scheme = "";
     this._auth.token = "";
+
     return this;
   }
 }

@@ -3,13 +3,14 @@ const nr_Integer: typeof Integer = importModule(
 ) as typeof Integer;
 
 class NegativeRational extends nr_Integer.Rational {
-  protected override cardinality: Cardinality =
-    new NegativeRational.Cardinality.Negative();
+  protected override cardinality: Cardinality
+    = new NegativeRational.Cardinality.Negative();
 
   static get Integer(): typeof Integer {
     try {
       return nr_Integer;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `NegativeRational: error loading parent Integer module: \n${e}`,
       );
@@ -19,7 +20,8 @@ class NegativeRational extends nr_Integer.Rational {
   static get Rational(): typeof Rational {
     try {
       return NegativeRational.Integer.Rational;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `NegativeRational: error loading Integer.Rational module: \n${e}`,
       );

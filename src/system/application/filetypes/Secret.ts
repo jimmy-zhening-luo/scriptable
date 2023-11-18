@@ -6,7 +6,8 @@ class Secret extends key_Filetype {
   constructor(subpath: string) {
     try {
       super("Secret", subpath);
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `Secret: constructor: Error creating Secret object: \n${e}`,
       );
@@ -16,7 +17,8 @@ class Secret extends key_Filetype {
   static get Filetype(): typeof Filetype {
     try {
       return key_Filetype;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError(
         `Secret: Utility: Error importing Utility module: \n${e}`,
       );

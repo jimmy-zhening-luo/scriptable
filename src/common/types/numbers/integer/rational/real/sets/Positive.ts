@@ -8,7 +8,8 @@ class Positive extends p_Cardinality {
       return (
         super.isCardinal(value) && (value === 0 || value === -0 || value > 0)
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError("Positive: error calling isCardinal");
     }
   }
@@ -16,7 +17,8 @@ class Positive extends p_Cardinality {
   static get Cardinality(): typeof Cardinality {
     try {
       return p_Cardinality;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError("Positive: error importing Cardinality module");
     }
   }

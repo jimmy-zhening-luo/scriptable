@@ -6,7 +6,8 @@ class ValidHostIPv6Repeater extends hips_ValidUrlRepeater {
   constructor(hostIPv6Repeater: string) {
     try {
       super(hostIPv6Repeater, 0, 4, hips_ValidUrlRepeater.UrlCharSet.hex);
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(
         `ValidHostIPv6Repeater: constructor: error creating ValidHostIPv6Repeater: \n${e}`,
       );

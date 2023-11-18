@@ -12,23 +12,53 @@ namespace TestRunner {
     export const Tests: Protos.TestSuiteProto[] = [
       {
         name: "Storage",
-        cases: [["foo", 1, 1]],
+        cases: [
+          [
+            "foo",
+            1,
+            1,
+          ],
+        ],
       },
       {
         name: "Config",
-        cases: [["bar", 2, 2]],
+        cases: [
+          [
+            "bar",
+            2,
+            2,
+          ],
+        ],
       },
       {
         name: "ReadOnlyFile",
-        cases: [["baz", 3, 3]],
+        cases: [
+          [
+            "baz",
+            3,
+            3,
+          ],
+        ],
       },
       {
         name: "File",
-        cases: [["bin", 4, 4]],
+        cases: [
+          [
+            "bin",
+            4,
+            4,
+          ],
+        ],
       },
       {
         name: "Url",
-        cases: [["fizz", 5, 5]],
+        cases: [
+          [
+            "fizz",
+            5,
+            5,
+          ],
+        ],
       },
     ];
   }
@@ -47,6 +77,7 @@ namespace TestRunner {
       try {
         const suites: Classes.TestSuite[] = Tests.Tests.map(testSuiteProto => {
           const caseTuples: Protos.TestCaseTriple[] = testSuiteProto.cases;
+
           return new Classes.TestSuite(
             testSuiteProto.name,
             ...caseTuples.map(caseTuple => ({
@@ -56,14 +87,18 @@ namespace TestRunner {
             })),
           );
         });
-        const output: string = suites.map(suite => suite.execute()).join("");
+        const output: string = suites.map(suite => suite.execute())
+          .join("");
+
         console.log(output);
         const outputDialog: Alert = new Alert();
+
         outputDialog.title = this.constructor.name;
         outputDialog.message = output;
         outputDialog.addAction("OK");
         outputDialog.presentAlert();
-      } catch (e) {
+      }
+      catch (e) {
         throw new EvalError(
           `TestRunner: runtime: Error running script: \n${e}`,
         );
@@ -94,7 +129,8 @@ namespace TestRunner {
                 caseTuple.right,
               ),
           );
-        } catch (e) {
+        }
+        catch (e) {
           throw new SyntaxError(`TestSuite.constructor() failed: ${e}\n`);
         }
       }
@@ -104,7 +140,8 @@ namespace TestRunner {
           return `${this._name}: ${this._cases
             .map(testCase => testCase.execute())
             .join("")}\n`;
-        } catch (e) {
+        }
+        catch (e) {
           throw new EvalError(`TestSuite.execute() failed: ${e}\n`);
         }
       }
@@ -120,7 +157,8 @@ namespace TestRunner {
           this._description = description;
           this._left = left;
           this._right = right;
-        } catch (e) {
+        }
+        catch (e) {
           throw new SyntaxError(`TestCase.constructor() failed: ${e}\n`);
         }
       }
@@ -130,7 +168,8 @@ namespace TestRunner {
           return `${this._description}: ${
             this._left === this._right ? "success" : "FAIL"
           }\n`;
-        } catch (e) {
+        }
+        catch (e) {
           throw new EvalError(`TestCase.execute() failed: ${e}\n`);
         }
       }
@@ -138,4 +177,5 @@ namespace TestRunner {
   }
 }
 
-new TestRunner.TestRunner().run();
+new TestRunner.TestRunner()
+  .run();

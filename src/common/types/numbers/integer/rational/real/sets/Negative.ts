@@ -8,7 +8,8 @@ class Negative extends n_Cardinality {
       return (
         super.isCardinal(value) && (value === 0 || value === -0 || value < 0)
       );
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError("Negative: error calling isCardinal");
     }
   }
@@ -16,7 +17,8 @@ class Negative extends n_Cardinality {
   static get Cardinality(): typeof Cardinality {
     try {
       return n_Cardinality;
-    } catch (e) {
+    }
+    catch (e) {
       throw new ReferenceError("Negative: error importing Cardinality module");
     }
   }

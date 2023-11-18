@@ -2,7 +2,8 @@ class Browser {
   static get Url(): typeof Url {
     try {
       return importModule("Url") as typeof Url;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(`Browser: get Url: error getting Url: \n${e}`);
     }
   }
@@ -10,7 +11,8 @@ class Browser {
   static get UrlParts(): typeof UrlParts {
     try {
       return Browser.Url.UrlParts;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(`Browser: get UrlParts: error getting UrlParts: \n${e}`);
     }
   }
@@ -18,7 +20,8 @@ class Browser {
   static get Api(): typeof Api {
     try {
       return importModule("Api") as typeof Api;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(`Browser: get Api: error getting Api: \n${e}`);
     }
   }
@@ -26,7 +29,8 @@ class Browser {
   static get Callback(): typeof Callback {
     try {
       return importModule("Callback") as typeof Callback;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(`Browser: get Callback: error getting Callback: \n${e}`);
     }
   }
@@ -34,7 +38,8 @@ class Browser {
   static get Endpoint(): typeof Endpoint {
     try {
       return importModule("Endpoint") as typeof Endpoint;
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error(`Browser: get Endpoint: error getting Endpoint: \n${e}`);
     }
   }
