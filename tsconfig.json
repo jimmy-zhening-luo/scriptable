@@ -4,6 +4,9 @@
       "tools/**/*": "cjs"
     }
   },
+  "include": [
+    "eslint.config.js"
+  ],
   "files": [],
   "references": [
     {
