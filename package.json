@@ -5,7 +5,7 @@
   "type": "module",
   "main": "",
   "scripts": {
-    "lint": "eslint --cache --cache-strategy content -c eslint.config.js **",
+    "lint": "eslint --cache --cache-strategy content -c eslint.config.js src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
     "clean": "npm run clean:built && npm run clean:packed",
     "clean:built": "shx rm -rf built",
