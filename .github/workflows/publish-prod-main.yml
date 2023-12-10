@@ -10,7 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: publish.prod
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: npm run pack
       - uses: bacongobbler/azure-blob-storage-upload@main
         with:
           source_dir: 'packed'
