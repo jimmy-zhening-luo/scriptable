@@ -1,1 +1,0 @@
-{"version":3,"file":"NativeScript.d.ts","sourceRoot":"","sources":["../../../src/system/NativeScript.ts"],"names":[],"mappings":"AAAA,QAAA,MAAM,cAAc,EAAE,OAAO,WAEN,CAAC;AAExB,uBAAe,YAAa,SAAQ,cAAc;IAChD,WAAkB,WAAW,IAAI,OAAO,WAAW,CASlD;IAED,IAAW,KAAK,IAAI,KAAK,CAIxB;IAED,cAAuB,iBAAiB,IAAI,MAAM,CAajD;IAEM,YAAY,IAAI,IAAI;CAC5B"}

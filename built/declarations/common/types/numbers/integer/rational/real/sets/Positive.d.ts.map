@@ -1,1 +1,0 @@
-{"version":3,"file":"Positive.d.ts","sourceRoot":"","sources":["../../../../../../../../../src/common/types/numbers/integer/rational/real/sets/Positive.ts"],"names":[],"mappings":"AAAA,QAAA,MAAM,aAAa,EAAE,OAAO,WAEL,CAAC;AAExB,cAAM,QAAS,SAAQ,aAAa;IAClC,WAAkB,WAAW,IAAI,OAAO,WAAW,CAOlD;IAEe,UAAU,CAAC,KAAK,EAAE,MAAM,GAAG,OAAO;CAUnD"}

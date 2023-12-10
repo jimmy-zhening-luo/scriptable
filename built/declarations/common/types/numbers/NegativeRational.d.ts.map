@@ -1,1 +1,0 @@
-{"version":3,"file":"NegativeRational.d.ts","sourceRoot":"","sources":["../../../../../src/common/types/numbers/NegativeRational.ts"],"names":[],"mappings":"AAAA,QAAA,MAAM,UAAU,EAAE,OAAO,OAEN,CAAC;AAEpB,cAAM,gBAAiB,SAAQ,UAAU,CAAC,QAAQ;IAChD,UAAmB,WAAW,EAAE,WAAW,CACK;IAEhD,WAAkB,OAAO,IAAI,OAAO,OAAO,CAS1C;IAED,WAAkB,QAAQ,IAAI,OAAO,QAAQ,CAS5C;CACF"}
