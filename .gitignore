@@ -13,6 +13,8 @@
 
 ##### BEGIN Project-Specific Files to .gitignore #####
 
+/built/
+/packed/
 
 
 #####   END Project-Specific Files to .gitignore #####
