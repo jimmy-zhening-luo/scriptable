@@ -16,7 +16,6 @@ jobs:
           node-version: '18'
       - run: npm ci
       - run: npm run pack
-      - run: az storage blob delete-batch --source ${{ vars.AZ_CONTAINER_NAME }} --account-name ${{ vars.AZ_ACCOUNT_NAME }} --sas-token ${{ secrets.AZ_CONTAINER_SAS_TOKEN }}
       - uses: bacongobbler/azure-blob-storage-upload@main
         with:
           source_dir: 'packed'
