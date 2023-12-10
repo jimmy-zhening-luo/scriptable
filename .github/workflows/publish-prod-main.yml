@@ -22,4 +22,5 @@ jobs:
           container_name: ${{ vars.AZ_CONTAINER_NAME }}
           account_name: ${{ vars.AZ_ACCOUNT_NAME }}
           sas_token: ${{ secrets.AZ_CONTAINER_SAS_TOKEN }}
+          extra_args: '--destination-path packed'
           overwrite: 'true'
