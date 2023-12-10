@@ -1,4 +1,3 @@
-// v4.0.0
 import stylistic from "@stylistic/eslint-plugin";
 import js from "@eslint/js";
 import tsLint from "@typescript-eslint/eslint-plugin";
