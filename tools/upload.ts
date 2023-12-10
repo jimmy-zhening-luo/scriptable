@@ -4,11 +4,13 @@ import dotenv from "dotenv";
 namespace _Project_Tool_Publish {
   export function upload(): void {
     console.log(
-      `${new Date().toTimeString()}: npm run upload: Starting upload...`,
+      `${new Date()
+        .toTimeString()}: npm run upload: Starting upload...`,
     );
     try {
       _az_clean_upload(_hydrateEnv());
-    } catch (e) {
+    }
+    catch (e) {
       e = new Error(
         `npm run upload: Canceled job due to encountered error: \n${e as string}`,
       );
@@ -19,25 +21,28 @@ namespace _Project_Tool_Publish {
     function _hydrateEnv(): AzCopyScriptVariables {
       try {
         dotenv.config();
-        const TEMPLATE_EXAMPLE_URL_BLOBSTORE_CONTAINER =
-          "https://<your-blob-store>.blob.core.windows.net/<your-container>";
+        const TEMPLATE_EXAMPLE_URL_BLOBSTORE_CONTAINER
+          = "https://<your-blob-store>.blob.core.windows.net/<your-container>";
         const azCopyScriptVariables: AzCopyScriptVariables = {
           executablePath:
             process.env.PATH_AZCOPY_EXECUTABLE ?? "azcopy",
           packedPath: "packed",
           blobStoreContainerUrl:
-            process.env.URL_AZURE_BLOB_STORE_CONTAINER ??
-            TEMPLATE_EXAMPLE_URL_BLOBSTORE_CONTAINER,
+            process.env.URL_AZURE_BLOB_STORE_CONTAINER
+            ?? TEMPLATE_EXAMPLE_URL_BLOBSTORE_CONTAINER,
         };
+
         if (
-          azCopyScriptVariables.blobStoreContainerUrl ===
-          TEMPLATE_EXAMPLE_URL_BLOBSTORE_CONTAINER
+          azCopyScriptVariables.blobStoreContainerUrl
+          === TEMPLATE_EXAMPLE_URL_BLOBSTORE_CONTAINER
         )
           throw new ReferenceError(
             `Canceling deployment because failed to hydrate env: no environment variable was set for URL_AZURE_BLOB_STORE_CONTAINER. Check your deployment environment variables or your .env file. See example URL_AZURE_BLOB_STORE_CONTAINER: ${TEMPLATE_EXAMPLE_URL_BLOBSTORE_CONTAINER}`,
           );
+
         return azCopyScriptVariables;
-      } catch (e) {
+      }
+      catch (e) {
         throw new ReferenceError(
           `npm run upload: hydrateEnv: Error while loading environmental variables to specify where to upload the packed files: \n${e as string}`,
         );
@@ -66,7 +71,8 @@ namespace _Project_Tool_Publish {
 
       try {
         _ps_exec(ps_exec_scripts.clean, ps_exec_scripts.upload);
-      } catch (e) {
+      }
+      catch (e) {
         throw new Error(
           `npm run upload: azure_clean_upload: Error while executing azcopy commands: \n${e as string}`,
         );
@@ -94,11 +100,13 @@ namespace _Project_Tool_Publish {
                 _ps_exec(nextScript[0], ...nextScript.slice(1));
               else
                 console.log(
-                  `${new Date().toTimeString()}: npm run upload: Job completed (check logging above for any partial completions or errors).`,
+                  `${new Date()
+                    .toTimeString()}: npm run upload: Job completed (check logging above for any partial completions or errors).`,
                 );
             },
           );
-        } catch (e) {
+        }
+        catch (e) {
           throw new Error(`_ps_exec: Error while executing powershell: \n${e as string}`);
         }
       }
@@ -111,9 +119,9 @@ namespace _Project_Tool_Publish {
           `Number of Folder Transfers Skipped: 0`,
           `Final Job Status: Completed`,
         ];
+
         return successCriteriaOutputLines.every(successOutputLine =>
-          stdout.includes(successOutputLine),
-        );
+          stdout.includes(successOutputLine));
       }
     }
   }

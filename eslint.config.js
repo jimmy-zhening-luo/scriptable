@@ -3,15 +3,20 @@ import stylistic from "@stylistic/eslint-plugin";
 import js from "@eslint/js";
 import tsLint from "@typescript-eslint/eslint-plugin";
 import tsLintParser from "@typescript-eslint/parser";
-import JimboLint from "@jimbojet/lint";
+import Configs from "@jimbojet/lint";
 
 export default [
-  ...new JimboLint(
+  ...new Configs(
     stylistic,
     js,
     tsLint,
     tsLintParser,
-    ["eslint.config.js"],
-    ["src/**/*.ts"],
+    [
+      "eslint.config.js",
+    ],
+    [
+      "src/**/*.ts",
+      "tools/**/*.ts",
+    ],
   ).configs,
 ];
