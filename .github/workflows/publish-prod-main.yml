@@ -1,0 +1,20 @@
+# https://github.com/marketplace/actions/azure-blob-storage-upload
+
+name: Upload to Azure Blob Storage - on push to main
+on:
+  push:
+    branches:
+      - main
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    environment: publish.prod
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bacongobbler/azure-blob-storage-upload@main
+        with:
+          source_dir: 'packed'
+          container_name: ${{ vars.AZ_CONTAINER_NAME }}
+          account_name: ${{ vars.AZ_ACCOUNT_NAME }}
+          sas_token: ${{ secrets.AZ_CONTAINER_SAS_TOKEN }}
+          overwrite: 'true'
