@@ -1,9 +1,4 @@
 {
-  "ts-node": {
-    "moduleTypes": {
-      "tools/**/*": "cjs"
-    }
-  },
   "include": [
     "eslint.config.js"
   ],
@@ -11,9 +6,6 @@
   "references": [
     {
       "path": "src/tsconfig.json"
-    },
-    {
-      "path": "tools/tsconfig.json"
     }
   ],
   "compilerOptions": {

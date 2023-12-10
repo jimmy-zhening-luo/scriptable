@@ -16,7 +16,6 @@ export default [
     ],
     [
       "src/**/*.ts",
-      "tools/**/*.ts",
     ],
   ).configs,
 ];

@@ -1,9 +1,0 @@
-{
-  "extends": "../tsconfig.json",
-  "include": ["**/*"],
-  "compilerOptions": {
-    "incremental": false,
-    "composite": false,
-    "noEmit": true /* Disable emitting files from a compilation. */
-  }
-}

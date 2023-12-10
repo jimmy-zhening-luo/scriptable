@@ -12,8 +12,7 @@
     "clean:packed": "shx rm -rf packed",
     "prebuild": "npm run lint && npm run clean",
     "build": "tsc --build",
-    "pack": "npm run build && shx mkdir packed && shx cp -r built/js/* packed",
-    "upload": "npm run pack && ts-node --esm tools/upload.ts"
+    "pack": "npm run build && shx mkdir packed && shx cp -r built/js/* packed"
   },
   "repository": {
     "type": "git",
@@ -26,7 +25,7 @@
   },
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "engines": {
-    "node": ">=18.18.2",
+    "node": ">=20.10.0",
     "npm": ">=10.2.5"
   },
   "dependencies": {
@@ -41,7 +40,6 @@
     "@typescript-eslint/parser": "^6.13.2",
     "eslint": "^8.55.0",
     "shx": "^0.3.4",
-    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }
