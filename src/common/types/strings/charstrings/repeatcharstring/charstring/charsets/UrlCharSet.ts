@@ -3,7 +3,7 @@ const u_CharSet: typeof CharSet = importModule(
 ) as typeof CharSet;
 
 class UrlCharSet extends u_CharSet {
-  static get hex(): string[] {
+  public static get hex(): string[] {
     return [
       ...this.numbers,
       "A",
@@ -22,7 +22,7 @@ class UrlCharSet extends u_CharSet {
   }
 
   // RFC 3986: https://www.rfc-edi  tor.org/rfc/rfc3986#appendix-A
-  static get pchar(): string[] {
+  public static get pchar(): string[] {
     return [
       ...this.unreserved,
       ...this.percentEncoded,
@@ -32,7 +32,7 @@ class UrlCharSet extends u_CharSet {
     ];
   }
 
-  static get unreserved(): string[] {
+  public static get unreserved(): string[] {
     return [
       ...this.alphaNumeric,
       ...this.hyphen,
@@ -42,21 +42,21 @@ class UrlCharSet extends u_CharSet {
     ];
   }
 
-  static get reserved(): string[] {
+  public static get reserved(): string[] {
     return [
       ...this.genDelims,
       ...this.subDelims,
     ];
   }
 
-  static get percentEncoded(): string[] {
+  public static get percentEncoded(): string[] {
     return [
       ...this.percent,
       ...this.hex,
     ];
   }
 
-  static get genDelims(): string[] {
+  public static get genDelims(): string[] {
     return [
       ...this.colon,
       ...this.slash,
@@ -68,7 +68,7 @@ class UrlCharSet extends u_CharSet {
     ];
   }
 
-  static get subDelims(): string[] {
+  public static get subDelims(): string[] {
     return [
       ...this.exclam,
       ...this.dollar,
@@ -84,13 +84,13 @@ class UrlCharSet extends u_CharSet {
     ];
   }
 
-  static get CharSet(): typeof CharSet {
+  public static get CharSet(): typeof CharSet {
     try {
       return u_CharSet;
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlCharSet: CharSet: Error importing CharSet module: \n${e}`,
+        `UrlCharSet: CharSet: Error importing CharSet module: \n${e as string}`,
       );
     }
   }

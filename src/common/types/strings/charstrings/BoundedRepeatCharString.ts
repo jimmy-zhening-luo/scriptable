@@ -3,8 +3,8 @@ const _RepeatCharString: typeof RepeatCharString = importModule(
 ) as typeof RepeatCharString;
 
 class BoundedRepeatCharString extends _RepeatCharString {
-  readonly min: number;
-  readonly max: number;
+  public readonly min: number;
+  public readonly max: number;
 
   constructor(
     min: number = 0,
@@ -46,7 +46,31 @@ class BoundedRepeatCharString extends _RepeatCharString {
     }
     catch (e) {
       throw new EvalError(
-        `BoundedRepeatCharString: constructor: Error creating BoundedRepeatCharString object: \n${e}`,
+        `BoundedRepeatCharString: constructor: Error creating BoundedRepeatCharString object: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get PositiveInteger(): typeof PositiveInteger {
+    try {
+      return importModule(
+        "./common/types/numbers/PositiveInteger",
+      ) as typeof PositiveInteger;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `BoundedRepeatCharString: PositiveInteger: Error importing PositiveInteger module: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get RepeatCharString(): typeof RepeatCharString {
+    try {
+      return _RepeatCharString;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `BoundedRepeatCharString: RepeatCharString: Error importing RepeatCharString module: \n${e as string}`,
       );
     }
   }
@@ -61,31 +85,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
     }
     catch (e) {
       throw new EvalError(
-        `BoundedRepeatCharString: _qualifies: Error calling _qualifies: \n${e}`,
-      );
-    }
-  }
-
-  static get PositiveInteger(): typeof PositiveInteger {
-    try {
-      return importModule(
-        "./common/types/numbers/PositiveInteger",
-      ) as typeof PositiveInteger;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `BoundedRepeatCharString: PositiveInteger: Error importing PositiveInteger module: \n${e}`,
-      );
-    }
-  }
-
-  static get RepeatCharString(): typeof RepeatCharString {
-    try {
-      return _RepeatCharString;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `BoundedRepeatCharString: RepeatCharString: Error importing RepeatCharString module: \n${e}`,
+        `BoundedRepeatCharString: _qualifies: Error calling _qualifies: \n${e as string}`,
       );
     }
   }

@@ -1,8 +1,8 @@
 class FilepathString {
-  readonly _nominalType: string = "FilepathString";
+  public readonly _nominalType: string = "FilepathString";
   private readonly _tree: string[];
 
-  constructor(...filepaths: (string | string[] | FilepathString)[]) {
+  constructor(...filepaths: Array<string | string[] | FilepathString>) {
     try {
       if (filepaths.length === 0) this._tree = [];
       else {
@@ -21,7 +21,104 @@ class FilepathString {
     }
     catch (e) {
       throw new SyntaxError(
-        `FilepathString: constructor: Caught unhandled exception while instantiating FilepathString by parsing path: \n${e}`,
+        `FilepathString: constructor: Caught unhandled exception while instantiating FilepathString by parsing path: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
+    try {
+      return importModule(
+        "validfilepathrepeater/ValidFilepathRepeater",
+      ) as typeof ValidFilepathRepeater;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Filepath: Failed to import module ValidFilepathRepeater: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get StringSplitter(): typeof StringSplitter {
+    try {
+      return importModule(
+        "./common/types/strings/StringSplitter",
+      ) as typeof StringSplitter;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Filepath: Failed to import module StringSplitter: \n${e as string}`,
+      );
+    }
+  }
+
+  public get isEmpty(): boolean {
+    try {
+      return this._tree.length === 0;
+    }
+    catch (e) {
+      throw new EvalError(
+        `FilepathString: get isEmpty: Caught unhandled exception while getting isEmpty: \n${e as string}`,
+      );
+    }
+  }
+
+  public get parent(): FilepathString {
+    try {
+      const parent: FilepathString = new FilepathString(this);
+
+      parent._tree.pop();
+
+      return parent;
+    }
+    catch (e) {
+      throw new EvalError(
+        `FilepathString: get parent: Caught unhandled exception while getting parent: \n${e as string}`,
+      );
+    }
+  }
+
+  public get leaf(): string {
+    try {
+      const selfCopy: string[] = [...this._tree];
+      const leaf: string = selfCopy.pop() ?? "";
+
+      return leaf;
+    }
+    catch (e) {
+      throw new EvalError(
+        `FilepathString: get leaf: Caught unhandled exception while getting leaf: \n${e as string}`,
+      );
+    }
+  }
+
+  public static [Symbol.hasInstance](instance: any): boolean {
+    try {
+      return (
+        instance !== null
+        && instance !== undefined
+        && typeof instance === "object"
+        && "_nominalType" in instance
+        && (instance as FilepathString)._nominalType === "FilepathString"
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `FilepathString: [Symbol.hasInstance]: Caught unhandled exception while checking if instance is a FilepathString: \n${e as string}`,
+      );
+    }
+  }
+
+  public static join(
+    ...filepaths: ConstructorParameters<typeof FilepathString>
+  ): string {
+    try {
+      return new FilepathString(...filepaths)
+        .toString();
+    }
+    catch (e) {
+      throw new SyntaxError(
+        `FilepathString: static join: Caught unhandled exception while creating a new FilepathString to join paths: \n${e as string}`,
       );
     }
   }
@@ -52,71 +149,33 @@ class FilepathString {
           function ___treeifyRaw(filepath: string | string[]): string[] {
             try {
               return (
-                Array.isArray(filepath) ? filepath.join("/") : filepath
+                Array.isArray(filepath)
+                  ? filepath.join("/")
+                  : filepath
               ).split("/");
             }
             catch (e) {
               throw new SyntaxError(
-                `FilepathString: __treeifyRaw: Caught unhandled exception while treeifying raw path: \n${e}`,
+                `FilepathString: __treeifyRaw: Caught unhandled exception while treeifying raw path: \n${e as string}`,
               );
             }
           }
         }
         catch (e) {
           throw new SyntaxError(
-            `FilepathString: _clean: Caught unhandled exception while cleaning path using StringSplitter instance: \n${e}`,
+            `FilepathString: _clean: Caught unhandled exception while cleaning path using StringSplitter instance: \n${e as string}`,
           );
         }
       }
     }
     catch (e) {
       throw new SyntaxError(
-        `FilepathString: _validate: Caught unhandled exception while validating path: \n${e}`,
+        `FilepathString: _validate: Caught unhandled exception while validating path: \n${e as string}`,
       );
     }
   }
 
-  get isEmpty(): boolean {
-    try {
-      return this._tree.length === 0;
-    }
-    catch (e) {
-      throw new EvalError(
-        `FilepathString: get isEmpty: Caught unhandled exception while getting isEmpty: \n${e}`,
-      );
-    }
-  }
-
-  get parent(): FilepathString {
-    try {
-      const parent: FilepathString = new FilepathString(this);
-
-      parent._tree.pop();
-
-      return parent;
-    }
-    catch (e) {
-      throw new EvalError(
-        `FilepathString: get parent: Caught unhandled exception while getting parent: \n${e}`,
-      );
-    }
-  }
-
-  get leaf(): string {
-    try {
-      const selfCopy: string[] = [...this._tree];
-      const leaf: string = selfCopy.pop() ?? "";
-
-      return leaf;
-    }
-    catch (e) {
-      throw new EvalError(
-        `FilepathString: get leaf: Caught unhandled exception while getting leaf: \n${e}`,
-      );
-    }
-  }
-
-  append(
+  public append(
     ...filepaths: ConstructorParameters<typeof FilepathString>
   ): FilepathString {
     try {
@@ -124,12 +183,14 @@ class FilepathString {
     }
     catch (e) {
       throw new SyntaxError(
-        `FilepathString: append: Caught unhandled exception while appending path by calling private FilepathString._walk(): \n${e}`,
+        `FilepathString: append: Caught unhandled exception while appending path by calling private FilepathString._walk(): \n${e as string}`,
       );
     }
   }
 
-  cd(relativeFilepath: ConstructorParameters<typeof FilepathString>[0]): this {
+  public cd(
+    relativeFilepath: ConstructorParameters<typeof FilepathString>[0],
+  ): this {
     try {
       const relativeTree: string[] = [
         ...new FilepathString(relativeFilepath)
@@ -145,87 +206,30 @@ class FilepathString {
     }
     catch (e) {
       throw new SyntaxError(
-        `FilepathString: cd: Caught unhandled exception while changing directories by calling private FilepathString._walk(): \n${e}`,
+        `FilepathString: cd: Caught unhandled exception while changing directories by calling private FilepathString._walk(): \n${e as string}`,
       );
     }
   }
 
-  toTree(): string[] {
+  public toTree(): string[] {
     try {
       return [...this._tree];
     }
     catch (e) {
       throw new EvalError(
-        `FilepathString: toTree: Caught unhandled exception while getting tree: \n${e}`,
+        `FilepathString: toTree: Caught unhandled exception while getting tree: \n${e as string}`,
       );
     }
   }
 
-  toString(): string {
+  public toString(): string {
     try {
       return this.toTree()
         .join("/");
     }
     catch (e) {
       throw new EvalError(
-        `FilepathString: toString: Caught unhandled exception while getting path: \n${e}`,
-      );
-    }
-  }
-
-  static join(
-    ...filepaths: ConstructorParameters<typeof FilepathString>
-  ): string {
-    try {
-      return new FilepathString(...filepaths)
-        .toString();
-    }
-    catch (e) {
-      throw new SyntaxError(
-        `FilepathString: static join: Caught unhandled exception while creating a new FilepathString to join paths: \n${e}`,
-      );
-    }
-  }
-
-  static [Symbol.hasInstance](instance: any): boolean {
-    try {
-      return (
-        instance !== null
-        && instance !== undefined
-        && typeof instance === "object"
-        && "_nominalType" in instance
-        && (instance as FilepathString)._nominalType === "FilepathString"
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `FilepathString: [Symbol.hasInstance]: Caught unhandled exception while checking if instance is a FilepathString: \n${e}`,
-      );
-    }
-  }
-
-  static get ValidFilepathRepeater(): typeof ValidFilepathRepeater {
-    try {
-      return importModule(
-        "validfilepathrepeater/ValidFilepathRepeater",
-      ) as typeof ValidFilepathRepeater;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Filepath: Failed to import module ValidFilepathRepeater: \n${e}`,
-      );
-    }
-  }
-
-  static get StringSplitter(): typeof StringSplitter {
-    try {
-      return importModule(
-        "./common/types/strings/StringSplitter",
-      ) as typeof StringSplitter;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Filepath: Failed to import module StringSplitter: \n${e}`,
+        `FilepathString: toString: Caught unhandled exception while getting path: \n${e as string}`,
       );
     }
   }

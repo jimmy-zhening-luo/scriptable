@@ -1,5 +1,5 @@
 class ValidString {
-  readonly cleaned: string;
+  public readonly cleaned: string;
   private readonly _boundedRepeatCharString: BoundedRepeatCharString;
 
   constructor(
@@ -13,7 +13,9 @@ class ValidString {
       min?: number;
       max?: number;
       negate?: boolean;
-      allowedChars?: ConstructorParameters<typeof BoundedRepeatCharString>[4][];
+      allowedChars?: Array<
+      ConstructorParameters<typeof BoundedRepeatCharString>[4]
+      >;
     } = {},
     cleanOptions: Parameters<typeof ValidString._clean>[1] = {},
   ) {
@@ -29,52 +31,87 @@ class ValidString {
     }
     catch (e) {
       throw new Error(
-        `ValidString: constructor: Error creating ValidString object: \n${e}`,
+        `ValidString: constructor: Error creating ValidString object: \n${e as string}`,
       );
     }
   }
 
-  get value(): typeof BoundedRepeatCharString.prototype.value {
+  public static get BoundedRepeatCharString(): typeof BoundedRepeatCharString {
+    try {
+      return importModule(
+        "charstrings/BoundedRepeatCharString",
+      ) as typeof BoundedRepeatCharString;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `ValidString: error importing BoundedRepeatCharString module: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get CharSets(): typeof CharSets {
+    try {
+      return ValidString.BoundedRepeatCharString.CharSets;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `ValidString: error importing CharSets module: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get CharSet(): typeof CharSet {
+    try {
+      return ValidString.CharSets.CharSet;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `ValidString: error importing CharSet module: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get UrlCharSet(): typeof UrlCharSet {
+    try {
+      return ValidString.CharSets.UrlCharSet;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `ValidString: error importing UrlCharSet module: \n${e as string}`,
+      );
+    }
+  }
+
+  public get value(): typeof BoundedRepeatCharString.prototype.value {
     return this._boundedRepeatCharString.value;
   }
 
-  get isValid(): boolean {
+  public get isValid(): boolean {
     try {
       return this.value !== null;
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: isValid: Error getting validity: \n${e}`,
+        `ValidString: isValid: Error getting validity: \n${e as string}`,
       );
     }
   }
 
-  get min(): number {
+  public get min(): number {
     try {
       return this._boundedRepeatCharString.min;
     }
     catch (e) {
-      throw new EvalError(`ValidString: min: Error getting min: \n${e}`);
+      throw new EvalError(`ValidString: min: Error getting min: \n${e as string}`);
     }
   }
 
-  get max(): number {
+  public get max(): number {
     try {
       return this._boundedRepeatCharString.max;
     }
     catch (e) {
-      throw new EvalError(`ValidString: max: Error getting max: \n${e}`);
-    }
-  }
-
-  toString(): string {
-    try {
-      return this.value ?? "";
-    }
-    catch (e) {
-      throw new EvalError(
-        `ValidString: toString: Error converting to string: \n${e}`,
-      );
+      throw new EvalError(`ValidString: max: Error getting max: \n${e as string}`);
     }
   }
 
@@ -114,7 +151,7 @@ class ValidString {
       );
     }
     catch (e) {
-      throw new EvalError(`ValidString: clean: Error cleaning string: \n${e}`);
+      throw new EvalError(`ValidString: clean: Error cleaning string: \n${e as string}`);
     }
   }
 
@@ -138,59 +175,28 @@ class ValidString {
         .forEach(word => {
           while (string[lookFn](word) === lookCondition)
             string = isLeading
-              ? string.slice(trimExcept ? 1 : word.length)
-              : string.slice(0, 0 - (trimExcept ? 1 : word.length));
+              ? string.slice(trimExcept
+                ? 1
+                : word.length)
+              : string.slice(0, 0 - (trimExcept
+                ? 1
+                : word.length));
         });
 
       return string;
     }
     catch (e) {
-      throw new EvalError(`ValidString: trimEdge: Error trimming edge: \n${e}`);
+      throw new EvalError(`ValidString: trimEdge: Error trimming edge: \n${e as string}`);
     }
   }
 
-  static get BoundedRepeatCharString(): typeof BoundedRepeatCharString {
+  public toString(): string {
     try {
-      return importModule(
-        "charstrings/BoundedRepeatCharString",
-      ) as typeof BoundedRepeatCharString;
+      return this.value ?? "";
     }
     catch (e) {
-      throw new ReferenceError(
-        `ValidString: error importing BoundedRepeatCharString module: \n${e}`,
-      );
-    }
-  }
-
-  static get CharSets(): typeof CharSets {
-    try {
-      return ValidString.BoundedRepeatCharString.CharSets;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `ValidString: error importing CharSets module: \n${e}`,
-      );
-    }
-  }
-
-  static get CharSet(): typeof CharSet {
-    try {
-      return ValidString.CharSets.CharSet;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `ValidString: error importing CharSet module: \n${e}`,
-      );
-    }
-  }
-
-  static get UrlCharSet(): typeof UrlCharSet {
-    try {
-      return ValidString.CharSets.UrlCharSet;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `ValidString: error importing UrlCharSet module: \n${e}`,
+      throw new EvalError(
+        `ValidString: toString: Error converting to string: \n${e as string}`,
       );
     }
   }

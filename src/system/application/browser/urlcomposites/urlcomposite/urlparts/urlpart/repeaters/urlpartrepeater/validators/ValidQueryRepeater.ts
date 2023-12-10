@@ -16,18 +16,18 @@ class ValidQueryRepeater extends qu_ValidUrlRepeater {
     }
     catch (e) {
       throw new Error(
-        `ValidQueryRepeater: constructor: error creating ValidQueryRepeater: \n${e}`,
+        `ValidQueryRepeater: constructor: error creating ValidQueryRepeater: \n${e as string}`,
       );
     }
   }
 
-  static get ValidUrlRepeater(): typeof ValidUrlRepeater {
+  public static get ValidUrlRepeater(): typeof ValidUrlRepeater {
     try {
       return qu_ValidUrlRepeater;
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidQueryRepeater: error loading parent ValidUrlRepeater module: \n${e}`,
+        `ValidQueryRepeater: error loading parent ValidUrlRepeater module: \n${e as string}`,
       );
     }
   }

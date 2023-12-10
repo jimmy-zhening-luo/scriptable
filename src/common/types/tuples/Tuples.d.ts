@@ -41,7 +41,7 @@ declare namespace _tuplehelpers {
     : BuildMinTuple<[Type, ...Current], Type, Min>;
 
   type BuildMinMaxTuple<
-    Current extends [...(Type | undefined)[]],
+    Current extends [...Array<Type | undefined>],
     Type,
     Min extends number,
     Max extends number,

@@ -6,13 +6,13 @@ class PositiveInteger extends p_Integer {
   protected override cardinality: Cardinality
     = new PositiveInteger.Cardinality.Positive();
 
-  static get Integer(): typeof Integer {
+  public static get Integer(): typeof Integer {
     try {
       return p_Integer;
     }
     catch (e) {
       throw new ReferenceError(
-        `PositiveInteger: error loading parent Integer module: \n${e}`,
+        `PositiveInteger: error loading parent Integer module: \n${e as string}`,
       );
     }
   }

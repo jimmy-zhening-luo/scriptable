@@ -9,7 +9,29 @@ class Fragment extends fr_UrlPart {
     }
     catch (e) {
       throw new SyntaxError(
-        `Fragment: constructor: error creating Fragment: \n${e}`,
+        `Fragment: constructor: error creating Fragment: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get ValidFragment(): typeof ValidFragment {
+    try {
+      return Fragment.UrlValidators.Fragment;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Fragment: error loading ValidFragment module: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get UrlPart(): typeof UrlPart {
+    try {
+      return fr_UrlPart;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Fragment: error loading parent UrlPart module: \n${e as string}`,
       );
     }
   }
@@ -21,29 +43,7 @@ class Fragment extends fr_UrlPart {
         : new Fragment.ValidFragment(fragment).value;
     }
     catch (e) {
-      throw new SyntaxError(`Fragment: parse: error parsing Fragment: \n${e}`);
-    }
-  }
-
-  static get ValidFragment(): typeof ValidFragment {
-    try {
-      return Fragment.UrlValidators.Fragment;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Fragment: error loading ValidFragment module: \n${e}`,
-      );
-    }
-  }
-
-  static get UrlPart(): typeof UrlPart {
-    try {
-      return fr_UrlPart;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Fragment: error loading parent UrlPart module: \n${e}`,
-      );
+      throw new SyntaxError(`Fragment: parse: error parsing Fragment: \n${e as string}`);
     }
   }
 }

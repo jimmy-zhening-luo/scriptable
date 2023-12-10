@@ -1,0 +1,1 @@
+{"version":3,"file":"PositiveFiniteInteger.d.ts","sourceRoot":"","sources":["../../../../../src/common/types/numbers/PositiveFiniteInteger.ts"],"names":[],"mappings":"AAAA,QAAA,MAAM,eAAe,EAAE,OAAO,aAEL,CAAC;AAE1B,cAAM,qBAAsB,SAAQ,eAAe;IACjD,UAAmB,WAAW,EAAE,WAAW,CACU;IAErD,WAAkB,aAAa,IAAI,OAAO,aAAa,CAStD;CACF"}

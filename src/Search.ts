@@ -9,7 +9,7 @@ namespace Search {
   ) as typeof Shortcut;
 
   export class Search extends shortcut {
-    runtime(): SearchResponse | null {
+    public runtime(): SearchResponse | null {
       try {
         const query: SearchQuery = new SearchQuery(
           this.input.plainTexts.shift() ?? "",
@@ -52,14 +52,14 @@ namespace Search {
         }
       }
       catch (e) {
-        throw new EvalError(`Search: runtime: Error running app: \n${e}`);
+        throw new EvalError(`Search: runtime: Error running app: \n${e as string}`);
       }
     }
   }
 
   class SearchQuery {
-    readonly searchKey: string;
-    readonly searchTerms: string[];
+    public readonly searchKey: string;
+    public readonly searchTerms: string[];
 
     constructor(query: string) {
       try {
@@ -73,7 +73,7 @@ namespace Search {
       }
       catch (e) {
         throw new SyntaxError(
-          `SearchQuery: constructor: Error creating SearchQuery object: \n${e}`,
+          `SearchQuery: constructor: Error creating SearchQuery object: \n${e as string}`,
         );
       }
     }
@@ -94,28 +94,30 @@ namespace Search {
   }
 
   abstract class SearchEngine {
-    readonly engineKeys: string[];
+    public readonly engineKeys: string[];
 
     constructor(configuredKeys: string[] | string) {
       try {
         this.engineKeys = (
-          Array.isArray(configuredKeys) ? configuredKeys : [configuredKeys]
+          Array.isArray(configuredKeys)
+            ? configuredKeys
+            : [configuredKeys]
         ).map(key => key.toLowerCase());
       }
       catch (e) {
         throw new EvalError(
-          `SearchEngine: constructor: Error creating SearchEngine object: \n${e}`,
+          `SearchEngine: constructor: Error creating SearchEngine object: \n${e as string}`,
         );
       }
     }
 
-    abstract parseQueryToAction(query: SearchQuery): SearchResponse;
+    public abstract parseQueryToAction(query: SearchQuery): SearchResponse;
   }
 
   class BrowserSearchEngine extends SearchEngine {
-    readonly engineUrls: string[];
-    readonly querytag: string;
-    readonly showWebview: boolean;
+    public readonly engineUrls: string[];
+    public readonly querytag: string;
+    public readonly showWebview: boolean;
 
     constructor(
       configuredKeys: string[] | string,
@@ -133,12 +135,12 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `BrowserSearchEngine: constructor: Error creating BrowserSearchEngine object: \n${e}`,
+          `BrowserSearchEngine: constructor: Error creating BrowserSearchEngine object: \n${e as string}`,
         );
       }
     }
 
-    parseQueryToAction(query: SearchQuery): SearchResponse {
+    public parseQueryToAction(query: SearchQuery): SearchResponse {
       try {
         const urlEncodedQueryTerms: string = query.searchTerms
           .map(term =>
@@ -152,20 +154,22 @@ namespace Search {
 
         return {
           app: "Safari",
-          actions: this.showWebview ? actions : actions.reverse(),
+          actions: this.showWebview
+            ? actions
+            : actions.reverse(),
           showWebview: this.showWebview,
         };
       }
       catch (e) {
         throw new SyntaxError(
-          `BrowserSearchEngine: parseQueryToAction: Error parsing query to action: \n${e}`,
+          `BrowserSearchEngine: parseQueryToAction: Error parsing query to action: \n${e as string}`,
         );
       }
     }
   }
 
   class AppSearchEngine extends SearchEngine {
-    readonly app: keyof typeof SupportedAppSearchEngine;
+    public readonly app: keyof typeof SupportedAppSearchEngine;
 
     constructor(
       configuredKeys: string[],
@@ -177,12 +181,12 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `AppSearchEngine: constructor: Error creating AppSearchEngine object: \n${e}`,
+          `AppSearchEngine: constructor: Error creating AppSearchEngine object: \n${e as string}`,
         );
       }
     }
 
-    parseQueryToAction(query: SearchQuery): SearchResponse {
+    public parseQueryToAction(query: SearchQuery): SearchResponse {
       try {
         return {
           app: this.app,
@@ -191,7 +195,7 @@ namespace Search {
       }
       catch (e) {
         throw new SyntaxError(
-          `AppSearchEngine: parseQueryToAction: Error parsing query to action: \n${e}`,
+          `AppSearchEngine: parseQueryToAction: Error parsing query to action: \n${e as string}`,
         );
       }
     }

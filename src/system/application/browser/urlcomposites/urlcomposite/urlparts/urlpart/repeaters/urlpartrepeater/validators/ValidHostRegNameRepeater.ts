@@ -16,18 +16,18 @@ class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
     }
     catch (e) {
       throw new Error(
-        `ValidHostRegNameRepeater: constructor: error creating ValidHostRegNameRepeater: \n${e}`,
+        `ValidHostRegNameRepeater: constructor: error creating ValidHostRegNameRepeater: \n${e as string}`,
       );
     }
   }
 
-  static get ValidUrlRepeater(): typeof ValidUrlRepeater {
+  public static get ValidUrlRepeater(): typeof ValidUrlRepeater {
     try {
       return hrn_ValidUrlRepeater;
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidHostRegNameRepeater: error loading parent ValidUrlRepeater module: \n${e}`,
+        `ValidHostRegNameRepeater: error loading parent ValidUrlRepeater module: \n${e as string}`,
       );
     }
   }

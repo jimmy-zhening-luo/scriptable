@@ -17,18 +17,18 @@ class ValidPort extends po_ValidUrlPart {
     }
     catch (e) {
       throw new Error(
-        `ValidPort: constructor: error creating ValidPort: \n${e}`,
+        `ValidPort: constructor: error creating ValidPort: \n${e as string}`,
       );
     }
   }
 
-  static get ValidUrlPart(): typeof ValidUrlPart {
+  public static get ValidUrlPart(): typeof ValidUrlPart {
     try {
       return po_ValidUrlPart;
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidPort: error loading parent ValidUrlPart module: \n${e}`,
+        `ValidPort: error loading parent ValidUrlPart module: \n${e as string}`,
       );
     }
   }

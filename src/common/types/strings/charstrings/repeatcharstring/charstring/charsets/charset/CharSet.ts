@@ -1,10 +1,10 @@
 class CharSet {
-  readonly charset: string[] = [];
-  readonly negate: boolean = false;
+  public readonly charset: string[] = [];
+  public readonly negate: boolean = false;
 
   constructor(
     negate?: boolean | CharSet | string | string[],
-    ...charInputs: (CharSet | string | string[])[]
+    ...charInputs: Array<CharSet | string | string[]>
   ) {
     try {
       if (negate === undefined) negate = false;
@@ -21,59 +21,33 @@ class CharSet {
     }
     catch (e) {
       throw new SyntaxError(
-        `CharSet: constructor: Error creating CharSet object: \n${e}`,
+        `CharSet: constructor: Error creating CharSet object: \n${e as string}`,
       );
     }
   }
 
-  allows(char: string): boolean {
-    try {
-      return (
-        char.length === 1
-        && (!this.negate && this.charset.includes(char)
-          || this.negate && !this.charset.includes(char))
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `CharSet: includes: Error checking if CharSet allows char: \n${e}`,
-      );
-    }
-  }
-
-  toString(): string {
-    try {
-      return this.charset.join(" | ");
-    }
-    catch (e) {
-      throw new EvalError(
-        `CharSet: toString: Error converting CharSet to string: \n${e}`,
-      );
-    }
-  }
-
-  static get alphaNumeric(): string[] {
+  public static get alphaNumeric(): string[] {
     return [
       ...this.numbers,
       ...this.alpha,
     ];
   }
 
-  static get alphaNumericLower(): string[] {
+  public static get alphaNumericLower(): string[] {
     return [
       ...this.numbers,
       ...this.alphaLower,
     ];
   }
 
-  static get alphaNumericUpper(): string[] {
+  public static get alphaNumericUpper(): string[] {
     return [
       ...this.numbers,
       ...this.alphaUpper,
     ];
   }
 
-  static get numbers(): string[] {
+  public static get numbers(): string[] {
     return [
       "0",
       "1",
@@ -88,14 +62,14 @@ class CharSet {
     ];
   }
 
-  static get alpha(): string[] {
+  public static get alpha(): string[] {
     return [
       ...this.alphaLower,
       ...this.alphaUpper,
     ];
   }
 
-  static get alphaLower(): string[] {
+  public static get alphaLower(): string[] {
     return [
       "a",
       "b",
@@ -126,7 +100,7 @@ class CharSet {
     ];
   }
 
-  static get alphaUpper(): string[] {
+  public static get alphaUpper(): string[] {
     return [
       "A",
       "B",
@@ -157,136 +131,162 @@ class CharSet {
     ];
   }
 
-  static get dot(): string[] {
+  public static get dot(): string[] {
     return ["."];
   }
 
-  static get plus(): string[] {
+  public static get plus(): string[] {
     return ["+"];
   }
 
-  static get hyphen(): string[] {
+  public static get hyphen(): string[] {
     return ["-"];
   }
 
-  static get dollar(): string[] {
+  public static get dollar(): string[] {
     return ["$"];
   }
 
-  static get underscore(): string[] {
+  public static get underscore(): string[] {
     return ["_"];
   }
 
-  static get exclam(): string[] {
+  public static get exclam(): string[] {
     return ["!"];
   }
 
-  static get asterisk(): string[] {
+  public static get asterisk(): string[] {
     return ["*"];
   }
 
-  static get quote(): string[] {
+  public static get quote(): string[] {
     return ["'"];
   }
 
-  static get leftParen(): string[] {
+  public static get leftParen(): string[] {
     return ["("];
   }
 
-  static get rightParen(): string[] {
+  public static get rightParen(): string[] {
     return [")"];
   }
 
-  static get comma(): string[] {
+  public static get comma(): string[] {
     return [","];
   }
 
-  static get leftBrace(): string[] {
+  public static get leftBrace(): string[] {
     return ["{"];
   }
 
-  static get rightBrace(): string[] {
+  public static get rightBrace(): string[] {
     return ["}"];
   }
 
-  static get or(): string[] {
+  public static get or(): string[] {
     return ["|"];
   }
 
-  static get backslash(): string[] {
+  public static get backslash(): string[] {
     return ["\\"];
   }
 
-  static get caret(): string[] {
+  public static get caret(): string[] {
     return ["^"];
   }
 
-  static get tilde(): string[] {
+  public static get tilde(): string[] {
     return ["~"];
   }
 
-  static get leftBracket(): string[] {
+  public static get leftBracket(): string[] {
     return ["["];
   }
 
-  static get rightBracket(): string[] {
+  public static get rightBracket(): string[] {
     return ["]"];
   }
 
-  static get backTick(): string[] {
+  public static get backTick(): string[] {
     return ["`"];
   }
 
-  static get lessThan(): string[] {
+  public static get lessThan(): string[] {
     return ["<"];
   }
 
-  static get greaterThan(): string[] {
+  public static get greaterThan(): string[] {
     return [">"];
   }
 
-  static get hash(): string[] {
+  public static get hash(): string[] {
     return ["#"];
   }
 
-  static get percent(): string[] {
+  public static get percent(): string[] {
     return ["%"];
   }
 
-  static get doubleQuote(): string[] {
+  public static get doubleQuote(): string[] {
     return ['"'];
   }
 
-  static get semicolon(): string[] {
+  public static get semicolon(): string[] {
     return ["];"];
   }
 
-  static get slash(): string[] {
+  public static get slash(): string[] {
     return ["/"];
   }
 
-  static get question(): string[] {
+  public static get question(): string[] {
     return ["?"];
   }
 
-  static get colon(): string[] {
+  public static get colon(): string[] {
     return [":"];
   }
 
-  static get at(): string[] {
+  public static get at(): string[] {
     return ["@"];
   }
 
-  static get and(): string[] {
+  public static get and(): string[] {
     return ["&"];
   }
 
-  static get equal(): string[] {
+  public static get equal(): string[] {
     return ["="];
   }
 
-  static get space(): string[] {
+  public static get space(): string[] {
     return [" "];
+  }
+
+  public allows(char: string): boolean {
+    try {
+      return (
+        char.length === 1
+        && (!this.negate && this.charset.includes(char)
+          || this.negate && !this.charset.includes(char))
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `CharSet: includes: Error checking if CharSet allows char: \n${e as string}`,
+      );
+    }
+  }
+
+  public toString(): string {
+    try {
+      return this.charset.join(" | ");
+    }
+    catch (e) {
+      throw new EvalError(
+        `CharSet: toString: Error converting CharSet to string: \n${e as string}`,
+      );
+    }
   }
 }
 

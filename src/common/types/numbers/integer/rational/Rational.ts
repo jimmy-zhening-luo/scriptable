@@ -32,19 +32,16 @@ class Rational extends r_Real {
     }
   }
 
-  protected _qualifies(rawNumber: number): boolean {
+  public static get Real(): typeof Real {
     try {
-      return (
-        this.bounds.isBounded(rawNumber)
-        && this.cardinality.isCardinal(rawNumber)
-      );
+      return r_Real;
     }
     catch (e) {
-      throw new EvalError("Rational: error calling _qualifies");
+      throw new ReferenceError("Rational: error importing module Real");
     }
   }
 
-  get isNaN(): boolean {
+  public get isNaN(): boolean {
     try {
       return Number.isNaN(this.toNumber());
     }
@@ -53,7 +50,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isZero(): boolean {
+  public get isZero(): boolean {
     try {
       return this.toNumber() === 0 || this.toNumber() === -0;
     }
@@ -62,7 +59,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isNonZero(): boolean {
+  public get isNonZero(): boolean {
     try {
       return !this.isNaN && !this.isZero;
     }
@@ -71,7 +68,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isFinite(): boolean {
+  public get isFinite(): boolean {
     try {
       return Number.isFinite(this.toNumber());
     }
@@ -80,7 +77,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isInfinity(): boolean {
+  public get isInfinity(): boolean {
     try {
       return this.isPositiveInfinity || this.isNegativeInfinity;
     }
@@ -89,7 +86,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isPositiveInfinity(): boolean {
+  public get isPositiveInfinity(): boolean {
     try {
       return this.toNumber() === Infinity;
     }
@@ -98,7 +95,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isNegativeInfinity(): boolean {
+  public get isNegativeInfinity(): boolean {
     try {
       return this.toNumber() === -Infinity;
     }
@@ -107,7 +104,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isStrictlyPositive(): boolean {
+  public get isStrictlyPositive(): boolean {
     try {
       return this.toNumber() > 0;
     }
@@ -116,7 +113,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isStrictlyNegative(): boolean {
+  public get isStrictlyNegative(): boolean {
     try {
       return this.toNumber() < 0;
     }
@@ -125,7 +122,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isPositive(): boolean {
+  public get isPositive(): boolean {
     try {
       return this.isZero || this.isStrictlyPositive;
     }
@@ -134,7 +131,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isNegative(): boolean {
+  public get isNegative(): boolean {
     try {
       return this.isZero || this.isStrictlyNegative;
     }
@@ -143,7 +140,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isFiniteInteger(): boolean {
+  public get isFiniteInteger(): boolean {
     try {
       return Number.isSafeInteger(this.toNumber());
     }
@@ -154,7 +151,7 @@ class Rational extends r_Real {
     }
   }
 
-  get isInteger(): boolean {
+  public get isInteger(): boolean {
     try {
       return this.isFiniteInteger || this.isInfinity;
     }
@@ -163,12 +160,15 @@ class Rational extends r_Real {
     }
   }
 
-  static get Real(): typeof Real {
+  protected _qualifies(rawNumber: number): boolean {
     try {
-      return r_Real;
+      return (
+        this.bounds.isBounded(rawNumber)
+        && this.cardinality.isCardinal(rawNumber)
+      );
     }
     catch (e) {
-      throw new ReferenceError("Rational: error importing module Real");
+      throw new EvalError("Rational: error calling _qualifies");
     }
   }
 }

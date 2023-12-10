@@ -19,18 +19,18 @@ class ValidFragment extends fr_ValidUrlPart {
     }
     catch (e) {
       throw new Error(
-        `ValidFragment: constructor: error creating ValidFragment: \n${e}`,
+        `ValidFragment: constructor: error creating ValidFragment: \n${e as string}`,
       );
     }
   }
 
-  static get ValidUrlPart(): typeof ValidUrlPart {
+  public static get ValidUrlPart(): typeof ValidUrlPart {
     try {
       return fr_ValidUrlPart;
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidFragment: error loading parent ValidUrlPart module: \n${e}`,
+        `ValidFragment: error loading parent ValidUrlPart module: \n${e as string}`,
       );
     }
   }

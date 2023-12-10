@@ -3,9 +3,9 @@ const pqf_UrlComposite: typeof UrlComposite = importModule(
 ) as typeof UrlComposite;
 
 class PathQueryFragment extends pqf_UrlComposite {
-  readonly parts: [PathQuery, Fragment];
-  readonly pathQuery: PathQuery;
-  readonly fragment: Fragment;
+  public readonly parts: [PathQuery, Fragment];
+  public readonly pathQuery: PathQuery;
+  public readonly fragment: Fragment;
 
   constructor(
     pathOrPathQueryOrPathQueryFragment?:
@@ -47,12 +47,45 @@ class PathQueryFragment extends pqf_UrlComposite {
     }
     catch (e) {
       throw new SyntaxError(
-        `PathQueryFragment: constructor: error creating PathQueryFragment: \n${e}`,
+        `PathQueryFragment: constructor: error creating PathQueryFragment: \n${e as string}`,
       );
     }
   }
 
-  get composite(): string {
+  public static get PathQuery(): typeof PathQuery {
+    try {
+      return importModule("PathQuery") as typeof PathQuery;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `PathQueryFragment: get PathQuery: error loading PathQuery module: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get Fragment(): typeof Fragment {
+    try {
+      return this.UrlParts.Fragment;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `PathQueryFragment: get Fragment: error loading Fragment module: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get UrlComposite(): typeof UrlComposite {
+    try {
+      return pqf_UrlComposite;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `PathQueryFragment: get UrlComposite: error loading UrlComposite module: \n${e as string}`,
+      );
+    }
+  }
+
+  public get composite(): string {
     try {
       return this.fragment.isValid
         ? [
@@ -63,40 +96,7 @@ class PathQueryFragment extends pqf_UrlComposite {
     }
     catch (e) {
       throw new EvalError(
-        `PathQueryFragment: get composite: error getting composite: \n${e}`,
-      );
-    }
-  }
-
-  static get PathQuery(): typeof PathQuery {
-    try {
-      return importModule("PathQuery") as typeof PathQuery;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `PathQueryFragment: get PathQuery: error loading PathQuery module: \n${e}`,
-      );
-    }
-  }
-
-  static get Fragment(): typeof Fragment {
-    try {
-      return this.UrlParts.Fragment;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `PathQueryFragment: get Fragment: error loading Fragment module: \n${e}`,
-      );
-    }
-  }
-
-  static get UrlComposite(): typeof UrlComposite {
-    try {
-      return pqf_UrlComposite;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `PathQueryFragment: get UrlComposite: error loading UrlComposite module: \n${e}`,
+        `PathQueryFragment: get composite: error getting composite: \n${e as string}`,
       );
     }
   }

@@ -10,7 +10,7 @@ namespace _Project_Tool_Publish {
       _az_clean_upload(_hydrateEnv());
     } catch (e) {
       e = new Error(
-        `npm run upload: Canceled job due to encountered error: \n${e}`,
+        `npm run upload: Canceled job due to encountered error: \n${e as string}`,
       );
       console.error(e);
       throw e;
@@ -39,7 +39,7 @@ namespace _Project_Tool_Publish {
         return azCopyScriptVariables;
       } catch (e) {
         throw new ReferenceError(
-          `npm run upload: hydrateEnv: Error while loading environmental variables to specify where to upload the packed files: \n${e}`,
+          `npm run upload: hydrateEnv: Error while loading environmental variables to specify where to upload the packed files: \n${e as string}`,
         );
       }
     }
@@ -68,7 +68,7 @@ namespace _Project_Tool_Publish {
         _ps_exec(ps_exec_scripts.clean, ps_exec_scripts.upload);
       } catch (e) {
         throw new Error(
-          `npm run upload: azure_clean_upload: Error while executing azcopy commands: \n${e}`,
+          `npm run upload: azure_clean_upload: Error while executing azcopy commands: \n${e as string}`,
         );
       }
 
@@ -99,7 +99,7 @@ namespace _Project_Tool_Publish {
             },
           );
         } catch (e) {
-          throw new Error(`_ps_exec: Error while executing powershell: \n${e}`);
+          throw new Error(`_ps_exec: Error while executing powershell: \n${e as string}`);
         }
       }
 

@@ -8,7 +8,29 @@ class Scheme extends sc_UrlPart {
       super(scheme);
     }
     catch (e) {
-      throw new Error(`Scheme: constructor: error creating Scheme: \n${e}`);
+      throw new Error(`Scheme: constructor: error creating Scheme: \n${e as string}`);
+    }
+  }
+
+  public static get ValidScheme(): typeof ValidScheme {
+    try {
+      return Scheme.UrlValidators.Scheme;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Scheme: error loading ValidScheme module: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get UrlPart(): typeof UrlPart {
+    try {
+      return sc_UrlPart;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Scheme: error loading parent UrlPart module: \n${e as string}`,
+      );
     }
   }
 
@@ -25,29 +47,7 @@ class Scheme extends sc_UrlPart {
           : "https";
     }
     catch (e) {
-      throw new Error(`Scheme: parse: error parsing Scheme: \n${e}`);
-    }
-  }
-
-  static get ValidScheme(): typeof ValidScheme {
-    try {
-      return Scheme.UrlValidators.Scheme;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Scheme: error loading ValidScheme module: \n${e}`,
-      );
-    }
-  }
-
-  static get UrlPart(): typeof UrlPart {
-    try {
-      return sc_UrlPart;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Scheme: error loading parent UrlPart module: \n${e}`,
-      );
+      throw new Error(`Scheme: parse: error parsing Scheme: \n${e as string}`);
     }
   }
 }

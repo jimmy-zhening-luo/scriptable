@@ -9,7 +9,7 @@ class ValidHostIPv6Repeater extends hips_ValidUrlRepeater {
     }
     catch (e) {
       throw new Error(
-        `ValidHostIPv6Repeater: constructor: error creating ValidHostIPv6Repeater: \n${e}`,
+        `ValidHostIPv6Repeater: constructor: error creating ValidHostIPv6Repeater: \n${e as string}`,
       );
     }
   }

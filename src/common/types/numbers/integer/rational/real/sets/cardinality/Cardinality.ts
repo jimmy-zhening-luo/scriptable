@@ -1,5 +1,5 @@
 abstract class Cardinality {
-  isCardinal(value: number): boolean {
+  public isCardinal(value: number): boolean {
     try {
       return !Number.isNaN(value);
     }

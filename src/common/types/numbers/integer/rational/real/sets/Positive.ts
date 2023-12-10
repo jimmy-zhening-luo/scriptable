@@ -3,7 +3,16 @@ const p_Cardinality: typeof Cardinality = importModule(
 ) as typeof Cardinality;
 
 class Positive extends p_Cardinality {
-  override isCardinal(value: number): boolean {
+  public static get Cardinality(): typeof Cardinality {
+    try {
+      return p_Cardinality;
+    }
+    catch (e) {
+      throw new ReferenceError("Positive: error importing Cardinality module");
+    }
+  }
+
+  public override isCardinal(value: number): boolean {
     try {
       return (
         super.isCardinal(value) && (value === 0 || value === -0 || value > 0)
@@ -11,15 +20,6 @@ class Positive extends p_Cardinality {
     }
     catch (e) {
       throw new EvalError("Positive: error calling isCardinal");
-    }
-  }
-
-  static get Cardinality(): typeof Cardinality {
-    try {
-      return p_Cardinality;
-    }
-    catch (e) {
-      throw new ReferenceError("Positive: error importing Cardinality module");
     }
   }
 }

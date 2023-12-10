@@ -16,7 +16,7 @@ class ValidUrlPart extends up_ValidString {
       trimLeading?: string[];
       trimTrailing?: string[];
     },
-    ...allowedChars: ConstructorParameters<typeof CharSet>[1][]
+    ...allowedChars: Array<ConstructorParameters<typeof CharSet>[1]>
   ) {
     try {
       super(
@@ -36,12 +36,12 @@ class ValidUrlPart extends up_ValidString {
     }
     catch (e) {
       throw new EvalError(
-        `ValidUrlPart: constructor: error creating ValidUrlPart: \n${e}`,
+        `ValidUrlPart: constructor: error creating ValidUrlPart: \n {${e as string}`,
       );
     }
   }
 
-  static get ValidString(): typeof ValidString {
+  public static get ValidString(): typeof ValidString {
     return up_ValidString;
   }
 }

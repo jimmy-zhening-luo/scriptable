@@ -3,9 +3,9 @@ const hp_UrlComposite: typeof UrlComposite = importModule(
 ) as typeof UrlComposite;
 
 class HostPort extends hp_UrlComposite {
-  readonly parts: [Host, Port];
-  readonly host: Host;
-  readonly port: Port;
+  public readonly parts: [Host, Port];
+  public readonly host: Host;
+  public readonly port: Port;
 
   constructor(
     hostOrHostPort?: string | Host | HostPort,
@@ -30,12 +30,45 @@ class HostPort extends hp_UrlComposite {
     }
     catch (e) {
       throw new SyntaxError(
-        `HostPort: constructor: error creating HostPort: \n${e}`,
+        `HostPort: constructor: error creating HostPort: \n${e as string}`,
       );
     }
   }
 
-  get composite(): string {
+  public static get Host(): typeof Host {
+    try {
+      return HostPort.UrlParts.Host;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `HostPort: get Host: error loading Host module: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get Port(): typeof Port {
+    try {
+      return HostPort.UrlParts.Port;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `HostPort: get Port: error loading Port module: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get UrlComposite(): typeof UrlComposite {
+    try {
+      return hp_UrlComposite;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `HostPort: get UrlComposite: error loading UrlComposite module: \n${e as string}`,
+      );
+    }
+  }
+
+  public get composite(): string {
     try {
       return this.host.isValid
         ? this.port.isValid
@@ -48,40 +81,7 @@ class HostPort extends hp_UrlComposite {
     }
     catch (e) {
       throw new EvalError(
-        `HostPort: get composite: error getting composite: \n${e}`,
-      );
-    }
-  }
-
-  static get Host(): typeof Host {
-    try {
-      return HostPort.UrlParts.Host;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `HostPort: get Host: error loading Host module: \n${e}`,
-      );
-    }
-  }
-
-  static get Port(): typeof Port {
-    try {
-      return HostPort.UrlParts.Port;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `HostPort: get Port: error loading Port module: \n${e}`,
-      );
-    }
-  }
-
-  static get UrlComposite(): typeof UrlComposite {
-    try {
-      return hp_UrlComposite;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `HostPort: get UrlComposite: error loading UrlComposite module: \n${e}`,
+        `HostPort: get composite: error getting composite: \n${e as string}`,
       );
     }
   }

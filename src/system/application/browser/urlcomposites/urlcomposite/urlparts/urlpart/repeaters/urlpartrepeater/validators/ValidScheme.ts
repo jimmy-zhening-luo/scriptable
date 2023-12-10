@@ -24,18 +24,18 @@ class ValidScheme extends sc_ValidUrlPart {
     }
     catch (e) {
       throw new Error(
-        `ValidScheme: constructor: error creating ValidScheme: \n${e}`,
+        `ValidScheme: constructor: error creating ValidScheme: \n${e as string}`,
       );
     }
   }
 
-  static get ValidUrlPart(): typeof ValidUrlPart {
+  public static get ValidUrlPart(): typeof ValidUrlPart {
     try {
       return sc_ValidUrlPart;
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidScheme: error loading parent ValidUrlPart module: \n${e}`,
+        `ValidScheme: error loading parent ValidUrlPart module: \n${e as string}`,
       );
     }
   }

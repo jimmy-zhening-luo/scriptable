@@ -3,7 +3,7 @@ const a_Cardinality: typeof Cardinality = importModule(
 ) as typeof Cardinality;
 
 class AnyCardinality extends a_Cardinality {
-  static get Cardinality(): typeof Cardinality {
+  public static get Cardinality(): typeof Cardinality {
     try {
       return a_Cardinality;
     }

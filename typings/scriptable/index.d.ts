@@ -1410,7 +1410,7 @@ declare class Data {
      * @param string - String to create data from.
      * @see https://docs.scriptable.app/data/#fromstring
      */
-    static fromString(string: string): Data;
+    static fromString(string: string): IOFile;
 
     /**
      * _Reads data from file path._
@@ -1419,7 +1419,7 @@ declare class Data {
      * @param filePath - Path of file to read data from.
      * @see https://docs.scriptable.app/data/#fromfile
      */
-    static fromFile(filePath: string): Data;
+    static fromFile(filePath: string): IOFile;
 
     /**
      * _Creates data from base64 encoded string._
@@ -1428,21 +1428,21 @@ declare class Data {
      * @param base64String - Base64 encoded string to create data from.
      * @see https://docs.scriptable.app/data/#frombase64string
      */
-    static fromBase64String(base64String: string): Data;
+    static fromBase64String(base64String: string): IOFile;
 
     /**
      * _Creates data from JPEG image._
      * @param image - JPEG image to convert to data.
      * @see https://docs.scriptable.app/data/#fromjpeg
      */
-    static fromJPEG(image: Image): Data;
+    static fromJPEG(image: Image): IOFile;
 
     /**
      * _Creates data from PNG image._
      * @param image - PNG image to convert to data.
      * @see https://docs.scriptable.app/data/#frompng
      */
-    static fromPNG(image: Image): Data;
+    static fromPNG(image: Image): IOFile;
 
     /**
      * _Creates a string from the data._
@@ -2037,7 +2037,7 @@ declare var DocumentPicker: {
      * @param name - Optional name of the image to export.
      * @see https://docs.scriptable.app/documentpicker/#exportdata
      */
-    exportData(data: Data, name?: string): Promise<string[]>;
+    exportData(data: IOFile, name?: string): Promise<string[]>;
 };
 
 declare namespace FileManager {
@@ -2080,7 +2080,7 @@ declare class FileManager {
      * @param filePath - Path of the file to read.
      * @see https://docs.scriptable.app/filemanager/#-read
      */
-    read(filePath: string): Data;
+    read(filePath: string): IOFile;
 
     /**
      * _Read contents of a file as string._
@@ -2110,7 +2110,7 @@ declare class FileManager {
      * @param content - Data to write to disk.
      * @see https://docs.scriptable.app/filemanager/#-write
      */
-    write(filePath: string, content: Data): void;
+    write(filePath: string, content: IOFile): void;
 
     /**
      * _Write a string to a file._
@@ -2789,7 +2789,7 @@ declare class Image {
      * @param data - Data to read image from.
      * @see https://docs.scriptable.app/image/#fromdata
      */
-    static fromData(data: Data): Image;
+    static fromData(data: IOFile): Image;
 }
 
 /**
@@ -2825,7 +2825,7 @@ declare var Keychain: {
      * @param key - Key to read value for.
      * @see https://docs.scriptable.app/keychain/#get
      */
-    get(key: string): string;
+    public get(key: string): string;
 
     /**
      * _Remove key from keychain._
@@ -3309,7 +3309,7 @@ declare class Mail {
      * @param filename - Name of the file represented by the data.
      * @see https://docs.scriptable.app/mail/#-adddataattachment
      */
-    addDataAttachment(data: Data, mimeType: string, filename: string): void;
+    addDataAttachment(data: IOFile, mimeType: string, filename: string): void;
 }
 
 /**
@@ -3375,7 +3375,7 @@ declare class Message {
      * @param filename - Name of the file represented by the data.
      * @see https://docs.scriptable.app/message/#-adddataattachment
      */
-    addDataAttachment(data: Data, uti: string, filename: string): void;
+    addDataAttachment(data: IOFile, uti: string, filename: string): void;
 }
 
 declare namespace Notification {
@@ -4805,7 +4805,7 @@ declare class Request {
      * Call to send the configured request to the specified URL. The raw response is provided when the returned promise is fulfilled.
      * @see https://docs.scriptable.app/request/#-load
      */
-    load(): Promise<Data>;
+    load(): Promise<IOFile>;
 
     /**
      * _Sends request and parses response as a string._
@@ -4857,7 +4857,7 @@ declare class Request {
      * @param filename - Name of the file.
      * @see https://docs.scriptable.app/request/#-addfiledatatomultipart
      */
-    addFileDataToMultipart(data: Data, mimeType: string, name: string, filename: string): void;
+    addFileDataToMultipart(data: IOFile, mimeType: string, name: string, filename: string): void;
 
     /**
      * _Adds a file to a multipart request._

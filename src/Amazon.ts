@@ -9,7 +9,7 @@ namespace Amazon {
   ) as typeof Shortcut;
 
   export class Amazon extends shortcut {
-    runtime(): boolean {
+    public runtime(): boolean {
       try {
         const storageFilename: string = "last-run.txt";
         const latestRunString: string = this.readStorage(storageFilename);
@@ -27,7 +27,7 @@ namespace Amazon {
         return Date.now() - latestRunTime.getTime() > 300000;
       }
       catch (e) {
-        throw new EvalError(`Amazon: runtime: Error running app: \n${e}`);
+        throw new EvalError(`Amazon: runtime: Error running app: \n${e as string}`);
       }
     }
   }

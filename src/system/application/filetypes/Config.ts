@@ -3,20 +3,29 @@ const cfg_Filetype: typeof Filetype = importModule(
 ) as typeof Filetype;
 
 class Config extends cfg_Filetype {
-  private _cachedConfig?: ApplicationConfigProto;
-
   constructor(configSubpath: string, programName: string) {
     try {
-      super("Config", Config.File.join(configSubpath, `${programName}.json`));
+      super("Config", Config.IOFile.join(configSubpath, `${programName}.json`));
     }
     catch (e) {
       throw new EvalError(
-        `Config: constructor: Error creating Config object: \n${e}`,
+        `Config: constructor: Error creating Config object: \n${e as string}`,
       );
     }
   }
 
-  get isParseable(): boolean {
+  public static get Filetype(): typeof Filetype {
+    try {
+      return cfg_Filetype;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Config: Error importing Utility module: \n${e as string}`,
+      );
+    }
+  }
+
+  public get isParseable(): boolean {
     try {
       if (!this.isFile)
         throw new ReferenceError(
@@ -33,7 +42,7 @@ class Config extends cfg_Filetype {
     }
   }
 
-  get parsed(): ApplicationConfigProto {
+  public get parsed(): ApplicationConfigProto {
     try {
       if (this._cachedConfig !== undefined) return this._cachedConfig;
       else {
@@ -61,7 +70,7 @@ class Config extends cfg_Filetype {
             }
             catch (e) {
               throw new EvalError(
-                `Config.js: Error while validating whether parsed JSON is matches the ApplicationConfigProto: \n${e}`,
+                `Config.js: Error while validating whether parsed JSON is matches the ApplicationConfigProto: \n${e as string}`,
               );
             }
           }
@@ -70,23 +79,23 @@ class Config extends cfg_Filetype {
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error while parsing config file '${this.path}': \n${e}`,
+        `Config.js: Error while parsing config file '${this.path}': \n${e as string}`,
       );
     }
   }
 
-  get unmerged(): ApplicationConfigProto {
+  public get unmerged(): ApplicationConfigProto {
     try {
       return this.parsed;
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error getting unmerged config file '${this.path}': \n${e}`,
+        `Config.js: Error getting unmerged config file '${this.path}': \n${e as string}`,
       );
     }
   }
 
-  get app(): ApplicationConfigProto["app"] {
+  public get app(): ApplicationConfigProto["app"] {
     try {
       if (this.unmerged.app === undefined)
         throw new ReferenceError(
@@ -96,12 +105,12 @@ class Config extends cfg_Filetype {
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error getting 'app' property from config file '${this.path}': \n${e}`,
+        `Config.js: Error getting 'app' property from config file '${this.path}': \n${e as string}`,
       );
     }
   }
 
-  get user(): ApplicationConfigProto["user"] {
+  public get user(): ApplicationConfigProto["user"] {
     try {
       if (this.unmerged.user === undefined)
         throw new ReferenceError(
@@ -111,29 +120,29 @@ class Config extends cfg_Filetype {
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error getting 'user' property from config file '${this.path}': \n${e}`,
+        `Config.js: Error getting 'user' property from config file '${this.path}': \n${e as string}`,
       );
     }
   }
 
-  get merged(): Setting {
+  public get merged(): Setting {
     try {
       return this.mergeSettings(this.user, this.app);
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error merging 'user' and 'app' properties from config file '${this.path}': \n${e}`,
+        `Config.js: Error merging 'user' and 'app' properties from config file '${this.path}': \n${e as string}`,
       );
     }
   }
 
-  get mergedUserOverridesProhibited(): Setting {
+  public get mergedUserOverridesProhibited(): Setting {
     try {
       return this.mergeSettings(this.app, this.user);
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error merging 'user' and 'app' properties from config file '${this.path}': \n${e}`,
+        `Config.js: Error merging 'user' and 'app' properties from config file '${this.path}': \n${e as string}`,
       );
     }
   }
@@ -223,7 +232,7 @@ class Config extends cfg_Filetype {
     }
     catch (e) {
       throw new SyntaxError(
-        `Config.js: Error merging settings from config file '${this.path}': \n${e}`,
+        `Config.js: Error merging settings from config file '${this.path}': \n${e as string}`,
       );
     }
 
@@ -237,7 +246,7 @@ class Config extends cfg_Filetype {
       }
       catch (e) {
         throw new EvalError(
-          `Config.js: Error determining whether object is primitive: \n${e}`,
+          `Config.js: Error determining whether object is primitive: \n${e as string}`,
         );
       }
     }
@@ -250,7 +259,7 @@ class Config extends cfg_Filetype {
         return winner.concat(loser);
       }
       catch (e) {
-        throw new EvalError(`Config.js: Error merging arrays: \n${e}`);
+        throw new EvalError(`Config.js: Error merging arrays: \n${e as string}`);
       }
     }
 
@@ -261,7 +270,7 @@ class Config extends cfg_Filetype {
             .includes(keyOfA));
       }
       catch (e) {
-        throw new EvalError(`Config.js: Error intersecting keys: \n${e}`);
+        throw new EvalError(`Config.js: Error intersecting keys: \n${e as string}`);
       }
     }
 
@@ -272,22 +281,13 @@ class Config extends cfg_Filetype {
       }
       catch (e) {
         throw new EvalError(
-          `Config.js: Error getting unique keys of object: \n${e}`,
+          `Config.js: Error getting unique keys of object: \n${e as string}`,
         );
       }
     }
   }
 
-  static get Filetype(): typeof Filetype {
-    try {
-      return cfg_Filetype;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Config: Error importing Utility module: \n${e}`,
-      );
-    }
-  }
+  private _cachedConfig?: ApplicationConfigProto;
 }
 
 module.exports = Config;

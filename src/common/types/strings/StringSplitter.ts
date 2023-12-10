@@ -1,5 +1,5 @@
 class StringSplitter {
-  readonly separator: string;
+  public readonly separator: string;
   private readonly _merged: string[];
 
   constructor(
@@ -19,7 +19,56 @@ class StringSplitter {
     }
     catch (e) {
       throw new Error(
-        `StringSplitter: constructor: Error creating StringSplitter object: \n${e}`,
+        `StringSplitter: constructor: Error creating StringSplitter object: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get PositiveInteger(): typeof PositiveInteger {
+    try {
+      return importModule(
+        "./common/types/numbers/PositiveInteger",
+      ) as typeof PositiveInteger;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `StringSplitter: error importing PositiveInteger module: \n${e as string}`,
+      );
+    }
+  }
+
+  public get numTokens(): number {
+    try {
+      return this.separator === ""
+        ? this.toString().length
+        : this.toString()
+          .split(this.separator).length;
+    }
+    catch (e) {
+      throw new EvalError(
+        `StringSplitter: numTokens: Error getting number of raw tokens: \n${e as string}`,
+      );
+    }
+  }
+
+  public get length(): number {
+    try {
+      return this.toTuple().length;
+    }
+    catch (e) {
+      throw new EvalError(
+        `StringSplitter: length: Error getting length of merged array: \n${e as string}`,
+      );
+    }
+  }
+
+  public get wasMerged(): boolean {
+    try {
+      return this.length < this.numTokens;
+    }
+    catch (e) {
+      throw new EvalError(
+        `StringSplitter: didMerge: Error checking if merge occurred during construction: \n${e as string}`,
       );
     }
   }
@@ -65,7 +114,7 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: merge: Error merging tokens: \n${e}`,
+        `StringSplitter: merge: Error merging tokens: \n${e as string}`,
       );
     }
   }
@@ -86,16 +135,20 @@ class StringSplitter {
     try {
       return StringSplitter.__tokenize(
         StringSplitter.__aggregate(stringOrTokens, separator)[
-          trim ? "trim" : "toString"
+          trim
+            ? "trim"
+            : "toString"
         ](),
         separator,
       )
-        .map(token => trimTokens ? token.trim() : token)
+        .map(token => trimTokens
+          ? token.trim()
+          : token)
         .filter(token => !ignoreEmptyTokens || token !== "");
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: split: Error splitting string: \n${e}`,
+        `StringSplitter: split: Error splitting string: \n${e as string}`,
       );
     }
   }
@@ -112,7 +165,7 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: aggregate: Error aggregating tokens: \n${e}`,
+        `StringSplitter: aggregate: Error aggregating tokens: \n${e as string}`,
       );
     }
   }
@@ -133,79 +186,30 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: tokenize: Error tokenizing string: \n${e}`,
+        `StringSplitter: tokenize: Error tokenizing string: \n${e as string}`,
       );
     }
   }
 
-  get numTokens(): number {
-    try {
-      return this.separator === ""
-        ? this.toString().length
-        : this.toString()
-          .split(this.separator).length;
-    }
-    catch (e) {
-      throw new EvalError(
-        `StringSplitter: numTokens: Error getting number of raw tokens: \n${e}`,
-      );
-    }
-  }
-
-  get length(): number {
-    try {
-      return this.toTuple().length;
-    }
-    catch (e) {
-      throw new EvalError(
-        `StringSplitter: length: Error getting length of merged array: \n${e}`,
-      );
-    }
-  }
-
-  get wasMerged(): boolean {
-    try {
-      return this.length < this.numTokens;
-    }
-    catch (e) {
-      throw new EvalError(
-        `StringSplitter: didMerge: Error checking if merge occurred during construction: \n${e}`,
-      );
-    }
-  }
-
-  toTuple(): string[] {
+  public toTuple(): string[] {
     try {
       return [...this._merged];
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: toTuple: Error converting to tuple: \n${e}`,
+        `StringSplitter: toTuple: Error converting to tuple: \n${e as string}`,
       );
     }
   }
 
-  toString(): string {
+  public toString(): string {
     try {
       return this.toTuple()
         .join(this.separator);
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: toString: Error converting to string: \n${e}`,
-      );
-    }
-  }
-
-  static get PositiveInteger(): typeof PositiveInteger {
-    try {
-      return importModule(
-        "./common/types/numbers/PositiveInteger",
-      ) as typeof PositiveInteger;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `StringSplitter: error importing PositiveInteger module: \n${e}`,
+        `StringSplitter: toString: Error converting to string: \n${e as string}`,
       );
     }
   }

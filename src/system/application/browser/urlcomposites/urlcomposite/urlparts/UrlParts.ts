@@ -1,77 +1,77 @@
 class UrlParts {
-  static get UrlPart(): typeof UrlPart {
+  public static get UrlPart(): typeof UrlPart {
     try {
       return UrlParts.Scheme.UrlPart;
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent UrlPart module: \n${e}`,
+        `UrlParts: error loading parent UrlPart module: \n${e as string}`,
       );
     }
   }
 
-  static get Scheme(): typeof Scheme {
+  public static get Scheme(): typeof Scheme {
     try {
       return importModule("Scheme") as typeof Scheme;
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Scheme module: \n${e}`,
+        `UrlParts: error loading parent Scheme module: \n${e as string}`,
       );
     }
   }
 
-  static get Host(): typeof Host {
+  public static get Host(): typeof Host {
     try {
       return importModule("Host") as typeof Host;
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Host module: \n${e}`,
+        `UrlParts: error loading parent Host module: \n${e as string}`,
       );
     }
   }
 
-  static get Port(): typeof Port {
+  public static get Port(): typeof Port {
     try {
       return importModule("Port") as typeof Port;
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Port module: \n${e}`,
+        `UrlParts: error loading parent Port module: \n${e as string}`,
       );
     }
   }
 
-  static get Path(): typeof Path {
+  public static get Path(): typeof Path {
     try {
       return importModule("Path") as typeof Path;
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Path module: \n${e}`,
+        `UrlParts: error loading parent Path module: \n${e as string}`,
       );
     }
   }
 
-  static get Query(): typeof Query {
+  public static get Query(): typeof Query {
     try {
       return importModule("Query") as typeof Query;
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Query module: \n${e}`,
+        `UrlParts: error loading parent Query module: \n${e as string}`,
       );
     }
   }
 
-  static get Fragment(): typeof Fragment {
+  public static get Fragment(): typeof Fragment {
     try {
       return importModule("Fragment") as typeof Fragment;
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading parent Fragment module: \n${e}`,
+        `UrlParts: error loading parent Fragment module: \n${e as string}`,
       );
     }
   }

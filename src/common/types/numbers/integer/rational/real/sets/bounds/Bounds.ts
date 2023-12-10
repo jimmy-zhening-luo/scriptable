@@ -1,5 +1,5 @@
 abstract class Bounds {
-  isBounded(value: number): boolean {
+  public isBounded(value: number): boolean {
     try {
       return !Number.isNaN(value);
     }

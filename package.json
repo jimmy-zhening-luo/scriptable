@@ -6,15 +6,14 @@
   "main": "",
   "scripts": {
     "lint": "eslint --cache --cache-strategy content -c eslint.config.js **",
-    "lint:fix": "eslint --fix --cache --cache-strategy content -c eslint.config.js **",
+    "lint:fix": "npm run lint -- --fix",
+    "clean": "npm run clean:built && npm run clean:packed",
     "clean:built": "shx rm -rf built",
     "clean:packed": "shx rm -rf packed",
-    "clean": "npm run clean:built && npm run clean:packed",
     "prebuild": "npm run lint && npm run clean",
     "build": "tsc --build",
     "pack": "npm run build && shx mkdir packed && shx cp -r built/js/* packed",
-    "upload": "npm run pack && ts-node --esm tools/upload.ts",
-    "test": "No tests configured."
+    "upload": "npm run pack && ts-node --esm tools/upload.ts"
   },
   "repository": {
     "type": "git",
@@ -28,7 +27,7 @@
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "engines": {
     "node": ">=18.18.2",
-    "npm": ">=10.2.4"
+    "npm": ">=10.2.5"
   },
   "dependencies": {
     "dotenv": "^16.3.1"

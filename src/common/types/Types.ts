@@ -1,5 +1,5 @@
 class Types {
-  static get Numbers(): typeof Numbers {
+  public static get Numbers(): typeof Numbers {
     try {
       return importModule("numbers/Numbers") as typeof Numbers;
     }
@@ -8,7 +8,7 @@ class Types {
     }
   }
 
-  static get Strings(): typeof Strings {
+  public static get Strings(): typeof Strings {
     try {
       return importModule("strings/Strings") as typeof Strings;
     }

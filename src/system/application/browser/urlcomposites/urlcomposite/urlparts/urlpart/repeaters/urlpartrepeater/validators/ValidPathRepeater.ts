@@ -9,18 +9,18 @@ class ValidPathRepeater extends pa_ValidUrlRepeater {
     }
     catch (e) {
       throw new Error(
-        `ValidPathRepeater: constructor: error creating ValidPathRepeater: \n${e}`,
+        `ValidPathRepeater: constructor: error creating ValidPathRepeater: \n${e as string}`,
       );
     }
   }
 
-  static get ValidUrlRepeater(): typeof ValidUrlRepeater {
+  public static get ValidUrlRepeater(): typeof ValidUrlRepeater {
     try {
       return pa_ValidUrlRepeater;
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidPathRepeater: error loading parent ValidUrlRepeater module: \n${e}`,
+        `ValidPathRepeater: error loading parent ValidUrlRepeater module: \n${e as string}`,
       );
     }
   }

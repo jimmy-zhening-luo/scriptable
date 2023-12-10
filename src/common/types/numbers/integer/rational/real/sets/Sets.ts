@@ -1,5 +1,5 @@
 class Sets {
-  static get Bounds(): {
+  public static get Bounds(): {
     Finite: typeof Finite;
     Infinite: typeof Infinite;
   } {
@@ -16,7 +16,7 @@ class Sets {
     }
   }
 
-  static get Cardinality(): {
+  public static get Cardinality(): {
     AnyCardinality: typeof AnyCardinality;
     Positive: typeof Positive;
     Negative: typeof Negative;
@@ -35,7 +35,7 @@ class Sets {
     }
   }
 
-  static get Base(): {
+  public static get Base(): {
     Bounds: typeof Bounds;
     Cardinality: typeof Cardinality;
   } {

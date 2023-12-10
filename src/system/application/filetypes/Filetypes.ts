@@ -1,26 +1,26 @@
 class Filetypes {
-  static get Config(): typeof Config {
-    return importModule("Config") as typeof Config;
-  }
-
-  static get Secret(): typeof Secret {
-    return importModule("Secret") as typeof Secret;
-  }
-
-  static get Storage(): typeof Storage {
-    return importModule("Storage") as typeof Storage;
-  }
-
-  static get Filetype(): typeof Filetype {
+  public static get Filetype(): typeof Filetype {
     return Filetypes.Config.Filetype;
   }
 
-  static get File(): typeof File {
-    return Filetypes.Filetype.File;
+  public static get IOFile(): typeof IOFile {
+    return Filetypes.Filetype.IOFile;
   }
 
-  static get ReadOnlyFile(): typeof ReadOnlyFile {
-    return Filetypes.Filetype.ReadOnlyFile;
+  public static get ReadOnlyIOFile(): typeof ReadOnlyIOFile {
+    return Filetypes.Filetype.ReadOnlyIOFile;
+  }
+
+  public static get Config(): typeof Config {
+    return importModule("Config") as typeof Config;
+  }
+
+  public static get Secret(): typeof Secret {
+    return importModule("Secret") as typeof Secret;
+  }
+
+  public static get Storage(): typeof Storage {
+    return importModule("Storage") as typeof Storage;
   }
 }
 

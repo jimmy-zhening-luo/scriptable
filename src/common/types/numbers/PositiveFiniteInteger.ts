@@ -6,13 +6,13 @@ class PositiveFiniteInteger extends p_FiniteInteger {
   protected override cardinality: Cardinality
     = new PositiveFiniteInteger.Cardinality.Positive();
 
-  static get FiniteInteger(): typeof FiniteInteger {
+  public static get FiniteInteger(): typeof FiniteInteger {
     try {
       return p_FiniteInteger;
     }
     catch (e) {
       throw new ReferenceError(
-        `PositiveFiniteInteger: error loading parent FiniteInteger module: \n${e}`,
+        `PositiveFiniteInteger: error loading parent FiniteInteger module: \n${e as string}`,
       );
     }
   }

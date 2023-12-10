@@ -1,6 +1,6 @@
 class Bookmark {
-  readonly _nominalType: string = "Bookmark";
-  readonly alias: string;
+  public readonly _nominalType: string = "Bookmark";
+  public readonly alias: string;
 
   constructor(bookmark: string = "") {
     try {
@@ -8,12 +8,12 @@ class Bookmark {
     }
     catch (e) {
       throw new SyntaxError(
-        `Bookmark: constructor: Caught unhandled exception while instantiating Bookmark. See unhandled exception: \n${e}`,
+        `Bookmark: constructor: Caught unhandled exception while instantiating Bookmark. See unhandled exception: \n${e as string}`,
       );
     }
   }
 
-  get resolves(): boolean {
+  public get resolves(): boolean {
     try {
       return (
         this.alias !== "" && FileManager.iCloud()
@@ -22,12 +22,12 @@ class Bookmark {
     }
     catch (e) {
       throw new ReferenceError(
-        `Bookmark: exists: Caught unhandled exception while using Scriptable FileManager class to check whether bookmark exists. See unhandled exception: \n${e}`,
+        `Bookmark: exists: Caught unhandled exception while using Scriptable FileManager class to check whether bookmark exists. See unhandled exception: \n${e as string}`,
       );
     }
   }
 
-  get path(): string {
+  public get path(): string {
     try {
       if (!this.resolves) {
         if (this.alias === "")
@@ -44,23 +44,12 @@ class Bookmark {
     }
     catch (e) {
       throw new ReferenceError(
-        `Bookmark: path: Error getting bookmarked path: \n${e}`,
+        `Bookmark: path: Error getting bookmarked path: \n${e as string}`,
       );
     }
   }
 
-  toString(): string {
-    try {
-      return this.path;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Bookmark: toString: Caught unhandled exception while getting bookmarked path of the bookmark named '${this.alias}'. See unhandled exception: \n${e}`,
-      );
-    }
-  }
-
-  static [Symbol.hasInstance](instance: any): boolean {
+  public static [Symbol.hasInstance](instance: any): boolean {
     try {
       return (
         instance !== null
@@ -72,7 +61,18 @@ class Bookmark {
     }
     catch (e) {
       throw new EvalError(
-        `Bookmark: [Symbol.hasInstance]: Caught unhandled exception while checking whether instance is an instance of Bookmark. See unhandled exception: \n${e}`,
+        `Bookmark: [Symbol.hasInstance]: Caught unhandled exception while checking whether instance is an instance of Bookmark. See unhandled exception: \n${e as string}`,
+      );
+    }
+  }
+
+  public toString(): string {
+    try {
+      return this.path;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Bookmark: toString: Caught unhandled exception while getting bookmarked path of the bookmark named '${this.alias}'. See unhandled exception: \n${e as string}`,
       );
     }
   }

@@ -11,47 +11,47 @@ class Storage extends stor_Filetype {
     try {
       super(
         "Storage",
-        Storage.File.join(storageSubpath, programName, subpath),
-        Storage.File,
+        Storage.IOFile.join(storageSubpath, programName, subpath),
+        Storage.IOFile,
       );
     }
     catch (e) {
       throw new EvalError(
-        `Storage: constructor: Error creating Storage object: \n${e}`,
+        `Storage: constructor: Error creating Storage object: \n${e as string}`,
       );
     }
   }
 
-  write(text: string): this {
+  public static get Filetype(): typeof Filetype {
+    try {
+      return stor_Filetype;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Storage: get Utility: Error importing Utility module: \n${e as string}`,
+      );
+    }
+  }
+
+  public write(text: string): this {
     try {
       this._file.write(text, true);
 
       return this;
     }
     catch (e) {
-      throw new EvalError(`Storage: write: Error writing to file: \n${e}`);
+      throw new EvalError(`Storage: write: Error writing to file: \n${e as string}`);
     }
   }
 
-  delete(): this {
+  public async delete(): Promise<this> {
     try {
-      this._file.delete();
+      await this._file.delete();
 
       return this;
     }
     catch (e) {
-      throw new EvalError(`Storage: delete: Error deleting file: \n${e}`);
-    }
-  }
-
-  static get Filetype(): typeof Filetype {
-    try {
-      return stor_Filetype;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Storage: get Utility: Error importing Utility module: \n${e}`,
-      );
+      throw new EvalError(`Storage: delete: Error deleting file: \n${e as string}`);
     }
   }
 }

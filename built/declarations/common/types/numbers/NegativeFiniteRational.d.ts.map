@@ -1,0 +1,1 @@
+{"version":3,"file":"NegativeFiniteRational.d.ts","sourceRoot":"","sources":["../../../../../src/common/types/numbers/NegativeFiniteRational.ts"],"names":[],"mappings":"AAAA,QAAA,MAAM,gBAAgB,EAAE,OAAO,cAEL,CAAC;AAE3B,cAAM,sBAAuB,SAAQ,gBAAgB;IACnD,UAAmB,WAAW,EAAE,WAAW,CACW;IAEtD,WAAkB,cAAc,IAAI,OAAO,cAAc,CASxD;CACF"}

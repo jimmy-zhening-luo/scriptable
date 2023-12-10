@@ -1,40 +1,40 @@
 class Files {
-  static get ReadOnlyFile(): typeof ReadOnlyFile {
+  public static get ReadOnlyIOFile(): typeof ReadOnlyIOFile {
     try {
-      return importModule("ReadOnlyFile") as typeof ReadOnlyFile;
+      return importModule("ReadOnlyIOFile") as typeof ReadOnlyIOFile;
     }
     catch (e) {
       throw new ReferenceError(
-        `Files: Error importing ReadOnlyFile class: \n${e}`,
+        `Files: Error importing ReadOnlyIOFile class: \n${e as string}`,
       );
     }
   }
 
-  static get File(): typeof File {
+  public static get IOFile(): typeof IOFile {
     try {
-      return Files.ReadOnlyFile.File;
+      return Files.ReadOnlyIOFile.IOFile;
     }
     catch (e) {
-      throw new ReferenceError(`Files: Error importing File class: \n${e}`);
+      throw new ReferenceError(`Files: Error importing IOFile class: \n${e as string}`);
     }
   }
 
-  static get Bookmark(): typeof Bookmark {
+  public static get Bookmark(): typeof Bookmark {
     try {
-      return Files.File.Bookmark;
+      return Files.IOFile.Bookmark;
     }
     catch (e) {
-      throw new ReferenceError(`Files: Error importing Bookmark class: \n${e}`);
+      throw new ReferenceError(`Files: Error importing Bookmark class: \n${e as string}`);
     }
   }
 
-  static get FilepathString(): typeof FilepathString {
+  public static get FilepathString(): typeof FilepathString {
     try {
-      return Files.File.FilepathString;
+      return Files.IOFile.FilepathString;
     }
     catch (e) {
       throw new ReferenceError(
-        `Files: Error importing FilepathString class: \n${e}`,
+        `Files: Error importing FilepathString class: \n${e as string}`,
       );
     }
   }

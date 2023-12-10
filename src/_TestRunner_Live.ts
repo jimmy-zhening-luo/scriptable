@@ -35,8 +35,8 @@ namespace TestRunner {
         cases: [
           [
             "baz",
-            3,
-            3,
+            1,
+            1,
           ],
         ],
       },
@@ -45,8 +45,8 @@ namespace TestRunner {
         cases: [
           [
             "bin",
-            4,
-            4,
+            1,
+            1,
           ],
         ],
       },
@@ -55,8 +55,8 @@ namespace TestRunner {
         cases: [
           [
             "fizz",
-            5,
-            5,
+            1,
+            1,
           ],
         ],
       },
@@ -73,7 +73,7 @@ namespace TestRunner {
   }
 
   export class TestRunner extends nativeScript {
-    runtime(): void {
+    public async runtime(): Promise<void> {
       try {
         const suites: Classes.TestSuite[] = Tests.Tests.map(testSuiteProto => {
           const caseTuples: Protos.TestCaseTriple[] = testSuiteProto.cases;
@@ -96,11 +96,11 @@ namespace TestRunner {
         outputDialog.title = this.constructor.name;
         outputDialog.message = output;
         outputDialog.addAction("OK");
-        outputDialog.presentAlert();
+        await outputDialog.presentAlert();
       }
       catch (e) {
         throw new EvalError(
-          `TestRunner: runtime: Error running script: \n${e}`,
+          `TestRunner: runtime: Error running script: \n${e as string}`,
         );
       }
     }
@@ -113,11 +113,11 @@ namespace TestRunner {
 
       constructor(
         name: string,
-        ...caseTuples: {
+        ...caseTuples: Array<{
           description: string;
           left: primitive;
           right: primitive;
-        }[]
+        }>
       ) {
         try {
           this._name = name;
@@ -131,18 +131,18 @@ namespace TestRunner {
           );
         }
         catch (e) {
-          throw new SyntaxError(`TestSuite.constructor() failed: ${e}\n`);
+          throw new SyntaxError(`TestSuite.constructor() failed: ${e as string}\n`);
         }
       }
 
-      execute(): string {
+      public execute(): string {
         try {
           return `${this._name}: ${this._cases
             .map(testCase => testCase.execute())
             .join("")}\n`;
         }
         catch (e) {
-          throw new EvalError(`TestSuite.execute() failed: ${e}\n`);
+          throw new EvalError(`TestSuite.execute() failed: ${e as string}\n`);
         }
       }
     }
@@ -159,18 +159,20 @@ namespace TestRunner {
           this._right = right;
         }
         catch (e) {
-          throw new SyntaxError(`TestCase.constructor() failed: ${e}\n`);
+          throw new SyntaxError(`TestCase.constructor() failed: ${e as string}\n`);
         }
       }
 
-      execute(): string {
+      public execute(): string {
         try {
           return `${this._description}: ${
-            this._left === this._right ? "success" : "FAIL"
+            this._left === this._right
+              ? "success"
+              : "FAIL"
           }\n`;
         }
         catch (e) {
-          throw new EvalError(`TestCase.execute() failed: ${e}\n`);
+          throw new EvalError(`TestCase.execute() failed: ${e as string}\n`);
         }
       }
     }

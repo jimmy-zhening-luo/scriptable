@@ -9,18 +9,18 @@ class Secret extends key_Filetype {
     }
     catch (e) {
       throw new EvalError(
-        `Secret: constructor: Error creating Secret object: \n${e}`,
+        `Secret: constructor: Error creating Secret object: \n${e as string}`,
       );
     }
   }
 
-  static get Filetype(): typeof Filetype {
+  public static get Filetype(): typeof Filetype {
     try {
       return key_Filetype;
     }
     catch (e) {
       throw new ReferenceError(
-        `Secret: Utility: Error importing Utility module: \n${e}`,
+        `Secret: Utility: Error importing Utility module: \n${e as string}`,
       );
     }
   }
