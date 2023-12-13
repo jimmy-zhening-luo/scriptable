@@ -8,7 +8,9 @@ on:
 jobs:
   upload:
     runs-on: ubuntu-latest
-    environment: publish.prod
+    environment:
+      name: publish.prod
+      url: https://${{ vars.AZ_ACCOUNT_NAME }}.blob.core.windows.net/${{ vars.AZ_CONTAINER_NAME }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
