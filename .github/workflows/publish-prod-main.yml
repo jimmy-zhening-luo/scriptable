@@ -33,11 +33,7 @@ jobs:
             az storage blob delete-batch -s '${{ vars.AZ_CONTAINER_NAME }}' --pattern '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}/*' --account-name '${{ vars.AZ_ACCOUNT_NAME }}' --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
       - name: Upload packed bundle to Azure
         id: uploadnew
-        uses: bacongobbler/azure-blob-storage-upload@main
+        uses: Azure/cli@v1
         with:
-          source_dir: 'packed'
-          container_name: ${{ vars.AZ_CONTAINER_NAME }}
-          account_name: ${{ vars.AZ_ACCOUNT_NAME }}
-          sas_token: ${{ secrets.AZ_CONTAINER_SAS_TOKEN }}
-          extra_args: '--destination-path ${{ vars.AZ_CONTAINER_DESTINATION_PATH }}'
-          overwrite: 'true'
+          inlineScript: |
+            az storage blob upload-batch -d '${{ vars.AZ_CONTAINER_NAME }}' -s '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}' --destination-path '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}' --overwrite 'true' --account-name '${{ vars.AZ_ACCOUNT_NAME }}' --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
