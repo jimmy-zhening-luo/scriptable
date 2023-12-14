@@ -12,13 +12,22 @@ jobs:
       name: publish.prod
       url: https://${{ vars.AZ_ACCOUNT_NAME }}.blob.core.windows.net/${{ vars.AZ_CONTAINER_NAME }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - name: Checkout source
+        id: checkout
+        uses: actions/checkout@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
-      - run: npm ci
-      - run: npm run pack
-      - uses: bacongobbler/azure-blob-storage-upload@main
+      - name: Install project dependencies
+        id: ci
+        run: npm ci
+      - name: Build and pack project
+        id: pack
+        run: npm run pack
+      - name: Upload packed bundle to Azure
+        id: uploadnew
+        uses: bacongobbler/azure-blob-storage-upload@main
         with:
           source_dir: 'packed'
           container_name: ${{ vars.AZ_CONTAINER_NAME }}
