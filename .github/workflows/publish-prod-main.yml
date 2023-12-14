@@ -25,6 +25,12 @@ jobs:
       - name: Build and pack project
         id: pack
         run: npm run pack
+      - name: Delete old bundle from Azure
+        id: deleteold
+        uses: Azure/cli@v1
+        with:
+          inlineScript: |
+            az storage blob delete-batch -s ${{ vars.AZ_CONTAINER_NAME }} --pattern ${{ vars.AZ_CONTAINER_DESTINATION_PATH }}/* --account-name ${{ vars.AZ_ACCOUNT_NAME }} --sas-token ${{ secrets.AZ_CONTAINER_SAS_TOKEN }}
       - name: Upload packed bundle to Azure
         id: uploadnew
         uses: bacongobbler/azure-blob-storage-upload@main
