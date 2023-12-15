@@ -26,7 +26,7 @@
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "engines": {
     "node": ">=20.10.0",
-    "npm": ">=10.2.5"
+    "npm": ">=10.2.3"
   },
   "dependencies": {
     "dotenv": "^16.3.1"
