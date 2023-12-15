@@ -86,11 +86,13 @@ namespace Search {
   }
 
   enum SupportedAppSearchEngine {
-    mail,
+    calendar,
     files,
+    mail,
+    notes,
+    runshortcut,
     shortcuts,
-    bear,
-    shortcut,
+    tasks,
   }
 
   abstract class SearchEngine {
