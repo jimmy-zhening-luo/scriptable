@@ -22,8 +22,10 @@ declare interface Key extends Setting {
 }
 
 declare type SupportedApp =
-  | "mail"
+  | "calendar"
   | "files"
+  | "mail"
+  | "notes"
+  | "runshortcut"
   | "shortcuts"
-  | "bear"
-  | "shortcut";
+  | "tasks";
