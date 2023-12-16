@@ -22,6 +22,7 @@ declare interface Key extends Setting {
 }
 
 declare type SupportedApp =
+  | "appstore"
   | "calendar"
   | "files"
   | "mail"

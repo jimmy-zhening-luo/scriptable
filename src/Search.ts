@@ -86,6 +86,7 @@ namespace Search {
   }
 
   enum SupportedAppSearchEngine {
+    appstore,
     calendar,
     files,
     mail,
