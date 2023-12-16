@@ -4,7 +4,7 @@ class Browser {
       return importModule("Url") as typeof Url;
     }
     catch (e) {
-      throw new Error(`Browser: get Url: error getting Url: \n${e as string}`);
+      throw new Error(`Browser: get Url: error loading module: \n${e as string}`);
     }
   }
 
@@ -13,7 +13,7 @@ class Browser {
       return Browser.Url.UrlParts;
     }
     catch (e) {
-      throw new Error(`Browser: get UrlParts: error getting UrlParts: \n${e as string}`);
+      throw new Error(`Browser: get UrlParts: error loading module: \n${e as string}`);
     }
   }
 }

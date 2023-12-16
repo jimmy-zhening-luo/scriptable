@@ -2,45 +2,45 @@ const ho_UrlPart: typeof UrlPart = importModule(
   "urlpart/UrlPart",
 ) as typeof UrlPart;
 
-class Host extends ho_UrlPart {
-  constructor(host?: string | Host) {
+class UrlHost extends ho_UrlPart {
+  constructor(host?: string | UrlHost) {
     try {
       super(host);
     }
     catch (e) {
-      throw new Error(`Host: constructor: error creating Host: \n${e as string}`);
+      throw new Error(`UrlHost: constructor: error creating UrlHost: \n${e as string}`);
     }
   }
 
   public static get HostIPv4Repeater(): typeof HostIPv4Repeater {
     try {
-      return Host.Repeaters.HostIPv4Repeater;
+      return UrlHost.Repeaters.HostIPv4Repeater;
     }
     catch (e) {
       throw new ReferenceError(
-        `Host: error loading HostIPv4Repeater module: \n${e as string}`,
+        `UrlHost: error loading module: \n${e as string}`,
       );
     }
   }
 
   public static get HostIPv6Repeater(): typeof HostIPv6Repeater {
     try {
-      return Host.Repeaters.HostIPv6Repeater;
+      return UrlHost.Repeaters.HostIPv6Repeater;
     }
     catch (e) {
       throw new ReferenceError(
-        `Host: error loading HostIPv6Repeater module: \n${e as string}`,
+        `UrlHost: error loading module: \n${e as string}`,
       );
     }
   }
 
   public static get HostRegNameRepeater(): typeof HostRegNameRepeater {
     try {
-      return Host.Repeaters.HostRegNameRepeater;
+      return UrlHost.Repeaters.HostRegNameRepeater;
     }
     catch (e) {
       throw new ReferenceError(
-        `Host: error loading HostRegNameRepeater module: \n${e as string}`,
+        `UrlHost: error loading module: \n${e as string}`,
       );
     }
   }
@@ -51,7 +51,7 @@ class Host extends ho_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `Host: error loading parent UrlPart module: \n${e as string}`,
+        `UrlHost: error loading module: \n${e as string}`,
       );
     }
   }
@@ -70,7 +70,7 @@ class Host extends ho_UrlPart {
         : host.split(".").length === 4
               && host
                 .split(".")
-                .map(hostRepeater => new Host.HostIPv4Repeater(hostRepeater))
+                .map(hostRepeater => new UrlHost.HostIPv4Repeater(hostRepeater))
                 .every(
                   hostRepeater =>
                     hostRepeater.isValid
@@ -80,20 +80,22 @@ class Host extends ho_UrlPart {
               && host.split(":").length >= 3
               && host
                 .split(":")
-                .map(hostRepeater => new Host.HostIPv6Repeater(hostRepeater))
+                .map(hostRepeater => new UrlHost.HostIPv6Repeater(hostRepeater))
                 .every(hostRepeater => hostRepeater.isValid)
             || host.split(".").length >= 1
               && host
                 .split(".")
-                .map(hostRepeater => new Host.HostRegNameRepeater(hostRepeater))
+                .map(
+                  hostRepeater => new UrlHost.HostRegNameRepeater(hostRepeater),
+                )
                 .every(hostRepeater => hostRepeater.isValid)
           ? host
           : null;
     }
     catch (e) {
-      throw new Error(`Host: parse: error parsing Host: \n${e as string}`);
+      throw new Error(`UrlHost: parse: error parsing UrlHost: \n${e as string}`);
     }
   }
 }
 
-module.exports = Host;
+module.exports = UrlHost;

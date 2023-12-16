@@ -12,12 +12,12 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     | SchemeHostPort
     | SchemeHostPortPathQueryFragment
     | [
-      string | Scheme,
-      string | Host,
-      string | number | Port,
-      string | Path,
-      string | Query,
-      string | Fragment,
+      string | UrlScheme,
+      string | UrlHost,
+      string | number | UrlPort,
+      string | UrlPath,
+      string | UrlQuery,
+      string | UrlFragment,
     ],
     pathQueryFragment?: PathQueryFragment,
   ) {
@@ -73,7 +73,7 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `SchemeHostPortPathQueryFragment: get SchemeHostPort: error loading SchemeHostPort module: \n${e as string}`,
+        `SchemeHostPortPathQueryFragment: get SchemeHostPort: error loading module: \n${e as string}`,
       );
     }
   }
@@ -84,7 +84,7 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `SchemeHostPortPathQueryFragment: get PathQueryFragment: error loading PathQueryFragment module: \n${e as string}`,
+        `SchemeHostPortPathQueryFragment: get PathQueryFragment: error loading module: \n${e as string}`,
       );
     }
   }

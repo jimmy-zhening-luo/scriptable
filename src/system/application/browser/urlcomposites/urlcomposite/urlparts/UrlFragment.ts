@@ -2,25 +2,25 @@ const fr_UrlPart: typeof UrlPart = importModule(
   "urlpart/UrlPart",
 ) as typeof UrlPart;
 
-class Fragment extends fr_UrlPart {
-  constructor(fragment?: string | Fragment) {
+class UrlFragment extends fr_UrlPart {
+  constructor(fragment?: string | UrlFragment) {
     try {
       super(fragment);
     }
     catch (e) {
       throw new SyntaxError(
-        `Fragment: constructor: error creating Fragment: \n${e as string}`,
+        `UrlFragment: constructor: error creating UrlFragment: \n${e as string}`,
       );
     }
   }
 
   public static get ValidFragment(): typeof ValidFragment {
     try {
-      return Fragment.UrlValidators.Fragment;
+      return UrlFragment.UrlValidators.Fragment;
     }
     catch (e) {
       throw new ReferenceError(
-        `Fragment: error loading ValidFragment module: \n${e as string}`,
+        `UrlFragment: error loading module: \n${e as string}`,
       );
     }
   }
@@ -31,7 +31,7 @@ class Fragment extends fr_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `Fragment: error loading parent UrlPart module: \n${e as string}`,
+        `UrlFragment: error loading module: \n${e as string}`,
       );
     }
   }
@@ -40,12 +40,12 @@ class Fragment extends fr_UrlPart {
     try {
       return fragment.trim() === "#" || fragment.trim() === ""
         ? null
-        : new Fragment.ValidFragment(fragment).value;
+        : new UrlFragment.ValidFragment(fragment).value;
     }
     catch (e) {
-      throw new SyntaxError(`Fragment: parse: error parsing Fragment: \n${e as string}`);
+      throw new SyntaxError(`UrlFragment: parse: error parsing UrlFragment: \n${e as string}`);
     }
   }
 }
 
-module.exports = Fragment;
+module.exports = UrlFragment;

@@ -41,8 +41,8 @@ abstract class Shortcut extends sh_Application {
   }
 
   public handleOutput(
-    output: null | primitive | IOFile | ShortcutDictionary = "",
-  ): primitive | ShortcutDictionary {
+    output: null | primitive | IOFile | Shortcut.ShortcutDictionary = "",
+  ): primitive | Shortcut.ShortcutDictionary {
     try {
       if (output === null) output = "";
       else if (
@@ -64,6 +64,20 @@ abstract class Shortcut extends sh_Application {
       );
     }
   }
+}
+
+namespace Shortcut {
+  export interface ShortcutDictionary {
+    [key: string]: ListContent | ShortcutDictionary;
+  }
+
+  export type ListContent =
+    | string
+    | number
+    | boolean
+    | ShortcutDictionary
+    | ListContent[];
+
 }
 
 module.exports = Shortcut;

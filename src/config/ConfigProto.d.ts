@@ -8,8 +8,8 @@ declare interface Setting {
 }
 
 declare type SettingValue =
-  | string
-  | number
-  | boolean
-  | Setting
-  | SettingValue[];
+    | string
+    | number
+    | boolean
+    | Setting
+    | SettingValue[];

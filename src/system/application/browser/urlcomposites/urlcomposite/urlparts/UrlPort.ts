@@ -2,8 +2,8 @@ const po_UrlPart: typeof UrlPart = importModule(
   "urlpart/UrlPart",
 ) as typeof UrlPart;
 
-class Port extends po_UrlPart {
-  constructor(port?: string | number | Port) {
+class UrlPort extends po_UrlPart {
+  constructor(port?: string | number | UrlPort) {
     try {
       super(
         typeof port === "number"
@@ -14,16 +14,16 @@ class Port extends po_UrlPart {
       );
     }
     catch (e) {
-      throw new Error(`Port: constructor: error creating Port: \n${e as string}`);
+      throw new Error(`UrlPort: constructor: error creating UrlPort: \n${e as string}`);
     }
   }
 
   public static get ValidPort(): typeof ValidPort {
     try {
-      return Port.UrlValidators.Port;
+      return UrlPort.UrlValidators.Port;
     }
     catch (e) {
-      throw new ReferenceError(`Port: error loading ValidPort module: \n${e as string}`);
+      throw new ReferenceError(`UrlPort: error loading module: \n${e as string}`);
     }
   }
 
@@ -32,7 +32,7 @@ class Port extends po_UrlPart {
       return po_UrlPart;
     }
     catch (e) {
-      throw new ReferenceError(`Port: error loading UrlPart module: \n${e as string}`);
+      throw new ReferenceError(`UrlPort: error loading module: \n${e as string}`);
     }
   }
 
@@ -46,14 +46,14 @@ class Port extends po_UrlPart {
     }
     catch (e) {
       throw new Error(
-        `Port: toNumber: error converting Port to number: \n${e as string}`,
+        `UrlPort: toNumber: error converting UrlPort to number: \n${e as string}`,
       );
     }
   }
 
   protected parse(port: string): null | string {
     try {
-      const parsedPortString: string = new Port.ValidPort(port)
+      const parsedPortString: string = new UrlPort.ValidPort(port)
         .toString();
       const parsedPortInt: number = Number.isInteger(
         Number.parseInt(parsedPortString),
@@ -66,9 +66,9 @@ class Port extends po_UrlPart {
         : null;
     }
     catch (e) {
-      throw new Error(`Port: parse: error parsing Port: \n${e as string}`);
+      throw new Error(`UrlPort: parse: error parsing UrlPort: \n${e as string}`);
     }
   }
 }
 
-module.exports = Port;
+module.exports = UrlPort;

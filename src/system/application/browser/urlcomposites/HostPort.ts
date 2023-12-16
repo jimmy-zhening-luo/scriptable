@@ -3,27 +3,27 @@ const hp_UrlComposite: typeof UrlComposite = importModule(
 ) as typeof UrlComposite;
 
 class HostPort extends hp_UrlComposite {
-  public readonly parts: [Host, Port];
-  public readonly host: Host;
-  public readonly port: Port;
+  public readonly parts: [UrlHost, UrlPort];
+  public readonly host: UrlHost;
+  public readonly port: UrlPort;
 
   constructor(
-    hostOrHostPort?: string | Host | HostPort,
-    port?: string | number | Port,
+    hostOrHostPort?: string | UrlHost | HostPort,
+    port?: string | number | UrlPort,
   ) {
     super();
     try {
       this.parts
         = hostOrHostPort === undefined
           ? [
-              new HostPort.Host(),
-              new HostPort.Port(),
+              new HostPort.UrlHost(),
+              new HostPort.UrlPort(),
             ]
           : hostOrHostPort instanceof HostPort
             ? hostOrHostPort.parts
             : [
-                new HostPort.Host(hostOrHostPort),
-                new HostPort.Port(port),
+                new HostPort.UrlHost(hostOrHostPort),
+                new HostPort.UrlPort(port),
               ];
       this.host = this.parts[0];
       this.port = this.parts[1];
@@ -35,24 +35,24 @@ class HostPort extends hp_UrlComposite {
     }
   }
 
-  public static get Host(): typeof Host {
+  public static get UrlHost(): typeof UrlHost {
     try {
-      return HostPort.UrlParts.Host;
+      return HostPort.UrlParts.UrlHost;
     }
     catch (e) {
       throw new ReferenceError(
-        `HostPort: get Host: error loading Host module: \n${e as string}`,
+        `HostPort: get UrlHost: error loading module: \n${e as string}`,
       );
     }
   }
 
-  public static get Port(): typeof Port {
+  public static get UrlPort(): typeof UrlPort {
     try {
-      return HostPort.UrlParts.Port;
+      return HostPort.UrlParts.UrlPort;
     }
     catch (e) {
       throw new ReferenceError(
-        `HostPort: get Port: error loading Port module: \n${e as string}`,
+        `HostPort: get UrlPort: error loading module: \n${e as string}`,
       );
     }
   }

@@ -3,30 +3,30 @@ const shp_UrlComposite: typeof UrlComposite = importModule(
 ) as typeof UrlComposite;
 
 class SchemeHostPort extends shp_UrlComposite {
-  public readonly parts: [Scheme, HostPort];
-  public readonly scheme: Scheme;
+  public readonly parts: [UrlScheme, HostPort];
+  public readonly scheme: UrlScheme;
   public readonly hostPort: HostPort;
 
   constructor(
-    schemeOrSchemeHostPort?: string | Scheme | SchemeHostPort,
-    hostPort?: HostPort | [string | Host, string | number | Port],
+    schemeOrSchemeHostPort?: string | UrlScheme | SchemeHostPort,
+    hostPort?: HostPort | [string | UrlHost, string | number | UrlPort],
   ) {
     super();
     try {
       this.parts
         = schemeOrSchemeHostPort === undefined
           ? [
-              new SchemeHostPort.Scheme(),
+              new SchemeHostPort.UrlScheme(),
               new SchemeHostPort.HostPort(),
             ]
           : schemeOrSchemeHostPort instanceof SchemeHostPort
             ? schemeOrSchemeHostPort.parts
             : [
-                new SchemeHostPort.Scheme(schemeOrSchemeHostPort),
+                new SchemeHostPort.UrlScheme(schemeOrSchemeHostPort),
                 Array.isArray(hostPort)
                   ? new SchemeHostPort.HostPort(
-                    new SchemeHostPort.HostPort.Host(hostPort[0]),
-                    new SchemeHostPort.HostPort.Port(hostPort[1]),
+                    new SchemeHostPort.HostPort.UrlHost(hostPort[0]),
+                    new SchemeHostPort.HostPort.UrlPort(hostPort[1]),
                   )
                   : new SchemeHostPort.HostPort(hostPort),
               ];
@@ -40,13 +40,13 @@ class SchemeHostPort extends shp_UrlComposite {
     }
   }
 
-  public static get Scheme(): typeof Scheme {
+  public static get UrlScheme(): typeof UrlScheme {
     try {
-      return this.UrlParts.Scheme;
+      return this.UrlParts.UrlScheme;
     }
     catch (e) {
       throw new ReferenceError(
-        `SchemeHostPort: get Scheme: error loading Scheme module: \n${e as string}`,
+        `SchemeHostPort: get UrlScheme: error loading module: \n${e as string}`,
       );
     }
   }
@@ -57,7 +57,7 @@ class SchemeHostPort extends shp_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `SchemeHostPort: get HostPort: error loading HostPort module: \n${e as string}`,
+        `SchemeHostPort: get HostPort: error loading module: \n${e as string}`,
       );
     }
   }

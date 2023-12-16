@@ -1,18 +1,18 @@
 class Url {
-  private _scheme: Scheme = new Url.Scheme("https");
-  private _host: Host = new Url.Host();
-  private _port: Port = new Url.Port();
-  private _path: Path = new Url.Path();
-  private _query: Query = new Url.Query();
-  private _fragment: Fragment = new Url.Fragment();
+  private _scheme: UrlScheme = new Url.UrlScheme("https");
+  private _host: UrlHost = new Url.UrlHost();
+  private _port: UrlPort = new Url.UrlPort();
+  private _path: UrlPath = new Url.UrlPath();
+  private _query: UrlQuery = new Url.UrlQuery();
+  private _fragment: UrlFragment = new Url.UrlFragment();
 
   constructor(
-    headUrl: string | Scheme | Url | Url.UrlRecords = "",
-    host?: ConstructorParameters<typeof Host>[0],
-    port?: ConstructorParameters<typeof Port>[0],
-    path?: ConstructorParameters<typeof Path>[0],
-    query?: ConstructorParameters<typeof Query>[0],
-    fragment?: ConstructorParameters<typeof Fragment>[0],
+    headUrl: string | UrlScheme | Url | Url.UrlRecords = "",
+    host?: ConstructorParameters<typeof UrlHost>[0],
+    port?: ConstructorParameters<typeof UrlPort>[0],
+    path?: ConstructorParameters<typeof UrlPath>[0],
+    query?: ConstructorParameters<typeof UrlQuery>[0],
+    fragment?: ConstructorParameters<typeof UrlFragment>[0],
   ) {
     try {
       if (typeof headUrl === "string") {
@@ -33,7 +33,7 @@ class Url {
           this.fragment = fragment;
         }
       }
-      else if (headUrl instanceof Url.Scheme) {
+      else if (headUrl instanceof Url.UrlScheme) {
         this.scheme = headUrl;
         this.host = host;
         this.port = port;
@@ -105,68 +105,68 @@ class Url {
     }
   }
 
-  public static get Scheme(): typeof Scheme {
+  public static get UrlScheme(): typeof UrlScheme {
     try {
-      return Url.UrlParts.Scheme;
+      return Url.UrlParts.UrlScheme;
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get Scheme: error loading Scheme module: \n${e as string}`,
+        `Url: get UrlScheme: error loading module: \n${e as string}`,
       );
     }
   }
 
-  public static get Host(): typeof Host {
+  public static get UrlHost(): typeof UrlHost {
     try {
-      return Url.UrlParts.Host;
+      return Url.UrlParts.UrlHost;
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get Host: error loading Host module: \n${e as string}`,
+        `Url: get UrlHost: error loading module: \n${e as string}`,
       );
     }
   }
 
-  public static get Port(): typeof Port {
+  public static get UrlPort(): typeof UrlPort {
     try {
-      return Url.UrlParts.Port;
+      return Url.UrlParts.UrlPort;
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get Port: error loading Port module: \n${e as string}`,
+        `Url: get UrlPort: error loading module: \n${e as string}`,
       );
     }
   }
 
-  public static get Path(): typeof Path {
+  public static get UrlPath(): typeof UrlPath {
     try {
-      return Url.UrlParts.Path;
+      return Url.UrlParts.UrlPath;
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get Path: error loading Path module: \n${e as string}`,
+        `Url: get UrlPath: error loading module: \n${e as string}`,
       );
     }
   }
 
-  public static get Query(): typeof Query {
+  public static get UrlQuery(): typeof UrlQuery {
     try {
-      return Url.UrlParts.Query;
+      return Url.UrlParts.UrlQuery;
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get Query: error loading Query module: \n${e as string}`,
+        `Url: get UrlQuery: error loading module: \n${e as string}`,
       );
     }
   }
 
-  public static get Fragment(): typeof Fragment {
+  public static get UrlFragment(): typeof UrlFragment {
     try {
-      return Url.UrlParts.Fragment;
+      return Url.UrlParts.UrlFragment;
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get Fragment: error loading Fragment module: \n${e as string}`,
+        `Url: get UrlFragment: error loading module: \n${e as string}`,
       );
     }
   }
@@ -178,7 +178,7 @@ class Url {
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get SchemeHostPortPathQueryFragment: error loading SchemeHostPortPathQueryFragment module: \n${e as string}`,
+        `Url: get SchemeHostPortPathQueryFragment: error loading module: \n${e as string}`,
       );
     }
   }
@@ -247,7 +247,7 @@ class Url {
     }
   }
 
-  public get query(): typeof Query.prototype.query {
+  public get query(): typeof UrlQuery.prototype.query {
     try {
       return this.queryString;
     }
@@ -256,7 +256,7 @@ class Url {
     }
   }
 
-  public get queryString(): typeof Query.prototype.queryString {
+  public get queryString(): typeof UrlQuery.prototype.queryString {
     try {
       return this._query.toString();
     }
@@ -267,7 +267,7 @@ class Url {
     }
   }
 
-  public get queryTuples(): typeof Query.prototype.queryTuples {
+  public get queryTuples(): typeof UrlQuery.prototype.queryTuples {
     try {
       return this._query.toTuples();
     }
@@ -278,7 +278,7 @@ class Url {
     }
   }
 
-  public get queryMap(): typeof Query.prototype.queryMap {
+  public get queryMap(): typeof UrlQuery.prototype.queryMap {
     try {
       return this._query.toMap();
     }
@@ -312,55 +312,55 @@ class Url {
     }
   }
 
-  public set scheme(scheme: ConstructorParameters<typeof Scheme>[0]) {
+  public set scheme(scheme: ConstructorParameters<typeof UrlScheme>[0]) {
     try {
-      this._scheme = new Url.Scheme(scheme);
-      if (this.scheme === "") this._scheme = new Url.Scheme("https");
+      this._scheme = new Url.UrlScheme(scheme);
+      if (this.scheme === "") this._scheme = new Url.UrlScheme("https");
     }
     catch (e) {
       throw new Error(`Url: set scheme: error setting scheme: \n${e as string}`);
     }
   }
 
-  public set host(host: ConstructorParameters<typeof Host>[0]) {
+  public set host(host: ConstructorParameters<typeof UrlHost>[0]) {
     try {
-      this._host = new Url.Host(host);
+      this._host = new Url.UrlHost(host);
     }
     catch (e) {
       throw new Error(`Url: set host: error setting host: \n${e as string}`);
     }
   }
 
-  public set port(port: ConstructorParameters<typeof Port>[0]) {
+  public set port(port: ConstructorParameters<typeof UrlPort>[0]) {
     try {
-      this._port = new Url.Port(port);
+      this._port = new Url.UrlPort(port);
     }
     catch (e) {
       throw new Error(`Url: set port: error setting port: \n${e as string}`);
     }
   }
 
-  public set path(path: ConstructorParameters<typeof Path>[0]) {
+  public set path(path: ConstructorParameters<typeof UrlPath>[0]) {
     try {
-      this._path = new Url.Path(path);
+      this._path = new Url.UrlPath(path);
     }
     catch (e) {
       throw new Error(`Url: set path: error setting path: \n${e as string}`);
     }
   }
 
-  public set query(query: ConstructorParameters<typeof Query>[0]) {
+  public set query(query: ConstructorParameters<typeof UrlQuery>[0]) {
     try {
-      this._query = new Url.Query(query);
+      this._query = new Url.UrlQuery(query);
     }
     catch (e) {
       throw new Error(`Url: set query: error setting query: \n${e as string}`);
     }
   }
 
-  public set fragment(fragment: ConstructorParameters<typeof Fragment>[0]) {
+  public set fragment(fragment: ConstructorParameters<typeof UrlFragment>[0]) {
     try {
-      this._fragment = new Url.Fragment(fragment);
+      this._fragment = new Url.UrlFragment(fragment);
     }
     catch (e) {
       throw new Error(`Url: set fragment: error setting fragment: \n${e as string}`);
@@ -407,7 +407,7 @@ class Url {
     }
   }
 
-  public append(...path: Parameters<Path["append"]>): this {
+  public append(...path: Parameters<UrlPath["append"]>): this {
     try {
       this.path = this._path.append(...path);
 
@@ -418,7 +418,7 @@ class Url {
     }
   }
 
-  public hasParam(...key: Parameters<Query["hasParam"]>): boolean {
+  public hasParam(...key: Parameters<UrlQuery["hasParam"]>): boolean {
     try {
       return this._query.hasParam(...key);
     }
@@ -429,7 +429,7 @@ class Url {
     }
   }
 
-  public getParam(...key: Parameters<Query["getParam"]>): string {
+  public getParam(...key: Parameters<UrlQuery["getParam"]>): string {
     try {
       return this._query.getParam(...key);
     }
@@ -438,7 +438,7 @@ class Url {
     }
   }
 
-  public addParam(...params: Parameters<Query["addParam"]>): this {
+  public addParam(...params: Parameters<UrlQuery["addParam"]>): this {
     try {
       this.query = this._query.addParam(...params);
 
@@ -449,7 +449,7 @@ class Url {
     }
   }
 
-  public deleteParam(...keys: Parameters<Query["deleteParam"]>): this {
+  public deleteParam(...keys: Parameters<UrlQuery["deleteParam"]>): this {
     try {
       this.query = this._query.deleteParam(...keys);
 
@@ -599,12 +599,12 @@ class Url {
 
 namespace Url {
   export interface UrlRecords {
-    scheme?: ConstructorParameters<typeof Scheme>[0];
-    host?: ConstructorParameters<typeof Host>[0];
-    port?: ConstructorParameters<typeof Port>[0];
-    path?: ConstructorParameters<typeof Path>[0];
-    query?: ConstructorParameters<typeof Query>[0];
-    fragment?: ConstructorParameters<typeof Fragment>[0];
+    scheme?: ConstructorParameters<typeof UrlScheme>[0];
+    host?: ConstructorParameters<typeof UrlHost>[0];
+    port?: ConstructorParameters<typeof UrlPort>[0];
+    path?: ConstructorParameters<typeof UrlPath>[0];
+    query?: ConstructorParameters<typeof UrlQuery>[0];
+    fragment?: ConstructorParameters<typeof UrlFragment>[0];
   }
 }
 

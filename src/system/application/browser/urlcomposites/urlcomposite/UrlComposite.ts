@@ -7,7 +7,7 @@ abstract class UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlComposite: error loading UrlParts module: \n${e as string}`,
+        `UrlComposite: error loading module: \n${e as string}`,
       );
     }
   }

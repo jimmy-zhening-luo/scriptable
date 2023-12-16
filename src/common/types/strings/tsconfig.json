@@ -1,6 +1,9 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["**/*", "../numbers/**/*"],
+  "include": [
+    "**/*",
+    "../numbers/**/*"
+  ],
   "references": [
     {
       "path": "charstrings/tsconfig.json"

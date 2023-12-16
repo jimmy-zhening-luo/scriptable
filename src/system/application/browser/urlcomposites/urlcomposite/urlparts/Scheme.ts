@@ -2,23 +2,23 @@ const sc_UrlPart: typeof UrlPart = importModule(
   "urlpart/UrlPart",
 ) as typeof UrlPart;
 
-class Scheme extends sc_UrlPart {
-  constructor(scheme?: string | Scheme) {
+class UrlScheme extends sc_UrlPart {
+  constructor(scheme?: string | UrlScheme) {
     try {
       super(scheme);
     }
     catch (e) {
-      throw new Error(`Scheme: constructor: error creating Scheme: \n${e as string}`);
+      throw new Error(`UrlScheme: constructor: error creating UrlScheme: \n${e as string}`);
     }
   }
 
   public static get ValidScheme(): typeof ValidScheme {
     try {
-      return Scheme.UrlValidators.Scheme;
+      return UrlScheme.UrlValidators.Scheme;
     }
     catch (e) {
       throw new ReferenceError(
-        `Scheme: error loading ValidScheme module: \n${e as string}`,
+        `UrlScheme: error loading module: \n${e as string}`,
       );
     }
   }
@@ -29,16 +29,16 @@ class Scheme extends sc_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `Scheme: error loading parent UrlPart module: \n${e as string}`,
+        `UrlScheme: error loading module: \n${e as string}`,
       );
     }
   }
 
   protected parse(scheme: string): null | string {
     try {
-      const validScheme: string = new Scheme.ValidScheme(scheme)
+      const validScheme: string = new UrlScheme.ValidScheme(scheme)
         .toString();
-      const charSetAlpha: string[] = Scheme.ValidScheme.UrlCharSet.alpha;
+      const charSetAlpha: string[] = UrlScheme.ValidScheme.UrlCharSet.alpha;
 
       return validScheme === ""
         ? "https"
@@ -47,9 +47,9 @@ class Scheme extends sc_UrlPart {
           : "https";
     }
     catch (e) {
-      throw new Error(`Scheme: parse: error parsing Scheme: \n${e as string}`);
+      throw new Error(`UrlScheme: parse: error parsing UrlScheme: \n${e as string}`);
     }
   }
 }
 
-module.exports = Scheme;
+module.exports = UrlScheme;

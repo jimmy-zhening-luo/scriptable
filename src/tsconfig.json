@@ -16,7 +16,7 @@
   ],
   "compilerOptions": {
     "outDir": "../built/js",
-    "declarationDir": "../built/declarations",
+    "declarationDir": "../built/declaration",
     "rootDir": "."
   }
 }

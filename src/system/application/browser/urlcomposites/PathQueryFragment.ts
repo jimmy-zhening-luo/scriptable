@@ -3,16 +3,16 @@ const pqf_UrlComposite: typeof UrlComposite = importModule(
 ) as typeof UrlComposite;
 
 class PathQueryFragment extends pqf_UrlComposite {
-  public readonly parts: [PathQuery, Fragment];
+  public readonly parts: [PathQuery, UrlFragment];
   public readonly pathQuery: PathQuery;
-  public readonly fragment: Fragment;
+  public readonly fragment: UrlFragment;
 
   constructor(
     pathOrPathQueryOrPathQueryFragment?:
     | PathQuery
-    | [string | Path, string | Query]
+    | [string | UrlPath, string | UrlQuery]
     | PathQueryFragment,
-    fragment?: string | Fragment,
+    fragment?: string | UrlFragment,
   ) {
     super();
     try {
@@ -20,27 +20,27 @@ class PathQueryFragment extends pqf_UrlComposite {
         = pathOrPathQueryOrPathQueryFragment === undefined
           ? [
               new PathQueryFragment.PathQuery(),
-              new PathQueryFragment.Fragment(),
+              new PathQueryFragment.UrlFragment(),
             ]
           : pathOrPathQueryOrPathQueryFragment instanceof PathQueryFragment
             ? pathOrPathQueryOrPathQueryFragment.parts
             : Array.isArray(pathOrPathQueryOrPathQueryFragment)
               ? [
                   new PathQueryFragment.PathQuery(
-                    new PathQueryFragment.PathQuery.Path(
+                    new PathQueryFragment.PathQuery.UrlPath(
                       pathOrPathQueryOrPathQueryFragment[0],
                     ),
-                    new PathQueryFragment.PathQuery.Query(
+                    new PathQueryFragment.PathQuery.UrlQuery(
                       pathOrPathQueryOrPathQueryFragment[1],
                     ),
                   ),
-                  new PathQueryFragment.Fragment(fragment),
+                  new PathQueryFragment.UrlFragment(fragment),
                 ]
               : [
                   new PathQueryFragment.PathQuery(
                     pathOrPathQueryOrPathQueryFragment,
                   ),
-                  new PathQueryFragment.Fragment(fragment),
+                  new PathQueryFragment.UrlFragment(fragment),
                 ];
       this.pathQuery = this.parts[0];
       this.fragment = this.parts[1];
@@ -58,18 +58,18 @@ class PathQueryFragment extends pqf_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `PathQueryFragment: get PathQuery: error loading PathQuery module: \n${e as string}`,
+        `PathQueryFragment: get PathQuery: error loading module: \n${e as string}`,
       );
     }
   }
 
-  public static get Fragment(): typeof Fragment {
+  public static get UrlFragment(): typeof UrlFragment {
     try {
-      return this.UrlParts.Fragment;
+      return this.UrlParts.UrlFragment;
     }
     catch (e) {
       throw new ReferenceError(
-        `PathQueryFragment: get Fragment: error loading Fragment module: \n${e as string}`,
+        `PathQueryFragment: get UrlFragment: error loading module: \n${e as string}`,
       );
     }
   }

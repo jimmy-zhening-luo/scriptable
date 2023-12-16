@@ -3,27 +3,27 @@ const pq_UrlComposite: typeof UrlComposite = importModule(
 ) as typeof UrlComposite;
 
 class PathQuery extends pq_UrlComposite {
-  public readonly parts: [Path, Query];
-  public readonly path: Path;
-  public readonly query: Query;
+  public readonly parts: [UrlPath, UrlQuery];
+  public readonly path: UrlPath;
+  public readonly query: UrlQuery;
 
   constructor(
-    pathOrPathQuery?: string | Path | PathQuery,
-    query?: string | Query,
+    pathOrPathQuery?: string | UrlPath | PathQuery,
+    query?: string | UrlQuery,
   ) {
     try {
       super();
       this.parts
         = pathOrPathQuery === undefined
           ? [
-              new PathQuery.Path(),
-              new PathQuery.Query(),
+              new PathQuery.UrlPath(),
+              new PathQuery.UrlQuery(),
             ]
           : pathOrPathQuery instanceof PathQuery
             ? pathOrPathQuery.parts
             : [
-                new PathQuery.Path(pathOrPathQuery),
-                new PathQuery.Query(query),
+                new PathQuery.UrlPath(pathOrPathQuery),
+                new PathQuery.UrlQuery(query),
               ];
       this.path = this.parts[0];
       this.query = this.parts[1];
@@ -35,24 +35,24 @@ class PathQuery extends pq_UrlComposite {
     }
   }
 
-  public static get Path(): typeof Path {
+  public static get UrlPath(): typeof UrlPath {
     try {
-      return this.UrlParts.Path;
+      return this.UrlParts.UrlPath;
     }
     catch (e) {
       throw new ReferenceError(
-        `PathQuery: get Path: error loading Path module: \n${e as string}`,
+        `PathQuery: get UrlPath: error loading module: \n${e as string}`,
       );
     }
   }
 
-  public static get Query(): typeof Query {
+  public static get UrlQuery(): typeof UrlQuery {
     try {
-      return this.UrlParts.Query;
+      return this.UrlParts.UrlQuery;
     }
     catch (e) {
       throw new ReferenceError(
-        `PathQuery: get Query: error loading Query module: \n${e as string}`,
+        `PathQuery: get UrlQuery: error loading module: \n${e as string}`,
       );
     }
   }

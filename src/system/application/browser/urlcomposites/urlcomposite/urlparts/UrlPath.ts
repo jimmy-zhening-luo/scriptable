@@ -2,23 +2,23 @@ const pa_UrlPart: typeof UrlPart = importModule(
   "urlpart/UrlPart",
 ) as typeof UrlPart;
 
-class Path extends pa_UrlPart {
-  constructor(path?: string | Path) {
+class UrlPath extends pa_UrlPart {
+  constructor(path?: string | UrlPath) {
     try {
       super(path);
     }
     catch (e) {
-      throw new Error(`Path: constructor: error creating Path: \n${e as string}`);
+      throw new Error(`UrlPath: constructor: error creating UrlPath: \n${e as string}`);
     }
   }
 
   public static get PathRepeater(): typeof PathRepeater {
     try {
-      return Path.Repeaters.PathRepeater;
+      return UrlPath.Repeaters.PathRepeater;
     }
     catch (e) {
       throw new ReferenceError(
-        `Path: error loading PathRepeater module: \n${e as string}`,
+        `UrlPath: error loading module: \n${e as string}`,
       );
     }
   }
@@ -28,7 +28,7 @@ class Path extends pa_UrlPart {
       return pa_UrlPart;
     }
     catch (e) {
-      throw new ReferenceError(`Path: error loading UrlPart module: \n${e as string}`);
+      throw new ReferenceError(`UrlPath: error loading module: \n${e as string}`);
     }
   }
 
@@ -40,20 +40,20 @@ class Path extends pa_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `Path: error loading StringSplitter module: \n${e as string}`,
+        `UrlPath: error loading module: \n${e as string}`,
       );
     }
   }
 
-  public append(subpath: string | Path): Path {
+  public append(subpath: string | UrlPath): UrlPath {
     try {
-      const newPath: Path = new Path(
+      const newPath: UrlPath = new UrlPath(
         [
           this.toString(),
-          new Path(subpath)
+          new UrlPath(subpath)
             .toString(),
         ].join(
-          Path.UrlValidators.CharSet.slash[0],
+          UrlPath.UrlValidators.CharSet.slash[0],
         ),
       );
 
@@ -62,15 +62,15 @@ class Path extends pa_UrlPart {
         : this;
     }
     catch (e) {
-      throw new Error(`Path: append: error appending Path: \n${e as string}`);
+      throw new Error(`UrlPath: append: error appending UrlPath: \n${e as string}`);
     }
   }
 
   protected parse(path: string): null | string {
     try {
-      const split: string[] = new Path.StringSplitter(
+      const split: string[] = new UrlPath.StringSplitter(
         path,
-        ...Path.UrlValidators.CharSet.slash,
+        ...UrlPath.UrlValidators.CharSet.slash,
         {
           trim: true,
           trimTokens: true,
@@ -82,15 +82,15 @@ class Path extends pa_UrlPart {
       return split.length === 0
         ? null
         : split.every(
-          pathRepeater => new Path.PathRepeater(pathRepeater).isValid,
+          pathRepeater => new UrlPath.PathRepeater(pathRepeater).isValid,
         )
-          ? split.join(Path.UrlValidators.CharSet.slash[0])
+          ? split.join(UrlPath.UrlValidators.CharSet.slash[0])
           : null;
     }
     catch (e) {
-      throw new Error(`Path: parse: error parsing Path: \n${e as string}`);
+      throw new Error(`UrlPath: parse: error parsing UrlPath: \n${e as string}`);
     }
   }
 }
 
-module.exports = Path;
+module.exports = UrlPath;
