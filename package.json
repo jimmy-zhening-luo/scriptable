@@ -12,7 +12,7 @@
     "clean:packed": "shx rm -rf packed",
     "prebuild": "npm run lint && npm run clean",
     "build": "tsc --build",
-    "pack": "npm run build && shx mkdir packed && shx cp -r built/js/* packed"
+    "pack": "npm run build && shx mkdir packed && shx cp -r built/js/**/*.js packed"
   },
   "repository": {
     "type": "git",
