@@ -1,0 +1,17 @@
+/*
+ * ShareSheetInput
+ *
+ * Line 4 (optional)
+ * share-sheet-inputs
+ *
+ * Comma-separated list (no quotes, no brackets, no terminating comma)
+ * e.g.
+ * // share-sheet-inputs: plain-text, url, file-url, image;
+ *
+ */
+
+declare type 
+plain-text
+url
+file-url
+image
