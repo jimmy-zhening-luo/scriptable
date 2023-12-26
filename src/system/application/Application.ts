@@ -12,10 +12,12 @@ abstract class Application {
 
   public get config(): Config {
     try {
-      return new Application.Filetypes.Config(
-        this.configSubpathRoot,
-        this.constructor.name,
-      );
+      if (this._cachedConfig === undefined)
+        this._cachedConfig = new Application.Filetypes.Config(
+          this.configSubpathRoot,
+          this.constructor.name,
+        );
+      return this._cachedConfig;
     }
     catch (e) {
       throw new ReferenceError(
@@ -107,6 +109,8 @@ abstract class Application {
       );
     }
   }
+
+  private _cachedConfig?: Config;
 
   public abstract runtime(): unknown;
   public abstract handleOutput(
