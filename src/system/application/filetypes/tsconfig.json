@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "include": [
     "../../../common/**/*",
-    "../../../config/**/*",
+    "../../../config/proto/**/*",
     "**/*"
   ],
   "references": [
@@ -10,7 +10,7 @@
       "path": "../../../common/tsconfig.json"
     },
     {
-      "path": "../../../config/tsconfig.json"
+      "path": "../../../config/proto/tsconfig.json"
     },
     {
       "path": "filetype/tsconfig.json"

@@ -3,12 +3,7 @@
   "include": [
     "**/*"
   ],
-  "references": [
-    {
-      "path": "proto/tsconfig.json"
-    }
-  ],
   "compilerOptions": {
-    "rootDir": ".."
+    "rootDir": "../.."
   }
 }
