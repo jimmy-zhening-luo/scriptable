@@ -17,6 +17,7 @@ abstract class Application {
           this.configSubpathRoot,
           this.constructor.name,
         );
+
       return this._cachedConfig;
     }
     catch (e) {
@@ -110,12 +111,12 @@ abstract class Application {
     }
   }
 
-  private _cachedConfig?: Config;
-
   public abstract runtime(): unknown;
   public abstract handleOutput(
     output: ReturnType<typeof Application.prototype.runtime>,
   ): unknown;
+
+  private _cachedConfig?: Config;
 }
 
 module.exports = Application;
