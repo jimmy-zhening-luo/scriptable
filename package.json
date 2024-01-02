@@ -10,9 +10,10 @@
     "clean": "npm run clean:built && npm run clean:packed",
     "clean:built": "shx rm -rf built",
     "clean:packed": "shx rm -rf packed",
-    "prebuild": "npm run lint && npm run clean",
+    "prebuild": "npm run lint:fix && npm run clean",
     "build": "tsc --build",
-    "pack": "npm run build && shx mkdir packed && shx cp -r built/js/* packed"
+    "prepack": "npm run build",
+    "pack": "shx mkdir packed && shx cp -r built/js/* packed"
   },
   "repository": {
     "type": "git",
