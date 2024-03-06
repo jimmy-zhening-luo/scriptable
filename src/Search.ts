@@ -66,6 +66,13 @@ namespace Search {
         const tokens: string[] = query.trim()
           .split(" ");
 
+        if (tokens.length <= 1)
+          tokens.push(
+            ...Pasteboard.paste()
+              .trim()
+              .split(" ")
+          );
+
         this.searchKey = tokens.shift()
           ?.toLowerCase()
           ?.replace(".", "") ?? "";
