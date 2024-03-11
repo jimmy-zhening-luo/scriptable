@@ -13,6 +13,7 @@ namespace Search {
       try {
         const query: SearchQuery = new SearchQuery(
           this.input.plainTexts.shift() ?? "",
+          this.input.plainTexts.shift() ?? "",
         );
 
         const searchShortcutConfig: SearchProto = this.config
@@ -61,16 +62,19 @@ namespace Search {
     public readonly searchKey: string;
     public readonly searchTerms: string[];
 
-    constructor(query: string) {
+    constructor(
+      query: string,
+      clipboard: string,
+    ) {
       try {
         const tokens: string[] = query.trim()
           .split(" ");
 
         if (tokens.length <= 1)
           tokens.push(
-            ...(Pasteboard.paste() ?? "")
+            ...clipboard
               .trim()
-              .split(" ")
+              .split(" "),
           );
 
         this.searchKey = tokens.shift()
