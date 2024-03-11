@@ -12,8 +12,8 @@ namespace Search {
     public runtime(): SearchResponse | null {
       try {
         const query: SearchQuery = new SearchQuery(
-          this.input.plainTexts.shift() ?? "",
-          this.input.plainTexts.shift() ?? "",
+          this.input.plainTexts[0] ?? "",
+          this.input.plainTexts[1] ?? "",
         );
 
         const searchShortcutConfig: SearchProto = this.config
