@@ -68,7 +68,7 @@ namespace Search {
 
         if (tokens.length <= 1)
           tokens.push(
-            ...Pasteboard.paste()
+            ...(Pasteboard.paste() ?? "")
               .trim()
               .split(" ")
           );
