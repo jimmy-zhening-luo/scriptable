@@ -34,7 +34,7 @@ namespace Search {
                   )
                   : engine.app === undefined
                     ? null
-                    : engine.app in SupportedAppSearchEngine
+                    : typeof engine.app === "string"
                       ? new AppSearchEngine(
                         typeof engine.keys === "string"
                           ? [engine.keys]
@@ -94,17 +94,6 @@ namespace Search {
     app: string;
     actions: string[];
     showWebview?: boolean;
-  }
-
-  enum SupportedAppSearchEngine {
-    appstore,
-    calendar,
-    files,
-    mail,
-    notes,
-    runshortcut,
-    shortcuts,
-    tasks,
   }
 
   abstract class SearchEngine {
@@ -183,11 +172,11 @@ namespace Search {
   }
 
   class AppSearchEngine extends SearchEngine {
-    public readonly app: keyof typeof SupportedAppSearchEngine;
+    public readonly app: string;
 
     constructor(
       configuredKeys: string[],
-      app: keyof typeof SupportedAppSearchEngine,
+      app: string,
     ) {
       try {
         super(configuredKeys);
