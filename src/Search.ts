@@ -16,21 +16,24 @@ namespace Search {
           this.input.plainTexts[1] ?? "",
         );
 
-        const searchShortcutConfig: SearchProto = this.config
+        const config: SearchProto = this
+          .config
           .unmerged as SearchProto;
-        const querytag: undefined | string = searchShortcutConfig.user.queryTag;
 
-        if (querytag === "" || query.searchKey === "") return null;
+        const querytag: string = config.app?.queryTag ?? config.user.queryTag ?? "";
+
+        if (querytag === "" || query.searchKey === "")
+          return null;
         else {
-          const configuredSearchEngines: SearchEngine[]
-            = searchShortcutConfig.user.engineKeys
+          const engines: SearchEngine[]
+            = config.user.engineKeys
               .map(engine =>
                 engine.urls
                   ? new BrowserSearchEngine(
                     engine.keys,
                     engine.urls,
                     querytag,
-                    engine.webview ?? false,
+                    engine.browser,
                   )
                   : engine.app === undefined
                     ? null
@@ -43,13 +46,11 @@ namespace Search {
                       )
                       : null)
               .filter(engine => engine !== null) as SearchEngine[];
-          const userIntendedSearchEngine: SearchEngine | undefined
-            = configuredSearchEngines.find(engine =>
+          const resolvedEngine: SearchEngine | undefined
+            = engines.find(engine =>
               engine.engineKeys.includes(query.searchKey));
 
-          return userIntendedSearchEngine === undefined
-            ? null
-            : userIntendedSearchEngine.parseQueryToAction(query);
+          return resolvedEngine?.parseQueryToAction(query) ?? null;
         }
       }
       catch (e) {
@@ -67,19 +68,26 @@ namespace Search {
       clipboard: string,
     ) {
       try {
-        const tokens: string[] = query.trim()
+        const tokens: string[] = query
+          .trim()
           .split(" ");
 
         if (tokens.length <= 1)
-          tokens.push(
-            ...clipboard
-              .trim()
-              .split(" "),
-          );
+          tokens
+            .push(
+              ...clipboard
+                .trim()
+                .split(" "),
+            );
 
-        this.searchKey = tokens.shift()
+        this.searchKey = tokens
+          .shift()
           ?.toLowerCase()
-          .replace(".", "") ?? "";
+          .replace(
+            ".",
+            "",
+          ) ?? "";
+
         this.searchTerms = tokens;
       }
       catch (e) {
@@ -93,7 +101,7 @@ namespace Search {
   interface SearchResponse {
     app: string;
     actions: string[];
-    showWebview?: boolean;
+    browser?: Browser;
   }
 
   abstract class SearchEngine {
@@ -105,7 +113,8 @@ namespace Search {
           Array.isArray(configuredKeys)
             ? configuredKeys
             : [configuredKeys]
-        ).map(key => key.toLowerCase());
+        )
+          .map(key => key.toLowerCase());
       }
       catch (e) {
         throw new EvalError(
@@ -120,13 +129,13 @@ namespace Search {
   class BrowserSearchEngine extends SearchEngine {
     public readonly engineUrls: string[];
     public readonly querytag: string;
-    public readonly showWebview: boolean;
+    public readonly browser: Browser;
 
     constructor(
       configuredKeys: string[] | string,
       configuredUrls: string[] | string,
       querytag: string,
-      showWebview: boolean = false,
+      browser: Browser = "default",
     ) {
       try {
         super(configuredKeys);
@@ -134,7 +143,7 @@ namespace Search {
           ? configuredUrls
           : [configuredUrls];
         this.querytag = querytag;
-        this.showWebview = showWebview;
+        this.browser = browser;
       }
       catch (e) {
         throw new EvalError(
@@ -156,11 +165,11 @@ namespace Search {
           url.replace(this.querytag, urlEncodedQueryTerms));
 
         return {
-          app: "Safari",
-          actions: this.showWebview
+          app: "safari",
+          actions: this.browser === "default"
             ? actions
             : actions.reverse(),
-          showWebview: this.showWebview,
+          browser: this.browser,
         };
       }
       catch (e) {
@@ -193,7 +202,11 @@ namespace Search {
       try {
         return {
           app: this.app,
-          actions: [query.searchTerms.join(" ")],
+          actions: [
+            query
+              .searchTerms
+              .join(" "),
+          ],
         };
       }
       catch (e) {
