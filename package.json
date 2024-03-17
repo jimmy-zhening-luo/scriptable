@@ -30,18 +30,18 @@
     "npm": ">=10.2.3"
   },
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "@eslint/js": "^8.56.0",
     "@jimbojet/lint": "^2.1.2",
     "@stylistic/eslint-plugin": "^1.5.1",
-    "@types/node": "^20.10.6",
-    "@types/scriptable-ios": "^1.7.5",
+    "@types/node": "^20.11.28",
+    "@types/scriptable-ios": "^1.7.7",
     "@typescript-eslint/eslint-plugin": "^6.16.0",
     "@typescript-eslint/parser": "^6.16.0",
     "eslint": "^8.56.0",
     "shx": "^0.3.4",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.2"
   }
 }
