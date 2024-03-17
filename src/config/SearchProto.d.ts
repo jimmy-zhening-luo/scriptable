@@ -16,12 +16,12 @@ declare interface SearchAppSettings extends Setting {
 declare interface Key extends Setting {
   keys: string | string[];
   urls?: string[];
-  browser?: Browser;
+  browser?: BrowserAction;
   app?: SupportedApp;
   shortcut?: string;
 }
 
-declare type Browser =
+declare type BrowserAction =
   | "api"
   | "force"
   | "default";

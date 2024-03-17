@@ -101,7 +101,7 @@ namespace Search {
   interface SearchResponse {
     app: string;
     actions: string[];
-    browser?: Browser;
+    browser?: BrowserAction;
   }
 
   abstract class SearchEngine {
@@ -129,13 +129,13 @@ namespace Search {
   class BrowserSearchEngine extends SearchEngine {
     public readonly engineUrls: string[];
     public readonly querytag: string;
-    public readonly browser: Browser;
+    public readonly browser: BrowserAction;
 
     constructor(
       configuredKeys: string[] | string,
       configuredUrls: string[] | string,
       querytag: string,
-      browser: Browser = "default",
+      browser: BrowserAction = "default",
     ) {
       try {
         super(configuredKeys);
