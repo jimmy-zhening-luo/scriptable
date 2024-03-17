@@ -166,9 +166,7 @@ namespace Search {
 
         return {
           app: "safari",
-          actions: this.browser === "default"
-            ? actions
-            : actions.reverse(),
+          actions: actions,
           browser: this.browser,
         };
       }
