@@ -14,7 +14,7 @@ class ValidString {
       max?: number;
       negate?: boolean;
       allowedChars?: Array<
-      ConstructorParameters<typeof BoundedRepeatCharString>[4]
+        ConstructorParameters<typeof BoundedRepeatCharString>[4]
       >;
     } = {},
     cleanOptions: Parameters<typeof ValidString._clean>[1] = {},

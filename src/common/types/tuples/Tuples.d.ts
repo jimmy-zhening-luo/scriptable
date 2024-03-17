@@ -1,15 +1,15 @@
 declare type Tuple<Type> = NTuple<Type, 2>;
 
 declare type NTuple<Type, N extends number> = _tuplehelpers.BuildNTuple<
-[],
-Type,
-N
+  [],
+  Type,
+  N
 >;
 
 declare type MinTuple<Type, Min extends number> = _tuplehelpers.BuildMinTuple<
-[],
-Type,
-Min
+  [],
+  Type,
+  Min
 >;
 
 declare type MaxTuple<

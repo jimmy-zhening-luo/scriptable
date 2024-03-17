@@ -79,7 +79,7 @@ namespace Search {
 
         this.searchKey = tokens.shift()
           ?.toLowerCase()
-          ?.replace(".", "") ?? "";
+          .replace(".", "") ?? "";
         this.searchTerms = tokens;
       }
       catch (e) {
