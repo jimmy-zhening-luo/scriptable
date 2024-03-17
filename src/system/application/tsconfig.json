@@ -17,6 +17,9 @@
     },
     {
       "path": "browser/tsconfig.json"
+    },
+    {
+      "path": "calendar/tsconfig.json"
     }
   ],
   "compilerOptions": {

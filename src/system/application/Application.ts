@@ -10,6 +10,17 @@ abstract class Application {
     }
   }
 
+  public static get Calendar(): typeof IOCalendar {
+    try {
+      return importModule("system/calendar/IOCalendar") as typeof IOCalendar;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Application: Calendar: Error importing IOCalendar module: \n${e as string}`,
+      );
+    }
+  }
+
   public get config(): Config {
     try {
       if (this._cachedConfig === undefined)

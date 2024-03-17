@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+    "../../../common/types/dates/**/*"
+  ],
+  "references": [
+    {
+      "path": "meeting/tsconfig.json"
+    },
+    {
+      "path": "../../../common/types/dates/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../.."
+  }
+}
