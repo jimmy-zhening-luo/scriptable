@@ -1,4 +1,5 @@
 enum TimeUnit {
+  millisecond = 1,
   second = 1000,
   minute = 60000,
   hour = 3600000,
