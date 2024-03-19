@@ -3,23 +3,23 @@
 // icon-color: deep-gray; icon-glyph: play;
 "use strict";
 
-namespace New {
+namespace GPT {
   const shortcut: typeof Shortcut = importModule(
     "system/Shortcut",
   ) as typeof Shortcut;
 
-  export class New extends shortcut {
+  export class GPT extends shortcut {
     public runtime(): string {
       try {
         return "Hello World";
       }
       catch (e) {
-        throw new EvalError(`New: runtime: Error running app: \n${e as string}`);
+        throw new EvalError(`GPT: runtime: Error running app: \n${e as string}`);
       }
     }
   }
 }
 
-new New.New()
+new GPT.GPT()
   .run();
 Script.complete();
