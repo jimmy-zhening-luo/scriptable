@@ -1,10 +1,10 @@
-#############################################
-#####            .gitignore             #####
-#############################################
+#########################################
+#####          .gitignore           #####
+#########################################
 
 
 #####################
-####   v3.0.0    ####
+####   v3.0.2    ####
 #####################
 
 
@@ -35,7 +35,7 @@
 #######################
 
 
-## Intention: ignore built or packaged files, because they should be re-built and re-packaged when deployed
+## Intention: ignore distro folders in root
 
 /dist/
 /build/
@@ -46,7 +46,7 @@
 
 
 
-## Intention: ignore local I/O dirs
+## Intention: ignore local I/O dirs in root
 
 /input/
 /inputs/
@@ -62,7 +62,7 @@
 
 
 
-## Intention: SVELTE: ignore sveltekit helper files generated during dev and build
+## Intention: SVELTE: ignore sveltekit helper files generated in root during dev and build
 
 /.svelte-kit/
 
@@ -75,19 +75,19 @@
 ################
 
 
-## Intention: NODE: ignore locally installed Node packages
+## Intention: NODE: ignore locally installed Node packages in any directory
 
 node_modules/
 
 
 
-## Intention: VSCODE: ignore IDE settings
+## Intention: VSCODE: ignore IDE settings anywhere
 
 .vscode/
 
 
 
-## Intention: iOS: ignore iOS filesystem detritus
+## Intention: iOS: ignore iOS filesystem detritus anywhere
 
 .Trash/
 
@@ -114,21 +114,21 @@ node_modules/
 ################
 
 
-## Intention: ignore any app secrets stored in .secret files possibly used for testing; this is bad practice and should never be done anyway
+## Intention: ignore app secrets in .secret files anywhere (regardless, storing secrets in plain-text is bad practice)
 
 *.secret
 *.secrets
 
 
 
-## Intention: ignore any .log files accidentally misplaced or thoughtlessly output in some lower directory, which may contain secrets
+## Intention: ignore .log files anywhere
 
 *.log
 *.logs
 
 
 
-## Intention: ignore any loose I/O artifacts
+## Intention: ignore loose I/O artifacts anywhere
 
 *.input
 *.inputs
@@ -137,7 +137,7 @@ node_modules/
 
 
 
-## Intention: ignore any non-example .env files
+## Intention: ignore non-example .env files anywhere
 
 *.env
 *.env.*
@@ -145,13 +145,13 @@ node_modules/
 
 
 
-## Intention: ESLINT: ignore eslint caches
+## Intention: ESLINT: ignore eslint caches anywhere
 
 *.eslintcache
 
 
 
-## Intention: iOS: ignore iOS filesystem detritus
+## Intention: iOS: ignore iOS filesystem detritus anywhere
 
 *.icloud
 
