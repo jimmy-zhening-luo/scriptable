@@ -11,6 +11,9 @@
       "path": "search/tsconfig.json"
     },
     {
+      "path": "gpt/tsconfig.json"
+    },
+    {
       "path": "../system/application/filetypes/config/tsconfig.json"
     }
   ],
