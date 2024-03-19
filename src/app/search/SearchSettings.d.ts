@@ -15,7 +15,7 @@ declare interface SearchAppSettings extends Settings {
 declare interface Key extends Settings {
   keys: string | string[];
   app?: string;
-  urls?: string[];
+  urls?: string | string[];
   browser?: BrowserAction;
 }
 
