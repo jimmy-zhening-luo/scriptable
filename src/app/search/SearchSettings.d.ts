@@ -1,19 +1,19 @@
-declare interface SearchProto extends ApplicationConfigProto {
+declare interface SearchSettings extends ApplicationSettings {
   user: SearchUserSettings;
   app?: SearchAppSettings;
 }
 
-declare interface SearchUserSettings extends Setting {
+declare interface SearchUserSettings extends Settings {
   engineKeys: Key[];
   queryTag?: string;
 }
 
-declare interface SearchAppSettings extends Setting {
+declare interface SearchAppSettings extends Settings {
   reservedKeys?: Key[];
   queryTag?: string;
 }
 
-declare interface Key extends Setting {
+declare interface Key extends Settings {
   keys: string | string[];
   urls?: string[];
   browser?: BrowserAction;

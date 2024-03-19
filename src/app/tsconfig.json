@@ -9,6 +9,9 @@
     },
     {
       "path": "search/tsconfig.json"
+    },
+    {
+      "path": "../system/application/filetypes/config/tsconfig.json"
     }
   ],
   "compilerOptions": {

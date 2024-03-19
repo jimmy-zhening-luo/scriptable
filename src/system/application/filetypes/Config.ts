@@ -42,7 +42,7 @@ class Config extends cfg_Filetype {
     }
   }
 
-  public get parsed(): ApplicationConfigProto {
+  public get parsed(): ApplicationSettings {
     try {
       if (this._cachedConfig !== undefined) return this._cachedConfig;
       else {
@@ -54,13 +54,13 @@ class Config extends cfg_Filetype {
           const parsedJson: unknown = JSON.parse(this.read());
 
           if (_validate(parsedJson)) {
-            this._cachedConfig = parsedJson as ApplicationConfigProto;
+            this._cachedConfig = parsedJson as ApplicationSettings;
 
             return this._cachedConfig;
           }
           else
             throw new SyntaxError(
-              `Config.js: Config file '${this.path}' is valid JSON but not a valid Application Config.`,
+              `Config.js: Config file '${this.path}' is valid JSON but not a valid ApplicationSettings file.`,
             );
 
           function _validate(parsedJson: unknown): boolean {
@@ -70,7 +70,7 @@ class Config extends cfg_Filetype {
             }
             catch (e) {
               throw new EvalError(
-                `Config.js: Error while validating whether parsed JSON is matches the ApplicationConfigProto: \n${e as string}`,
+                `Config.js: Error while validating whether parsed JSON matches expected ApplicationSettings file: \n${e as string}`,
               );
             }
           }
@@ -84,7 +84,7 @@ class Config extends cfg_Filetype {
     }
   }
 
-  public get unmerged(): ApplicationConfigProto {
+  public get unmerged(): ApplicationSettings {
     try {
       return this.parsed;
     }
@@ -95,7 +95,7 @@ class Config extends cfg_Filetype {
     }
   }
 
-  public get app(): ApplicationConfigProto["app"] {
+  public get app(): ApplicationSettings["app"] {
     try {
       if (this.unmerged.app === undefined)
         throw new ReferenceError(
@@ -110,7 +110,7 @@ class Config extends cfg_Filetype {
     }
   }
 
-  public get user(): ApplicationConfigProto["user"] {
+  public get user(): ApplicationSettings["user"] {
     try {
       if (this.unmerged.user === undefined)
         throw new ReferenceError(
@@ -125,7 +125,7 @@ class Config extends cfg_Filetype {
     }
   }
 
-  public get merged(): Setting {
+  public get merged(): Settings {
     try {
       return this.mergeSettings(this.user, this.app);
     }
@@ -136,7 +136,7 @@ class Config extends cfg_Filetype {
     }
   }
 
-  public get mergedUserOverridesProhibited(): Setting {
+  public get mergedUserOverridesProhibited(): Settings {
     try {
       return this.mergeSettings(this.app, this.user);
     }
@@ -148,9 +148,9 @@ class Config extends cfg_Filetype {
   }
 
   protected mergeSettings(
-    winningSettings: Setting | undefined,
-    losingSettings: Setting | undefined,
-  ): Setting {
+    winningSettings: Settings | undefined,
+    losingSettings: Settings | undefined,
+  ): Settings {
     try {
       if (winningSettings === undefined && losingSettings !== undefined)
         return losingSettings;
@@ -220,8 +220,8 @@ class Config extends cfg_Filetype {
             mergedSettingsMap.set(
               key,
               this.mergeSettings(
-                winningSettingsMap.get(key) as Setting,
-                losingSettingsMap.get(key) as Setting,
+                winningSettingsMap.get(key) as Settings,
+                losingSettingsMap.get(key) as Settings,
               ),
             );
         }
@@ -263,7 +263,7 @@ class Config extends cfg_Filetype {
       }
     }
 
-    function intersectKeys(a: Setting, b: Setting): string[] {
+    function intersectKeys(a: Settings, b: Settings): string[] {
       try {
         return Object.keys(a)
           .filter(keyOfA => Object.keys(b)
@@ -274,7 +274,7 @@ class Config extends cfg_Filetype {
       }
     }
 
-    function uniqueKeysOf(obj: Setting, sharedKeys: string[]): string[] {
+    function uniqueKeysOf(obj: Settings, sharedKeys: string[]): string[] {
       try {
         return Object.keys(obj)
           .filter(objKey => !sharedKeys.includes(objKey));
@@ -287,7 +287,7 @@ class Config extends cfg_Filetype {
     }
   }
 
-  private _cachedConfig?: ApplicationConfigProto;
+  private _cachedConfig?: ApplicationSettings;
 }
 
 module.exports = Config;

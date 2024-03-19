@@ -11,9 +11,6 @@
       "path": "common/tsconfig.json"
     },
     {
-      "path": "config/tsconfig.json"
-    },
-    {
       "path": "system/tsconfig.json"
     }
   ],

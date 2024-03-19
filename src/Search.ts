@@ -16,9 +16,9 @@ namespace Search {
           this.input.plainTexts[1] ?? "",
         );
 
-        const config: SearchProto = this
+        const config: SearchSettings = this
           .config
-          .unmerged as SearchProto;
+          .unmerged as SearchSettings;
 
         const querytag: string = config.app?.queryTag ?? config.user.queryTag ?? "";
 

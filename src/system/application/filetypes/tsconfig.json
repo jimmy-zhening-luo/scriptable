@@ -2,7 +2,6 @@
   "extends": "../tsconfig.json",
   "include": [
     "../../../common/**/*",
-    "../../../config/proto/**/*",
     "**/*"
   ],
   "references": [
@@ -10,11 +9,11 @@
       "path": "../../../common/tsconfig.json"
     },
     {
-      "path": "../../../config/proto/tsconfig.json"
-    },
-    {
       "path": "filetype/tsconfig.json"
     },
+    {
+      "path": "config/tsconfig.json"
+    }
   ],
   "compilerOptions": {
     "rootDir": "../../.."

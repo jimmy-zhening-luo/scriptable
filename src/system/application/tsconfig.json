@@ -2,15 +2,11 @@
   "extends": "../tsconfig.json",
   "include": [
     "../../common/**/*",
-    "../../config/**/*",
     "**/*"
   ],
   "references": [
     {
       "path": "../../common/tsconfig.json"
-    },
-    {
-      "path": "../../config/tsconfig.json"
     },
     {
       "path": "filetypes/tsconfig.json"
