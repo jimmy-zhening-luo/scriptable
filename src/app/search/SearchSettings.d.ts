@@ -9,7 +9,6 @@ declare interface SearchUserSettings extends Settings {
 }
 
 declare interface SearchAppSettings extends Settings {
-  reservedKeys?: Key[];
   queryTag?: string;
 }
 
