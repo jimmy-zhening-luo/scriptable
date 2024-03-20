@@ -8,83 +8,82 @@ namespace GPT {
     "system/Shortcut",
   ) as typeof Shortcut;
 
-  interface ShortcutParams {
-    prompt: string;
-    model?: GPTSettings["user"]["defaults"]["model"];
-    token?: number;
-    temperature?: number;
-    preset?: string;
-  }
-
   export class GPT extends shortcut {
-    public runtime(): null | GPTResponse {
+    public runtime(): GPTOutput {
       try {
-        // Get config from Files
-        const config: GPTSettings = this
+        // Get settings
+        const {
+          app,
+          user,
+        }: GPTSettings = this
           .config
           .unmerged as GPTSettings;
 
-        // Get input from Shortcut
-        const prompt: string = this
+        // Get Shortcut raw input (string)
+        const rawInput: string = this
           .input
           .plainTexts[0] ?? "";
 
-        let params: ShortcutParams = {
-          prompt,
+        // Parse input (string) into GPTInput
+        const input: GPTInput = !rawInput.startsWith("{")
+          ? {
+              prompt: rawInput,
+            }
+          : JSON.parse(rawInput) as GPTInput;
+
+        if (input.prompt.endsWith("=") && !input.prompt.includes(" "))
+          input.prompt = atob(input.prompt);
+
+        // Fill in blank options with defaults
+        const final: GPTFinal = {
+          prompt: input.prompt,
+          model: input.model ?? user.defaults.model,
+          token:
+            input.token !== undefined
+            && Number.isInteger(input.token)
+            && input.token <= app.limits.token
+              ? input.token
+              : user.defaults.token,
+          temperature:
+            input.temperature !== undefined
+            && Number.isFinite(input.temperature)
+            && input.temperature >= app.limits.temperature.min
+            && input.temperature <= app.limits.temperature.max
+              ? input.temperature
+              : user.defaults.temperature,
+          preset: input.preset !== undefined && input.preset in user.presets
+            ? input.preset
+            : user.defaults.preset,
         };
 
-        // Parse Shortcut input
-        if (prompt.startsWith("{")) {
-          try {
-            params = JSON.parse(prompt) as ShortcutParams;
+        // Build user message
+        const preset: undefined | PresetPrompt = user.presets[final.preset];
 
-            if (params.prompt.endsWith("=") && !params.prompt.includes(" "))
-              params.prompt = atob(params.prompt);
-          }
-          catch (e) {
-            throw new SyntaxError(`GPT: runtime: Invalid Shortcut input JSON: \n${e as string}`);
-          }
-        }
+        const message: GPTOutput["message"] = !preset
+          ? {
+              user: final.prompt,
+            }
+          : {
+              system: preset.system,
+              user: preset.user === undefined
+                ? final.prompt
+                : !preset.user.includes(app.presetTag)
+                    ? final.prompt
+                    : preset.user.replace(app.presetTag, final.prompt),
+            };
 
-        // TBD: Implement preset logic -> system / user messages
+        // Build GPTResponse from ChatOptions & return GPTResponse to Shortcut
         return {
-          message: {
-            user: (
-              config
-                .user
-                .presets[
-                  params.preset ?? config.user.defaults.preset
-                ]
-                ?.system ?? ""
-            ) + params.prompt,
-          },
-          options: {
-            model: config
-              .app
-              .models[
-                params.model ?? config.user.defaults.model
-              ],
-            token: params.token ?? config.user.defaults.token,
-            temperature: params.temperature ?? config.user.defaults.temperature,
-          },
+          message,
+          model: app.models[final.model],
+          token: final.token,
+          temperature: final.temperature,
         };
       }
       catch (e) {
         throw new EvalError(`GPT: runtime: Error running app: \n${e as string}`);
       }
     }
-  }
-
-  interface GPTResponse {
-    message: {
-      user: string;
-      system?: string;
-    };
-    options: {
-      model: string;
-      token: number;
-      temperature: number;
-    };
   }
 }
 

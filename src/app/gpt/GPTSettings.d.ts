@@ -18,12 +18,12 @@ declare interface GPTUserSettings extends Settings {
     preset: string;
   };
   presets: {
-    [key: string]: Preset;
+    [key: string?]: PresetPrompt;
   };
 }
 
 declare interface GPTAppSettings extends Settings {
-  promptTag: string;
+  presetTag: string;
   temperature: {
     min: number;
     max: number;
