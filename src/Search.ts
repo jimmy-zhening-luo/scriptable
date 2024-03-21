@@ -12,9 +12,12 @@ namespace Search {
     public runtime(): SearchResponse | null {
       try {
         const query: SearchQuery = new SearchQuery(
-          this.input.plainTexts[0] ?? "",
+          this.input.plainTexts[0] ?? this.readStorage(),
           this.input.plainTexts[1] ?? "",
         );
+
+        if (query.clean !== "")
+          this.writeStorage(query.clean);
 
         const setting: SearchSettings = this
           .setting
@@ -93,6 +96,17 @@ namespace Search {
       catch (e) {
         throw new SyntaxError(
           `SearchQuery: constructor: Error creating SearchQuery object: \n${e as string}`,
+        );
+      }
+    }
+
+    public get clean(): string {
+      try {
+        return [ this.searchKey, ...this.searchTerms ].join(" ");
+      }
+      catch (e) {
+        throw new EvalError(
+          `SearchQuery: clean: Error cleaning query: \n${e as string}`,
         );
       }
     }
