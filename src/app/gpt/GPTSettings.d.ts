@@ -1,9 +1,9 @@
-declare interface GPTSettings extends ApplicationSettings {
+declare interface GPTSettings extends Config {
   user: GPTUserSettings;
   app: GPTAppSettings;
 }
 
-declare interface GPTUserSettings extends Settings {
+declare interface GPTUserSettings extends SettingMap {
   log: {
     enable: boolean;
     path: string;
@@ -22,7 +22,7 @@ declare interface GPTUserSettings extends Settings {
   };
 }
 
-declare interface GPTAppSettings extends Settings {
+declare interface GPTAppSettings extends SettingMap {
   presetTag: string;
   temperature: {
     min: number;

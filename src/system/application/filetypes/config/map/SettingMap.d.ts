@@ -1,3 +1,3 @@
-declare interface Settings {
+declare interface SettingMap {
   [key: string]: SettingValue;
 }

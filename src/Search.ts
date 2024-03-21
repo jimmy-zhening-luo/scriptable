@@ -16,17 +16,17 @@ namespace Search {
           this.input.plainTexts[1] ?? "",
         );
 
-        const config: SearchSettings = this
-          .config
+        const setting: SearchSettings = this
+          .setting
           .unmerged as SearchSettings;
 
-        const querytag: string = config.app?.queryTag ?? config.user.queryTag ?? "";
+        const querytag: string = setting.app?.queryTag ?? setting.user.queryTag ?? "";
 
         if (querytag === "" || query.searchKey === "")
           return null;
         else {
           const engines: SearchEngine[]
-            = config.user.engineKeys
+            = setting.user.engineKeys
               .map(engine =>
                 engine.urls !== undefined
                   ? new BrowserSearchEngine(
@@ -48,7 +48,7 @@ namespace Search {
               .filter(engine => engine !== null) as SearchEngine[];
           const resolvedEngine: SearchEngine | undefined
             = engines.find(engine =>
-              engine.engineKeys.includes(query.searchKey));
+              engine.keys.includes(query.searchKey));
 
           return resolvedEngine?.parseQueryToAction(query) ?? null;
         }
@@ -105,14 +105,14 @@ namespace Search {
   }
 
   abstract class SearchEngine {
-    public readonly engineKeys: string[];
+    public readonly keys: string[];
 
-    constructor(configuredKeys: string[] | string) {
+    constructor(keys: string[] | string) {
       try {
-        this.engineKeys = (
-          Array.isArray(configuredKeys)
-            ? configuredKeys
-            : [configuredKeys]
+        this.keys = (
+          Array.isArray(keys)
+            ? keys
+            : [keys]
         )
           .map(key => key.toLowerCase());
       }
@@ -127,21 +127,21 @@ namespace Search {
   }
 
   class BrowserSearchEngine extends SearchEngine {
-    public readonly engineUrls: string[];
+    public readonly urls: string[];
     public readonly querytag: string;
     public readonly browser: BrowserAction;
 
     constructor(
-      configuredKeys: string[] | string,
-      configuredUrls: string[] | string,
+      keys: string[] | string,
+      urls: string[] | string,
       querytag: string,
       browser: BrowserAction = "default",
     ) {
       try {
-        super(configuredKeys);
-        this.engineUrls = Array.isArray(configuredUrls)
-          ? configuredUrls
-          : [configuredUrls];
+        super(keys);
+        this.urls = Array.isArray(urls)
+          ? urls
+          : [urls];
         this.querytag = querytag;
         this.browser = browser;
       }
@@ -161,7 +161,7 @@ namespace Search {
               .map(operand => encodeURI(operand))
               .join("%2B"))
           .join("+");
-        const actions: string[] = this.engineUrls.map(url =>
+        const actions: string[] = this.urls.map(url =>
           url.replace(this.querytag, urlEncodedQueryTerms));
 
         return {
@@ -182,11 +182,11 @@ namespace Search {
     public readonly app: string;
 
     constructor(
-      configuredKeys: string[],
+      keys: string[],
       app: string,
     ) {
       try {
-        super(configuredKeys);
+        super(keys);
         this.app = app;
       }
       catch (e) {

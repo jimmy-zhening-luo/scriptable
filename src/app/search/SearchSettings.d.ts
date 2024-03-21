@@ -1,18 +1,18 @@
-declare interface SearchSettings extends ApplicationSettings {
+declare interface SearchSettings extends Config {
   user: SearchUserSettings;
   app?: SearchAppSettings;
 }
 
-declare interface SearchUserSettings extends Settings {
+declare interface SearchUserSettings extends SettingMap {
   engineKeys: Key[];
   queryTag?: string;
 }
 
-declare interface SearchAppSettings extends Settings {
+declare interface SearchAppSettings extends SettingMap {
   queryTag?: string;
 }
 
-declare interface Key extends Settings {
+declare interface Key extends SettingMap {
   keys: string | string[];
   app?: string;
   urls?: string | string[];

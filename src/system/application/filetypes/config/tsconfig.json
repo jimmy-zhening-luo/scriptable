@@ -5,7 +5,7 @@
   ],
   "references": [
     {
-      "path": "settings/tsconfig.json"
+      "path": "map/tsconfig.json"
     }
   ],
   "compilerOptions": {

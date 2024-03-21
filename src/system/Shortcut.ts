@@ -25,17 +25,17 @@ abstract class Shortcut extends sh_Application {
     }
   }
 
-  protected override get configSubpathRoot(): string {
+  protected override get settingSubpathRoot(): string {
     try {
-      const SHORTCUT_CONFIG_SUBPATH_ROOT: string = "Shortcut";
+      const SHORTCUT_SETTING_SUBPATH_ROOT: string = "Shortcut";
 
-      return super.configSubpathRoot === ""
-        ? SHORTCUT_CONFIG_SUBPATH_ROOT
-        : `${super.configSubpathRoot}/${SHORTCUT_CONFIG_SUBPATH_ROOT}`;
+      return super.settingSubpathRoot === ""
+        ? SHORTCUT_SETTING_SUBPATH_ROOT
+        : `${super.settingSubpathRoot}/${SHORTCUT_SETTING_SUBPATH_ROOT}`;
     }
     catch (e) {
       throw new EvalError(
-        `Shortcut.js: Error getting shortcut config subpath: \n${e as string}`,
+        `Shortcut.js: Error getting shortcut setting subpath: \n${e as string}`,
       );
     }
   }

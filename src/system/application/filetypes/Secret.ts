@@ -3,9 +3,14 @@ const key_Filetype: typeof Filetype = importModule(
 ) as typeof Filetype;
 
 class Secret extends key_Filetype {
-  constructor(subpath: string) {
+  constructor(
+    subpath: string,
+  ) {
     try {
-      super("Secret", subpath);
+      super(
+        "Secret",
+        subpath,
+      );
     }
     catch (e) {
       throw new EvalError(

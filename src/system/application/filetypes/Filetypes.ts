@@ -1,6 +1,6 @@
 class Filetypes {
   public static get Filetype(): typeof Filetype {
-    return Filetypes.Config.Filetype;
+    return Filetypes.Setting.Filetype;
   }
 
   public static get IOFile(): typeof IOFile {
@@ -11,8 +11,8 @@ class Filetypes {
     return Filetypes.Filetype.ReadOnlyIOFile;
   }
 
-  public static get Config(): typeof Config {
-    return importModule("Config") as typeof Config;
+  public static get Setting(): typeof Setting {
+    return importModule("Setting") as typeof Setting;
   }
 
   public static get Secret(): typeof Secret {

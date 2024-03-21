@@ -11,7 +11,11 @@ class Storage extends stor_Filetype {
     try {
       super(
         "Storage",
-        Storage.IOFile.join(storageSubpath, programName, subpath),
+        Storage.IOFile.join(
+          storageSubpath,
+          programName,
+          subpath,
+        ),
         Storage.IOFile,
       );
     }

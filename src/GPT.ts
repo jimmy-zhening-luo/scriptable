@@ -16,7 +16,7 @@ namespace GPT {
           app,
           user,
         }: GPTSettings = this
-          .config
+          .setting
           .unmerged as GPTSettings;
 
         // Get Shortcut raw input (string)

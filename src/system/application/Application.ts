@@ -21,39 +21,39 @@ abstract class Application {
     }
   }
 
-  public get config(): Config {
+  public get setting(): Setting {
     try {
-      if (this._cachedConfig === undefined)
-        this._cachedConfig = new Application.Filetypes.Config(
-          this.configSubpathRoot,
+      if (this._cachedSetting === undefined)
+        this._cachedSetting = new Application.Filetypes.Setting(
+          this.settingSubpathRoot,
           this.constructor.name,
         );
 
-      return this._cachedConfig;
+      return this._cachedSetting;
     }
     catch (e) {
       throw new ReferenceError(
-        `Application: config: Error getting application Config object: \n${e as string}`,
+        `Application: setting: Error getting application Setting object: \n${e as string}`,
       );
     }
   }
 
-  protected get configSubpathRoot(): string {
+  protected get settingSubpathRoot(): string {
     try {
       return "";
     }
     catch (e) {
       throw new ReferenceError(
-        `Application: configSubpath: Error getting application config subpath: \n${e as string}`,
+        `Application: settingSubpathRoot: Error getting application setting subpath: \n${e as string}`,
       );
     }
   }
 
   protected get storageSubpathRoot(): typeof Application
     .prototype
-    .configSubpathRoot {
+    .settingSubpathRoot {
     try {
-      return this.configSubpathRoot;
+      return this.settingSubpathRoot;
     }
     catch (e) {
       throw new ReferenceError(
@@ -127,7 +127,7 @@ abstract class Application {
     output: ReturnType<typeof Application.prototype.runtime>,
   ): unknown;
 
-  private _cachedConfig?: Config;
+  private _cachedSetting?: Setting;
 }
 
 module.exports = Application;

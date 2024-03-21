@@ -21,7 +21,7 @@ namespace TestRunner {
         ],
       },
       {
-        name: "Config",
+        name: "Setting",
         cases: [
           [
             "bar",

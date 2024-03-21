@@ -20,17 +20,17 @@ abstract class NativeScript extends sc_Application {
     );
   }
 
-  protected override get configSubpathRoot(): string {
+  protected override get settingSubpathRoot(): string {
     try {
-      const SCRIPTABLE_CONFIG_SUBPATH_ROOT: string = "NativeScript";
+      const SCRIPTABLE_SETTING_SUBPATH_ROOT: string = "NativeScript";
 
-      return super.configSubpathRoot === ""
-        ? SCRIPTABLE_CONFIG_SUBPATH_ROOT
-        : `${super.configSubpathRoot}/${SCRIPTABLE_CONFIG_SUBPATH_ROOT}`;
+      return super.settingSubpathRoot === ""
+        ? SCRIPTABLE_SETTING_SUBPATH_ROOT
+        : `${super.settingSubpathRoot}/${SCRIPTABLE_SETTING_SUBPATH_ROOT}`;
     }
     catch (e) {
       throw new EvalError(
-        `NativeScript.js: Error getting shortcut config subpath: \n${e as string}`,
+        `NativeScript.js: Error getting shortcut setting subpath: \n${e as string}`,
       );
     }
   }

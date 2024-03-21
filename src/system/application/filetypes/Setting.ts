@@ -1,26 +1,35 @@
-const cfg_Filetype: typeof Filetype = importModule(
+const set_Filetype: typeof Filetype = importModule(
   "filetype/Filetype",
 ) as typeof Filetype;
 
-class Config extends cfg_Filetype {
-  constructor(configSubpath: string, programName: string) {
+class Setting extends set_Filetype {
+  constructor(
+    settingSubpath: string,
+    programName: string,
+  ) {
     try {
-      super("Config", Config.IOFile.join(configSubpath, `${programName}.json`));
+      super(
+        "Setting",
+        Setting.IOFile.join(
+          settingSubpath,
+          `${programName}.json`,
+        ),
+      );
     }
     catch (e) {
       throw new EvalError(
-        `Config: constructor: Error creating Config object: \n${e as string}`,
+        `Setting: constructor: Error creating Setting object: \n${e as string}`,
       );
     }
   }
 
   public static get Filetype(): typeof Filetype {
     try {
-      return cfg_Filetype;
+      return set_Filetype;
     }
     catch (e) {
       throw new ReferenceError(
-        `Config: Error importing Utility module: \n${e as string}`,
+        `Setting: Error importing Utility module: \n${e as string}`,
       );
     }
   }
@@ -29,7 +38,7 @@ class Config extends cfg_Filetype {
     try {
       if (!this.isFile)
         throw new ReferenceError(
-          `Config.js: Config file '${this.path}' does not exist.`,
+          `Setting.js: Setting file '${this.path}' does not exist.`,
         );
       else {
         JSON.parse(this.read());
@@ -42,25 +51,25 @@ class Config extends cfg_Filetype {
     }
   }
 
-  public get parsed(): ApplicationSettings {
+  public get parsed(): Config {
     try {
-      if (this._cachedConfig !== undefined) return this._cachedConfig;
+      if (this._cachedSetting !== undefined) return this._cachedSetting;
       else {
         if (!this.isParseable)
           throw new SyntaxError(
-            `Config.js: Config file '${this.path}' is not parseable as JSON.`,
+            `Setting.js: Setting file '${this.path}' is not parseable as JSON.`,
           );
         else {
           const parsedJson: unknown = JSON.parse(this.read());
 
           if (_validate(parsedJson)) {
-            this._cachedConfig = parsedJson as ApplicationSettings;
+            this._cachedSetting = parsedJson as Config;
 
-            return this._cachedConfig;
+            return this._cachedSetting;
           }
           else
             throw new SyntaxError(
-              `Config.js: Config file '${this.path}' is valid JSON but not a valid ApplicationSettings file.`,
+              `Setting.js: Setting file '${this.path}' is valid JSON but not a valid ApplicationSettings file.`,
             );
 
           function _validate(parsedJson: unknown): boolean {
@@ -70,7 +79,7 @@ class Config extends cfg_Filetype {
             }
             catch (e) {
               throw new EvalError(
-                `Config.js: Error while validating whether parsed JSON matches expected ApplicationSettings file: \n${e as string}`,
+                `Setting.js: Error while validating whether parsed JSON matches expected ApplicationSettings file: \n${e as string}`,
               );
             }
           }
@@ -79,78 +88,78 @@ class Config extends cfg_Filetype {
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error while parsing config file '${this.path}': \n${e as string}`,
+        `Setting.js: Error while parsing setting file '${this.path}': \n${e as string}`,
       );
     }
   }
 
-  public get unmerged(): ApplicationSettings {
+  public get unmerged(): Config {
     try {
       return this.parsed;
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error getting unmerged config file '${this.path}': \n${e as string}`,
+        `Setting.js: Error getting unmerged setting file '${this.path}': \n${e as string}`,
       );
     }
   }
 
-  public get app(): ApplicationSettings["app"] {
+  public get app(): Config["app"] {
     try {
       if (this.unmerged.app === undefined)
         throw new ReferenceError(
-          `Config.js: Config file '${this.path}' does not contain an 'app' property.`,
+          `Setting.js: Setting file '${this.path}' does not contain an 'app' property.`,
         );
       else return this.unmerged.app;
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error getting 'app' property from config file '${this.path}': \n${e as string}`,
+        `Setting.js: Error getting 'app' property from setting file '${this.path}': \n${e as string}`,
       );
     }
   }
 
-  public get user(): ApplicationSettings["user"] {
+  public get user(): Config["user"] {
     try {
       if (this.unmerged.user === undefined)
         throw new ReferenceError(
-          `Config.js: Config file '${this.path}' does not contain a 'user' property.`,
+          `Setting.js: Setting file '${this.path}' does not contain a 'user' property.`,
         );
       else return this.unmerged.user;
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error getting 'user' property from config file '${this.path}': \n${e as string}`,
+        `Setting.js: Error getting 'user' property from setting file '${this.path}': \n${e as string}`,
       );
     }
   }
 
-  public get merged(): Settings {
+  public get merged(): SettingMap {
     try {
       return this.mergeSettings(this.user, this.app);
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error merging 'user' and 'app' properties from config file '${this.path}': \n${e as string}`,
+        `Setting.js: Error merging 'user' and 'app' properties from setting file '${this.path}': \n${e as string}`,
       );
     }
   }
 
-  public get mergedUserOverridesProhibited(): Settings {
+  public get mergedUserOverridesProhibited(): SettingMap {
     try {
       return this.mergeSettings(this.app, this.user);
     }
     catch (e) {
       throw new EvalError(
-        `Config.js: Error merging 'user' and 'app' properties from config file '${this.path}': \n${e as string}`,
+        `Setting.js: Error merging 'user' and 'app' properties from setting file '${this.path}': \n${e as string}`,
       );
     }
   }
 
   protected mergeSettings(
-    winningSettings: Settings | undefined,
-    losingSettings: Settings | undefined,
-  ): Settings {
+    winningSettings: SettingMap | undefined,
+    losingSettings: SettingMap | undefined,
+  ): SettingMap {
     try {
       if (winningSettings === undefined && losingSettings !== undefined)
         return losingSettings;
@@ -220,8 +229,8 @@ class Config extends cfg_Filetype {
             mergedSettingsMap.set(
               key,
               this.mergeSettings(
-                winningSettingsMap.get(key) as Settings,
-                losingSettingsMap.get(key) as Settings,
+                winningSettingsMap.get(key) as SettingMap,
+                losingSettingsMap.get(key) as SettingMap,
               ),
             );
         }
@@ -232,7 +241,7 @@ class Config extends cfg_Filetype {
     }
     catch (e) {
       throw new SyntaxError(
-        `Config.js: Error merging settings from config file '${this.path}': \n${e as string}`,
+        `Setting.js: Error merging settings from setting file '${this.path}': \n${e as string}`,
       );
     }
 
@@ -246,7 +255,7 @@ class Config extends cfg_Filetype {
       }
       catch (e) {
         throw new EvalError(
-          `Config.js: Error determining whether object is primitive: \n${e as string}`,
+          `Setting.js: Error determining whether object is primitive: \n${e as string}`,
         );
       }
     }
@@ -259,35 +268,35 @@ class Config extends cfg_Filetype {
         return winner.concat(loser);
       }
       catch (e) {
-        throw new EvalError(`Config.js: Error merging arrays: \n${e as string}`);
+        throw new EvalError(`Setting.js: Error merging arrays: \n${e as string}`);
       }
     }
 
-    function intersectKeys(a: Settings, b: Settings): string[] {
+    function intersectKeys(a: SettingMap, b: SettingMap): string[] {
       try {
         return Object.keys(a)
           .filter(keyOfA => Object.keys(b)
             .includes(keyOfA));
       }
       catch (e) {
-        throw new EvalError(`Config.js: Error intersecting keys: \n${e as string}`);
+        throw new EvalError(`Setting.js: Error intersecting keys: \n${e as string}`);
       }
     }
 
-    function uniqueKeysOf(obj: Settings, sharedKeys: string[]): string[] {
+    function uniqueKeysOf(obj: SettingMap, sharedKeys: string[]): string[] {
       try {
         return Object.keys(obj)
           .filter(objKey => !sharedKeys.includes(objKey));
       }
       catch (e) {
         throw new EvalError(
-          `Config.js: Error getting unique keys of object: \n${e as string}`,
+          `Setting.js: Error getting unique keys of object: \n${e as string}`,
         );
       }
     }
   }
 
-  private _cachedConfig?: ApplicationSettings;
+  private _cachedSetting?: Config;
 }
 
-module.exports = Config;
+module.exports = Setting;
