@@ -12,8 +12,8 @@ namespace Search {
     public runtime(): SearchResponse | null {
       try {
         const query: SearchQuery = new SearchQuery(
-          this.input.plainTexts[0] ?? this.readStorage(),
-          this.input.plainTexts[1] ?? "",
+          this.input.shortcutParameter?.input ?? this.readStorage(),
+          this.input.shortcutParameter?.clip ?? "",
         );
 
         if (query.clean !== "")
