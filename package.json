@@ -7,12 +7,9 @@
   "scripts": {
     "lint": "eslint --cache --cache-strategy content -c eslint.config.js src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
-    "relint": "npm run clean:lint && npm run lint",
-    "relint:fix": "npm run clean:lint && npm run lint:fix",
     "clean": "npm run clean:built && npm run clean:packed",
     "clean:built": "shx rm -rf built",
     "clean:packed": "shx rm -rf packed",
-    "clean:lint": "shx rm -rf .eslintcache",
     "prebuild": "npm run lint:fix && npm run clean",
     "build": "tsc --build",
     "prepack": "npm run build",
