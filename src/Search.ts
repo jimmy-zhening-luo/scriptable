@@ -75,7 +75,7 @@ namespace Search {
           .trim()
           .split(" ");
 
-        if (tokens.length <= 1)
+        if (tokens.length === 1)
           tokens
             .push(
               ...clipboard
