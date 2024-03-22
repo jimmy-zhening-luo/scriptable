@@ -9,10 +9,9 @@ namespace Search {
   ) as typeof Shortcut;
 
   export class Search extends shortcut {
-    public runtime(): SearchResponse | null {
+    public runtime(): null | SearchResponse {
       try {
-        const raw: string = this
-          .input
+        const raw: string = this.input
           .shortcutParameter
           ?.input ?? "";
 
@@ -20,8 +19,7 @@ namespace Search {
           raw === ""
             ? this.readStorage()
             : raw,
-          this
-            .input
+          this.input
             .shortcutParameter
             ?.clip ?? "",
         );
@@ -32,33 +30,36 @@ namespace Search {
 
         const querytag: string = setting.app?.queryTag ?? setting.user.queryTag ?? "";
 
-        if (querytag === "" || query.searchKey === "")
+        if (querytag === "" || query.key === "")
           return null;
         else {
-          const engines: SearchEngine[]
-            = setting.user.engineKeys
-              .map(engine =>
-                engine.urls !== undefined
-                  ? new BrowserSearchEngine(
+          const engines: SearchEngine[] = setting
+            .user
+            .engineKeys
+            .map(engine =>
+              engine.urls !== undefined
+                ? new BrowserSearchEngine(
+                  engine.keys,
+                  engine.urls,
+                  querytag,
+                  engine.browser,
+                )
+                : engine.app === undefined
+                  ? null
+                  : new AppSearchEngine(
                     engine.keys,
-                    engine.urls,
-                    querytag,
-                    engine.browser,
+                    engine.app,
                   )
-                  : engine.app === undefined
-                    ? null
-                    : typeof engine.app === "string"
-                      ? new AppSearchEngine(
-                        typeof engine.keys === "string"
-                          ? [engine.keys]
-                          : engine.keys,
-                        engine.app,
-                      )
-                      : null)
+              )
               .filter(engine => engine !== null) as SearchEngine[];
-          const resolvedEngine: SearchEngine | undefined
+          const resolvedEngine: undefined | SearchEngine
             = engines.find(engine =>
-              engine.keys.includes(query.searchKey));
+              engine
+                .keys
+                .includes(
+                  query.key
+                )
+            );
 
           if (resolvedEngine !== undefined)
             this.writeStorage(query.clean);
@@ -73,8 +74,8 @@ namespace Search {
   }
 
   class SearchQuery {
-    public readonly searchKey: string;
-    public readonly searchTerms: string[];
+    public readonly key: string;
+    public readonly terms: string[];
 
     constructor(
       query: string,
@@ -93,7 +94,7 @@ namespace Search {
                 .split(" "),
             );
 
-        this.searchKey = tokens
+        this.key = tokens
           .shift()
           ?.toLowerCase()
           .replace(
@@ -101,7 +102,7 @@ namespace Search {
             "",
           ) ?? "";
 
-        this.searchTerms = tokens;
+        this.terms = tokens;
       }
       catch (e) {
         throw new SyntaxError(
@@ -112,7 +113,11 @@ namespace Search {
 
     public get clean(): string {
       try {
-        return [ this.searchKey, ...this.searchTerms ].join(" ");
+        return [
+          this.key,
+          ...this.terms
+        ]
+          .join(" ");
       }
       catch (e) {
         throw new EvalError(
@@ -122,22 +127,13 @@ namespace Search {
     }
   }
 
-  interface SearchResponse {
-    app: string;
-    actions: string[];
-    browser?: BrowserAction;
-  }
-
   abstract class SearchEngine {
     public readonly keys: string[];
 
-    constructor(keys: string[] | string) {
+    constructor(keys: string | string[]) {
       try {
-        this.keys = (
-          Array.isArray(keys)
-            ? keys
-            : [keys]
-        )
+        this.keys = [keys]
+          .flat()
           .map(key => key.toLowerCase());
       }
       catch (e) {
@@ -156,16 +152,14 @@ namespace Search {
     public readonly browser: BrowserAction;
 
     constructor(
-      keys: string[] | string,
-      urls: string[] | string,
+      keys: string | string[],
+      urls: string | string[],
       querytag: string,
       browser: BrowserAction = "default",
     ) {
       try {
         super(keys);
-        this.urls = Array.isArray(urls)
-          ? urls
-          : [urls];
+        this.urls = [urls].flat();
         this.querytag = querytag;
         this.browser = browser;
       }
@@ -178,17 +172,31 @@ namespace Search {
 
     public parseQueryToAction(query: SearchQuery): SearchResponse {
       try {
-        const urlEncodedQueryTerms: string = query.searchTerms
+        const urlEncodedQueryTerms: string = query
+          .terms
           .map(term =>
             term
               .split("+")
-              .map(operand => encodeURI(operand))
-              .join("%2B"))
+              .map(operand =>
+                encodeURI(operand)
+              )
+              .join("%2B")
+          )
           .join("+");
-        const actions: string[] = this.urls.map(url =>
-          url.replace(this.querytag, urlEncodedQueryTerms));
+        const actions: string[] = this
+          .urls
+          .map(url =>
+            url.replace(
+              this.querytag,
+              urlEncodedQueryTerms
+            )
+          );
 
         return {
+          query: {
+            key: query.key,
+            terms: query.terms,
+          },
           app: "safari",
           actions: actions,
           browser: this.browser,
@@ -223,10 +231,14 @@ namespace Search {
     public parseQueryToAction(query: SearchQuery): SearchResponse {
       try {
         return {
+          query: {
+            key: query.key,
+            terms: query.terms,
+          },
           app: this.app,
           actions: [
             query
-              .searchTerms
+              .terms
               .join(" "),
           ],
         };
