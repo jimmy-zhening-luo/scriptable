@@ -11,13 +11,20 @@ namespace Search {
   export class Search extends shortcut {
     public runtime(): SearchResponse | null {
       try {
-        const query: SearchQuery = new SearchQuery(
-          this.input.shortcutParameter?.input ?? this.readStorage(),
-          this.input.shortcutParameter?.clip ?? "",
-        );
+        const raw: string = this
+          .input
+          .shortcutParameter
+          ?.input ?? "";
 
-        if (query.clean !== "")
-          this.writeStorage(query.clean);
+        const query: SearchQuery = new SearchQuery(
+          raw === ""
+            ? this.readStorage()
+            : raw,
+          this
+            .input
+            .shortcutParameter
+            ?.clip ?? "",
+        );
 
         const setting: SearchSettings = this
           .setting
@@ -52,6 +59,9 @@ namespace Search {
           const resolvedEngine: SearchEngine | undefined
             = engines.find(engine =>
               engine.keys.includes(query.searchKey));
+
+          if (resolvedEngine !== undefined)
+            this.writeStorage(query.clean);
 
           return resolvedEngine?.parseQueryToAction(query) ?? null;
         }
