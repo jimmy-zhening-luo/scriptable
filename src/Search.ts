@@ -35,7 +35,7 @@ namespace Search {
         else {
           const engines: SearchEngine[] = setting
             .user
-            .engineKeys
+            .engines
             .map(engine =>
               engine.urls !== undefined
                 ? new BrowserSearchEngine(

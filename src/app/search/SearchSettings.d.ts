@@ -4,7 +4,7 @@ declare interface SearchSettings extends Config {
 }
 
 declare interface SearchUserSettings extends SettingMap {
-  engineKeys: Key[];
+  engines: Engine[];
   queryTag?: string;
 }
 
@@ -12,7 +12,7 @@ declare interface SearchAppSettings extends SettingMap {
   queryTag?: string;
 }
 
-declare interface Key extends SettingMap {
+declare interface Engine extends SettingMap {
   keys: string | string[];
   app?: string;
   urls?: string | string[];
