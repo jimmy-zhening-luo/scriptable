@@ -214,7 +214,7 @@ namespace Search {
     public readonly app: string;
 
     constructor(
-      keys: string[],
+      keys: string | string[],
       app: string,
     ) {
       try {
