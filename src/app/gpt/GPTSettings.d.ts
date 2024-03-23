@@ -1,6 +1,22 @@
 declare interface GPTSettings extends Config {
-  user: GPTUserSettings;
   app: GPTAppSettings;
+  user: GPTUserSettings;
+}
+
+declare interface GPTAppSettings extends SettingMap {
+  presetTag: string;
+  models: {
+    ultra: string;
+    high: string;
+    low: string;
+  };
+  limit: {
+    token: number;
+    temperature: {
+      min: number;
+      max: number;
+    };
+  };
 }
 
 declare interface GPTUserSettings extends SettingMap {
@@ -19,21 +35,5 @@ declare interface GPTUserSettings extends SettingMap {
   };
   presets: {
     [key: string?]: PresetPrompt;
-  };
-}
-
-declare interface GPTAppSettings extends SettingMap {
-  presetTag: string;
-  limit: {
-    token: number;
-    temperature: {
-      min: number;
-      max: number;
-    };
-  };
-  models: {
-    ultra: string;
-    high: string;
-    low: string;
   };
 }
