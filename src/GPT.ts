@@ -78,10 +78,21 @@ namespace GPT {
   
           // Build GPTResponse from ChatOptions & return GPTResponse to Shortcut
           return {
-            message,
-            model: app.models[final.model],
-            token: final.token,
-            temperature: final.temperature,
+            api: [
+              app.api.host,
+              app.api.version,
+              app.api.action,
+            ].join("/"),
+            header: {
+              auth: user.id.token,
+              org: user.id.org,
+            },
+            body: {
+              message,
+              model: app.models[final.model],
+              token: final.token,
+              temperature: final.temperature,
+            }
           };
         }
       }
