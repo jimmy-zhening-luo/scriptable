@@ -5,6 +5,11 @@ declare interface GPTSettings extends Config {
 
 declare interface GPTAppSettings extends SettingMap {
   presetTag: string;
+  api: {
+    host: string;
+    version: string;
+    action: string;
+  };
   models: {
     ultra: string;
     high: string;
@@ -20,6 +25,10 @@ declare interface GPTAppSettings extends SettingMap {
 }
 
 declare interface GPTUserSettings extends SettingMap {
+  id: {
+    token: string;
+    org: string;
+  };
   log: {
     enable: boolean;
     path: string;
