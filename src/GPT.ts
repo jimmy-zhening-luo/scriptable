@@ -55,17 +55,25 @@ namespace GPT {
           // Build user message
           const preset: undefined | PresetPrompt = user.presets[final.preset];
   
-          const message: GPTOutput["message"] = !preset
+          const message: GPTOutput["message"] = preset === undefined
             ? {
-                user: final.prompt,
+              user: final.prompt,
               }
-            : {
+            : preset.system === undefined || preset.system === ""
+              ? {
+                user: preset.user === undefined
+                  ? final.prompt
+                  : !preset.user.includes(app.presetTag)
+                    ? final.prompt
+                    : preset.user.replace(app.presetTag, final.prompt),
+                }
+              : {
                 system: preset.system,
                 user: preset.user === undefined
                   ? final.prompt
                   : !preset.user.includes(app.presetTag)
-                      ? final.prompt
-                      : preset.user.replace(app.presetTag, final.prompt),
+                    ? final.prompt
+                    : preset.user.replace(app.presetTag, final.prompt),
               };
   
           // Build GPTResponse from ChatOptions & return GPTResponse to Shortcut
