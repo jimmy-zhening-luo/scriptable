@@ -55,7 +55,7 @@ namespace GPT {
           // Build user message
           const preset: undefined | PresetPrompt = user.presets[final.preset];
   
-          const message: GPTOutput["message"] = preset === undefined
+          const message: GPTOutput["body"]["message"] = preset === undefined
             ? {
               user: final.prompt,
               }
