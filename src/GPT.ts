@@ -88,7 +88,7 @@ namespace GPT {
               org: user.id.org,
             },
             body: {
-              message,
+              message: message,
               model: app.models[final.model],
               token: final.token,
               temperature: final.temperature,
