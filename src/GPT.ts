@@ -37,23 +37,23 @@ namespace GPT {
         // Fill in blank options with defaults
         const final: GPTFinal = {
           prompt: input.prompt,
-          model: input.model ?? user.defaults.model,
+          model: input.model ?? user.default.model,
           token:
             input.token !== undefined
             && Number.isInteger(input.token)
-            && input.token <= app.limits.token
+            && input.token <= app.limit.token
               ? input.token
-              : user.defaults.token,
+              : user.default.token,
           temperature:
             input.temperature !== undefined
             && Number.isFinite(input.temperature)
-            && input.temperature >= app.limits.temperature.min
-            && input.temperature <= app.limits.temperature.max
+            && input.temperature >= app.limit.temperature.min
+            && input.temperature <= app.limit.temperature.max
               ? input.temperature
-              : user.defaults.temperature,
+              : user.default.temperature,
           preset: input.preset !== undefined && input.preset in user.presets
             ? input.preset
-            : user.defaults.preset,
+            : user.default.preset,
         };
 
         // Build user message

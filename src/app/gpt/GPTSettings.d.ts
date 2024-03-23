@@ -8,7 +8,7 @@ declare interface GPTUserSettings extends SettingMap {
     enable: boolean;
     path: string;
   };
-  defaults: {
+  default: {
     token: number;
     temperature: number;
     model:
@@ -24,11 +24,7 @@ declare interface GPTUserSettings extends SettingMap {
 
 declare interface GPTAppSettings extends SettingMap {
   presetTag: string;
-  temperature: {
-    min: number;
-    max: number;
-  };
-  limits: {
+  limit: {
     token: number;
     temperature: {
       min: number;
