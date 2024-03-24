@@ -29,9 +29,6 @@
     "node": ">=20.11.1",
     "npm": ">=10.5.0"
   },
-  "dependencies": {
-    "dotenv": "^16.4.5"
-  },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
     "@jimbojet/lint": "^2.2.3",
