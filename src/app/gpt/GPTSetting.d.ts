@@ -1,9 +1,9 @@
-declare interface GPTSettings extends Config {
-  app: GPTAppSettings;
-  user: GPTUserSettings;
+declare interface GPTSetting extends Config {
+  app: GPTAppSetting;
+  user: GPTUserSetting;
 }
 
-declare interface GPTAppSettings extends SettingMap {
+declare interface GPTAppSetting extends SettingMap {
   presetTag: string;
   api: {
     host: string;
@@ -24,7 +24,7 @@ declare interface GPTAppSettings extends SettingMap {
   };
 }
 
-declare interface GPTUserSettings extends SettingMap {
+declare interface GPTUserSetting extends SettingMap {
   id: {
     token: string;
     org: string;
@@ -33,7 +33,7 @@ declare interface GPTUserSettings extends SettingMap {
     enable: boolean;
     path: string;
   };
-  default: {
+  "default": {
     token: number;
     temperature: number;
     model:

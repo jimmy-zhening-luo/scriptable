@@ -12,70 +12,74 @@ namespace GPT {
     public runtime(): GPTOutput {
       try {
         // Get Shortcut input
-        const input: undefined | string | GPTInput = this
+        const input: string | GPTInput = (this
           .input
-          .shortcutParameter as undefined | string | GPTInput;
+          .shortcutParameter ?? "") as string | GPTInput;
 
         // Validate input is a Dictionary
-        if (input === undefined || typeof input === "string")
+        if (typeof input === "string")
           throw new TypeError(
-            `Shortcut input must be dictionary. Instead it was undefined or string: ${String(input as string)}`
+            `Shortcut input must be dictionary. Instead it was undefined or string: ${String(input)}`,
           );
         else {
           // Get settings
           const {
             app,
             user,
-          }: GPTSettings = this
+          }: GPTSetting = this
             .setting
-            .unmerged as GPTSettings;
+            .unmerged as GPTSetting;
 
           // Fill in blank options with defaults
           const final: GPTFinal = {
             prompt: input.prompt,
-            model: input.model ?? user.default.model,
+            model: "model" in input
+              ? input.model
+              : user.default.model,
             token:
-              input.token !== undefined
+              "token" in input
               && Number.isInteger(input.token)
               && input.token <= app.limit.token
                 ? input.token
                 : user.default.token,
             temperature:
-              input.temperature !== undefined
+            "temperature" in input
               && Number.isFinite(input.temperature)
               && input.temperature >= app.limit.temperature.min
               && input.temperature <= app.limit.temperature.max
-                ? input.temperature
-                : user.default.temperature,
-            preset: input.preset !== undefined && input.preset in user.presets
+              ? input.temperature
+              : user.default.temperature,
+            preset: "preset" in input && input.preset in user.presets
               ? input.preset
               : user.default.preset,
           };
-  
+
           // Build user message
-          const preset: undefined | PresetPrompt = user.presets[final.preset];
-  
+          const preset: undefined | PresetPrompt = user
+            .presets[
+              final.preset
+            ] as undefined | PresetPrompt;
+
           const message: GPTOutput["body"]["message"] = preset === undefined
             ? {
-              user: final.prompt,
+                user: final.prompt,
               }
-            : preset.system === undefined || preset.system === ""
+            : preset.system === ""
               ? {
-                user: preset.user === undefined
-                  ? final.prompt
-                  : !preset.user.includes(app.presetTag)
+                  user: preset.user === undefined
+                  || !preset.user.includes(app.presetTag)
                     ? final.prompt
                     : preset.user.replace(app.presetTag, final.prompt),
                 }
               : {
-                system: preset.system,
-                user: preset.user === undefined
-                  ? final.prompt
-                  : !preset.user.includes(app.presetTag)
+                  system: preset.system,
+                  user: preset.user === undefined
                     ? final.prompt
-                    : preset.user.replace(app.presetTag, final.prompt),
-              };
-  
+                    : !preset.user.includes(app.presetTag)
+                        ? final.prompt
+                        : preset.user.replace(app.presetTag, final.prompt),
+                };
+
           // Build GPTResponse from ChatOptions & return GPTResponse to Shortcut
           return {
             api: [
@@ -88,11 +92,11 @@ namespace GPT {
               org: user.id.org,
             },
             body: {
-              message: message,
+              message: message as { user: string; system?: string },
               model: app.models[final.model],
               token: final.token,
               temperature: final.temperature,
-            }
+            },
           };
         }
       }

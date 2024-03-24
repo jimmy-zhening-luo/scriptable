@@ -9,19 +9,19 @@ namespace Search {
   ) as typeof Shortcut;
 
   export class Search extends shortcut {
-    public runtime(): null | SearchResponse {
+    public runtime(): null | SearchOutput {
       try {
-        const raw: string = this.input
-          .shortcutParameter
-          ?.input ?? "";
+        const raw: string = (this.input
+          .shortcutParameter as SearchInput)
+          .input;
 
         const query: SearchQuery = new SearchQuery(
           raw === ""
             ? this.readStorage()
             : raw,
-          this.input
-            .shortcutParameter
-            ?.clip ?? "",
+          (this.input
+            .shortcutParameter as SearchInput)
+            .clip,
         );
 
         const setting: SearchSettings = this
@@ -37,29 +37,29 @@ namespace Search {
             .user
             .engines
             .map(engine =>
-              engine.urls !== undefined
-                ? new BrowserSearchEngine(
-                  engine.keys,
-                  engine.urls,
-                  querytag,
-                  engine.browser,
-                )
-                : engine.app === undefined
-                  ? null
-                  : new AppSearchEngine(
+              "keys" in engine
+                ? "urls" in engine
+                  ? new BrowserSearchEngine(
                     engine.keys,
-                    engine.app,
+                    engine.urls,
+                    querytag,
+                    engine.browser,
                   )
-              )
-              .filter(engine => engine !== null) as SearchEngine[];
+                  : "app" in engine
+                    ? new AppSearchEngine(
+                      engine.keys,
+                      engine.app,
+                    )
+                    : null
+                : null)
+            .filter(engine => engine !== null) as SearchEngine[];
           const resolvedEngine: undefined | SearchEngine
             = engines.find(engine =>
               engine
                 .keys
                 .includes(
-                  query.key
-                )
-            );
+                  query.key,
+                ));
 
           if (resolvedEngine !== undefined)
             this.writeStorage(query.clean);
@@ -115,7 +115,7 @@ namespace Search {
       try {
         return [
           this.key,
-          ...this.terms
+          ...this.terms,
         ]
           .join(" ");
       }
@@ -143,7 +143,7 @@ namespace Search {
       }
     }
 
-    public abstract parseQueryToAction(query: SearchQuery): SearchResponse;
+    public abstract parseQueryToAction(query: SearchQuery): SearchOutput;
   }
 
   class BrowserSearchEngine extends SearchEngine {
@@ -170,7 +170,7 @@ namespace Search {
       }
     }
 
-    public parseQueryToAction(query: SearchQuery): SearchResponse {
+    public parseQueryToAction(query: SearchQuery): SearchOutput {
       try {
         const urlEncodedQueryTerms: string = query
           .terms
@@ -178,19 +178,16 @@ namespace Search {
             term
               .split("+")
               .map(operand =>
-                encodeURI(operand)
-              )
-              .join("%2B")
-          )
+                encodeURI(operand))
+              .join("%2B"))
           .join("+");
         const actions: string[] = this
           .urls
           .map(url =>
             url.replace(
               this.querytag,
-              urlEncodedQueryTerms
-            )
-          );
+              urlEncodedQueryTerms,
+            ));
 
         return {
           query: {
@@ -228,7 +225,7 @@ namespace Search {
       }
     }
 
-    public parseQueryToAction(query: SearchQuery): SearchResponse {
+    public parseQueryToAction(query: SearchQuery): SearchOutput {
       try {
         return {
           query: {
