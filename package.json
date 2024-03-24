@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
-    "@jimbojet/lint": "^2.2.2",
+    "@jimbojet/lint": "^2.2.3",
     "@stylistic/eslint-plugin": "^1.7.0",
     "@types/node": "^20.11.30",
     "@types/scriptable-ios": "^1.7.7",
