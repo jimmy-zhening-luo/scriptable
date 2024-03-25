@@ -9,6 +9,7 @@ jobs:
     environment:
       name: dev
       url: https://${{ vars.AZ_ACCOUNT_NAME }}.blob.core.windows.net/${{ vars.AZ_CONTAINER_NAME }}
+    name: Publish (dev)
     steps:
       - name: Checkout Source
         id: checkout
