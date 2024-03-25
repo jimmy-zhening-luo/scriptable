@@ -4,7 +4,7 @@ on:
     branches:
       - int
 jobs:
-  upload:
+  upload-int:
     runs-on: ubuntu-latest
     environment:
       name: int

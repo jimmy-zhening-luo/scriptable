@@ -4,7 +4,7 @@ on:
     branches:
       - dev
 jobs:
-  upload:
+  upload-dev:
     runs-on: ubuntu-latest
     environment:
       name: dev
