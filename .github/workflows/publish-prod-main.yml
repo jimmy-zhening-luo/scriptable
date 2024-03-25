@@ -1,5 +1,3 @@
-# https://github.com/marketplace/actions/azure-blob-storage-upload
-
 name: Publish to Azure [PROD] (main - push)
 on:
   push:
