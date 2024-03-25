@@ -1,0 +1,38 @@
+name: Publish to Azure (dev - push)
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+      url: https://${{ vars.AZ_ACCOUNT_NAME }}.blob.core.windows.net/${{ vars.AZ_CONTAINER_NAME }}
+    steps:
+      - name: Checkout Source
+        id: checkout
+        uses: actions/checkout@v4
+      - name: Install Node
+        id: node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install Dependencies
+        id: ci
+        run: npm ci
+      - name: Build/Pack Distro
+        id: buildpack
+        run: npm run pack
+      - name: Azure - Delete Old Distro
+        id: delold
+        uses: Azure/cli@v1
+        with:
+          inlineScript: |
+            az storage blob delete-batch -s '${{ vars.AZ_CONTAINER_NAME }}' --pattern '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}/*' --account-name '${{ vars.AZ_ACCOUNT_NAME }}' --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
+      - name: Azure - Publish New Distro
+        id: pubnew
+        uses: Azure/cli@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch -d '${{ vars.AZ_CONTAINER_NAME }}' -s '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}' --pattern '*.js' --destination-path '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}' --overwrite 'true' --account-name '${{ vars.AZ_ACCOUNT_NAME }}' --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
