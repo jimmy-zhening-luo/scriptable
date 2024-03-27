@@ -66,8 +66,7 @@ namespace GPT {
               }
             : preset.system === ""
               ? {
-                  user: preset.user === undefined
-                  || !preset.user.includes(app.presetTag)
+                  user: !("user" in preset) || !preset.user.includes(app.presetTag)
                     ? final.prompt
                     : preset.user.replace(app.presetTag, final.prompt),
                 }
