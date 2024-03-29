@@ -2,7 +2,9 @@ const sh_Application: typeof Application = importModule(
   "application/Application",
 ) as typeof Application;
 
-abstract class Shortcut extends sh_Application {
+abstract class Shortcut<
+  C extends Config = Record<string, never>,
+> extends sh_Application<C> {
   public static get Application(): typeof Application {
     try {
       return sh_Application;

@@ -8,7 +8,9 @@ namespace GPT {
     "system/Shortcut",
   ) as typeof Shortcut;
 
-  export class GPT extends shortcut {
+  export class GPT extends shortcut<
+    GPTSetting
+  > {
     public runtime(): GPTOutput {
       try {
         // Get Shortcut input
@@ -28,7 +30,7 @@ namespace GPT {
             user,
           }: GPTSetting = this
             .setting
-            .unmerged as GPTSetting;
+            .unmerged;
 
           // Fill in blank options with defaults
           const final: GPTFinal = {

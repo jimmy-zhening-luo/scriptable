@@ -8,7 +8,9 @@ namespace Search {
     "system/Shortcut",
   ) as typeof Shortcut;
 
-  export class Search extends shortcut {
+  export class Search extends shortcut<
+    SearchSettings
+  > {
     public runtime(): null | SearchOutput {
       try {
         const raw: string = (this.input
@@ -26,7 +28,7 @@ namespace Search {
 
         const setting: SearchSettings = this
           .setting
-          .unmerged as SearchSettings;
+          .unmerged;
 
         const querytag: string = setting.app?.queryTag ?? setting.user.queryTag ?? "";
 

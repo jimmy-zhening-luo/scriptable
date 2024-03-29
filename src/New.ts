@@ -8,7 +8,9 @@ namespace New {
     "system/Shortcut",
   ) as typeof Shortcut;
 
-  export class New extends shortcut {
+  export class New extends shortcut<
+    Record<string, never> | NewSetting
+  > {
     public runtime(): string {
       try {
         return "Hello World";

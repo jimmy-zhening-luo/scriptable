@@ -1,4 +1,6 @@
-abstract class Application {
+abstract class Application<
+  C extends Config = Record<string, never>,
+> {
   public static get Filetypes(): typeof Filetypes {
     try {
       return importModule("filetypes/Filetypes") as typeof Filetypes;
@@ -21,7 +23,7 @@ abstract class Application {
     }
   }
 
-  public get setting(): Setting {
+  public get setting(): Setting<C> {
     try {
       if (this._cachedSetting === undefined)
         this._cachedSetting = new Application.Filetypes.Setting(
@@ -127,7 +129,7 @@ abstract class Application {
     output: ReturnType<typeof Application.prototype.runtime>,
   ): unknown;
 
-  private _cachedSetting?: Setting;
+  private _cachedSetting?: Setting<C>;
 }
 
 module.exports = Application;
