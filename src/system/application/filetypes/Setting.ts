@@ -2,7 +2,7 @@ const set_Filetype: typeof Filetype = importModule(
   "filetype/Filetype",
 ) as typeof Filetype;
 
-class Setting extends set_Filetype {
+class Setting<C extends Config = Record<string, never>> extends set_Filetype {
   constructor(
     settingSubpath: string,
     programName: string,
@@ -51,7 +51,7 @@ class Setting extends set_Filetype {
     }
   }
 
-  public get parsed(): Config {
+  public get parsed(): C {
     try {
       if (this._cachedSetting !== undefined) return this._cachedSetting;
       else {
@@ -63,7 +63,7 @@ class Setting extends set_Filetype {
           const parsedJson: unknown = JSON.parse(this.read());
 
           if (_validate(parsedJson)) {
-            this._cachedSetting = parsedJson as Config;
+            this._cachedSetting = parsedJson as C;
 
             return this._cachedSetting;
           }
@@ -93,7 +93,7 @@ class Setting extends set_Filetype {
     }
   }
 
-  public get unmerged(): Config {
+  public get unmerged(): C {
     try {
       return this.parsed;
     }
@@ -104,7 +104,7 @@ class Setting extends set_Filetype {
     }
   }
 
-  public get app(): Config["app"] {
+  public get app(): C["app"] {
     try {
       if (this.unmerged.app === undefined)
         throw new ReferenceError(
@@ -119,7 +119,7 @@ class Setting extends set_Filetype {
     }
   }
 
-  public get user(): Config["user"] {
+  public get user(): C["user"] {
     try {
       if (this.unmerged.user === undefined)
         throw new ReferenceError(
@@ -296,7 +296,7 @@ class Setting extends set_Filetype {
     }
   }
 
-  private _cachedSetting?: Config;
+  private _cachedSetting?: C;
 }
 
 module.exports = Setting;

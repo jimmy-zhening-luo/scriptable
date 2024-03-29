@@ -8,29 +8,32 @@ namespace Search {
     "system/Shortcut",
   ) as typeof Shortcut;
 
-  export class Search extends shortcut {
+  export class Search extends shortcut<
+    SearchInput,
+    null | SearchOutput,
+    SearchSetting
+  > {
     public runtime(): null | SearchOutput {
       try {
-        const raw: string = (this.input
-          .shortcutParameter as SearchInput)
-          .input;
+        const params: SearchInput = this.input ?? {
+          input: "",
+          clip: "",
+        };
 
         const query: SearchQuery = new SearchQuery(
-          raw === ""
+          params.input === ""
             ? this.readStorage()
-            : raw,
-          (this.input
-            .shortcutParameter as SearchInput)
-            .clip,
+            : params.input,
+          params.clip,
         );
 
-        const setting: SearchSettings = this
+        const setting: SearchSetting = this
           .setting
-          .unmerged as SearchSettings;
+          .unmerged;
 
-        const querytag: string = setting.app?.queryTag ?? setting.user.queryTag ?? "";
+        const tag: string = setting.app?.queryTag ?? setting.user.queryTag ?? "";
 
-        if (querytag === "" || query.key === "")
+        if (tag === "" || query.key === "")
           return null;
         else {
           const engines: SearchEngine[] = setting
@@ -42,7 +45,7 @@ namespace Search {
                   ? new BrowserSearchEngine(
                     engine.keys,
                     engine.urls,
-                    querytag,
+                    tag,
                     engine.browser,
                   )
                   : "app" in engine

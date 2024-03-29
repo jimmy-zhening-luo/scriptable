@@ -2,7 +2,9 @@ const sc_Application: typeof Application = importModule(
   "application/Application",
 ) as typeof Application;
 
-abstract class NativeScript extends sc_Application {
+abstract class NativeScript<
+  C extends Config = Record<string, never>,
+> extends sc_Application<C> {
   public static get Application(): typeof Application {
     try {
       return sc_Application;
@@ -35,7 +37,16 @@ abstract class NativeScript extends sc_Application {
     }
   }
 
-  public handleOutput(): void {}
+  public handleOutput(): void {
+    try {
+      Script.complete();
+    }
+    catch (e) {
+      throw new EvalError(
+        `NativeScript.js: Error handling output: \n${e as string}`,
+      );
+    }
+  }
 }
 
 module.exports = NativeScript;

@@ -1,4 +1,9 @@
-abstract class Application {
+abstract class Application<
+  C extends Config = Record<string, never>,
+  In = null,
+  RuntimeOut = void,
+  Out = void,
+> {
   public static get Filetypes(): typeof Filetypes {
     try {
       return importModule("filetypes/Filetypes") as typeof Filetypes;
@@ -21,7 +26,7 @@ abstract class Application {
     }
   }
 
-  public get setting(): Setting {
+  public get setting(): Setting<C> {
     try {
       if (this._cachedSetting === undefined)
         this._cachedSetting = new Application.Filetypes.Setting(
@@ -62,9 +67,9 @@ abstract class Application {
     }
   }
 
-  public abstract get input(): unknown;
+  public abstract get input(): undefined | In;
 
-  public run(): ReturnType<typeof Application.prototype.handleOutput> {
+  public run(): Out {
     try {
       return this.handleOutput(this.runtime());
     }
@@ -91,12 +96,12 @@ abstract class Application {
     }
   }
 
-  public writeStorage(data: string, subpath?: string): this {
+  public writeStorage(data: string, subpath?: string): void {
     try {
       this.storage(subpath)
         .write(data);
 
-      return this;
+      return;
     }
     catch (e) {
       throw new ReferenceError(
@@ -122,12 +127,12 @@ abstract class Application {
     }
   }
 
-  public abstract runtime(): unknown;
+  public abstract runtime(): RuntimeOut;
   public abstract handleOutput(
-    output: ReturnType<typeof Application.prototype.runtime>,
-  ): unknown;
+    runtimeOutput: RuntimeOut
+  ): Out;
 
-  private _cachedSetting?: Setting;
+  private _cachedSetting?: Setting<C>;
 }
 
 module.exports = Application;

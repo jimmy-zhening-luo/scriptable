@@ -8,13 +8,15 @@ namespace GPT {
     "system/Shortcut",
   ) as typeof Shortcut;
 
-  export class GPT extends shortcut {
+  export class GPT extends shortcut<
+    string | GPTInput,
+    GPTOutput,
+    GPTSetting
+  > {
     public runtime(): GPTOutput {
       try {
         // Get Shortcut input
-        const input: string | GPTInput = (this
-          .input
-          .shortcutParameter ?? "") as string | GPTInput;
+        const input: string | GPTInput = this.input ?? "";
 
         // Validate input is a Dictionary
         if (typeof input === "string")
@@ -28,7 +30,7 @@ namespace GPT {
             user,
           }: GPTSetting = this
             .setting
-            .unmerged as GPTSetting;
+            .unmerged;
 
           // Fill in blank options with defaults
           const final: GPTFinal = {
