@@ -9,98 +9,92 @@ namespace GPT {
   ) as typeof Shortcut;
 
   export class GPT extends shortcut<
+    string | GPTInput,
+    null | GPTOutput,
     GPTSetting
   > {
-    public runtime(): GPTOutput {
+    public runtime(): null | GPTOutput {
       try {
-        // Get Shortcut input
-        const input: string | GPTInput = (this
-          .input
-          .shortcutParameter ?? "") as string | GPTInput;
+        const raw: typeof GPT.prototype.input = this.input ?? "";
+        const i: GPTInput = typeof raw === "string"
+          ? { prompt: raw }
+          : raw;
 
-        // Validate input is a Dictionary
-        if (typeof input === "string")
-          throw new TypeError(
-            `Shortcut input must be dictionary. Instead it was undefined or string: ${String(input)}`,
-          );
-        else {
-          // Get settings
-          const {
-            app,
-            user,
-          }: GPTSetting = this
-            .setting
-            .unmerged;
+        const {
+          app,
+          user,
+        }: GPTSetting = this
+          .setting
+          .unmerged;
 
-          // Fill in blank options with defaults
-          const final: GPTFinal = {
-            prompt: input.prompt,
-            model: "model" in input
-              ? input.model
-              : user.default.model,
-            token:
-              "token" in input
-              && Number.isInteger(input.token)
-              && input.token <= app.limit.token
-                ? input.token
+        const resolved: GPTResolved = {
+          prompt: i.prompt,
+          model: "model" in i
+            ? i.model
+            : user.default.model,
+          token:
+              "token" in i
+              && Number.isInteger(i.token)
+              && i.token <= app.limit.token
+                ? i.token
                 : user.default.token,
-            temperature:
-            "temperature" in input
-              && Number.isFinite(input.temperature)
-              && input.temperature >= app.limit.temperature.min
-              && input.temperature <= app.limit.temperature.max
-              ? input.temperature
+          temperature:
+            "temperature" in i
+              && Number.isFinite(i.temperature)
+              && i.temperature >= app.limit.temperature.min
+              && i.temperature <= app.limit.temperature.max
+              ? i.temperature
               : user.default.temperature,
-            preset: "preset" in input && input.preset in user.presets
-              ? input.preset
-              : user.default.preset,
-          };
+          preset: "preset" in i && i.preset in user.presets
+            ? i.preset
+            : user.default.preset,
+        };
 
-          // Build user message
-          const preset: undefined | PresetPrompt = user
-            .presets[
-              final.preset
-            ] as undefined | PresetPrompt;
+        // Build user message
+        const preset: null | PresetPrompt = user
+          .presets[
+            resolved.preset
+          ] ?? null;
 
-          const message: GPTOutput["body"]["message"] = preset === undefined
+        const message: GPTOutput["body"]["message"] = !preset
+          ? {
+              user: resolved.prompt,
+            }
+          : preset.system === ""
             ? {
-                user: final.prompt,
+                user: !("user" in preset) || !preset.user.includes(app.presetTag)
+                  ? resolved.prompt
+                  : preset.user.replace(app.presetTag, resolved.prompt),
               }
-            : preset.system === ""
-              ? {
-                  user: !("user" in preset) || !preset.user.includes(app.presetTag)
-                    ? final.prompt
-                    : preset.user.replace(app.presetTag, final.prompt),
-                }
-              : {
-                  system: preset.system,
-                  user: preset.user === undefined
-                    ? final.prompt
-                    : !preset.user.includes(app.presetTag)
-                        ? final.prompt
-                        : preset.user.replace(app.presetTag, final.prompt),
-                };
+            : {
+                system: preset.system,
+                user: !("user" in preset)
+                  ? resolved.prompt
+                  : !preset.user.includes(app.presetTag)
+                      ? resolved.prompt
+                      : preset.user.replace(app.presetTag, resolved.prompt),
+              };
 
-          // Build GPTResponse from ChatOptions & return GPTResponse to Shortcut
-          return {
-            api: [
-              app.api.host,
-              app.api.version,
-              app.api.action,
-            ].join("/"),
-            header: {
-              auth: user.id.token,
-              org: user.id.org,
-            },
-            body: {
-              message: message as { user: string; system?: string },
-              model: app.models[final.model],
-              token: final.token,
-              temperature: final.temperature,
-            },
-          };
-        }
+        // Build GPTResponse from ChatOptions & return GPTResponse to Shortcut
+        return {
+          api: [
+            app.api.host,
+            app.api.version,
+            app.api.action,
+          ].join("/"),
+          header: {
+            auth: user.id.token,
+            org: user.id.org,
+          },
+          body: {
+            message: message as { user: string; system?: string },
+            model: app.models[resolved.model],
+            token: resolved.token,
+            temperature: resolved.temperature,
+          },
+        };
       }
+
       catch (e) {
         throw new EvalError(`GPT: runtime: Error running app: \n${e as string}`);
       }

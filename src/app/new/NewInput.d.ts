@@ -1,5 +1,1 @@
-declare type NewInput =
-| string
-| {
-  input: string;
-};
+declare type NewInput = string | { input: string };

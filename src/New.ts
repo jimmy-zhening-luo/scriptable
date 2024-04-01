@@ -9,6 +9,8 @@ namespace New {
   ) as typeof Shortcut;
 
   export class New extends shortcut<
+    null | NewInput,
+    string | NewOutput,
     Record<string, never> | NewSetting
   > {
     public runtime(): string {

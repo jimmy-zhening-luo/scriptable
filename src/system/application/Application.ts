@@ -1,4 +1,6 @@
 abstract class Application<
+  I = null,
+  O = null,
   C extends Config = Record<string, never>,
 > {
   public static get Filetypes(): typeof Filetypes {
@@ -51,9 +53,7 @@ abstract class Application<
     }
   }
 
-  protected get storageSubpathRoot(): typeof Application
-    .prototype
-    .settingSubpathRoot {
+  protected get storageSubpathRoot(): string {
     try {
       return this.settingSubpathRoot;
     }
@@ -64,11 +64,12 @@ abstract class Application<
     }
   }
 
-  public abstract get input(): unknown;
+  public abstract get input(): null | I;
 
-  public run(): ReturnType<typeof Application.prototype.handleOutput> {
+  public run(): O {
     try {
-      return this.handleOutput(this.runtime());
+      return this
+        .runtime();
     }
     catch (e) {
       throw new EvalError(
@@ -79,9 +80,10 @@ abstract class Application<
 
   public readStorage(
     subpath?: string,
-  ): ReturnType<typeof Storage.prototype.read> {
+  ): ReturnType<Storage["read"]> {
     try {
-      return this.storage(subpath)
+      return this
+        .storage(subpath)
         .read();
     }
     catch (e) {
@@ -93,9 +95,13 @@ abstract class Application<
     }
   }
 
-  public writeStorage(data: string, subpath?: string): this {
+  public writeStorage(
+    data: string,
+    subpath?: string,
+  ): this {
     try {
-      this.storage(subpath)
+      this
+        .storage(subpath)
         .write(data);
 
       return this;
@@ -124,10 +130,7 @@ abstract class Application<
     }
   }
 
-  public abstract runtime(): unknown;
-  public abstract handleOutput(
-    output: ReturnType<typeof Application.prototype.runtime>,
-  ): unknown;
+  public abstract runtime(): O;
 
   private _cachedSetting?: Setting<C>;
 }

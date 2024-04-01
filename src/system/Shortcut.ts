@@ -3,8 +3,10 @@ const sh_Application: typeof Application = importModule(
 ) as typeof Application;
 
 abstract class Shortcut<
+  I extends typeof args.shortcutParameter = null,
+  O = null,
   C extends Config = Record<string, never>,
-> extends sh_Application<C> {
+> extends sh_Application<I, O, C> {
   public static get Application(): typeof Application {
     try {
       return sh_Application;
@@ -16,13 +18,15 @@ abstract class Shortcut<
     }
   }
 
-  public get input(): typeof args {
+  public get input(): null | I {
     try {
-      return args;
+      return args.shortcutParameter === undefined
+        ? null
+        : args.shortcutParameter as null | I;
     }
     catch (e) {
-      throw new ReferenceError(
-        `Shortcut.js: Error getting shortcut input from Scriptable 'args' object (which by design is loaded with any input parameters passed from Shortcuts when executing a Scriptable script): \n${e as string}`,
+      throw new EvalError(
+        `Shortcut.js: Error getting shortcut input from Scriptable 'args' object: \n${e as string}`,
       );
     }
   }
@@ -41,45 +45,6 @@ abstract class Shortcut<
       );
     }
   }
-
-  public handleOutput(
-    output: null | primitive | IOFile | Shortcut.ShortcutDictionary = "",
-  ): primitive | Shortcut.ShortcutDictionary {
-    try {
-      if (output === null) output = "";
-      else if (
-        typeof output === "string"
-        || typeof output === "number"
-        || typeof output === "boolean"
-      )
-        output = output;
-      else if (
-        output instanceof Shortcut.Filetypes.IOFile
-      ) output = output.path;
-      Script.setShortcutOutput(output);
-
-      return output;
-    }
-    catch (e) {
-      throw new SyntaxError(
-        `Shortcut.js: Error setting shortcut output: \n${e as string}`,
-      );
-    }
-  }
-}
-
-namespace Shortcut {
-  export interface ShortcutDictionary {
-    [key: string]: ListContent | ShortcutDictionary;
-  }
-
-  export type ListContent =
-    | string
-    | number
-    | boolean
-    | ShortcutDictionary
-    | ListContent[];
-
 }
 
 module.exports = Shortcut;

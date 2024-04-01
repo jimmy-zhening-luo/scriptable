@@ -9,34 +9,34 @@ namespace Search {
   ) as typeof Shortcut;
 
   export class Search extends shortcut<
+    SearchInput,
+    null | SearchOutput,
     SearchSettings
   > {
     public runtime(): null | SearchOutput {
       try {
-        const raw: string = (this.input
-          .shortcutParameter as SearchInput)
-          .input;
+        const raw: null | SearchInput = this.input;
 
         const query: SearchQuery = new SearchQuery(
-          raw === ""
+          !raw || raw.input === ""
             ? this.readStorage()
-            : raw,
-          (this.input
-            .shortcutParameter as SearchInput)
-            .clip,
+            : raw.input,
+          raw?.clip ?? "",
         );
 
-        const setting: SearchSettings = this
+        const {
+          app,
+          user,
+        }: SearchSettings = this
           .setting
           .unmerged;
 
-        const querytag: string = setting.app?.queryTag ?? setting.user.queryTag ?? "";
+        const tag: string = app?.queryTag ?? user.queryTag ?? "";
 
-        if (querytag === "" || query.key === "")
+        if (tag === "" || query.key === "")
           return null;
         else {
-          const engines: SearchEngine[] = setting
-            .user
+          const engines: SearchEngine[] = user
             .engines
             .map(engine =>
               "keys" in engine
@@ -44,7 +44,7 @@ namespace Search {
                   ? new BrowserSearchEngine(
                     engine.keys,
                     engine.urls,
-                    querytag,
+                    tag,
                     engine.browser,
                   )
                   : "app" in engine
@@ -55,18 +55,18 @@ namespace Search {
                     : null
                 : null)
             .filter(engine => engine !== null) as SearchEngine[];
-          const resolvedEngine: undefined | SearchEngine
+          const resolved: null | SearchEngine
             = engines.find(engine =>
               engine
                 .keys
                 .includes(
                   query.key,
-                ));
+                )) ?? null;
 
-          if (resolvedEngine !== undefined)
+          if (resolved !== null)
             this.writeStorage(query.clean);
 
-          return resolvedEngine?.parseQueryToAction(query) ?? null;
+          return resolved?.parseQueryToAction(query) ?? null;
         }
       }
       catch (e) {
@@ -81,7 +81,7 @@ namespace Search {
 
     constructor(
       query: string,
-      clipboard: string,
+      clip: string,
     ) {
       try {
         const tokens: string[] = query
@@ -91,7 +91,7 @@ namespace Search {
         if (tokens.length === 1)
           tokens
             .push(
-              ...clipboard
+              ...clip
                 .trim()
                 .split(" "),
             );
@@ -150,19 +150,19 @@ namespace Search {
 
   class BrowserSearchEngine extends SearchEngine {
     public readonly urls: string[];
-    public readonly querytag: string;
+    public readonly tag: string;
     public readonly browser: BrowserAction;
 
     constructor(
       keys: string | string[],
       urls: string | string[],
-      querytag: string,
+      tag: string,
       browser: BrowserAction = "default",
     ) {
       try {
         super(keys);
         this.urls = [urls].flat();
-        this.querytag = querytag;
+        this.tag = tag;
         this.browser = browser;
       }
       catch (e) {
@@ -187,7 +187,7 @@ namespace Search {
           .urls
           .map(url =>
             url.replace(
-              this.querytag,
+              this.tag,
               urlEncodedQueryTerms,
             ));
 
