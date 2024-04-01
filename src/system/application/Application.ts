@@ -68,8 +68,12 @@ abstract class Application<
 
   public run(): O {
     try {
-      return this
-        .runtime();
+      const output: O = this.runtime();
+
+      if (this.setOut !== undefined)
+        this.setOut(output);
+
+      return output;
     }
     catch (e) {
       const finalError = `Application: run: Caught unhandled exception during application runtime: \n${e as string}`;
@@ -134,6 +138,8 @@ abstract class Application<
   public abstract runtime(): O;
 
   private _cachedSetting?: Setting<C>;
+
+  protected setOut?(runtimeOut: O): void;
 }
 
 module.exports = Application;

@@ -45,6 +45,19 @@ abstract class Shortcut<
       );
     }
   }
+
+  protected override setOut(runtimeOutput: O): void {
+    try {
+      Script.setShortcutOutput(runtimeOutput);
+
+      return;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Shortcut.js: Error setting shortcut output: \n${e as string}`,
+      );
+    }
+  }
 }
 
 module.exports = Shortcut;
