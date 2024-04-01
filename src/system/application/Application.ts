@@ -76,10 +76,18 @@ abstract class Application<
       return output;
     }
     catch (e) {
-      const finalError = `Application: run: Caught unhandled exception during application runtime: \n${e as string}`;
+      const e_final = `Application: run: Caught unhandled exception during application runtime: \n${e as string}`;
 
-      console.error(finalError);
-      throw new EvalError(finalError);
+      console.error(e_final);
+      const e_notif = new Notification();
+
+      e_notif.title = "Scriptable Error";
+      e_notif.body = e_final;
+      e_notif.sound = "failure";
+      e_notif.schedule()
+        .catch(err => { throw err; });
+
+      throw new EvalError(e_final);
     }
   }
 
