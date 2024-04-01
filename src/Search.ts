@@ -15,78 +15,98 @@ namespace Search {
   > {
     public runtime(): null | SearchOutput {
       try {
-        const raw: null | SearchInput = this.input;
-
-        const query: SearchQuery = new SearchQuery(
-          !raw || raw.input === ""
-            ? this.readStorage()
-            : raw.input,
-          raw?.clip ?? "",
-        );
-
         const {
           app,
           user,
-        }: SearchSettings = this
-          .setting
-          .unmerged;
+        }: SearchSettings = this.setting.unmerged;
 
-        const tag: string = app?.queryTag ?? user.queryTag ?? "";
+        const TAG: string = app?.queryTag ?? user.queryTag ?? "";
 
-        if (tag === "" || query.key === "")
-          return null;
+        if (TAG === "")
+          throw new SyntaxError(
+            `Search: runtime: No query tag provided.`,
+          );
         else {
-          const engines: SearchEngine[] = user
-            .engines
-            .map(engine =>
-              "keys" in engine
-                ? "urls" in engine
-                  ? new BrowserSearchEngine(
-                    engine.keys,
-                    engine.urls,
-                    tag,
-                    engine.browser,
+          const MATH_KEYS: string | string[] = app?.mathKeys ?? [];
+
+          const query: Query = new Query(
+            !this.input || this.input.input === ""
+              ? this.readStorage()
+              : this.input.input,
+            this.input?.clip ?? "",
+            MATH_KEYS,
+          );
+
+          if (query.key === "")
+            return null;
+          else {
+            const resolved: null | Engine = user
+              .engines
+              .filter(
+                eng => "keys" in eng,
+              )
+              .filter(
+                eng => "urls" in eng || "app" in eng,
+              )
+              .map(
+                eng => "urls" in eng
+                  ? new BrowserEngine(
+                    eng.keys,
+                    eng.urls,
+                    TAG,
+                    eng.browser,
                   )
-                  : "app" in engine
-                    ? new AppSearchEngine(
-                      engine.keys,
-                      engine.app,
-                    )
-                    : null
-                : null)
-            .filter(engine => engine !== null) as SearchEngine[];
-          const resolved: null | SearchEngine
-            = engines.find(engine =>
-              engine
-                .keys
-                .includes(
-                  query.key,
-                )) ?? null;
+                  : new AppEngine(
+                    eng.keys,
+                    eng.app,
+                  ),
+              )
+              .find(
+                eng => eng
+                  .keys
+                  .includes(
+                    query.key,
+                  ),
+              ) ?? null;
 
-          if (resolved !== null)
-            this.writeStorage(query.clean);
+            if (resolved)
+              this.writeStorage(
+                query.clean,
+              );
 
-          return resolved?.parseQueryToAction(query) ?? null;
+            return resolved
+              ?.parseQueryToAction(
+                query,
+              ) ?? null;
+          }
         }
       }
       catch (e) {
-        throw new EvalError(`Search: runtime: Error running app: \n${e as string}`);
+        throw new EvalError(
+          `Search: runtime: Error running app: \n${e as string}`,
+        );
       }
     }
   }
 
-  class SearchQuery {
+  class Query {
     public readonly key: string;
     public readonly terms: string[];
 
     constructor(
       query: string,
       clip: string,
+      mathKeys: string | string[] = [],
     ) {
       try {
-        const tokens: string[] = query
-          .trim()
-          .split(" ");
+        const tokens: string[] = [
+          ...Query.mathefy(
+            query
+              .trim()
+              .split(" "),
+            mathKeys,
+          ),
+        ];
 
         if (tokens.length === 1)
           tokens
@@ -104,7 +124,7 @@ namespace Search {
             "",
           ) ?? "";
 
-        this.terms = tokens;
+        this.terms = [...tokens];
       }
       catch (e) {
         throw new SyntaxError(
@@ -127,9 +147,107 @@ namespace Search {
         );
       }
     }
+
+    private static mathefy(
+      tokens: string[],
+      mathKeys: string | string[],
+    ): string[] {
+      try {
+        const T: string[] = [...tokens];
+        const M: string[] = [mathKeys]
+          .flat()
+          .filter(
+            mk => mk !== "",
+          )
+          .filter(
+            mk => mk.length > 0,
+          )
+          .map(
+            mk => mk.toLowerCase(),
+          );
+
+        if (
+          M.length > 0
+          && T.length > 0
+          && T[0] !== undefined
+          && T[0] !== ""
+        ) {
+          const t_0: string = T[0].toLowerCase();
+          const math_long: string = [...M]
+            .filter(
+              mk => mk.length <= t_0.length,
+            )
+            .sort(
+              (a, b) => b.length - a.length,
+            )
+            .find(
+              mk => t_0.startsWith(
+                mk,
+              ),
+            ) ?? "";
+
+          if (math_long !== "") {
+            const operand_0: string = t_0.slice(
+              math_long.length,
+            );
+
+            if (operand_0 !== "") {
+              T.shift();
+              T.unshift(operand_0);
+              T.unshift(math_long);
+            }
+          }
+          else {
+            const math_short: string = [...M]
+              .sort(
+                (a, b) => a.length - b.length,
+              )
+              .shift() ?? "";
+
+            if (math_short !== "") {
+              const d: string[] = [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+              ]
+                .map(
+                  n => String(n),
+                )
+                .filter(
+                  n => n !== "",
+                );
+
+              if (
+                d.includes(
+                  t_0.slice(
+                    0,
+                    1,
+                  ),
+                )
+              )
+                T.unshift(math_short);
+            }
+          }
+        }
+
+        return T;
+      }
+      catch (e) {
+        throw new SyntaxError(
+          `SearchQuery: mathefy: Error checking (& transforming) query for mathiness: \n${e as string}`,
+        );
+      }
+    }
   }
 
-  abstract class SearchEngine {
+  abstract class Engine {
     public readonly keys: string[];
 
     constructor(keys: string | string[]) {
@@ -145,10 +263,10 @@ namespace Search {
       }
     }
 
-    public abstract parseQueryToAction(query: SearchQuery): SearchOutput;
+    public abstract parseQueryToAction(query: Query): SearchOutput;
   }
 
-  class BrowserSearchEngine extends SearchEngine {
+  class BrowserEngine extends Engine {
     public readonly urls: string[];
     public readonly tag: string;
     public readonly browser: BrowserAction;
@@ -172,7 +290,7 @@ namespace Search {
       }
     }
 
-    public parseQueryToAction(query: SearchQuery): SearchOutput {
+    public parseQueryToAction(query: Query): SearchOutput {
       try {
         const urlEncodedQueryTerms: string = query
           .terms
@@ -209,7 +327,7 @@ namespace Search {
     }
   }
 
-  class AppSearchEngine extends SearchEngine {
+  class AppEngine extends Engine {
     public readonly app: string;
 
     constructor(
@@ -227,7 +345,7 @@ namespace Search {
       }
     }
 
-    public parseQueryToAction(query: SearchQuery): SearchOutput {
+    public parseQueryToAction(query: Query): SearchOutput {
       try {
         return {
           query: {
