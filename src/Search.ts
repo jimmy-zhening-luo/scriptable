@@ -101,9 +101,7 @@ namespace Search {
       try {
         const tokens: string[] = [
           ...Query.mathefy(
-            query
-              .trim()
-              .split(" "),
+            Query.tokenize(query),
             mathKeys,
           ),
         ];
@@ -111,9 +109,7 @@ namespace Search {
         if (tokens.length === 1)
           tokens
             .push(
-              ...clip
-                .trim()
-                .split(" "),
+              ...Query.tokenize(clip),
             );
 
         this.key = tokens
@@ -144,6 +140,21 @@ namespace Search {
       catch (e) {
         throw new EvalError(
           `SearchQuery: clean: Error cleaning query: \n${e as string}`,
+        );
+      }
+    }
+
+    private static tokenize(
+      query: string,
+    ): string[] {
+      try {
+        return query
+          .trim()
+          .split(" ");
+      }
+      catch (e) {
+        throw new SyntaxError(
+          `SearchQuery: tokenize: Error tokenizing query: \n${e as string}`,
         );
       }
     }
