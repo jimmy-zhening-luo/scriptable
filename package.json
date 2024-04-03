@@ -26,14 +26,14 @@
   },
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "engines": {
-    "node": ">=20.11.1",
+    "node": ">=20.12.0",
     "npm": ">=10.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
     "@jimbojet/lint": "^2.3.1",
     "@stylistic/eslint-plugin": "^1.7.0",
-    "@types/node": "^20.12.3",
+    "@types/node": "^20.12.4",
     "@types/scriptable-ios": "^1.7.7",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
