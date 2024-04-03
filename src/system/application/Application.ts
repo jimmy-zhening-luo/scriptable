@@ -64,7 +64,7 @@ abstract class Application<
     }
   }
 
-  public abstract get input(): null | I;
+  public abstract get input(): null | string | I;
 
   public run(): O {
     try {

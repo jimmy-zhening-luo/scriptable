@@ -18,7 +18,7 @@ abstract class Shortcut<
     }
   }
 
-  public get input(): null | I {
+  public get input(): Application<I, O, C>["input"] {
     try {
       return args.shortcutParameter === undefined
         ? null
@@ -26,7 +26,35 @@ abstract class Shortcut<
     }
     catch (e) {
       throw new EvalError(
-        `Shortcut.js: Error getting shortcut input from Scriptable 'args' object: \n${e as string}`,
+        `Shortcut.js: Error getting raw file, string, or Image input from Scriptable.args.shortcutParameter: \n${e as string}`,
+      );
+    }
+  }
+
+  public get inputData(): null | I {
+    try {
+      return typeof this.input === "string" || this.input === undefined
+        ? null
+        : this.input;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Shortcut.js: Error constraining Scriptable.args.shortcutParameter to type I & !(string | Image): \n${e as string}`,
+      );
+    }
+  }
+
+  public get inputText(): null | string {
+    try {
+      const input: string = String(this.input ?? null);
+
+      return input === "null" || input === ""
+        ? null
+        : input;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Shortcut.js: Error casting Scriptable.args.shortcutParameter to string: \n${e as string}`,
       );
     }
   }
