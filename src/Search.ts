@@ -114,11 +114,7 @@ namespace Search {
 
         this.key = tokens
           .shift()
-          ?.toLowerCase()
-          .replace(
-            ".",
-            "",
-          ) ?? "";
+          ?.toLowerCase() ?? "";
 
         this.terms = [...tokens];
       }
@@ -198,15 +194,14 @@ namespace Search {
             ) ?? "";
 
           if (math_long !== "") {
-            const operand_0: string = t_0.slice(
+            const operand_0: string = T.shift()?.slice(
               math_long.length,
-            );
+            ) ?? "";
 
-            if (operand_0 !== "") {
-              T.shift();
+            if (operand_0 !== "")
               T.unshift(operand_0);
-              T.unshift(math_long);
-            }
+
+            T.unshift(math_long);
           }
           else {
             const math_short: string = [...M]
@@ -342,7 +337,7 @@ namespace Search {
   class BrowserEngine extends Engine {
     public readonly urls: string[];
     public readonly tag: string;
-    public readonly browser: BrowserAction;
+    public readonly browser: Lowercase<BrowserAction>;
 
     constructor(
       keys: string | string[],
@@ -354,7 +349,7 @@ namespace Search {
         super(keys);
         this.urls = [urls].flat();
         this.tag = tag;
-        this.browser = browser;
+        this.browser = browser.toLowerCase();
       }
       catch (e) {
         throw new EvalError(
@@ -409,7 +404,7 @@ namespace Search {
     ) {
       try {
         super(keys);
-        this.app = app;
+        this.app = app.toLowerCase();
       }
       catch (e) {
         throw new EvalError(
