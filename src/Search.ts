@@ -337,7 +337,7 @@ namespace Search {
   class BrowserEngine extends Engine {
     public readonly urls: string[];
     public readonly tag: string;
-    public readonly browser: Lowercase<BrowserAction>;
+    public readonly browser: BrowserAction;
 
     constructor(
       keys: string | string[],
@@ -349,7 +349,7 @@ namespace Search {
         super(keys);
         this.urls = [urls].flat();
         this.tag = tag;
-        this.browser = browser.toLowerCase();
+        this.browser = browser;
       }
       catch (e) {
         throw new EvalError(
