@@ -20,7 +20,11 @@ abstract class Shortcut<
 
   public get input(): Application<I, O, C>["input"] {
     try {
-      return args.shortcutParameter === undefined
+      return args.shortcutParameter === null
+        || args.shortcutParameter === undefined
+        || args.shortcutParameter === ""
+        || args.shortcutParameter === 0
+        || args.shortcutParameter === false
         ? null
         : args.shortcutParameter as null | I;
     }
@@ -33,9 +37,11 @@ abstract class Shortcut<
 
   public get inputData(): null | I {
     try {
-      return typeof this.input === "string" || this.input === undefined
-        ? null
-        : this.input;
+      return this.input === null
+        || typeof this.input === "string"
+        || Object.values(this.input).every(val => val ?? "" === "")
+          ? null
+          : this.input;
     }
     catch (e) {
       throw new EvalError(
@@ -46,11 +52,9 @@ abstract class Shortcut<
 
   public get inputText(): null | string {
     try {
-      const input: string = String(this.input ?? null);
-
-      return input === "null" || input === ""
+      return this.input === null
         ? null
-        : input;
+        : String(this.input);
     }
     catch (e) {
       throw new EvalError(
