@@ -1,3 +1,12 @@
-declare type GPTInput = {
-  prompt: string; // Text or Base64 encoded text
-} & Partial<Omit<GPTResolved, "prompt">>;
+declare interface GPTInput {
+  [key: string]: unknown;
+  prompt: string;
+
+  token?: number;
+  temperature?: number;
+  model?:
+    | "ultra"
+    | "high"
+    | "low";
+  preset?: string;
+}
