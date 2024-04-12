@@ -1,13 +1,14 @@
 declare interface SearchSettings extends Config {
-  user: SearchUserSettings;
   app: SearchAppSettings;
+  user: SearchUserSettings;
 }
 
 declare interface SearchUserSettings extends SettingMap {
-  engines: EngineSetting[];
+  engines: SearchEngineSetting[];
 }
 
 declare interface SearchAppSettings extends SettingMap {
-  mathKeys?: string | string[];
   queryTag: string;
+  mathKeys?: string | string[];
+
 }

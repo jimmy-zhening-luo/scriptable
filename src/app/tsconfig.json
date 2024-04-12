@@ -1,20 +1,25 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "../system/application/filetypes/config/**/*",
+    "../system/input/**/*"
   ],
   "references": [
     {
-      "path": "new/tsconfig.json"
+      "path": "input/tsconfig.json"
     },
     {
-      "path": "search/tsconfig.json"
+      "path": "output/tsconfig.json"
     },
     {
-      "path": "gpt/tsconfig.json"
+      "path": "setting/tsconfig.json"
     },
     {
       "path": "../system/application/filetypes/config/tsconfig.json"
+    },
+    {
+      "path": "../system/input/tsconfig.json"
     }
   ],
   "compilerOptions": {

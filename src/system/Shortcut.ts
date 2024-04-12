@@ -3,7 +3,7 @@ const sh_Application: typeof Application = importModule(
 ) as typeof Application;
 
 abstract class Shortcut<
-  I extends typeof args.shortcutParameter = null,
+  I extends ShortcutInput = null,
   O = null,
   C extends Config = Record<string, never>,
 > extends sh_Application<I, O, C> {
@@ -20,32 +20,28 @@ abstract class Shortcut<
 
   public get input(): Application<I, O, C>["input"] {
     try {
-      return args.shortcutParameter === null
-        || args.shortcutParameter === undefined
-        || args.shortcutParameter === ""
-        || args.shortcutParameter === 0
-        || args.shortcutParameter === false
+      const flat: unknown = Array.isArray(args.shortcutParameter)
+        ? args.shortcutParameter.length === 1
+          ? args.shortcutParameter[0]
+          : null
+        : args.shortcutParameter;
+
+      return flat === null
+        || flat === undefined
+        || flat === ""
+        || flat === 0
+        || flat === -0
+        || typeof flat === "number" && (Number.isNaN(flat) || !Number.isFinite(flat))
+        || flat === false
+        || Array.isArray(flat)
         ? null
-        : args.shortcutParameter as null | I;
+        : typeof flat === "number" || typeof flat === "boolean"
+          ? String(flat)
+          : flat as NonNullable<I>;
     }
     catch (e) {
       throw new EvalError(
         `Shortcut.js: Error getting raw file, string, or Image input from Scriptable.args.shortcutParameter: \n${e as string}`,
-      );
-    }
-  }
-
-  public get inputData(): null | I {
-    try {
-      return this.input === null
-        || typeof this.input === "string"
-        || Object.values(this.input).every(val => val ?? "" === "")
-          ? null
-          : this.input;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Shortcut.js: Error constraining Scriptable.args.shortcutParameter to type I & !(string | Image): \n${e as string}`,
       );
     }
   }
@@ -59,6 +55,22 @@ abstract class Shortcut<
     catch (e) {
       throw new EvalError(
         `Shortcut.js: Error casting Scriptable.args.shortcutParameter to string: \n${e as string}`,
+      );
+    }
+  }
+
+  public get inputData(): null | I {
+    try {
+      return this.input === null
+        || typeof this.input === "string"
+        || Object.values(this.input)
+          .every(val => val === undefined || val === null || val === "")
+        ? null
+        : this.input;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Shortcut.js: Error constraining Scriptable.args.shortcutParameter to type I & !(string | Image): \n${e as string}`,
       );
     }
   }

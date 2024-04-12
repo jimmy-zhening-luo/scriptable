@@ -51,7 +51,7 @@ namespace GPT {
         };
 
         // Build user message
-        const preset: null | PresetPrompt = user
+        const preset: null | GPTPreset = user
           .presets[
             resolved.preset
           ] ?? null;

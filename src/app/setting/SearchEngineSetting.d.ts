@@ -1,16 +1,16 @@
-declare type EngineSetting =
+declare type SearchEngineSetting =
   | AppEngineSetting
   | BrowserEngineSetting;
 
-declare interface IEngineSetting {
+declare interface ISearchEngineSetting {
   keys: string | string[];
 }
 
-declare interface AppEngineSetting extends IEngineSetting {
+declare interface AppEngineSetting extends ISearchEngineSetting {
   app: string;
 }
 
-declare interface BrowserEngineSetting extends IEngineSetting {
+declare interface BrowserEngineSetting extends ISearchEngineSetting {
   urls: string | string[];
   browser?: BrowserAction;
 }

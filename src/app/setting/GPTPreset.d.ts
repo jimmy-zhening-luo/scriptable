@@ -1,4 +1,4 @@
-declare interface PresetPrompt {
+declare interface GPTPreset {
   system: string;
   user?: string;
 }

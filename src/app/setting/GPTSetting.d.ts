@@ -43,6 +43,6 @@ declare interface GPTUserSetting extends SettingMap {
     preset: string;
   };
   presets: {
-    [key: string?]: PresetPrompt;
+    [key: string?]: GPTPreset;
   };
 }

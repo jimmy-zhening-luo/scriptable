@@ -30,10 +30,7 @@ namespace Search {
           const MATH_KEYS: string | string[] = app.mathKeys ?? [];
 
           const query: Query = new Query(
-            this.inputData === null
-            || (this.inputData.input ?? "" === "")
-              ? this.readStorage()
-              : this.inputData.input ?? "",
+            this.inputData?.input ?? this.readStorage(),
             this.inputData?.clip ?? "",
             MATH_KEYS,
           );
@@ -195,9 +192,10 @@ namespace Search {
             ) ?? "";
 
           if (math_long !== "") {
-            const operand_0: string = T.shift()?.slice(
-              math_long.length,
-            ) ?? "";
+            const operand_0: string = T.shift()
+              ?.slice(
+                math_long.length,
+              ) ?? "";
 
             if (operand_0 !== "")
               T.unshift(operand_0);
