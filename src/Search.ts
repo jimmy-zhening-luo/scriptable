@@ -30,9 +30,9 @@ namespace Search {
           const MATH_KEYS: string | string[] = app.mathKeys ?? [];
 
           const query: Query = new Query(
-            this.inputData === null
+            this.inputData === null || this.inputData.input ?? "" === ""
               ? this.readStorage()
-              : this.inputData.input,
+              : this.inputData.input ?? "",
             this.inputData?.clip ?? "",
             MATH_KEYS,
           );
