@@ -33,12 +33,12 @@
     "@eslint/js": "^8.57.0",
     "@jimbojet/lint": "^3.0.0",
     "@stylistic/eslint-plugin": "^1.7.0",
-    "@types/node": "^20.12.5",
+    "@types/node": "^20.12.7",
     "@types/scriptable-ios": "^1.7.7",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
     "eslint": "^8.57.0",
     "shx": "^0.3.4",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   }
 }
