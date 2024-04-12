@@ -20,14 +20,14 @@ namespace Search {
           user,
         }: SearchSettings = this.setting.unmerged;
 
-        const TAG: string = app?.queryTag ?? user.queryTag ?? "";
+        const TAG: string = app.queryTag;
 
         if (TAG === "")
           throw new SyntaxError(
             `Search: runtime: No query tag provided.`,
           );
         else {
-          const MATH_KEYS: string | string[] = app?.mathKeys ?? [];
+          const MATH_KEYS: string | string[] = app.mathKeys ?? [];
 
           const query: Query = new Query(
             this.inputData === null
@@ -421,11 +421,9 @@ namespace Search {
             terms: query.terms,
           },
           app: this.app,
-          actions: [
-            query
-              .terms
-              .join(" "),
-          ],
+          actions: query
+            .terms
+            .join(" "),
         };
       }
       catch (e) {

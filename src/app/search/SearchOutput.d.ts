@@ -4,6 +4,6 @@ declare interface SearchOutput {
     terms: string[];
   };
   app: string;
-  actions: string[];
+  actions: string | string[];
   browser?: BrowserAction;
 }
