@@ -24,7 +24,7 @@ namespace Search {
 
         if (TAG === "")
           throw new SyntaxError(
-            `Search: runtime: No query tag provided.`,
+            `No querytag configured.`,
           );
         else {
           const MATH_KEYS: string | string[] = app.mathKeys ?? [];
@@ -39,8 +39,16 @@ namespace Search {
             MATH_KEYS,
           );
 
-          if (query.key === "")
-            return null;
+          if (query.key === "") {
+            if (query.terms.length < 1)
+              throw new SyntaxError(
+                `Final query is empty`,
+              );
+            else
+              throw new EvalError(
+                `Unexpected: final query has no key, but has terms: ${query.terms}`,
+              );
+          }
           else {
             const resolved: null | Engine = user
               .engines
@@ -85,7 +93,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Search: runtime: Error running app: \n${e as string}`,
+          `Search: runtime: \n${e as string}`,
         );
       }
     }
@@ -119,10 +127,15 @@ namespace Search {
           ?.toLowerCase() ?? "";
 
         this.terms = [...tokens];
+        
+        if (this.key === "" && this.terms.length > 0)
+            throw new EvalError(
+              `Unexpected: Query.key is empty but Query.terms has value: ${this.terms}`,
+            );
       }
       catch (e) {
-        throw new SyntaxError(
-          `SearchQuery: constructor: Error creating SearchQuery object: \n${e as string}`,
+        throw new EvalError(
+          `Query: ctor: Error creating Query: \n${e as string}`,
         );
       }
     }
@@ -137,7 +150,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `SearchQuery: clean: Error cleaning query: \n${e as string}`,
+          `Query: clean: Error cleaning query: \n${e as string}`,
         );
       }
     }
@@ -151,8 +164,8 @@ namespace Search {
           .split(" ");
       }
       catch (e) {
-        throw new SyntaxError(
-          `SearchQuery: tokenize: Error tokenizing query: \n${e as string}`,
+        throw new EvalError(
+          `Query: tokenize: Error tokenizing query: \n${e as string}`,
         );
       }
     }
@@ -311,8 +324,8 @@ namespace Search {
         return T;
       }
       catch (e) {
-        throw new SyntaxError(
-          `SearchQuery: mathefy: Error checking (& transforming) query for mathiness: \n${e as string}`,
+        throw new EvalError(
+          `Query: mathefy: Error checking (& transforming) query for mathiness: \n${e as string}`,
         );
       }
     }
@@ -329,7 +342,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `SearchEngine: constructor: Error creating SearchEngine object: \n${e as string}`,
+          `Engine: ctor: Error creating SearchEngine object: \n${e as string}`,
         );
       }
     }
@@ -356,7 +369,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `BrowserSearchEngine: constructor: Error creating BrowserSearchEngine object: \n${e as string}`,
+          `BrowserEngine: ctor: Error creating BrowserSearchEngine object: \n${e as string}`,
         );
       }
     }
@@ -391,8 +404,8 @@ namespace Search {
         };
       }
       catch (e) {
-        throw new SyntaxError(
-          `BrowserSearchEngine: parseQueryToAction: Error parsing query to action: \n${e as string}`,
+        throw new EvalError(
+          `BrowserEngine: parseQueryToAction: Error parsing query to action: \n${e as string}`,
         );
       }
     }
@@ -411,7 +424,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `AppSearchEngine: constructor: Error creating AppSearchEngine object: \n${e as string}`,
+          `AppEngine: ctor: Error creating AppSearchEngine object: \n${e as string}`,
         );
       }
     }
@@ -430,8 +443,8 @@ namespace Search {
         };
       }
       catch (e) {
-        throw new SyntaxError(
-          `AppSearchEngine: parseQueryToAction: Error parsing query to action: \n${e as string}`,
+        throw new EvalError(
+          `AppEngine: parseQueryToAction: Error parsing query to action: \n${e as string}`,
         );
       }
     }

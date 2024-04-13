@@ -18,7 +18,7 @@ namespace New {
         return "Hello World";
       }
       catch (e) {
-        throw new EvalError(`New: runtime: Error running app: \n${e as string}`);
+        throw new EvalError(`New: runtime: \n${e as string}`);
       }
     }
   }
