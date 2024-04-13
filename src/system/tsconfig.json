@@ -9,7 +9,7 @@
       "path": "../common/tsconfig.json"
     },
     {
-      "path": "application/tsconfig.json"
+      "path": "app/tsconfig.json"
     }
   ],
   "compilerOptions": {

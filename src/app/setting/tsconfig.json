@@ -2,11 +2,11 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../../system/application/filetypes/config/**/*",
+    "../../system/app/filetypes/config/**/*",
   ],
   "references": [
     {
-      "path": "../../system/application/filetypes/config/tsconfig.json"
+      "path": "../../system/app/filetypes/config/tsconfig.json"
     }
   ],
   "compilerOptions": {

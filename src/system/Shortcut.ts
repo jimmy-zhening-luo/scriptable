@@ -1,24 +1,24 @@
-const sh_Application: typeof Application = importModule(
-  "application/Application",
-) as typeof Application;
+const sh_App: typeof App = importModule(
+  "app/App",
+) as typeof App;
 
 abstract class Shortcut<
   I extends ShortcutInput = null,
   O = null,
   C extends Config = Record<string, never>,
-> extends sh_Application<I, O, C> {
-  public static get Application(): typeof Application {
+> extends sh_App<I, O, C> {
+  public static get App(): typeof App {
     try {
-      return sh_Application;
+      return sh_App;
     }
     catch (e) {
       throw new ReferenceError(
-        `Shortcut.js: Error getting shortcut Application class: \n${e as string}`,
+        `Shortcut.js: Error getting shortcut App class: \n${e as string}`,
       );
     }
   }
 
-  public get input(): Application<I, O, C>["input"] {
+  public get input(): App<I, O, C>["input"] {
     try {
       const flat: unknown = Array.isArray(args.shortcutParameter)
         ? args.shortcutParameter.length === 1

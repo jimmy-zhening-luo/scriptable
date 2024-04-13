@@ -1,4 +1,4 @@
-abstract class Application<
+abstract class App<
   I = null,
   O = null,
   C extends Config = Record<string, never>,
@@ -9,7 +9,7 @@ abstract class Application<
     }
     catch (e) {
       throw new ReferenceError(
-        `Application: Filetypes: Error importing Filetypes module: \n${e as string}`,
+        `App: Filetypes: Error importing Filetypes module: \n${e as string}`,
       );
     }
   }
@@ -20,7 +20,7 @@ abstract class Application<
     }
     catch (e) {
       throw new ReferenceError(
-        `Application: Calendar: Error importing IOCalendar module: \n${e as string}`,
+        `App: Calendar: Error importing IOCalendar module: \n${e as string}`,
       );
     }
   }
@@ -28,7 +28,7 @@ abstract class Application<
   public get setting(): Setting<C> {
     try {
       if (this._cachedSetting === undefined)
-        this._cachedSetting = new Application.Filetypes.Setting(
+        this._cachedSetting = new App.Filetypes.Setting(
           this.settingSubpathRoot,
           this.constructor.name,
         );
@@ -37,7 +37,7 @@ abstract class Application<
     }
     catch (e) {
       throw new ReferenceError(
-        `Application: setting: Error getting application Setting object: \n${e as string}`,
+        `App: setting: Error getting app Setting object: \n${e as string}`,
       );
     }
   }
@@ -48,7 +48,7 @@ abstract class Application<
     }
     catch (e) {
       throw new ReferenceError(
-        `Application: settingSubpathRoot: Error getting application setting subpath: \n${e as string}`,
+        `App: settingSubpathRoot: Error getting app setting subpath: \n${e as string}`,
       );
     }
   }
@@ -59,7 +59,7 @@ abstract class Application<
     }
     catch (e) {
       throw new ReferenceError(
-        `Application: storageSubpath: Error getting application storage subpath: \n${e as string}`,
+        `App: storageSubpath: Error getting app storage subpath: \n${e as string}`,
       );
     }
   }
@@ -76,7 +76,7 @@ abstract class Application<
       return output;
     }
     catch (e) {
-      const e_final = `Application: run: Caught unhandled exception during application runtime: \n${e as string}`;
+      const e_final = `App: run: Caught unhandled exception during app runtime: \n${e as string}`;
 
       console.error(e_final);
       const e_notif = new Notification();
@@ -101,7 +101,7 @@ abstract class Application<
     }
     catch (e) {
       throw new ReferenceError(
-        `Application: readStorage: Error reading application storage file at '${
+        `App: readStorage: Error reading app storage file at '${
           this.storage(subpath).path
         }': \n${e as string}`,
       );
@@ -121,7 +121,7 @@ abstract class Application<
     }
     catch (e) {
       throw new ReferenceError(
-        `Application: writeStorage: Error writing to application storage file at '${
+        `App: writeStorage: Error writing to app storage file at '${
           this.storage(subpath).path
         }': \n${e as string}`,
       );
@@ -130,7 +130,7 @@ abstract class Application<
 
   protected storage(subpath?: string): Storage {
     try {
-      return new Application.Filetypes.Storage(
+      return new App.Filetypes.Storage(
         this.storageSubpathRoot,
         this.constructor.name,
         subpath,
@@ -138,7 +138,7 @@ abstract class Application<
     }
     catch (e) {
       throw new ReferenceError(
-        `Application: storage: Error getting application Storage object: \n${e as string}`,
+        `App: storage: Error getting app Storage object: \n${e as string}`,
       );
     }
   }
@@ -150,4 +150,4 @@ abstract class Application<
   protected setOut?(runtimeOut: O): void;
 }
 
-module.exports = Application;
+module.exports = App;

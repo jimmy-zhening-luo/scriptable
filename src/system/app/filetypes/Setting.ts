@@ -69,7 +69,7 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
           }
           else
             throw new SyntaxError(
-              `Setting.js: Setting file '${this.path}' is valid JSON but not a valid ApplicationSettings file.`,
+              `Setting.js: Setting file '${this.path}' is valid JSON but not a valid Settings file.`,
             );
 
           function _validate(parsedJson: unknown): boolean {
@@ -79,7 +79,7 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
             }
             catch (e) {
               throw new EvalError(
-                `Setting.js: Error while validating whether parsed JSON matches expected ApplicationSettings file: \n${e as string}`,
+                `Setting.js: Error while validating whether parsed JSON matches expected Settings file: \n${e as string}`,
               );
             }
           }

@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../system/application/filetypes/config/**/*",
+    "../system/app/filetypes/config/**/*",
     "../system/input/**/*"
   ],
   "references": [
@@ -16,7 +16,7 @@
       "path": "setting/tsconfig.json"
     },
     {
-      "path": "../system/application/filetypes/config/tsconfig.json"
+      "path": "../system/app/filetypes/config/tsconfig.json"
     },
     {
       "path": "../system/input/tsconfig.json"
