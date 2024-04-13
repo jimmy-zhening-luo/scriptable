@@ -11,11 +11,16 @@ declare interface AppEngineSetting extends ISearchEngineSetting {
 }
 
 declare interface BrowserEngineSetting extends ISearchEngineSetting {
-  urls: string | string[];
+  url: string | string[];
   browser?: BrowserAction;
+  encode?: BrowserEncode;
 }
 
 declare type BrowserAction =
   | "api"
   | "force"
+  | "default";
+
+declare type BrowserEncode =
+  | "%20"
   | "default";

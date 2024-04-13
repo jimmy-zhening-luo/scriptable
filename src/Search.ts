@@ -48,13 +48,13 @@ namespace Search {
                 eng => "keys" in eng,
               )
               .filter(
-                eng => "urls" in eng || "app" in eng,
+                eng => "url" in eng || "app" in eng,
               )
               .map(
-                eng => "urls" in eng
+                eng => "url" in eng
                   ? new BrowserEngine(
                     eng.keys,
-                    eng.urls,
+                    eng.url,
                     TAG,
                     eng.browser,
                   )
@@ -338,19 +338,19 @@ namespace Search {
   }
 
   class BrowserEngine extends Engine {
-    public readonly urls: string[];
+    public readonly url: string[];
     public readonly tag: string;
     public readonly browser: BrowserAction;
 
     constructor(
       keys: string | string[],
-      urls: string | string[],
+      url: string | string[],
       tag: string,
       browser: BrowserAction = "default",
     ) {
       try {
         super(keys);
-        this.urls = [urls].flat();
+        this.url = [url].flat();
         this.tag = tag;
         this.browser = browser;
       }
@@ -373,9 +373,9 @@ namespace Search {
               .join("%2B"))
           .join("+");
         const actions: string[] = this
-          .urls
-          .map(url =>
-            url.replace(
+          .url
+          .map(u =>
+            u.replace(
               this.tag,
               urlEncodedQueryTerms,
             ));
