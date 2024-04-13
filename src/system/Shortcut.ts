@@ -31,7 +31,7 @@ abstract class Shortcut<
         || flat === ""
         || flat === 0
         || flat === -0
-        || typeof flat === "number" && (Number.isNaN(flat) || !Number.isFinite(flat))
+        || typeof flat === "number" && !Number.isFinite(flat)
         || flat === false
         || Array.isArray(flat)
         ? null
