@@ -22,8 +22,8 @@ class CharSet {
         .map(set =>
           set instanceof CharSet
             ? set.charset
-            : [set])
-        .flat(Infinity)
+            : [set].flat())
+        .flat()
         .filter(c => c.length === 1);
     }
     catch (e) {
