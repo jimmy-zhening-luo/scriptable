@@ -162,11 +162,11 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
   ): SettingMap {
     try {
       if (winners === undefined && losers === undefined)
-        return {}
+        return {};
       else if (losers === undefined)
-        return winners;
+        return winners!;
       else if (winners === undefined)
-        return losers;
+        return losers!;
       else {
         const sharedKeys: string[] = intersectKeys(
           winners,
