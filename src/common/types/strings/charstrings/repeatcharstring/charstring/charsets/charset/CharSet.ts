@@ -22,10 +22,9 @@ class CharSet {
         .map(set =>
           set instanceof CharSet
             ? set.charset
-            : [set]
-              .flat()
-              .filter(c => c.length === 1))
-        .flat();
+            : [set])
+        .flat()
+        .filter(c => c.length === 1);
     }
     catch (e) {
       throw new SyntaxError(
@@ -292,7 +291,7 @@ class CharSet {
     try {
       return (
         char.length === 1
-        && this.charset.includes(char) === !this.negate
+        && this.charset.includes(char) !== this.negate
       );
     }
     catch (e) {
