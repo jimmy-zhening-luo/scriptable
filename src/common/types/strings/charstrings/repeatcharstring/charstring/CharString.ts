@@ -1,6 +1,5 @@
 abstract class CharString {
   public readonly charset: CharSet;
-  public readonly isValid: boolean;
   private readonly _raw: string;
   private _isValid?: boolean;
 
