@@ -292,7 +292,7 @@ class CharSet {
     try {
       return (
         char.length === 1
-        && this.charset.includes(char)) === !this.negate
+        && this.charset.includes(char) === !this.negate
       );
     }
     catch (e) {
