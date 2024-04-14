@@ -65,6 +65,7 @@ namespace Search {
                     eng.url,
                     TAG,
                     eng.browser,
+                    eng.encode,
                   )
                   : new AppEngine(
                     eng.keys,
