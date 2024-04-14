@@ -366,10 +366,15 @@ namespace Search {
     ) {
       try {
         super(keys);
-        this.url = [url].flat();
         this.tag = tag;
         this.browser = browser;
         this.encode = encode;
+        this.url = [url]
+          .flat()
+          .map(u =>
+            u.includes(this.tag)
+              ? u
+              : u.concat(this.tag));
       }
       catch (e) {
         throw new EvalError(
