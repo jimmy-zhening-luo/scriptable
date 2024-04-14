@@ -37,7 +37,29 @@ abstract class App<
     }
     catch (e) {
       throw new ReferenceError(
-        `App: setting: Error getting app Setting object: \n${e as string}`,
+        `App: setting: Error getting Setting object: \n${e as string}`,
+      );
+    }
+  }
+
+  public get app(): Setting<C>["app"] {
+    try {
+      return this.setting.app;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: app: Error getting setting.app: \n${e as string}`,
+      );
+    }
+  }
+
+  public get user(): Setting<C>["user"] {
+    try {
+      return this.setting.user;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: user: Error getting setting.user: \n${e as string}`,
       );
     }
   }
