@@ -61,7 +61,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
       return (
         candidate.length <= this.max
         && candidate.length >= this.min
-        && super._qualifies(candidate);
+        && super._qualifies(candidate)
       );
     }
     catch (e) {
