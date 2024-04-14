@@ -2,6 +2,7 @@ abstract class CharString {
   public readonly charset: CharSet;
   public readonly isValid: boolean;
   private readonly _raw: string;
+  private _isValid?: boolean;
 
   constructor(
     candidate: string = "",
@@ -10,7 +11,6 @@ abstract class CharString {
     try {
       this._raw = candidate;
       this.charset = new CharString.CharSets.CharSet(...charsets);
-      this.isValid = this._qualifies(this._raw);
     }
     catch (e) {
       throw new Error(
@@ -26,6 +26,20 @@ abstract class CharString {
     catch (e) {
       throw new ReferenceError(
         `CharString: CharSets: Error importing CharSets module: \n${e as string}`,
+      );
+    }
+  }
+
+  public get isValid(): null | string {
+    try {
+      if (this._isValid === undefined)
+        this._isValid = this._qualifies(this._raw);
+
+      return this._isValid;
+    }
+    catch (e) {
+      throw new EvalError(
+        `CharString: value: Error checking validity: \n${e as string}`,
       );
     }
   }
