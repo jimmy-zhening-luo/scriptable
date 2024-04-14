@@ -370,11 +370,7 @@ namespace Search {
         this.browser = browser;
         this.encode = encode;
         this.url = [url]
-          .flat()
-          .map(u =>
-            u.includes(this.tag)
-              ? u
-              : u.concat(this.tag));
+          .flat();
       }
       catch (e) {
         throw new EvalError(
