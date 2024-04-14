@@ -157,87 +157,88 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
   }
 
   protected mergeSettings(
-    winningSettings: SettingMap | undefined,
-    losingSettings: SettingMap | undefined,
+    winners: SettingMap | undefined,
+    losers: SettingMap | undefined,
   ): SettingMap {
     try {
-      if (winningSettings === undefined && losingSettings !== undefined)
-        return losingSettings;
-      else if (losingSettings === undefined && winningSettings !== undefined)
-        return winningSettings;
-      else if (losingSettings !== undefined && winningSettings !== undefined) {
-        const commonSettingKeys: string[] = intersectKeys(
-          winningSettings,
-          losingSettings,
+      if (winners === undefined && losers === undefined)
+        return {}
+      else if (losers === undefined)
+        return winners;
+      else if (winners === undefined)
+        return losers;
+      else {
+        const sharedKeys: string[] = intersectKeys(
+          winners,
+          losers,
         );
-        const keysUniqueToWinningSettings: string[] = uniqueKeysOf(
-          winningSettings,
-          commonSettingKeys,
+        const uniqueKeysW: string[] = uniqueKeysOf(
+          winners,
+          sharedKeys,
         );
-        const keysUniqueToLosingSettings: string[] = uniqueKeysOf(
-          losingSettings,
-          commonSettingKeys,
+        const uniqueKeysL: string[] = uniqueKeysOf(
+          losers,
+          sharedKeys,
         );
-        const mergedSettingsMap: Map<string, SettingValue> = new Map();
-        const losingSettingsMap: Map<string, SettingValue> = new Map(
-          Object.entries(losingSettings),
+        const mergedMap: Map<string, SettingValue> = new Map();
+        const losingMap: Map<string, SettingValue> = new Map(
+          Object.entries(losers),
         );
-        const winningSettingsMap: Map<string, SettingValue> = new Map(
-          Object.entries(winningSettings),
+        const winningMap: Map<string, SettingValue> = new Map(
+          Object.entries(winners),
         );
 
-        for (const loser of keysUniqueToLosingSettings)
-          mergedSettingsMap.set(loser, losingSettingsMap.get(loser)!);
+        for (const loser of uniqueKeysL)
+          mergedMap.set(loser, losingMap.get(loser)!);
 
-        for (const winner of keysUniqueToWinningSettings)
-          mergedSettingsMap.set(winner, winningSettingsMap.get(winner)!);
+        for (const winner of uniqueKeysW)
+          mergedMap.set(winner, winningMap.get(winner)!);
 
-        for (const key of commonSettingKeys) {
+        for (const key of sharedKeys) {
           if (
-            isPrimitive(winningSettingsMap.get(key)!)
-            && isPrimitive(losingSettingsMap.get(key)!)
+            isPrimitive(winningMap.get(key)!)
+            && isPrimitive(losingMap.get(key)!)
           )
-            mergedSettingsMap.set(key, winningSettingsMap.get(key)!);
+            mergedMap.set(key, winningMap.get(key)!);
           else if (
-            Array.isArray(winningSettingsMap.get(key))
-            && Array.isArray(losingSettingsMap.get(key))
+            Array.isArray(winningMap.get(key))
+            && Array.isArray(losingMap.get(key))
           )
-            mergedSettingsMap.set(
+            mergedMap.set(
               key,
               mergeArrays(
-                winningSettingsMap.get(key) as SettingValue[],
-                losingSettingsMap.get(key) as SettingValue[],
+                winningMap.get(key) as SettingValue[],
+                losingMap.get(key) as SettingValue[],
               ),
             );
-          else if (Array.isArray(winningSettingsMap.get(key)))
-            mergedSettingsMap.set(
+          else if (Array.isArray(winningMap.get(key)))
+            mergedMap.set(
               key,
               mergeArrays(
-                winningSettingsMap.get(key) as SettingValue[],
-                [losingSettingsMap.get(key)!],
+                winningMap.get(key) as SettingValue[],
+                [losingMap.get(key)!],
               ),
             );
-          else if (Array.isArray(losingSettingsMap.get(key)))
-            mergedSettingsMap.set(
+          else if (Array.isArray(losingMap.get(key)))
+            mergedMap.set(
               key,
               mergeArrays(
-                [winningSettingsMap.get(key)!],
-                losingSettingsMap.get(key) as SettingValue[],
+                [winningMap.get(key)!],
+                losingMap.get(key) as SettingValue[],
               ),
             );
           else
-            mergedSettingsMap.set(
+            mergedMap.set(
               key,
               this.mergeSettings(
-                winningSettingsMap.get(key) as SettingMap,
-                losingSettingsMap.get(key) as SettingMap,
+                winningMap.get(key) as SettingMap,
+                losingMap.get(key) as SettingMap,
               ),
             );
         }
 
-        return Object.fromEntries(mergedSettingsMap);
+        return Object.fromEntries(mergedMap);
       }
-      else return {};
     }
     catch (e) {
       throw new SyntaxError(
@@ -274,19 +275,23 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
 
     function intersectKeys(a: SettingMap, b: SettingMap): string[] {
       try {
+        const bKeys: string[] = Object.keys(b);
         return Object.keys(a)
-          .filter(keyOfA => Object.keys(b)
-            .includes(keyOfA));
+          .filter(aKey =>
+            bKeys
+              .includes(aKey));
       }
       catch (e) {
         throw new EvalError(`Setting.js: Error intersecting keys: \n${e as string}`);
       }
     }
 
-    function uniqueKeysOf(obj: SettingMap, sharedKeys: string[]): string[] {
+    function uniqueKeysOf(x: SettingMap, sharedKeys: string[]): string[] {
       try {
-        return Object.keys(obj)
-          .filter(objKey => !sharedKeys.includes(objKey));
+        return Object.keys(x)
+          .filter(xKey =>
+            !sharedKeys
+              .includes(xKey));
       }
       catch (e) {
         throw new EvalError(
