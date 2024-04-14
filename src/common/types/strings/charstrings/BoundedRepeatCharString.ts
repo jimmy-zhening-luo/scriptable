@@ -21,7 +21,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
       ]) {
         if (!Number.isInteger(n) && n !== Infinity || n < 0)
           throw SyntaxError(
-            `the value ${bound} of min ${min} or max ${max} is not a valid positive integer`,
+            `the value ${n} of min ${min} or max ${max} is not a valid positive integer`,
           );
       }
 
