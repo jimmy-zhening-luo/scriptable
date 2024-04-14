@@ -8,12 +8,6 @@
       "path": "primitive/tsconfig.json"
     },
     {
-      "path": "tuples/tsconfig.json"
-    },
-    {
-      "path": "numbers/tsconfig.json"
-    },
-    {
       "path": "strings/tsconfig.json"
     },
     {
