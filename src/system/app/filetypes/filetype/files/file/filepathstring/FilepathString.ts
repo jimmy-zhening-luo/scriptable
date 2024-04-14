@@ -2,20 +2,21 @@ class FilepathString {
   public readonly _nominalType: string = "FilepathString";
   private readonly _tree: string[];
 
-  constructor(...filepaths: Array<string | string[] | FilepathString>) {
+  constructor(...paths: Array<string | string[] | FilepathString>) {
     try {
-      if (filepaths.length === 0) this._tree = [];
+      if (paths.length === 0)
+        this._tree = [];
       else {
-        const filepath: string | string[] | FilepathString = filepaths.shift()!;
+        const _path: string | string[] | FilepathString = paths.shift()!;
 
         this._tree
-          = filepath instanceof FilepathString
-            ? [...filepath._tree]
-            : [...FilepathString._validate(filepath)];
-        if (filepaths.length > 0)
+          = _path instanceof FilepathString
+            ? _path._tree
+            : FilepathString._validate(_path);
+        if (paths.length > 0)
           this._tree = [
             ...this._tree,
-            ...new FilepathString(...filepaths)._tree,
+            ...new FilepathString(...paths)._tree,
           ];
       }
     }
@@ -80,10 +81,9 @@ class FilepathString {
 
   public get leaf(): string {
     try {
-      const selfCopy: string[] = [...this._tree];
-      const leaf: string = selfCopy.pop() ?? "";
+      const copy: string[] = [...this._tree];
 
-      return leaf;
+      return copy.pop() ?? "";
     }
     catch (e) {
       throw new EvalError(
@@ -110,10 +110,10 @@ class FilepathString {
   }
 
   public static join(
-    ...filepaths: ConstructorParameters<typeof FilepathString>
+    ...paths: ConstructorParameters<typeof FilepathString>
   ): string {
     try {
-      return new FilepathString(...filepaths)
+      return new FilepathString(...paths)
         .toString();
     }
     catch (e) {

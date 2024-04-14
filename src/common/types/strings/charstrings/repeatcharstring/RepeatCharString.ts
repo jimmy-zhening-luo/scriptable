@@ -14,9 +14,9 @@ class RepeatCharString extends rp_CharString {
     }
   }
 
-  protected _qualifies(candidateCharString: string): boolean {
+  protected _qualifies(candidate: string): boolean {
     try {
-      return [...candidateCharString].every(char => this.charset.allows(char));
+      return [...candidate].every(char => this.charset.allows(char));
     }
     catch (e) {
       throw new EvalError(

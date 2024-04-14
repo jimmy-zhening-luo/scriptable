@@ -20,7 +20,10 @@ class ValidString {
     cleanOptions: Parameters<typeof ValidString._clean>[1] = {},
   ) {
     try {
-      this.cleaned = ValidString._clean(candidateString, cleanOptions);
+      this.cleaned = ValidString._clean(
+        candidateString,
+        cleanOptions
+      );
       this._boundedRepeatCharString = new ValidString.BoundedRepeatCharString(
         min,
         max,
@@ -30,8 +33,8 @@ class ValidString {
       );
     }
     catch (e) {
-      throw new Error(
-        `ValidString: constructor: Error creating ValidString object: \n${e as string}`,
+      throw new EvalError(
+        `ValidString: constructor: \n${e as string}`,
       );
     }
   }

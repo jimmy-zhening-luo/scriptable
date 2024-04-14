@@ -1,27 +1,35 @@
 class CharSet {
-  public readonly charset: string[] = [];
-  public readonly negate: boolean = false;
+  public readonly _nominalType: string = "CharSet";
+  public readonly charset: string[];
+  public readonly negate: boolean;
 
   constructor(
     negate?: boolean | CharSet | string | string[],
-    ...charInputs: Array<CharSet | string | string[]>
+    ...charsets: Array<CharSet | string | string[]>
   ) {
     try {
-      if (negate === undefined) negate = false;
-      else if (typeof negate === "boolean") this.negate = negate;
-      else charInputs.unshift(negate);
-      charInputs.forEach(input => {
-        input instanceof CharSet
-          ? this.charset.push(...input.charset)
-          : Array.isArray(input)
-            ? this.charset.push(...input)
-            : this.charset.push(input);
-      });
-      this.charset.filter(char => char.length === 1);
+      if (negate === undefined)
+        this.negate === false;
+      else if (typeof negate === "boolean") this.negate = negate; 
+      else {
+        charsets.unshift(negate);
+        this.negate = charsets
+          .some(set =>
+            set instanceof CharSet && set.negate);
+      }
+
+      this.charset = charsets
+        .map(set =>
+          set instanceof CharSet
+            ? set.charset
+            : [i]
+              .flat()
+              .filter(c => c.length === 1))
+        .flat();
     }
     catch (e) {
       throw new SyntaxError(
-        `CharSet: constructor: Error creating CharSet object: \n${e as string}`,
+        `CharSet: ctor: Error creating CharSet: \n${e as string}`,
       );
     }
   }
@@ -263,12 +271,28 @@ class CharSet {
     return [" "];
   }
 
+  public static [Symbol.hasInstance](instance: any): boolean {
+    try {
+      return (
+        instance !== null
+        && instance !== undefined
+        && typeof instance === "object"
+        && "_nominalType" in instance
+        && (instance as CharSet)._nominalType === "CharSet"
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `CharSet: [Symbol.hasInstance]: Unhandled exception on operator 'instanceof': \n${e as string}`,
+      );
+    }
+  }
+
   public allows(char: string): boolean {
     try {
       return (
         char.length === 1
-        && (!this.negate && this.charset.includes(char)
-          || this.negate && !this.charset.includes(char))
+        && this.charset.includes(char)) === !this.negate
       );
     }
     catch (e) {

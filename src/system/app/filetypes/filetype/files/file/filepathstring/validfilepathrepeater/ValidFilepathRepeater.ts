@@ -10,8 +10,8 @@ class ValidFilepathRepeater extends fpr_ValidString {
         max: 255,
         negate: true,
         allowedChars: [
-          ...ValidFilepathRepeater.CharSet.colon,
-          ...ValidFilepathRepeater.CharSet.slash,
+          ValidFilepathRepeater.CharSet.colon,
+          ValidFilepathRepeater.CharSet.slash,
         ],
       });
     }

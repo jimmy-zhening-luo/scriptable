@@ -15,51 +15,32 @@ class BoundedRepeatCharString extends _RepeatCharString {
   ) {
     try {
       super(...repeatCharStringCtorParams);
-      for (const bound of [
+      for (const n of [
         min,
         max,
       ]) {
-        if (!new BoundedRepeatCharString.PositiveInteger(bound).isValid)
+        if (!Number.isInteger(n) && n !== Infinity || n < 0)
           throw SyntaxError(
             `the value ${bound} of min ${min} or max ${max} is not a valid positive integer`,
           );
       }
 
-      let minIntToNum: number = new BoundedRepeatCharString.PositiveInteger(
-        min,
-      )
-        .toNumber();
-      let maxIntToNum: number = new BoundedRepeatCharString.PositiveInteger(
-        max,
-      )
-        .toNumber();
+      if (min > max) {
+        const swap: number = min;
 
-      if (minIntToNum > maxIntToNum) {
-        const tmp: number = minIntToNum;
-
-        minIntToNum = maxIntToNum;
-        maxIntToNum = tmp;
+        min = max;
+        max = swap;
       }
-      if (minIntToNum === Infinity) minIntToNum = maxIntToNum = 0;
-      this.min = minIntToNum;
-      this.max = maxIntToNum;
+
+      if (min === Infinity)
+        min = max = 0;
+
+      this.min = min;
+      this.max = max;
     }
     catch (e) {
       throw new EvalError(
         `BoundedRepeatCharString: constructor: Error creating BoundedRepeatCharString object: \n${e as string}`,
-      );
-    }
-  }
-
-  public static get PositiveInteger(): typeof PositiveInteger {
-    try {
-      return importModule(
-        "./common/types/numbers/PositiveInteger",
-      ) as typeof PositiveInteger;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `BoundedRepeatCharString: PositiveInteger: Error importing PositiveInteger module: \n${e as string}`,
       );
     }
   }
@@ -75,12 +56,12 @@ class BoundedRepeatCharString extends _RepeatCharString {
     }
   }
 
-  protected override _qualifies(candidateCharString: string): boolean {
+  protected override _qualifies(candidate: string): boolean {
     try {
       return (
-        super._qualifies(candidateCharString)
-        && candidateCharString.length >= this.min
-        && candidateCharString.length <= this.max
+        candidate.length <= this.max
+        && candidate.length >= this.min
+        && super._qualifies(candidate);
       );
     }
     catch (e) {

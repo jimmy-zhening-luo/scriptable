@@ -24,19 +24,6 @@ class StringSplitter {
     }
   }
 
-  public static get PositiveInteger(): typeof PositiveInteger {
-    try {
-      return importModule(
-        "./common/types/numbers/PositiveInteger",
-      ) as typeof PositiveInteger;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `StringSplitter: error importing PositiveInteger module: \n${e as string}`,
-      );
-    }
-  }
-
   public get numTokens(): number {
     try {
       return this.separator === ""
@@ -86,31 +73,32 @@ class StringSplitter {
     },
   ): string[] {
     try {
-      limit = new StringSplitter.PositiveInteger(limit).value ?? Infinity;
+      limit = !Number.isInteger(limit) || limit < 0
+        ? Infinity
+        : limit;
+
       const tokens: string[] = StringSplitter._split(
         stringOrTokens,
         separator,
         splitOptions,
       );
 
-      if (tokens.length === 0) return [];
-      else {
-        if (limit === Infinity) return tokens;
-        else {
-          if (mergeTo === StringSplitter.Direction.Left)
-            return [
-              tokens.slice(0, limit - 1)
-                .join(separator),
-              ...tokens.slice(limit - 1),
-            ];
-          else
-            return [
-              ...tokens.slice(0, limit - 1),
-              tokens.slice(limit - 1)
-                .join(separator),
-            ];
-        }
-      }
+      if (tokens.length === 0)
+        return [];
+      else if (limit === Infinity)
+        return tokens;
+      else if (mergeTo === StringSplitter.Direction.Left)
+        return [
+          tokens.slice(0, limit - 1)
+            .join(separator),
+          ...tokens.slice(limit - 1),
+        ];
+      else
+        return [
+          ...tokens.slice(0, limit - 1),
+          tokens.slice(limit - 1)
+            .join(separator),
+        ];
     }
     catch (e) {
       throw new EvalError(
@@ -176,13 +164,15 @@ class StringSplitter {
   ): string[] {
     try {
       if (typeof stringOrTokens === "string") {
-        if (stringOrTokens === "") return [];
-        else {
-          if (separator === "") return [...stringOrTokens];
-          else return stringOrTokens.split(separator);
-        }
+        if (stringOrTokens === "")
+          return [];
+        else if (separator === "")
+          return [...stringOrTokens];
+        else
+          return stringOrTokens.split(separator);
       }
-      else return [...stringOrTokens];
+      else
+        return stringOrTokens;
     }
     catch (e) {
       throw new EvalError(
@@ -193,7 +183,7 @@ class StringSplitter {
 
   public toTuple(): string[] {
     try {
-      return [...this._merged];
+      return this._merged;
     }
     catch (e) {
       throw new EvalError(

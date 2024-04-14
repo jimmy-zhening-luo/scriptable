@@ -1,14 +1,16 @@
 abstract class CharString {
   public readonly charset: CharSet;
+  public readonly isValid: boolean;
   private readonly _raw: string;
 
   constructor(
-    candidateCharString: string = "",
-    ...charsetCtorParams: ConstructorParameters<typeof CharSet>
+    candidate: string = "",
+    ...charsets: ConstructorParameters<typeof CharSet>
   ) {
     try {
-      this._raw = candidateCharString;
-      this.charset = new CharString.CharSets.CharSet(...charsetCtorParams);
+      this._raw = candidate;
+      this.charset = new CharString.CharSets.CharSet(...charsets);
+      this.isValid = this._qualifies(this._raw);
     }
     catch (e) {
       throw new Error(
@@ -24,17 +26,6 @@ abstract class CharString {
     catch (e) {
       throw new ReferenceError(
         `CharString: CharSets: Error importing CharSets module: \n${e as string}`,
-      );
-    }
-  }
-
-  public get isValid(): boolean {
-    try {
-      return this._qualifies(this._raw);
-    }
-    catch (e) {
-      throw new EvalError(
-        `CharString: isValid: Error checking if CharString is valid: \n${e as string}`,
       );
     }
   }
@@ -63,7 +54,7 @@ abstract class CharString {
     }
   }
 
-  protected abstract _qualifies(candidateCharString: string): boolean;
+  protected abstract _qualifies(candidate: string): boolean;
 }
 
 module.exports = CharString;
