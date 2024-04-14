@@ -9,7 +9,7 @@ class CharSet {
   ) {
     try {
       if (negate === undefined)
-        this.negate === false;
+        this.negate = false;
       else if (typeof negate === "boolean") this.negate = negate; 
       else {
         charsets.unshift(negate);
@@ -22,7 +22,7 @@ class CharSet {
         .map(set =>
           set instanceof CharSet
             ? set.charset
-            : [i]
+            : [set]
               .flat()
               .filter(c => c.length === 1))
         .flat();
