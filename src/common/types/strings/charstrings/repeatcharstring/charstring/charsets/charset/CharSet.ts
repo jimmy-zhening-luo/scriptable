@@ -23,7 +23,7 @@ class CharSet {
           set instanceof CharSet
             ? set.charset
             : [set])
-        .flat()
+        .flat(Infinity)
         .filter(c => c.length === 1);
     }
     catch (e) {
