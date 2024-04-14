@@ -1,29 +1,29 @@
 class IOFile {
   public readonly _nominalType: string = "IOFile";
-  private readonly _root: FilepathString;
-  private _subpath: FilepathString;
+
+  private readonly _root: Filepath;
+  private _subpath: Filepath;
 
   constructor(
     base:
     | IOFile
-    | Bookmark
-    | ConstructorParameters<typeof FilepathString>[0] = "",
-    ...subpaths: ConstructorParameters<typeof FilepathString>
+    | ConstructorParameters<typeof Filepath>[0],
+    ...subpaths: ConstructorParameters<typeof Filepath>
   ) {
     try {
       this._root
         = base instanceof IOFile
           ? base._path
-          : base instanceof IOFile.Bookmark
-            ? base.path
-            : new IOFile.FilepathString(
-              base,
-            );
-      this._subpath = new IOFile.FilepathString(...subpaths);
+          : new IOFile.Filepath(
+            base,
+          );
+      this._subpath = new IOFile.Filepath(
+        ...subpaths
+      );
     }
     catch (e) {
-      throw new SyntaxError(
-        `IOFile: constructor: Error constructing IOFile: \n${e as string}`,
+      throw new EvalError(
+        `IOFile: ctor: \n${e as string}`,
       );
     }
   }
@@ -33,19 +33,58 @@ class IOFile {
       return importModule("bookmark/Bookmark") as typeof Bookmark;
     }
     catch (e) {
-      throw new ReferenceError(`IOFile: Error importing Bookmark class: \n${e as string}`);
+      throw new ReferenceError(
+        `IOFile: import Bookmark: \n${e as string}`
+      );
     }
   }
 
-  public static get FilepathString(): typeof FilepathString {
+  protected static get Filepath(): typeof Filepath {
     try {
       return importModule(
-        "filepathstring/FilepathString",
-      ) as typeof FilepathString;
+        "filepath/Filepath",
+      ) as typeof Filepath;
     }
     catch (e) {
       throw new ReferenceError(
-        `IOFile: Error importing FilepathString class: \n${e as string}`,
+        `IOFile: Error importing Filepath class: \n${e as string}`,
+      );
+    }
+  }
+
+  public get path(): string {
+    try {
+      return this._path.toString();
+    }
+    catch (e) {
+      throw new EvalError(
+        `IOFile: path: \n${e as string}`,
+      );
+    }
+  }
+
+  public get tree(): string {
+    try {
+      return this._path.tree;
+    }
+    catch (e) {
+      throw new EvalError(
+        `IOFile: tree: \n${e as string}`,
+      );
+    }
+  }
+
+  public get root(): this {
+    try {
+      return new (this.constructor as new (
+        ...args: ConstructorParameters<typeof IOFile>
+      ) => this)(
+        this._root,
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `IOFile: root: \n${e as string}`,
       );
     }
   }
@@ -55,16 +94,9 @@ class IOFile {
       return this._subpath.toString();
     }
     catch (e) {
-      throw new EvalError(`IOFile: subpath: Error getting subpath: \n${e as string}`);
-    }
-  }
-
-  public get path(): string {
-    try {
-      return this._path.toString();
-    }
-    catch (e) {
-      throw new EvalError(`IOFile: path: Error getting path: \n${e as string}`);
+      throw new EvalError(
+        `IOFile: subpath: Error getting subpath: \n${e as string}`
+      );
     }
   }
 
@@ -73,30 +105,8 @@ class IOFile {
       return this._path.leaf;
     }
     catch (e) {
-      throw new EvalError(`IOFile: leaf: Error getting leaf: \n${e as string}`);
-    }
-  }
-
-  public get root(): this {
-    try {
-      return new (this.constructor as new (
-        ...args: ConstructorParameters<typeof IOFile>
-      ) => this)(this._root);
-    }
-    catch (e) {
-      throw new EvalError(`IOFile: root: Error getting root: \n${e as string}`);
-    }
-  }
-
-  public get parent(): this {
-    try {
-      return new (this.constructor as new (
-        ...args: ConstructorParameters<typeof IOFile>
-      ) => this)(this.root, this._subpath.parent);
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `IOFile: parent: Error getting parent IOFile object: \n${e as string}`,
+      throw new EvalError(
+        `IOFile: leaf: \n${e as string}`,
       );
     }
   }
@@ -106,32 +116,39 @@ class IOFile {
       return this.isFile || this.isDirectory;
     }
     catch (e) {
-      throw new ReferenceError(
-        `IOFile: exists: Error checking whether file exists: \n${e as string}`,
+      throw new EvalError(
+        `IOFile: exists: \n${e as string}`,
       );
     }
   }
 
   public get isFile(): boolean {
     try {
-      return FileManager.iCloud()
-        .fileExists(this.path) && !this.isDirectory;
+      return FileManager
+        .iCloud()
+        .fileExists(
+          this.path,
+        )
+        && !this.isDirectory;
     }
     catch (e) {
-      throw new ReferenceError(
-        `IOFile: isFile: Error using Scriptable FileManager class to check whether path is file: \n${e as string}`,
+      throw new EvalError(
+        `IOFile: isFile: \n${e as string}`,
       );
     }
   }
 
   public get isDirectory(): boolean {
     try {
-      return FileManager.iCloud()
-        .isDirectory(this.path);
+      return FileManager
+        .iCloud()
+        .isDirectory(
+          this.path,
+        );
     }
     catch (e) {
-      throw new ReferenceError(
-        `IOFile: isDirectory: Error using Scriptable FileManager class to check whether path is directory: \n${e as string}`,
+      throw new EvalError(
+        `IOFile: isDirectory: \n${e as string}`,
       );
     }
   }
@@ -142,7 +159,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: isRoot: Error checking whether file is root (empty subpath): \n${e as string}`,
+        `IOFile: isRoot: \n${e as string}`,
       );
     }
   }
@@ -152,12 +169,29 @@ class IOFile {
       return (
         !this.exists
         || this.isFile
-        || this.isDirectory && this.ls.length === 0
+        || this.isDirectory
+        && this.ls.length === 0
       );
     }
     catch (e) {
-      throw new ReferenceError(
-        `IOFile: isLeaf: Error checking whether file is leaf: \n${e as string}`,
+      throw new EvalError(
+        `IOFile: isLeaf: \n${e as string}`,
+      );
+    }
+  }
+
+  public get parent(): this {
+    try {
+      return new (this.constructor as new (
+        ...args: ConstructorParameters<typeof IOFile>
+      ) => this)(
+        this.root,
+        this._subpath.parent,
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `IOFile: parent: \n${e as string}`,
       );
     }
   }
@@ -165,13 +199,16 @@ class IOFile {
   public get ls(): string[] {
     try {
       return this.isDirectory
-        ? FileManager.iCloud()
-          .listContents(this.path)
+        ? FileManager
+          .iCloud()
+          .listContents(
+            this.path,
+          )
         : [];
     }
     catch (e) {
-      throw new ReferenceError(
-        `IOFile: ls: Error using Scriptable FileManager class to list contents of directory: \n${e as string}`,
+      throw new EvalError(
+        `IOFile: ls: \n${e as string}`,
       );
     }
   }
@@ -183,31 +220,50 @@ class IOFile {
         : this.isLeaf
           ? []
           : this.ls
-            .map(leaf => this.append(leaf))
-            .filter(child => !this.path.startsWith(child.path))
-            .map(file => file.descendants)
+            .map(leaf =>
+              this.append(
+                leaf,
+              ))
+            .filter(child =>
+              !this.path.startsWith(
+                child.path,
+              ))
+            .map(file =>
+              file.descendants)
             .flat(1);
     }
     catch (e) {
-      throw new ReferenceError(`IOFile: Error getting descendants: \n${e as string}`);
+      throw new EvalError(
+        `IOFile: descendants: \n${e as string}`,
+      );
     }
   }
 
-  private get _path(): FilepathString {
+  private get _path(): Filepath {
     try {
-      return this._root.append(this._subpath);
+      return this._root.append(
+        this._subpath,
+      );
     }
     catch (e) {
-      throw new EvalError(`IOFile: _path: Error getting path: \n${e as string}`);
+      throw new EvalError(
+        `IOFile: _path: \n${e as string}`,
+      );
     }
   }
 
-  public set subpath(subpath: ConstructorParameters<typeof FilepathString>[0]) {
+  public set subpath(
+    subpath: ConstructorParameters<typeof Filepath>[1],
+  ) {
     try {
-      this._subpath = new IOFile.FilepathString(subpath);
+      this._subpath = new IOFile.Filepath(
+        subpath,
+      );
     }
     catch (e) {
-      throw new SyntaxError(`IOFile: subpath: Error setting subpath: \n${e as string}`);
+      throw new EvalError(
+        `IOFile: subpath: \n${e as string}`,
+      );
     }
   }
 
@@ -222,23 +278,25 @@ class IOFile {
       );
     }
     catch (e) {
-      throw new Error(`IOFile: Error checking if object is IOFile: \n${e as string}`);
+      throw new EvalError(
+        `IOFile: [Symbol.hasInstance]: \n${e as string}`,
+      );
     }
   }
 
   public static join(
-    ...filepaths: Parameters<typeof FilepathString.join>
-  ): ReturnType<typeof FilepathString.join> {
+    ...filepaths: Parameters<typeof Filepath.join>
+  ): ReturnType<typeof Filepath.join> {
     try {
-      return IOFile.FilepathString.join(...filepaths);
+      return IOFile.Filepath.join(...filepaths);
     }
     catch (e) {
-      throw new SyntaxError(`IOFile: static join: Error joining paths: \n${e as string}`);
+      throw new EvalError(`IOFile: static join: Error joining paths: \n${e as string}`);
     }
   }
 
   public append(
-    ...filepaths: Parameters<typeof FilepathString.prototype.append>
+    ...filepaths: Parameters<typeof Filepath.prototype.append>
   ): this {
     try {
       return new (this.constructor as new (
@@ -251,7 +309,7 @@ class IOFile {
   }
 
   public cd(
-    ...relativeFilepath: Parameters<typeof FilepathString.prototype.cd>
+    ...relativeFilepath: Parameters<typeof Filepath.prototype.cd>
   ): this {
     try {
       this._subpath.cd(...relativeFilepath);
@@ -295,7 +353,7 @@ class IOFile {
           }
           catch (e) {
             throw new EvalError(
-              `Could not create parent directory using Scriptable FileManager class. See caught error: \n${e as string}`,
+              `Could not create parent directory using Scriptable FileManager class: \n${e as string}`,
             );
           }
         try {
@@ -318,43 +376,56 @@ class IOFile {
     }
   }
 
-  public async delete(force: boolean = false): Promise<this> {
+  public async delete(
+    force: boolean = false,
+  ): Promise<this> {
     try {
       if (this.exists) {
         if (force) __deleteUsingFileManager(this.path);
         else {
           const confirm: Alert = new Alert();
 
-          confirm.message = `Are you sure you want to delete this file or folder (including all descendants)? Path: ${this.path}`;
-          confirm.addDestructiveAction("Yes, DELETE this file");
-          confirm.addCancelAction("Cancel");
-          await confirm.present()
+          confirm
+            .message = `Are you sure you want to delete this file or folder (including all descendants)? Path: ${this.path}`;
+          confirm
+            .addDestructiveAction(
+              "Yes, DELETE this file",
+            );
+          confirm
+            .addCancelAction(
+              "Cancel",
+            );
+          await confirm
+            .present()
             .then(userChoice => {
               userChoice === 0
-                ? __deleteUsingFileManager(this.path)
-                : console.warn(
-                  `User canceled file deletion of file or folder at path: ${this.path}`,
-                );
+                ? __deleteUsingFileManager(
+                  this.path,
+                )
+                : console
+                  .warn(
+                    `User canceled file deletion of file or folder at path: ${this.path}`,
+                  );
             });
         }
       }
 
-      function __deleteUsingFileManager(path: string): void {
+      function __deleteUsingFileManager(
+        path: string,
+      ): void {
         try {
           FileManager.iCloud()
             .remove(path);
           if (FileManager.iCloud()
             .fileExists(path))
             throw new ReferenceError(
-              `IOFile still exists after using Scriptable FileManager class to delete it.`,
+              `Unexpected: IOFile still exists, even after deleting it using Scriptable.FileManager`,
             );
         }
         catch (e) {
-          if (!(e instanceof ReferenceError))
-            e = new EvalError(
-              `Could not delete file using Scriptable FileManager class. See caught error: \n${e as string}`,
-            );
-          throw new EvalError(`__deleteUsingFileManager: \n${e as string}`);
+          throw new EvalError(
+            `__deleteUsingFileManager: \n${e as string}`,
+          );
         }
       }
 
@@ -362,7 +433,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: delete: Error deleting file at path "${this.path}": \n${e as string}`,
+        `IOFile: delete: \n${e as string}`,
       );
     }
   }
@@ -372,16 +443,9 @@ class IOFile {
       return this.path;
     }
     catch (e) {
-      throw new EvalError(`IOFile: toString: Error getting path: \n${e as string}`);
-    }
-  }
-
-  public toTree(): string[] {
-    try {
-      return this._path.toTree();
-    }
-    catch (e) {
-      throw new EvalError(`IOFile: toTree: Error getting tree: \n${e as string}`);
+      throw new EvalError(
+        `IOFile: toString: \n${e as string}`,
+      );
     }
   }
 }

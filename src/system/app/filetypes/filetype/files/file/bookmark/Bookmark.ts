@@ -14,7 +14,7 @@ class Bookmark {
         const alias: string = bookmark.trim();
         if (alias === "")
           throw new SyntaxError(
-            `alias must be non-empty`,
+            `empty alias`,
           );
         else if (
           !FileManager
@@ -22,7 +22,7 @@ class Bookmark {
             .bookmarkExists(alias)
         )
           throw new ReferenceError(
-            `Scriptable has no bookmark with alias '${alias}'`,
+            `no Scriptable bookmark with alias: '${alias}'`,
           );
         else {
           this.alias = alias;
@@ -51,7 +51,7 @@ class Bookmark {
     }
     catch (e) {
       throw new EvalError(
-        `Bookmark: [Symbol.hasInstance]: Unhandled exception: \n${e as string}`,
+        `Bookmark: [Symbol.hasInstance]: \n${e as string}`,
       );
     }
   }
@@ -62,7 +62,7 @@ class Bookmark {
     }
     catch (e) {
       throw new EvalError(
-        `Bookmark: toString: Unhandled exception: \n${e as string}`,
+        `Bookmark: toString: \n${e as string}`,
       );
     }
   }

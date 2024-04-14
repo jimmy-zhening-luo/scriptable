@@ -27,17 +27,6 @@ class Files {
       throw new ReferenceError(`Files: Error importing Bookmark class: \n${e as string}`);
     }
   }
-
-  public static get FilepathString(): typeof FilepathString {
-    try {
-      return Files.IOFile.FilepathString;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Files: Error importing FilepathString class: \n${e as string}`,
-      );
-    }
-  }
 }
 
 module.exports = Files;

@@ -25,7 +25,7 @@ abstract class Filetype {
     }
     catch (e) {
       throw new ReferenceError(
-        `Utility: Files: Error importing Files module: \n${e as string}`,
+        `Utility: import Files: \n${e as string}`,
       );
     }
   }
@@ -36,7 +36,7 @@ abstract class Filetype {
     }
     catch (e) {
       throw new ReferenceError(
-        `Utility: ReadOnlyIOFile: Error importing ReadOnlyIOFile class: \n${e as string}`,
+        `Utility: import Files.ReadOnlyIOFile: \n${e as string}`,
       );
     }
   }
@@ -47,7 +47,18 @@ abstract class Filetype {
     }
     catch (e) {
       throw new ReferenceError(
-        `Utility: IOFile: Error importing IOFile class: \n${e as string}`,
+        `Utility: import Files.IOFile: \n${e as string}`,
+      );
+    }
+  }
+
+  public static get Bookmark(): typeof Bookmark {
+    try {
+      return Filetype.Files.Bookmark;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Utility: import Files.Bookmark: \n${e as string}`,
       );
     }
   }

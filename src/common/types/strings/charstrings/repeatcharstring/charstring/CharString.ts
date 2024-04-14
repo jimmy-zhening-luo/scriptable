@@ -12,8 +12,8 @@ abstract class CharString {
       this.charset = new CharString.CharSets.CharSet(...charsets);
     }
     catch (e) {
-      throw new Error(
-        `CharString: constructor: Error creating CharString object: \n${e as string}`,
+      throw new EvalError(
+        `CharString: ctor: \n${e as string}`,
       );
     }
   }
@@ -24,7 +24,7 @@ abstract class CharString {
     }
     catch (e) {
       throw new ReferenceError(
-        `CharString: CharSets: Error importing CharSets module: \n${e as string}`,
+        `CharString: import CharSets: \n${e as string}`,
       );
     }
   }
@@ -38,7 +38,7 @@ abstract class CharString {
     }
     catch (e) {
       throw new EvalError(
-        `CharString: value: Error checking validity: \n${e as string}`,
+        `CharString: isValid: \n${e as string}`,
       );
     }
   }

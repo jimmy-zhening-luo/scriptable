@@ -12,7 +12,7 @@
       "path": "bookmark/tsconfig.json"
     },
     {
-      "path": "filepathstring/tsconfig.json"
+      "path": "filepath/tsconfig.json"
     }
   ],
   "compilerOptions": {

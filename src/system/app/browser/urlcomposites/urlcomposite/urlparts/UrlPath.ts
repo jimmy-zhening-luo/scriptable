@@ -77,7 +77,7 @@ class UrlPath extends pa_UrlPart {
           ignoreEmptyTokens: true,
         },
       )
-        .toTuple();
+        .merged;
 
       return split.length === 0
         ? null

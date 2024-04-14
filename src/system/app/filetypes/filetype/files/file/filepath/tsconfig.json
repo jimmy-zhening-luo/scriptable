@@ -9,7 +9,7 @@
       "path": "../../../../../../../common/types/strings/tsconfig.json"
     },
     {
-      "path": "validfilepathrepeater/tsconfig.json"
+      "path": "validpart/tsconfig.json"
     }
   ],
   "compilerOptions": {
