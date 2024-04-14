@@ -14,11 +14,11 @@ class IOFile {
       this._root
         = base instanceof IOFile
           ? base._path
-          : new IOFile.FilepathString(
-            base instanceof IOFile.Bookmark
-              ? base.path
-              : base,
-          );
+          : base instanceof IOFile.Bookmark
+            ? base.path
+            : new IOFile.FilepathString(
+              base,
+            );
       this._subpath = new IOFile.FilepathString(...subpaths);
     }
     catch (e) {

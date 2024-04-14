@@ -90,7 +90,7 @@ class UrlCharSet extends u_CharSet {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlCharSet: CharSet: Error importing CharSet module: \n${e as string}`,
+        `UrlCharSet: import CharSet: \n${e as string}`,
       );
     }
   }

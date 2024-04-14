@@ -3,7 +3,7 @@ const fpr_ValidString: typeof ValidString = importModule(
 ) as typeof ValidString;
 
 class ValidFilepathRepeater extends fpr_ValidString {
-  constructor(pathSegment: string = "") {
+  constructor(pathSegment: string) {
     try {
       super(pathSegment, {
         min: 1,
@@ -16,8 +16,8 @@ class ValidFilepathRepeater extends fpr_ValidString {
       });
     }
     catch (e) {
-      throw new SyntaxError(
-        `ValidFilepathRepeater: constructor: Caught unhandled exception instantiating parent class ValidFilepathRepeater: \n${e as string}`,
+      throw new EvalError(
+        `ValidFilepathRepeater: ctor: \n${e as string}`,
       );
     }
   }
@@ -28,7 +28,7 @@ class ValidFilepathRepeater extends fpr_ValidString {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidFilepathRepeater: ValidString: Failed to import ValidString module: \n${e as string}`,
+        `ValidFilepathRepeater: import ValidString: \n${e as string}`,
       );
     }
   }

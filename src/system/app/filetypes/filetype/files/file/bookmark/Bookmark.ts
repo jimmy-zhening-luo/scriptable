@@ -1,50 +1,40 @@
 class Bookmark {
   public readonly _nominalType: string = "Bookmark";
+
   public readonly alias: string;
+  public readonly path: string;
 
-  constructor(bookmark: string = "") {
+  constructor(bookmark: string | Bookmark) {
     try {
-      this.alias = bookmark.trim();
-    }
-    catch (e) {
-      throw new SyntaxError(
-        `Bookmark: constructor: Caught unhandled exception while instantiating Bookmark. See unhandled exception: \n${e as string}`,
-      );
-    }
-  }
-
-  public get resolves(): boolean {
-    try {
-      return (
-        this.alias !== "" && FileManager.iCloud()
-          .bookmarkExists(this.alias)
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Bookmark: exists: Caught unhandled exception while using Scriptable FileManager class to check whether bookmark exists. See unhandled exception: \n${e as string}`,
-      );
-    }
-  }
-
-  public get path(): string {
-    try {
-      if (!this.resolves) {
-        if (this.alias === "")
-          throw new ReferenceError("Bookmark name cannot be empty.");
-        else
-          throw new ReferenceError(
-            `Bookmark '${this.alias}' is not configured in Scriptable.`,
-          );
+      if (bookmark instanceof Bookmark) {
+        this.alias = bookmark.alias;
+        this.path = bookmark.path;
       }
       else {
-        return FileManager.iCloud()
-          .bookmarkedPath(this.alias);
+        const alias: string = bookmark.trim();
+        if (alias === "")
+          throw new SyntaxError(
+            `alias must be non-empty`,
+          );
+        else if (
+          !FileManager
+            .iCloud()
+            .bookmarkExists(alias)
+        )
+          throw new ReferenceError(
+            `Scriptable has no bookmark with alias '${alias}'`,
+          );
+        else {
+          this.alias = alias;
+          this.path = FileManager
+            .iCloud()
+            .bookmarkedPath(alias);
+        }
       }
     }
     catch (e) {
-      throw new ReferenceError(
-        `Bookmark: path: Error getting bookmarked path: \n${e as string}`,
+      throw new EvalError(
+        `Bookmark: ctor: \n${e as string}`,
       );
     }
   }
@@ -61,7 +51,7 @@ class Bookmark {
     }
     catch (e) {
       throw new EvalError(
-        `Bookmark: [Symbol.hasInstance]: Caught unhandled exception while checking whether instance is an instance of Bookmark. See unhandled exception: \n${e as string}`,
+        `Bookmark: [Symbol.hasInstance]: Unhandled exception: \n${e as string}`,
       );
     }
   }
@@ -72,7 +62,7 @@ class Bookmark {
     }
     catch (e) {
       throw new EvalError(
-        `Bookmark: toString: Caught unhandled exception while getting bookmarked path of the bookmark named '${this.alias}'. See unhandled exception: \n${e as string}`,
+        `Bookmark: toString: Unhandled exception: \n${e as string}`,
       );
     }
   }

@@ -116,25 +116,12 @@ abstract class Filetype {
     try {
       if (utilityClassName === "")
         throw new SyntaxError(
-          `Utility name passed to Utility abstract base class constructor was empty. Utility name must be a non-empty string.`,
+          `Utility name cannot be empty.`,
         );
-      else {
-        const utilityRootBookmarkName: string = [
-          "#",
-          utilityClassName,
-        ].join(
-          "",
+      else
+        return new Filetype.IOFile.Bookmark(
+          "#" + utilityClassName,
         );
-        const utilityRootBookmark: Bookmark = new Filetype.IOFile.Bookmark(
-          utilityRootBookmarkName,
-        );
-
-        if (!utilityRootBookmark.resolves)
-          throw new ReferenceError(
-            `Utility root bookmark name '${utilityRootBookmarkName}' does not resolve to a Scriptable bookmark`,
-          );
-        else return utilityRootBookmark;
-      }
     }
     catch (e) {
       throw new EvalError(

@@ -1,11 +1,20 @@
 class CharSet {
   public readonly _nominalType: string = "CharSet";
-  public readonly charset: string[];
+
+  public readonly members: string[];
   public readonly negate: boolean;
 
   constructor(
-    negate?: boolean | CharSet | string | string[],
-    ...charsets: Array<CharSet | string | string[]>
+    negate?:
+      | boolean
+      | string
+      | string[]
+      | CharSet,
+    ...charsets: Array<
+      | string
+      | string[]
+      | CharSet
+    >
   ) {
     try {
       if (negate === undefined)
@@ -18,17 +27,18 @@ class CharSet {
             set instanceof CharSet && set.negate);
       }
 
-      this.charset = charsets
+      this.members = charsets
         .map(set =>
           set instanceof CharSet
-            ? set.charset
-            : [set].flat())
-        .flat()
-        .filter(c => c.length === 1);
+            ? set.members
+            : [set]
+              .flat()
+              .filter(c => c.length === 1))
+        .flat();
     }
     catch (e) {
-      throw new SyntaxError(
-        `CharSet: ctor: Error creating CharSet: \n${e as string}`,
+      throw new EvalError(
+        `CharSet: ctor: \n${e as string}`,
       );
     }
   }
@@ -282,7 +292,7 @@ class CharSet {
     }
     catch (e) {
       throw new EvalError(
-        `CharSet: [Symbol.hasInstance]: Unhandled exception on operator 'instanceof': \n${e as string}`,
+        `CharSet: [Symbol.hasInstance]: \n${e as string}`,
       );
     }
   }
@@ -291,23 +301,23 @@ class CharSet {
     try {
       return (
         char.length === 1
-        && this.charset.includes(char) !== this.negate
+        && this.members.includes(char) !== this.negate
       );
     }
     catch (e) {
       throw new EvalError(
-        `CharSet: includes: Error checking if CharSet allows char: \n${e as string}`,
+        `CharSet: allows: \n${e as string}`,
       );
     }
   }
 
   public toString(): string {
     try {
-      return this.charset.join(" | ");
+      return this.members.join(" | ");
     }
     catch (e) {
       throw new EvalError(
-        `CharSet: toString: Error converting CharSet to string: \n${e as string}`,
+        `CharSet: toString: Failed to format-print CharSet members: \n${e as string}`,
       );
     }
   }

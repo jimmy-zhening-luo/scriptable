@@ -5,7 +5,7 @@ class CharSets {
     }
     catch (e) {
       throw new ReferenceError(
-        `CharSets: UrlCharSet: Error importing UrlCharSet module: \n${e as string}`,
+        `CharSets: import UrlCharSet: \n${e as string}`,
       );
     }
   }
@@ -16,7 +16,7 @@ class CharSets {
     }
     catch (e) {
       throw new ReferenceError(
-        `CharSets: CharSet: Error importing CharSet module: \n${e as string}`,
+        `CharSets: import CharSet: \n${e as string}`,
       );
     }
   }
