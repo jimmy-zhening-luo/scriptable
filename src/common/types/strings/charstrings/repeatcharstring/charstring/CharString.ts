@@ -29,7 +29,7 @@ abstract class CharString {
     }
   }
 
-  public get isValid(): null | string {
+  public get isValid(): boolean {
     try {
       if (this._isValid === undefined)
         this._isValid = this._qualifies(this._raw);
