@@ -33,7 +33,7 @@ namespace Search {
 
           const query: Query = new Query(
             input === ""
-              ? this.readStorage()
+              ? this.read()
               : input,
             this.inputData?.clip ?? "",
             MATH_KEYS,
@@ -81,7 +81,7 @@ namespace Search {
               ) ?? null;
 
             if (resolved)
-              this.writeStorage(
+              this.write(
                 query.clean,
               );
 

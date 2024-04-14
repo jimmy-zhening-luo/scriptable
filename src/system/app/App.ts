@@ -91,7 +91,7 @@ abstract class App<
     }
   }
 
-  public readStorage(
+  public read(
     subpath?: string,
   ): ReturnType<Storage["read"]> {
     try {
@@ -101,14 +101,14 @@ abstract class App<
     }
     catch (e) {
       throw new ReferenceError(
-        `App: readStorage: Error reading app storage file at '${
+        `App: read: Error reading app storage file at '${
           this.storage(subpath).path
         }': \n${e as string}`,
       );
     }
   }
 
-  public writeStorage(
+  public write(
     data: string,
     subpath?: string,
   ): this {
@@ -121,7 +121,7 @@ abstract class App<
     }
     catch (e) {
       throw new ReferenceError(
-        `App: writeStorage: Error writing to app storage file at '${
+        `App: write: Error writing to app storage file at '${
           this.storage(subpath).path
         }': \n${e as string}`,
       );
