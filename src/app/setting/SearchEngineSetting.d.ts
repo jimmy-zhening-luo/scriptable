@@ -23,4 +23,4 @@ declare type BrowserAction =
 
 declare type BrowserEncode =
   | "%20"
-  | "default";
+  | "+";

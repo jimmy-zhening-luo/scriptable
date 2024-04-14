@@ -354,18 +354,21 @@ namespace Search {
     public readonly url: string[];
     public readonly tag: string;
     public readonly browser: BrowserAction;
+    public readonly encode: BrowserEncode;
 
     constructor(
       keys: string | string[],
       url: string | string[],
       tag: string,
       browser: BrowserAction = "default",
+      encode: BrowserEncode = "+",
     ) {
       try {
         super(keys);
         this.url = [url].flat();
         this.tag = tag;
         this.browser = browser;
+        this.encode = encode;
       }
       catch (e) {
         throw new EvalError(
@@ -384,7 +387,7 @@ namespace Search {
               .map(operand =>
                 encodeURI(operand))
               .join("%2B"))
-          .join("+");
+          .join(this.encode);
         const actions: string[] = this
           .url
           .map(u =>
