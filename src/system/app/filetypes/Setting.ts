@@ -30,7 +30,7 @@ class Setting<
     try {
       if (this._cachedSetting !== undefined) return this._cachedSetting;
       else {
-        if (!this.isFile)
+        if (!this._file.isFile)
           throw new SyntaxError(
             `setting file does not exist`,
           );
