@@ -5,11 +5,7 @@ const fpr_ValidString: typeof ValidString = importModule(
 class ValidFilepathPart extends fpr_ValidString {
   constructor(part: string) {
     try {
-      if (part.length < 1)
-        throw new SyntaxError(
-          `empty path part`,
-        );
-      else if (part.length > 255)
+      if (part.length > 255)
         throw new SyntaxError(
           `path part exceeds 255 chars`,
         );
@@ -17,7 +13,7 @@ class ValidFilepathPart extends fpr_ValidString {
         super(
           part,
           {
-            min: 1,
+            min: 0,
             max: 255,
             negate: true,
             allowedChars: [

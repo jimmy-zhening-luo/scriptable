@@ -168,7 +168,9 @@ class Filepath {
           new Filepath
             .ValidFilepathPart(
               part,
-            ).value);
+            ).value)
+        .filter(part =>
+          part !== "");
     }
     catch (e) {
       throw new EvalError(
