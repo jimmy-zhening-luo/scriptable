@@ -18,7 +18,7 @@ class RepeatCharString extends rp_CharString {
     candidate: string,
   ): boolean {
     try {
-      return [
+      return candidate === "" || [
         ...candidate,
       ].every(
         char =>

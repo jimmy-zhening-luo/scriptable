@@ -58,19 +58,23 @@ class StringSplitter {
         splitOptions,
       );
 
-      return mergeTo === "left"
-        ? [
-            tokens
-              .slice(0, limit - 1)
-              .join(separator),
-            ...tokens.slice(limit - 1),
-          ]
-        : [
-            ...tokens.slice(0, limit - 1),
-            tokens
-              .slice(limit - 1)
-              .join(separator),
-          ];
+      return tokens.length === 0
+        ? []
+        : tokens.length <= limit
+          ? tokens
+          : mergeTo === "left"
+            ? [
+                tokens
+                  .slice(0, limit - 1)
+                  .join(separator),
+                ...tokens.slice(limit - 1),
+              ]
+            : [
+                ...tokens.slice(0, limit - 1),
+                tokens
+                  .slice(limit - 1)
+                  .join(separator),
+              ];
     }
     catch (e) {
       throw new EvalError(
