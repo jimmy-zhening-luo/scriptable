@@ -1,142 +1,135 @@
-abstract class Filetype {
+abstract class Filetype<
+  T extends string,
+  F extends typeof IOFile = typeof ReadOnlyIOFile,
+> {
   protected readonly _file: IOFile;
 
   constructor(
-    utilityClassName: string,
-    utilityFileSubpath: string,
-    FileTypeConstructor: typeof IOFile = Filetype.ReadOnlyIOFile,
+    _type: T,
+    FileConstructor: F,
+    ...subpaths: string[],
   ) {
     try {
-      this._file = new FileTypeConstructor(
-        this._utilityClassNameToBookmark(utilityClassName),
-        utilityFileSubpath,
+      this._file = new FileConstructor(
+        this._rootBookmark(
+          _type
+        ),
+        ...subpaths,
       );
     }
     catch (e) {
       throw new EvalError(
-        `Utility: constructor: Caught unhandled exception while creating Utility file: \n${e as string}`,
+        `Filetype: ctor: \n${e as string}`,
       );
     }
   }
 
-  public static get Files(): typeof Files {
+  protected static get Files(): typeof Files {
     try {
       return importModule("files/Files") as typeof Files;
     }
     catch (e) {
       throw new ReferenceError(
-        `Utility: import Files: \n${e as string}`,
+        `Filetype: import Files: \n${e as string}`,
       );
     }
   }
 
-  public static get ReadOnlyIOFile(): typeof ReadOnlyIOFile {
+  protected static get ReadOnlyIOFile(): typeof ReadOnlyIOFile {
     try {
       return Filetype.Files.ReadOnlyIOFile;
     }
     catch (e) {
       throw new ReferenceError(
-        `Utility: import Files.ReadOnlyIOFile: \n${e as string}`,
+        `Filetype: import Files.ReadOnlyIOFile: \n${e as string}`,
       );
     }
   }
 
-  public static get IOFile(): typeof IOFile {
+  protected static get IOFile(): typeof IOFile {
     try {
       return Filetype.Files.IOFile;
     }
     catch (e) {
       throw new ReferenceError(
-        `Utility: import Files.IOFile: \n${e as string}`,
+        `Filetype: import Files.IOFile: \n${e as string}`,
       );
     }
   }
 
-  public static get Bookmark(): typeof Bookmark {
+  private static get Bookmark(): typeof Bookmark {
     try {
       return Filetype.Files.Bookmark;
     }
     catch (e) {
       throw new ReferenceError(
-        `Utility: import Files.Bookmark: \n${e as string}`,
+        `Filetype: import Files.Bookmark: \n${e as string}`,
       );
     }
   }
 
-  public get isFile(): boolean {
-    try {
-      return this._file.isFile;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Utility: isFile: Error checking if file exists and is a file, not a directory: \n${e as string}`,
-      );
-    }
-  }
-
-  public get path(): typeof Filetype.prototype._file.path {
-    try {
-      return this._file.path;
-    }
-    catch (e) {
-      throw new EvalError(`Utility: path: Error getting path: \n${e as string}`);
-    }
-  }
-
-  public get subpath(): typeof Filetype.prototype._file.subpath {
+  public get subpath(): string {
     try {
       return this._file.subpath;
     }
     catch (e) {
-      throw new EvalError(`Utility: subpath: Error getting subpath: \n${e as string}`);
+      throw new EvalError(
+        `Filetype: subpath: \n${e as string}`,
+      );
     }
   }
 
-  public get filename(): typeof Filetype.prototype._file.leaf {
+  public get filename(): string {
     try {
-      return this._file.isFile
-        ? this._file.leaf
-        : "";
+      return this._file.leaf;
     }
     catch (e) {
-      throw new EvalError(`Utility: filename: Error getting filename: \n${e as string}`);
+      throw new EvalError(
+        `Filetype: filename: \n${e as string}`,
+      );
     }
   }
 
-  public read(): ReturnType<typeof Filetype.prototype._file.read> {
+  public read(): string {
     try {
       return this._file.isFile
         ? this._file.read()
         : "";
     }
     catch (e) {
-      throw new ReferenceError(`Utility: read: Error reading file: \n${e as string}`);
+      throw new EvalError(
+        `Filetype: read: \n${e as string}`,
+      );
     }
   }
 
-  public toString(): ReturnType<typeof Filetype.prototype.read> {
+  public toString(): string {
     try {
-      return this.read();
+      return this._file.toString();
     }
     catch (e) {
-      throw new EvalError(`Utility: toString: Error getting data: \n${e as string}`);
+      throw new EvalError(
+        `Filetype: toString: \n${e as string}`,
+      );
     }
   }
 
-  private _utilityClassNameToBookmark(utilityClassName: string): Bookmark {
+  private _rootBookmark(
+    _type: T,
+  ): Bookmark {
     try {
-      if (utilityClassName === "")
+      if (_type === "")
         throw new SyntaxError(
-          `Utility name cannot be empty.`,
+          `Empty _type`,
         );
       else
         return new Filetype.IOFile.Bookmark(
-          "#" + utilityClassName,
+          "#" + _type,
         );
     }
     catch (e) {
       throw new EvalError(
-        `Error while getting Utility root bookmark for the Utility class named '${utilityClassName}': \n${e as string}`,
+        `Filetype: _rootBookmark: \n${e as string}`,
       );
     }
   }

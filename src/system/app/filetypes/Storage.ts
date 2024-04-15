@@ -2,49 +2,46 @@ const stor_Filetype: typeof Filetype = importModule(
   "filetype/Filetype",
 ) as typeof Filetype;
 
-class Storage extends stor_Filetype {
+class Storage extends stor_Filetype<
+  "Storage",
+  typeof IOFile
+> {
   constructor(
-    storageSubpath: string,
-    programName: string,
+    appType: string,
+    appName: string,
     subpath: string = "default.txt",
   ) {
     try {
       super(
         "Storage",
-        Storage.IOFile.join(
-          storageSubpath,
-          programName,
-          subpath,
-        ),
         Storage.IOFile,
+        appType,
+        appName,
+        subpath,
       );
     }
     catch (e) {
       throw new EvalError(
-        `Storage: constructor: Error creating Storage object: \n${e as string}`,
+        `Storage: ctor: \n${e as string}`,
       );
     }
   }
 
-  public static get Filetype(): typeof Filetype {
+  public write(
+    text: string,
+  ): this {
     try {
-      return stor_Filetype;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Storage: get Utility: Error importing Utility module: \n${e as string}`,
+      this._file.write(
+        text,
+        true
       );
-    }
-  }
-
-  public write(text: string): this {
-    try {
-      this._file.write(text, true);
 
       return this;
     }
     catch (e) {
-      throw new EvalError(`Storage: write: Error writing to file: \n${e as string}`);
+      throw new EvalError(
+        `Storage: write: \n${e as string}`,
+      );
     }
   }
 
@@ -55,7 +52,9 @@ class Storage extends stor_Filetype {
       return this;
     }
     catch (e) {
-      throw new EvalError(`Storage: delete: Error deleting file: \n${e as string}`);
+      throw new EvalError(
+        `Storage: delete: \n${e as string}`,
+      );
     }
   }
 }

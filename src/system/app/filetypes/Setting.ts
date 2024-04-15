@@ -2,52 +2,27 @@ const set_Filetype: typeof Filetype = importModule(
   "filetype/Filetype",
 ) as typeof Filetype;
 
-class Setting<C extends Config = Record<string, never>> extends set_Filetype {
+class Setting<
+  C extends Config = Record<string, never>,
+> extends set_Filetype<
+  "Setting"
+> {
   constructor(
-    settingSubpath: string,
-    programName: string,
+    appType: string,
+    appName: string,
   ) {
     try {
       super(
         "Setting",
-        Setting.IOFile.join(
-          settingSubpath,
-          `${programName}.json`,
-        ),
+        Setting.ReadOnlyIOFile,
+        appType,
+        appName + ".json",
       );
     }
     catch (e) {
       throw new EvalError(
-        `Setting: constructor: Error creating Setting object: \n${e as string}`,
+        `Setting: ctor: \n${e as string}`,
       );
-    }
-  }
-
-  public static get Filetype(): typeof Filetype {
-    try {
-      return set_Filetype;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Setting: Error importing Utility module: \n${e as string}`,
-      );
-    }
-  }
-
-  public get isParseable(): boolean {
-    try {
-      if (!this.isFile)
-        throw new ReferenceError(
-          `Setting.js: Setting file '${this.path}' does not exist.`,
-        );
-      else {
-        JSON.parse(this.read());
-
-        return true;
-      }
-    }
-    catch {
-      return false;
     }
   }
 
@@ -55,9 +30,9 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
     try {
       if (this._cachedSetting !== undefined) return this._cachedSetting;
       else {
-        if (!this.isParseable)
+        if (!this.isFile)
           throw new SyntaxError(
-            `Setting.js: Setting file '${this.path}' is not parseable as JSON.`,
+            `setting file does not exist`,
           );
         else {
           const parsedJson: unknown = JSON.parse(this.read());
@@ -69,7 +44,7 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
           }
           else
             throw new SyntaxError(
-              `Setting.js: Setting file '${this.path}' is valid JSON but not a valid Settings file.`,
+              `setting file is valid JSON, but invalid setting schema`,
             );
 
           function _validate(parsedJson: unknown): boolean {
@@ -79,7 +54,7 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
             }
             catch (e) {
               throw new EvalError(
-                `Setting.js: Error while validating whether parsed JSON matches expected Settings file: \n${e as string}`,
+                `_validate: \n${e as string}`,
               );
             }
           }
@@ -88,7 +63,7 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
     }
     catch (e) {
       throw new EvalError(
-        `Setting.js: Error while parsing setting file '${this.path}': \n${e as string}`,
+        `Setting: parsed: \n${e as string}`,
       );
     }
   }
@@ -99,7 +74,7 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
     }
     catch (e) {
       throw new EvalError(
-        `Setting.js: Error getting unmerged setting file '${this.path}': \n${e as string}`,
+        `Setting: unmerged: \n${e as string}`,
       );
     }
   }
@@ -108,13 +83,13 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
     try {
       if (this.unmerged.app === undefined)
         throw new ReferenceError(
-          `Setting.js: Setting file '${this.path}' does not contain an 'app' property.`,
+          `no app setting found`,
         );
       else return this.unmerged.app;
     }
     catch (e) {
       throw new EvalError(
-        `Setting.js: Error getting 'app' property from setting file '${this.path}': \n${e as string}`,
+        `Setting: app: \n${e as string}`,
       );
     }
   }
@@ -123,40 +98,46 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
     try {
       if (this.unmerged.user === undefined)
         throw new ReferenceError(
-          `Setting.js: Setting file '${this.path}' does not contain a 'user' property.`,
+          `no user setting found`,
         );
       else return this.unmerged.user;
     }
     catch (e) {
       throw new EvalError(
-        `Setting.js: Error getting 'user' property from setting file '${this.path}': \n${e as string}`,
+        `Setting: user: \n${e as string}`,
       );
     }
   }
 
   public get merged(): SettingMap {
     try {
-      return this.mergeSettings(this.user, this.app);
+      return this.mergeSettings(
+        this.user,
+        this.app,
+      );
     }
     catch (e) {
       throw new EvalError(
-        `Setting.js: Error merging 'user' and 'app' properties from setting file '${this.path}': \n${e as string}`,
+        `Setting: merged: \n${e as string}`,
       );
     }
   }
 
-  public get mergedUserOverridesProhibited(): SettingMap {
+  public get mergedNoOverride(): SettingMap {
     try {
-      return this.mergeSettings(this.app, this.user);
+      return this.mergeSettings(
+        this.app,
+        this.user,
+      );
     }
     catch (e) {
       throw new EvalError(
-        `Setting.js: Error merging 'user' and 'app' properties from setting file '${this.path}': \n${e as string}`,
+        `Setting: mergedNoOverride: \n${e as string}`,
       );
     }
   }
 
-  protected mergeSettings(
+  private mergeSettings(
     winners: SettingMap | undefined,
     losers: SettingMap | undefined,
   ): SettingMap {
@@ -241,8 +222,8 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
       }
     }
     catch (e) {
-      throw new SyntaxError(
-        `Setting.js: Error merging settings from setting file '${this.path}': \n${e as string}`,
+      throw new EvalError(
+        `Setting: mergeSettings: \n${e as string}`,
       );
     }
 
@@ -256,7 +237,7 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
       }
       catch (e) {
         throw new EvalError(
-          `Setting.js: Error determining whether object is primitive: \n${e as string}`,
+          `isPrimitive: \n${e as string}`,
         );
       }
     }
@@ -269,7 +250,9 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
         return winner.concat(loser);
       }
       catch (e) {
-        throw new EvalError(`Setting.js: Error merging arrays: \n${e as string}`);
+        throw new EvalError(
+          `mergeArrays: \n${e as string}`,
+        );
       }
     }
 
@@ -283,7 +266,9 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
               .includes(aKey));
       }
       catch (e) {
-        throw new EvalError(`Setting.js: Error intersecting keys: \n${e as string}`);
+        throw new EvalError(
+          `intersectKeys: \n${e as string}`,
+        );
       }
     }
 
@@ -296,7 +281,7 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
       }
       catch (e) {
         throw new EvalError(
-          `Setting.js: Error getting unique keys of object: \n${e as string}`,
+          `uniqueKeysOf: \n${e as string}`,
         );
       }
     }
