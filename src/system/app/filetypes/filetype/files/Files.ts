@@ -5,7 +5,7 @@ class Files {
     }
     catch (e) {
       throw new ReferenceError(
-        `Files: Error import ReadOnlyIOFile: \n${e as string}`,
+        `Files: import ReadOnlyIOFile: \n${e as string}`,
       );
     }
   }
