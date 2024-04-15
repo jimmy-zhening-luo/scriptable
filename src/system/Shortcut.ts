@@ -16,7 +16,7 @@ abstract class Shortcut<
     super("Shortcut");
   }
 
-  public get input(): App<I, O, C>["input"] {
+  public get input(): App<string, I, O, C>["input"] {
     try {
       const flat: unknown = Array.isArray(args.shortcutParameter)
         ? args.shortcutParameter.length === 1
