@@ -166,7 +166,7 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
       else if (losers === undefined)
         return winners!;
       else if (winners === undefined)
-        return losers!;
+        return losers;
       else {
         const sharedKeys: string[] = intersectKeys(
           winners,
@@ -276,6 +276,7 @@ class Setting<C extends Config = Record<string, never>> extends set_Filetype {
     function intersectKeys(a: SettingMap, b: SettingMap): string[] {
       try {
         const bKeys: string[] = Object.keys(b);
+
         return Object.keys(a)
           .filter(aKey =>
             bKeys

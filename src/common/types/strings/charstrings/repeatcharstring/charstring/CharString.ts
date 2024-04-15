@@ -1,7 +1,6 @@
 abstract class CharString {
   public readonly charset: CharSet;
   private readonly _raw: string;
-  private _isValid?: boolean;
 
   constructor(
     candidate: string = "",
@@ -68,6 +67,7 @@ abstract class CharString {
   }
 
   protected abstract _qualifies(candidate: string): boolean;
+  private _isValid?: boolean;
 }
 
 module.exports = CharString;

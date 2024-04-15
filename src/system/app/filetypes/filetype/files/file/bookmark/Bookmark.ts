@@ -1,6 +1,5 @@
 class Bookmark {
   public readonly _nominalType: string = "Bookmark";
-
   public readonly alias: string;
   public readonly path: string;
 
@@ -12,6 +11,7 @@ class Bookmark {
       }
       else {
         const alias: string = bookmark.trim();
+
         if (alias === "")
           throw new SyntaxError(
             `empty alias`,

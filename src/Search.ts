@@ -46,7 +46,7 @@ namespace Search {
               );
             else
               throw new EvalError(
-                `Unexpected: final query has no key, but has terms: ${query.terms}`,
+                `Unexpected: final query has no key, but has terms: ${query.terms.join(", ")}`,
               );
           }
           else {
@@ -128,11 +128,11 @@ namespace Search {
           ?.toLowerCase() ?? "";
 
         this.terms = [...tokens];
-        
+
         if (this.key === "" && this.terms.length > 0)
-            throw new EvalError(
-              `Unexpected: Query.key is empty but Query.terms has value: ${this.terms}`,
-            );
+          throw new EvalError(
+            `Unexpected: Query.key is empty but Query.terms has value: ${this.terms.join(", ")}`,
+          );
       }
       catch (e) {
         throw new EvalError(

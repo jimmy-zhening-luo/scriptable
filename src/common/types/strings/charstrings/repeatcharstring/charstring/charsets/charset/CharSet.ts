@@ -1,6 +1,5 @@
 class CharSet {
   public readonly _nominalType: string = "CharSet";
-
   public readonly members: string[];
   public readonly negate: boolean;
 
@@ -19,7 +18,7 @@ class CharSet {
     try {
       if (negate === undefined)
         this.negate = false;
-      else if (typeof negate === "boolean") this.negate = negate; 
+      else if (typeof negate === "boolean") this.negate = negate;
       else {
         charsets.unshift(negate);
         this.negate = charsets
@@ -32,8 +31,8 @@ class CharSet {
           set instanceof CharSet
             ? set.members
             : [set]
-              .flat()
-              .filter(c => c.length === 1))
+                .flat()
+                .filter(c => c.length === 1))
         .flat();
     }
     catch (e) {

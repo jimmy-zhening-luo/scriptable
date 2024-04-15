@@ -1,38 +1,35 @@
 class Filepath {
   public readonly _nominalType: string = "Filepath";
-
   private readonly _tree: string[] = [];
 
   constructor(
-    head?:
-      | string
-      | string[]
-      | Filepath
-      | Bookmark,
     ...subpaths: Array<
       | string
       | string[]
       | Filepath
+      | Bookmark
     >
   ) {
     try {
-      head = head ?? subpaths.shift();
-      if (head !== undefined) {
-        this._tree.push(
-          head instanceof Bookmark
-            ? ...head.path.split("/")
-            : head instanceof Filepath
-              ? ...head._tree
-              : ...Filepath._validate(head);
-        );
-        this._tree.push(
-          ...new Filepath(
-            ...subpaths
-          )
-            ._tree,
-        );
-      }
+      const head:
+      | string | string[] | Filepath | Bookmark = subpaths.shift() ?? [];
+
+      this._tree.push(
+        ...head instanceof Bookmark
+          ? head.path.split("/")
+          : head instanceof Filepath
+            ? head._tree
+            : Filepath._validate(head),
+      );
+
+      this._tree.push(
+        ...new Filepath(
+          ...subpaths,
+        )
+          ._tree,
+      );
     }
+
     catch (e) {
       throw new EvalError(
         `Filepath: ctor: \n${e as string}`,
@@ -138,7 +135,7 @@ class Filepath {
   ): string {
     try {
       return new Filepath(
-        ...subpaths
+        ...subpaths,
       )
         .toString();
     }
@@ -150,7 +147,7 @@ class Filepath {
   }
 
   private static _validate(
-    subpath: 
+    subpath:
       | string
       | string[],
   ): string[] {
@@ -160,7 +157,7 @@ class Filepath {
       return cleaned.some(
         node => new Filepath
           .ValidFilepathPart(
-            node
+            node,
           )
           .value === null,
       )
@@ -176,16 +173,15 @@ class Filepath {
           return new Filepath
             .StringSplitter(
               ___treeifyRaw(
-                subpath
+                subpath,
               ),
-            "/",
-            {
-              trim: true,
-              trimTokens: true,
-              ignoreEmptyTokens: true,
-            },
-          )
-            ._tree;
+              "/",
+              {
+                trim: true,
+                trimTokens: true,
+                noEmptyTokens: true,
+              },
+            ).merged;
 
           function ___treeifyRaw(subpath: string | string[]): string[] {
             try {
@@ -230,11 +226,11 @@ class Filepath {
   }
 
   public cd(
-    ...relPaths: ConstructorParameters<typeof Filepath>,
+    ...relPaths: ConstructorParameters<typeof Filepath>
   ): this {
     try {
       const rel: Filepath = new Filepath(
-        ...relPaths
+        ...relPaths,
       );
 
       for (const node of rel._tree) {

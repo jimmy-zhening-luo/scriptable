@@ -74,7 +74,7 @@ class UrlPath extends pa_UrlPart {
         {
           trim: true,
           trimTokens: true,
-          ignoreEmptyTokens: true,
+          noEmptyTokens: true,
         },
       )
         .merged;

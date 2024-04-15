@@ -11,8 +11,8 @@ class StringSplitter {
     try {
       this.separator = separator;
       this.merged = StringSplitter.mergeSplit(
-        this.unmerged,
-        this.separator,
+        unmerged,
+        separator,
         splitOptions,
         mergeOptions,
       );
@@ -60,17 +60,17 @@ class StringSplitter {
 
       return mergeTo === StringSplitter.Direction.Left
         ? [
-          tokens
-            .slice(0, limit - 1)
-            .join(separator),
-          ...tokens.slice(limit - 1),
-        ]
+            tokens
+              .slice(0, limit - 1)
+              .join(separator),
+            ...tokens.slice(limit - 1),
+          ]
         : [
-          ...tokens.slice(0, limit - 1),
-          tokens
-            .slice(limit - 1)
-            .join(separator),
-        ];
+            ...tokens.slice(0, limit - 1),
+            tokens
+              .slice(limit - 1)
+              .join(separator),
+          ];
     }
     catch (e) {
       throw new EvalError(
@@ -99,7 +99,8 @@ class StringSplitter {
           trim
             ? "trim"
             : "toString"
-        ];
+        ]();
+
       return trimmed === ""
         ? []
         : trimmed

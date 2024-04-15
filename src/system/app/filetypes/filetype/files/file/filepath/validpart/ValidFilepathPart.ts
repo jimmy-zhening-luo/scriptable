@@ -7,11 +7,11 @@ class ValidFilepathPart extends fpr_ValidString {
     try {
       if (part.length < 1)
         throw new SyntaxError(
-          `empty path part`
+          `empty path part`,
         );
       else if (part.length > 255)
         throw new SyntaxError(
-          `path part exceeds 255 chars`
+          `path part exceeds 255 chars`,
         );
       else
         super(
@@ -24,7 +24,7 @@ class ValidFilepathPart extends fpr_ValidString {
               ":",
               "/",
             ],
-          }
+          },
         );
     }
     catch (e) {

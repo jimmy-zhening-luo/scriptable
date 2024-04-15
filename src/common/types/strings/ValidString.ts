@@ -22,7 +22,7 @@ class ValidString {
     try {
       this.cleaned = ValidString._clean(
         candidateString,
-        cleanOptions
+        cleanOptions,
       );
       this._boundedRepeatCharString = new ValidString.BoundedRepeatCharString(
         min,

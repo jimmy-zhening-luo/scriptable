@@ -1,15 +1,19 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "../../../../../../../common/types/strings/**/*",
-    "**/*"
+    "**/*",
+    "../bookmark/**/*",
+    "../../../../../../../common/types/strings/**/*"
   ],
   "references": [
     {
-      "path": "../../../../../../../common/types/strings/tsconfig.json"
+      "path": "validpart/tsconfig.json"
     },
     {
-      "path": "validpart/tsconfig.json"
+      "path": "../bookmark/tsconfig.json"
+    },
+    {
+      "path": "../../../../../../../common/types/strings/tsconfig.json"
     }
   ],
   "compilerOptions": {

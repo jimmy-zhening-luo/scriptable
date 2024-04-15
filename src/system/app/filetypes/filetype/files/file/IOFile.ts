@@ -1,6 +1,5 @@
 class IOFile {
   public readonly _nominalType: string = "IOFile";
-
   private readonly _root: Filepath;
   private _subpath: Filepath;
 
@@ -18,7 +17,7 @@ class IOFile {
             base,
           );
       this._subpath = new IOFile.Filepath(
-        ...subpaths
+        ...subpaths,
       );
     }
     catch (e) {
@@ -34,7 +33,7 @@ class IOFile {
     }
     catch (e) {
       throw new ReferenceError(
-        `IOFile: import Bookmark: \n${e as string}`
+        `IOFile: import Bookmark: \n${e as string}`,
       );
     }
   }
@@ -63,7 +62,7 @@ class IOFile {
     }
   }
 
-  public get tree(): string {
+  public get tree(): string[] {
     try {
       return this._path.tree;
     }
@@ -95,7 +94,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: subpath: Error getting subpath: \n${e as string}`
+        `IOFile: subpath: Error getting subpath: \n${e as string}`,
       );
     }
   }
