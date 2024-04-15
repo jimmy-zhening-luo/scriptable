@@ -9,9 +9,6 @@
     },
     {
       "path": "strings/tsconfig.json"
-    },
-    {
-      "path": "dates/tsconfig.json"
     }
   ],
   "compilerOptions": {
