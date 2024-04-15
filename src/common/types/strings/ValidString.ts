@@ -54,35 +54,13 @@ class ValidString {
     }
   }
 
-  public static get CharSets(): typeof CharSets {
-    try {
-      return ValidString.BoundedRepeatCharString.CharSets;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `ValidString: import BoundedRepeatCharString.CharSets: \n${e as string}`,
-      );
-    }
-  }
-
   public static get CharSet(): typeof CharSet {
     try {
-      return ValidString.CharSets.CharSet;
+      return ValidString.BoundedRepeatCharString.CharSet;
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidString: import CharSets.CharSet: \n${e as string}`,
-      );
-    }
-  }
-
-  public static get UrlCharSet(): typeof UrlCharSet {
-    try {
-      return ValidString.CharSets.UrlCharSet;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `ValidString: import CharSets.UrlCharSet: \n${e as string}`,
+        `ValidString: import BoundedRepeatCharString.CharSet: \n${e as string}`,
       );
     }
   }

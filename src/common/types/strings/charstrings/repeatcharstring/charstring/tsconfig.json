@@ -5,7 +5,7 @@
   ],
   "references": [
     {
-      "path": "charsets/tsconfig.json"
+      "path": "charset/tsconfig.json"
     }
   ],
   "compilerOptions": {

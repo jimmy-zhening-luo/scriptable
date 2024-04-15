@@ -9,7 +9,6 @@ abstract class CharString {
     try {
       this._raw = candidate;
       this.charset = new CharString
-        .CharSets
         .CharSet(
           ...charsets,
         );
@@ -21,13 +20,13 @@ abstract class CharString {
     }
   }
 
-  public static get CharSets(): typeof CharSets {
+  public static get CharSet(): typeof CharSet {
     try {
-      return importModule("charsets/CharSets") as typeof CharSets;
+      return importModule("charset/CharSet") as typeof CharSet;
     }
     catch (e) {
       throw new ReferenceError(
-        `CharString: import CharSets: \n${e as string}`,
+        `CharString: import CharSet: \n${e as string}`,
       );
     }
   }

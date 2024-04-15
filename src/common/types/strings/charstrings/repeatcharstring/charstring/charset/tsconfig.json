@@ -3,11 +3,7 @@
   "include": [
     "**/*"
   ],
-  "references": [
-    {
-      "path": "charset/tsconfig.json"
-    }
-  ],
+  "references": [],
   "compilerOptions": {
     "rootDir": "../../../../../../.."
   }

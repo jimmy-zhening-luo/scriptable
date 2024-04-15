@@ -9,9 +9,9 @@ class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
         hostRegNameRepeater,
         1,
         Infinity,
-        hrn_ValidUrlRepeater.UrlCharSet.unreserved,
-        hrn_ValidUrlRepeater.UrlCharSet.percentEncoded,
-        hrn_ValidUrlRepeater.UrlCharSet.subDelims,
+        hrn_ValidUrlRepeater.CharSet.unreserved,
+        hrn_ValidUrlRepeater.CharSet.percentEncoded,
+        hrn_ValidUrlRepeater.CharSet.subDelims,
       );
     }
     catch (e) {

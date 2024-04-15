@@ -38,7 +38,7 @@ class UrlScheme extends sc_UrlPart {
     try {
       const validScheme: string = new UrlScheme.ValidScheme(scheme)
         .toString();
-      const charSetAlpha: string[] = UrlScheme.ValidScheme.UrlCharSet.alpha;
+      const charSetAlpha: string[] = UrlScheme.ValidScheme.CharSet.alpha;
 
       return validScheme === ""
         ? "https"

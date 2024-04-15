@@ -9,7 +9,7 @@ class ValidHostIPv4Repeater extends hipf_ValidUrlRepeater {
         hostIPv4Repeater,
         1,
         3,
-        hipf_ValidUrlRepeater.UrlCharSet.numbers,
+        hipf_ValidUrlRepeater.CharSet.numbers,
       );
     }
     catch (e) {

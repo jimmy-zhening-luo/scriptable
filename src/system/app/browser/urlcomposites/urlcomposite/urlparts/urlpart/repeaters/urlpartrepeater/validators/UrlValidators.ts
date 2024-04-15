@@ -45,17 +45,6 @@ class UrlValidators {
     }
   }
 
-  public static get UrlCharSet(): typeof UrlCharSet {
-    try {
-      return UrlValidators.ValidUrlPart.UrlCharSet;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `UrlValidators: error loading UrlCharSet module: \n${e as string}`,
-      );
-    }
-  }
-
   public static get Host(): {
     Repeaters: {
       IPv4: typeof ValidHostIPv4Repeater;

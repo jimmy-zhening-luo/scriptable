@@ -12,14 +12,14 @@ class ValidScheme extends sc_ValidUrlPart {
         {
           toLower: true,
           trimTrailing: [
-            ...ValidScheme.UrlCharSet.slash,
-            ...ValidScheme.UrlCharSet.colon,
+            ...ValidScheme.CharSet.slash,
+            ...ValidScheme.CharSet.colon,
           ],
         },
-        ValidScheme.UrlCharSet.alphaNumericLower,
-        ValidScheme.UrlCharSet.plus,
-        ValidScheme.UrlCharSet.hyphen,
-        ValidScheme.UrlCharSet.dot,
+        ValidScheme.CharSet.alphaNumericLower,
+        ValidScheme.CharSet.plus,
+        ValidScheme.CharSet.hyphen,
+        ValidScheme.CharSet.dot,
       );
     }
     catch (e) {

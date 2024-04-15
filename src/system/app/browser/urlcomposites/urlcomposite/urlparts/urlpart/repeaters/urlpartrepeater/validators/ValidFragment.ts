@@ -10,11 +10,11 @@ class ValidFragment extends fr_ValidUrlPart {
         1,
         Infinity,
         {
-          trimLeading: [...ValidFragment.UrlCharSet.hash],
+          trimLeading: [...ValidFragment.CharSet.hash],
         },
-        ValidFragment.UrlCharSet.pchar,
-        ValidFragment.UrlCharSet.slash,
-        ValidFragment.UrlCharSet.question,
+        ValidFragment.CharSet.pchar,
+        ValidFragment.CharSet.slash,
+        ValidFragment.CharSet.question,
       );
     }
     catch (e) {
