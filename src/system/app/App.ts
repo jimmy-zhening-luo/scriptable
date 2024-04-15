@@ -95,7 +95,7 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-      `App: storage.read: \n${e as string}`,
+        `App: storage.read: \n${e as string}`,
       );
     }
   }
@@ -113,13 +113,13 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-      `App: storage.write: \n${e as string}`,
+        `App: storage.write: \n${e as string}`,
       );
     }
   }
 
   protected storage(
-    subpath?: string
+    subpath?: string,
   ): Storage {
     try {
       return new App.Filetypes.Storage(

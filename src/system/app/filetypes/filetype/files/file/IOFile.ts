@@ -1,22 +1,29 @@
 class IOFile {
   public readonly _nominalType: string = "IOFile";
-  private readonly _root: Filepath;
+  private readonly _root: string;
   private _subpath: Filepath;
 
   constructor(
-    base:
+    root:
     | IOFile
+    | { file: IOFile; rootOnly: boolean }
+    | Bookmark
     | ConstructorParameters<typeof Filepath>[0],
     ...subpaths: ConstructorParameters<typeof Filepath>
   ) {
     try {
       this._root
-        = base instanceof IOFile
-          ? base._path
-          : new IOFile
-            .Filepath(
-              base,
-            );
+        = root instanceof IOFile || root instanceof Bookmark
+          ? root.path
+          : typeof root === "object" && "file" in root && "rootOnly" in root
+            ? root.rootOnly
+              ? root.file._root
+              : root.file.path
+            : new IOFile
+              .Filepath(
+                root,
+              )
+              .toString();
       this._subpath = new IOFile
         .Filepath(
           ...subpaths,
@@ -43,7 +50,7 @@ class IOFile {
   protected static get Filepath(): typeof Filepath {
     try {
       return importModule(
-        "filepath/Filepath",
+        "./common/validators/filepath/Filepath",
       ) as typeof Filepath;
     }
     catch (e) {
@@ -55,37 +62,11 @@ class IOFile {
 
   public get path(): string {
     try {
-      return this._path.toString();
+      return this._subpath.prepend(this._root);
     }
     catch (e) {
       throw new EvalError(
         `IOFile: path: \n${e as string}`,
-      );
-    }
-  }
-
-  public get tree(): string[] {
-    try {
-      return this._path.tree;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IOFile: tree: \n${e as string}`,
-      );
-    }
-  }
-
-  public get root(): this {
-    try {
-      return new (this.constructor as new (
-        ...args: ConstructorParameters<typeof IOFile>
-      ) => this)(
-        this._root,
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `IOFile: root: \n${e as string}`,
       );
     }
   }
@@ -97,17 +78,6 @@ class IOFile {
     catch (e) {
       throw new EvalError(
         `IOFile: subpath: \n${e as string}`,
-      );
-    }
-  }
-
-  public get leaf(): string {
-    try {
-      return this._path.leaf;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IOFile: leaf: \n${e as string}`,
       );
     }
   }
@@ -181,6 +151,24 @@ class IOFile {
     }
   }
 
+  public get root(): this {
+    try {
+      return new (this.constructor as new (
+        ...args: ConstructorParameters<typeof IOFile>
+      ) => this)(
+        {
+          file: this,
+          rootOnly: true,
+        },
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `IOFile: root: \n${e as string}`,
+      );
+    }
+  }
+
   public get parent(): this {
     try {
       return new (this.constructor as new (
@@ -221,35 +209,29 @@ class IOFile {
         : this.isLeaf
           ? []
           : this.ls
-            .map(leaf =>
-              this.append(
-                leaf,
-              ))
-            .filter(child =>
-              !this.path.startsWith(
-                child.path,
-              ))
-            .map(file =>
-              file.descendants)
-            .flat(1);
+            .map(
+              filename =>
+                this.append(
+                  filename,
+                ),
+            )
+            .filter(
+              child =>
+                !this.path.startsWith(
+                  child.path,
+                ),
+            )
+            .map(
+              file =>
+                file.descendants,
+            )
+            .flat(
+              1,
+            );
     }
     catch (e) {
       throw new EvalError(
         `IOFile: descendants: \n${e as string}`,
-      );
-    }
-  }
-
-  private get _path(): Filepath {
-    try {
-      return this._root
-        .append(
-          this._subpath,
-        );
-    }
-    catch (e) {
-      throw new EvalError(
-        `IOFile: _path: \n${e as string}`,
       );
     }
   }
@@ -287,26 +269,20 @@ class IOFile {
     }
   }
 
-  public static join(
-    ...filepaths: Parameters<typeof Filepath.join>
-  ): ReturnType<typeof Filepath.join> {
-    try {
-      return IOFile.Filepath.join(...filepaths);
-    }
-    catch (e) {
-      throw new EvalError(
-        `IOFile: static join: \n${e as string}`,
-      );
-    }
-  }
-
   public append(
     ...filepaths: Parameters<typeof Filepath.prototype.append>
   ): this {
     try {
       return new (this.constructor as new (
         ...args: ConstructorParameters<typeof IOFile>
-      ) => this)(this.root, this._subpath.append(...filepaths));
+      ) => this)(
+        this,
+        this
+          ._subpath
+          .append(
+            ...filepaths,
+          ),
+      );
     }
     catch (e) {
       throw new EvalError(

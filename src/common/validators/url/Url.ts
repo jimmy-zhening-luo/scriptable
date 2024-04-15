@@ -73,7 +73,7 @@ class Url {
   public static get UrlComposites(): typeof UrlComposites {
     try {
       return importModule(
-        "urlcomposites/UrlComposites",
+        "composites/UrlComposites",
       ) as typeof UrlComposites;
     }
     catch (e) {
@@ -497,7 +497,7 @@ class Url {
         ]) => {
           callbackUrl.addParameter(key, value);
         });
-      var response: Record<string, primitive | null> = {};
+      var response: Record<string, null | string | number | boolean> = {};
 
       await callbackUrl.open()
         .then(_response => {

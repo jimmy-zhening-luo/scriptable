@@ -2,7 +2,7 @@ const fpr_ValidString: typeof ValidString = importModule(
   "./common/types/strings/ValidString",
 ) as typeof ValidString;
 
-class ValidFilepathPart extends fpr_ValidString {
+class FilepathPart extends fpr_ValidString {
   constructor(part: string) {
     try {
       if (part.length < 1)
@@ -29,21 +29,10 @@ class ValidFilepathPart extends fpr_ValidString {
     }
     catch (e) {
       throw new EvalError(
-        `ValidFilepathPart: ctor: \n${e as string}`,
-      );
-    }
-  }
-
-  protected static get ValidString(): typeof ValidString {
-    try {
-      return fpr_ValidString;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `ValidFilepathPart: import ValidString: \n${e as string}`,
+        `FilepathPart: ctor: \n${e as string}`,
       );
     }
   }
 }
 
-module.exports = ValidFilepathPart;
+module.exports = FilepathPart;

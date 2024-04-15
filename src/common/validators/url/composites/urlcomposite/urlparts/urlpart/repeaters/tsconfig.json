@@ -6,6 +6,9 @@
   ],
   "references": [
     {
+      "path": "urlpartrepeater/tsconfig.json"
+    },
+    {
       "path": "../../../../../../../../common/types/strings/tsconfig.json"
     }
   ],

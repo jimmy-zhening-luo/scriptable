@@ -16,5 +16,14 @@ export default [
     [
       "src/**/*.ts",
     ],
+    undefined,
+    {
+      "@typescript-eslint/parameter-properties": [
+        "error",
+        {
+          prefer: "parameter-property",
+        },
+      ],
+    },
   ).configs,
 ];

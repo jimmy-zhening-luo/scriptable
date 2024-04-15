@@ -7,11 +7,11 @@ abstract class Shortcut<
   O = null,
   C extends Config = Record<string, never>,
 > extends sh_App<
-  "Shortcut",
-  I,
-  O,
-  C
-> {
+    "Shortcut",
+    I,
+    O,
+    C
+  > {
   constructor() {
     super("Shortcut");
   }
@@ -74,7 +74,7 @@ abstract class Shortcut<
   }
 
   protected override setOutput(
-    runtimeOutput: O
+    runtimeOutput: O,
   ): void {
     try {
       Script.setShortcutOutput(runtimeOutput);

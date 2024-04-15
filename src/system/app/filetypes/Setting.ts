@@ -5,8 +5,8 @@ const set_Filetype: typeof Filetype = importModule(
 class Setting<
   C extends Config = Record<string, never>,
 > extends set_Filetype<
-  "Setting"
-> {
+    "Setting"
+  > {
   constructor(
     appType: string,
     appName: string,

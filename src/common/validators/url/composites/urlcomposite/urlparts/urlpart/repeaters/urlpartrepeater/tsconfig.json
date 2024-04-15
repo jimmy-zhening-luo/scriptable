@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+    "../../../../../../../../../common/types/strings/**/*"
+  ],
+  "references": [
+    {
+      "path": "validators/tsconfig.json"
+    },
+    {
+      "path": "../../../../../../../../../common/types/strings/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../../../../../.."
+  }
+}

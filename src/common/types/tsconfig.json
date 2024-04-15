@@ -5,9 +5,6 @@
   ],
   "references": [
     {
-      "path": "primitive/tsconfig.json"
-    },
-    {
       "path": "strings/tsconfig.json"
     }
   ],

@@ -33,7 +33,7 @@ class Storage extends stor_Filetype<
     try {
       this._file.write(
         text,
-        true
+        true,
       );
 
       return this;

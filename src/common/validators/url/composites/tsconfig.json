@@ -2,15 +2,11 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../../../../common/validators/filepath/**/*",
     "../../../../common/types/strings/**/*"
   ],
   "references": [
     {
-      "path": "files/tsconfig.json"
-    },
-    {
-      "path": "../../../../common/validators/filepath/tsconfig.json"
+      "path": "urlcomposite/tsconfig.json"
     },
     {
       "path": "../../../../common/types/strings/tsconfig.json"

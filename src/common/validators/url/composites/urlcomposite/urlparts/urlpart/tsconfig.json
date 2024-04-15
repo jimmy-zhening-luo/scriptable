@@ -2,15 +2,11 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../bookmark/**/*",
     "../../../../../../../common/types/strings/**/*"
   ],
   "references": [
     {
-      "path": "validpart/tsconfig.json"
-    },
-    {
-      "path": "../bookmark/tsconfig.json"
+      "path": "repeaters/tsconfig.json"
     },
     {
       "path": "../../../../../../../common/types/strings/tsconfig.json"

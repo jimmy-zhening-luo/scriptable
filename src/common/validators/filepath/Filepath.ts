@@ -7,7 +7,6 @@ class Filepath {
       | string
       | string[]
       | Filepath
-      | Bookmark
     >
   ) {
     try {
@@ -15,8 +14,7 @@ class Filepath {
         const head:
         | string
         | string[]
-        | Filepath
-        | Bookmark = subpaths.shift() ?? "";
+        | Filepath = subpaths.shift() ?? "";
 
         if (typeof head === "string") {
           if (head.length > 0)
@@ -26,10 +24,8 @@ class Filepath {
           if (head.length > 0)
             this._tree.push(...Filepath._validate(head));
         }
-        else if (head instanceof Filepath)
-          this._tree.push(...head._tree);
         else
-          this._tree.push(...Filepath._validate(head.path));
+          this._tree.push(...head._tree);
 
         this._tree.push(...new Filepath(...subpaths)._tree);
       }
@@ -42,7 +38,7 @@ class Filepath {
     }
   }
 
-  protected static get StringSplitter(): typeof StringSplitter {
+  private static get StringSplitter(): typeof StringSplitter {
     try {
       return importModule(
         "./common/types/strings/StringSplitter",
@@ -55,15 +51,15 @@ class Filepath {
     }
   }
 
-  protected static get ValidFilepathPart(): typeof ValidFilepathPart {
+  private static get FilepathPart(): typeof FilepathPart {
     try {
       return importModule(
-        "validpart/ValidFilepathPart",
-      ) as typeof ValidFilepathPart;
+        "part/FilepathPart",
+      ) as typeof FilepathPart;
     }
     catch (e) {
       throw new ReferenceError(
-        `Filepath: import ValidFilepathPart: \n${e as string}`,
+        `Filepath: import FilepathPart: \n${e as string}`,
       );
     }
   }
@@ -168,7 +164,7 @@ class Filepath {
         .merged
         .map(part =>
           new Filepath
-            .ValidFilepathPart(
+            .FilepathPart(
               part,
             ).value)
         .filter(part =>
@@ -190,6 +186,21 @@ class Filepath {
     catch (e) {
       throw new EvalError(
         `Filepath: append: \n${e as string}`,
+      );
+    }
+  }
+
+  public prepend(
+    root: string,
+  ): string {
+    try {
+      return this.isEmpty
+        ? root
+        : root + "/" + this.toString();
+    }
+    catch (e) {
+      throw new EvalError(
+        `Filepath: prepend: \n${e as string}`,
       );
     }
   }

@@ -4,7 +4,9 @@ class Types {
       return importModule("strings/Strings") as typeof Strings;
     }
     catch (e) {
-      throw new ReferenceError("Types: import Strings");
+      throw new ReferenceError(
+        `Types: import Strings`,
+      );
     }
   }
 }

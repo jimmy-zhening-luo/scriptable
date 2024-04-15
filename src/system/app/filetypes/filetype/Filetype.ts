@@ -12,7 +12,7 @@ abstract class Filetype<
     try {
       this._file = new FileConstructor(
         this._rootBookmark(
-          _type
+          _type,
         ),
         ...subpaths,
       );
@@ -64,17 +64,6 @@ abstract class Filetype<
     catch (e) {
       throw new EvalError(
         `Filetype: subpath: \n${e as string}`,
-      );
-    }
-  }
-
-  public get filename(): string {
-    try {
-      return this._file.leaf;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Filetype: filename: \n${e as string}`,
       );
     }
   }
