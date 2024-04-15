@@ -13,12 +13,14 @@ class IOFile {
       this._root
         = base instanceof IOFile
           ? base._path
-          : new IOFile.Filepath(
-            base,
-          );
-      this._subpath = new IOFile.Filepath(
-        ...subpaths,
-      );
+          : new IOFile
+            .Filepath(
+              base,
+            );
+      this._subpath = new IOFile
+        .Filepath(
+          ...subpaths,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -46,7 +48,7 @@ class IOFile {
     }
     catch (e) {
       throw new ReferenceError(
-        `IOFile: Error importing Filepath class: \n${e as string}`,
+        `IOFile: import Filepath: \n${e as string}`,
       );
     }
   }
@@ -94,7 +96,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: subpath: Error getting subpath: \n${e as string}`,
+        `IOFile: subpath: \n${e as string}`,
       );
     }
   }
@@ -240,9 +242,10 @@ class IOFile {
 
   private get _path(): Filepath {
     try {
-      return this._root.append(
-        this._subpath,
-      );
+      return this._root
+        .append(
+          this._subpath,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -255,9 +258,10 @@ class IOFile {
     subpath: ConstructorParameters<typeof Filepath>[1],
   ) {
     try {
-      this._subpath = new IOFile.Filepath(
-        subpath,
-      );
+      this._subpath = new IOFile
+        .Filepath(
+          subpath,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -320,7 +324,9 @@ class IOFile {
       return this;
     }
     catch (e) {
-      throw new EvalError(`IOFile: cd: \n${e as string}`);
+      throw new EvalError(
+        `IOFile: cd: \n${e as string}`,
+      );
     }
   }
 
@@ -328,7 +334,7 @@ class IOFile {
     try {
       if (!this.isFile)
         throw new ReferenceError(
-          `IOFile does not exist.`,
+          `file does not exist`,
         );
 
       return FileManager
@@ -337,7 +343,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: read: Error reading file at "${this.path}": \n${e as string}`,
+        `IOFile: read: \n${e as string}`,
       );
     }
   }
@@ -346,11 +352,11 @@ class IOFile {
     try {
       if (this.isDirectory)
         throw new ReferenceError(
-          `Path points to folder. Cannot write to a folder.`,
+          `path points to folder`,
         );
       else if (this.isFile && !overwrite)
         throw new ReferenceError(
-          `To overwrite an existing file, IOFile.write must be called with flag 'overwrite' === true.`,
+          `cannot write: file already exists, and overwrite is set to false`,
         );
       else {
         if (!this.parent.isDirectory)
@@ -361,7 +367,7 @@ class IOFile {
           }
           catch (e) {
             throw new EvalError(
-              `Could not create parent directory using Scriptable FileManager class: \n${e as string}`,
+              `tried to create directory, but FileManager failed to create directory: \n${e as string}`,
             );
           }
         try {
@@ -371,7 +377,7 @@ class IOFile {
         }
         catch (e) {
           throw new EvalError(
-            `Could not write data to file using Scriptable FileManager class. See caught error: \n${e as string}`,
+            `FileManager failed to write data: \n${e as string}`,
           );
         }
 
@@ -380,7 +386,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: write: Error writing data to file "${this.path}": \n${e as string}`,
+        `IOFile: write: \n${e as string}`,
       );
     }
   }
