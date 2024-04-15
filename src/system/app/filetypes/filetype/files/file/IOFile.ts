@@ -13,7 +13,7 @@ class IOFile {
   ) {
     try {
       this._root
-        = root instanceof IOFile || root instanceof Bookmark
+        = root instanceof IOFile || root instanceof IOFile.Bookmark
           ? root.path
           : typeof root === "object" && "file" in root && "rootOnly" in root
             ? root.rootOnly
