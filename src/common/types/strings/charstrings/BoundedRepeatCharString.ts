@@ -9,12 +9,12 @@ class BoundedRepeatCharString extends _RepeatCharString {
   constructor(
     min: number = 0,
     max: number = Infinity,
-    ...repeatCharStringCtorParams: ConstructorParameters<
+    ...charStringParams: ConstructorParameters<
       typeof RepeatCharString
     >
   ) {
     try {
-      super(...repeatCharStringCtorParams);
+      super(...charStringParams);
       for (const n of [
         min,
         max,
@@ -40,7 +40,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
     }
     catch (e) {
       throw new EvalError(
-        `BoundedRepeatCharString: constructor: Error creating BoundedRepeatCharString object: \n${e as string}`,
+        `BoundedRepeatCharString: ctor: \n${e as string}`,
       );
     }
   }
@@ -51,7 +51,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
     }
     catch (e) {
       throw new ReferenceError(
-        `BoundedRepeatCharString: RepeatCharString: Error importing RepeatCharString module: \n${e as string}`,
+        `BoundedRepeatCharString: import RepeatCharString: \n${e as string}`,
       );
     }
   }
@@ -66,7 +66,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
     }
     catch (e) {
       throw new EvalError(
-        `BoundedRepeatCharString: _qualifies: Error calling _qualifies: \n${e as string}`,
+        `BoundedRepeatCharString: _qualifies: \n${e as string}`,
       );
     }
   }

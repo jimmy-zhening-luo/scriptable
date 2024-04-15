@@ -8,7 +8,11 @@ abstract class CharString {
   ) {
     try {
       this._raw = candidate;
-      this.charset = new CharString.CharSets.CharSet(...charsets);
+      this.charset = new CharString
+        .CharSets
+        .CharSet(
+          ...charsets,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -28,46 +32,36 @@ abstract class CharString {
     }
   }
 
-  public get isValid(): boolean {
+  public get value(): string {
     try {
-      if (this._isValid === undefined)
-        this._isValid = this._qualifies(this._raw);
-
-      return this._isValid;
+      if (!this._qualifies(
+        this._raw,
+      ))
+        throw new SyntaxError(
+          `Unqualified: ${this._raw}`,
+        );
+      else
+        return this._raw;
     }
     catch (e) {
       throw new EvalError(
-        `CharString: isValid: \n${e as string}`,
-      );
-    }
-  }
-
-  public get value(): null | string {
-    try {
-      return this.isValid
-        ? this._raw
-        : null;
-    }
-    catch (e) {
-      throw new EvalError(
-        `CharString: value: Error getting CharString value: \n${e as string}`,
+        `CharString: value: \n${e as string}`,
       );
     }
   }
 
   public toString(): string {
     try {
-      return this.value ?? "";
+      return this.value;
     }
     catch (e) {
       throw new EvalError(
-        `CharString: toString: Error converting CharString to string: \n${e as string}`,
+        `CharString: toString: \n${e as string}`,
       );
     }
   }
 
   protected abstract _qualifies(candidate: string): boolean;
-  private _isValid?: boolean;
 }
 
 module.exports = CharString;

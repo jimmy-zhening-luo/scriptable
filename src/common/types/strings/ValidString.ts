@@ -1,9 +1,9 @@
 class ValidString {
   public readonly cleaned: string;
-  private readonly _boundedRepeatCharString: BoundedRepeatCharString;
+  private readonly _charString: BoundedRepeatCharString;
 
   constructor(
-    candidateString: string = "",
+    candidate: string,
     {
       min = 0,
       max = Infinity,
@@ -20,21 +20,23 @@ class ValidString {
     cleanOptions: Parameters<typeof ValidString._clean>[1] = {},
   ) {
     try {
-      this.cleaned = ValidString._clean(
-        candidateString,
-        cleanOptions,
-      );
-      this._boundedRepeatCharString = new ValidString.BoundedRepeatCharString(
-        min,
-        max,
-        this.cleaned,
-        negate,
-        ...allowedChars,
-      );
+      this.cleaned = ValidString
+        ._clean(
+          candidate,
+          cleanOptions,
+        );
+      this._charString = new ValidString
+        .BoundedRepeatCharString(
+          min,
+          max,
+          this.cleaned,
+          negate,
+          ...allowedChars,
+        );
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: constructor: \n${e as string}`,
+        `ValidString: ctor: \n${e as string}`,
       );
     }
   }
@@ -47,7 +49,7 @@ class ValidString {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing BoundedRepeatCharString module: \n${e as string}`,
+        `ValidString: import BoundedRepeatCharString: \n${e as string}`,
       );
     }
   }
@@ -58,7 +60,7 @@ class ValidString {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing CharSets module: \n${e as string}`,
+        `ValidString: import BoundedRepeatCharString.CharSets: \n${e as string}`,
       );
     }
   }
@@ -69,7 +71,7 @@ class ValidString {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing CharSet module: \n${e as string}`,
+        `ValidString: import CharSets.CharSet: \n${e as string}`,
       );
     }
   }
@@ -80,41 +82,34 @@ class ValidString {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidString: error importing UrlCharSet module: \n${e as string}`,
+        `ValidString: import CharSets.UrlCharSet: \n${e as string}`,
       );
     }
   }
 
-  public get value(): typeof BoundedRepeatCharString.prototype.value {
-    return this._boundedRepeatCharString.value;
-  }
-
-  public get isValid(): boolean {
-    try {
-      return this.value !== null;
-    }
-    catch (e) {
-      throw new EvalError(
-        `ValidString: isValid: Error getting validity: \n${e as string}`,
-      );
-    }
+  public get value(): string {
+    return this._charString.value;
   }
 
   public get min(): number {
     try {
-      return this._boundedRepeatCharString.min;
+      return this._charString.min;
     }
     catch (e) {
-      throw new EvalError(`ValidString: min: Error getting min: \n${e as string}`);
+      throw new EvalError(
+        `ValidString: min: \n${e as string}`,
+      );
     }
   }
 
   public get max(): number {
     try {
-      return this._boundedRepeatCharString.max;
+      return this._charString.max;
     }
     catch (e) {
-      throw new EvalError(`ValidString: max: Error getting max: \n${e as string}`);
+      throw new EvalError(
+        `ValidString: max: \n${e as string}`,
+      );
     }
   }
 
@@ -135,80 +130,86 @@ class ValidString {
       trimLeading?: string[];
       trimTrailing?: string[];
     },
-  ): typeof ValidString.prototype.cleaned {
+  ): string {
     try {
-      if (toLower) raw = raw.toLowerCase();
-      if (trim) raw = raw.trim();
-      const preprocessed: string = raw;
+      if (toLower)
+        raw = raw.toLowerCase();
+      if (trim)
+        raw = raw.trim();
 
-      return ValidString._trimEdge(
-        ValidString._trimEdge(
-          preprocessed,
+      return ValidString.__trimEdge(
+        ValidString.__trimEdge(
+          raw,
+          "leading",
           trimLeading,
-          ValidString.Edge.Leading,
           trimLeadingExcept,
         ),
+        "trailing",
         trimTrailing,
-        ValidString.Edge.Trailing,
         trimTrailingExcept,
       );
     }
     catch (e) {
-      throw new EvalError(`ValidString: clean: Error cleaning string: \n${e as string}`);
+      throw new EvalError(
+        `ValidString: _clean: \n${e as string}`,
+      );
     }
   }
 
-  private static _trimEdge(
+  private static __trimEdge(
     string: string,
-    wordsToTrim: string[] = [],
-    edge: ValidString.Edge,
-    trimExcept: boolean = false,
+    edge: "leading" | "trailing",
+    wordsToTrim: string[],
+    trimExcept: boolean,
   ): string {
     try {
-      const isLeading: boolean = edge === ValidString.Edge.Leading;
-
-      type LookPrototypeFunction = "startsWith" | "endsWith";
-      const lookFn: LookPrototypeFunction = isLeading
-        ? "startsWith"
-        : "endsWith";
-      const lookCondition: boolean = !trimExcept;
+      const lookFn:
+        | "startsWith"
+        | "endsWith" = edge === "leading"
+          ? "startsWith"
+          : "endsWith";
 
       wordsToTrim
-        .filter(word => word !== "")
+        .filter(word =>
+          word !== "")
         .forEach(word => {
-          while (string[lookFn](word) === lookCondition)
-            string = isLeading
-              ? string.slice(trimExcept
-                ? 1
-                : word.length)
-              : string.slice(0, 0 - (trimExcept
-                ? 1
-                : word.length));
+          while (
+            string[lookFn](word) !== trimExcept
+          )
+            string = lookFn === "startsWith"
+              ? string.slice(
+                trimExcept
+                  ? 1
+                  : word.length,
+              )
+              : string.slice(
+                0,
+                0 - (
+                  trimExcept
+                    ? 1
+                    : word.length
+                ),
+              );
         });
 
       return string;
     }
     catch (e) {
-      throw new EvalError(`ValidString: trimEdge: Error trimming edge: \n${e as string}`);
+      throw new EvalError(
+        `ValidString: __trimEdge: \n${e as string}`,
+      );
     }
   }
 
   public toString(): string {
     try {
-      return this.value ?? "";
+      return this.value;
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: toString: Error converting to string: \n${e as string}`,
+        `ValidString: toString: \n${e as string}`,
       );
     }
-  }
-}
-
-namespace ValidString {
-  export enum Edge {
-    Leading,
-    Trailing,
   }
 }
 

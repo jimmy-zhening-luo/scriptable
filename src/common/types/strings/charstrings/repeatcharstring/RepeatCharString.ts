@@ -9,18 +9,27 @@ class RepeatCharString extends rp_CharString {
     }
     catch (e) {
       throw new ReferenceError(
-        `RepeatCharString: CharString: Error importing CharString module: \n${e as string}`,
+        `RepeatCharString: import CharString: \n${e as string}`,
       );
     }
   }
 
-  protected _qualifies(candidate: string): boolean {
+  protected _qualifies(
+    candidate: string,
+  ): boolean {
     try {
-      return [...candidate].every(char => this.charset.allows(char));
+      return [
+        ...candidate,
+      ].every(
+        char =>
+          this.charset.allows(
+            char,
+          ),
+      );
     }
     catch (e) {
       throw new EvalError(
-        `RepeatCharString: qualifies: Error checking if CharString qualifies: \n${e as string}`,
+        `RepeatCharString: _qualifies: \n${e as string}`,
       );
     }
   }

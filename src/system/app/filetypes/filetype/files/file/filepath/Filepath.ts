@@ -12,7 +12,10 @@ class Filepath {
   ) {
     try {
       const head:
-      | string | string[] | Filepath | Bookmark = subpaths.shift() ?? [];
+        | string
+        | string[]
+        | Filepath
+        | Bookmark = subpaths.shift() ?? [];
 
       this._tree.push(
         ...head instanceof Bookmark
@@ -147,63 +150,25 @@ class Filepath {
   }
 
   private static _validate(
-    subpath:
-      | string
-      | string[],
+    subpath: string | string[],
   ): string[] {
     try {
-      const cleaned: string[] = __clean(subpath);
-
-      return cleaned.some(
-        node => new Filepath
-          .ValidFilepathPart(
-            node,
-          )
-          .value === null,
-      )
-        ? []
-        : cleaned;
-
-      function __clean(
-        subpath:
-          | string
-          | string[],
-      ): string[] {
-        try {
-          return new Filepath
-            .StringSplitter(
-              ___treeifyRaw(
-                subpath,
-              ),
-              "/",
-              {
-                trim: true,
-                trimTokens: true,
-                noEmptyTokens: true,
-              },
-            ).merged;
-
-          function ___treeifyRaw(subpath: string | string[]): string[] {
-            try {
-              return (
-                Array.isArray(subpath)
-                  ? subpath.join("/")
-                  : subpath
-              ).split("/");
-            }
-            catch (e) {
-              throw new SyntaxError(
-                `___treeifyRaw: \n${e as string}`,
-              );
-            }
-          }
-        }
-        catch (e) {
-          throw new SyntaxError(
-            `__clean: \n${e as string}`,
-          );
-        }
-      }
+      return new Filepath
+        .StringSplitter(
+          subpath,
+          "/",
+          {
+            trim: true,
+            trimTokens: true,
+            noEmptyTokens: true,
+          },
+        )
+        .merged
+        .map(part =>
+          new Filepath
+            .ValidFilepathPart(
+              part,
+            ).value);
     }
     catch (e) {
       throw new EvalError(

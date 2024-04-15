@@ -4,7 +4,7 @@ class Types {
       return importModule("dates/Dates") as typeof Dates;
     }
     catch (e) {
-      throw new ReferenceError("Types: error importing Dates module");
+      throw new ReferenceError("Types: import Dates");
     }
   }
 
@@ -13,7 +13,7 @@ class Types {
       return importModule("strings/Strings") as typeof Strings;
     }
     catch (e) {
-      throw new ReferenceError("Types: error importing Strings module");
+      throw new ReferenceError("Types: import Strings");
     }
   }
 }

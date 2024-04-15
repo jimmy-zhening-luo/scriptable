@@ -5,12 +5,12 @@ class StringSplitter {
   constructor(
     unmerged: string | string[],
     separator: string = "",
-    splitOptions: Parameters<typeof StringSplitter.mergeSplit>[2] = {},
-    mergeOptions: Parameters<typeof StringSplitter.mergeSplit>[3] = {},
+    splitOptions: Parameters<typeof StringSplitter._mergeSplit>[2] = {},
+    mergeOptions: Parameters<typeof StringSplitter._mergeSplit>[3] = {},
   ) {
     try {
       this.separator = separator;
-      this.merged = StringSplitter.mergeSplit(
+      this.merged = StringSplitter._mergeSplit(
         unmerged,
         separator,
         splitOptions,
@@ -35,16 +35,16 @@ class StringSplitter {
     }
   }
 
-  private static mergeSplit(
-    unmerged: Parameters<typeof StringSplitter._split>[0],
-    separator: Parameters<typeof StringSplitter._split>[1],
-    splitOptions: Parameters<typeof StringSplitter._split>[2] = {},
+  private static _mergeSplit(
+    unmerged: string | string[],
+    separator: string,
+    splitOptions: Parameters<typeof StringSplitter.__split>[2] = {},
     {
       limit = Infinity,
-      mergeTo = StringSplitter.Direction.Right,
+      mergeTo = "right",
     }: {
       limit?: number;
-      mergeTo?: StringSplitter.Direction;
+      mergeTo?: "left" | "right";
     },
   ): string[] {
     try {
@@ -52,13 +52,13 @@ class StringSplitter {
         ? Infinity
         : limit;
 
-      const tokens: string[] = StringSplitter._split(
+      const tokens: string[] = StringSplitter.__split(
         unmerged,
         separator,
         splitOptions,
       );
 
-      return mergeTo === StringSplitter.Direction.Left
+      return mergeTo === "left"
         ? [
             tokens
               .slice(0, limit - 1)
@@ -74,12 +74,12 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: mergeSplit: \n${e as string}`,
+        `StringSplitter: _mergeSplit: \n${e as string}`,
       );
     }
   }
 
-  private static _split(
+  private static __split(
     raw: string | string[],
     separator: string,
     {
@@ -93,13 +93,15 @@ class StringSplitter {
     },
   ): string[] {
     try {
-      const trimmed: string = [raw]
-        .flat()
-        .join(separator)[
-          trim
-            ? "trim"
-            : "toString"
-        ]();
+      const trimmed: string = (
+        typeof raw === "string"
+          ? raw
+          : raw.join(separator)
+      )[
+        trim
+          ? "trim"
+          : "toString"
+      ]();
 
       return trimmed === ""
         ? []
@@ -114,7 +116,7 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: _split: \n${e as string}`,
+        `StringSplitter: __split: \n${e as string}`,
       );
     }
   }
@@ -128,13 +130,6 @@ class StringSplitter {
         `StringSplitter: toString: \n${e as string}`,
       );
     }
-  }
-}
-
-namespace StringSplitter {
-  export enum Direction {
-    Left,
-    Right,
   }
 }
 
