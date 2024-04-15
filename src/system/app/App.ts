@@ -1,26 +1,20 @@
 abstract class App<
+  T extends string,
   I = null,
   O = null,
   C extends Config = Record<string, never>,
 > {
-  public static get Filetypes(): typeof Filetypes {
+  constructor(
+    protected readonly _type: T,
+  ) {}
+
+  protected static get Filetypes(): typeof Filetypes {
     try {
       return importModule("filetypes/Filetypes") as typeof Filetypes;
     }
     catch (e) {
       throw new ReferenceError(
-        `App: Filetypes: Error importing Filetypes module: \n${e as string}`,
-      );
-    }
-  }
-
-  public static get Calendar(): typeof IOCalendar {
-    try {
-      return importModule("system/calendar/IOCalendar") as typeof IOCalendar;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: Calendar: Error importing IOCalendar module: \n${e as string}`,
+        `App: import Filetypes: \n${e as string}`,
       );
     }
   }
@@ -29,15 +23,15 @@ abstract class App<
     try {
       if (this._cachedSetting === undefined)
         this._cachedSetting = new App.Filetypes.Setting(
-          this.settingSubpathRoot,
+          this._type,
           this.constructor.name,
         );
 
       return this._cachedSetting;
     }
     catch (e) {
-      throw new ReferenceError(
-        `App: setting: Error getting Setting object: \n${e as string}`,
+      throw new EvalError(
+        `App: setting: \n${e as string}`,
       );
     }
   }
@@ -47,8 +41,8 @@ abstract class App<
       return this.setting.app;
     }
     catch (e) {
-      throw new ReferenceError(
-        `App: app: Error getting setting.app: \n${e as string}`,
+      throw new EvalError(
+        `App: setting.app: \n${e as string}`,
       );
     }
   }
@@ -58,30 +52,8 @@ abstract class App<
       return this.setting.user;
     }
     catch (e) {
-      throw new ReferenceError(
-        `App: user: Error getting setting.user: \n${e as string}`,
-      );
-    }
-  }
-
-  protected get settingSubpathRoot(): string {
-    try {
-      return "";
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: settingSubpathRoot: Error getting app setting subpath: \n${e as string}`,
-      );
-    }
-  }
-
-  protected get storageSubpathRoot(): string {
-    try {
-      return this.settingSubpathRoot;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: storageSubpath: Error getting app storage subpath: \n${e as string}`,
+      throw new EvalError(
+        `App: setting.user: \n${e as string}`,
       );
     }
   }
@@ -92,8 +64,8 @@ abstract class App<
     try {
       const output: O = this.runtime();
 
-      if (this.setOut !== undefined)
-        this.setOut(output);
+      if (this.setOutput !== undefined)
+        this.setOutput(output);
 
       return output;
     }
@@ -122,10 +94,8 @@ abstract class App<
         .read();
     }
     catch (e) {
-      throw new ReferenceError(
-        `App: read: Error reading app storage file at '${
-          this.storage(subpath).path
-        }': \n${e as string}`,
+      throw new EvalError(
+      `App: storage.read: \n${e as string}`,
       );
     }
   }
@@ -142,25 +112,25 @@ abstract class App<
       return this;
     }
     catch (e) {
-      throw new ReferenceError(
-        `App: write: Error writing to app storage file at '${
-          this.storage(subpath).path
-        }': \n${e as string}`,
+      throw new EvalError(
+      `App: storage.write: \n${e as string}`,
       );
     }
   }
 
-  protected storage(subpath?: string): Storage {
+  protected storage(
+    subpath?: string
+  ): Storage {
     try {
       return new App.Filetypes.Storage(
-        this.storageSubpathRoot,
+        this._type,
         this.constructor.name,
         subpath,
       );
     }
     catch (e) {
-      throw new ReferenceError(
-        `App: storage: Error getting app Storage object: \n${e as string}`,
+      throw new EvalError(
+        `App: storage: \n${e as string}`,
       );
     }
   }
@@ -169,7 +139,7 @@ abstract class App<
 
   private _cachedSetting?: Setting<C>;
 
-  protected setOut?(runtimeOut: O): void;
+  protected setOutput?(runtimeOutput: O): void;
 }
 
 module.exports = App;

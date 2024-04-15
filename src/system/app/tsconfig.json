@@ -12,9 +12,6 @@
       "path": "browser/tsconfig.json"
     },
     {
-      "path": "calendar/tsconfig.json"
-    },
-    {
       "path": "../../common/tsconfig.json"
     }
   ],

@@ -6,16 +6,14 @@ abstract class Shortcut<
   I extends ShortcutInput = null,
   O = null,
   C extends Config = Record<string, never>,
-> extends sh_App<I, O, C> {
-  public static get App(): typeof App {
-    try {
-      return sh_App;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Shortcut.js: Error getting shortcut App class: \n${e as string}`,
-      );
-    }
+> extends sh_App<
+  "Shortcut",
+  I,
+  O,
+  C
+> {
+  constructor() {
+    super("Shortcut");
   }
 
   public get input(): App<I, O, C>["input"] {
@@ -41,7 +39,7 @@ abstract class Shortcut<
     }
     catch (e) {
       throw new EvalError(
-        `Shortcut.js: Error getting raw file, string, or Image input from Scriptable.args.shortcutParameter: \n${e as string}`,
+        `Shortcut: input: \n${e as string}`,
       );
     }
   }
@@ -54,7 +52,7 @@ abstract class Shortcut<
     }
     catch (e) {
       throw new EvalError(
-        `Shortcut.js: Error casting Scriptable.args.shortcutParameter to string: \n${e as string}`,
+        `Shortcut: inputText: \n${e as string}`,
       );
     }
   }
@@ -70,35 +68,22 @@ abstract class Shortcut<
     }
     catch (e) {
       throw new EvalError(
-        `Shortcut.js: Error constraining Scriptable.args.shortcutParameter to type I & !(string | Image): \n${e as string}`,
+        `Shortcut: inputData: \n${e as string}`,
       );
     }
   }
 
-  protected override get settingSubpathRoot(): string {
-    try {
-      const SHORTCUT_SETTING_SUBPATH_ROOT: string = "Shortcut";
-
-      return super.settingSubpathRoot === ""
-        ? SHORTCUT_SETTING_SUBPATH_ROOT
-        : `${super.settingSubpathRoot}/${SHORTCUT_SETTING_SUBPATH_ROOT}`;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Shortcut.js: Error getting shortcut setting subpath: \n${e as string}`,
-      );
-    }
-  }
-
-  protected override setOut(runtimeOutput: O): void {
+  protected override setOutput(
+    runtimeOutput: O
+  ): void {
     try {
       Script.setShortcutOutput(runtimeOutput);
 
       return;
     }
     catch (e) {
-      throw new ReferenceError(
-        `Shortcut.js: Error setting shortcut output: \n${e as string}`,
+      throw new EvalError(
+        `Shortcut: setOutput: \n${e as string}`,
       );
     }
   }
