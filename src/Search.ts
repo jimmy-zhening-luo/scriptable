@@ -136,7 +136,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Query: ctor: Error creating Query: \n${e as string}`,
+          `Query: ctor \n${e as string}`,
         );
       }
     }
@@ -151,7 +151,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Query: clean: Error cleaning query: \n${e as string}`,
+          `Query: clean: \n${e as string}`,
         );
       }
     }
@@ -166,7 +166,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Query: tokenize: Error tokenizing query: \n${e as string}`,
+          `Query: tokenize: \n${e as string}`,
         );
       }
     }
@@ -326,7 +326,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Query: mathefy: Error checking (& transforming) query for mathiness: \n${e as string}`,
+          `Query: mathefy: \n${e as string}`,
         );
       }
     }
@@ -343,7 +343,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Engine: ctor: Error creating SearchEngine object: \n${e as string}`,
+          `Engine: ctor: \n${e as string}`,
         );
       }
     }
@@ -374,7 +374,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `BrowserEngine: ctor: Error creating BrowserSearchEngine object: \n${e as string}`,
+          `BrowserEngine: ctor: \n${e as string}`,
         );
       }
     }
@@ -410,7 +410,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `BrowserEngine: parseQueryToAction: Error parsing query to action: \n${e as string}`,
+          `BrowserEngine: parseQueryToAction: \n${e as string}`,
         );
       }
     }
@@ -429,7 +429,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `AppEngine: ctor: Error creating AppSearchEngine object: \n${e as string}`,
+          `AppEngine: ctor: \n${e as string}`,
         );
       }
     }
@@ -449,7 +449,7 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `AppEngine: parseQueryToAction: Error parsing query to action: \n${e as string}`,
+          `AppEngine: parseQueryToAction: \n${e as string}`,
         );
       }
     }
