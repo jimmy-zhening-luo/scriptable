@@ -28,7 +28,7 @@
   "devDependencies": {
     "@eslint/js": "^8.57.0",
     "@jimbojet/lint": "^3.0.1",
-    "@stylistic/eslint-plugin": "^1.7.0",
+    "@stylistic/eslint-plugin": "^1.7.2",
     "@types/node": "^20.12.7",
     "@types/scriptable-ios": "^1.7.7",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
