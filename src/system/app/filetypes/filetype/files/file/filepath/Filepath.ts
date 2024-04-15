@@ -11,26 +11,28 @@ class Filepath {
     >
   ) {
     try {
-      const head:
+      if (subpaths.length > 0) {
+        const head:
         | string
         | string[]
         | Filepath
-        | Bookmark = subpaths.shift() ?? [];
+        | Bookmark = subpaths.shift() ?? "";
 
-      this._tree.push(
-        ...head instanceof Filepath
-          ? head._tree
-          : typeof head === "string" || Array.isArray(head)
-            ? Filepath._validate(head)
-            : head.path.split("/"),
-      );
+        if (typeof head === "string") {
+          if (head.length > 0)
+            this._tree.push(...Filepath._validate(head));
+        }
+        else if (Array.isArray(head)) {
+          if (head.length > 0)
+            this._tree.push(...Filepath._validate(head));
+        }
+        else if (head instanceof Filepath)
+          this._tree.push(...head._tree);
+        else
+          this._tree.push(...Filepath._validate(head.path));
 
-      this._tree.push(
-        ...new Filepath(
-          ...subpaths,
-        )
-          ._tree,
-      );
+        this._tree.push(...new Filepath(...subpaths)._tree);
+      }
     }
 
     catch (e) {
