@@ -5,7 +5,7 @@ class Files {
     }
     catch (e) {
       throw new ReferenceError(
-        `Files: Error importing ReadOnlyIOFile class: \n${e as string}`,
+        `Files: Error import ReadOnlyIOFile: \n${e as string}`,
       );
     }
   }
@@ -15,7 +15,9 @@ class Files {
       return Files.ReadOnlyIOFile.IOFile;
     }
     catch (e) {
-      throw new ReferenceError(`Files: Error importing IOFile class: \n${e as string}`);
+      throw new ReferenceError(
+        `Files: import ReadOnlyIOFile.IOFile: \n${e as string}`,
+      );
     }
   }
 
@@ -24,7 +26,9 @@ class Files {
       return Files.IOFile.Bookmark;
     }
     catch (e) {
-      throw new ReferenceError(`Files: Error importing Bookmark class: \n${e as string}`);
+      throw new ReferenceError(
+        `Files: import IOFile.Bookmark: \n${e as string}`,
+      );
     }
   }
 }

@@ -290,7 +290,9 @@ class IOFile {
       return IOFile.Filepath.join(...filepaths);
     }
     catch (e) {
-      throw new EvalError(`IOFile: static join: Error joining paths: \n${e as string}`);
+      throw new EvalError(
+        `IOFile: static join: \n${e as string}`,
+      );
     }
   }
 
@@ -303,7 +305,9 @@ class IOFile {
       ) => this)(this.root, this._subpath.append(...filepaths));
     }
     catch (e) {
-      throw new EvalError(`IOFile: append: Error appending subpath: \n${e as string}`);
+      throw new EvalError(
+        `IOFile: append: \n${e as string}`,
+      );
     }
   }
 
@@ -316,15 +320,19 @@ class IOFile {
       return this;
     }
     catch (e) {
-      throw new EvalError(`IOFile: cd: Error changing directory: \n${e as string}`);
+      throw new EvalError(`IOFile: cd: \n${e as string}`);
     }
   }
 
   public read(): string {
     try {
-      if (!this.isFile) throw new ReferenceError(`IOFile does not exist.`);
+      if (!this.isFile)
+        throw new ReferenceError(
+          `IOFile does not exist.`,
+        );
 
-      return FileManager.iCloud()
+      return FileManager
+        .iCloud()
         .readString(this.path);
     }
     catch (e) {
@@ -347,7 +355,8 @@ class IOFile {
       else {
         if (!this.parent.isDirectory)
           try {
-            FileManager.iCloud()
+            FileManager
+              .iCloud()
               .createDirectory(this.parent.path, true);
           }
           catch (e) {
@@ -356,7 +365,8 @@ class IOFile {
             );
           }
         try {
-          FileManager.iCloud()
+          FileManager
+            .iCloud()
             .writeString(this.path, data);
         }
         catch (e) {
@@ -413,10 +423,14 @@ class IOFile {
         path: string,
       ): void {
         try {
-          FileManager.iCloud()
+          FileManager
+            .iCloud()
             .remove(path);
-          if (FileManager.iCloud()
-            .fileExists(path))
+          if (
+            FileManager
+              .iCloud()
+              .fileExists(path)
+          )
             throw new ReferenceError(
               `Unexpected: IOFile still exists, even after deleting it using Scriptable.FileManager`,
             );

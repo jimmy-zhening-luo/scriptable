@@ -18,11 +18,11 @@ class Filepath {
         | Bookmark = subpaths.shift() ?? [];
 
       this._tree.push(
-        ...head instanceof Bookmark
-          ? head.path.split("/")
-          : head instanceof Filepath
-            ? head._tree
-            : Filepath._validate(head),
+        ...head instanceof Filepath
+          ? head._tree
+          : typeof head === "string" || Array.isArray(head)
+            ? Filepath._validate(head)
+            : head.path.split("/"),
       );
 
       this._tree.push(

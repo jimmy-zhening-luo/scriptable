@@ -1,13 +1,10 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "../../common/**/*",
-    "**/*"
+    "**/*",
+    "../../common/**/*"
   ],
   "references": [
-    {
-      "path": "../../common/tsconfig.json"
-    },
     {
       "path": "filetypes/tsconfig.json"
     },
@@ -16,6 +13,9 @@
     },
     {
       "path": "calendar/tsconfig.json"
+    },
+    {
+      "path": "../../common/tsconfig.json"
     }
   ],
   "compilerOptions": {

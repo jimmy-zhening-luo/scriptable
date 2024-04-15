@@ -7,20 +7,20 @@ class ReadOnlyIOFile extends _IOFile {
     }
     catch (e) {
       throw new ReferenceError(
-        `IOFile::ReadOnlyIOFile: IOFile: Failed to import module IOFile: \n${e as string}`,
+        `ReadOnlyIOFile: import IOFile: \n${e as string}`,
       );
     }
   }
 
   public override delete(): never {
     throw new ReferenceError(
-      `IOFile::ReadOnlyIOFile:delete(): Cannot delete a read-only file or folder.`,
+      `ReadOnlyIOFile: delete: Forbidden Operation: Cannot delete a read-only file or folder.`,
     );
   }
 
   public override write(): never {
     throw new ReferenceError(
-      `IOFile::ReadOnlyIOFile:write(): Cannot write to or overwrite a read-only file.`,
+      `ReadOnlyIOFile: write: Forbidden Operation: Cannot write to or overwrite a read-only file.`,
     );
   }
 }
