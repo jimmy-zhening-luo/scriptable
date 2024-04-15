@@ -7,7 +7,7 @@ abstract class Filetype<
   constructor(
     _type: T,
     FileConstructor: F,
-    ...subpaths: string[],
+    ...subpaths: string[]
   ) {
     try {
       this._file = new FileConstructor(
@@ -53,17 +53,6 @@ abstract class Filetype<
     catch (e) {
       throw new ReferenceError(
         `Filetype: import Files.IOFile: \n${e as string}`,
-      );
-    }
-  }
-
-  private static get Bookmark(): typeof Bookmark {
-    try {
-      return Filetype.Files.Bookmark;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Filetype: import Files.Bookmark: \n${e as string}`,
       );
     }
   }
