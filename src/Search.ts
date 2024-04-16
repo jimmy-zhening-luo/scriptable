@@ -21,86 +21,73 @@ namespace Search {
         }: SearchSettings = this.setting.unmerged;
 
         const TAG: string = app.queryTag;
+        const MATH_KEYS: string | string[] = app.mathKeys ?? [];
 
-        if (TAG === "")
-          throw new SyntaxError(
-            `No querytag configured.`,
-          );
+        const input: string = this.inputData?.input ?? "";
+
+        const query: Query = new Query(
+          input === ""
+            ? this.read()
+            : input,
+          this.inputData?.clip ?? "",
+          MATH_KEYS,
+        );
+
+        if (query.key === "") {
+          if (query.terms.length < 1)
+            throw new SyntaxError(
+              `Final query is empty`,
+            );
+          else
+            throw new EvalError(
+              `Unexpected: final query has no key, but has terms: ${query.terms.join(", ")}`,
+            );
+        }
         else {
-          const MATH_KEYS: string | string[] = app.mathKeys ?? [];
+          const resolved: null | Engine = user
+            .engines
+            .map(
+              eng => "url" in eng
+                ? new BrowserEngine(
+                  eng.keys,
+                  eng.url,
+                  TAG,
+                  eng.browser,
+                  eng.encode,
+                )
+                : "shortcut" in eng
+                ? new ShortcutEngine(
+                  eng.keys,
+                  eng.shortcut,
+                  eng.output,
+                )
+                  : "native" in eng
+                    ? new NativeEngine(
+                      eng.keys,
+                      eng.native,
+                    )
+                    : new AppEngine(
+                      eng.keys,
+                      eng.app,
+                    ),
+            )
+            .find(
+              eng => eng
+                .keys
+                .includes(
+                  query.key,
+                ),
+            ) ?? null;
 
-          const input: string = this.inputData?.input ?? "";
+          if (resolved)
+            this.write(
+              query.clean,
+            );
 
-          const query: Query = new Query(
-            input === ""
-              ? this.read()
-              : input,
-            this.inputData?.clip ?? "",
-            MATH_KEYS,
-          );
-
-          if (query.key === "") {
-            if (query.terms.length < 1)
-              throw new SyntaxError(
-                `Final query is empty`,
-              );
-            else
-              throw new EvalError(
-                `Unexpected: final query has no key, but has terms: ${query.terms.join(", ")}`,
-              );
-          }
-          else {
-            const resolved: null | Engine = user
-              .engines
-              .filter(
-                eng => "keys" in eng,
-              )
-              .filter(
-                eng => "url" in eng || "app" in eng || "shortcut" in eng || "native" in eng,
-              )
-              .map(
-                eng => "url" in eng
-                  ? new BrowserEngine(
-                    eng.keys,
-                    eng.url,
-                    TAG,
-                    eng.browser,
-                    eng.encode,
-                  )
-                  : "shortcut" in eng
-                  ? new ShortcutEngine(
-                    eng.keys,
-                    eng.shortcut,
-                    eng.output,
-                  )
-                    : "native" in eng
-                      ? new NativeEngine(
-                        eng.keys,
-                        eng.native,
-                      )
-                      : new AppEngine(
-                        eng.keys,
-                        eng.app,
-                      ),
-              )
-              .find(
-                eng => eng
-                  .keys
-                  .includes(
-                    query.key,
-                  ),
-              ) ?? null;
-
-            if (resolved)
-              this.write(
-                query.clean,
-              );
-
-            return resolved
-              ?.parseQueryToAction(
-                query,
-              ) ?? null;
-          }
+          return resolved
+            ?.parseQueryToAction(
+              query,
+            ) ?? null;
         }
       }
       catch (e) {
@@ -139,11 +126,6 @@ namespace Search {
           ?.toLowerCase() ?? "";
 
         this.terms = [...tokens];
-
-        if (this.key === "" && this.terms.length > 0)
-          throw new EvalError(
-            `Unexpected: Query.key is empty but Query.terms has value: ${this.terms.join(", ")}`,
-          );
       }
       catch (e) {
         throw new EvalError(
@@ -255,70 +237,40 @@ namespace Search {
                   .map(
                     n => String(n),
                   ),
-                ...[
-                  "(",
-                  ")",
-                  "[",
-                  "]",
-                  "{",
-                  "}",
-                ],
-                ...[
-                  ".",
-                  ",",
-                  ":",
-                  ";",
-                ],
-                ...[
-                  "-",
-                  "_",
-                  "+",
-                  "*",
-                  "/",
-                  "\\",
-                  "^",
-                  "%",
-                  "~",
-                  "=",
-                  "<",
-                  ">",
-                ],
-                ...[
-                  "|",
-                  "&",
-                ],
-                ...[
-                  "`",
-                  "'",
-                  "\"",
-                ],
-                ...[
-                  "?",
-                  "!",
-                  "@",
-                  "#",
-                ],
-                ...[
-                  "$",
-                ],
-                ...[
-                  "€",
-                  "£",
-                  "¥",
-                  "₩",
-                  "₽",
-                  "₹",
-                  "₪",
-                  "₺",
-                  "¢",
-                ],
-                ...[
-                  "°",
-                ],
-              ]
-                .filter(
-                  n => n !== "",
-                );
+                "(",
+                ")",
+                "[",
+                "]",
+                "{",
+                "}",
+                ".",
+                ",",
+                ":",
+                ";",
+                "-",
+                "_",
+                "+",
+                "*",
+                "/",
+                "\\",
+                "^",
+                "%",
+                "~",
+                "=",
+                "<",
+                ">",
+                "|",
+                "&",
+                "`",
+                "'",
+                "\"",
+                "?",
+                "!",
+                "@",
+                "#",
+                "$",
+                "°",
+              ];
 
               if (
                 d.includes(
