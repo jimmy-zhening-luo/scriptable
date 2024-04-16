@@ -513,7 +513,7 @@ namespace Search {
     constructor(
       keys: string | string[],
       shortcut: string,
-      output: boolean = false;
+      output: boolean = false,
     ) {
       try {
         super(keys);
