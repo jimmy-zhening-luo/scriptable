@@ -1,12 +1,9 @@
 declare interface SearchOutput {
-  query: {
-    key: string;
-    terms: string[];
-  };
   app: string;
   actions: string | string[];
+  natural?: string;
+  browser?: BrowserAction;
   shortcut?: string;
   output?: boolean;
   native?: string;
-  browser?: BrowserAction;
 }

@@ -44,40 +44,39 @@ namespace Search {
             );
         }
         else {
-          const resolved: null | Engine = user
+          const match: null | SearchEngineSetting = user
             .engines
-            .map(
-              eng => "url" in eng
-                ? new BrowserEngine(
-                  eng.keys,
-                  eng.url,
-                  TAG,
-                  eng.browser,
-                  eng.encode,
-                )
-                : "shortcut" in eng
-                ? new ShortcutEngine(
-                  eng.keys,
-                  eng.shortcut,
-                  eng.output,
-                )
-                  : "native" in eng
-                    ? new NativeEngine(
-                      eng.keys,
-                      eng.native,
-                    )
-                    : new AppEngine(
-                      eng.keys,
-                      eng.app,
-                    ),
-            )
             .find(
-              eng => eng
-                .keys
-                .includes(
-                  query.key,
-                ),
+              eng => eng.keys.includes(
+                query.key
+              )
             ) ?? null;
+          
+          const resolved: null | Engine = match === null
+            ? null
+            : "url" in match
+              ? new BrowserEngine(
+                match.keys,
+                match.url,
+                TAG,
+                match.browser,
+                match.encode,
+              )
+              : "shortcut" in match
+              ? new ShortcutEngine(
+                match.keys,
+                match.shortcut,
+                match.output,
+              )
+                : "native" in match
+                  ? new NativeEngine(
+                    match.keys,
+                    match.native,
+                  )
+                  : new AppEngine(
+                    match.keys,
+                    match.app,
+                  );
 
           if (resolved)
             this.write(
@@ -134,11 +133,24 @@ namespace Search {
       }
     }
 
+    public get natural(): string {
+      try {
+        return this
+          .terms
+          .join(" ");
+      }
+      catch (e) {
+        throw new EvalError(
+          `Query: clean: \n${e as string}`,
+        );
+      }
+    }
+
     public get clean(): string {
       try {
         return [
           this.key,
-          ...this.terms,
+          this.natural,
         ]
           .join(" ");
       }
@@ -362,12 +374,9 @@ namespace Search {
             ));
 
         return {
-          query: {
-            key: query.key,
-            terms: query.terms,
-          },
           app: "safari",
           actions: actions,
+          natural: query.natural,
           browser: this.browser,
         };
       }
@@ -400,14 +409,8 @@ namespace Search {
     public parseQueryToAction(query: Query): SearchOutput {
       try {
         return {
-          query: {
-            key: query.key,
-            terms: query.terms,
-          },
           app: this.app,
-          actions: query
-            .terms
-            .join(" "),
+          actions: query.natural,
         };
       }
       catch (e) {
@@ -439,14 +442,8 @@ namespace Search {
     public parseQueryToAction(query: Query): SearchOutput {
       try {
         return {
-          query: {
-            key: query.key,
-            terms: query.terms,
-          },
           app: "native",
-          actions: query
-            .terms
-            .join(" "),
+          actions: query.natural,
           native: this.native,
         };
       }
@@ -482,14 +479,8 @@ namespace Search {
     public parseQueryToAction(query: Query): SearchOutput {
       try {
         return {
-          query: {
-            key: query.key,
-            terms: query.terms,
-          },
           app: "shortcut",
-          actions: query
-            .terms
-            .join(" "),
+          actions: query.natural,
           shortcut: this.shortcut,
           output: this.output,
         };
