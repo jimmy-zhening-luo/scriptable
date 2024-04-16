@@ -21,6 +21,10 @@ namespace Search {
         }: SearchSettings = this.setting.unmerged;
 
         const TAG: string = app.queryTag;
+        if (TAG === "")
+          throw new SyntaxError(
+            `setting.app.queryTag is empty`,
+          );
         const MATH_KEYS: string | string[] = app.mathKeys ?? [];
 
         const input: string = this.inputData?.input ?? "";
@@ -33,17 +37,6 @@ namespace Search {
           MATH_KEYS,
         );
 
-        if (query.key === "") {
-          if (query.terms.length < 1)
-            throw new SyntaxError(
-              `Final query is empty`,
-            );
-          else
-            throw new EvalError(
-              `Unexpected: final query has no key, but has terms: ${query.terms.join(", ")}`,
-            );
-        }
-        else {
           const match: null | SearchEngineSetting = user
             .engines
             .find(
@@ -87,7 +80,6 @@ namespace Search {
             ?.parseQueryToAction(
               query,
             ) ?? null;
-        }
       }
       catch (e) {
         throw new EvalError(
@@ -120,10 +112,34 @@ namespace Search {
               ...Query.tokenize(clip),
             );
 
-        this.key = tokens
+        let _key: string = tokens
           .shift()
           ?.toLowerCase() ?? "";
+          
+        if (_key.endsWith(".")) {
+          if (_key.length > 1)
+            _key = _key.slice(0, -1);
+          else if (tokens.length > 0)
+            throw new SyntaxError(
+              `Query '${query}' resolved to\ninvalid key '${_key}'\nwith terms: '${tokens.join("|")}'`,
+            );
+          else
+            throw new SyntaxError(
+              `Query '${query}' resolved to\ninvalid key '${_key}'\nwith zero terms.`,
+            );
+        }
+        else if (_key === "") {
+          if (tokens.length < 1)
+            throw new SyntaxError(
+              `Query resolved empty`,
+            );
+          else
+            throw new RangeError(
+              `Unexpected: final query has no key\nbut has terms: '${query.terms.join("|")}'`,
+            );
+        }
 
+        this.key = _key;
         this.terms = [...tokens];
       }
       catch (e) {
@@ -346,6 +362,11 @@ namespace Search {
         this.encode = encode;
         this.url = [url]
           .flat();
+        
+        if (this.url === "")
+          throw new SyntaxError(
+            `engine url is empty`,
+          );
       }
       catch (e) {
         throw new EvalError(
@@ -398,6 +419,10 @@ namespace Search {
       try {
         super(keys);
         this.app = app;
+        if (this.app === "")
+          throw new SyntaxError(
+            `engine app name is empty`,
+          );
       }
       catch (e) {
         throw new EvalError(
@@ -431,6 +456,10 @@ namespace Search {
       try {
         super(keys);
         this.native = native;
+        if (this.native === "")
+          throw new SyntaxError(
+            `engine native provider is empty`,
+          );
       }
       catch (e) {
         throw new EvalError(
@@ -468,6 +497,10 @@ namespace Search {
         super(keys);
         this.shortcut = shortcut;
         this.output = output;
+        if (this.shortcut === "")
+          throw new SyntaxError(
+            `engine shortcut name is empty`,
+          );
       }
       catch (e) {
         throw new EvalError(
