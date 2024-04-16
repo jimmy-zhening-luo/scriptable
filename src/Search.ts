@@ -67,15 +67,20 @@ namespace Search {
                     eng.browser,
                     eng.encode,
                   )
-                  : "native" in eng
-                    ? new NativeEngine(
-                      eng.keys,
-                      eng.native,
-                    )
-                    : new AppEngine(
-                      eng.keys,
-                      eng.app,
-                    ),
+                  : "shortcut" in eng
+                  ? new ShortcutEngine(
+                    eng.keys,
+                    eng.shortcut,
+                  )
+                    : "native" in eng
+                      ? new NativeEngine(
+                        eng.keys,
+                        eng.native,
+                      )
+                      : new AppEngine(
+                        eng.keys,
+                        eng.app,
+                      ),
               )
               .find(
                 eng => eng
@@ -462,7 +467,7 @@ namespace Search {
 
   class NativeEngine extends Engine {
     public readonly native: string;
-    
+
     constructor(
       keys: string | string[],
       native: string,
@@ -495,6 +500,46 @@ namespace Search {
       catch (e) {
         throw new EvalError(
           `NativeEngine: parseQueryToAction: \n${e as string}`,
+        );
+      }
+    }
+  }
+
+  class ShortcutEngine extends Engine {
+    public readonly shortcut: string;
+
+    constructor(
+      keys: string | string[],
+      shortcut: string,
+    ) {
+      try {
+        super(keys);
+        this.shortcut = shortcut;
+      }
+      catch (e) {
+        throw new EvalError(
+          `ShortcutEngine: ctor: \n${e as string}`,
+        );
+      }
+    }
+
+    public parseQueryToAction(query: Query): SearchOutput {
+      try {
+        return {
+          query: {
+            key: query.key,
+            terms: query.terms,
+          },
+          app: "native",
+          actions: query
+            .terms
+            .join(" "),
+          shortcut: this.shortcut,
+        };
+      }
+      catch (e) {
+        throw new EvalError(
+          `ShortcutEngine: parseQueryToAction: \n${e as string}`,
         );
       }
     }
