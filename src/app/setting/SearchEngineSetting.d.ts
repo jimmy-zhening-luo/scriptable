@@ -1,5 +1,6 @@
 declare type SearchEngineSetting =
   | AppEngineSetting
+  | NativeEngineSetting
   | BrowserEngineSetting;
 
 declare interface ISearchEngineSetting {
@@ -8,6 +9,10 @@ declare interface ISearchEngineSetting {
 
 declare interface AppEngineSetting extends ISearchEngineSetting {
   app: string;
+}
+
+declare interface NativeEngineSetting extends ISearchEngineSetting {
+  native: string;
 }
 
 declare interface BrowserEngineSetting extends ISearchEngineSetting {

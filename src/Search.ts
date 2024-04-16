@@ -67,10 +67,15 @@ namespace Search {
                     eng.browser,
                     eng.encode,
                   )
-                  : new AppEngine(
-                    eng.keys,
-                    eng.app,
-                  ),
+                  : "native" in eng
+                    ? new NativeEngine(
+                      eng.keys,
+                      eng.native,
+                    )
+                    : new AppEngine(
+                      eng.keys,
+                      eng.app,
+                    ),
               )
               .find(
                 eng => eng
@@ -353,22 +358,16 @@ namespace Search {
 
   class BrowserEngine extends Engine {
     public readonly url: string[];
-    public readonly tag: string;
-    public readonly browser: BrowserAction;
-    public readonly encode: BrowserEncode;
 
     constructor(
       keys: string | string[],
       url: string | string[],
-      tag: string,
-      browser: BrowserAction = "default",
-      encode: BrowserEncode = "+",
+      public readonly tag: string,
+      public readonly browser: BrowserAction = "default",
+      public readonly encode: BrowserEncode = "+",
     ) {
       try {
         super(keys);
-        this.tag = tag;
-        this.browser = browser;
-        this.encode = encode;
         this.url = [url]
           .flat();
       }
@@ -417,15 +416,12 @@ namespace Search {
   }
 
   class AppEngine extends Engine {
-    public readonly app: string;
-
     constructor(
       keys: string | string[],
-      app: string,
+      public readonly app: string,
     ) {
       try {
         super(keys);
-        this.app = app.toLowerCase();
       }
       catch (e) {
         throw new EvalError(
@@ -450,6 +446,43 @@ namespace Search {
       catch (e) {
         throw new EvalError(
           `AppEngine: parseQueryToAction: \n${e as string}`,
+        );
+      }
+    }
+  }
+
+  class NativeEngine extends Engine {
+    constructor(
+      keys: string | string[],
+      public readonly native: string,
+    ) {
+      try {
+        super(keys);
+      }
+      catch (e) {
+        throw new EvalError(
+          `NativeEngine: ctor: \n${e as string}`,
+        );
+      }
+    }
+
+    public parseQueryToAction(query: Query): SearchOutput {
+      try {
+        return {
+          query: {
+            key: query.key,
+            terms: query.terms,
+          },
+          app: "native",
+          actions: query
+            .terms
+            .join(" "),
+          native: this.native,
+        };
+      }
+      catch (e) {
+        throw new EvalError(
+          `NativeEngine: parseQueryToAction: \n${e as string}`,
         );
       }
     }

@@ -5,5 +5,6 @@ declare interface SearchOutput {
   };
   app: string;
   actions: string | string[];
+  native?: string;
   browser?: BrowserAction;
 }
