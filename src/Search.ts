@@ -358,16 +358,22 @@ namespace Search {
 
   class BrowserEngine extends Engine {
     public readonly url: string[];
+    public readonly tag: string;
+    public readonly browser: BrowserAction;
+    public readonly encode: BrowserEncode;
 
     constructor(
       keys: string | string[],
       url: string | string[],
-      public readonly tag: string,
-      public readonly browser: BrowserAction = "default",
-      public readonly encode: BrowserEncode = "+",
+      tag: string,
+      browser: BrowserAction = "default",
+      encode: BrowserEncode = "+",
     ) {
       try {
         super(keys);
+        this.tag = tag;
+        this.browser = browser;
+        this.encode = encode;
         this.url = [url]
           .flat();
       }
@@ -416,12 +422,15 @@ namespace Search {
   }
 
   class AppEngine extends Engine {
+    public readonly app: string;
+
     constructor(
       keys: string | string[],
-      public readonly app: string,
+      app: string,
     ) {
       try {
         super(keys);
+        this.app = app;
       }
       catch (e) {
         throw new EvalError(
@@ -452,12 +461,15 @@ namespace Search {
   }
 
   class NativeEngine extends Engine {
+    public readonly native: string;
+    
     constructor(
       keys: string | string[],
-      public readonly native: string,
+      native: string,
     ) {
       try {
         super(keys);
+        this.native = native;
       }
       catch (e) {
         throw new EvalError(
