@@ -11,13 +11,16 @@ namespace New {
   export class New extends shortcut<
     null | NewInput,
     string | NewOutput,
-    Record<string, never> | NewSetting
+    NewSetting
   > {
     public runtime(): string {
       try {
         const WORLD_FILE = "world.txt";
         const WORLD_PREFIX = "World: ";
+        const SPACE_SETTING = "space";
+        const E_MISSING_SETTING = "{E_MISSING_SETTING}";
 
+        // Storage
         const hello: string = this.read();
         const world: string = this.read(
           WORLD_FILE,
@@ -28,7 +31,14 @@ namespace New {
           WORLD_FILE,
         );
 
-        return hello + " " + world;
+        // Setting
+        const space: string = this.app[
+          SPACE_SETTING
+        ] ?? E_MISSING_SETTING;
+
+        console.warn(hello + space + world);
+
+        return hello + space + world;
       }
       catch (e) {
         throw new EvalError(
