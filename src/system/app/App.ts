@@ -65,18 +65,23 @@ abstract class App<
       const output: O = this.runtime();
 
       if (this.setOutput !== undefined)
-        this.setOutput(output);
+        this.setOutput(
+          output,
+        );
 
       return output;
     }
     catch (e) {
       const stack: string[] = `${e as string}`
         .split(
-          "\n"
-        )
-        .reverse();
+          "\n",
+        );
       const nTitle: string = stack.pop() ?? "";
-      const nBody: string = stack.join("\n");
+      const nBody: string = stack
+        .reverse()
+        .join(
+          "\n",
+        );
 
       console.error(nTitle);
       console.error(nBody);
