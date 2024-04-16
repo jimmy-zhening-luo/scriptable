@@ -37,49 +37,49 @@ namespace Search {
           MATH_KEYS,
         );
 
-          const match: null | SearchEngineSetting = user
-            .engines
-            .find(
-              eng => eng.keys.includes(
-                query.key
-              )
-            ) ?? null;
-          
-          const resolved: null | Engine = match === null
-            ? null
-            : "url" in match
-              ? new BrowserEngine(
-                match.keys,
-                match.url,
-                TAG,
-                match.browser,
-                match.encode,
-              )
-              : "shortcut" in match
-              ? new ShortcutEngine(
-                match.keys,
-                match.shortcut,
-                match.output,
-              )
-                : "native" in match
-                  ? new NativeEngine(
-                    match.keys,
-                    match.native,
-                  )
-                  : new AppEngine(
-                    match.keys,
-                    match.app,
-                  );
+        const match: null | SearchEngineSetting = user
+          .engines
+          .find(
+            eng => eng.keys.includes(
+              query.key
+            )
+          ) ?? null;
+        
+        const resolved: null | Engine = match === null
+          ? null
+          : "url" in match
+            ? new BrowserEngine(
+              match.keys,
+              match.url,
+              TAG,
+              match.browser,
+              match.encode,
+            )
+            : "shortcut" in match
+            ? new ShortcutEngine(
+              match.keys,
+              match.shortcut,
+              match.output,
+            )
+              : "native" in match
+                ? new NativeEngine(
+                  match.keys,
+                  match.native,
+                )
+                : new AppEngine(
+                  match.keys,
+                  match.app,
+                );
 
-          if (resolved)
-            this.write(
-              query.clean,
-            );
+        if (resolved)
+          this.write(
+            query.clean,
+          );
 
-          return resolved
-            ?.parseQueryToAction(
-              query,
-            ) ?? null;
+        return resolved
+          ?.parseQueryToAction(
+            query,
+          ) ?? null;
       }
       catch (e) {
         throw new EvalError(
@@ -115,7 +115,7 @@ namespace Search {
         let _key: string = tokens
           .shift()
           ?.toLowerCase() ?? "";
-          
+
         if (_key.endsWith(".")) {
           if (_key.length > 1)
             _key = _key.slice(0, -1);
@@ -135,7 +135,7 @@ namespace Search {
             );
           else
             throw new RangeError(
-              `Unexpected: final query has no key\nbut has terms: '${query.terms.join("|")}'`,
+              `Unexpected: final query has no key\nbut has terms: '${tokens.join("|")}'`,
             );
         }
 
@@ -362,10 +362,14 @@ namespace Search {
         this.encode = encode;
         this.url = [url]
           .flat();
-        
-        if (this.url === "")
+
+        if (this.url.length === 0)
           throw new SyntaxError(
-            `engine url is empty`,
+            `engine url[] is empty`,
+          );
+        else if (this.url.every(u => u === ""))
+          throw new SyntaxError(
+            `engine url[""] contains all empty strings`,
           );
       }
       catch (e) {
