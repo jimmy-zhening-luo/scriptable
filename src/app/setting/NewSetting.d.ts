@@ -1,5 +1,5 @@
 declare interface NewSetting extends Config {
-  app?: NewAppSetting;
+  app: NewAppSetting;
   user?: NewUserSetting;
 }
 
