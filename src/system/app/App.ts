@@ -70,18 +70,31 @@ abstract class App<
       return output;
     }
     catch (e) {
-      const e_final = `App: run: Caught unhandled exception during app runtime: \n${e as string}`;
+      const stack: string[] = `${e as string}`
+        .split(
+          "\n"
+        )
+        .reverse();
+      const n_Title: string = stack.pop();
+      const n_Body: string = stack.join("\n");
 
-      console.error(e_final);
-      const e_notif = new Notification();
+      console.error(n_Title);
+      console.error(n_Body);
 
-      e_notif.title = "Scriptable Error";
-      e_notif.body = e_final;
-      e_notif.sound = "failure";
-      e_notif.schedule()
-        .catch(err => { throw err; });
+      const n: Notification = new Notification();
 
-      throw new EvalError(e_final);
+      n.title = n_Title;
+      n.body = n_Body;
+      n.sound = "failure";
+      n.schedule()
+        .catch(
+          err =>
+            { throw err; }
+          );
+
+      throw new EvalError(
+        `App: run: \n${e as string}`,
+      )
     }
   }
 
