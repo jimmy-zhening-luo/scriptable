@@ -15,11 +15,20 @@ namespace New {
   > {
     public runtime(): string {
       try {
-        const hello: string = this.read(
-          ""
+        const WORLD_FILE = "world.txt";
+        const WORLD_PREFIX = "World: ";
+
+        const hello: string = this.read();
+        const world: string = this.read(
+          WORLD_FILE,
         );
-        
-        return "Hello World";
+
+        this.write(
+          WORLD_PREFIX + new Date().toString(),
+          WORLD_FILE,
+        );
+
+        return hello + " " + world;
       }
       catch (e) {
         throw new EvalError(
