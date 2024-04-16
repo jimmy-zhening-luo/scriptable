@@ -56,7 +56,7 @@ namespace Search {
                 eng => "keys" in eng,
               )
               .filter(
-                eng => "url" in eng || "app" in eng,
+                eng => "url" in eng || "app" in eng || "shortcut" in eng || "native" in eng,
               )
               .map(
                 eng => "url" in eng
