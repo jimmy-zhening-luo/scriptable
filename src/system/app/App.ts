@@ -93,13 +93,12 @@ abstract class App<
       n.sound = "failure";
       n.schedule()
         .catch(
-          err =>
-            { throw err; }
-          );
+          err => { throw err; },
+        );
 
-      throw new EvalError(
-        `App: run: \n${e as string}`,
-      )
+      throw new Error(
+        `END EXECUTION`,
+      );
     }
   }
 

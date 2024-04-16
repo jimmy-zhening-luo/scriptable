@@ -27,7 +27,8 @@ namespace New {
         );
 
         this.write(
-          WORLD_PREFIX + new Date().toString(),
+          WORLD_PREFIX + new Date()
+            .toString(),
           WORLD_FILE,
         );
 
