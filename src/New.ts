@@ -15,6 +15,10 @@ namespace New {
   > {
     public runtime(): string {
       try {
+        const hello: string = this.read(
+          ""
+        );
+        
         return "Hello World";
       }
       catch (e) {

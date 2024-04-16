@@ -75,16 +75,16 @@ abstract class App<
           "\n"
         )
         .reverse();
-      const n_Title: string = stack.pop();
-      const n_Body: string = stack.join("\n");
+      const nTitle: string = stack.pop() ?? "";
+      const nBody: string = stack.join("\n");
 
-      console.error(n_Title);
-      console.error(n_Body);
+      console.error(nTitle);
+      console.error(nBody);
 
       const n: Notification = new Notification();
 
-      n.title = n_Title;
-      n.body = n_Body;
+      n.title = nTitle;
+      n.body = nBody;
       n.sound = "failure";
       n.schedule()
         .catch(
