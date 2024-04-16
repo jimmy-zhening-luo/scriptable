@@ -71,6 +71,7 @@ namespace Search {
                   ? new ShortcutEngine(
                     eng.keys,
                     eng.shortcut,
+                    eng.output,
                   )
                     : "native" in eng
                       ? new NativeEngine(
@@ -507,14 +508,17 @@ namespace Search {
 
   class ShortcutEngine extends Engine {
     public readonly shortcut: string;
+    public readonly output: boolean;
 
     constructor(
       keys: string | string[],
       shortcut: string,
+      output: boolean = false;
     ) {
       try {
         super(keys);
         this.shortcut = shortcut;
+        this.output = output;
       }
       catch (e) {
         throw new EvalError(
@@ -530,11 +534,12 @@ namespace Search {
             key: query.key,
             terms: query.terms,
           },
-          app: "native",
+          app: "shortcut",
           actions: query
             .terms
             .join(" "),
           shortcut: this.shortcut,
+          output: this.output,
         };
       }
       catch (e) {

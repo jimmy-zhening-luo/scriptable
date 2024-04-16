@@ -14,6 +14,7 @@ declare interface AppEngineSetting extends ISearchEngineSetting {
 
 declare interface ShortcutEngineSetting extends ISearchEngineSetting {
   shortcut: string;
+  output?: boolean;
 }
 
 declare interface NativeEngineSetting extends ISearchEngineSetting {
