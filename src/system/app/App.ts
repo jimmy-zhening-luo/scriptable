@@ -83,15 +83,15 @@ abstract class App<
       );
     }
     catch (e) {
-      if (e instanceof Error) {
-        this.handleError(e);
+      if (typeof e === "object" && "message" in e) {
+        this.handleError(e as Error);
         throw new Error(
-          `TOP OF STACK`,
+          `TOP`,
           { cause: e },
         );
       }
       else
-        throw new TypeError(
+        throw new SyntaxError(
           `Caught unparseable error`,
           { cause: e },
         );
@@ -155,30 +155,34 @@ abstract class App<
     e: Error,
   ): void {
     try {
-      const stack: Error[] = [e];
+      const stack: string[] = [
+        String(e),
+      ];
 
-      for (let i: Error = e; i.cause instanceof Error; i = i.cause)
-        stack.push(i.cause);
-
-      const nStack: string[] = stack
-        .map(
-          i =>
-            i.toString(),
+      for (let i: Error = e; "cause" in i && typeof i.cause === "object" && "message" in i.cause; i = i.cause as Error);
+        stack.push(
+          String(
+            i.cause as Error,
+          ),
         );
 
-      while (stack.length > 1)
-        console.error(
-          stack.pop(),
-        );
+      const messages: string[] = stack
+        .reverse();
+
+      console.error(
+        messages
+          .join(
+            "\n",
+          ),
+      );
 
       const n: Notification = new Notification();
 
       n.title = (
-        nStack
+        messages
           .pop() ?? ""
-      )
-        .toString();
-      n.body = nStack
+      );
+      n.body = messages
         .join(
           "\n",
         );
