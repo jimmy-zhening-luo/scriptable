@@ -21,6 +21,7 @@ namespace Search {
         }: SearchSettings = this.setting.unmerged;
 
         const TAG: string = app.queryTag;
+
         if (TAG === "")
           throw new SyntaxError(
             `setting.app.queryTag is empty`,
@@ -41,10 +42,10 @@ namespace Search {
           .engines
           .find(
             eng => eng.keys.includes(
-              query.key
-            )
+              query.key,
+            ),
           ) ?? null;
-        
+
         const resolved: null | Engine = match === null
           ? null
           : "url" in match
@@ -56,11 +57,11 @@ namespace Search {
               match.encode,
             )
             : "shortcut" in match
-            ? new ShortcutEngine(
-              match.keys,
-              match.shortcut,
-              match.output,
-            )
+              ? new ShortcutEngine(
+                match.keys,
+                match.shortcut,
+                match.output,
+              )
               : "native" in match
                 ? new NativeEngine(
                   match.keys,
@@ -477,7 +478,7 @@ namespace Search {
         return {
           app: "native",
           actions: query.natural,
-          native: this.native,
+          "native": this.native,
         };
       }
       catch (e) {

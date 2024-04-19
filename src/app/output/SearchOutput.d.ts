@@ -5,5 +5,5 @@ declare interface SearchOutput {
   browser?: BrowserAction;
   shortcut?: string;
   output?: boolean;
-  native?: string;
+  "native"?: string;
 }

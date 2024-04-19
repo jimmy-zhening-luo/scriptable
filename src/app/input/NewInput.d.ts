@@ -1,3 +1,3 @@
 declare interface NewInput {
-  input: string;
-};
+  [key: string]: unknown;
+}
