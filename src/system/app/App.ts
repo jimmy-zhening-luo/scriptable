@@ -83,7 +83,7 @@ abstract class App<
       );
     }
     catch (e) {
-      if (typeof e === "object" && "message" in e) {
+      if (e !== null && typeof e === "object" && "message" in e) {
         this.handleError(e as Error);
         throw new Error(
           `TOP`,
@@ -159,7 +159,7 @@ abstract class App<
         String(e),
       ];
 
-      for (let i: Error = e; "cause" in i && typeof i.cause === "object" && "message" in i.cause; i = i.cause as Error);
+      for (let i: Error = e; "cause" in i && typeof i.cause === "object" && i.cause !== null && "message" in i.cause; i = i.cause as Error)
         stack.push(
           String(
             i.cause as Error,
@@ -178,10 +178,9 @@ abstract class App<
 
       const n: Notification = new Notification();
 
-      n.title = (
-        messages
-          .pop() ?? ""
-      );
+      n.title
+        = messages
+          .pop() ?? "";
       n.body = messages
         .join(
           "\n",
