@@ -328,7 +328,7 @@ class IOFile {
     try {
       if (!this.isFile)
         throw new ReferenceError(
-          `file does not exist at path: ${this.path}`,
+          `file does not exist`,
         );
 
       return FileManager
@@ -337,7 +337,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: read`,
+        `IOFile: read: ${this.path}`,
         { cause: e },
       );
     }
@@ -347,11 +347,11 @@ class IOFile {
     try {
       if (this.isDirectory)
         throw new ReferenceError(
-          `unwriteable location; filepath points to a folder: ${this.path}`,
+          `unwriteable location; filepath points to a folder`,
         );
       else if (this.isFile && !overwrite)
         throw new ReferenceError(
-          `unwriteable file: file already exists, and overwrite is false: ${this.path}`,
+          `unwriteable file: file already exists, and overwrite is false`,
         );
       else {
         if (!this.parent.isDirectory)
@@ -362,7 +362,7 @@ class IOFile {
           }
           catch (e) {
             throw new EvalError(
-              `Unexpected: FileManager tried but failed to create parent directory for file to write: ${this.path}`,
+              `Unexpected: FileManager tried but failed to create parent directory for file to write`,
               { cause: e },
             );
           }
@@ -373,7 +373,7 @@ class IOFile {
         }
         catch (e) {
           throw new EvalError(
-            `Unexpected: FileManager tried but failed to write data to file: ${this.path}`,
+            `Unexpected: FileManager tried but failed to write data to file`,
             { cause: e },
           );
         }
@@ -383,7 +383,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: write`,
+        `IOFile: write: ${this.path}`,
         { cause: e },
       );
     }
@@ -436,7 +436,7 @@ class IOFile {
               .fileExists(path)
           )
             throw new ReferenceError(
-              `Unexpected: FileManager deleted file, but file still exists: ${this.path}`,
+              `Unexpected: FileManager deleted file, but file still exists`,
             );
         }
         catch (e) {
@@ -451,7 +451,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: delete`,
+        `IOFile: delete: ${this.path}`,
         { cause: e },
       );
     }
