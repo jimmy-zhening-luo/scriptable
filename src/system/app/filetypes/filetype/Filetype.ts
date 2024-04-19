@@ -24,35 +24,24 @@ abstract class Filetype<
     }
   }
 
-  protected static get Files(): typeof Files {
-    try {
-      return importModule("files/Files") as typeof Files;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Filetype: import Files: \n${e as string}`,
-      );
-    }
-  }
-
   protected static get ReadOnlyIOFile(): typeof ReadOnlyIOFile {
     try {
-      return Filetype.Files.ReadOnlyIOFile;
+      return importModule("file/ReadOnlyIOFile") as typeof ReadOnlyIOFile;
     }
     catch (e) {
       throw new ReferenceError(
-        `Filetype: import Files.ReadOnlyIOFile: \n${e as string}`,
+        `Filetype: import ReadOnlyIOFile: \n${e as string}`,
       );
     }
   }
 
   protected static get IOFile(): typeof IOFile {
     try {
-      return Filetype.Files.IOFile;
+      return importModule("file/IOFile") as typeof IOFile;
     }
     catch (e) {
       throw new ReferenceError(
-        `Filetype: import Files.IOFile: \n${e as string}`,
+        `Filetype: import IOFile: \n${e as string}`,
       );
     }
   }

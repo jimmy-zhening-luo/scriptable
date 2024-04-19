@@ -1,17 +1,6 @@
-const _IOFile: typeof IOFile = importModule("file/IOFile") as typeof IOFile;
+const _IOFile: typeof IOFile = importModule("IOFile") as typeof IOFile;
 
 class ReadOnlyIOFile extends _IOFile {
-  public static get IOFile(): typeof IOFile {
-    try {
-      return _IOFile;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `ReadOnlyIOFile: import IOFile: \n${e as string}`,
-      );
-    }
-  }
-
   public override delete(): never {
     throw new ReferenceError(
       `ReadOnlyIOFile: delete: Forbidden Operation: Cannot delete a read-only file or folder.`,

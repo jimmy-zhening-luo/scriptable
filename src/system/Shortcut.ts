@@ -73,13 +73,13 @@ abstract class Shortcut<
     }
   }
 
-  protected override setOutput(
-    runtimeOutput: O,
-  ): void {
+  protected setOutput(
+    runtimeOutput: null | O,
+  ): null | O {
     try {
       Script.setShortcutOutput(runtimeOutput);
 
-      return;
+      return runtimeOutput;
     }
     catch (e) {
       throw new EvalError(

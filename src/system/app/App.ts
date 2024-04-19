@@ -8,13 +8,24 @@ abstract class App<
     protected readonly _type: T,
   ) {}
 
-  protected static get Filetypes(): typeof Filetypes {
+  protected static get Setting(): typeof Setting {
     try {
-      return importModule("filetypes/Filetypes") as typeof Filetypes;
+      return importModule("filetypes/Setting") as typeof Setting;
     }
     catch (e) {
       throw new ReferenceError(
-        `App: import Filetypes: \n${e as string}`,
+        `App: import Setting: \n${e as string}`,
+      );
+    }
+  }
+
+  protected static get Storage(): typeof Storage {
+    try {
+      return importModule("filetypes/Storage") as typeof Storage;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Storage: \n${e as string}`,
       );
     }
   }
@@ -22,7 +33,7 @@ abstract class App<
   public get setting(): Setting<C> {
     try {
       if (this._cachedSetting === undefined)
-        this._cachedSetting = new App.Filetypes.Setting(
+        this._cachedSetting = new App.Setting(
           this._type,
           this.constructor.name,
         );
@@ -60,16 +71,11 @@ abstract class App<
 
   public abstract get input(): null | string | I;
 
-  public run(): O {
+  public run(): null | O {
     try {
-      const output: O = this.runtime();
-
-      if (this.setOutput !== undefined)
-        this.setOutput(
-          output,
-        );
-
-      return output;
+      return this.setOutput(
+        this.runtime(),
+      );
     }
     catch (e) {
       const stack: string[] = `${e as string}`
@@ -139,7 +145,7 @@ abstract class App<
     subpath?: string,
   ): Storage {
     try {
-      return new App.Filetypes.Storage(
+      return new App.Storage(
         this._type,
         this.constructor.name,
         subpath,
@@ -152,11 +158,11 @@ abstract class App<
     }
   }
 
-  public abstract runtime(): O;
+  public abstract runtime(): null | O;
+
+  protected abstract setOutput(runtimeOutput: null | O): null | O;
 
   private _cachedSetting?: Setting<C>;
-
-  protected setOutput?(runtimeOutput: O): void;
 }
 
 module.exports = App;
