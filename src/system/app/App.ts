@@ -83,33 +83,18 @@ abstract class App<
       );
     }
     catch (e) {
-      const stack: string[] = `${e as string}`
-        .split(
-          "\n",
+      if (e instanceof Error) {
+        this.handleError(e);
+        throw new Error(
+          `TOP OF STACK`,
+          { cause: e },
         );
-      const nTitle: string = stack.pop() ?? "";
-      const nBody: string = stack
-        .reverse()
-        .join(
-          "\n",
+      }
+      else
+        throw new TypeError(
+          `Caught unparseable error`,
+          { cause: e },
         );
-
-      console.error(nTitle);
-      console.error(nBody);
-
-      const n: Notification = new Notification();
-
-      n.title = nTitle;
-      n.body = nBody;
-      n.sound = "failure";
-      n.schedule()
-        .catch(
-          err => { throw err; },
-        );
-
-      throw new Error(
-        `END EXECUTION`,
-      );
     }
   }
 
@@ -161,6 +146,51 @@ abstract class App<
     catch (e) {
       throw new EvalError(
         `App: storage`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected handleError(
+    e: Error,
+  ): void {
+    try {
+      const stack: Error[] = [e];
+
+      for (let i: Error = e; i.cause instanceof Error; i = i.cause)
+        stack.push(i.cause);
+
+      const nStack: string[] = stack
+        .map(
+          i =>
+            i.toString(),
+        );
+
+      while (stack.length > 1)
+        console.error(
+          stack.pop(),
+        );
+
+      const n: Notification = new Notification();
+
+      n.title = (
+        nStack
+          .pop() ?? ""
+      )
+        .toString();
+      n.body = nStack
+        .join(
+          "\n",
+        );
+      n.sound = "failure";
+      n.schedule()
+        .catch(
+          n_e => { throw n_e; },
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: handleError`,
         { cause: e },
       );
     }
