@@ -38,8 +38,8 @@ abstract class CharString {
       if (!this._qualifies(
         this._raw,
       ))
-        throw new SyntaxError(
-          `Unqualified: ${this._raw}`,
+        throw new TypeError(
+          `Unqualified string: ${this._raw}`,
         );
       else
         return this._raw;

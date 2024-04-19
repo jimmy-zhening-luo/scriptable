@@ -381,10 +381,12 @@ class CharSet {
 
   public allows(char: string): boolean {
     try {
-      return (
-        char.length === 1
-        && this.members.includes(char) !== this.negate
-      );
+      if (char.length !== 1)
+        throw new RangeError(
+          `expected char of length 1; instead, char '${char}' has length ${char}`,
+        );
+      else
+        return this.members.includes(char) !== this.negate;
     }
     catch (e) {
       throw new EvalError(

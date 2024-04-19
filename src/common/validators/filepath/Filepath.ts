@@ -16,11 +16,7 @@ class Filepath {
         | string[]
         | Filepath = subpaths.shift() ?? "";
 
-        if (typeof head === "string") {
-          if (head.length > 0)
-            this._tree.push(...Filepath._validate(head));
-        }
-        else if (Array.isArray(head)) {
+        if (typeof head === "string" || Array.isArray(head)) {
           if (head.length > 0)
             this._tree.push(...Filepath._validate(head));
         }

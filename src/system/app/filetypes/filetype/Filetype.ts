@@ -93,7 +93,7 @@ abstract class Filetype<
     try {
       if (_type === "")
         throw new SyntaxError(
-          `Empty _type`,
+          `Expected app child type name; instead, type is empty`,
         );
       else
         return new Filetype.IOFile.Bookmark(

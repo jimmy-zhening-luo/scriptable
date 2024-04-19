@@ -6,12 +6,12 @@ class FilepathPart extends fpr_ValidString {
   constructor(part: string) {
     try {
       if (part.length < 1)
-        throw new SyntaxError(
-          `path part is empty`,
+        throw new RangeError(
+          `path part is empty; expected part length 1-255`,
         );
       else if (part.length > 255)
-        throw new SyntaxError(
-          `path part exceeds 255 chars`,
+        throw new RangeError(
+          `path part exceeds 255 chars; expected part length 1-255`,
         );
       else
         super(

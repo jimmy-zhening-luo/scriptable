@@ -14,7 +14,7 @@ class Bookmark {
 
         if (alias === "")
           throw new SyntaxError(
-            `empty alias`,
+            `expected bookmark name; instead, got empty string: '${alias}'`,
           );
         else if (
           !FileManager
@@ -22,13 +22,17 @@ class Bookmark {
             .bookmarkExists(alias)
         )
           throw new ReferenceError(
-            `no Scriptable bookmark with alias: '${alias}'`,
+            `no bookmark exists in Scriptable with alias: '${alias}'`,
           );
         else {
           this.alias = alias;
           this.path = FileManager
             .iCloud()
             .bookmarkedPath(alias);
+          if (this.path === "")
+            throw new ReferenceError(
+              `Unexpected: bookmark with alias '${alias}' resolved to empty path even though it exists in Scriptable`,
+            );
         }
       }
     }

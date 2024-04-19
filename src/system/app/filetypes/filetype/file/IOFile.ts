@@ -328,7 +328,7 @@ class IOFile {
     try {
       if (!this.isFile)
         throw new ReferenceError(
-          `file does not exist`,
+          `file does not exist at path: ${this.path}`,
         );
 
       return FileManager
@@ -347,11 +347,11 @@ class IOFile {
     try {
       if (this.isDirectory)
         throw new ReferenceError(
-          `path points to folder`,
+          `unwriteable location; filepath points to a folder: ${this.path}`,
         );
       else if (this.isFile && !overwrite)
         throw new ReferenceError(
-          `cannot write: file already exists, and overwrite is set to false`,
+          `unwriteable file: file already exists, and overwrite is false: ${this.path}`,
         );
       else {
         if (!this.parent.isDirectory)
@@ -362,7 +362,7 @@ class IOFile {
           }
           catch (e) {
             throw new EvalError(
-              `tried to create directory, but FileManager failed to create directory`,
+              `Unexpected: FileManager tried but failed to create parent directory for file to write: ${this.path}`,
               { cause: e },
             );
           }
@@ -373,7 +373,7 @@ class IOFile {
         }
         catch (e) {
           throw new EvalError(
-            `FileManager failed to write data`,
+            `Unexpected: FileManager tried but failed to write data to file: ${this.path}`,
             { cause: e },
           );
         }
@@ -436,7 +436,7 @@ class IOFile {
               .fileExists(path)
           )
             throw new ReferenceError(
-              `Unexpected: IOFile still exists, even after deleting it using Scriptable.FileManager`,
+              `Unexpected: FileManager deleted file, but file still exists: ${this.path}`,
             );
         }
         catch (e) {

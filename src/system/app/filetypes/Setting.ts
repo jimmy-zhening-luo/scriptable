@@ -32,8 +32,8 @@ class Setting<
       if (this._cachedSetting !== undefined) return this._cachedSetting;
       else {
         if (!this._file.isFile)
-          throw new SyntaxError(
-            `setting file does not exist`,
+          throw new ReferenceError(
+            `No setting file found at path: ${this._file.path}`,
           );
         else {
           const parsedJson: unknown = JSON.parse(this.read());
@@ -44,8 +44,8 @@ class Setting<
             return this._cachedSetting;
           }
           else
-            throw new SyntaxError(
-              `setting file is valid JSON, but invalid setting schema`,
+            throw new TypeError(
+              `Setting file parsed to valid JSON, but has incorrect schema: ${this._file.path}`,
             );
 
           function _validate(parsedJson: unknown): boolean {
@@ -87,7 +87,7 @@ class Setting<
     try {
       if (this.unmerged.app === undefined)
         throw new ReferenceError(
-          `no app setting found`,
+          `No app setting found`,
         );
       else return this.unmerged.app;
     }
@@ -103,7 +103,7 @@ class Setting<
     try {
       if (this.unmerged.user === undefined)
         throw new ReferenceError(
-          `no user setting found`,
+          `No user setting found`,
         );
       else return this.unmerged.user;
     }

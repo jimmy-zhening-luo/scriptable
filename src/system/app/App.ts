@@ -92,7 +92,7 @@ abstract class App<
       }
       else
         throw new SyntaxError(
-          `Caught unparseable error`,
+          `Unexpected: Caught unparseable error`,
           { cause: e },
         );
     }
