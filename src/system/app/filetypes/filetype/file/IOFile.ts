@@ -31,7 +31,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: ctor: \n${e as string}`,
+        `IOFile: ctor`,
+        { cause: e },
       );
     }
   }
@@ -42,7 +43,8 @@ class IOFile {
     }
     catch (e) {
       throw new ReferenceError(
-        `IOFile: import Bookmark: \n${e as string}`,
+        `IOFile: import Bookmark`,
+        { cause: e },
       );
     }
   }
@@ -55,7 +57,8 @@ class IOFile {
     }
     catch (e) {
       throw new ReferenceError(
-        `IOFile: import Filepath: \n${e as string}`,
+        `IOFile: import Filepath`,
+        { cause: e },
       );
     }
   }
@@ -66,7 +69,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: path: \n${e as string}`,
+        `IOFile: path`,
+        { cause: e },
       );
     }
   }
@@ -77,7 +81,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: subpath: \n${e as string}`,
+        `IOFile: subpath`,
+        { cause: e },
       );
     }
   }
@@ -88,7 +93,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: exists: \n${e as string}`,
+        `IOFile: exists`,
+        { cause: e },
       );
     }
   }
@@ -104,7 +110,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: isFile: \n${e as string}`,
+        `IOFile: isFile`,
+        { cause: e },
       );
     }
   }
@@ -119,7 +126,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: isDirectory: \n${e as string}`,
+        `IOFile: isDirectory`,
+        { cause: e },
       );
     }
   }
@@ -130,7 +138,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: isRoot: \n${e as string}`,
+        `IOFile: isRoot`,
+        { cause: e },
       );
     }
   }
@@ -146,7 +155,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: isLeaf: \n${e as string}`,
+        `IOFile: isLeaf`,
+        { cause: e },
       );
     }
   }
@@ -164,7 +174,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: root: \n${e as string}`,
+        `IOFile: root`,
+        { cause: e },
       );
     }
   }
@@ -180,7 +191,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: parent: \n${e as string}`,
+        `IOFile: parent`,
+        { cause: e },
       );
     }
   }
@@ -197,7 +209,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: ls: \n${e as string}`,
+        `IOFile: ls`,
+        { cause: e },
       );
     }
   }
@@ -231,7 +244,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: descendants: \n${e as string}`,
+        `IOFile: descendants`,
+        { cause: e },
       );
     }
   }
@@ -247,7 +261,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: subpath: \n${e as string}`,
+        `IOFile: subpath`,
+        { cause: e },
       );
     }
   }
@@ -264,7 +279,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: [Symbol.hasInstance]: \n${e as string}`,
+        `IOFile: [Symbol.hasInstance]`,
+        { cause: e },
       );
     }
   }
@@ -286,7 +302,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: append: \n${e as string}`,
+        `IOFile: append`,
+        { cause: e },
       );
     }
   }
@@ -301,7 +318,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: cd: \n${e as string}`,
+        `IOFile: cd`,
+        { cause: e },
       );
     }
   }
@@ -319,7 +337,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: read: \n${e as string}`,
+        `IOFile: read`,
+        { cause: e },
       );
     }
   }
@@ -343,7 +362,8 @@ class IOFile {
           }
           catch (e) {
             throw new EvalError(
-              `tried to create directory, but FileManager failed to create directory: \n${e as string}`,
+              `tried to create directory, but FileManager failed to create directory`,
+              { cause: e },
             );
           }
         try {
@@ -353,7 +373,8 @@ class IOFile {
         }
         catch (e) {
           throw new EvalError(
-            `FileManager failed to write data: \n${e as string}`,
+            `FileManager failed to write data`,
+            { cause: e },
           );
         }
 
@@ -362,7 +383,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: write: \n${e as string}`,
+        `IOFile: write`,
+        { cause: e },
       );
     }
   }
@@ -419,7 +441,8 @@ class IOFile {
         }
         catch (e) {
           throw new EvalError(
-            `__deleteUsingFileManager: \n${e as string}`,
+            `__deleteUsingFileManager`,
+            { cause: e },
           );
         }
       }
@@ -428,7 +451,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: delete: \n${e as string}`,
+        `IOFile: delete`,
+        { cause: e },
       );
     }
   }
@@ -439,7 +463,8 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: toString: \n${e as string}`,
+        `IOFile: toString`,
+        { cause: e },
       );
     }
   }

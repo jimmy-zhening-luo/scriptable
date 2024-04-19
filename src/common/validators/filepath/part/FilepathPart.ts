@@ -29,7 +29,8 @@ class FilepathPart extends fpr_ValidString {
     }
     catch (e) {
       throw new EvalError(
-        `FilepathPart: ctor: \n${e as string}`,
+        `FilepathPart: ctor`,
+        { cause: e },
       );
     }
   }

@@ -21,7 +21,8 @@ class Setting<
     }
     catch (e) {
       throw new EvalError(
-        `Setting: ctor: \n${e as string}`,
+        `Setting: ctor`,
+        { cause: e },
       );
     }
   }
@@ -54,7 +55,8 @@ class Setting<
             }
             catch (e) {
               throw new EvalError(
-                `_validate: \n${e as string}`,
+                `_validate`,
+                { cause: e },
               );
             }
           }
@@ -63,7 +65,8 @@ class Setting<
     }
     catch (e) {
       throw new EvalError(
-        `Setting: parsed: \n${e as string}`,
+        `Setting: parsed`,
+        { cause: e },
       );
     }
   }
@@ -74,7 +77,8 @@ class Setting<
     }
     catch (e) {
       throw new EvalError(
-        `Setting: unmerged: \n${e as string}`,
+        `Setting: unmerged`,
+        { cause: e },
       );
     }
   }
@@ -89,7 +93,8 @@ class Setting<
     }
     catch (e) {
       throw new EvalError(
-        `Setting: app: \n${e as string}`,
+        `Setting: app`,
+        { cause: e },
       );
     }
   }
@@ -104,7 +109,8 @@ class Setting<
     }
     catch (e) {
       throw new EvalError(
-        `Setting: user: \n${e as string}`,
+        `Setting: user`,
+        { cause: e },
       );
     }
   }
@@ -118,7 +124,8 @@ class Setting<
     }
     catch (e) {
       throw new EvalError(
-        `Setting: merged: \n${e as string}`,
+        `Setting: merged`,
+        { cause: e },
       );
     }
   }
@@ -132,7 +139,8 @@ class Setting<
     }
     catch (e) {
       throw new EvalError(
-        `Setting: mergedNoOverride: \n${e as string}`,
+        `Setting: mergedNoOverride`,
+        { cause: e },
       );
     }
   }
@@ -223,7 +231,8 @@ class Setting<
     }
     catch (e) {
       throw new EvalError(
-        `Setting: mergeSettings: \n${e as string}`,
+        `Setting: mergeSettings`,
+        { cause: e },
       );
     }
 
@@ -237,7 +246,8 @@ class Setting<
       }
       catch (e) {
         throw new EvalError(
-          `isPrimitive: \n${e as string}`,
+          `isPrimitive`,
+          { cause: e },
         );
       }
     }
@@ -251,7 +261,8 @@ class Setting<
       }
       catch (e) {
         throw new EvalError(
-          `mergeArrays: \n${e as string}`,
+          `mergeArrays`,
+          { cause: e },
         );
       }
     }
@@ -267,7 +278,8 @@ class Setting<
       }
       catch (e) {
         throw new EvalError(
-          `intersectKeys: \n${e as string}`,
+          `intersectKeys`,
+          { cause: e },
         );
       }
     }
@@ -281,7 +293,8 @@ class Setting<
       }
       catch (e) {
         throw new EvalError(
-          `uniqueKeysOf: \n${e as string}`,
+          `uniqueKeysOf`,
+          { cause: e },
         );
       }
     }

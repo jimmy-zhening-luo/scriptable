@@ -9,7 +9,8 @@ class QueryRepeater extends qu_UrlPartRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `QueryRepeater: error loading ValidQueryRepeater module: \n${e as string}`,
+        `QueryRepeater: error loading ValidQueryRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -20,7 +21,8 @@ class QueryRepeater extends qu_UrlPartRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `QueryRepeater: error loading parent UrlPartRepeater module: \n${e as string}`,
+        `QueryRepeater: error loading parent UrlPartRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -31,7 +33,8 @@ class QueryRepeater extends qu_UrlPartRepeater {
     }
     catch (e) {
       throw new Error(
-        `QueryRepeater: parse: error parsing QueryRepeater: \n${e as string}`,
+        `QueryRepeater: parse: error parsing QueryRepeater`,
+        { cause: e },
       );
     }
   }

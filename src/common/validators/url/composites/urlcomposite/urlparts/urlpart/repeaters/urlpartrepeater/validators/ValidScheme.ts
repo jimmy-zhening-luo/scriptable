@@ -24,7 +24,8 @@ class ValidScheme extends sc_ValidUrlPart {
     }
     catch (e) {
       throw new Error(
-        `ValidScheme: constructor: error creating ValidScheme: \n${e as string}`,
+        `ValidScheme: constructor: error creating ValidScheme`,
+        { cause: e },
       );
     }
   }
@@ -35,7 +36,8 @@ class ValidScheme extends sc_ValidUrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidScheme: error loading parent ValidUrlPart module: \n${e as string}`,
+        `ValidScheme: error loading parent ValidUrlPart module`,
+        { cause: e },
       );
     }
   }

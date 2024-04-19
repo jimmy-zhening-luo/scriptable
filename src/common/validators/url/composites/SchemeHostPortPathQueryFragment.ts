@@ -62,7 +62,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     }
     catch (e) {
       throw new SyntaxError(
-        `SchemeHostPortPathQueryFragment: constructor: error creating SchemeHostPortPathQueryFragment: \n${e as string}`,
+        `SchemeHostPortPathQueryFragment: constructor: error creating SchemeHostPortPathQueryFragment`,
+        { cause: e },
       );
     }
   }
@@ -73,7 +74,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `SchemeHostPortPathQueryFragment: get SchemeHostPort: error loading module: \n${e as string}`,
+        `SchemeHostPortPathQueryFragment: get SchemeHostPort: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -84,7 +86,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `SchemeHostPortPathQueryFragment: get PathQueryFragment: error loading module: \n${e as string}`,
+        `SchemeHostPortPathQueryFragment: get PathQueryFragment: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -95,7 +98,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `SchemeHostPortPathQueryFragment: get UrlComposite: error loading UrlComposite module: \n${e as string}`,
+        `SchemeHostPortPathQueryFragment: get UrlComposite: error loading UrlComposite module`,
+        { cause: e },
       );
     }
   }
@@ -113,7 +117,8 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
     }
     catch (e) {
       throw new EvalError(
-        `SchemeHostPortPathQueryFragment: get composite: error getting composite: \n${e as string}`,
+        `SchemeHostPortPathQueryFragment: get composite: error getting composite`,
+        { cause: e },
       );
     }
   }

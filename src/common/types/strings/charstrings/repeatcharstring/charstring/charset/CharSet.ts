@@ -37,7 +37,8 @@ class CharSet {
     }
     catch (e) {
       throw new EvalError(
-        `CharSet: ctor: \n${e as string}`,
+        `CharSet: ctor`,
+        { cause: e },
       );
     }
   }
@@ -372,7 +373,8 @@ class CharSet {
     }
     catch (e) {
       throw new EvalError(
-        `CharSet: [Symbol.hasInstance]: \n${e as string}`,
+        `CharSet: [Symbol.hasInstance]`,
+        { cause: e },
       );
     }
   }
@@ -386,7 +388,8 @@ class CharSet {
     }
     catch (e) {
       throw new EvalError(
-        `CharSet: allows: \n${e as string}`,
+        `CharSet: allows`,
+        { cause: e },
       );
     }
   }
@@ -397,7 +400,8 @@ class CharSet {
     }
     catch (e) {
       throw new EvalError(
-        `CharSet: toString: Failed to format-print CharSet members: \n${e as string}`,
+        `CharSet: toString: Failed to format-print CharSet members`,
+        { cause: e },
       );
     }
   }

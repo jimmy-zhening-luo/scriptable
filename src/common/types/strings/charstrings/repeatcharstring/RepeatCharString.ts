@@ -9,7 +9,8 @@ class RepeatCharString extends rp_CharString {
     }
     catch (e) {
       throw new ReferenceError(
-        `RepeatCharString: import CharString: \n${e as string}`,
+        `RepeatCharString: import CharString`,
+        { cause: e },
       );
     }
   }
@@ -29,7 +30,8 @@ class RepeatCharString extends rp_CharString {
     }
     catch (e) {
       throw new EvalError(
-        `RepeatCharString: _qualifies: \n${e as string}`,
+        `RepeatCharString: _qualifies`,
+        { cause: e },
       );
     }
   }

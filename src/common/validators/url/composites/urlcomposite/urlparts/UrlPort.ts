@@ -46,7 +46,8 @@ class UrlPort extends po_UrlPart {
     }
     catch (e) {
       throw new Error(
-        `UrlPort: toNumber: error converting UrlPort to number: \n${e as string}`,
+        `UrlPort: toNumber: error converting UrlPort to number`,
+        { cause: e },
       );
     }
   }

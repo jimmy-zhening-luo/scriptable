@@ -14,7 +14,8 @@ class ValidHostIPv4Repeater extends hipf_ValidUrlRepeater {
     }
     catch (e) {
       throw new Error(
-        `ValidHostIPv4Repeater: constructor: error creating ValidHostIPv4Repeater: \n${e as string}`,
+        `ValidHostIPv4Repeater: constructor: error creating ValidHostIPv4Repeater`,
+        { cause: e },
       );
     }
   }
@@ -25,7 +26,8 @@ class ValidHostIPv4Repeater extends hipf_ValidUrlRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidHostIPv4Repeater: error loading parent ValidUrlRepeater module: \n${e as string}`,
+        `ValidHostIPv4Repeater: error loading parent ValidUrlRepeater module`,
+        { cause: e },
       );
     }
   }

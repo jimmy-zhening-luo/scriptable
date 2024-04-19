@@ -33,7 +33,8 @@ class Filepath {
 
     catch (e) {
       throw new EvalError(
-        `Filepath: ctor: \n${e as string}`,
+        `Filepath: ctor`,
+        { cause: e },
       );
     }
   }
@@ -46,7 +47,8 @@ class Filepath {
     }
     catch (e) {
       throw new ReferenceError(
-        `Filepath: import StringSplitter: \n${e as string}`,
+        `Filepath: import StringSplitter`,
+        { cause: e },
       );
     }
   }
@@ -59,7 +61,8 @@ class Filepath {
     }
     catch (e) {
       throw new ReferenceError(
-        `Filepath: import FilepathPart: \n${e as string}`,
+        `Filepath: import FilepathPart`,
+        { cause: e },
       );
     }
   }
@@ -70,7 +73,8 @@ class Filepath {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: get isEmpty: \n${e as string}`,
+        `Filepath: get isEmpty`,
+        { cause: e },
       );
     }
   }
@@ -81,7 +85,8 @@ class Filepath {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: get isEmpty: \n${e as string}`,
+        `Filepath: get isEmpty`,
+        { cause: e },
       );
     }
   }
@@ -96,7 +101,8 @@ class Filepath {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: get parent: \n${e as string}`,
+        `Filepath: get parent`,
+        { cause: e },
       );
     }
   }
@@ -109,7 +115,8 @@ class Filepath {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: get leaf: \n${e as string}`,
+        `Filepath: get leaf`,
+        { cause: e },
       );
     }
   }
@@ -126,7 +133,8 @@ class Filepath {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: [Symbol.hasInstance]: \n${e as string}`,
+        `Filepath: [Symbol.hasInstance]`,
+        { cause: e },
       );
     }
   }
@@ -142,7 +150,8 @@ class Filepath {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: static join: \n${e as string}`,
+        `Filepath: static join`,
+        { cause: e },
       );
     }
   }
@@ -172,7 +181,8 @@ class Filepath {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: _validate: \n${e as string}`,
+        `Filepath: _validate`,
+        { cause: e },
       );
     }
   }
@@ -185,7 +195,8 @@ class Filepath {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: append: \n${e as string}`,
+        `Filepath: append`,
+        { cause: e },
       );
     }
   }
@@ -200,7 +211,8 @@ class Filepath {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: prepend: \n${e as string}`,
+        `Filepath: prepend`,
+        { cause: e },
       );
     }
   }
@@ -224,7 +236,8 @@ class Filepath {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: cd: \n${e as string}`,
+        `Filepath: cd`,
+        { cause: e },
       );
     }
   }
@@ -235,7 +248,8 @@ class Filepath {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: toString: \n${e as string}`,
+        `Filepath: toString`,
+        { cause: e },
       );
     }
   }

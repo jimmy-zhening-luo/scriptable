@@ -97,7 +97,8 @@ namespace GPT {
 
       catch (e) {
         throw new EvalError(
-          `GPT: runtime: \n${e as string}`,
+          `GPT: runtime`,
+          { cause: e },
         );
       }
     }

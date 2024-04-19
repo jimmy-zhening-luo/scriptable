@@ -5,7 +5,8 @@ class UrlParts {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading module: \n${e as string}`,
+        `UrlParts: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -16,7 +17,8 @@ class UrlParts {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading module: \n${e as string}`,
+        `UrlParts: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -27,7 +29,8 @@ class UrlParts {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading module: \n${e as string}`,
+        `UrlParts: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -38,7 +41,8 @@ class UrlParts {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading module: \n${e as string}`,
+        `UrlParts: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -49,7 +53,8 @@ class UrlParts {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading module: \n${e as string}`,
+        `UrlParts: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -60,7 +65,8 @@ class UrlParts {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading module: \n${e as string}`,
+        `UrlParts: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -71,7 +77,8 @@ class UrlParts {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlParts: error loading module: \n${e as string}`,
+        `UrlParts: error loading module`,
+        { cause: e },
       );
     }
   }

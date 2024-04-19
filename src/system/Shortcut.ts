@@ -39,7 +39,8 @@ abstract class Shortcut<
     }
     catch (e) {
       throw new EvalError(
-        `Shortcut: input: \n${e as string}`,
+        `Shortcut: input`,
+        { cause: e },
       );
     }
   }
@@ -52,7 +53,8 @@ abstract class Shortcut<
     }
     catch (e) {
       throw new EvalError(
-        `Shortcut: inputText: \n${e as string}`,
+        `Shortcut: inputText`,
+        { cause: e },
       );
     }
   }
@@ -68,7 +70,8 @@ abstract class Shortcut<
     }
     catch (e) {
       throw new EvalError(
-        `Shortcut: inputData: \n${e as string}`,
+        `Shortcut: inputData`,
+        { cause: e },
       );
     }
   }
@@ -83,7 +86,8 @@ abstract class Shortcut<
     }
     catch (e) {
       throw new EvalError(
-        `Shortcut: setOutput: \n${e as string}`,
+        `Shortcut: setOutput`,
+        { cause: e },
       );
     }
   }

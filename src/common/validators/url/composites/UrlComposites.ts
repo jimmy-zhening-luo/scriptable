@@ -5,7 +5,8 @@ class UrlComposites {
     }
     catch (e) {
       throw new Error(
-        `UrlComposites: get UrlComposite: error loading module: \n${e as string}`,
+        `UrlComposites: get UrlComposite: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -19,7 +20,8 @@ class UrlComposites {
     }
     catch (e) {
       throw new Error(
-        `UrlComposites: get SchemeHostPortPathQueryFragment: error loading module: \n${e as string}`,
+        `UrlComposites: get SchemeHostPortPathQueryFragment: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -30,7 +32,8 @@ class UrlComposites {
     }
     catch (e) {
       throw new Error(
-        `UrlComposites: get SchemeHostPort: error loading module: \n${e as string}`,
+        `UrlComposites: get SchemeHostPort: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -41,7 +44,8 @@ class UrlComposites {
     }
     catch (e) {
       throw new Error(
-        `UrlComposites: get PathQueryFragment: error loading module: \n${e as string}`,
+        `UrlComposites: get PathQueryFragment: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -52,7 +56,8 @@ class UrlComposites {
     }
     catch (e) {
       throw new Error(
-        `UrlComposites: get HostPort: error loading module: \n${e as string}`,
+        `UrlComposites: get HostPort: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -63,7 +68,8 @@ class UrlComposites {
     }
     catch (e) {
       throw new Error(
-        `UrlComposites: get PathQuery: error loading module: \n${e as string}`,
+        `UrlComposites: get PathQuery: error loading module`,
+        { cause: e },
       );
     }
   }

@@ -19,7 +19,8 @@ abstract class Filetype<
     }
     catch (e) {
       throw new EvalError(
-        `Filetype: ctor: \n${e as string}`,
+        `Filetype: ctor`,
+        { cause: e },
       );
     }
   }
@@ -30,7 +31,8 @@ abstract class Filetype<
     }
     catch (e) {
       throw new ReferenceError(
-        `Filetype: import ReadOnlyIOFile: \n${e as string}`,
+        `Filetype: import ReadOnlyIOFile`,
+        { cause: e },
       );
     }
   }
@@ -41,7 +43,8 @@ abstract class Filetype<
     }
     catch (e) {
       throw new ReferenceError(
-        `Filetype: import IOFile: \n${e as string}`,
+        `Filetype: import IOFile`,
+        { cause: e },
       );
     }
   }
@@ -52,7 +55,8 @@ abstract class Filetype<
     }
     catch (e) {
       throw new EvalError(
-        `Filetype: subpath: \n${e as string}`,
+        `Filetype: subpath`,
+        { cause: e },
       );
     }
   }
@@ -65,7 +69,8 @@ abstract class Filetype<
     }
     catch (e) {
       throw new EvalError(
-        `Filetype: read: \n${e as string}`,
+        `Filetype: read`,
+        { cause: e },
       );
     }
   }
@@ -76,7 +81,8 @@ abstract class Filetype<
     }
     catch (e) {
       throw new EvalError(
-        `Filetype: toString: \n${e as string}`,
+        `Filetype: toString`,
+        { cause: e },
       );
     }
   }
@@ -96,7 +102,8 @@ abstract class Filetype<
     }
     catch (e) {
       throw new EvalError(
-        `Filetype: _rootBookmark: \n${e as string}`,
+        `Filetype: _rootBookmark`,
+        { cause: e },
       );
     }
   }

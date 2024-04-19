@@ -18,7 +18,8 @@ class UrlHost extends ho_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlHost: error loading module: \n${e as string}`,
+        `UrlHost: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -29,7 +30,8 @@ class UrlHost extends ho_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlHost: error loading module: \n${e as string}`,
+        `UrlHost: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -40,7 +42,8 @@ class UrlHost extends ho_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlHost: error loading module: \n${e as string}`,
+        `UrlHost: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -51,7 +54,8 @@ class UrlHost extends ho_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlHost: error loading module: \n${e as string}`,
+        `UrlHost: error loading module`,
+        { cause: e },
       );
     }
   }

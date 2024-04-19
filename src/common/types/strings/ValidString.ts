@@ -36,7 +36,8 @@ class ValidString {
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: ctor: \n${e as string}`,
+        `ValidString: ctor`,
+        { cause: e },
       );
     }
   }
@@ -49,7 +50,8 @@ class ValidString {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidString: import BoundedRepeatCharString: \n${e as string}`,
+        `ValidString: import BoundedRepeatCharString`,
+        { cause: e },
       );
     }
   }
@@ -60,7 +62,8 @@ class ValidString {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidString: import BoundedRepeatCharString.CharSet: \n${e as string}`,
+        `ValidString: import BoundedRepeatCharString.CharSet`,
+        { cause: e },
       );
     }
   }
@@ -75,7 +78,8 @@ class ValidString {
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: min: \n${e as string}`,
+        `ValidString: min`,
+        { cause: e },
       );
     }
   }
@@ -86,7 +90,8 @@ class ValidString {
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: max: \n${e as string}`,
+        `ValidString: max`,
+        { cause: e },
       );
     }
   }
@@ -129,7 +134,8 @@ class ValidString {
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: _clean: \n${e as string}`,
+        `ValidString: _clean`,
+        { cause: e },
       );
     }
   }
@@ -174,7 +180,8 @@ class ValidString {
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: __trimEdge: \n${e as string}`,
+        `ValidString: __trimEdge`,
+        { cause: e },
       );
     }
   }
@@ -185,7 +192,8 @@ class ValidString {
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: toString: \n${e as string}`,
+        `ValidString: toString`,
+        { cause: e },
       );
     }
   }

@@ -43,7 +43,8 @@ namespace New {
       }
       catch (e) {
         throw new EvalError(
-          `New: runtime: \n${e as string}`,
+          `New: runtime`,
+          { cause: e },
         );
       }
     }

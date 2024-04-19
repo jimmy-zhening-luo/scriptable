@@ -17,7 +17,8 @@ class ValidPort extends po_ValidUrlPart {
     }
     catch (e) {
       throw new Error(
-        `ValidPort: constructor: error creating ValidPort: \n${e as string}`,
+        `ValidPort: constructor: error creating ValidPort`,
+        { cause: e },
       );
     }
   }
@@ -28,7 +29,8 @@ class ValidPort extends po_ValidUrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidPort: error loading parent ValidUrlPart module: \n${e as string}`,
+        `ValidPort: error loading parent ValidUrlPart module`,
+        { cause: e },
       );
     }
   }

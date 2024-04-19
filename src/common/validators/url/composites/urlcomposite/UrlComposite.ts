@@ -7,7 +7,8 @@ abstract class UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlComposite: error loading module: \n${e as string}`,
+        `UrlComposite: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -18,7 +19,8 @@ abstract class UrlComposite {
     }
     catch (e) {
       throw new Error(
-        `UrlComposite: isValid: error checking validity of composite: \n${e as string}`,
+        `UrlComposite: isValid: error checking validity of composite`,
+        { cause: e },
       );
     }
   }
@@ -31,7 +33,8 @@ abstract class UrlComposite {
     }
     catch (e) {
       throw new Error(
-        `UrlComposite: toString: error converting composite to string: \n${e as string}`,
+        `UrlComposite: toString: error converting composite to string`,
+        { cause: e },
       );
     }
   }

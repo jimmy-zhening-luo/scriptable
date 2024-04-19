@@ -35,7 +35,8 @@ class SchemeHostPort extends shp_UrlComposite {
     }
     catch (e) {
       throw new SyntaxError(
-        `SchemeHostPort: constructor: error creating SchemeHostPort: \n${e as string}`,
+        `SchemeHostPort: constructor: error creating SchemeHostPort`,
+        { cause: e },
       );
     }
   }
@@ -46,7 +47,8 @@ class SchemeHostPort extends shp_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `SchemeHostPort: get UrlScheme: error loading module: \n${e as string}`,
+        `SchemeHostPort: get UrlScheme: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -57,7 +59,8 @@ class SchemeHostPort extends shp_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `SchemeHostPort: get HostPort: error loading module: \n${e as string}`,
+        `SchemeHostPort: get HostPort: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -68,7 +71,8 @@ class SchemeHostPort extends shp_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `SchemeHostPort: get UrlComposite: error loading UrlComposite module: \n${e as string}`,
+        `SchemeHostPort: get UrlComposite: error loading UrlComposite module`,
+        { cause: e },
       );
     }
   }
@@ -82,7 +86,8 @@ class SchemeHostPort extends shp_UrlComposite {
     }
     catch (e) {
       throw new EvalError(
-        `SchemeHostPort: get composite: error getting composite: \n${e as string}`,
+        `SchemeHostPort: get composite: error getting composite`,
+        { cause: e },
       );
     }
   }

@@ -5,7 +5,8 @@ class UrlValidators {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading ValidUrlPart module: \n${e as string}`,
+        `UrlValidators: error loading ValidUrlPart module`,
+        { cause: e },
       );
     }
   }
@@ -18,7 +19,8 @@ class UrlValidators {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading ValidUrlRepeater module: \n${e as string}`,
+        `UrlValidators: error loading ValidUrlRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -29,7 +31,8 @@ class UrlValidators {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading ValidScheme module: \n${e as string}`,
+        `UrlValidators: error loading ValidScheme module`,
+        { cause: e },
       );
     }
   }
@@ -40,7 +43,8 @@ class UrlValidators {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading CharSet module: \n${e as string}`,
+        `UrlValidators: error loading CharSet module`,
+        { cause: e },
       );
     }
   }
@@ -69,7 +73,8 @@ class UrlValidators {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading Host module: \n${e as string}`,
+        `UrlValidators: error loading Host module`,
+        { cause: e },
       );
     }
   }
@@ -80,7 +85,8 @@ class UrlValidators {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading ValidPort module: \n${e as string}`,
+        `UrlValidators: error loading ValidPort module`,
+        { cause: e },
       );
     }
   }
@@ -99,7 +105,8 @@ class UrlValidators {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading Path module: \n${e as string}`,
+        `UrlValidators: error loading Path module`,
+        { cause: e },
       );
     }
   }
@@ -120,7 +127,8 @@ class UrlValidators {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading Query module: \n${e as string}`,
+        `UrlValidators: error loading Query module`,
+        { cause: e },
       );
     }
   }
@@ -131,7 +139,8 @@ class UrlValidators {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlValidators: error loading ValidFragment module: \n${e as string}`,
+        `UrlValidators: error loading ValidFragment module`,
+        { cause: e },
       );
     }
   }

@@ -18,7 +18,8 @@ class UrlScheme extends sc_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlScheme: error loading module: \n${e as string}`,
+        `UrlScheme: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -29,7 +30,8 @@ class UrlScheme extends sc_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlScheme: error loading module: \n${e as string}`,
+        `UrlScheme: error loading module`,
+        { cause: e },
       );
     }
   }

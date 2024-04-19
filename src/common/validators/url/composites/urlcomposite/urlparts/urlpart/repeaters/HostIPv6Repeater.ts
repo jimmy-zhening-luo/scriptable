@@ -9,7 +9,8 @@ class HostIPv6Repeater extends hips_UrlPartRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `HostIPv6Repeater: error loading ValidHostIPv6Repeater module: \n${e as string}`,
+        `HostIPv6Repeater: error loading ValidHostIPv6Repeater module`,
+        { cause: e },
       );
     }
   }
@@ -20,7 +21,8 @@ class HostIPv6Repeater extends hips_UrlPartRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `HostIPv6Repeater: error loading parent UrlPartRepeater module: \n${e as string}`,
+        `HostIPv6Repeater: error loading parent UrlPartRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -31,7 +33,8 @@ class HostIPv6Repeater extends hips_UrlPartRepeater {
     }
     catch (e) {
       throw new Error(
-        `HostIPv6Repeater: parse: error parsing HostIPv6Repeater: \n${e as string}`,
+        `HostIPv6Repeater: parse: error parsing HostIPv6Repeater`,
+        { cause: e },
       );
     }
   }

@@ -16,7 +16,8 @@ class ValidQueryRepeater extends qu_ValidUrlRepeater {
     }
     catch (e) {
       throw new Error(
-        `ValidQueryRepeater: constructor: error creating ValidQueryRepeater: \n${e as string}`,
+        `ValidQueryRepeater: constructor: error creating ValidQueryRepeater`,
+        { cause: e },
       );
     }
   }
@@ -27,7 +28,8 @@ class ValidQueryRepeater extends qu_ValidUrlRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidQueryRepeater: error loading parent ValidUrlRepeater module: \n${e as string}`,
+        `ValidQueryRepeater: error loading parent ValidUrlRepeater module`,
+        { cause: e },
       );
     }
   }

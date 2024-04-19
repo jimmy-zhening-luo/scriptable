@@ -34,7 +34,8 @@ class Bookmark {
     }
     catch (e) {
       throw new EvalError(
-        `Bookmark: ctor: \n${e as string}`,
+        `Bookmark: ctor`,
+        { cause: e },
       );
     }
   }
@@ -51,7 +52,8 @@ class Bookmark {
     }
     catch (e) {
       throw new EvalError(
-        `Bookmark: [Symbol.hasInstance]: \n${e as string}`,
+        `Bookmark: [Symbol.hasInstance]`,
+        { cause: e },
       );
     }
   }
@@ -62,7 +64,8 @@ class Bookmark {
     }
     catch (e) {
       throw new EvalError(
-        `Bookmark: toString: \n${e as string}`,
+        `Bookmark: toString`,
+        { cause: e },
       );
     }
   }

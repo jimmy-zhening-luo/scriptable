@@ -10,7 +10,8 @@ class HostRegNameRepeater extends hrn_UrlPartRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `HostRegNameRepeater: error loading ValidHostRegNameRepeater module: \n${e as string}`,
+        `HostRegNameRepeater: error loading ValidHostRegNameRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -21,7 +22,8 @@ class HostRegNameRepeater extends hrn_UrlPartRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `HostRegNameRepeater: error loading parent UrlPartRepeater module: \n${e as string}`,
+        `HostRegNameRepeater: error loading parent UrlPartRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -32,7 +34,8 @@ class HostRegNameRepeater extends hrn_UrlPartRepeater {
     }
     catch (e) {
       throw new Error(
-        `HostRegNameRepeater: parse: error parsing HostRegNameRepeater: \n${e as string}`,
+        `HostRegNameRepeater: parse: error parsing HostRegNameRepeater`,
+        { cause: e },
       );
     }
   }

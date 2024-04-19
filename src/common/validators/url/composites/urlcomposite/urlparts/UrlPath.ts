@@ -18,7 +18,8 @@ class UrlPath extends pa_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlPath: error loading module: \n${e as string}`,
+        `UrlPath: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -40,7 +41,8 @@ class UrlPath extends pa_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlPath: error loading module: \n${e as string}`,
+        `UrlPath: error loading module`,
+        { cause: e },
       );
     }
   }

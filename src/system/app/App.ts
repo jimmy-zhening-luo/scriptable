@@ -14,7 +14,8 @@ abstract class App<
     }
     catch (e) {
       throw new ReferenceError(
-        `App: import Setting: \n${e as string}`,
+        `App: import Setting`,
+        { cause: e },
       );
     }
   }
@@ -25,7 +26,8 @@ abstract class App<
     }
     catch (e) {
       throw new ReferenceError(
-        `App: import Storage: \n${e as string}`,
+        `App: import Storage`,
+        { cause: e },
       );
     }
   }
@@ -42,7 +44,8 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: setting: \n${e as string}`,
+        `App: setting`,
+        { cause: e },
       );
     }
   }
@@ -53,7 +56,8 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: setting.app: \n${e as string}`,
+        `App: setting.app`,
+        { cause: e },
       );
     }
   }
@@ -64,7 +68,8 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: setting.user: \n${e as string}`,
+        `App: setting.user`,
+        { cause: e },
       );
     }
   }
@@ -118,7 +123,8 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: storage.read: \n${e as string}`,
+        `App: storage.read`,
+        { cause: e },
       );
     }
   }
@@ -136,7 +142,8 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: storage.write: \n${e as string}`,
+        `App: storage.write`,
+        { cause: e },
       );
     }
   }
@@ -153,7 +160,8 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: storage: \n${e as string}`,
+        `App: storage`,
+        { cause: e },
       );
     }
   }

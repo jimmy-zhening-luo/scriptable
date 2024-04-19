@@ -30,7 +30,8 @@ class PathQuery extends pq_UrlComposite {
     }
     catch (e) {
       throw new SyntaxError(
-        `PathQuery: constructor: error creating PathQuery: \n${e as string}`,
+        `PathQuery: constructor: error creating PathQuery`,
+        { cause: e },
       );
     }
   }
@@ -41,7 +42,8 @@ class PathQuery extends pq_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `PathQuery: get UrlPath: error loading module: \n${e as string}`,
+        `PathQuery: get UrlPath: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -52,7 +54,8 @@ class PathQuery extends pq_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `PathQuery: get UrlQuery: error loading module: \n${e as string}`,
+        `PathQuery: get UrlQuery: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -63,7 +66,8 @@ class PathQuery extends pq_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `PathQuery: get UrlComposite: error loading UrlComposite module: \n${e as string}`,
+        `PathQuery: get UrlComposite: error loading UrlComposite module`,
+        { cause: e },
       );
     }
   }
@@ -79,7 +83,8 @@ class PathQuery extends pq_UrlComposite {
     }
     catch (e) {
       throw new EvalError(
-        `PathQuery: get composite: error getting composite: \n${e as string}`,
+        `PathQuery: get composite: error getting composite`,
+        { cause: e },
       );
     }
   }

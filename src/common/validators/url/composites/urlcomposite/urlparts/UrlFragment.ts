@@ -9,7 +9,8 @@ class UrlFragment extends fr_UrlPart {
     }
     catch (e) {
       throw new SyntaxError(
-        `UrlFragment: constructor: error creating UrlFragment: \n${e as string}`,
+        `UrlFragment: constructor: error creating UrlFragment`,
+        { cause: e },
       );
     }
   }
@@ -20,7 +21,8 @@ class UrlFragment extends fr_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlFragment: error loading module: \n${e as string}`,
+        `UrlFragment: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -31,7 +33,8 @@ class UrlFragment extends fr_UrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlFragment: error loading module: \n${e as string}`,
+        `UrlFragment: error loading module`,
+        { cause: e },
       );
     }
   }

@@ -11,7 +11,8 @@ abstract class UrlPartRepeater {
     }
     catch (e) {
       throw new Error(
-        `UrlPartRepeater: constructor: error creating UrlPartRepeater: \n${e as string}`,
+        `UrlPartRepeater: constructor: error creating UrlPartRepeater`,
+        { cause: e },
       );
     }
   }
@@ -22,7 +23,8 @@ abstract class UrlPartRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlPartRepeater: error loading parent UrlValidators module: \n${e as string}`,
+        `UrlPartRepeater: error loading parent UrlValidators module`,
+        { cause: e },
       );
     }
   }
@@ -33,7 +35,8 @@ abstract class UrlPartRepeater {
     }
     catch (e) {
       throw new Error(
-        `UrlPartRepeater: isValid: error checking if UrlPartRepeater is valid: \n${e as string}`,
+        `UrlPartRepeater: isValid: error checking if UrlPartRepeater is valid`,
+        { cause: e },
       );
     }
   }
@@ -44,7 +47,8 @@ abstract class UrlPartRepeater {
     }
     catch (e) {
       throw new Error(
-        `UrlPartRepeater: toString: error converting UrlPartRepeater to string: \n${e as string}`,
+        `UrlPartRepeater: toString: error converting UrlPartRepeater to string`,
+        { cause: e },
       );
     }
   }

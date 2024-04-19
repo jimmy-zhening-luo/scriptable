@@ -19,7 +19,8 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: ctor: \n${e as string}`,
+        `StringSplitter: ctor`,
+        { cause: e },
       );
     }
   }
@@ -30,7 +31,8 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: length: \n${e as string}`,
+        `StringSplitter: length`,
+        { cause: e },
       );
     }
   }
@@ -78,7 +80,8 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: _mergeSplit: \n${e as string}`,
+        `StringSplitter: _mergeSplit`,
+        { cause: e },
       );
     }
   }
@@ -120,7 +123,8 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: __split: \n${e as string}`,
+        `StringSplitter: __split`,
+        { cause: e },
       );
     }
   }
@@ -131,7 +135,8 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: toString: \n${e as string}`,
+        `StringSplitter: toString`,
+        { cause: e },
       );
     }
   }

@@ -40,7 +40,8 @@ class BoundedRepeatCharString extends _RepeatCharString {
     }
     catch (e) {
       throw new EvalError(
-        `BoundedRepeatCharString: ctor: \n${e as string}`,
+        `BoundedRepeatCharString: ctor`,
+        { cause: e },
       );
     }
   }
@@ -51,7 +52,8 @@ class BoundedRepeatCharString extends _RepeatCharString {
     }
     catch (e) {
       throw new ReferenceError(
-        `BoundedRepeatCharString: import RepeatCharString: \n${e as string}`,
+        `BoundedRepeatCharString: import RepeatCharString`,
+        { cause: e },
       );
     }
   }
@@ -66,7 +68,8 @@ class BoundedRepeatCharString extends _RepeatCharString {
     }
     catch (e) {
       throw new EvalError(
-        `BoundedRepeatCharString: _qualifies: \n${e as string}`,
+        `BoundedRepeatCharString: _qualifies`,
+        { cause: e },
       );
     }
   }

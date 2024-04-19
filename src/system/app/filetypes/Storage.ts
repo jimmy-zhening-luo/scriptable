@@ -22,7 +22,8 @@ class Storage extends stor_Filetype<
     }
     catch (e) {
       throw new EvalError(
-        `Storage: ctor: \n${e as string}`,
+        `Storage: ctor`,
+        { cause: e },
       );
     }
   }
@@ -40,7 +41,8 @@ class Storage extends stor_Filetype<
     }
     catch (e) {
       throw new EvalError(
-        `Storage: write: \n${e as string}`,
+        `Storage: write`,
+        { cause: e },
       );
     }
   }
@@ -53,7 +55,8 @@ class Storage extends stor_Filetype<
     }
     catch (e) {
       throw new EvalError(
-        `Storage: delete: \n${e as string}`,
+        `Storage: delete`,
+        { cause: e },
       );
     }
   }

@@ -78,7 +78,8 @@ class Url {
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get UrlComposites: error loading UrlComposites module: \n${e as string}`,
+        `Url: get UrlComposites: error loading UrlComposites module`,
+        { cause: e },
       );
     }
   }
@@ -89,7 +90,8 @@ class Url {
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get UrlParts: error loading UrlParts module: \n${e as string}`,
+        `Url: get UrlParts: error loading UrlParts module`,
+        { cause: e },
       );
     }
   }
@@ -100,7 +102,8 @@ class Url {
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get UrlPart: error loading UrlPart module: \n${e as string}`,
+        `Url: get UrlPart: error loading UrlPart module`,
+        { cause: e },
       );
     }
   }
@@ -111,7 +114,8 @@ class Url {
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get UrlScheme: error loading module: \n${e as string}`,
+        `Url: get UrlScheme: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -122,7 +126,8 @@ class Url {
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get UrlHost: error loading module: \n${e as string}`,
+        `Url: get UrlHost: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -133,7 +138,8 @@ class Url {
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get UrlPort: error loading module: \n${e as string}`,
+        `Url: get UrlPort: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -144,7 +150,8 @@ class Url {
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get UrlPath: error loading module: \n${e as string}`,
+        `Url: get UrlPath: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -155,7 +162,8 @@ class Url {
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get UrlQuery: error loading module: \n${e as string}`,
+        `Url: get UrlQuery: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -166,7 +174,8 @@ class Url {
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get UrlFragment: error loading module: \n${e as string}`,
+        `Url: get UrlFragment: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -178,7 +187,8 @@ class Url {
     }
     catch (e) {
       throw new ReferenceError(
-        `Url: get SchemeHostPortPathQueryFragment: error loading module: \n${e as string}`,
+        `Url: get SchemeHostPortPathQueryFragment: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -262,7 +272,8 @@ class Url {
     }
     catch (e) {
       throw new Error(
-        `Url: get queryString: error getting queryString: \n${e as string}`,
+        `Url: get queryString: error getting queryString`,
+        { cause: e },
       );
     }
   }
@@ -273,7 +284,8 @@ class Url {
     }
     catch (e) {
       throw new Error(
-        `Url: get queryTuples: error getting queryTuples: \n${e as string}`,
+        `Url: get queryTuples: error getting queryTuples`,
+        { cause: e },
       );
     }
   }
@@ -424,7 +436,8 @@ class Url {
     }
     catch (e) {
       throw new Error(
-        `Url: hasParam: error checking if query has param: \n${e as string}`,
+        `Url: hasParam: error checking if query has param`,
+        { cause: e },
       );
     }
   }

@@ -9,7 +9,8 @@ class HostIPv4Repeater extends hipf_UrlPartRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `HostIPv4Repeater: error loading ValidHostIPv4Repeater module: \n${e as string}`,
+        `HostIPv4Repeater: error loading ValidHostIPv4Repeater module`,
+        { cause: e },
       );
     }
   }
@@ -20,7 +21,8 @@ class HostIPv4Repeater extends hipf_UrlPartRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `HostIPv4Repeater: error loading parent UrlPartRepeater module: \n${e as string}`,
+        `HostIPv4Repeater: error loading parent UrlPartRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -31,7 +33,8 @@ class HostIPv4Repeater extends hipf_UrlPartRepeater {
     }
     catch (e) {
       throw new Error(
-        `HostIPv4Repeater: parse: error parsing HostIPv4Repeater: \n${e as string}`,
+        `HostIPv4Repeater: parse: error parsing HostIPv4Repeater`,
+        { cause: e },
       );
     }
   }

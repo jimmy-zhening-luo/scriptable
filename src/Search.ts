@@ -84,7 +84,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Search: runtime: \n${e as string}`,
+          `Search: runtime`,
+          { cause: e },
         );
       }
     }
@@ -158,7 +159,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Query: clean: \n${e as string}`,
+          `Query: clean`,
+          { cause: e },
         );
       }
     }
@@ -173,7 +175,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Query: clean: \n${e as string}`,
+          `Query: clean`,
+          { cause: e },
         );
       }
     }
@@ -188,7 +191,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Query: tokenize: \n${e as string}`,
+          `Query: tokenize`,
+          { cause: e },
         );
       }
     }
@@ -318,7 +322,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Query: mathefy: \n${e as string}`,
+          `Query: mathefy`,
+          { cause: e },
         );
       }
     }
@@ -335,7 +340,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `Engine: ctor: \n${e as string}`,
+          `Engine: ctor`,
+          { cause: e },
         );
       }
     }
@@ -375,7 +381,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `BrowserEngine: ctor: \n${e as string}`,
+          `BrowserEngine: ctor`,
+          { cause: e },
         );
       }
     }
@@ -408,7 +415,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `BrowserEngine: parseQueryToAction: \n${e as string}`,
+          `BrowserEngine: parseQueryToAction`,
+          { cause: e },
         );
       }
     }
@@ -431,7 +439,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `AppEngine: ctor: \n${e as string}`,
+          `AppEngine: ctor`,
+          { cause: e },
         );
       }
     }
@@ -445,7 +454,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `AppEngine: parseQueryToAction: \n${e as string}`,
+          `AppEngine: parseQueryToAction`,
+          { cause: e },
         );
       }
     }
@@ -468,7 +478,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `NativeEngine: ctor: \n${e as string}`,
+          `NativeEngine: ctor`,
+          { cause: e },
         );
       }
     }
@@ -483,7 +494,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `NativeEngine: parseQueryToAction: \n${e as string}`,
+          `NativeEngine: parseQueryToAction`,
+          { cause: e },
         );
       }
     }
@@ -509,7 +521,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `ShortcutEngine: ctor: \n${e as string}`,
+          `ShortcutEngine: ctor`,
+          { cause: e },
         );
       }
     }
@@ -525,7 +538,8 @@ namespace Search {
       }
       catch (e) {
         throw new EvalError(
-          `ShortcutEngine: parseQueryToAction: \n${e as string}`,
+          `ShortcutEngine: parseQueryToAction`,
+          { cause: e },
         );
       }
     }

@@ -47,7 +47,8 @@ class PathQueryFragment extends pqf_UrlComposite {
     }
     catch (e) {
       throw new SyntaxError(
-        `PathQueryFragment: constructor: error creating PathQueryFragment: \n${e as string}`,
+        `PathQueryFragment: constructor: error creating PathQueryFragment`,
+        { cause: e },
       );
     }
   }
@@ -58,7 +59,8 @@ class PathQueryFragment extends pqf_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `PathQueryFragment: get PathQuery: error loading module: \n${e as string}`,
+        `PathQueryFragment: get PathQuery: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -69,7 +71,8 @@ class PathQueryFragment extends pqf_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `PathQueryFragment: get UrlFragment: error loading module: \n${e as string}`,
+        `PathQueryFragment: get UrlFragment: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -80,7 +83,8 @@ class PathQueryFragment extends pqf_UrlComposite {
     }
     catch (e) {
       throw new ReferenceError(
-        `PathQueryFragment: get UrlComposite: error loading UrlComposite module: \n${e as string}`,
+        `PathQueryFragment: get UrlComposite: error loading UrlComposite module`,
+        { cause: e },
       );
     }
   }
@@ -96,7 +100,8 @@ class PathQueryFragment extends pqf_UrlComposite {
     }
     catch (e) {
       throw new EvalError(
-        `PathQueryFragment: get composite: error getting composite: \n${e as string}`,
+        `PathQueryFragment: get composite: error getting composite`,
+        { cause: e },
       );
     }
   }

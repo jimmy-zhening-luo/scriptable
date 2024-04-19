@@ -5,7 +5,8 @@ class Repeaters {
     }
     catch (e) {
       throw new ReferenceError(
-        `Repeaters: error loading parent UrlPartRepeater module: \n${e as string}`,
+        `Repeaters: error loading parent UrlPartRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -16,7 +17,8 @@ class Repeaters {
     }
     catch (e) {
       throw new ReferenceError(
-        `Repeaters: error loading UrlValidators module: \n${e as string}`,
+        `Repeaters: error loading UrlValidators module`,
+        { cause: e },
       );
     }
   }
@@ -27,7 +29,8 @@ class Repeaters {
     }
     catch (e) {
       throw new ReferenceError(
-        `Repeaters: error loading HostIPv4Repeater module: \n${e as string}`,
+        `Repeaters: error loading HostIPv4Repeater module`,
+        { cause: e },
       );
     }
   }
@@ -38,7 +41,8 @@ class Repeaters {
     }
     catch (e) {
       throw new ReferenceError(
-        `Repeaters: error loading HostIPv6Repeater module: \n${e as string}`,
+        `Repeaters: error loading HostIPv6Repeater module`,
+        { cause: e },
       );
     }
   }
@@ -49,7 +53,8 @@ class Repeaters {
     }
     catch (e) {
       throw new ReferenceError(
-        `Repeaters: error loading HostRegNameRepeater module: \n${e as string}`,
+        `Repeaters: error loading HostRegNameRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -60,7 +65,8 @@ class Repeaters {
     }
     catch (e) {
       throw new ReferenceError(
-        `Repeaters: error loading PathRepeater module: \n${e as string}`,
+        `Repeaters: error loading PathRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -71,7 +77,8 @@ class Repeaters {
     }
     catch (e) {
       throw new ReferenceError(
-        `Repeaters: error loading QueryRepeater module: \n${e as string}`,
+        `Repeaters: error loading QueryRepeater module`,
+        { cause: e },
       );
     }
   }

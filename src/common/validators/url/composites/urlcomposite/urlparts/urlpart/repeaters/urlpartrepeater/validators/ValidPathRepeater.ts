@@ -9,7 +9,8 @@ class ValidPathRepeater extends pa_ValidUrlRepeater {
     }
     catch (e) {
       throw new Error(
-        `ValidPathRepeater: constructor: error creating ValidPathRepeater: \n${e as string}`,
+        `ValidPathRepeater: constructor: error creating ValidPathRepeater`,
+        { cause: e },
       );
     }
   }
@@ -20,7 +21,8 @@ class ValidPathRepeater extends pa_ValidUrlRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidPathRepeater: error loading parent ValidUrlRepeater module: \n${e as string}`,
+        `ValidPathRepeater: error loading parent ValidUrlRepeater module`,
+        { cause: e },
       );
     }
   }

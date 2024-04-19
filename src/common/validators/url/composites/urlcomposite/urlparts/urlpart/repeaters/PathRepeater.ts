@@ -9,7 +9,8 @@ class PathRepeater extends pa_UrlPartRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `PathRepeater: error loading ValidPathRepeater module: \n${e as string}`,
+        `PathRepeater: error loading ValidPathRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -20,7 +21,8 @@ class PathRepeater extends pa_UrlPartRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `PathRepeater: error loading parent UrlPartRepeater module: \n${e as string}`,
+        `PathRepeater: error loading parent UrlPartRepeater module`,
+        { cause: e },
       );
     }
   }
@@ -31,7 +33,8 @@ class PathRepeater extends pa_UrlPartRepeater {
     }
     catch (e) {
       throw new Error(
-        `PathRepeater: parse: error parsing PathRepeater: \n${e as string}`,
+        `PathRepeater: parse: error parsing PathRepeater`,
+        { cause: e },
       );
     }
   }

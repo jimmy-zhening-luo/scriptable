@@ -16,7 +16,8 @@ class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
     }
     catch (e) {
       throw new Error(
-        `ValidHostRegNameRepeater: constructor: error creating ValidHostRegNameRepeater: \n${e as string}`,
+        `ValidHostRegNameRepeater: constructor: error creating ValidHostRegNameRepeater`,
+        { cause: e },
       );
     }
   }
@@ -27,7 +28,8 @@ class ValidHostRegNameRepeater extends hrn_ValidUrlRepeater {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidHostRegNameRepeater: error loading parent ValidUrlRepeater module: \n${e as string}`,
+        `ValidHostRegNameRepeater: error loading parent ValidUrlRepeater module`,
+        { cause: e },
       );
     }
   }

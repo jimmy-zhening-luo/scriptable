@@ -19,7 +19,8 @@ class ValidFragment extends fr_ValidUrlPart {
     }
     catch (e) {
       throw new Error(
-        `ValidFragment: constructor: error creating ValidFragment: \n${e as string}`,
+        `ValidFragment: constructor: error creating ValidFragment`,
+        { cause: e },
       );
     }
   }
@@ -30,7 +31,8 @@ class ValidFragment extends fr_ValidUrlPart {
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidFragment: error loading parent ValidUrlPart module: \n${e as string}`,
+        `ValidFragment: error loading parent ValidUrlPart module`,
+        { cause: e },
       );
     }
   }

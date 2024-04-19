@@ -40,7 +40,8 @@ class UrlQuery extends qu_UrlPart {
     }
     catch (e) {
       throw new Error(
-        `UrlQuery: get QueryRepeater: error loading module: \n${e as string}`,
+        `UrlQuery: get QueryRepeater: error loading module`,
+        { cause: e },
       );
     }
   }
@@ -69,7 +70,8 @@ class UrlQuery extends qu_UrlPart {
     }
     catch (e) {
       throw new Error(
-        `UrlQuery: get queryString: error getting queryString: \n${e as string}`,
+        `UrlQuery: get queryString: error getting queryString`,
+        { cause: e },
       );
     }
   }
@@ -80,7 +82,8 @@ class UrlQuery extends qu_UrlPart {
     }
     catch (e) {
       throw new Error(
-        `UrlQuery: get queryTuples: error getting queryTuples: \n${e as string}`,
+        `UrlQuery: get queryTuples: error getting queryTuples`,
+        { cause: e },
       );
     }
   }
@@ -111,7 +114,8 @@ class UrlQuery extends qu_UrlPart {
     }
     catch (e) {
       throw new Error(
-        `UrlQuery: queryStringToTuples: error converting to tuples: \n${e as string}`,
+        `UrlQuery: queryStringToTuples: error converting to tuples`,
+        { cause: e },
       );
     }
   }
@@ -135,7 +139,8 @@ class UrlQuery extends qu_UrlPart {
     }
     catch (e) {
       throw new Error(
-        `UrlQuery: queryStringToMap: error converting to map: \n${e as string}`,
+        `UrlQuery: queryStringToMap: error converting to map`,
+        { cause: e },
       );
     }
   }
@@ -165,7 +170,8 @@ class UrlQuery extends qu_UrlPart {
     }
     catch (e) {
       throw new Error(
-        `UrlQuery: tuplesToQueryString: error converting to query string: \n${e as string}`,
+        `UrlQuery: tuplesToQueryString: error converting to query string`,
+        { cause: e },
       );
     }
   }
@@ -178,7 +184,8 @@ class UrlQuery extends qu_UrlPart {
     }
     catch (e) {
       throw new Error(
-        `UrlQuery: mapToQueryString: error converting to query string: \n${e as string}`,
+        `UrlQuery: mapToQueryString: error converting to query string`,
+        { cause: e },
       );
     }
   }

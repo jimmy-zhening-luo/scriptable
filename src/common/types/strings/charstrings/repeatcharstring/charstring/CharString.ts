@@ -15,7 +15,8 @@ abstract class CharString {
     }
     catch (e) {
       throw new EvalError(
-        `CharString: ctor: \n${e as string}`,
+        `CharString: ctor`,
+        { cause: e },
       );
     }
   }
@@ -26,7 +27,8 @@ abstract class CharString {
     }
     catch (e) {
       throw new ReferenceError(
-        `CharString: import CharSet: \n${e as string}`,
+        `CharString: import CharSet`,
+        { cause: e },
       );
     }
   }
@@ -44,7 +46,8 @@ abstract class CharString {
     }
     catch (e) {
       throw new EvalError(
-        `CharString: value: \n${e as string}`,
+        `CharString: value`,
+        { cause: e },
       );
     }
   }
@@ -55,7 +58,8 @@ abstract class CharString {
     }
     catch (e) {
       throw new EvalError(
-        `CharString: toString: \n${e as string}`,
+        `CharString: toString`,
+        { cause: e },
       );
     }
   }
