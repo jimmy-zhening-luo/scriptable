@@ -52,4 +52,3 @@ namespace New {
 
 new New.New()
   .run();
-Script.complete();

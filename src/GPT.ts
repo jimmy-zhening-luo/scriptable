@@ -106,4 +106,3 @@ namespace GPT {
 
 new GPT.GPT()
   .run();
-Script.complete();
