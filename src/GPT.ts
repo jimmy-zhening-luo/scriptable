@@ -22,9 +22,11 @@ namespace GPT {
           .unmerged;
 
         const _i: typeof GPT.prototype.input = this.input ?? "";
-        const i: GPTInput = typeof _i === "string" || "user" in _i && "system" in _i
+        const i: GPTInput = typeof _i === "string"
           ? { prompt: _i }
-          : _i;
+          : !("prompt" in _i)
+            ? { prompt: _i }
+            : _i;
         const arg: Required<GPTInput> = {
           prompt: i.prompt,
           model: "model" in i
