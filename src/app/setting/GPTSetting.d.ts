@@ -21,6 +21,10 @@ declare interface GPTAppSetting extends SettingMap {
       min: number;
       max: number;
     };
+    p: {
+      min: number;
+      max: number;
+    };
   };
 }
 
@@ -36,6 +40,7 @@ declare interface GPTUserSetting extends SettingMap {
   "default": {
     token: number;
     temperature: number;
+    p: number;
     model:
     | "ultra"
     | "high"
