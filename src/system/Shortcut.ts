@@ -18,24 +18,28 @@ abstract class Shortcut<
 
   public get input(): string | Nullable<I> {
     try {
-      const flat: unknown = Array.isArray(args.shortcutParameter)
-        ? args.shortcutParameter.length === 1
-          ? args.shortcutParameter[0]
-          : null
-        : args.shortcutParameter;
+      if (this._input === undefined) {
+        const flat: unknown = Array.isArray(args.shortcutParameter)
+          ? args.shortcutParameter.length === 1
+            ? args.shortcutParameter[0]
+            : null
+          : args.shortcutParameter;
 
-      return flat === null
-        || flat === undefined
-        || flat === ""
-        || flat === 0
-        || flat === -0
-        || typeof flat === "number" && !Number.isFinite(flat)
-        || flat === false
-        || Array.isArray(flat)
-        ? null
-        : typeof flat === "number" || typeof flat === "boolean"
-          ? String(flat)
-          : flat as NonNullable<I>;
+        this._input = flat === null
+          || flat === undefined
+          || flat === ""
+          || flat === 0
+          || flat === -0
+          || typeof flat === "number" && !Number.isFinite(flat)
+          || flat === false
+          || Array.isArray(flat)
+          ? null
+          : typeof flat === "number" || typeof flat === "boolean"
+            ? String(flat)
+            : flat as NonNullable<I>;
+      }
+
+      return this._input;
     }
     catch (e) {
       throw new EvalError(
@@ -91,6 +95,8 @@ abstract class Shortcut<
       );
     }
   }
+
+  private _input?: Shortcut<I>["input"];
 }
 
 module.exports = Shortcut;
