@@ -10,87 +10,96 @@ namespace GPT {
 
   export class GPT extends shortcut<
     string | GPTInput,
-    null | GPTOutput,
+    GPTOutput,
     GPTSetting
   > {
     public runtime(): null | GPTOutput {
       try {
-        const raw: typeof GPT.prototype.input = this.input ?? "";
-        const i: GPTInput = typeof raw === "string"
-          ? { prompt: raw }
-          : raw;
-
         const {
-          app,
-          user,
+          _a,
+          _u,
         }: GPTSetting = this
           .setting
           .unmerged;
 
-        const resolved: GPTResolved = {
+        const _i: typeof GPT.prototype.input = this.input ?? "";
+        const i: GPTInput = typeof _i === "string"
+          ? { prompt: _i }
+          : _i;
+        const arg: Required<GPTInput> = {
           prompt: i.prompt,
           model: "model" in i
             ? i.model
-            : user.default.model,
+            : _u.default.model,
           token:
               "token" in i
               && Number.isInteger(i.token)
-              && i.token <= app.limit.token
+              && i.token <= _a.limit.token
                 ? i.token
-                : user.default.token,
+                : _u.default.token,
           temperature:
             "temperature" in i
               && Number.isFinite(i.temperature)
-              && i.temperature >= app.limit.temperature.min
-              && i.temperature <= app.limit.temperature.max
+              && i.temperature >= _a.limit.temperature.min
+              && i.temperature <= _a.limit.temperature.max
               ? i.temperature
-              : user.default.temperature,
-          preset: "preset" in i && i.preset in user.presets
+              : _u.default.temperature,
+          p:
+            "p" in i
+              && Number.isFinite(i.p)
+              && i.p >= _a.limit.p.min
+              && i.p <= _a.limit.p.max
+              ? i.p
+              : _u.default.p,
+          preset: "preset" in i && i.preset in _u.presets
             ? i.preset
-            : user.default.preset,
+            : _u.default.preset,
         };
 
-        // Build user message
-        const preset: null | GPTPreset = user
+        const preset: null | GPTPreset = _u
           .presets[
-            resolved.preset
+            arg.preset
           ] ?? null;
-
-        const message: GPTOutput["body"]["message"] = !preset
-          ? {
-              user: resolved.prompt,
-            }
-          : preset.system === ""
+        const {
+          system,
+          user,
+        }: {
+          system: string,
+          user: string,
+        } = typeof arg.prompt === "string"
+          ? !preset
             ? {
-                user: !("user" in preset) || !preset.user.includes(app.presetTag)
-                  ? resolved.prompt
-                  : preset.user.replace(app.presetTag, resolved.prompt),
+                system: "",
+                user: arg.prompt,
               }
             : {
                 system: preset.system,
                 user: !("user" in preset)
-                  ? resolved.prompt
-                  : !preset.user.includes(app.presetTag)
-                      ? resolved.prompt
-                      : preset.user.replace(app.presetTag, resolved.prompt),
-              };
+                  ? arg.prompt
+                  : !preset.user.includes(_a.presetTag)
+                      ? arg.prompt
+                      : preset.user.replace(_a.presetTag, arg.prompt),
+              }
+          : arg.prompt;
 
-        // Build GPTResponse from ChatOptions & return GPTResponse to Shortcut
         return {
           api: [
-            app.api.host,
-            app.api.version,
-            app.api.action,
+            _a.api.host,
+            _a.api.version,
+            _a.api.action,
           ].join("/"),
           header: {
-            auth: user.id.token,
-            org: user.id.org,
+            auth: _u.id.token,
+            org: _u.id.org,
           },
           body: {
-            message: message as { user: string; system?: string },
-            model: app.models[resolved.model],
-            token: resolved.token,
-            temperature: resolved.temperature,
+            message: system === ""
+              ? { user }
+              : { system, user },
+            temperature: arg.temperature,
+            p: arg.p,
+            model: _a.models[arg.model],
+            token: arg.token,
           },
         };
       }

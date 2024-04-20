@@ -12,5 +12,6 @@ declare interface GPTOutput {
     model: string;
     token: number;
     temperature: number;
+    p: number;
   };
 }
