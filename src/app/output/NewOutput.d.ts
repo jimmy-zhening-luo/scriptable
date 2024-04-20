@@ -1,1 +1,1 @@
-declare type NewOutput = null | string;
+declare type NewOutput = string;

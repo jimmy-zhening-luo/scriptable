@@ -10,7 +10,7 @@ namespace Search {
 
   export class Search extends shortcut<
     SearchInput,
-    null | SearchOutput,
+    SearchOutput,
     SearchSettings
   > {
     public runtime(): null | SearchOutput {
