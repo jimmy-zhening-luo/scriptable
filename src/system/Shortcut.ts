@@ -5,7 +5,7 @@ const sh_App: typeof App = importModule(
 abstract class Shortcut<
   I extends ShortcutInput = null,
   O extends Nullable<Definite> = null,
-  C extends Config = Record<string, never>,
+  C extends Config = Empty,
 > extends sh_App<
     "Shortcut",
     I,
