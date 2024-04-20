@@ -16,8 +16,8 @@ namespace GPT {
     public runtime(): null | GPTOutput {
       try {
         const {
-          _a,
-          _u,
+          app,
+          user,
         }: GPTSetting = this
           .setting
           .unmerged;
@@ -30,33 +30,33 @@ namespace GPT {
           prompt: i.prompt,
           model: "model" in i
             ? i.model
-            : _u.default.model,
+            : user.default.model,
           token:
               "token" in i
               && Number.isInteger(i.token)
-              && i.token <= _a.limit.token
+              && i.token <= app.limit.token
                 ? i.token
-                : _u.default.token,
+                : user.default.token,
           temperature:
             "temperature" in i
               && Number.isFinite(i.temperature)
-              && i.temperature >= _a.limit.temperature.min
-              && i.temperature <= _a.limit.temperature.max
+              && i.temperature >= app.limit.temperature.min
+              && i.temperature <= app.limit.temperature.max
               ? i.temperature
-              : _u.default.temperature,
+              : user.default.temperature,
           p:
             "p" in i
               && Number.isFinite(i.p)
-              && i.p >= _a.limit.p.min
-              && i.p <= _a.limit.p.max
+              && i.p >= app.limit.p.min
+              && i.p <= app.limit.p.max
               ? i.p
-              : _u.default.p,
-          preset: "preset" in i && i.preset in _u.presets
+              : user.default.p,
+          preset: "preset" in i && i.preset in user.presets
             ? i.preset
-            : _u.default.preset,
+            : user.default.preset,
         };
 
-        const preset: null | GPTPreset = _u
+        const preset: null | GPTPreset = user
           .presets[
             arg.preset
           ] ?? null;
@@ -76,21 +76,21 @@ namespace GPT {
                 system: preset.system,
                 user: !("user" in preset)
                   ? arg.prompt
-                  : !preset.user.includes(_a.presetTag)
+                  : !preset.user.includes(app.presetTag)
                       ? arg.prompt
-                      : preset.user.replace(_a.presetTag, arg.prompt),
+                      : preset.user.replace(app.presetTag, arg.prompt),
               }
           : arg.prompt;
 
         return {
           api: [
-            _a.api.host,
-            _a.api.version,
-            _a.api.action,
+            app.api.host,
+            app.api.version,
+            app.api.action,
           ].join("/"),
           header: {
-            auth: _u.id.token,
-            org: _u.id.org,
+            auth: user.id.token,
+            org: user.id.org,
           },
           body: {
             message: system === ""
@@ -98,7 +98,7 @@ namespace GPT {
               : { system, user },
             temperature: arg.temperature,
             p: arg.p,
-            model: _a.models[arg.model],
+            model: app.models[arg.model],
             token: arg.token,
           },
         };
