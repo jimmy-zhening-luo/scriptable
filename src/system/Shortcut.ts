@@ -4,7 +4,7 @@ const sh_App: typeof App = importModule(
 
 abstract class Shortcut<
   I extends ShortcutInput = null,
-  O = null,
+  O extends Nullable<Definite> = null,
   C extends Config = Record<string, never>,
 > extends sh_App<
     "Shortcut",
@@ -16,7 +16,7 @@ abstract class Shortcut<
     super("Shortcut");
   }
 
-  public get input(): App<string, I, O, C>["input"] {
+  public get input(): App<string, I>["input"] {
     try {
       const flat: unknown = Array.isArray(args.shortcutParameter)
         ? args.shortcutParameter.length === 1
@@ -77,8 +77,8 @@ abstract class Shortcut<
   }
 
   protected setOutput(
-    runtimeOutput: null | O,
-  ): null | O {
+    runtimeOutput: Nullable<O>,
+  ): Nullable<O> {
     try {
       Script.setShortcutOutput(runtimeOutput);
 
