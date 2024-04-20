@@ -1,11 +1,11 @@
 abstract class App<
-  T extends string,
-  I = null,
-  O = null,
-  C extends Config = Record<string, never>,
+  Class extends string,
+  I extends Nullable<Definite> = null,
+  O extends Nullable<Definite> = null,
+  C extends Config = Empty,
 > {
   constructor(
-    protected readonly _type: T,
+    protected readonly _class: Class,
   ) {}
 
   protected static get Setting(): typeof Setting {
@@ -34,13 +34,13 @@ abstract class App<
 
   public get setting(): Setting<C> {
     try {
-      if (this._cachedSetting === undefined)
-        this._cachedSetting = new App.Setting(
-          this._type,
+      if (this._setting === undefined)
+        this._setting = new App.Setting(
+          this._class,
           this.constructor.name,
         );
 
-      return this._cachedSetting;
+      return this._setting;
     }
     catch (e) {
       throw new EvalError(
@@ -74,9 +74,9 @@ abstract class App<
     }
   }
 
-  public abstract get input(): null | string | I;
+  public abstract get input(): string | Nullable<I>;
 
-  public run(): null | O {
+  public run(): Nullable<O> {
     try {
       return this.setOutput(
         this.runtime(),
@@ -138,7 +138,7 @@ abstract class App<
   ): Storage {
     try {
       return new App.Storage(
-        this._type,
+        this._class,
         this.constructor.name,
         subpath,
       );
@@ -199,11 +199,11 @@ abstract class App<
     }
   }
 
-  public abstract runtime(): null | O;
+  public abstract runtime(): Nullable<O>;
 
-  protected abstract setOutput(runtimeOutput: null | O): null | O;
+  protected abstract setOutput(runtimeOutput: Nullable<O>): Nullable<O>;
 
-  private _cachedSetting?: Setting<C>;
+  private _setting?: Setting<C>;
 }
 
 module.exports = App;
