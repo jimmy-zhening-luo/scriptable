@@ -16,7 +16,7 @@ abstract class Shortcut<
     super("Shortcut");
   }
 
-  public get input(): App<string, I>["input"] {
+  public get input(): string | Nullable<I> {
     try {
       const flat: unknown = Array.isArray(args.shortcutParameter)
         ? args.shortcutParameter.length === 1
@@ -45,7 +45,7 @@ abstract class Shortcut<
     }
   }
 
-  public get inputText(): null | string {
+  public get inputText(): Nullable<string> {
     try {
       return this.input === null
         ? null
@@ -59,7 +59,7 @@ abstract class Shortcut<
     }
   }
 
-  public get inputData(): null | I {
+  public get inputData(): Nullable<I> {
     try {
       return this.input === null
         || typeof this.input === "string"
