@@ -13,7 +13,7 @@ namespace Search {
     SearchOutput,
     SearchSettings
   > {
-    public runtime(): null | SearchOutput {
+    public runtime(): Nullable<SearchOutput> {
       try {
         const {
           app,
@@ -38,7 +38,7 @@ namespace Search {
           MATH_KEYS,
         );
 
-        const match: null | SearchEngineSetting = user
+        const match: Nullable<SearchEngineSetting> = user
           .engines
           .find(
             eng => eng.keys.includes(
@@ -46,7 +46,7 @@ namespace Search {
             ),
           ) ?? null;
 
-        const resolved: null | Engine = match === null
+        const resolved: Nullable<Engine> = match === null
           ? null
           : "url" in match
             ? new BrowserEngine(

@@ -15,10 +15,10 @@ namespace New {
   > {
     public runtime(): string {
       try {
-        const WORLD_FILE = "world.txt";
-        const WORLD_PREFIX = "World: ";
-        const SPACE_SETTING = "space";
-        const E_MISSING_SETTING = "{E_MISSING_SETTING}";
+        const WORLD_FILE: string = "world.txt";
+        const WORLD_PREFIX: string = "World: ";
+        const SPACE_SETTING: string = "space";
+        const E_MISSING_SETTING: string = "{E_MISSING_SETTING}";
 
         // Storage
         const hello: string = this.read();
