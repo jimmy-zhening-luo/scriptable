@@ -51,11 +51,10 @@ abstract class UrlPart {
     }
   }
 
-  public static [Symbol.hasInstance](instance: any): boolean {
+  public static [Symbol.hasInstance](instance: unknown): boolean {
     try {
       return (
         instance !== null
-        && instance !== undefined
         && typeof instance === "object"
         && "_nominalType" in instance
         && (instance as UrlPart)._nominalType === "UrlPart"
