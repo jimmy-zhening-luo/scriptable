@@ -211,7 +211,7 @@ namespace Search {
       chat: string,
     ): string[] {
       try {
-        const pre: string[] = query[0] === " "
+        const pre: string[] = query.startsWith(" ")
           ? [chat]
           : [];
 
@@ -222,7 +222,7 @@ namespace Search {
             .split(" ")
             .filter(
               t =>
-                t !== ""
+                t !== "",
             ),
         ];
       }
@@ -249,7 +249,7 @@ namespace Search {
             : t_0.startsWith(translate)
               ? [
                   translate,
-                  L + t_0[1] as string,
+                  L + t_0[1],
                   ...t_0.length > 2
                     ? [
                         tokens

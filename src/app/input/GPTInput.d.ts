@@ -3,8 +3,8 @@ declare interface GPTInput {
   prompt:
     | string
     | {
-      system: string,
-      user: string,
+      system: string;
+      user: string;
     };
   token?: number;
   temperature?: number;

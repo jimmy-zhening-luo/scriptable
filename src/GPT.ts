@@ -10,7 +10,7 @@ namespace GPT {
 
   export class GPT extends shortcut<
     GPTInput
-      | { system: string, user: string }
+      | { system: string; user: string }
       | string,
     GPTOutput,
     GPTSetting
@@ -25,8 +25,8 @@ namespace GPT {
         const _i: GPTInput = typeof __i === "string"
           ? { prompt: __i }
           : !("prompt" in __i)
-            ? { prompt: __i }
-            : __i;
+              ? { prompt: __i }
+              : __i;
         const i: Required<GPTInput> = {
           prompt: _i.prompt,
           model: "model" in _i
@@ -65,15 +65,15 @@ namespace GPT {
           : null;
         const message: GPTOutput["body"]["message"] = typeof i.prompt === "string"
           ? !preset || preset.system === ""
-            ? {
-                user: i.prompt,
-              }
-            : {
-                system: preset.system,
-                user: preset.user.includes(s.app.presetTag)
-                  ? preset.user.replace(s.app.presetTag, i.prompt)
-                  : i.prompt,
-              }
+              ? {
+                  user: i.prompt,
+                }
+              : {
+                  system: preset.system,
+                  user: preset.user.includes(s.app.presetTag)
+                    ? preset.user.replace(s.app.presetTag, i.prompt)
+                    : i.prompt,
+                }
           : i.prompt;
 
         return {

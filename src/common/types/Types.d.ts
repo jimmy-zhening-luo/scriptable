@@ -9,4 +9,4 @@ declare type Nullable<T> = null | T;
 
 declare type Empty = Record<string, never>;
 
-declare type Arrayful<T> = [T, ...T[]]
+declare type Arrayful<T> = [T, ...T[]];
