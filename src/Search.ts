@@ -253,7 +253,7 @@ namespace Search {
                   ...t_0.length > 2
                     ? [
                         tokens
-                          .pop()!
+                          .shift()!
                           .slice(2),
                       ]
                     : [],
