@@ -215,7 +215,11 @@ namespace Search {
           ...prepend,
           ...query
             .trim()
-            .split(" "),
+            .split(" ")
+            .filter(
+              t =>
+                t !== ""
+            ),
         ];
       }
       catch (e) {
