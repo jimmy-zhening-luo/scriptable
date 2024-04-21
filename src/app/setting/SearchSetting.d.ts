@@ -8,7 +8,9 @@ declare interface SearchUserSettings extends SettingMap {
 }
 
 declare interface SearchAppSettings extends SettingMap {
-  queryTag: string;
-  mathKeys?: string | string[];
+  tag: string;
+  chat: string;
+  translate: string;
+  math?: string[];
 
 }

@@ -20,13 +20,13 @@ namespace Search {
           user,
         }: SearchSettings = this.setting.unmerged;
 
-        const TAG: string = app.queryTag;
+        const TAG: string = app.tag;
 
         if (TAG === "")
           throw new SyntaxError(
-            `setting.app.queryTag is empty`,
+            `setting.app.tag is empty`,
           );
-        const MATH_KEYS: string | string[] = app.mathKeys ?? [];
+        const MATH: string[] = app.math ?? [];
 
         const input: string = this.inputData?.input ?? "";
 
@@ -35,7 +35,7 @@ namespace Search {
             ? this.read()
             : input,
           this.inputData?.clip ?? "",
-          MATH_KEYS,
+          MATH,
         );
 
         const match: Nullable<SearchEngineSetting> = user
@@ -98,13 +98,13 @@ namespace Search {
     constructor(
       query: string,
       clip: string,
-      mathKeys: string | string[] = [],
+      math: string[] = [],
     ) {
       try {
         const tokens: string[] = [
           ...Query.mathefy(
             Query.tokenize(query),
-            mathKeys,
+            math,
           ),
         ];
 
@@ -199,17 +199,13 @@ namespace Search {
 
     private static mathefy(
       tokens: string[],
-      mathKeys: string | string[],
+      math: string[],
     ): string[] {
       try {
         const T: string[] = [...tokens];
-        const M: string[] = [mathKeys]
-          .flat()
+        const M: string[] = math
           .filter(
             mk => mk !== "",
-          )
-          .filter(
-            mk => mk.length > 0,
           )
           .map(
             mk => mk.toLowerCase(),
