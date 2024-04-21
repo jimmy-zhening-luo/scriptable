@@ -21,20 +21,31 @@ namespace Search {
         }: SearchSettings = this.setting.unmerged;
 
         const TAG: string = app.tag;
+        const CHAT: string = app.chat;
+        const TRANSLATE: string = app.translate;
+        const MATH: string[] = app.math ?? [];
 
         if (TAG === "")
           throw new SyntaxError(
             `setting.app.tag is empty`,
           );
-        const MATH: string[] = app.math ?? [];
+        else if (CHAT === "")
+          throw new SyntaxError(
+            `setting.app.chat is empty`,
+          );
+        else if (TRANSLATE === "")
+          throw new SyntaxError(
+            `setting.app.translate is empty`,
+          );
 
         const input: string = this.inputData?.input ?? "";
-
         const query: Query = new Query(
           input === ""
             ? this.read()
             : input,
           this.inputData?.clip ?? "",
+          CHAT,
+          TRANSLATE,
           MATH,
         );
 
@@ -45,7 +56,6 @@ namespace Search {
               query.key,
             ),
           ) ?? null;
-
         const resolved: Nullable<Engine> = match === null
           ? null
           : "url" in match
@@ -98,12 +108,20 @@ namespace Search {
     constructor(
       query: string,
       clip: string,
+      chat: string,
+      translate: string,
       math: string[] = [],
     ) {
       try {
         const tokens: string[] = [
           ...Query.mathefy(
-            Query.tokenize(query),
+            Query.transliterate(
+              Query.tokenize(
+                query,
+                chat,
+              ),
+              translate,
+            ),
             math,
           ),
         ];
@@ -111,7 +129,10 @@ namespace Search {
         if (tokens.length === 1)
           tokens
             .push(
-              ...Query.tokenize(clip),
+              ...Query.tokenize(
+                clip,
+                "",
+              ),
             );
 
         let _key: string = tokens
@@ -183,15 +204,46 @@ namespace Search {
 
     private static tokenize(
       query: string,
+      chat: string,
     ): string[] {
       try {
-        return query
-          .trim()
-          .split(" ");
+        const prepend: string[] = query[0] === " " && chat !== ""
+          ? [chat]
+          : [];
+
+        return [
+          ...prepend,
+          ...query
+            .trim()
+            .split(" "),
+        ];
       }
       catch (e) {
         throw new EvalError(
           `Query: tokenize`,
+          { cause: e },
+        );
+      }
+    }
+
+    private static transliterate(
+      tokens: string[],
+      translate: string,
+    ): string[] {
+      try {
+        const t_0: string = tokens[0] ?? "";
+        const prepend: string[] = t_0.startsWith("@") && translate !== ""
+          ? [translate]
+          : []
+
+        return [
+          ...prepend,
+          ...tokens,
+        ];
+      }
+      catch (e) {
+        throw new EvalError(
+          `Query: transliterate`,
           { cause: e },
         );
       }
@@ -218,9 +270,10 @@ namespace Search {
           && T[0] !== ""
         ) {
           const t_0: string = T[0].toLowerCase();
+          const t_0_len: number = t_0.length;
           const math_long: string = [...M]
             .filter(
-              mk => mk.length <= t_0.length,
+              mk => mk.length <= t_0_len,
             )
             .sort(
               (a, b) => b.length - a.length,
@@ -251,21 +304,16 @@ namespace Search {
 
             if (math_short !== "") {
               const d: string[] = [
-                ...[
-                  0,
-                  1,
-                  2,
-                  3,
-                  4,
-                  5,
-                  6,
-                  7,
-                  8,
-                  9,
-                ]
-                  .map(
-                    n => String(n),
-                  ),
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
                 "(",
                 ")",
                 "[",
@@ -295,18 +343,19 @@ namespace Search {
                 "\"",
                 "?",
                 "!",
-                "@",
                 "#",
                 "$",
                 "°",
               ];
+              const t_00: string = t_0
+                .slice(
+                  0,
+                  1,
+                );
 
               if (
                 d.includes(
-                  t_0.slice(
-                    0,
-                    1,
-                  ),
+                  t_00,
                 )
               )
                 T.unshift(math_short);
