@@ -15,73 +15,68 @@ namespace GPT {
     GPTOutput,
     GPTSetting
   > {
-    public runtime(): null | GPTOutput {
+    public runtime(): Nullable<GPTOutput> {
       try {
         const s: GPTSetting = this
           .setting
           .unmerged;
 
-        const _i: typeof GPT.prototype.input = this.input ?? "";
-        const i: GPTInput = typeof _i === "string"
-          ? { prompt: _i }
-          : !("prompt" in _i)
-            ? { prompt: _i }
-            : _i;
-        const arg: Required<GPTInput> = {
-          prompt: i.prompt,
-          model: "model" in i
-            ? i.model
+        const __i: typeof GPT.prototype.input = this.input ?? "";
+        const _i: GPTInput = typeof __i === "string"
+          ? { prompt: __i }
+          : !("prompt" in __i)
+            ? { prompt: __i }
+            : __i;
+        const i: Required<GPTInput> = {
+          prompt: _i.prompt,
+          model: "model" in _i
+            ? _i.model
             : s.user.default.model,
           token:
-              "token" in i
-              && Number.isInteger(i.token)
-              && i.token <= s.app.limit.token
-                ? i.token
+              "token" in _i
+              && Number.isInteger(_i.token)
+              && _i.token <= s.app.limit.token
+                ? _i.token
                 : s.user.default.token,
           temperature:
-            "temperature" in i
-              && Number.isFinite(i.temperature)
-              && i.temperature >= s.app.limit.temperature.min
-              && i.temperature <= s.app.limit.temperature.max
-              ? i.temperature
+            "temperature" in _i
+              && Number.isFinite(_i.temperature)
+              && _i.temperature >= s.app.limit.temperature.min
+              && _i.temperature <= s.app.limit.temperature.max
+              ? _i.temperature
               : s.user.default.temperature,
           p:
-            "p" in i
-              && Number.isFinite(i.p)
-              && i.p >= s.app.limit.p.min
-              && i.p <= s.app.limit.p.max
-              ? i.p
+            "p" in _i
+              && Number.isFinite(_i.p)
+              && _i.p >= s.app.limit.p.min
+              && _i.p <= s.app.limit.p.max
+              ? _i.p
               : s.user.default.p,
-          preset: "preset" in i && i.preset in s.user.presets
-            ? i.preset
+          preset: "preset" in _i && _i.preset in s.user.presets
+            ? _i.preset
             : s.user.default.preset,
         };
 
-        const preset: null | GPTPreset = s.user
-          .presets[
-            arg.preset
-          ] ?? null;
-        const {
-          system,
-          user,
-        }: {
-          system: string,
-          user: string,
-        } = typeof arg.prompt === "string"
+        const preset: Nullable<Required<GPTPreset>> = typeof i.prompt === "string"
+          ? i.preset in s.user.presets
+            ? {
+                system: s.user.presets[i.preset].system,
+                user: s.user.presets[i.preset].user ?? "",
+              }
+            : null
+          : null;
+        const message: GPTOutput["body"]["message"] = typeof i.prompt === "string"
           ? !preset
             ? {
-                system: "",
-                user: arg.prompt,
+                user: i.prompt,
               }
             : {
                 system: preset.system,
-                user: !("user" in preset)
-                  ? arg.prompt
-                  : !preset.user.includes(s.app.presetTag)
-                      ? arg.prompt
-                      : preset.user.replace(s.app.presetTag, arg.prompt),
+                user: preset.user.includes(s.app.presetTag)
+                  ? preset.user.replace(s.app.presetTag, i.prompt)
+                  : i.prompt,
               }
-          : arg.prompt;
+          : i.prompt;
 
         return {
           api: [
@@ -94,13 +89,11 @@ namespace GPT {
             org: s.user.id.org,
           },
           body: {
-            message: system === ""
-              ? { user }
-              : { system, user },
-            temperature: arg.temperature,
-            p: arg.p,
-            model: s.app.models[arg.model],
-            token: arg.token,
+            message,
+            temperature: i.temperature,
+            p: i.p,
+            model: s.app.models[i.model],
+            token: i.token,
           },
         };
       }
