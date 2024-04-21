@@ -58,15 +58,13 @@ namespace GPT {
         };
 
         const preset: Nullable<Required<GPTPreset>> = typeof i.prompt === "string"
-          ? i.preset in s.user.presets
-            ? {
-                system: s.user.presets[i.preset].system,
-                user: s.user.presets[i.preset].user ?? "",
-              }
-            : null
+          ? {
+              system: s.user.presets[i.preset]?.system ?? "",
+              user: s.user.presets[i.preset]?.user ?? "",
+            }
           : null;
         const message: GPTOutput["body"]["message"] = typeof i.prompt === "string"
-          ? !preset
+          ? !preset || preset.system === ""
             ? {
                 user: i.prompt,
               }
