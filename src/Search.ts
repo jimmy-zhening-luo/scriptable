@@ -37,6 +37,10 @@ namespace Search {
           throw new SyntaxError(
             `setting.app.translate is empty`,
           );
+        else if (MATH.some(k => k === ""))
+          throw new SyntaxError(
+            `setting.app.math? is set, but contains empty string(s)`,
+          );
 
         const input: string = this.inputData?.input ?? "";
         const query: Query = new Query(
@@ -207,12 +211,12 @@ namespace Search {
       chat: string,
     ): string[] {
       try {
-        const prepend: string[] = query[0] === " " && chat !== ""
+        const pre: string[] = query[0] === " "
           ? [chat]
           : [];
 
         return [
-          ...prepend,
+          ...pre,
           ...query
             .trim()
             .split(" ")
@@ -235,13 +239,30 @@ namespace Search {
       translate: string,
     ): string[] {
       try {
-        const t_0: string = tokens[0] ?? "";
-        const prepend: string[] = t_0.startsWith("@") && translate !== ""
-          ? [translate]
-          : []
+        const L: string = "@";
+        const t_0: string = (tokens[0] ?? "").toLowerCase();
+        const pre: string[] = t_0.length > 1
+          ? t_0.startsWith(L)
+            ? [
+                translate,
+              ]
+            : t_0.startsWith(translate)
+              ? [
+                  translate,
+                  L + t_0[1] as string,
+                  ...t_0.length > 2
+                    ? [
+                        tokens
+                          .pop()
+                          .slice(2),
+                      ]
+                    : [],
+                ]
+              : []
+          : [];
 
         return [
-          ...prepend,
+          ...pre,
           ...tokens,
         ];
       }
@@ -254,24 +275,14 @@ namespace Search {
     }
 
     private static mathefy(
-      tokens: string[],
-      math: string[],
+      T: string[],
+      M: string[],
     ): string[] {
       try {
-        const T: string[] = [...tokens];
-        const M: string[] = math
-          .filter(
-            mk => mk !== "",
-          )
-          .map(
-            mk => mk.toLowerCase(),
-          );
-
         if (
           M.length > 0
           && T.length > 0
           && T[0] !== undefined
-          && T[0] !== ""
         ) {
           const t_0: string = T[0].toLowerCase();
           const t_0_len: number = t_0.length;
