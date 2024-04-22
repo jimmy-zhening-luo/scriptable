@@ -29,11 +29,7 @@ class SchemeHostPort extends shp_UrlComposite {
                   new SchemeHostPort.HostPort.UrlPort(hostPort[1]),
                 )
                 : new SchemeHostPort.HostPort(hostPort),
-            ];
-
-      this.scheme = this.parts[0];
-
-      this.hostPort = this.parts[1];
+            ];      this.scheme = this.parts[0];      this.hostPort = this.parts[1];
     }
     catch (e) {
       throw new SyntaxError(

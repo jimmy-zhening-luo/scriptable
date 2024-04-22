@@ -21,9 +21,7 @@ class CharSet {
       else if (typeof negate === "boolean")
         this.negate = negate;
       else {
-        charsets.unshift(negate);
-
-        this.negate = charsets
+        charsets.unshift(negate);        this.negate = charsets
           .some(set =>
             set instanceof CharSet && set.negate);
       }

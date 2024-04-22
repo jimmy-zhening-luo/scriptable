@@ -10,7 +10,6 @@ class StringSplitter {
   ) {
     try {
       this.separator = separator;
-
       this.merged = StringSplitter._mergeSplit(
         unmerged,
         separator,

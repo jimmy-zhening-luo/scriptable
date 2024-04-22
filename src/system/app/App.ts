@@ -163,13 +163,7 @@ abstract class App<
 
       const n: Notification = new Notification();
 
-      n.title = messages.pop() ?? "";
-
-      n.body = messages.join("\n");
-
-      n.sound = "failure";
-
-      n
+      n.title = messages.pop() ?? "";      n.body = messages.join("\n");      n.sound = "failure";      n
         .schedule()
         .catch(n_e => { throw n_e; });
     }

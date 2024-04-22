@@ -24,11 +24,7 @@ class HostPort extends hp_UrlComposite {
           : [
               new HostPort.UrlHost(hostOrHostPort),
               new HostPort.UrlPort(port),
-            ];
-
-      this.host = this.parts[0];
-
-      this.port = this.parts[1];
+            ];      this.host = this.parts[0];      this.port = this.parts[1];
     }
     catch (e) {
       throw new SyntaxError(

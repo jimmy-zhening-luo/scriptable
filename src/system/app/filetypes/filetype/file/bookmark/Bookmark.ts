@@ -6,9 +6,7 @@ class Bookmark {
   constructor(bookmark: string | Bookmark) {
     try {
       if (bookmark instanceof Bookmark) {
-        this.alias = bookmark.alias;
-
-        this.path = bookmark.path;
+        this.alias = bookmark.alias;        this.path = bookmark.path;
       }
       else {
         const alias: string = bookmark.trim();
@@ -26,9 +24,7 @@ class Bookmark {
             `no bookmark exists in Scriptable with alias: '${alias}'`,
           );
         else {
-          this.alias = alias;
-
-          this.path = FileManager
+          this.alias = alias;          this.path = FileManager
             .iCloud()
             .bookmarkedPath(alias);
 

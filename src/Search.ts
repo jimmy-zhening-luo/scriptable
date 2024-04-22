@@ -166,9 +166,7 @@ namespace Search {
             );
         }
 
-        this.key = _key;
-
-        this.terms = [...tokens];
+        this.key = _key;        this.terms = [...tokens];
       }
       catch (e) {
         throw new EvalError(
@@ -421,15 +419,7 @@ namespace Search {
       encode: BrowserEncode = "+",
     ) {
       try {
-        super(keys);
-
-        this.tag = tag;
-
-        this.browser = browser;
-
-        this.encode = encode;
-
-        this.url = [url]
+        super(keys);        this.tag = tag;        this.browser = browser;        this.encode = encode;        this.url = [url]
           .flat();
 
         if (this.url.length === 0)
@@ -499,9 +489,7 @@ namespace Search {
       app: string,
     ) {
       try {
-        super(keys);
-
-        this.app = app;
+        super(keys);        this.app = app;
 
         if (this.app === "")
           throw new SyntaxError(
@@ -540,9 +528,7 @@ namespace Search {
       native: string,
     ) {
       try {
-        super(keys);
-
-        this.native = native;
+        super(keys);        this.native = native;
 
         if (this.native === "")
           throw new SyntaxError(
@@ -584,11 +570,7 @@ namespace Search {
       output: boolean = false,
     ) {
       try {
-        super(keys);
-
-        this.shortcut = shortcut;
-
-        this.output = output;
+        super(keys);        this.shortcut = shortcut;        this.output = output;
 
         if (this.shortcut === "")
           throw new SyntaxError(

@@ -35,11 +35,7 @@ class PathQueryFragment extends pqf_UrlComposite {
             : [
                 new PathQueryFragment.PathQuery(pathOrPathQueryOrPathQueryFragment),
                 new PathQueryFragment.UrlFragment(fragment),
-              ];
-
-      this.pathQuery = this.parts[0];
-
-      this.fragment = this.parts[1];
+              ];      this.pathQuery = this.parts[0];      this.fragment = this.parts[1];
     }
     catch (e) {
       throw new SyntaxError(

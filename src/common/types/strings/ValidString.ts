@@ -24,9 +24,7 @@ class ValidString {
         ._clean(
           candidate,
           cleanOptions,
-        );
-
-      this._charString = new ValidString
+        );      this._charString = new ValidString
         .BoundedRepeatCharString(
           min,
           max,

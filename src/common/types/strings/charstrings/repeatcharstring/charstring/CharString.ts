@@ -7,9 +7,7 @@ abstract class CharString {
     ...charsets: ConstructorParameters<typeof CharSet>
   ) {
     try {
-      this._raw = candidate;
-
-      this.charset = new CharString
+      this._raw = candidate;      this.charset = new CharString
         .CharSet(...charsets);
     }
     catch (e) {

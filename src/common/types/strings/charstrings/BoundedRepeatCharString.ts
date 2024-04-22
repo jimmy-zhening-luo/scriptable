@@ -29,17 +29,13 @@ class BoundedRepeatCharString extends _RepeatCharString {
       if (min > max) {
         const swap: number = min;
 
-        min = max;
-
-        max = swap;
+        min = max;        max = swap;
       }
 
       if (min === Infinity)
         min = max = 0;
 
-      this.min = min;
-
-      this.max = max;
+      this.min = min;      this.max = max;
     }
     catch (e) {
       throw new EvalError(

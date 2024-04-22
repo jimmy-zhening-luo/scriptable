@@ -25,44 +25,14 @@ class Url {
         )
           this.url = headUrl;
         else {
-          this.scheme = headUrl;
-
-          this.host = host;
-
-          this.port = port;
-
-          this.path = path;
-
-          this.query = query;
-
-          this.fragment = fragment;
+          this.scheme = headUrl;          this.host = host;          this.port = port;          this.path = path;          this.query = query;          this.fragment = fragment;
         }
       }
       else if (headUrl instanceof Url.UrlScheme) {
-        this.scheme = headUrl;
-
-        this.host = host;
-
-        this.port = port;
-
-        this.path = path;
-
-        this.query = query;
-
-        this.fragment = fragment;
+        this.scheme = headUrl;        this.host = host;        this.port = port;        this.path = path;        this.query = query;        this.fragment = fragment;
       }
       else {
-        this.scheme = headUrl.scheme;
-
-        this.host = headUrl.host;
-
-        this.port = headUrl.port;
-
-        this.path = headUrl.path;
-
-        this.query = headUrl.query;
-
-        this.fragment = headUrl.fragment;
+        this.scheme = headUrl.scheme;        this.host = headUrl.host;        this.port = headUrl.port;        this.path = headUrl.path;        this.query = headUrl.query;        this.fragment = headUrl.fragment;
 
         if (host !== undefined) {
           this.host = host;
@@ -330,17 +300,7 @@ class Url {
     try {
       const parsedUrl: Url.UrlRecords = this._parse(url);
 
-      this.scheme = parsedUrl.scheme;
-
-      this.host = parsedUrl.host;
-
-      this.port = parsedUrl.port;
-
-      this.path = parsedUrl.path;
-
-      this.query = parsedUrl.query;
-
-      this.fragment = parsedUrl.fragment;
+      this.scheme = parsedUrl.scheme;      this.host = parsedUrl.host;      this.port = parsedUrl.port;      this.path = parsedUrl.path;      this.query = parsedUrl.query;      this.fragment = parsedUrl.fragment;
     }
     catch (e) {
       throw new Error(`Url: set url: error setting url: \n${e as string}`);
@@ -528,9 +488,7 @@ class Url {
     try {
       const baseUrl = new Url(this);
 
-      baseUrl.query = "";
-
-      baseUrl.fragment = "";
+      baseUrl.query = "";      baseUrl.fragment = "";
 
       const callbackUrl = new CallbackURL(baseUrl.toString());
 
@@ -617,9 +575,7 @@ class Url {
 
         const host_port: string[] = hostport.split(":");
 
-        urlStringParts.host = host_port.shift() ?? "";
-
-        urlStringParts.port = urlStringParts.host === ""
+        urlStringParts.host = host_port.shift() ?? "";        urlStringParts.port = urlStringParts.host === ""
           ? ""
           : host_port
             .join(":");

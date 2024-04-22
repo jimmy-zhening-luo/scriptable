@@ -52,11 +52,7 @@ class SchemeHostPortPathQueryFragment extends shppqf_UrlComposite {
             : [
                 new SchemeHostPortPathQueryFragment.SchemeHostPort(schemeHostPortOrSchemeHostPortPathQueryFragment),
                 new SchemeHostPortPathQueryFragment.PathQueryFragment(pathQueryFragment),
-              ];
-
-      this.schemeHostPort = this.parts[0];
-
-      this.pathQueryFragment = this.parts[1];
+              ];      this.schemeHostPort = this.parts[0];      this.pathQueryFragment = this.parts[1];
     }
     catch (e) {
       throw new SyntaxError(

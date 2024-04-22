@@ -340,9 +340,7 @@ class UrlQuery extends qu_UrlPart {
 
   protected parse(query: string): null | string {
     try {
-      query = query.trim();
-
-      query = query.startsWith("?")
+      query = query.trim();      query = query.startsWith("?")
         ? query.slice(1)
         : query;
 

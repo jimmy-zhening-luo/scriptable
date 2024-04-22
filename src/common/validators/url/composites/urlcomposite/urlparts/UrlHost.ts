@@ -65,9 +65,7 @@ class UrlHost extends ho_UrlPart {
 
   protected parse(host: string): null | string {
     try {
-      host = host.trim();
-
-      host = host.includes("://")
+      host = host.trim();      host = host.includes("://")
         ? host.split("://")
           .slice(1)
           .join("://")
