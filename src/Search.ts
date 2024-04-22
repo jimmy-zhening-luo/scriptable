@@ -22,32 +22,21 @@ namespace Search {
           app.tag,
           "app.tag",
         );
-        const CHAT: string = app.chat;
-        const TRANSLATE: string = app.translate;
-        const MATH: string[] = app.math ?? [];
-
-        if (TAG === "")
-          throw new SyntaxError(
-            `setting.app.tag is empty`,
-          );
-        else if (CHAT === "")
-          throw new SyntaxError(
-            `setting.app.chat is empty`,
-          );
-        else if (TRANSLATE === "")
-          throw new SyntaxError(
-            `setting.app.translate is empty`,
-          );
-        else if (
-          MATH.some(
-            k =>
-              k === "",
-          )
-        )
-          throw new SyntaxError(
-            `setting.app.math? is set, but contains empty string(s)`,
-          );
-
+        const CHAT: stringful = stringful(
+          app.chat,
+          "app.chat",
+        );
+        const TRANSLATE: stringful = stringful(
+          app.translate,
+          "app.translate",
+        );
+        const MATH: stringful[] = (app.math ?? []).map(
+          s =>
+            stringful(
+              s,
+              "app.math?",
+            ),
+        );
         const input: string = this.inputData?.input ?? "";
         const query: Query = new Query(
           input === ""
