@@ -1,17 +1,17 @@
 abstract class Filetype<
-  T extends string,
+  Class extends string,
   F extends typeof IOFile = typeof ReadOnlyIOFile,
 > {
   protected readonly _file: IOFile;
 
   constructor(
-    _type: T,
+    _class: Class extends "" ? never : Class,
     FileConstructor: F,
     ...subpaths: string[]
   ) {
     try {
       this._file = new FileConstructor(
-        this._rootBookmark(_type),
+        this._rootBookmark(_class),
         ...subpaths,
       );
     }
@@ -85,7 +85,7 @@ abstract class Filetype<
     }
   }
 
-  private _rootBookmark(_type: T): Bookmark {
+  private _rootBookmark(_type: Class): Bookmark {
     try {
       if (_type === "")
         throw new SyntaxError(
