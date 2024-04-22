@@ -24,7 +24,8 @@ class ValidString {
         ._clean(
           candidate,
           cleanOptions,
-        );      this._charString = new ValidString
+        );
+      this._charString = new ValidString
         .BoundedRepeatCharString(
           min,
           max,
@@ -41,18 +42,6 @@ class ValidString {
     }
   }
 
-  public static get BoundedRepeatCharString(): typeof BoundedRepeatCharString {
-    try {
-      return importModule("charstrings/BoundedRepeatCharString") as typeof BoundedRepeatCharString;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `ValidString: import BoundedRepeatCharString`,
-        { cause: e },
-      );
-    }
-  }
-
   public static get CharSet(): typeof CharSet {
     try {
       return ValidString.BoundedRepeatCharString.CharSet;
@@ -60,6 +49,18 @@ class ValidString {
     catch (e) {
       throw new ReferenceError(
         `ValidString: import BoundedRepeatCharString.CharSet`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static get BoundedRepeatCharString(): typeof BoundedRepeatCharString {
+    try {
+      return importModule("charstrings/BoundedRepeatCharString") as typeof BoundedRepeatCharString;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `ValidString: import BoundedRepeatCharString`,
         { cause: e },
       );
     }
