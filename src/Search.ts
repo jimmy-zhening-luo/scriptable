@@ -13,11 +13,12 @@ namespace Search {
   > {
     public runtime(): Nullable<SearchOutput> {
       try {
+        const stringful: typeof Stringful = importModule("common/types/strings/Stringful") as typeof Stringful;
         const {
           app,
           user,
         }: SearchSettings = this.setting.unmerged;
-        const TAG: string = app.tag;
+        const TAG: stringful = stringful(app.chat);
         const CHAT: string = app.chat;
         const TRANSLATE: string = app.translate;
         const MATH: string[] = app.math ?? [];

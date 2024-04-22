@@ -5,13 +5,13 @@
   ],
   "references": [
     {
-      "path": "charstrings/tsconfig.json"
+      "path": "brand/tsconfig.json"
     },
     {
-      "path": "safe/tsconfig.json"
+      "path": "rejector/tsconfig.json"
     }
   ],
   "compilerOptions": {
-    "rootDir": "../../.."
+    "rootDir": "../../../.."
   }
 }
