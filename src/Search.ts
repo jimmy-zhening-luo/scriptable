@@ -471,7 +471,7 @@ namespace Search {
       try {
         super(
           "safari",
-          keys
+          keys,
         );
         this.tag = TAG;
         this.browser = browser;
@@ -609,9 +609,7 @@ namespace Search {
 
     protected options(): Required<Pick<SearchOutput, "native">> {
       try {
-        return {
-          "native": this.native,
-        };
+        return { "native": this.native };
       }
       catch (e) {
         throw new EvalError(
