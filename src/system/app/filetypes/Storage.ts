@@ -28,9 +28,7 @@ class Storage extends stor_Filetype<
     }
   }
 
-  public write(
-    text: string,
-  ): this {
+  public write(text: string): this {
     try {
       this._file.write(
         text,

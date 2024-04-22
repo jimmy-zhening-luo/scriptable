@@ -5,7 +5,9 @@ abstract class UrlPart {
   constructor(part: string | UrlPart = "") {
     try {
       this.value = this.parse(part.toString());
-      if (this.value === "") this.value = null;
+
+      if (this.value === "")
+        this.value = null;
     }
     catch (e) {
       throw new SyntaxError(

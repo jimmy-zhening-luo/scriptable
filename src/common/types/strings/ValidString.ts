@@ -25,6 +25,7 @@ class ValidString {
           candidate,
           cleanOptions,
         );
+
       this._charString = new ValidString
         .BoundedRepeatCharString(
           min,
@@ -44,9 +45,7 @@ class ValidString {
 
   public static get BoundedRepeatCharString(): typeof BoundedRepeatCharString {
     try {
-      return importModule(
-        "charstrings/BoundedRepeatCharString",
-      ) as typeof BoundedRepeatCharString;
+      return importModule("charstrings/BoundedRepeatCharString") as typeof BoundedRepeatCharString;
     }
     catch (e) {
       throw new ReferenceError(
@@ -117,6 +116,7 @@ class ValidString {
     try {
       if (toLower)
         raw = raw.toLowerCase();
+
       if (trim)
         raw = raw.trim();
 

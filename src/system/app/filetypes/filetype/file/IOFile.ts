@@ -5,29 +5,25 @@ class IOFile {
 
   constructor(
     root:
-    | IOFile
-    | { file: IOFile; rootOnly: boolean }
-    | Bookmark
-    | ConstructorParameters<typeof Filepath>[0],
+      | IOFile
+      | { file: IOFile; rootOnly: boolean }
+      | Bookmark
+      | ConstructorParameters<typeof Filepath>[0],
     ...subpaths: ConstructorParameters<typeof Filepath>
   ) {
     try {
-      this._root
-        = root instanceof IOFile || root instanceof IOFile.Bookmark
-          ? root.path
-          : typeof root === "object" && "file" in root && "rootOnly" in root
-            ? root.rootOnly
-              ? root.file._root
-              : root.file.path
-            : new IOFile
-              .Filepath(
-                root,
-              )
-              .toString();
+      this._root = root instanceof IOFile || root instanceof IOFile.Bookmark
+        ? root.path
+        : typeof root === "object" && "file" in root && "rootOnly" in root
+          ? root.rootOnly
+            ? root.file._root
+            : root.file.path
+          : new IOFile
+            .Filepath(root)
+            .toString();
+
       this._subpath = new IOFile
-        .Filepath(
-          ...subpaths,
-        );
+        .Filepath(...subpaths);
     }
     catch (e) {
       throw new EvalError(
@@ -51,9 +47,7 @@ class IOFile {
 
   protected static get Filepath(): typeof Filepath {
     try {
-      return importModule(
-        "./common/validators/filepath/Filepath",
-      ) as typeof Filepath;
+      return importModule("./common/validators/filepath/Filepath") as typeof Filepath;
     }
     catch (e) {
       throw new ReferenceError(
@@ -103,9 +97,7 @@ class IOFile {
     try {
       return FileManager
         .iCloud()
-        .fileExists(
-          this.path,
-        )
+        .fileExists(this.path)
         && !this.isDirectory;
     }
     catch (e) {
@@ -120,9 +112,7 @@ class IOFile {
     try {
       return FileManager
         .iCloud()
-        .isDirectory(
-          this.path,
-        );
+        .isDirectory(this.path);
     }
     catch (e) {
       throw new EvalError(
@@ -165,12 +155,10 @@ class IOFile {
     try {
       return new (this.constructor as new (
         ...args: ConstructorParameters<typeof IOFile>
-      ) => this)(
-        {
-          file: this,
-          rootOnly: true,
-        },
-      );
+      )=> this)({
+        file: this,
+        rootOnly: true,
+      });
     }
     catch (e) {
       throw new EvalError(
@@ -184,7 +172,7 @@ class IOFile {
     try {
       return new (this.constructor as new (
         ...args: ConstructorParameters<typeof IOFile>
-      ) => this)(
+      )=> this)(
         this.root,
         this._subpath.parent,
       );
@@ -202,9 +190,7 @@ class IOFile {
       return this.isDirectory
         ? FileManager
           .iCloud()
-          .listContents(
-            this.path,
-          )
+          .listContents(this.path)
         : [];
     }
     catch (e) {
@@ -224,23 +210,17 @@ class IOFile {
           : this.ls
             .map(
               filename =>
-                this.append(
-                  filename,
-                ),
+                this.append(filename),
             )
             .filter(
               child =>
-                !this.path.startsWith(
-                  child.path,
-                ),
+                !this.path.startsWith(child.path),
             )
             .map(
               file =>
                 file.descendants,
             )
-            .flat(
-              1,
-            );
+            .flat(1);
     }
     catch (e) {
       throw new EvalError(
@@ -250,14 +230,10 @@ class IOFile {
     }
   }
 
-  public set subpath(
-    subpath: ConstructorParameters<typeof Filepath>[1],
-  ) {
+  public set subpath(subpath: ConstructorParameters<typeof Filepath>[1]) {
     try {
       this._subpath = new IOFile
-        .Filepath(
-          subpath,
-        );
+        .Filepath(subpath);
     }
     catch (e) {
       throw new EvalError(
@@ -284,19 +260,15 @@ class IOFile {
     }
   }
 
-  public append(
-    ...filepaths: Parameters<typeof Filepath.prototype.append>
-  ): this {
+  public append(...filepaths: Parameters<typeof Filepath.prototype.append>): this {
     try {
       return new (this.constructor as new (
         ...args: ConstructorParameters<typeof IOFile>
-      ) => this)(
+      )=> this)(
         this,
         this
           ._subpath
-          .append(
-            ...filepaths,
-          ),
+          .append(...filepaths),
       );
     }
     catch (e) {
@@ -307,9 +279,7 @@ class IOFile {
     }
   }
 
-  public cd(
-    ...relativeFilepath: Parameters<typeof Filepath.prototype.cd>
-  ): this {
+  public cd(...relativeFilepath: Parameters<typeof Filepath.prototype.cd>): this {
     try {
       this._subpath.cd(...relativeFilepath);
 
@@ -357,7 +327,10 @@ class IOFile {
           try {
             FileManager
               .iCloud()
-              .createDirectory(this.parent.path, true);
+              .createDirectory(
+                this.parent.path,
+                true,
+              );
           }
           catch (e) {
             throw new EvalError(
@@ -365,10 +338,14 @@ class IOFile {
               { cause: e },
             );
           }
+
         try {
           FileManager
             .iCloud()
-            .writeString(this.path, data);
+            .writeString(
+              this.path,
+              data,
+            );
         }
         catch (e) {
           throw new EvalError(
@@ -388,25 +365,27 @@ class IOFile {
     }
   }
 
-  public async delete(
-    force: boolean = false,
-  ): Promise<this> {
+  public async delete(force: boolean = false): Promise<this> {
     try {
       if (this.exists) {
-        if (force) __deleteUsingFileManager(this.path);
+        if (force)
+          __deleteUsingFileManager(this.path);
         else {
           const confirm: Alert = new Alert();
 
           confirm
             .message = `Are you sure you want to delete this file or folder (including all descendants)? Path: ${this.path}`;
+
           confirm
             .addDestructiveAction(
               "Yes, DELETE this file",
             );
+
           confirm
             .addCancelAction(
               "Cancel",
             );
+
           await confirm
             .present()
             .then(userChoice => {
@@ -422,13 +401,12 @@ class IOFile {
         }
       }
 
-      function __deleteUsingFileManager(
-        path: string,
-      ): void {
+      function __deleteUsingFileManager(path: string): void {
         try {
           FileManager
             .iCloud()
             .remove(path);
+
           if (
             FileManager
               .iCloud()

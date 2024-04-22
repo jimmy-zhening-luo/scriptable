@@ -14,7 +14,10 @@ class UrlPort extends po_UrlPart {
       );
     }
     catch (e) {
-      throw new Error(`UrlPort: constructor: error creating UrlPort: \n${e as string}`);
+      throw new EvalError(
+        `UrlPort: ctor`,
+        { cause: e },
+      );
     }
   }
 
@@ -59,7 +62,9 @@ class UrlPort extends po_UrlPart {
       const parsedPortInt: number = Number.isInteger(
         Number.parseInt(parsedPortString),
       )
-        ? Math.round(Number.parseInt(parsedPortString))
+        ? Math.round(
+          Number.parseInt(parsedPortString),
+        )
         : NaN;
 
       return parsedPortInt >= 1 && parsedPortInt <= 65535
@@ -67,7 +72,10 @@ class UrlPort extends po_UrlPart {
         : null;
     }
     catch (e) {
-      throw new Error(`UrlPort: parse: error parsing UrlPort: \n${e as string}`);
+      throw new EvalError(
+        `UrlPort: parse`,
+        { cause: e },
+      );
     }
   }
 }

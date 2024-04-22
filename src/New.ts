@@ -4,9 +4,7 @@
 "use strict";
 
 namespace New {
-  const shortcut: typeof Shortcut = importModule(
-    "system/Shortcut",
-  ) as typeof Shortcut;
+  const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class New extends shortcut<
     null,
@@ -19,12 +17,8 @@ namespace New {
         const WORLD_PREFIX: string = "World: ";
         const SPACE_SETTING: string = "space";
         const E_MISSING_SETTING: string = "{E_MISSING_SETTING}";
-
-        // Storage
         const hello: string = this.read();
-        const world: string = this.read(
-          WORLD_FILE,
-        );
+        const world: string = this.read(WORLD_FILE);
 
         this.write(
           WORLD_PREFIX + new Date()

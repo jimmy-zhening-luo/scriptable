@@ -18,21 +18,28 @@ class CharSet {
     try {
       if (negate === undefined)
         this.negate = false;
-      else if (typeof negate === "boolean") this.negate = negate;
+      else if (typeof negate === "boolean")
+        this.negate = negate;
       else {
         charsets.unshift(negate);
+
         this.negate = charsets
           .some(set =>
             set instanceof CharSet && set.negate);
       }
 
       this.members = charsets
-        .map(set =>
-          set instanceof CharSet
-            ? set.members
-            : [set]
-                .flat()
-                .filter(c => c.length === 1))
+        .map(
+          set =>
+            set instanceof CharSet
+              ? set.members
+              : [set]
+                  .flat()
+                  .filter(
+                    c =>
+                      c.length === 1,
+                  ),
+        )
         .flat();
     }
     catch (e) {

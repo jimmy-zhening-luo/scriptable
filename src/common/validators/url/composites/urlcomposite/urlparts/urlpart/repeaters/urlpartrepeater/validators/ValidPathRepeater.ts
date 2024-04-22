@@ -5,7 +5,12 @@ const pa_ValidUrlRepeater: typeof ValidUrlRepeater = importModule(
 class ValidPathRepeater extends pa_ValidUrlRepeater {
   constructor(pathRepeater: string) {
     try {
-      super(pathRepeater, 0, Infinity, pa_ValidUrlRepeater.CharSet.pchar);
+      super(
+        pathRepeater,
+        0,
+        Infinity,
+        pa_ValidUrlRepeater.CharSet.pchar,
+      );
     }
     catch (e) {
       throw new Error(

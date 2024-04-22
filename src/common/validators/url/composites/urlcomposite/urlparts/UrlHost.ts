@@ -8,7 +8,10 @@ class UrlHost extends ho_UrlPart {
       super(host);
     }
     catch (e) {
-      throw new Error(`UrlHost: constructor: error creating UrlHost: \n${e as string}`);
+      throw new EvalError(
+        `UrlHost: ctor`,
+        { cause: e },
+      );
     }
   }
 
@@ -63,6 +66,7 @@ class UrlHost extends ho_UrlPart {
   protected parse(host: string): null | string {
     try {
       host = host.trim();
+
       host = host.includes("://")
         ? host.split("://")
           .slice(1)
@@ -72,32 +76,48 @@ class UrlHost extends ho_UrlPart {
       return host === ""
         ? null
         : host.split(".").length === 4
-              && host
-                .split(".")
-                .map(hostRepeater => new UrlHost.HostIPv4Repeater(hostRepeater))
-                .every(
-                  hostRepeater =>
-                    hostRepeater.isValid
-                    && Number.parseInt(hostRepeater.toString()) <= 255,
-                )
-            || host.split(":").length <= 8
-              && host.split(":").length >= 3
-              && host
-                .split(":")
-                .map(hostRepeater => new UrlHost.HostIPv6Repeater(hostRepeater))
-                .every(hostRepeater => hostRepeater.isValid)
+        && host
+          .split(".")
+          .map(
+            hostRepeater =>
+              new UrlHost.HostIPv4Repeater(hostRepeater),
+          )
+          .every(
+            hostRepeater =>
+              hostRepeater.isValid
+              && Number.parseInt(hostRepeater.toString()) <= 255,
+          )
+          || host.split(":").length <= 8
+          && host.split(":").length >= 3
+          && host
+            .split(":")
+            .map(
+              hostRepeater =>
+                new UrlHost.HostIPv6Repeater(hostRepeater),
+            )
+            .every(
+              hostRepeater =>
+                hostRepeater.isValid,
+            )
             || host.split(".").length >= 1
-              && host
-                .split(".")
-                .map(
-                  hostRepeater => new UrlHost.HostRegNameRepeater(hostRepeater),
-                )
-                .every(hostRepeater => hostRepeater.isValid)
+            && host
+              .split(".")
+              .map(
+                hostRepeater =>
+                  new UrlHost.HostRegNameRepeater(hostRepeater),
+              )
+              .every(
+                hostRepeater =>
+                  hostRepeater.isValid,
+              )
           ? host
           : null;
     }
     catch (e) {
-      throw new Error(`UrlHost: parse: error parsing UrlHost: \n${e as string}`);
+      throw new EvalError(
+        `UrlHost: parse`,
+        { cause: e },
+      );
     }
   }
 }

@@ -15,6 +15,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
   ) {
     try {
       super(...charStringParams);
+
       for (const n of [
         min,
         max,
@@ -29,6 +30,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
         const swap: number = min;
 
         min = max;
+
         max = swap;
       }
 
@@ -36,6 +38,7 @@ class BoundedRepeatCharString extends _RepeatCharString {
         min = max = 0;
 
       this.min = min;
+
       this.max = max;
     }
     catch (e) {

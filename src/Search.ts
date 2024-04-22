@@ -4,9 +4,7 @@
 "use strict";
 
 namespace Search {
-  const shortcut: typeof Shortcut = importModule(
-    "system/Shortcut",
-  ) as typeof Shortcut;
+  const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class Search extends shortcut<
     SearchInput,
@@ -19,7 +17,6 @@ namespace Search {
           app,
           user,
         }: SearchSettings = this.setting.unmerged;
-
         const TAG: string = app.tag;
         const CHAT: string = app.chat;
         const TRANSLATE: string = app.translate;
@@ -37,7 +34,12 @@ namespace Search {
           throw new SyntaxError(
             `setting.app.translate is empty`,
           );
-        else if (MATH.some(k => k === ""))
+        else if (
+          MATH.some(
+            k =>
+              k === "",
+          )
+        )
           throw new SyntaxError(
             `setting.app.math? is set, but contains empty string(s)`,
           );
@@ -52,13 +54,11 @@ namespace Search {
           TRANSLATE,
           MATH,
         );
-
         const match: Nullable<SearchEngineSetting> = user
           .engines
           .find(
-            eng => eng.keys.includes(
-              query.key,
-            ),
+            eng =>
+              eng.keys.includes(query.key),
           ) ?? null;
         const resolved: Nullable<Engine> = match === null
           ? null
@@ -87,14 +87,10 @@ namespace Search {
                 );
 
         if (resolved)
-          this.write(
-            query.clean,
-          );
+          this.write(query.clean);
 
         return resolved
-          ?.parseQueryToAction(
-            query,
-          ) ?? null;
+          ?.parseQueryToAction(query) ?? null;
       }
       catch (e) {
         throw new EvalError(
@@ -145,7 +141,11 @@ namespace Search {
 
         if (_key.endsWith(".")) {
           if (_key.length > 1)
-            _key = _key.slice(0, -1);
+            _key = _key
+              .slice(
+                0,
+                -1,
+              );
           else if (tokens.length > 0)
             throw new SyntaxError(
               `Query '${query}' resolved to\ninvalid key '${_key}'\nwith terms: '${tokens.join("|")}'`,
@@ -167,6 +167,7 @@ namespace Search {
         }
 
         this.key = _key;
+
         this.terms = [...tokens];
       }
       catch (e) {
@@ -243,9 +244,7 @@ namespace Search {
         const t_0: string = (tokens[0] ?? "").toLowerCase();
         const pre: string[] = t_0.length > 1
           ? t_0.startsWith(L)
-            ? [
-                translate,
-              ]
+            ? [translate]
             : t_0.startsWith(translate)
               ? [
                   translate,
@@ -288,22 +287,21 @@ namespace Search {
           const t_0_len: number = t_0.length;
           const math_long: string = [...M]
             .filter(
-              mk => mk.length <= t_0_len,
+              mk =>
+                mk.length <= t_0_len,
             )
             .sort(
-              (a, b) => b.length - a.length,
+              (a, b) =>
+                b.length - a.length,
             )
             .find(
-              mk => t_0.startsWith(
-                mk,
-              ),
+              mk =>
+                t_0.startsWith(mk),
             ) ?? "";
 
           if (math_long !== "") {
             const operand_0: string = T.shift()
-              ?.slice(
-                math_long.length,
-              ) ?? "";
+              ?.slice(math_long.length) ?? "";
 
             if (operand_0 !== "")
               T.unshift(operand_0);
@@ -313,7 +311,8 @@ namespace Search {
           else {
             const math_short: string = [...M]
               .sort(
-                (a, b) => a.length - b.length,
+                (a, b) =>
+                  a.length - b.length,
               )
               .shift() ?? "";
 
@@ -368,11 +367,7 @@ namespace Search {
                   1,
                 );
 
-              if (
-                d.includes(
-                  t_00,
-                )
-              )
+              if (d.includes(t_00))
                 T.unshift(math_short);
             }
           }
@@ -396,7 +391,10 @@ namespace Search {
       try {
         this.keys = [keys]
           .flat()
-          .map(key => key.toLowerCase());
+          .map(
+            key =>
+              key.toLowerCase(),
+          );
       }
       catch (e) {
         throw new EvalError(
@@ -424,9 +422,13 @@ namespace Search {
     ) {
       try {
         super(keys);
+
         this.tag = tag;
+
         this.browser = browser;
+
         this.encode = encode;
+
         this.url = [url]
           .flat();
 
@@ -434,7 +436,14 @@ namespace Search {
           throw new SyntaxError(
             `engine url[] is empty`,
           );
-        else if (this.url.every(u => u === ""))
+        else if (
+          this
+            .url
+            .every(
+              u =>
+                u === "",
+            )
+        )
           throw new SyntaxError(
             `engine url[""] contains all empty strings`,
           );
@@ -491,7 +500,9 @@ namespace Search {
     ) {
       try {
         super(keys);
+
         this.app = app;
+
         if (this.app === "")
           throw new SyntaxError(
             `engine app name is empty`,
@@ -530,7 +541,9 @@ namespace Search {
     ) {
       try {
         super(keys);
+
         this.native = native;
+
         if (this.native === "")
           throw new SyntaxError(
             `engine native provider is empty`,
@@ -572,8 +585,11 @@ namespace Search {
     ) {
       try {
         super(keys);
+
         this.shortcut = shortcut;
+
         this.output = output;
+
         if (this.shortcut === "")
           throw new SyntaxError(
             `engine shortcut name is empty`,

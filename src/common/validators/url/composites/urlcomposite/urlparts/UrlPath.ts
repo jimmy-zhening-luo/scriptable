@@ -8,7 +8,10 @@ class UrlPath extends pa_UrlPart {
       super(path);
     }
     catch (e) {
-      throw new Error(`UrlPath: constructor: error creating UrlPath: \n${e as string}`);
+      throw new EvalError(
+        `UrlPath: ctor`,
+        { cause: e },
+      );
     }
   }
 
@@ -35,9 +38,7 @@ class UrlPath extends pa_UrlPart {
 
   public static get StringSplitter(): typeof StringSplitter {
     try {
-      return importModule(
-        "./common/types/strings/StringSplitter",
-      ) as typeof StringSplitter;
+      return importModule("./common/types/strings/StringSplitter") as typeof StringSplitter;
     }
     catch (e) {
       throw new ReferenceError(
@@ -49,15 +50,12 @@ class UrlPath extends pa_UrlPart {
 
   public append(subpath: string | UrlPath): UrlPath {
     try {
-      const newPath: UrlPath = new UrlPath(
-        [
-          this.toString(),
-          new UrlPath(subpath)
-            .toString(),
-        ].join(
-          UrlPath.UrlValidators.CharSet.slash[0],
-        ),
-      );
+      const newPath: UrlPath = new UrlPath([
+        this.toString(),
+        new UrlPath(subpath)
+          .toString(),
+      ]
+        .join(UrlPath.UrlValidators.CharSet.slash[0]));
 
       return newPath.isValid
         ? newPath
@@ -83,14 +81,20 @@ class UrlPath extends pa_UrlPart {
 
       return split.length === 0
         ? null
-        : split.every(
-          pathRepeater => new UrlPath.PathRepeater(pathRepeater).isValid,
-        )
-          ? split.join(UrlPath.UrlValidators.CharSet.slash[0])
+        : split
+          .every(
+            pathRepeater =>
+              new UrlPath.PathRepeater(pathRepeater).isValid,
+          )
+          ? split
+            .join(UrlPath.UrlValidators.CharSet.slash[0])
           : null;
     }
     catch (e) {
-      throw new Error(`UrlPath: parse: error parsing UrlPath: \n${e as string}`);
+      throw new EvalError(
+        `UrlPath: parse`,
+        { cause: e },
+      );
     }
   }
 }

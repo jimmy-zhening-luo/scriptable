@@ -29,7 +29,8 @@ class Setting<
 
   public get parsed(): C {
     try {
-      if (this._cachedSetting !== undefined) return this._cachedSetting;
+      if (this._cachedSetting !== undefined)
+        return this._cachedSetting;
       else {
         if (!this._file.isFile)
           throw new ReferenceError(
@@ -89,7 +90,8 @@ class Setting<
         throw new ReferenceError(
           `No app setting found`,
         );
-      else return this.unmerged.app;
+      else
+        return this.unmerged.app;
     }
     catch (e) {
       throw new EvalError(
@@ -105,7 +107,8 @@ class Setting<
         throw new ReferenceError(
           `No user setting found`,
         );
-      else return this.unmerged.user;
+      else
+        return this.unmerged.user;
     }
     catch (e) {
       throw new EvalError(
@@ -170,25 +173,30 @@ class Setting<
           sharedKeys,
         );
         const mergedMap: Map<string, SettingValue> = new Map();
-        const losingMap: Map<string, SettingValue> = new Map(
-          Object.entries(losers),
-        );
-        const winningMap: Map<string, SettingValue> = new Map(
-          Object.entries(winners),
-        );
+        const losingMap: Map<string, SettingValue> = new Map(Object.entries(losers));
+        const winningMap: Map<string, SettingValue> = new Map(Object.entries(winners));
 
         for (const loser of uniqueKeysL)
-          mergedMap.set(loser, losingMap.get(loser)!);
+          mergedMap.set(
+            loser,
+            losingMap.get(loser)!,
+          );
 
         for (const winner of uniqueKeysW)
-          mergedMap.set(winner, winningMap.get(winner)!);
+          mergedMap.set(
+            winner,
+            winningMap.get(winner)!,
+          );
 
         for (const key of sharedKeys) {
           if (
             isPrimitive(winningMap.get(key)!)
             && isPrimitive(losingMap.get(key)!)
           )
-            mergedMap.set(key, winningMap.get(key)!);
+            mergedMap.set(
+              key,
+              winningMap.get(key)!,
+            );
           else if (
             Array.isArray(winningMap.get(key))
             && Array.isArray(losingMap.get(key))

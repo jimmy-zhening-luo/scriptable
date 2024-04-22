@@ -9,40 +9,36 @@ class PathQueryFragment extends pqf_UrlComposite {
 
   constructor(
     pathOrPathQueryOrPathQueryFragment?:
-    | PathQuery
-    | [string | UrlPath, string | UrlQuery]
-    | PathQueryFragment,
+      | PathQuery
+      | [string | UrlPath, string | UrlQuery]
+      | PathQueryFragment,
     fragment?: string | UrlFragment,
   ) {
     super();
+
     try {
-      this.parts
-        = pathOrPathQueryOrPathQueryFragment === undefined
-          ? [
-              new PathQueryFragment.PathQuery(),
-              new PathQueryFragment.UrlFragment(),
-            ]
-          : pathOrPathQueryOrPathQueryFragment instanceof PathQueryFragment
-            ? pathOrPathQueryOrPathQueryFragment.parts
-            : Array.isArray(pathOrPathQueryOrPathQueryFragment)
-              ? [
-                  new PathQueryFragment.PathQuery(
-                    new PathQueryFragment.PathQuery.UrlPath(
-                      pathOrPathQueryOrPathQueryFragment[0],
-                    ),
-                    new PathQueryFragment.PathQuery.UrlQuery(
-                      pathOrPathQueryOrPathQueryFragment[1],
-                    ),
-                  ),
-                  new PathQueryFragment.UrlFragment(fragment),
-                ]
-              : [
-                  new PathQueryFragment.PathQuery(
-                    pathOrPathQueryOrPathQueryFragment,
-                  ),
-                  new PathQueryFragment.UrlFragment(fragment),
-                ];
+      this.parts = pathOrPathQueryOrPathQueryFragment === undefined
+        ? [
+            new PathQueryFragment.PathQuery(),
+            new PathQueryFragment.UrlFragment(),
+          ]
+        : pathOrPathQueryOrPathQueryFragment instanceof PathQueryFragment
+          ? pathOrPathQueryOrPathQueryFragment.parts
+          : Array.isArray(pathOrPathQueryOrPathQueryFragment)
+            ? [
+                new PathQueryFragment.PathQuery(
+                  new PathQueryFragment.PathQuery.UrlPath(pathOrPathQueryOrPathQueryFragment[0]),
+                  new PathQueryFragment.PathQuery.UrlQuery(pathOrPathQueryOrPathQueryFragment[1]),
+                ),
+                new PathQueryFragment.UrlFragment(fragment),
+              ]
+            : [
+                new PathQueryFragment.PathQuery(pathOrPathQueryOrPathQueryFragment),
+                new PathQueryFragment.UrlFragment(fragment),
+              ];
+
       this.pathQuery = this.parts[0];
+
       this.fragment = this.parts[1];
     }
     catch (e) {

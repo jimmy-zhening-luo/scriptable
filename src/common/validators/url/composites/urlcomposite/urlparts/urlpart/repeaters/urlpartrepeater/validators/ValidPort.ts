@@ -9,9 +9,7 @@ class ValidPort extends po_ValidUrlPart {
         port,
         1,
         Infinity,
-        {
-          trimLeading: [...po_ValidUrlPart.CharSet.colon],
-        },
+        { trimLeading: [...po_ValidUrlPart.CharSet.colon] },
         po_ValidUrlPart.CharSet.numbers,
       );
     }

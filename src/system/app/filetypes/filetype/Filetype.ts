@@ -11,9 +11,7 @@ abstract class Filetype<
   ) {
     try {
       this._file = new FileConstructor(
-        this._rootBookmark(
-          _type,
-        ),
+        this._rootBookmark(_type),
         ...subpaths,
       );
     }
@@ -87,18 +85,14 @@ abstract class Filetype<
     }
   }
 
-  private _rootBookmark(
-    _type: T,
-  ): Bookmark {
+  private _rootBookmark(_type: T): Bookmark {
     try {
       if (_type === "")
         throw new SyntaxError(
           `Expected app child type name; instead, type is empty`,
         );
       else
-        return new Filetype.IOFile.Bookmark(
-          "#" + _type,
-        );
+        return new Filetype.IOFile.Bookmark("#" + _type);
     }
     catch (e) {
       throw new EvalError(

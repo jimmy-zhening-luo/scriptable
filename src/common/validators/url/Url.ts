@@ -26,36 +26,56 @@ class Url {
           this.url = headUrl;
         else {
           this.scheme = headUrl;
+
           this.host = host;
+
           this.port = port;
+
           this.path = path;
+
           this.query = query;
+
           this.fragment = fragment;
         }
       }
       else if (headUrl instanceof Url.UrlScheme) {
         this.scheme = headUrl;
+
         this.host = host;
+
         this.port = port;
+
         this.path = path;
+
         this.query = query;
+
         this.fragment = fragment;
       }
       else {
         this.scheme = headUrl.scheme;
+
         this.host = headUrl.host;
+
         this.port = headUrl.port;
+
         this.path = headUrl.path;
+
         this.query = headUrl.query;
+
         this.fragment = headUrl.fragment;
+
         if (host !== undefined) {
           this.host = host;
+
           if (port !== undefined) {
             this.port = port;
+
             if (path !== undefined) {
               this.path = path;
+
               if (query !== undefined) {
                 this.query = query;
+
                 if (fragment !== undefined) {
                   this.fragment = fragment;
                 }
@@ -72,9 +92,7 @@ class Url {
 
   public static get UrlComposites(): typeof UrlComposites {
     try {
-      return importModule(
-        "composites/UrlComposites",
-      ) as typeof UrlComposites;
+      return importModule("composites/UrlComposites") as typeof UrlComposites;
     }
     catch (e) {
       throw new ReferenceError(
@@ -313,10 +331,15 @@ class Url {
       const parsedUrl: Url.UrlRecords = this._parse(url);
 
       this.scheme = parsedUrl.scheme;
+
       this.host = parsedUrl.host;
+
       this.port = parsedUrl.port;
+
       this.path = parsedUrl.path;
+
       this.query = parsedUrl.query;
+
       this.fragment = parsedUrl.fragment;
     }
     catch (e) {
@@ -327,7 +350,9 @@ class Url {
   public set scheme(scheme: ConstructorParameters<typeof UrlScheme>[0]) {
     try {
       this._scheme = new Url.UrlScheme(scheme);
-      if (this.scheme === "") this._scheme = new Url.UrlScheme("https");
+
+      if (this.scheme === "")
+        this._scheme = new Url.UrlScheme("https");
     }
     catch (e) {
       throw new Error(`Url: set scheme: error setting scheme: \n${e as string}`);
@@ -486,7 +511,11 @@ class Url {
 
   public async webview(fullScreen: boolean = false): Promise<this> {
     try {
-      await WebView.loadURL(this.url, undefined, fullScreen);
+      await WebView.loadURL(
+        this.url,
+        undefined,
+        fullScreen,
+      );
 
       return this;
     }
@@ -500,7 +529,9 @@ class Url {
       const baseUrl = new Url(this);
 
       baseUrl.query = "";
+
       baseUrl.fragment = "";
+
       const callbackUrl = new CallbackURL(baseUrl.toString());
 
       Array.from(this._query.queryMap.entries())
@@ -508,8 +539,12 @@ class Url {
           key,
           value,
         ]) => {
-          callbackUrl.addParameter(key, value);
+          callbackUrl.addParameter(
+            key,
+            value,
+          );
         });
+
       var response: Record<string, null | string | number | boolean> = {};
 
       await callbackUrl.open()
@@ -544,13 +579,9 @@ class Url {
 
         urlStringParts.fragment = url_fragment.join("#");
 
-        const queryOrSchemehostportpath_query: string[]
-          = urlWithoutFragment.split("?");
-        const queryOrSchemehostportpath: string
-          = queryOrSchemehostportpath_query.shift() ?? "";
-        const schemehostportpath: string = queryOrSchemehostportpath.includes(
-          "=",
-        )
+        const queryOrSchemehostportpath_query: string[] = urlWithoutFragment.split("?");
+        const queryOrSchemehostportpath: string = queryOrSchemehostportpath_query.shift() ?? "";
+        const schemehostportpath: string = queryOrSchemehostportpath.includes("=")
           ? ""
           : queryOrSchemehostportpath;
 
@@ -564,20 +595,21 @@ class Url {
         const scheme_hostportpath: string[] = schemehostportpath.split("://");
         const schemeOrHostportpath: string = scheme_hostportpath.shift() ?? "";
 
-        urlStringParts.scheme
-          = scheme_hostportpath.length > 0
-            ? schemeOrHostportpath
-            : schemeOrHostportpath.includes(".")
-                || schemeOrHostportpath.includes("/")
-              ? ""
-              : schemeOrHostportpath;
-        const hostportpath: string
-          = scheme_hostportpath.length > 0
-            ? scheme_hostportpath.join("://")
-            : urlStringParts.scheme === ""
-              ? schemeOrHostportpath
-              : "";
+        urlStringParts.scheme = scheme_hostportpath.length > 0
+          ? schemeOrHostportpath
+          : schemeOrHostportpath
+            .includes(".")
+            || schemeOrHostportpath
+              .includes("/")
+            ? ""
+            : schemeOrHostportpath;
 
+        const hostportpath: string = scheme_hostportpath.length > 0
+          ? scheme_hostportpath
+            .join("://")
+          : urlStringParts.scheme === ""
+            ? schemeOrHostportpath
+            : "";
         const hostport_path: string[] = hostportpath.split("/");
         const hostport: string = hostport_path.shift() ?? "";
 
@@ -586,10 +618,11 @@ class Url {
         const host_port: string[] = hostport.split(":");
 
         urlStringParts.host = host_port.shift() ?? "";
-        urlStringParts.port
-          = urlStringParts.host === ""
-            ? ""
-            : host_port.join(":");
+
+        urlStringParts.port = urlStringParts.host === ""
+          ? ""
+          : host_port
+            .join(":");
       }
       else {
         urlStringParts = {

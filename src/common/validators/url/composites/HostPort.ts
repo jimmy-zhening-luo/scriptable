@@ -12,20 +12,22 @@ class HostPort extends hp_UrlComposite {
     port?: string | number | UrlPort,
   ) {
     super();
+
     try {
-      this.parts
-        = hostOrHostPort === undefined
-          ? [
-              new HostPort.UrlHost(),
-              new HostPort.UrlPort(),
-            ]
-          : hostOrHostPort instanceof HostPort
-            ? hostOrHostPort.parts
-            : [
-                new HostPort.UrlHost(hostOrHostPort),
-                new HostPort.UrlPort(port),
-              ];
+      this.parts = hostOrHostPort === undefined
+        ? [
+            new HostPort.UrlHost(),
+            new HostPort.UrlPort(),
+          ]
+        : hostOrHostPort instanceof HostPort
+          ? hostOrHostPort.parts
+          : [
+              new HostPort.UrlHost(hostOrHostPort),
+              new HostPort.UrlPort(port),
+            ];
+
       this.host = this.parts[0];
+
       this.port = this.parts[1];
     }
     catch (e) {

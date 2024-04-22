@@ -15,18 +15,13 @@ class RepeatCharString extends rp_CharString {
     }
   }
 
-  protected _qualifies(
-    candidate: string,
-  ): boolean {
+  protected _qualifies(candidate: string): boolean {
     try {
-      return candidate === "" || [
-        ...candidate,
-      ].every(
-        char =>
-          this.charset.allows(
-            char,
-          ),
-      );
+      return candidate === "" || [...candidate]
+        .every(
+          char =>
+            this.charset.allows(char),
+        );
     }
     catch (e) {
       throw new EvalError(

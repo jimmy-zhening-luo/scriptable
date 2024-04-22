@@ -10,6 +10,7 @@ class StringSplitter {
   ) {
     try {
       this.separator = separator;
+
       this.merged = StringSplitter._mergeSplit(
         unmerged,
         separator,
@@ -67,12 +68,18 @@ class StringSplitter {
           : mergeTo === "left"
             ? [
                 tokens
-                  .slice(0, limit - 1)
+                  .slice(
+                    0,
+                    limit - 1,
+                  )
                   .join(separator),
                 ...tokens.slice(limit - 1),
               ]
             : [
-                ...tokens.slice(0, limit - 1),
+                ...tokens.slice(
+                  0,
+                  limit - 1,
+                ),
                 tokens
                   .slice(limit - 1)
                   .join(separator),

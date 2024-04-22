@@ -13,19 +13,21 @@ class PathQuery extends pq_UrlComposite {
   ) {
     try {
       super();
-      this.parts
-        = pathOrPathQuery === undefined
-          ? [
-              new PathQuery.UrlPath(),
-              new PathQuery.UrlQuery(),
-            ]
-          : pathOrPathQuery instanceof PathQuery
-            ? pathOrPathQuery.parts
-            : [
-                new PathQuery.UrlPath(pathOrPathQuery),
-                new PathQuery.UrlQuery(query),
-              ];
+
+      this.parts = pathOrPathQuery === undefined
+        ? [
+            new PathQuery.UrlPath(),
+            new PathQuery.UrlQuery(),
+          ]
+        : pathOrPathQuery instanceof PathQuery
+          ? pathOrPathQuery.parts
+          : [
+              new PathQuery.UrlPath(pathOrPathQuery),
+              new PathQuery.UrlQuery(query),
+            ];
+
       this.path = this.parts[0];
+
       this.query = this.parts[1];
     }
     catch (e) {

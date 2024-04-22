@@ -10,19 +10,13 @@ export default [
     js,
     tsLint,
     tsLintParser,
-    [
-      "eslint.config.js",
-    ],
-    [
-      "src/**/*.ts",
-    ],
+    ["eslint.config.js"],
+    ["src/**/*.ts"],
     undefined,
     {
       "@typescript-eslint/parameter-properties": [
         "error",
-        {
-          prefer: "parameter-property",
-        },
+        { prefer: "parameter-property" },
       ],
     },
   ).configs,

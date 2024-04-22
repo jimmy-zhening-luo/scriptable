@@ -3,11 +3,12 @@ abstract class UrlPartRepeater {
 
   constructor(repeater: null | string) {
     try {
-      this.value
-        = repeater === null || repeater === ""
-          ? null
-          : this.parse(repeater);
-      if (this.value === "") this.value = null;
+      this.value = repeater === null || repeater === ""
+        ? null
+        : this.parse(repeater);
+
+      if (this.value === "")
+        this.value = null;
     }
     catch (e) {
       throw new Error(

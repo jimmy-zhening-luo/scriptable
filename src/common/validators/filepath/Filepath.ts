@@ -12,9 +12,9 @@ class Filepath {
     try {
       if (subpaths.length > 0) {
         const head:
-        | string
-        | string[]
-        | Filepath = subpaths.shift() ?? "";
+          | string
+          | string[]
+          | Filepath = subpaths.shift() ?? "";
 
         if (typeof head === "string" || Array.isArray(head)) {
           if (head.length > 0)
@@ -37,9 +37,7 @@ class Filepath {
 
   private static get StringSplitter(): typeof StringSplitter {
     try {
-      return importModule(
-        "./common/types/strings/StringSplitter",
-      ) as typeof StringSplitter;
+      return importModule("./common/types/strings/StringSplitter") as typeof StringSplitter;
     }
     catch (e) {
       throw new ReferenceError(
@@ -51,9 +49,7 @@ class Filepath {
 
   private static get FilepathPart(): typeof FilepathPart {
     try {
-      return importModule(
-        "part/FilepathPart",
-      ) as typeof FilepathPart;
+      return importModule("part/FilepathPart") as typeof FilepathPart;
     }
     catch (e) {
       throw new ReferenceError(
@@ -134,13 +130,9 @@ class Filepath {
     }
   }
 
-  public static join(
-    ...subpaths: ConstructorParameters<typeof Filepath>
-  ): string {
+  public static join(...subpaths: ConstructorParameters<typeof Filepath>): string {
     try {
-      return new Filepath(
-        ...subpaths,
-      )
+      return new Filepath(...subpaths)
         .toString();
     }
     catch (e) {
@@ -151,9 +143,7 @@ class Filepath {
     }
   }
 
-  private static _validate(
-    subpath: string | string[],
-  ): string[] {
+  private static _validate(subpath: string | string[]): string[] {
     try {
       return new Filepath
         .StringSplitter(
@@ -166,11 +156,12 @@ class Filepath {
           },
         )
         .merged
-        .map(part =>
-          new Filepath
-            .FilepathPart(
-              part,
-            ).value)
+        .map(
+          part =>
+            new Filepath
+              .FilepathPart(part)
+              .value,
+        )
         .filter(part =>
           part !== "");
     }
@@ -182,11 +173,12 @@ class Filepath {
     }
   }
 
-  public append(
-    ...subpaths: ConstructorParameters<typeof Filepath>
-  ): Filepath {
+  public append(...subpaths: ConstructorParameters<typeof Filepath>): Filepath {
     try {
-      return new Filepath(this, ...subpaths);
+      return new Filepath(
+        this,
+        ...subpaths,
+      );
     }
     catch (e) {
       throw new EvalError(
@@ -196,9 +188,7 @@ class Filepath {
     }
   }
 
-  public prepend(
-    root: string,
-  ): string {
+  public prepend(root: string): string {
     try {
       return this.isEmpty
         ? root
@@ -212,13 +202,9 @@ class Filepath {
     }
   }
 
-  public cd(
-    ...relPaths: ConstructorParameters<typeof Filepath>
-  ): this {
+  public cd(...relPaths: ConstructorParameters<typeof Filepath>): this {
     try {
-      const rel: Filepath = new Filepath(
-        ...relPaths,
-      );
+      const rel: Filepath = new Filepath(...relPaths);
 
       for (const node of rel._tree) {
         if (node === "..")

@@ -8,10 +8,9 @@ abstract class CharString {
   ) {
     try {
       this._raw = candidate;
+
       this.charset = new CharString
-        .CharSet(
-          ...charsets,
-        );
+        .CharSet(...charsets);
     }
     catch (e) {
       throw new EvalError(
@@ -35,9 +34,7 @@ abstract class CharString {
 
   public get value(): string {
     try {
-      if (!this._qualifies(
-        this._raw,
-      ))
+      if (!this._qualifies(this._raw))
         throw new TypeError(
           `Unqualified string: ${this._raw}`,
         );

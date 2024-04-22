@@ -42,9 +42,9 @@ declare interface GPTUserSetting extends SettingMap {
     temperature: number;
     p: number;
     model:
-    | "ultra"
-    | "high"
-    | "low";
+      | "ultra"
+      | "high"
+      | "low";
     preset: string;
   };
   presets: {

@@ -10,7 +10,13 @@ class ValidUrlRepeater extends r_ValidUrlPart {
     ...allowedChars: Array<ConstructorParameters<typeof ValidUrlPart>[4]>
   ) {
     try {
-      super(part, minLength, maxLength, {}, ...allowedChars);
+      super(
+        part,
+        minLength,
+        maxLength,
+        {},
+        ...allowedChars,
+      );
     }
     catch (e) {
       throw new Error(

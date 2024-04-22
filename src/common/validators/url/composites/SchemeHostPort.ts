@@ -12,25 +12,27 @@ class SchemeHostPort extends shp_UrlComposite {
     hostPort?: HostPort | [string | UrlHost, string | number | UrlPort],
   ) {
     super();
+
     try {
-      this.parts
-        = schemeOrSchemeHostPort === undefined
-          ? [
-              new SchemeHostPort.UrlScheme(),
-              new SchemeHostPort.HostPort(),
-            ]
-          : schemeOrSchemeHostPort instanceof SchemeHostPort
-            ? schemeOrSchemeHostPort.parts
-            : [
-                new SchemeHostPort.UrlScheme(schemeOrSchemeHostPort),
-                Array.isArray(hostPort)
-                  ? new SchemeHostPort.HostPort(
-                    new SchemeHostPort.HostPort.UrlHost(hostPort[0]),
-                    new SchemeHostPort.HostPort.UrlPort(hostPort[1]),
-                  )
-                  : new SchemeHostPort.HostPort(hostPort),
-              ];
+      this.parts = schemeOrSchemeHostPort === undefined
+        ? [
+            new SchemeHostPort.UrlScheme(),
+            new SchemeHostPort.HostPort(),
+          ]
+        : schemeOrSchemeHostPort instanceof SchemeHostPort
+          ? schemeOrSchemeHostPort.parts
+          : [
+              new SchemeHostPort.UrlScheme(schemeOrSchemeHostPort),
+              Array.isArray(hostPort)
+                ? new SchemeHostPort.HostPort(
+                  new SchemeHostPort.HostPort.UrlHost(hostPort[0]),
+                  new SchemeHostPort.HostPort.UrlPort(hostPort[1]),
+                )
+                : new SchemeHostPort.HostPort(hostPort),
+            ];
+
       this.scheme = this.parts[0];
+
       this.hostPort = this.parts[1];
     }
     catch (e) {

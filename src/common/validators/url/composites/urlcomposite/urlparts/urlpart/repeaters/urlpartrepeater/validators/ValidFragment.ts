@@ -9,9 +9,7 @@ class ValidFragment extends fr_ValidUrlPart {
         fragment,
         1,
         Infinity,
-        {
-          trimLeading: [...ValidFragment.CharSet.hash],
-        },
+        { trimLeading: [...ValidFragment.CharSet.hash] },
         ValidFragment.CharSet.pchar,
         ValidFragment.CharSet.slash,
         ValidFragment.CharSet.question,

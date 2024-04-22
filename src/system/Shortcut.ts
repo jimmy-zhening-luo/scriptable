@@ -1,6 +1,4 @@
-const sh_App: typeof App = importModule(
-  "app/App",
-) as typeof App;
+const sh_App: typeof App = importModule("app/App") as typeof App;
 
 abstract class Shortcut<
   I extends ShortcutInput = null,
@@ -25,7 +23,8 @@ abstract class Shortcut<
             : null
           : args.shortcutParameter;
 
-        this._input = flat === null
+        this._input =
+          flat === null
           || flat === undefined
           || flat === ""
           || flat === 0
@@ -33,10 +32,10 @@ abstract class Shortcut<
           || typeof flat === "number" && !Number.isFinite(flat)
           || flat === false
           || Array.isArray(flat)
-          ? null
-          : typeof flat === "number" || typeof flat === "boolean"
-            ? String(flat)
-            : flat as NonNullable<I>;
+            ? null
+            : typeof flat === "number" || typeof flat === "boolean"
+              ? String(flat)
+              : flat as NonNullable<I>;
       }
 
       return this._input;
@@ -68,7 +67,10 @@ abstract class Shortcut<
       return this.input === null
         || typeof this.input === "string"
         || Object.values(this.input)
-          .every(val => val === undefined || val === null || val === "")
+          .every(
+            val =>
+              val === undefined || val === null || val === "",
+          )
         ? null
         : this.input;
     }
@@ -80,9 +82,7 @@ abstract class Shortcut<
     }
   }
 
-  protected setOutput(
-    runtimeOutput: Nullable<O>,
-  ): Nullable<O> {
+  protected setOutput(runtimeOutput: Nullable<O>): Nullable<O> {
     try {
       Script.setShortcutOutput(runtimeOutput);
 

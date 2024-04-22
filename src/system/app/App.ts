@@ -4,9 +4,7 @@ abstract class App<
   O extends Nullable<Definite> = null,
   C extends Config = Empty,
 > {
-  constructor(
-    protected readonly _class: Class,
-  ) {}
+  constructor(protected readonly _class: Class) {}
 
   protected static get Setting(): typeof Setting {
     try {
@@ -85,6 +83,7 @@ abstract class App<
     catch (e) {
       if (e !== null && typeof e === "object" && "message" in e) {
         this.handleError(e as Error);
+
         throw new Error(
           `TOP`,
           { cause: e },
@@ -98,9 +97,7 @@ abstract class App<
     }
   }
 
-  public read(
-    subpath?: string,
-  ): ReturnType<Storage["read"]> {
+  public read(subpath?: string): ReturnType<Storage["read"]> {
     try {
       return this
         .storage(subpath)
@@ -133,9 +130,7 @@ abstract class App<
     }
   }
 
-  protected storage(
-    subpath?: string,
-  ): Storage {
+  protected storage(subpath?: string): Storage {
     try {
       return new App.Storage(
         this._class,
@@ -151,45 +146,32 @@ abstract class App<
     }
   }
 
-  protected handleError(
-    e: Error,
-  ): void {
+  protected handleError(e: Error): void {
     try {
-      const stack: string[] = [
-        String(e),
-      ];
+      const stack: string[] = [String(e)];
 
       for (let i: Error = e; "cause" in i && typeof i.cause === "object" && i.cause !== null && "message" in i.cause; i = i.cause as Error)
-        stack.push(
-          String(
-            i.cause as Error,
-          ),
-        );
+        stack.push(String(i.cause as Error));
 
       const messages: string[] = stack
         .reverse();
 
       console.error(
         messages
-          .join(
-            "\n",
-          ),
+          .join("\n"),
       );
 
       const n: Notification = new Notification();
 
-      n.title
-        = messages
-          .pop() ?? "";
-      n.body = messages
-        .join(
-          "\n",
-        );
+      n.title = messages.pop() ?? "";
+
+      n.body = messages.join("\n");
+
       n.sound = "failure";
-      n.schedule()
-        .catch(
-          n_e => { throw n_e; },
-        );
+
+      n
+        .schedule()
+        .catch(n_e => { throw n_e; });
     }
     catch (e) {
       throw new EvalError(

@@ -5,15 +5,16 @@ const qu_UrlPart: typeof UrlPart = importModule(
 class UrlQuery extends qu_UrlPart {
   constructor(
     query:
-    | string
-    | UrlQuery
-    | Map<string, string>
-    | Record<string, string>
-    | [string, string]
-    | Array<[string, string]> = "",
+      | string
+      | UrlQuery
+      | Map<string, string>
+      | Record<string, string>
+      | [string, string]
+      | Array<[string, string]> = "",
   ) {
     try {
-      if (typeof query === "string" || query instanceof UrlQuery) super(query);
+      if (typeof query === "string" || query instanceof UrlQuery)
+        super(query);
       else if (Array.isArray(query)) {
         if (
           query.length === 2
@@ -21,16 +22,20 @@ class UrlQuery extends qu_UrlPart {
           && typeof query[1] === "string"
         )
           super(`${query[0]}=${query[1]}`);
-        else super(
-          UrlQuery.tuplesToQueryString(query as Array<[string, string]>),
-        );
+        else
+          super(
+            UrlQuery.tuplesToQueryString(query as Array<[string, string]>),
+          );
       }
       else {
         super(UrlQuery.mapToQueryString(query));
       }
     }
     catch (e) {
-      throw new Error(`UrlQuery: constructor: error creating UrlQuery: \n${e as string}`);
+      throw new EvalError(
+        `UrlQuery: ctor`,
+        { cause: e },
+      );
     }
   }
 
@@ -102,15 +107,31 @@ class UrlQuery extends qu_UrlPart {
       return (
         query
           .split("&")
-          .filter(keyValueString => keyValueString !== "")
-          .map(keyValueString => keyValueString.split("="))
-          .filter(keyValueTuple => keyValueTuple.length >= 2)
-          .map(keyValueTuple => [
-            keyValueTuple[0],
-            keyValueTuple.slice(1)
-              .join("="),
-          ]) as Array<[string, string]>
-      ).filter(tuple => tuple[0] !== "" && tuple[1] !== "");
+          .filter(
+            keyValueString =>
+              keyValueString !== "",
+          )
+          .map(
+            keyValueString =>
+              keyValueString.split("="),
+          )
+          .filter(
+            keyValueTuple =>
+              keyValueTuple.length >= 2,
+          )
+          .map(
+            keyValueTuple =>
+              [
+                keyValueTuple[0],
+                keyValueTuple.slice(1)
+                  .join("="),
+              ],
+          ) as Array<[string, string]>
+      )
+        .filter(
+          tuple =>
+            tuple[0] !== "" && tuple[1] !== "",
+        );
     }
     catch (e) {
       throw new Error(
@@ -120,12 +141,14 @@ class UrlQuery extends qu_UrlPart {
     }
   }
 
-  public static tuplesToMap(
-    tuples: Array<[string, string]>,
-  ): Map<string, string> {
+  public static tuplesToMap(tuples: Array<[string, string]>): Map<string, string> {
     try {
       return new Map(
-        tuples.filter(tuple => tuple[0] !== "" && tuple[1] !== ""),
+        tuples
+          .filter(
+            tuple =>
+              tuple[0] !== "" && tuple[1] !== "",
+          ),
       );
     }
     catch (e) {
@@ -146,7 +169,9 @@ class UrlQuery extends qu_UrlPart {
   }
 
   public static mapToTuples(
-    record: Map<string, string> | Record<string, string>,
+    record:
+      | Map<string, string>
+      | Record<string, string>,
   ): Array<[string, string]> {
     try {
       return Array.from(
@@ -154,7 +179,10 @@ class UrlQuery extends qu_UrlPart {
           ? record.entries()
           : Object.entries(record),
       )
-        .filter(tuple => tuple[0] !== "" && tuple[1] !== "");
+        .filter(
+          tuple =>
+            tuple[0] !== "" && tuple[1] !== "",
+        );
     }
     catch (e) {
       throw new Error(`UrlQuery: mapToTuples: error converting to tuples: \n${e as string}`);
@@ -164,8 +192,14 @@ class UrlQuery extends qu_UrlPart {
   public static tuplesToQueryString(tuples: Array<[string, string]>): string {
     try {
       return tuples
-        .filter(tuple => tuple[0] !== "" && tuple[1] !== "")
-        .map(keyValueTuple => keyValueTuple.join("="))
+        .filter(
+          tuple =>
+            tuple[0] !== "" && tuple[1] !== "",
+        )
+        .map(
+          keyValueTuple =>
+            keyValueTuple.join("="),
+        )
         .join("&");
     }
     catch (e) {
@@ -176,9 +210,7 @@ class UrlQuery extends qu_UrlPart {
     }
   }
 
-  public static mapToQueryString(
-    record: Map<string, string> | Record<string, string>,
-  ): string {
+  public static mapToQueryString(record: Map<string, string> | Record<string, string>): string {
     try {
       return UrlQuery.tuplesToQueryString(UrlQuery.mapToTuples(record));
     }
@@ -223,17 +255,35 @@ class UrlQuery extends qu_UrlPart {
             _value,
           ]);
       }
-      else newParamTuples.push(...new UrlQuery(_keyOrKeyValue).queryTuples);
+      else
+        newParamTuples
+          .push(
+            ...new UrlQuery(
+              _keyOrKeyValue,
+            )
+              .queryTuples,
+          );
+
       newParamTuples
-        .filter(tuple => tuple[0] !== "")
-        .forEach(([
-          key,
-          value,
-        ]) => {
-          value === ""
-            ? queryMapCopy.delete(key)
-            : queryMapCopy.set(key, value);
-        });
+        .filter(
+          tuple =>
+            tuple[0] !== "",
+        )
+        .forEach(
+          ([
+            key,
+            value,
+          ]) => {
+            value === ""
+              ? queryMapCopy
+                .delete(key)
+              : queryMapCopy
+                .set(
+                  key,
+                  value,
+                );
+          },
+        );
 
       return new UrlQuery(queryMapCopy);
     }
@@ -247,10 +297,21 @@ class UrlQuery extends qu_UrlPart {
       let newQuery: UrlQuery = new UrlQuery(this);
 
       Array.isArray(keys)
-        ? keys.forEach(key => {
-          newQuery = newQuery.addParam(key, "");
-        })
-        : newQuery = newQuery.addParam(keys, "");
+        ? keys
+          .forEach(
+            key => {
+              newQuery = newQuery
+                .addParam(
+                  key,
+                  "",
+                );
+            },
+          )
+        : newQuery = newQuery
+          .addParam(
+            keys,
+            "",
+          );
 
       return newQuery;
     }
@@ -280,22 +341,39 @@ class UrlQuery extends qu_UrlPart {
   protected parse(query: string): null | string {
     try {
       query = query.trim();
+
       query = query.startsWith("?")
         ? query.slice(1)
         : query;
 
       return query === ""
         ? null
-        : UrlQuery.mapToQueryString(UrlQuery.queryStringToMap(query))
+        : UrlQuery
+          .mapToQueryString(UrlQuery.queryStringToMap(query))
           .split("&")
-          .filter(keyValueString => keyValueString !== "")
-          .map(keyValueString => new UrlQuery.QueryRepeater(keyValueString))
-          .filter(queryRepeater => queryRepeater.isValid)
-          .map(queryRepeater => queryRepeater.toString())
+          .filter(
+            keyValueString =>
+              keyValueString !== "",
+          )
+          .map(
+            keyValueString =>
+              new UrlQuery.QueryRepeater(keyValueString),
+          )
+          .filter(
+            queryRepeater =>
+              queryRepeater.isValid,
+          )
+          .map(
+            queryRepeater =>
+              queryRepeater.toString(),
+          )
           .join("&");
     }
     catch (e) {
-      throw new Error(`UrlQuery: parse: error parsing UrlQuery: \n${e as string}`);
+      throw new EvalError(
+        `UrlQuery: parse`,
+        { cause: e },
+      );
     }
   }
 }

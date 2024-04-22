@@ -4,14 +4,12 @@
 "use strict";
 
 namespace GPT {
-  const shortcut: typeof Shortcut = importModule(
-    "system/Shortcut",
-  ) as typeof Shortcut;
+  const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class GPT extends shortcut<
-    GPTInput
-      | { system: string; user: string }
-      | string,
+    | GPTInput
+    | { system: string; user: string }
+    | string,
     GPTOutput,
     GPTSetting
   > {
@@ -20,7 +18,6 @@ namespace GPT {
         const s: GPTSetting = this
           .setting
           .unmerged;
-
         const __i: typeof GPT.prototype.input = this.input ?? "";
         const _i: GPTInput = typeof __i === "string"
           ? { prompt: __i }
@@ -40,23 +37,22 @@ namespace GPT {
                 : s.user.default.token,
           temperature:
             "temperature" in _i
-              && Number.isFinite(_i.temperature)
-              && _i.temperature >= s.app.limit.temperature.min
-              && _i.temperature <= s.app.limit.temperature.max
+            && Number.isFinite(_i.temperature)
+            && _i.temperature >= s.app.limit.temperature.min
+            && _i.temperature <= s.app.limit.temperature.max
               ? _i.temperature
               : s.user.default.temperature,
           p:
             "p" in _i
-              && Number.isFinite(_i.p)
-              && _i.p >= s.app.limit.p.min
-              && _i.p <= s.app.limit.p.max
+            && Number.isFinite(_i.p)
+            && _i.p >= s.app.limit.p.min
+            && _i.p <= s.app.limit.p.max
               ? _i.p
               : s.user.default.p,
           preset: "preset" in _i && _i.preset in s.user.presets
             ? _i.preset
             : s.user.default.preset,
         };
-
         const preset: Nullable<Required<GPTPreset>> = typeof i.prompt === "string"
           ? {
               system: s.user.presets[i.preset]?.system ?? "",
@@ -65,13 +61,14 @@ namespace GPT {
           : null;
         const message: GPTOutput["body"]["message"] = typeof i.prompt === "string"
           ? !preset || preset.system === ""
-              ? {
-                  user: i.prompt,
-                }
+              ? { user: i.prompt }
               : {
                   system: preset.system,
                   user: preset.user.includes(s.app.presetTag)
-                    ? preset.user.replace(s.app.presetTag, i.prompt)
+                    ? preset.user.replace(
+                      s.app.presetTag,
+                      i.prompt,
+                    )
                     : i.prompt,
                 }
           : i.prompt;

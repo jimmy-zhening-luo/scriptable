@@ -13,9 +13,7 @@ class UrlValidators {
 
   public static get ValidUrlRepeater(): typeof ValidUrlRepeater {
     try {
-      return importModule(
-        "validurlpart/ValidUrlRepeater",
-      ) as typeof ValidUrlRepeater;
+      return importModule("validurlpart/ValidUrlRepeater") as typeof ValidUrlRepeater;
     }
     catch (e) {
       throw new ReferenceError(
@@ -59,15 +57,9 @@ class UrlValidators {
     try {
       return {
         Repeaters: {
-          IPv4: importModule(
-            "ValidHostIPv4Repeater",
-          ) as typeof ValidHostIPv4Repeater,
-          IPv6: importModule(
-            "ValidHostIPv6Repeater",
-          ) as typeof ValidHostIPv6Repeater,
-          RegName: importModule(
-            "ValidHostRegNameRepeater",
-          ) as typeof ValidHostRegNameRepeater,
+          IPv4: importModule("ValidHostIPv4Repeater") as typeof ValidHostIPv4Repeater,
+          IPv6: importModule("ValidHostIPv6Repeater") as typeof ValidHostIPv6Repeater,
+          RegName: importModule("ValidHostRegNameRepeater") as typeof ValidHostRegNameRepeater,
         },
       };
     }
@@ -97,11 +89,7 @@ class UrlValidators {
     };
   } {
     try {
-      return {
-        Repeaters: {
-          Path: importModule("ValidPathRepeater") as typeof ValidPathRepeater,
-        },
-      };
+      return { Repeaters: { Path: importModule("ValidPathRepeater") as typeof ValidPathRepeater } };
     }
     catch (e) {
       throw new ReferenceError(
@@ -117,13 +105,7 @@ class UrlValidators {
     };
   } {
     try {
-      return {
-        Repeaters: {
-          Query: importModule(
-            "ValidQueryRepeater",
-          ) as typeof ValidQueryRepeater,
-        },
-      };
+      return { Repeaters: { Query: importModule("ValidQueryRepeater") as typeof ValidQueryRepeater } };
     }
     catch (e) {
       throw new ReferenceError(

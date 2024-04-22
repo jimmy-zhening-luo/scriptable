@@ -7,6 +7,7 @@ class Bookmark {
     try {
       if (bookmark instanceof Bookmark) {
         this.alias = bookmark.alias;
+
         this.path = bookmark.path;
       }
       else {
@@ -26,9 +27,11 @@ class Bookmark {
           );
         else {
           this.alias = alias;
+
           this.path = FileManager
             .iCloud()
             .bookmarkedPath(alias);
+
           if (this.path === "")
             throw new ReferenceError(
               `Unexpected: bookmark with alias '${alias}' resolved to empty path even though it exists in Scriptable`,
