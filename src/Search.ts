@@ -18,7 +18,10 @@ namespace Search {
           app,
           user,
         }: SearchSettings = this.setting.unmerged;
-        const TAG: stringful = stringful(app.chat);
+        const TAG: stringful = stringful(
+          app.tag,
+          "app.tag",
+        );
         const CHAT: string = app.chat;
         const TRANSLATE: string = app.translate;
         const MATH: string[] = app.math ?? [];
