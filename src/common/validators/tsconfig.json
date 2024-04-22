@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../types/strings/**/*"
+    "../types/**/*"
   ],
   "references": [
     {
@@ -12,7 +12,7 @@
       "path": "url/tsconfig.json"
     },
     {
-      "path": "../types/strings/tsconfig.json"
+      "path": "../types/tsconfig.json"
     }
   ],
   "compilerOptions": {
