@@ -36,13 +36,13 @@ class UrlPath extends pa_UrlPart {
     }
   }
 
-  public static get StringSplitter(): typeof StringSplitter {
+  public static get Splitter(): typeof Splitter {
     try {
-      return importModule("./common/types/strings/StringSplitter") as typeof StringSplitter;
+      return importModule("./common/types/strings/Splitter") as typeof Splitter;
     }
     catch (e) {
       throw new ReferenceError(
-        `UrlPath: error loading module`,
+        `UrlPath: import Splitter`,
         { cause: e },
       );
     }
@@ -68,7 +68,7 @@ class UrlPath extends pa_UrlPart {
 
   protected parse(path: string): null | string {
     try {
-      const split: string[] = new UrlPath.StringSplitter(
+      const split: string[] = new UrlPath.Splitter(
         path,
         ...UrlPath.UrlValidators.CharSet.slash,
         {

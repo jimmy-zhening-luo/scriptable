@@ -1,16 +1,16 @@
-class StringSplitter {
+class Splitter {
   public readonly separator: string;
   public readonly merged: string[];
 
   constructor(
     unmerged: string | string[],
     separator: string = "",
-    splitOptions: Parameters<typeof StringSplitter._mergeSplit>[2] = {},
-    mergeOptions: Parameters<typeof StringSplitter._mergeSplit>[3] = {},
+    splitOptions: Parameters<typeof Splitter._mergeSplit>[2] = {},
+    mergeOptions: Parameters<typeof Splitter._mergeSplit>[3] = {},
   ) {
     try {
       this.separator = separator;
-      this.merged = StringSplitter._mergeSplit(
+      this.merged = Splitter._mergeSplit(
         unmerged,
         separator,
         splitOptions,
@@ -19,7 +19,7 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: ctor`,
+        `Splitter: ctor`,
         { cause: e },
       );
     }
@@ -31,7 +31,7 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: length`,
+        `Splitter: length`,
         { cause: e },
       );
     }
@@ -40,7 +40,7 @@ class StringSplitter {
   private static _mergeSplit(
     unmerged: string | string[],
     separator: string,
-    splitOptions: Parameters<typeof StringSplitter.__split>[2] = {},
+    splitOptions: Parameters<typeof Splitter.__split>[2] = {},
     {
       limit = Infinity,
       mergeTo = "right",
@@ -54,7 +54,7 @@ class StringSplitter {
         ? Infinity
         : limit;
 
-      const tokens: string[] = StringSplitter.__split(
+      const tokens: string[] = Splitter.__split(
         unmerged,
         separator,
         splitOptions,
@@ -86,7 +86,7 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: _mergeSplit`,
+        `Splitter: _mergeSplit`,
         { cause: e },
       );
     }
@@ -129,7 +129,7 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: __split`,
+        `Splitter: __split`,
         { cause: e },
       );
     }
@@ -141,11 +141,11 @@ class StringSplitter {
     }
     catch (e) {
       throw new EvalError(
-        `StringSplitter: toString`,
+        `Splitter: toString`,
         { cause: e },
       );
     }
   }
 }
 
-module.exports = StringSplitter;
+module.exports = Splitter;

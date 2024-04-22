@@ -35,13 +35,13 @@ class Filepath {
     }
   }
 
-  private static get StringSplitter(): typeof StringSplitter {
+  private static get Splitter(): typeof Splitter {
     try {
-      return importModule("./common/types/strings/StringSplitter") as typeof StringSplitter;
+      return importModule("./common/types/strings/Splitter") as typeof Splitter;
     }
     catch (e) {
       throw new ReferenceError(
-        `Filepath: import StringSplitter`,
+        `Filepath: import Splitter`,
         { cause: e },
       );
     }
@@ -146,7 +146,7 @@ class Filepath {
   private static _validate(subpath: string | string[]): string[] {
     try {
       return new Filepath
-        .StringSplitter(
+        .Splitter(
           subpath,
           "/",
           {
