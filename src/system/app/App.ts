@@ -2,7 +2,7 @@ abstract class App<
   Class extends string,
   I extends Nullable<Definite> = null,
   O extends Nullable<Definite> = null,
-  C extends Config = Empty,
+  C extends Config = NullRecord,
 > {
   constructor(protected readonly _class: Class) {}
 
