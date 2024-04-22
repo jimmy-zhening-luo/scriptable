@@ -1,6 +1,6 @@
 {
   "name": "scriptable-wild",
-  "version": "6.7.0-alpha.9",
+  "version": "6.7.0-alpha.10",
   "description": "Building block classes and scripts to do complex automation on iOS.",
   "type": "module",
   "main": "",
