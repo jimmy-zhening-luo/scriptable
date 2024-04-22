@@ -150,8 +150,8 @@ abstract class App<
     try {
       const stack: string[] = [String(e)];
 
-      for (let i: Error = e; "cause" in i && typeof i.cause === "object" && i.cause !== null && "message" in i.cause; i = i.cause as Error)
-        stack.push(String(i.cause as Error));
+      for (let ec: Error = e; "cause" in ec; ec = ec.cause as Error)
+        stack.push(String(ec.cause));
 
       const messages: string[] = stack
         .reverse();
@@ -163,7 +163,10 @@ abstract class App<
 
       const n: Notification = new Notification();
 
-      n.title = messages.pop() ?? "";      n.body = messages.join("\n");      n.sound = "failure";      n
+      n.title = messages.pop() ?? "";
+      n.body = messages.join("\n");
+      n.sound = "failure";
+      n
         .schedule()
         .catch(n_e => { throw n_e; });
     }
