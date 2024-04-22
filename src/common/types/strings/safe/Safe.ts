@@ -1,16 +1,16 @@
 function safe<S extends string>(
-  s: string,
+  string: string,
   rejector: rejector = (s: string): boolean =>
     s.length === 0,
   error: string = "",
 ): Brand<S> {
-  if (rejector(s)) {
+  if (rejector(string)) {
     throw new TypeError(
       `Safe: ${error}`,
     );
   }
 
-  return s as Brand<S>;
+  return string as Brand<S>;
 }
 
 module.exports = safe;
