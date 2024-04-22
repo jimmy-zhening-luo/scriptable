@@ -1,5 +1,5 @@
 abstract class UrlPart {
-  public readonly _nominalType: string = "UrlPart";
+  public readonly name: string = "UrlPart";
   public readonly value: null | string;
 
   constructor(part: string | UrlPart = "") {
@@ -58,8 +58,8 @@ abstract class UrlPart {
       return (
         instance !== null
         && typeof instance === "object"
-        && "_nominalType" in instance
-        && (instance as UrlPart)._nominalType === "UrlPart"
+        && "name" in instance
+        && (instance as UrlPart).name === "UrlPart"
       );
     }
     catch (e) {

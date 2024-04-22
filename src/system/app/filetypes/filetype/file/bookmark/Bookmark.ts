@@ -1,12 +1,13 @@
 class Bookmark {
-  public readonly _nominalType: string = "Bookmark";
+  public readonly name: string = "Bookmark";
   public readonly alias: string;
   public readonly path: string;
 
   constructor(bookmark: string | Bookmark) {
     try {
       if (bookmark instanceof Bookmark) {
-        this.alias = bookmark.alias;        this.path = bookmark.path;
+        this.alias = bookmark.alias;
+        this.path = bookmark.path;
       }
       else {
         const alias: string = bookmark.trim();
@@ -24,7 +25,8 @@ class Bookmark {
             `no bookmark exists in Scriptable with alias: '${alias}'`,
           );
         else {
-          this.alias = alias;          this.path = FileManager
+          this.alias = alias;
+          this.path = FileManager
             .iCloud()
             .bookmarkedPath(alias);
 
@@ -48,8 +50,8 @@ class Bookmark {
       return (
         instance !== null
         && typeof instance === "object"
-        && "_nominalType" in instance
-        && instance._nominalType === "Bookmark"
+        && "name" in instance
+        && instance.name === "Bookmark"
       );
     }
     catch (e) {

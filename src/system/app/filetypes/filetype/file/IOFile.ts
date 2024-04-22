@@ -1,5 +1,5 @@
 class IOFile {
-  public readonly _nominalType: string = "IOFile";
+  public readonly name: string = "IOFile";
   private readonly _root: string;
   private _subpath: Filepath;
 
@@ -20,7 +20,8 @@ class IOFile {
             : root.file.path
           : new IOFile
             .Filepath(root)
-            .toString();      this._subpath = new IOFile
+            .toString();
+      this._subpath = new IOFile
         .Filepath(...subpaths);
     }
     catch (e) {
@@ -246,8 +247,8 @@ class IOFile {
       return (
         instance !== null
         && typeof instance === "object"
-        && "_nominalType" in instance
-        && (instance as IOFile)._nominalType === "IOFile"
+        && "name" in instance
+        && (instance as IOFile).name === "IOFile"
       );
     }
     catch (e) {
@@ -372,13 +373,16 @@ class IOFile {
           const confirm: Alert = new Alert();
 
           confirm
-            .message = `Are you sure you want to delete this file or folder (including all descendants)? Path: ${this.path}`;          confirm
+            .message = `Are you sure you want to delete this file or folder (including all descendants)? Path: ${this.path}`;
+          confirm
             .addDestructiveAction(
               "Yes, DELETE this file",
-            );          confirm
+            );
+          confirm
             .addCancelAction(
               "Cancel",
-            );          await confirm
+            );
+          await confirm
             .present()
             .then(userChoice => {
               userChoice === 0

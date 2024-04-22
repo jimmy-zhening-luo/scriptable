@@ -1,5 +1,5 @@
 class Filepath {
-  public readonly _nominalType: string = "Filepath";
+  public readonly name: string = "Filepath";
   private readonly _tree: string[] = [];
 
   constructor(
@@ -118,8 +118,8 @@ class Filepath {
       return (
         instance !== null
         && typeof instance === "object"
-        && "_nominalType" in instance
-        && (instance as Filepath)._nominalType === "Filepath"
+        && "name" in instance
+        && (instance as Filepath).name === "Filepath"
       );
     }
     catch (e) {
