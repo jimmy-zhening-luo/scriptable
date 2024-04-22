@@ -166,7 +166,8 @@ namespace Search {
             );
         }
 
-        this.key = _key;        this.terms = [...tokens];
+        this.key = _key;
+        this.terms = [...tokens];
       }
       catch (e) {
         throw new EvalError(
@@ -383,15 +384,36 @@ namespace Search {
   }
 
   abstract class Engine {
+    public readonly app: string;
     public readonly keys: string[];
 
-    constructor(keys: string | string[]) {
+    constructor(
+      app: string,
+      keys: string | string[],
+    ) {
       try {
+        this.app = app;
         this.keys = [keys]
           .flat()
           .map(
             key =>
               key.toLowerCase(),
+          )
+          .filter(
+            key =>
+              key !== "",
+          );
+
+        if (this.app === "")
+          throw new SyntaxError(
+            `engine app name is empty`,
+          );
+        else if (
+          this.keys
+            .length === 0
+        )
+          throw new SyntaxError(
+            `engine keys is empty`,
           );
       }
       catch (e) {
@@ -402,40 +424,68 @@ namespace Search {
       }
     }
 
-    public abstract parseQueryToAction(query: Query): SearchOutput;
+    public parseQueryToAction(query: Query): SearchOutput {
+      try {
+        return {
+          app: this.app,
+          actions: this.transform(query),
+          ...this.options(query),
+        };
+      }
+      catch (e) {
+        throw new EvalError(
+          `Engine: parseQueryToAction`,
+          { cause: e },
+        );
+      }
+    }
+
+    protected transform(query: Query): string | string[] {
+      try {
+        return query.natural;
+      }
+      catch (e) {
+        throw new EvalError(
+          `Engine: transform`,
+          { cause: e },
+        );
+      }
+    }
+
+    protected abstract options(query: Query): Omit<SearchOutput, "app" | "actions">;
   }
 
   class BrowserEngine extends Engine {
-    public readonly url: string[];
+    public readonly urls: string[];
     public readonly tag: string;
     public readonly browser: BrowserAction;
     public readonly encode: BrowserEncode;
 
     constructor(
       keys: string | string[],
-      url: string | string[],
-      tag: string,
+      urls: string | string[],
+      TAG: string,
       browser: BrowserAction = "default",
       encode: BrowserEncode = "+",
     ) {
       try {
-        super(keys);        this.tag = tag;        this.browser = browser;        this.encode = encode;        this.url = [url]
-          .flat();
-
-        if (this.url.length === 0)
-          throw new SyntaxError(
-            `engine url[] is empty`,
+        super(
+          "safari",
+          keys
+        );
+        this.tag = TAG;
+        this.browser = browser;
+        this.encode = encode;
+        this.urls = [urls]
+          .flat()
+          .filter(
+            url =>
+              url !== "",
           );
-        else if (
-          this
-            .url
-            .every(
-              u =>
-                u === "",
-            )
-        )
+
+        if (this.urls.length === 0)
           throw new SyntaxError(
-            `engine url[""] contains all empty strings`,
+            `engine urls[] is empty`,
           );
       }
       catch (e) {
@@ -446,35 +496,52 @@ namespace Search {
       }
     }
 
-    public parseQueryToAction(query: Query): SearchOutput {
+    protected override transform(query: Query): string[] {
       try {
-        const urlEncodedQueryTerms: string = query
+        const OP: string = "+";
+        const ENCODED_OP: string = "%2B";
+        const encodedQuery: string = query
           .terms
-          .map(term =>
-            term
-              .split("+")
-              .map(operand =>
-                encodeURI(operand))
-              .join("%2B"))
+          .map(
+            term =>
+              term
+                .split(OP)
+                .map(
+                  operand =>
+                    encodeURI(operand),
+                )
+                .join(ENCODED_OP),
+          )
           .join(this.encode);
-        const actions: string[] = this
-          .url
-          .map(u =>
-            u.replace(
-              this.tag,
-              urlEncodedQueryTerms,
-            ));
 
+        return this
+          .urls
+          .map(
+            url =>
+              url.replace(
+                this.tag,
+                encodedQuery,
+              ),
+          );
+      }
+      catch (e) {
+        throw new EvalError(
+          `BrowserEngine: transform`,
+          { cause: e },
+        );
+      }
+    }
+
+    protected options(query: Query): Required<Pick<SearchOutput, "natural" | "browser">> {
+      try {
         return {
-          app: "safari",
-          actions: actions,
           natural: query.natural,
           browser: this.browser,
         };
       }
       catch (e) {
         throw new EvalError(
-          `BrowserEngine: parseQueryToAction`,
+          `BrowserEngine: options`,
           { cause: e },
         );
       }
@@ -482,19 +549,15 @@ namespace Search {
   }
 
   class AppEngine extends Engine {
-    public readonly app: string;
-
     constructor(
       keys: string | string[],
       app: string,
     ) {
       try {
-        super(keys);        this.app = app;
-
-        if (this.app === "")
-          throw new SyntaxError(
-            `engine app name is empty`,
-          );
+        super(
+          app,
+          keys,
+        );
       }
       catch (e) {
         throw new EvalError(
@@ -504,16 +567,13 @@ namespace Search {
       }
     }
 
-    public parseQueryToAction(query: Query): SearchOutput {
+    protected options(): Record<string, never> {
       try {
-        return {
-          app: this.app,
-          actions: query.natural,
-        };
+        return {};
       }
       catch (e) {
         throw new EvalError(
-          `AppEngine: parseQueryToAction`,
+          `AppEngine: options`,
           { cause: e },
         );
       }
@@ -528,7 +588,11 @@ namespace Search {
       native: string,
     ) {
       try {
-        super(keys);        this.native = native;
+        super(
+          "native",
+          keys,
+        );
+        this.native = native;
 
         if (this.native === "")
           throw new SyntaxError(
@@ -543,17 +607,15 @@ namespace Search {
       }
     }
 
-    public parseQueryToAction(query: Query): SearchOutput {
+    protected options(): Required<Pick<SearchOutput, "native">> {
       try {
         return {
-          app: "native",
-          actions: query.natural,
           "native": this.native,
         };
       }
       catch (e) {
         throw new EvalError(
-          `NativeEngine: parseQueryToAction`,
+          `NativeEngine: options`,
           { cause: e },
         );
       }
@@ -570,7 +632,12 @@ namespace Search {
       output: boolean = false,
     ) {
       try {
-        super(keys);        this.shortcut = shortcut;        this.output = output;
+        super(
+          "shortcut",
+          keys,
+        );
+        this.shortcut = shortcut;
+        this.output = output;
 
         if (this.shortcut === "")
           throw new SyntaxError(
@@ -585,18 +652,16 @@ namespace Search {
       }
     }
 
-    public parseQueryToAction(query: Query): SearchOutput {
+    protected options(): Required<Pick<SearchOutput, "shortcut" | "output">> {
       try {
         return {
-          app: "shortcut",
-          actions: query.natural,
           shortcut: this.shortcut,
           output: this.output,
         };
       }
       catch (e) {
         throw new EvalError(
-          `ShortcutEngine: parseQueryToAction`,
+          `ShortcutEngine: options`,
           { cause: e },
         );
       }
