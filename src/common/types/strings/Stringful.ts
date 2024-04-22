@@ -1,4 +1,4 @@
-const f_safe: typeof safe = importModule("brand/Safe") as typeof safe;
+const f_safe: typeof safe = importModule("safe/Safe") as typeof safe;
 
 declare type stringful = Brand<"stringful">;
 
