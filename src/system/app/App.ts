@@ -123,11 +123,15 @@ abstract class App<
   public write(
     data: string,
     subpath?: string,
+    overwrite?: Parameters<Storage["write"]>[1],
   ): this {
     try {
       this
         .storage(subpath)
-        .write(data);
+        .write(
+          data,
+          overwrite,
+        );
 
       return this;
     }
