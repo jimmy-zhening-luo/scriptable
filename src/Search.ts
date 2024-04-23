@@ -5,6 +5,7 @@
 
 namespace Search {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
+  const stringful: typeof Stringful = importModule("common/types/strings/Stringful") as typeof Stringful;
 
   export class Search extends shortcut<
     SearchInput,
@@ -13,7 +14,6 @@ namespace Search {
   > {
     public runtime(): Nullable<SearchOutput> {
       try {
-        const stringful: typeof Stringful = importModule("common/types/strings/Stringful") as typeof Stringful;
         const {
           app,
           user,
