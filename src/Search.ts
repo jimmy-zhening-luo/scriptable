@@ -95,8 +95,8 @@ namespace Search {
   }
 
   class Query {
-    public readonly key: string;
-    public readonly terms: string[];
+    public readonly key: stringful;
+    public readonly terms: stringful[];
 
     constructor(
       query: string,
@@ -106,7 +106,7 @@ namespace Search {
       math: stringful[] = [],
     ) {
       try {
-        const tokens: string[] = [
+        const tokens: stringful[] = [
           ...Query.mathefy(
             Query.transliterate(
               Query.tokenize(
@@ -224,37 +224,51 @@ namespace Search {
     }
 
     private static transliterate(
-      tokens: string[],
-      translate: string,
-    ): string[] {
+      tokens: stringful[],
+      TRANSLATE: stringful,
+    ): stringful[] {
       try {
-        const L: string = "@";
-        const t_0: string = (tokens[0] ?? "").toLowerCase();
-        const pre: string[] = t_0.length > 1
-          ? t_0.startsWith(L)
-            ? [translate]
-            : t_0.startsWith(translate)
-              ? [
-                  translate,
-                  L + t_0[1],
-                  ...t_0.length > 2
+        if (tokens.length < 1)
+          return [];
+        else {
+          const LANG: stringful = "@" as stringful; // static
+          const T_0: stringful = tokens[0];
+          const t_0: stringful = t_0.toLowerCase() as stringful;
+          const pre: stringful[] = t_0.length > 1
+            ? t_0.startsWith(LANG)
+              ? [TRANSLATE]
+              : t_0.startsWith(TRANSLATE)
+                ? t_0.slice(
+                    TRANSLATE.length,
+                    LANG.length,
+                  ) === LANG
+                  ? [
+                      TRANSLATE,
+                      tokens
+                        .shift()!
+                        .slice(TRANSLATE.length) as stringful,
+                    ]
+                  : t_0.length > TRANSLATE.length
                     ? [
-                        tokens
-                          .shift()!
-                          .slice(2),
+                        TRANSLATE,
+                        (LANG + t_0[TRANSLATE.length]) as stringful,
+                        ...tokens.shift()!.length > TRANSLATE.length + LANG.length
+                          ? [
+                              t_0.slice(
+                                TRANSLATE.length + LANG.length
+                              ) as stringful,
+                            ]
+                          : []
                       ]
-                    : [],
-                ]
-              : []
-          : [];
-        return [
-          ...pre,
-          ...tokens,
-        ];
                     : []
                 : []
             : [];
 
+          return [
+            ...pre,
+            ...tokens,
+          ];
+        }
       }
       catch (e) {
         throw new EvalError(
@@ -265,18 +279,18 @@ namespace Search {
     }
 
     private static mathefy(
-      T: string[],
-      M: string[],
-    ): string[] {
+      T: stringful[],
+      M: stringful[],
+    ): stringful[] {
       try {
         if (
           M.length > 0
           && T.length > 0
           && T[0] !== undefined
         ) {
-          const t_0: string = T[0].toLowerCase();
+          const t_0: stringful = T[0].toLowerCase() as stringful;
           const t_0_len: number = t_0.length;
-          const math_long: string = [...M]
+          const math_long: Nullable<stringful> = [...M]
             .filter(
               mk =>
                 mk.length <= t_0_len,
@@ -288,27 +302,28 @@ namespace Search {
             .find(
               mk =>
                 t_0.startsWith(mk),
-            ) ?? "";
+            ) ?? null;
 
-          if (math_long !== "") {
-            const operand_0: string = T.shift()
+          if (math_long !== null) {
+            const operand_0: string = T
+              .shift()
               ?.slice(math_long.length) ?? "";
 
-            if (operand_0 !== "")
-              T.unshift(operand_0);
+            if (operand_0.length !== 0)
+              T.unshift(operand_0 as stringful);
 
             T.unshift(math_long);
           }
           else {
-            const math_short: string = [...M]
+            const math_short: Nullable<stringful> = [...M]
               .sort(
                 (a, b) =>
                   a.length - b.length,
               )
-              .shift() ?? "";
+              .shift() ?? null;
 
-            if (math_short !== "") {
-              const d: string[] = [
+            if (math_short !== null) {
+              const d: stringful[] = [
                 "0",
                 "1",
                 "2",
@@ -351,14 +366,9 @@ namespace Search {
                 "#",
                 "$",
                 "°",
-              ];
-              const t_00: string = t_0
-                .slice(
-                  0,
-                  1,
-                );
+              ] as stringful[]; // static
 
-              if (d.includes(t_00))
+              if (d.includes(t_0[0] as stringful))
                 T.unshift(math_short);
             }
           }
