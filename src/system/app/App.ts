@@ -4,6 +4,8 @@ abstract class App<
   O extends Nullable<Definite> = null,
   C extends Config = NullRecord,
 > {
+  protected debug: boolean = false;
+
   constructor(protected readonly _class: Class extends "" ? never : Class) {}
 
   protected static get Setting(): typeof Setting {
@@ -76,9 +78,19 @@ abstract class App<
 
   public run(): Nullable<O> {
     try {
-      return this.setOutput(
-        this.runtime(),
-      );
+      const begin: Date = new Date();
+      const output: Nullable<O> = this.runtime();
+
+      if (this.debug) {
+        const end: Date = new Date();
+
+        this.write(
+          `${end - begin} ms`,
+          "runtime.txt",
+        );
+      }
+
+      return this.setOutput(output);
     }
     catch (e) {
       if (e !== null && typeof e === "object" && "message" in e) {
