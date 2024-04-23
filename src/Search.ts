@@ -216,7 +216,7 @@ namespace Search {
               : t_0.startsWith(TRANSLATE)
                 ? t_0.slice(
                     TRANSLATE.length,
-                    LANG.length,
+                    TRANSLATE.length + LANG.length,
                   ) === LANG
                   ? [
                       TRANSLATE,
