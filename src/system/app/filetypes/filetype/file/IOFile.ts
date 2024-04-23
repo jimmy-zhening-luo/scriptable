@@ -45,7 +45,7 @@ class IOFile {
     }
   }
 
-  protected static get Filepath(): typeof Filepath {
+  private static get Filepath(): typeof Filepath {
     try {
       return importModule("./common/validators/filepath/Filepath") as typeof Filepath;
     }
@@ -95,7 +95,7 @@ class IOFile {
 
   public get isFile(): boolean {
     try {
-      return manager.fileExists(this.path) && !this.isDirectory;
+      return this.manager.fileExists(this.path) && !this.isDirectory;
     }
     catch (e) {
       throw new EvalError(
@@ -107,7 +107,7 @@ class IOFile {
 
   public get isDirectory(): boolean {
     try {
-      return manager.isDirectory(this.path);
+      return this.manager.isDirectory(this.path);
     }
     catch (e) {
       throw new EvalError(
@@ -183,7 +183,7 @@ class IOFile {
   public get ls(): string[] {
     try {
       return this.isDirectory
-        ? manager.listContents(this.path)
+        ? this.manager.listContents(this.path)
         : [];
     }
     catch (e) {
@@ -293,7 +293,7 @@ class IOFile {
           `file does not exist`,
         );
 
-      return manager.readString(this.path);
+      return this.manager.readString(this.path);
     }
     catch (e) {
       throw new EvalError(
@@ -324,7 +324,7 @@ class IOFile {
             );
           else
             try {
-              manager.writeString(
+              this.manager.writeString(
                 this.path,
                 overwrite === "append"
                   ? this.read() + data
@@ -345,7 +345,7 @@ class IOFile {
         else {
           if (!this.parent.isDirectory)
             try {
-              manager.createDirectory(
+              this.manager.createDirectory(
                 this.parent.path,
                 true,
               );
@@ -358,7 +358,7 @@ class IOFile {
             }
 
           try {
-            manager.writeString(
+            this.manager.writeString(
               this.path,
               data,
             );
@@ -417,9 +417,9 @@ class IOFile {
 
       function __deleteUsingFileManager(path: string): void {
         try {
-          manager.remove(path);
+          this.manager.remove(path);
 
-          if (manager.fileExists(path))
+          if (this.manager.fileExists(path))
             throw new ReferenceError(
               `Unexpected: FileManager deleted file, but file still exists`,
             );
