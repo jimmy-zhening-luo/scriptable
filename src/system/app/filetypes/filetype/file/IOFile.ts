@@ -417,9 +417,9 @@ class IOFile {
 
       function __deleteUsingFileManager(path: string): void {
         try {
-          this.manager.remove(path);
+          FileManager.iCloud().remove(path);
 
-          if (this.manager.fileExists(path))
+          if (FileManager.iCloud().fileExists(path))
             throw new ReferenceError(
               `Unexpected: FileManager deleted file, but file still exists`,
             );
