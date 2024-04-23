@@ -101,9 +101,9 @@ namespace Search {
     constructor(
       query: string,
       clip: string,
-      chat: string,
-      translate: string,
-      math: string[] = [],
+      chat: stringful,
+      translate: stringful,
+      math: stringful[] = [],
     ) {
       try {
         const tokens: string[] = [
@@ -139,7 +139,7 @@ namespace Search {
                 0,
                 -1,
               );
-          else if (tokens.length > 0)
+          else if (tokens.length !== 0)
             throw new SyntaxError(
               `Query '${query}' resolved to\ninvalid key '${_key}'\nwith terms: '${tokens.join("|")}'`,
             );
