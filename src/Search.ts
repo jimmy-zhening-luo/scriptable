@@ -209,8 +209,7 @@ namespace Search {
           return [];
         else {
           const LANG: stringful = "@" as stringful; // static
-          const T_0: stringful = tokens[0];
-          const t_0: stringful = t_0.toLowerCase() as stringful;
+          const t_0: stringful = tokens[0]!.toLowerCase() as stringful;
           const pre: stringful[] = t_0.length > 1
             ? t_0.startsWith(LANG)
               ? [TRANSLATE]
