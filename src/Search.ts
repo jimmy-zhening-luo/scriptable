@@ -122,39 +122,16 @@ namespace Search {
         if (tokens.length === 1)
           tokens.push(...Query.tokenize(clip));
 
-        let _key: string = tokens
-          .shift()
-          ?.toLowerCase() ?? "";
-
-        if (_key.endsWith(".")) {
-          if (_key.length > 1)
-            _key = _key
-              .slice(
-                0,
-                -1,
-              );
-          else if (tokens.length !== 0)
-            throw new SyntaxError(
-              `Query '${query}' resolved to\ninvalid key '${_key}'\nwith terms: '${tokens.join("|")}'`,
-            );
-          else
-            throw new SyntaxError(
-              `Query '${query}' resolved to\ninvalid key '${_key}'\nwith zero terms.`,
-            );
+        if (tokens.length === 0)
+          throw new SyntaxError(
+            `Query resolved to 0 tokens`,
+          );
+        else {
+          this.key = tokens
+            .shift()!
+            .toLowerCase() as stringful;
+          this.terms = [...tokens];
         }
-        else if (_key === "") {
-          if (tokens.length < 1)
-            throw new SyntaxError(
-              `Query resolved empty`,
-            );
-          else
-            throw new RangeError(
-              `Unexpected: final query has no key\nbut has terms: '${tokens.join("|")}'`,
-            );
-        }
-
-        this.key = _key;
-        this.terms = [...tokens];
       }
       catch (e) {
         throw new EvalError(
