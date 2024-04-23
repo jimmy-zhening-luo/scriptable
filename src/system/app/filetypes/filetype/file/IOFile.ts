@@ -1,5 +1,6 @@
 class IOFile {
   public readonly name: string = "IOFile";
+  protected readonly manager: FileManager = FileManager.iCloud();
   private readonly _root: string;
   private _subpath: Filepath;
 
@@ -94,10 +95,7 @@ class IOFile {
 
   public get isFile(): boolean {
     try {
-      return FileManager
-        .iCloud()
-        .fileExists(this.path)
-        && !this.isDirectory;
+      return manager.fileExists(this.path) && !this.isDirectory;
     }
     catch (e) {
       throw new EvalError(
@@ -109,9 +107,7 @@ class IOFile {
 
   public get isDirectory(): boolean {
     try {
-      return FileManager
-        .iCloud()
-        .isDirectory(this.path);
+      return manager.isDirectory(this.path);
     }
     catch (e) {
       throw new EvalError(
@@ -187,9 +183,7 @@ class IOFile {
   public get ls(): string[] {
     try {
       return this.isDirectory
-        ? FileManager
-          .iCloud()
-          .listContents(this.path)
+        ? manager.listContents(this.path)
         : [];
     }
     catch (e) {
@@ -299,9 +293,7 @@ class IOFile {
           `file does not exist`,
         );
 
-      return FileManager
-        .iCloud()
-        .readString(this.path);
+      return manager.readString(this.path);
     }
     catch (e) {
       throw new EvalError(
@@ -311,49 +303,75 @@ class IOFile {
     }
   }
 
-  public write(data: string, overwrite: boolean = false): this {
+  public write(
+    data: string,
+    overwrite:
+      | boolean
+      | "overwrite"
+      | "append"
+      | "line" = false,
+  ): this {
     try {
       if (this.isDirectory)
         throw new ReferenceError(
-          `unwriteable location; filepath points to a folder`,
-        );
-      else if (this.isFile && !overwrite)
-        throw new ReferenceError(
-          `unwriteable file: file already exists, and overwrite is false`,
+          `Unwriteable: path points to folder`,
         );
       else {
-        if (!this.parent.isDirectory)
-          try {
-            FileManager
-              .iCloud()
-              .createDirectory(
+        if (this.isFile) {
+          if (overwrite === false)
+            throw new TypeError(
+              `Unwriteable: file already exists && !overwrite`,
+            );
+          else
+            try {
+              manager.writeString(
+                this.path,
+                overwrite === "append"
+                  ? this.read() + data
+                  : overwrite === "line"
+                    ? this.read() + "\n" + data
+                    : data,
+              );
+
+              return this;
+            }
+            catch (e) {
+              throw new EvalError(
+                `Unexpected: FileManager tried but failed to overwrite data to existing file`,
+                { cause: e },
+              );
+            }
+        }
+        else {
+          if (!this.parent.isDirectory)
+            try {
+              manager.createDirectory(
                 this.parent.path,
                 true,
               );
-          }
-          catch (e) {
-            throw new EvalError(
-              `Unexpected: FileManager tried but failed to create parent directory for file to write`,
-              { cause: e },
-            );
-          }
+            }
+            catch (e) {
+              throw new EvalError(
+                `Unexpected: FileManager tried to create parent folder because both file and parent do not exist, but failed`,
+                { cause: e },
+              );
+            }
 
-        try {
-          FileManager
-            .iCloud()
-            .writeString(
+          try {
+            manager.writeString(
               this.path,
               data,
             );
-        }
-        catch (e) {
-          throw new EvalError(
-            `Unexpected: FileManager tried but failed to write data to file`,
-            { cause: e },
-          );
-        }
 
-        return this;
+            return this;
+          }
+          catch (e) {
+            throw new EvalError(
+              `Unexpected: FileManager tried but failed to write data to new file`,
+              { cause: e },
+            );
+          }
+        }
       }
     }
     catch (e) {
@@ -399,15 +417,9 @@ class IOFile {
 
       function __deleteUsingFileManager(path: string): void {
         try {
-          FileManager
-            .iCloud()
-            .remove(path);
+          manager.remove(path);
 
-          if (
-            FileManager
-              .iCloud()
-              .fileExists(path)
-          )
+          if (manager.fileExists(path))
             throw new ReferenceError(
               `Unexpected: FileManager deleted file, but file still exists`,
             );
