@@ -28,11 +28,14 @@ class Storage extends stor_Filetype<
     }
   }
 
-  public write(text: string): this {
+  public write(
+    text: string,
+    overwrite: Parameters<IOFile["write"]>[1] = true,
+  ): this {
     try {
       this._file.write(
         text,
-        true,
+        overwrite,
       );
 
       return this;
