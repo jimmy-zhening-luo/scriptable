@@ -195,8 +195,8 @@ namespace Search {
 
     private static tokenize(
       query: string,
-    ): string[] {
       CHAT?: stringful,
+    ): stringful[] {
       try {
         const pre: stringful[] = CHAT === undefined
           ? []
@@ -212,7 +212,7 @@ namespace Search {
             .filter(
               t =>
                 t !== "",
-            ),
+            ) as stringful[],
         ];
       }
       catch (e) {
