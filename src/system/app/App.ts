@@ -81,11 +81,15 @@ abstract class App<
       const begin: Date = new Date();
       const output: Nullable<O> = this.runtime();
 
-      if (this.debug)
+      if (this.debug) {
+        const end: Date = new Date();
+
         this.write(
-          `Runtime: ${new Date().getTime() - begin.getTime()} ms`,
-          "debug.txt",
+          `${end.toISOString()}: ${end.getTime() - begin.getTime()} ms`,
+          "_runtime.txt",
+          "line",
         );
+      }
 
       return this.setOutput(output);
     }

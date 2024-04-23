@@ -329,7 +329,7 @@ class IOFile {
                 overwrite === "append"
                   ? this.read() + data
                   : overwrite === "line"
-                    ? this.read() + "\n" + data
+                    ? data + "\n" + this.read()
                     : data,
               );
 
