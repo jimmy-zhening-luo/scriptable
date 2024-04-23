@@ -120,13 +120,7 @@ namespace Search {
         ];
 
         if (tokens.length === 1)
-          tokens
-            .push(
-              ...Query.tokenize(
-                clip,
-                "",
-              ),
-            );
+          tokens.push(...Query.tokenize(clip));
 
         let _key: string = tokens
           .shift()
@@ -201,12 +195,14 @@ namespace Search {
 
     private static tokenize(
       query: string,
-      chat: string,
     ): string[] {
+      CHAT?: stringful,
       try {
-        const pre: string[] = query.startsWith(" ")
-          ? [chat]
-          : [];
+        const pre: stringful[] = CHAT === undefined
+          ? []
+          : query.startsWith(" ")
+            ? [CHAT]
+            : [];
 
         return [
           ...pre,
@@ -251,11 +247,14 @@ namespace Search {
                 ]
               : []
           : [];
-
         return [
           ...pre,
           ...tokens,
         ];
+                    : []
+                : []
+            : [];
+
       }
       catch (e) {
         throw new EvalError(
