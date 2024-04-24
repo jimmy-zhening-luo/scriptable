@@ -13,31 +13,11 @@ namespace New {
   > {
     public runtime(): string {
       try {
-        const WORLD_FILE: string = "world.txt";
-        const WORLD_PREFIX: string = "World: ";
-        const SPACE_SETTING: string = "space";
-        const E_MISSING_SETTING: string = "{E_MISSING_SETTING}";
-        const hello: string = this.read();
-        const world: string = this.read(WORLD_FILE);
-
-        this.write(
-          WORLD_PREFIX + new Date()
-            .toString(),
-          WORLD_FILE,
-        );
-
-        // Setting
-        const space: string = this.app[
-          SPACE_SETTING
-        ] ?? E_MISSING_SETTING;
-
-        console.warn(hello + space + world);
-
-        return hello + space + world;
+        return "";
       }
       catch (e) {
         throw new EvalError(
-          `New: runtime`,
+          `${this.constructor.name}: runtime`,
           { cause: e },
         );
       }
