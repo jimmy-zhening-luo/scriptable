@@ -11,8 +11,8 @@ namespace New {
     string,
     NewSetting
   > {
-    public runtime(): string {
-      return "";
+    public runtime(): null {
+      return null;
     }
   }
 }
