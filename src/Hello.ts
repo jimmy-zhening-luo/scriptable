@@ -13,39 +13,31 @@ namespace Hello {
     HelloSetting
   > {
     public runtime(): string {
-      try {
-        this.debug = true;
+      this.debug = true;
 
-        const FILENAME_WORLDTIME: string = "world-time.txt";
-        const HELLO: stringful = stringful(
-          this.read(),
-          "hello: default.txt",
-        );
-        const world: string = this.read(
-          FILENAME_WORLDTIME,
-        );
+      const FILENAME_WORLDTIME: string = "world-time.txt";
+      const HELLO: stringful = stringful(
+        this.read(),
+        "hello: default.txt",
+      );
+      const world: string = this.read(
+        FILENAME_WORLDTIME,
+      );
 
-        this.write(
-          `World!\n(Previous: ${new Date().toISOString()})`,
-          FILENAME_WORLDTIME,
-        );
+      this.write(
+        `World!\n(Previous: ${new Date().toISOString()})`,
+        FILENAME_WORLDTIME,
+      );
 
-        const SPACE: stringful = stringful(
-          this.app["space"] ?? "",
-          "app.space",
-        );
-        const message: string = HELLO + SPACE + world;
+      const SPACE: stringful = stringful(
+        this.app["space"] ?? "",
+        "app.space",
+      );
+      const message: string = HELLO + SPACE + world;
 
-        console.warn(message);
+      console.warn(message);
 
-        return message;
-      }
-      catch (e) {
-        throw new EvalError(
-          `${this.constructor.name}: runtime`,
-          { cause: e },
-        );
-      }
+      return message;
     }
   }
 }

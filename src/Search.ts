@@ -13,84 +13,76 @@ namespace Search {
     SearchSettings
   > {
     public runtime(): Nullable<SearchOutput> {
-      try {
-        const {
-          app,
-          user,
-        }: SearchSettings = this.setting.unmerged;
-        const TAG: stringful = stringful(
-          app.tag,
-          "app.tag",
-        );
-        const CHAT: stringful = stringful(
-          app.chat,
-          "app.chat",
-        );
-        const TRANSLATE: stringful = stringful(
-          app.translate,
-          "app.translate",
-        );
-        const MATH: stringful[] = (app.math ?? []).map(
-          s =>
-            stringful(
-              s,
-              "app.math?",
-            ),
-        );
-        const input: string = this.inputData?.input ?? "";
-        const query: Query = new Query(
-          input.length === 0
-            ? this.read()
-            : input,
-          this.inputData?.clip ?? "",
-          CHAT,
-          TRANSLATE,
-          MATH,
-        );
-        const match: Nullable<SearchEngineSetting> = user
-          .engines
-          .find(
-            eng =>
-              eng.keys.includes(query.key),
-          ) ?? null;
-        const resolved: Nullable<Engine> = match === null
-          ? null
-          : "url" in match
-            ? new BrowserEngine(
+      const {
+        app,
+        user,
+      }: SearchSettings = this.setting.unmerged;
+      const TAG: stringful = stringful(
+        app.tag,
+        "app.tag",
+      );
+      const CHAT: stringful = stringful(
+        app.chat,
+        "app.chat",
+      );
+      const TRANSLATE: stringful = stringful(
+        app.translate,
+        "app.translate",
+      );
+      const MATH: stringful[] = (app.math ?? []).map(
+        s =>
+          stringful(
+            s,
+            "app.math?",
+          ),
+      );
+      const input: string = this.inputData?.input ?? "";
+      const query: Query = new Query(
+        input.length === 0
+          ? this.read()
+          : input,
+        this.inputData?.clip ?? "",
+        CHAT,
+        TRANSLATE,
+        MATH,
+      );
+      const match: Nullable<SearchEngineSetting> = user
+        .engines
+        .find(
+          eng =>
+            eng.keys.includes(query.key),
+        ) ?? null;
+      const resolved: Nullable<Engine> = match === null
+        ? null
+        : "url" in match
+          ? new BrowserEngine(
+            match.keys,
+            match.url,
+            TAG,
+            match.browser,
+            match.encode,
+          )
+          : "shortcut" in match
+            ? new ShortcutEngine(
               match.keys,
-              match.url,
-              TAG,
-              match.browser,
-              match.encode,
+              match.shortcut,
+              match.output,
             )
-            : "shortcut" in match
-              ? new ShortcutEngine(
+            : "native" in match
+              ? new NativeEngine(
                 match.keys,
-                match.shortcut,
-                match.output,
+                match.native,
               )
-              : "native" in match
-                ? new NativeEngine(
-                  match.keys,
-                  match.native,
-                )
-                : new AppEngine(
-                  match.app,
-                  match.keys,
-                );
+              : new AppEngine(
+                match.app,
+                match.keys,
+              );
 
-        if (resolved)
-          this.write(query.clean);
+      if (resolved)
+        this.write(query.clean);
 
-        return resolved
-          ?.parseQueryToAction(query) ?? null;
-      }
-      catch (e) {
-        throw new EvalError(
-          `Search: runtime`,
-          { cause: e },
-        );
-      }
+      return resolved
+        ?.parseQueryToAction(query) ?? null;
     }
   }
 

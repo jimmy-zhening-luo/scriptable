@@ -12,15 +12,7 @@ namespace New {
     NewSetting
   > {
     public runtime(): string {
-      try {
-        return "";
-      }
-      catch (e) {
-        throw new EvalError(
-          `${this.constructor.name}: runtime`,
-          { cause: e },
-        );
-      }
+      return "";
     }
   }
 }

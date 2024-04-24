@@ -107,7 +107,7 @@ abstract class App<
     }
     catch (e) {
       const f: Error = new Error(
-        `\n`,
+        `run\n`,
         { cause: e },
       );
 
