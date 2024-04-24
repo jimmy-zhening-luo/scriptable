@@ -1,12 +1,12 @@
-declare interface NewSetting extends Config {
+declare interface NewSetting {
   app: NewAppSetting;
   user?: NewUserSetting;
 }
 
-declare interface NewAppSetting extends SettingMap {
+declare interface NewAppSetting {
   [key: string]: string;
 }
 
-declare interface NewUserSetting extends SettingMap {
+declare interface NewUserSetting {
   [key: string]: string;
 }

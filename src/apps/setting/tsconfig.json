@@ -1,14 +1,9 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*",
-    "../../system/app/filetypes/config/**/*",
+    "**/*"
   ],
-  "references": [
-    {
-      "path": "../../system/app/filetypes/config/tsconfig.json"
-    }
-  ],
+  "references": [],
   "compilerOptions": {
     "rootDir": "../.."
   }

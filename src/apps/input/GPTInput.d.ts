@@ -1,5 +1,4 @@
 declare interface GPTInput {
-  [key: string]: unknown;
   prompt:
     | string
     | {
