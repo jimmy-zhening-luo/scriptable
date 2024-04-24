@@ -14,6 +14,8 @@ namespace Hello {
   > {
     public runtime(): string {
       try {
+        this.debug = true;
+
         const FILENAME_WORLDTIME: string = "world-time.txt";
         const HELLO: stringful = stringful(
           this.read(),
