@@ -2,7 +2,7 @@ abstract class App<
   Class extends string,
   I extends Nullable<Definite> = null,
   O extends Nullable<Definite> = null,
-  C = NullRecord,
+  C extends Config = NullRecord,
 > {
   protected debug: boolean = false;
 
@@ -32,7 +32,7 @@ abstract class App<
     }
   }
 
-  public get setting(): Setting<C & Config> {
+  public get setting(): Setting<C> {
     try {
       if (this._setting === undefined)
         this._setting = new App.Setting(
@@ -50,7 +50,7 @@ abstract class App<
     }
   }
 
-  public get app(): App<I, O, C>["app"] {
+  public get app(): App<I, O, C>["setting"]["app"] {
     try {
       return this.setting.app;
     }
@@ -62,7 +62,7 @@ abstract class App<
     }
   }
 
-  public get user(): App<I, O, C>["user"] {
+  public get user(): App<I, O, C>["setting"]["user"] {
     try {
       return this.setting.user;
     }
