@@ -73,6 +73,18 @@ abstract class Filetype<
     }
   }
 
+  public readful(): stringful {
+    try {
+      return this._file.readful();
+    }
+    catch (e) {
+      throw new EvalError(
+        `Filetype: readful`,
+        { cause: e },
+      );
+    }
+  }
+
   public toString(): string {
     try {
       return this._file.toString();

@@ -303,6 +303,25 @@ class IOFile {
     }
   }
 
+  public readful(): stringful {
+    try {
+      const s: string = this.read();
+
+      if (s.length === 0)
+        throw new TypeError(
+          `empty file`,
+        );
+      else
+        return s as stringful;
+    }
+    catch (e) {
+      throw new EvalError(
+        `IOFile: readful: ${this.path}`,
+        { cause: e },
+      );
+    }
+  }
+
   public write(
     data: string,
     overwrite:

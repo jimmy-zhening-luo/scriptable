@@ -129,6 +129,20 @@ abstract class App<
     }
   }
 
+  public readful(subpath?: string): ReturnType<Storage["readful"]> {
+    try {
+      return this
+        .storage(subpath)
+        .readful();
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: storage.readful`,
+        { cause: e },
+      );
+    }
+  }
+
   public write(
     data: string,
     subpath?: string,
