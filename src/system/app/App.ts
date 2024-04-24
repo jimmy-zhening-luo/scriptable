@@ -107,7 +107,7 @@ abstract class App<
     }
     catch (e) {
       const f: Error = new Error(
-        `TOP: ${this.constructor.name}: run`,
+        `\n`,
         { cause: e },
       );
 
@@ -187,7 +187,7 @@ abstract class App<
 
       const n: Notification = new Notification();
 
-      n.title = messages.pop() ?? "";
+      n.title = messages.shift() ?? "";
       n.body = messages.join("\n");
       n.sound = "failure";
       n
