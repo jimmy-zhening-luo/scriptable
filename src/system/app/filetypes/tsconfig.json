@@ -3,7 +3,7 @@
   "include": [
     "**/*",
     "../../../common/validators/filepath/**/*",
-    "../../../common/types/strings/**/*"
+    "../../../common/types/**/*"
   ],
   "references": [
     {
@@ -16,7 +16,7 @@
       "path": "../../../common/validators/filepath/tsconfig.json"
     },
     {
-      "path": "../../../common/types/strings/tsconfig.json"
+      "path": "../../../common/types/tsconfig.json"
     }
   ],
   "compilerOptions": {

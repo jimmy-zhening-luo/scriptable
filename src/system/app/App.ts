@@ -2,7 +2,7 @@ abstract class App<
   Class extends string,
   I extends Nullable<Definite> = null,
   O extends Nullable<Definite> = null,
-  C extends Config = NullRecord,
+  C = NullRecord,
 > {
   protected debug: boolean = false;
 
@@ -32,7 +32,7 @@ abstract class App<
     }
   }
 
-  public get setting(): Setting<C> {
+  public get setting(): Setting<C & Config> {
     try {
       if (this._setting === undefined)
         this._setting = new App.Setting(
@@ -50,7 +50,7 @@ abstract class App<
     }
   }
 
-  public get app(): Setting<C>["app"] {
+  public get app(): App<I, O, C>["app"] {
     try {
       return this.setting.app;
     }
@@ -62,7 +62,7 @@ abstract class App<
     }
   }
 
-  public get user(): Setting<C>["user"] {
+  public get user(): App<I, O, C>["user"] {
     try {
       return this.setting.user;
     }
@@ -205,7 +205,7 @@ abstract class App<
 
   protected abstract setOutput(runtimeOutput: Nullable<O>): Nullable<O>;
 
-  private _setting?: Setting<C>;
+  private _setting?: App<I, O, C>["setting"];
 }
 
 module.exports = App;
