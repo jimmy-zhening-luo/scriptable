@@ -2,11 +2,11 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../../../types/strings/**/*"
+    "../../../types/**/*"
   ],
   "references": [
     {
-      "path": "../../../types/strings/tsconfig.json"
+      "path": "../../../types/tsconfig.json"
     }
   ],
   "compilerOptions": {
