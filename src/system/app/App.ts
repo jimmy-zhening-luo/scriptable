@@ -79,7 +79,19 @@ abstract class App<
   public run(): Nullable<O> {
     try {
       const begin: Date = new Date();
-      const output: Nullable<O> = this.runtime();
+      let _output: Nullable<O> = null;
+
+      try {
+        _output = this.runtime();
+      }
+      catch (e) {
+        throw new Error(
+          `${this.constructor.name}: runtime`,
+          { cause: e },
+        );
+      }
+
+      const output: Nullable<O> = _output;
 
       if (this.debug) {
         const end: Date = new Date();
@@ -94,19 +106,12 @@ abstract class App<
       return this.setOutput(output);
     }
     catch (e) {
-      if (e !== null && typeof e === "object" && "message" in e) {
-        this.handleError(e as Error);
-
-        throw new Error(
-          `TOP`,
+      this.handleError(
+        new Error(
+          `TOP: ${this.constructor.name}: run`
           { cause: e },
-        );
-      }
-      else
-        throw new SyntaxError(
-          `Unexpected: Caught unparseable error`,
-          { cause: e },
-        );
+        ),
+      );
     }
   }
 
