@@ -106,12 +106,14 @@ abstract class App<
       return this.setOutput(output);
     }
     catch (e) {
-      this.handleError(
-        new Error(
-          `TOP: ${this.constructor.name}: run`,
-          { cause: e },
-        ),
+      const f: Error = new Error(
+        `TOP: ${this.constructor.name}: run`,
+        { cause: e },
       );
+
+      this.handleError(f);
+
+      throw f;
     }
   }
 
