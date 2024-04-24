@@ -27,7 +27,7 @@ namespace Hello {
         );
 
         this.write(
-          `World!\n(${new Date().toISOString()})`,
+          `World!\n(Previous: ${new Date().toISOString()})`,
           FILENAME_WORLDTIME,
         );
 
