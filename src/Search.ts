@@ -39,7 +39,7 @@ namespace Search {
         );
         const input: string = this.inputData?.input ?? "";
         const query: Query = new Query(
-          input === ""
+          input.length === 0
             ? this.read()
             : input,
           this.inputData?.clip ?? "",
@@ -75,8 +75,8 @@ namespace Search {
                   match.native,
                 )
                 : new AppEngine(
-                  match.keys,
                   match.app,
+                  match.keys,
                 );
 
         if (resolved)
@@ -154,13 +154,9 @@ namespace Search {
       }
     }
 
-    public get clean(): string {
+    public get clean(): stringful {
       try {
-        return [
-          this.key,
-          this.natural,
-        ]
-          .join(" ");
+        return this.key + " " + this.natural as stringful;
       }
       catch (e) {
         throw new EvalError(
@@ -188,7 +184,7 @@ namespace Search {
             .split(" ")
             .filter(
               t =>
-                t !== "",
+                t.length !== 0,
             ) as stringful[],
         ];
       }
@@ -362,37 +358,36 @@ namespace Search {
   }
 
   abstract class Engine {
-    public readonly app: string;
-    public readonly keys: string[];
+    public readonly app: stringful;
+    public readonly keys: stringful[];
 
     constructor(
       app: string,
       keys: string | string[],
     ) {
       try {
-        this.app = app;
-        this.keys = [keys]
-          .flat()
-          .map(
-            key =>
-              key.toLowerCase(),
-          )
-          .filter(
-            key =>
-              key !== "",
-          );
-
-        if (this.app === "")
+        if (app.length === 0)
           throw new SyntaxError(
             `engine app name is empty`,
           );
-        else if (
-          this.keys
-            .length === 0
-        )
-          throw new SyntaxError(
-            `engine keys is empty`,
-          );
+        else {
+          this.app = app as stringful;
+          this.keys = [keys]
+            .flat()
+            .map(
+              key =>
+                key.toLowerCase(),
+            )
+            .filter(
+              key =>
+                key.length !== 0,
+            ) as stringful[];
+
+          if (this.keys.length === 0)
+            throw new SyntaxError(
+              `engine keys is empty`,
+            );
+        }
       }
       catch (e) {
         throw new EvalError(
@@ -434,15 +429,15 @@ namespace Search {
   }
 
   class BrowserEngine extends Engine {
-    public readonly urls: string[];
-    public readonly tag: string;
+    public readonly urls: stringful[];
+    public readonly tag: stringful;
     public readonly browser: BrowserAction;
     public readonly encode: BrowserEncode;
 
     constructor(
       keys: string | string[],
       urls: string | string[],
-      TAG: string,
+      TAG: stringful,
       browser: BrowserAction = "default",
       encode: BrowserEncode = "+",
     ) {
@@ -452,18 +447,18 @@ namespace Search {
           keys,
         );
         this.tag = TAG;
-        this.browser = browser;
-        this.encode = encode;
+        this.browser = browser; // unsafe
+        this.encode = encode; // unsafe
         this.urls = [urls]
           .flat()
           .filter(
             url =>
-              url !== "",
-          );
+              url.length !== 0,
+          ) as stringful[];
 
         if (this.urls.length === 0)
           throw new SyntaxError(
-            `engine urls[] is empty`,
+            `engine has 0 urls`,
           );
       }
       catch (e) {
@@ -476,7 +471,7 @@ namespace Search {
 
     protected override transform(query: Query): string[] {
       try {
-        const OP: string = "+";
+        const OP: string = "+"; //static
         const ENCODED_OP: string = "%2B";
         const encodedQuery: string = query
           .terms
@@ -527,24 +522,6 @@ namespace Search {
   }
 
   class AppEngine extends Engine {
-    constructor(
-      keys: string | string[],
-      app: string,
-    ) {
-      try {
-        super(
-          app,
-          keys,
-        );
-      }
-      catch (e) {
-        throw new EvalError(
-          `AppEngine: ctor`,
-          { cause: e },
-        );
-      }
-    }
-
     protected options(): Record<string, never> {
       try {
         return {};
@@ -559,7 +536,7 @@ namespace Search {
   }
 
   class NativeEngine extends Engine {
-    public readonly native: string;
+    public readonly native: stringful;
 
     constructor(
       keys: string | string[],
@@ -570,12 +547,13 @@ namespace Search {
           "native",
           keys,
         );
-        this.native = native;
 
-        if (this.native === "")
+        if (native.length === 0)
           throw new SyntaxError(
             `engine native provider is empty`,
           );
+        else
+          this.native = native as stringful;
       }
       catch (e) {
         throw new EvalError(
@@ -599,7 +577,7 @@ namespace Search {
   }
 
   class ShortcutEngine extends Engine {
-    public readonly shortcut: string;
+    public readonly shortcut: stringful;
     public readonly output: boolean;
 
     constructor(
@@ -612,13 +590,15 @@ namespace Search {
           "shortcut",
           keys,
         );
-        this.shortcut = shortcut;
-        this.output = output;
 
-        if (this.shortcut === "")
+        if (this.shortcut.length === 0)
           throw new SyntaxError(
             `engine shortcut name is empty`,
           );
+        else {
+          this.shortcut = shortcut as stringful;
+          this.output = output;
+        }
       }
       catch (e) {
         throw new EvalError(
