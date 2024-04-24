@@ -1,14 +1,9 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*",
-    "../../system/input/**/*",
+    "**/*"
   ],
-  "references": [
-    {
-      "path": "../../system/input/tsconfig.json"
-    },
-  ],
+  "references": [],
   "compilerOptions": {
     "rootDir": "../..",
   }

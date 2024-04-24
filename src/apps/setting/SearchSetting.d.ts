@@ -1,16 +1,15 @@
-declare interface SearchSettings extends Config {
+declare type SearchSettings = {
   app: SearchAppSettings;
   user: SearchUserSettings;
-}
+};
 
-declare interface SearchUserSettings extends SettingMap {
+declare type SearchUserSettings = {
   engines: SearchEngineSetting[];
-}
+};
 
-declare interface SearchAppSettings extends SettingMap {
+declare type SearchAppSettings = {
   tag: string;
   chat: string;
   translate: string;
   math?: string[];
-
-}
+};

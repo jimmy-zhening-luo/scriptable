@@ -4,28 +4,28 @@ declare type SearchEngineSetting =
   | NativeEngineSetting
   | BrowserEngineSetting;
 
-declare interface ISearchEngineSetting {
+declare type ISearchEngineSetting = {
   keys: string | string[];
-}
+};
 
-declare interface AppEngineSetting extends ISearchEngineSetting {
+declare type AppEngineSetting = {
   app: string;
-}
+} & ISearchEngineSetting;
 
-declare interface ShortcutEngineSetting extends ISearchEngineSetting {
+declare type ShortcutEngineSetting = {
   shortcut: string;
   output?: boolean;
-}
+} & ISearchEngineSetting;
 
-declare interface NativeEngineSetting extends ISearchEngineSetting {
+declare type NativeEngineSetting = {
   "native": string;
-}
+} & ISearchEngineSetting;
 
-declare interface BrowserEngineSetting extends ISearchEngineSetting {
+declare type BrowserEngineSetting = {
   url: string | string[];
   browser?: BrowserAction;
   encode?: BrowserEncode;
-}
+} & ISearchEngineSetting;
 
 declare type BrowserAction =
   | "api"

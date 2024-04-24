@@ -1,5 +1,4 @@
-declare interface GPTInput {
-  [key: string]: unknown;
+declare type GPTInput = {
   prompt:
     | string
     | {
@@ -14,4 +13,4 @@ declare interface GPTInput {
     | "high"
     | "low";
   preset?: string;
-}
+};

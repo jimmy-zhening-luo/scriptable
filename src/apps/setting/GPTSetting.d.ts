@@ -1,9 +1,9 @@
-declare interface GPTSetting extends Config {
+declare type GPTSetting = {
   app: GPTAppSetting;
   user: GPTUserSetting;
-}
+};
 
-declare interface GPTAppSetting extends SettingMap {
+declare type GPTAppSetting = {
   presetTag: string;
   api: {
     host: string;
@@ -26,9 +26,9 @@ declare interface GPTAppSetting extends SettingMap {
       max: number;
     };
   };
-}
+};
 
-declare interface GPTUserSetting extends SettingMap {
+declare type GPTUserSetting = {
   id: {
     token: string;
     org: string;
@@ -50,4 +50,4 @@ declare interface GPTUserSetting extends SettingMap {
   presets: {
     [key: string?]: GPTPreset;
   };
-}
+};

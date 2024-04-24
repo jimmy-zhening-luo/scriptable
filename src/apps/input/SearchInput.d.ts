@@ -1,5 +1,4 @@
-declare interface SearchInput {
-  [key: string]: unknown;
+declare type SearchInput = {
   input: string;
   clip: string;
-}
+};

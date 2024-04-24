@@ -1,7 +1,7 @@
-declare interface HelloSetting extends Config {
+declare type HelloSetting = {
   app: NewAppSetting;
-}
+};
 
-declare interface HelloAppSetting extends SettingMap {
+declare type HelloAppSetting = {
   space: string;
-}
+};
