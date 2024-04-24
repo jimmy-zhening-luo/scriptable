@@ -4,9 +4,10 @@ abstract class App<
   O extends Nullable<Definite> = null,
   C extends Config = NullRecord,
 > {
-  protected debug: boolean = false;
-
-  constructor(protected readonly _class: Class extends "" ? never : Class) {}
+  constructor(
+    protected readonly _class: Class extends "" ? never : Class,
+    protected debug: boolean = false,
+  ) {}
 
   protected static get Setting(): typeof Setting {
     try {

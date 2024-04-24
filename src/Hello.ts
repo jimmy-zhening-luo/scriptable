@@ -42,5 +42,5 @@ namespace Hello {
   }
 }
 
-new Hello.Hello()
+new Hello.Hello(true)
   .run();

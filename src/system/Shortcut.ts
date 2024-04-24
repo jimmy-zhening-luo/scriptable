@@ -10,8 +10,11 @@ abstract class Shortcut<
     O,
     C
   > {
-  constructor() {
-    super("Shortcut");
+  constructor(debug: boolean = false) {
+    super(
+      "Shortcut",
+      debug,
+    );
   }
 
   public get input(): string | Nullable<I> {
