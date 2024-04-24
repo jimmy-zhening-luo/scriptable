@@ -50,7 +50,7 @@ abstract class App<
     }
   }
 
-  public get app(): App<I, O, C>["setting"]["app"] {
+  public get app(): Setting<C>["app"] {
     try {
       return this.setting.app;
     }
@@ -62,7 +62,7 @@ abstract class App<
     }
   }
 
-  public get user(): App<I, O, C>["setting"]["user"] {
+  public get user(): Setting<C>["user"] {
     try {
       return this.setting.user;
     }
@@ -205,7 +205,7 @@ abstract class App<
 
   protected abstract setOutput(runtimeOutput: Nullable<O>): Nullable<O>;
 
-  private _setting?: App<I, O, C>["setting"];
+  private _setting?: Setting<C>;
 }
 
 module.exports = App;
