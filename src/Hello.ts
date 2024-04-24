@@ -21,9 +21,8 @@ namespace Hello {
           this.read(),
           "hello: default.txt",
         );
-        const world: stringful = stringful(
-          this.read(FILENAME_WORLDTIME),
-          "world: " + FILENAME_WORLDTIME,
+        const world: string = this.read(
+          FILENAME_WORLDTIME,
         );
 
         this.write(
