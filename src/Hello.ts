@@ -17,7 +17,6 @@ namespace Hello {
         const WORLD_FILE: string = "world.txt";
         const WORLD_PREFIX: string = "World: ";
         const SPACE_SETTING: string = "space";
-        const E_MISSING_SETTING: string = "{E_MISSING_SETTING}";
         const hello: stringful = stringful(this.read());
         const world: stringful = stringful(this.read(WORLD_FILE));
 
@@ -26,7 +25,7 @@ namespace Hello {
           WORLD_FILE,
         );
 
-        const space: stringful = stringful(this.app[SPACE_SETTING]);
+        const space: stringful = stringful(this.app[SPACE_SETTING] ?? "");
         const message: string = hello + space + world;
 
         console.warn(message);
