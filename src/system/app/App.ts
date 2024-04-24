@@ -2,7 +2,7 @@ abstract class App<
   Class extends string,
   I extends Nullable<Definite> = null,
   O extends Nullable<Definite> = null,
-  C = NullRecord,
+  C extends Config = NullRecord,
 > {
   protected debug: boolean = false;
 
@@ -32,7 +32,7 @@ abstract class App<
     }
   }
 
-  public get setting(): Setting<Extract<C["app"], string>> {
+  public get setting(): Setting<C> {
     try {
       if (this._setting === undefined)
         this._setting = new App.Setting(
