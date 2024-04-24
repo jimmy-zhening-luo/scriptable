@@ -74,7 +74,7 @@ abstract class App<
     }
   }
 
-  public abstract get input(): string | Nullable<I>;
+  public abstract get input(): I;
 
   public run(): Nullable<O> {
     try {

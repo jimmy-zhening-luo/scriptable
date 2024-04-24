@@ -6,7 +6,7 @@ abstract class Shortcut<
   C extends Config = NullRecord,
 > extends sh_App<
     "Shortcut",
-    I,
+    string | Nullable<I>,
     O,
     C
   > {
