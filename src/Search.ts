@@ -591,7 +591,7 @@ namespace Search {
           keys,
         );
 
-        if (this.shortcut.length === 0)
+        if (shortcut.length === 0)
           throw new SyntaxError(
             `engine shortcut name is empty`,
           );
