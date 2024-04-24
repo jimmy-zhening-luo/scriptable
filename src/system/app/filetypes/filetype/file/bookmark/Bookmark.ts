@@ -1,7 +1,7 @@
 class Bookmark {
   public readonly name: string = "Bookmark";
-  public readonly alias: string;
-  public readonly path: string;
+  public readonly alias: stringful;
+  public readonly path: stringful;
 
   constructor(bookmark: string | Bookmark) {
     try {
@@ -12,9 +12,9 @@ class Bookmark {
       else {
         const alias: string = bookmark.trim();
 
-        if (alias === "")
-          throw new SyntaxError(
-            `expected bookmark name; instead, got empty string: '${alias}'`,
+        if (alias.length === 0)
+          throw new TypeError(
+            `empty bookmark alias`,
           );
         else if (
           !FileManager
@@ -22,18 +22,21 @@ class Bookmark {
             .bookmarkExists(alias)
         )
           throw new ReferenceError(
-            `no bookmark exists in Scriptable with alias: '${alias}'`,
+            `no Scriptable bookmark with alias: '${alias}'`,
           );
         else {
-          this.alias = alias;
-          this.path = FileManager
+          this.alias = alias as stringful;
+
+          const path: string = FileManager
             .iCloud()
             .bookmarkedPath(alias);
 
-          if (this.path === "")
+          if (path.length === 0)
             throw new ReferenceError(
-              `Unexpected: bookmark with alias '${alias}' resolved to empty path even though it exists in Scriptable`,
+              `Unexpected: bookmark with alias '${alias}' resolved to empty path even though the bookmark exists in Scriptable`,
             );
+          else
+            this.path === path as stringful;
         }
       }
     }
