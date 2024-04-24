@@ -36,7 +36,7 @@ class Bookmark {
               `Unexpected: bookmark with alias '${alias}' resolved to empty path even though the bookmark exists in Scriptable`,
             );
           else
-            this.path === path as stringful;
+            this.path = path as stringful;
         }
       }
     }
