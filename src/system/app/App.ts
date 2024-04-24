@@ -106,14 +106,12 @@ abstract class App<
       return this.setOutput(output);
     }
     catch (e) {
-      const f: Error = new Error(
-        `run\n`,
-        { cause: e },
+      throw this.handleError(
+        new Error(
+          `run\n`,
+          { cause: e },
+        ),
       );
-
-      this.handleError(f);
-
-      throw f;
     }
   }
 
@@ -170,7 +168,7 @@ abstract class App<
     }
   }
 
-  protected handleError(e: Error): void {
+  protected handleError(e: Error): string {
     try {
       const stack: string[] = [String(e)];
 
@@ -181,18 +179,19 @@ abstract class App<
         .reverse();
 
       console.error(
-        messages
-          .join("\n"),
+        messages.join("\n"),
       );
 
+      const root: string = messages.shift() ?? "";
       const n: Notification = new Notification();
 
-      n.title = messages.shift() ?? "";
+      n.title = root;
       n.body = messages.join("\n");
       n.sound = "failure";
-      n
-        .schedule()
+      n.schedule()
         .catch(n_e => { throw n_e; });
+
+      return root;
     }
     catch (e) {
       throw new EvalError(
