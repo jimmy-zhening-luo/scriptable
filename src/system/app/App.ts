@@ -108,7 +108,7 @@ abstract class App<
     catch (e) {
       this.handleError(
         new Error(
-          `TOP: ${this.constructor.name}: run`
+          `TOP: ${this.constructor.name}: run`,
           { cause: e },
         ),
       );
