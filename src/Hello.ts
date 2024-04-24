@@ -14,19 +14,26 @@ namespace Hello {
   > {
     public runtime(): string {
       try {
-        const WORLD_FILE: string = "world.txt";
-        const WORLD_PREFIX: string = "World: ";
-        const SPACE_SETTING: string = "space";
-        const hello: stringful = stringful(this.read());
-        const world: stringful = stringful(this.read(WORLD_FILE));
-
-        this.write(
-          WORLD_PREFIX + new Date().toISOString(),
-          WORLD_FILE,
+        const FILENAME_WORLDTIME: string = "world-time.txt";
+        const HELLO: stringful = stringful(
+          this.read(),
+          "hello: default.txt",
+        );
+        const world: stringful = stringful(
+          this.read(FILENAME_WORLDTIME),
+          "world: " + FILENAME_WORLDTIME,
         );
 
-        const space: stringful = stringful(this.app[SPACE_SETTING] ?? "");
-        const message: string = hello + space + world;
+        this.write(
+          `World!\n(${new Date().toISOString()})`,
+          FILENAME_WORLDTIME,
+        );
+
+        const SPACE: stringful = stringful(
+          this.app["space"] ?? "",
+          "app.space",
+        );
+        const message: string = HELLO + SPACE + world;
 
         console.warn(message);
 
