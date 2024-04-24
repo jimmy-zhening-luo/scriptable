@@ -1,4 +1,4 @@
-declare interface SearchInput {
+declare type SearchInput = {
   input: string;
   clip: string;
-}
+};

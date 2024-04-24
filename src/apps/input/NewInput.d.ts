@@ -1,3 +1,3 @@
-declare interface NewInput {
+declare type NewInput = {
   [key: string]: unknown;
-}
+};

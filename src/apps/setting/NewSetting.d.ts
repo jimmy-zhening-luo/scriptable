@@ -1,12 +1,12 @@
-declare interface NewSetting {
+declare type NewSetting = {
   app: NewAppSetting;
   user?: NewUserSetting;
-}
+};
 
-declare interface NewAppSetting {
+declare type NewAppSetting = {
   [key: string]: string;
-}
+};
 
-declare interface NewUserSetting {
+declare type NewUserSetting = {
   [key: string]: string;
-}
+};

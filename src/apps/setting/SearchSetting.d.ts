@@ -1,16 +1,15 @@
-declare interface SearchSettings {
+declare type SearchSettings = {
   app: SearchAppSettings;
   user: SearchUserSettings;
-}
+};
 
-declare interface SearchUserSettings {
+declare type SearchUserSettings = {
   engines: SearchEngineSetting[];
-}
+};
 
-declare interface SearchAppSettings {
+declare type SearchAppSettings = {
   tag: string;
   chat: string;
   translate: string;
   math?: string[];
-
-}
+};

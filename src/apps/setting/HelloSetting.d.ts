@@ -1,7 +1,7 @@
-declare interface HelloSetting {
+declare type HelloSetting = {
   app: NewAppSetting;
-}
+};
 
-declare interface HelloAppSetting {
+declare type HelloAppSetting = {
   space: string;
-}
+};

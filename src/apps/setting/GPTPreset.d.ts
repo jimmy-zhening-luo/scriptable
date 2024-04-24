@@ -1,4 +1,4 @@
-declare interface GPTPreset {
+declare type GPTPreset = {
   system: string;
   user?: string;
-}
+};
