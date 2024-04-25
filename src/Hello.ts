@@ -16,10 +16,7 @@ namespace Hello {
       this.debug = true;
 
       const FILENAME_WORLDTIME: string = "world-time.txt";
-      const HELLO: stringful = stringful(
-        this.read(),
-        "hello: default.txt",
-      );
+      const HELLO: stringful = this.readful();
       const world: string = this.read(
         FILENAME_WORLDTIME,
       );
