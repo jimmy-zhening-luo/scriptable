@@ -9,7 +9,7 @@ class Storage extends stor_Filetype<
   constructor(
     appType: string,
     appName: string,
-    subpath: string = "default.txt",
+    subpath: string,
   ) {
     try {
       super(

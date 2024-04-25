@@ -136,7 +136,7 @@ abstract class App<
   }
 
   public readful(
-    subpath?: string,
+    subpath: string = "default.txt",
   ): ReturnType<Storage["readful"]> {
     try {
       return this
