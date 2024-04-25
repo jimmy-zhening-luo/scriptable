@@ -6,7 +6,7 @@ abstract class Helper<
   C extends Config = NullRecord,
 > extends hp_App<
     "Helper",
-    Nullable<I>,
+    I,
     O,
     C
   > {
