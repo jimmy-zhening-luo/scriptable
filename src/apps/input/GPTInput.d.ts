@@ -1,10 +1,16 @@
-declare type GPTInput = {
+declare type GPTInput =
+  | GPTPrompt
+  | GPTOptions;
+
+declare type GPTPrompt = {
+  system: string;
+  user: string;
+};
+
+declare type GPTOptions = {
   prompt:
     | string
-    | {
-      system: string;
-      user: string;
-    };
+    | GPTPrompt;
   token?: number;
   temperature?: number;
   p?: number;
