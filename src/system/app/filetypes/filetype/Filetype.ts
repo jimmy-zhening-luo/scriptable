@@ -59,11 +59,9 @@ abstract class Filetype<
     }
   }
 
-  public read(): string {
+  public read(error?: boolean): string {
     try {
-      return this._file.isFile
-        ? this._file.read()
-        : "";
+      return this._file.read(error);
     }
     catch (e) {
       throw new EvalError(
@@ -73,9 +71,9 @@ abstract class Filetype<
     }
   }
 
-  public readful(): stringful {
+  public readful(label?: message): stringful {
     try {
-      return this._file.readful();
+      return this._file.readful(label);
     }
     catch (e) {
       throw new EvalError(

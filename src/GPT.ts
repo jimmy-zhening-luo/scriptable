@@ -16,7 +16,7 @@ namespace GPT {
     public runtime(): Nullable<GPTOutput> {
       const s: GPTSetting = this
         .setting
-        .unmerged;
+        .parsed;
       const __i: typeof GPT.prototype.input = this.input ?? "";
       const _i: GPTInput = typeof __i === "string"
         ? { prompt: __i }

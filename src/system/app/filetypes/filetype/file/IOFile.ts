@@ -57,6 +57,18 @@ class IOFile {
     }
   }
 
+  private static get stringful(): typeof Stringful {
+    try {
+      return importModule("./common/types/strings/Stringful") as typeof Stringful;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `IOFile: import Stringful`,
+        { cause: e },
+      );
+    }
+  }
+
   public get path(): string {
     try {
       return this._subpath.prepend(this._root);
@@ -286,14 +298,18 @@ class IOFile {
     }
   }
 
-  public read(): string {
+  public read(error: boolean = false): string {
     try {
-      if (!this.isFile)
-        throw new ReferenceError(
-          `file does not exist`,
-        );
-
-      return this.manager.readString(this.path);
+      if (!this.isFile) {
+        if (error)
+          throw new ReferenceError(
+            `file does not exist`,
+          );
+        else
+          return "";
+      }
+      else
+        return this.manager.readString(this.path);
     }
     catch (e) {
       throw new EvalError(
@@ -303,16 +319,12 @@ class IOFile {
     }
   }
 
-  public readful(): stringful {
+  public readful(label?: string): stringful {
     try {
-      const s: string = this.read();
-
-      if (s.length === 0)
-        throw new TypeError(
-          `empty file`,
-        );
-      else
-        return s as stringful;
+      return IOFile.stringful(
+        this.read(true),
+        label,
+      );
     }
     catch (e) {
       throw new EvalError(

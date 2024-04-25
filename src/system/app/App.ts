@@ -116,11 +116,14 @@ abstract class App<
     }
   }
 
-  public read(subpath?: string): ReturnType<Storage["read"]> {
+  public read(
+    subpath?: string,
+    error?: boolean,
+  ): ReturnType<Storage["read"]> {
     try {
       return this
         .storage(subpath)
-        .read();
+        .read(error);
     }
     catch (e) {
       throw new EvalError(
@@ -130,11 +133,14 @@ abstract class App<
     }
   }
 
-  public readful(subpath?: string): ReturnType<Storage["readful"]> {
+  public readful(
+    subpath?: string,
+    label?: string,
+  ): ReturnType<Storage["readful"]> {
     try {
       return this
         .storage(subpath)
-        .readful();
+        .readful(label);
     }
     catch (e) {
       throw new EvalError(

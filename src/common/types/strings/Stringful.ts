@@ -4,14 +4,14 @@ declare type stringful = Brand<"stringful">;
 
 function Stringful(
   string: string,
-  error?: string,
+  label?: string,
 ): stringful {
   return f_safe<"stringful">(
     string,
     (s: string): boolean =>
       s.length === 0,
-    `stringful: empty string${error !== undefined
-      ? ": " + error
+    `stringful: empty string${label !== undefined
+      ? ": " + label
       : ""}`,
   );
 }

@@ -16,7 +16,7 @@ namespace Search {
       const {
         app,
         user,
-      }: SearchSettings = this.setting.unmerged;
+      }: SearchSettings = this.setting.parsed;
       const TAG: stringful = stringful(
         app.tag,
         "app.tag",
