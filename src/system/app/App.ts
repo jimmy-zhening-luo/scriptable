@@ -117,13 +117,15 @@ abstract class App<
   }
 
   public read(
-    subpath?: string,
+    eSubpath?: boolean | string,
     error?: boolean,
   ): ReturnType<Storage["read"]> {
     try {
-      return this
-        .storage(subpath)
-        .read(error);
+      return eSubpath === undefined
+        ? this.storage().read()
+        : typeof eSubpath === "boolean"
+          ? this.storage().read(eSubpath)
+          : this.storage(eSubpath).read(error);
     }
     catch (e) {
       throw new EvalError(
@@ -135,12 +137,11 @@ abstract class App<
 
   public readful(
     subpath?: string,
-    label?: string,
   ): ReturnType<Storage["readful"]> {
     try {
       return this
         .storage(subpath)
-        .readful(label);
+        .readful(subpath);
     }
     catch (e) {
       throw new EvalError(
