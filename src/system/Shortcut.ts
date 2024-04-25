@@ -6,7 +6,7 @@ abstract class Shortcut<
   C extends Config = NullRecord,
 > extends sh_App<
     "Shortcut",
-    string | Nullable<I>,
+    string | I,
     O,
     C
   > {
@@ -17,7 +17,7 @@ abstract class Shortcut<
     );
   }
 
-  public get input(): string | Nullable<I> {
+  public get input(): Nullable<string | I> {
     try {
       if (this._input === undefined) {
         const flat: unknown = Array.isArray(args.shortcutParameter)
