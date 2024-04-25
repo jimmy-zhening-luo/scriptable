@@ -71,7 +71,7 @@ abstract class Filetype<
     }
   }
 
-  public readful(label?: message): stringful {
+  public readful(label?: string): stringful {
     try {
       return this._file.readful(label);
     }
