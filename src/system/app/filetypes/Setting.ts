@@ -31,7 +31,7 @@ class Setting<
     try {
       if (this._cachedSetting === undefined) {
         const parsedJson: unknown = JSON.parse(
-          this.readful("setting.json"),
+          this.readful(),
         );
 
         if (parsedJson !== undefined)
