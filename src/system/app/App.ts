@@ -136,12 +136,12 @@ abstract class App<
   }
 
   public readful(
-    subpath: string = "default.txt",
+    subpath?: string,
   ): ReturnType<Storage["readful"]> {
     try {
       return this
         .storage(subpath)
-        .readful(subpath);
+        .readful();
     }
     catch (e) {
       throw new EvalError(

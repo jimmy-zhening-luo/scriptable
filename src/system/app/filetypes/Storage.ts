@@ -9,15 +9,19 @@ class Storage extends stor_Filetype<
   constructor(
     appType: string,
     appName: string,
-    subpath: string,
+    subpath?: string,
   ) {
     try {
+      const subpathful: stringful = subpath !== undefined && subpath.length !== 0
+        ? subpath as stringful
+        : "default.txt" as stringful;
+
       super(
         "Storage",
         Storage.IOFile,
         appType,
         appName,
-        subpath,
+        subpathful,
       );
     }
     catch (e) {

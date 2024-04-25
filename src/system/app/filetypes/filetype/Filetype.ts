@@ -71,9 +71,9 @@ abstract class Filetype<
     }
   }
 
-  public readful(label?: string): stringful {
+  public readful(): stringful {
     try {
-      return this._file.readful(label);
+      return this._file.readful(this.subpath);
     }
     catch (e) {
       throw new EvalError(
