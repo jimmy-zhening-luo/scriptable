@@ -1,15 +1,12 @@
 abstract class Filetype<
   Class extends string,
-  F extends IFile = ReadOnlyFile,
-  FC extends new (
-    ...args: ConstructorParameters<FC>
-  ) => F = F extends ReadOnlyFile ? typeof ReadOnlyFile : never,
+  F extends ReadOnlyFile | WriteFile = ReadOnlyFile,
 > {
   protected readonly _file: F;
 
   constructor(
     _class: Class extends "" ? never : Class,
-    FileConstructor: FC,
+    FileConstructor: F extends ReadOnlyFile ? typeof ReadOnlyFile : typeof WriteFile,
     ...subpaths: string[]
   ) {
     try {
