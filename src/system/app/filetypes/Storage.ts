@@ -4,7 +4,8 @@ const stor_Filetype: typeof Filetype = importModule(
 
 class Storage extends stor_Filetype<
   "Storage",
-  WriteFile
+  WriteFile,
+  typeof WriteFile
 > {
   constructor(
     appType: string,
