@@ -1,33 +1,33 @@
-class IOFile {
-  public readonly name: string = "IOFile";
+class IFile {
+  public readonly name: string = "IFile";
   protected readonly manager: FileManager = FileManager.iCloud();
   private readonly _root: string;
   private _subpath: Filepath;
 
   constructor(
     root:
-      | IOFile
-      | { file: IOFile; rootOnly: boolean }
+      | IFile
+      | { file: IFile; rootOnly: boolean }
       | Bookmark
       | ConstructorParameters<typeof Filepath>[0],
     ...subpaths: ConstructorParameters<typeof Filepath>
   ) {
     try {
-      this._root = root instanceof IOFile || root instanceof IOFile.Bookmark
+      this._root = root instanceof IFile || root instanceof IFile.Bookmark
         ? root.path
         : typeof root === "object" && "file" in root && "rootOnly" in root
           ? root.rootOnly
             ? root.file._root
             : root.file.path
-          : new IOFile
+          : new IFile
             .Filepath(root)
             .toString();
-      this._subpath = new IOFile
+      this._subpath = new IFile
         .Filepath(...subpaths);
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: ctor`,
+        `IFile: ctor`,
         { cause: e },
       );
     }
@@ -39,7 +39,7 @@ class IOFile {
     }
     catch (e) {
       throw new ReferenceError(
-        `IOFile: import Bookmark`,
+        `IFile: import Bookmark`,
         { cause: e },
       );
     }
@@ -51,7 +51,7 @@ class IOFile {
     }
     catch (e) {
       throw new ReferenceError(
-        `IOFile: import Filepath`,
+        `IFile: import Filepath`,
         { cause: e },
       );
     }
@@ -63,7 +63,7 @@ class IOFile {
     }
     catch (e) {
       throw new ReferenceError(
-        `IOFile: import Stringful`,
+        `IFile: import Stringful`,
         { cause: e },
       );
     }
@@ -75,7 +75,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: path`,
+        `IFile: path`,
         { cause: e },
       );
     }
@@ -87,7 +87,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: subpath`,
+        `IFile: subpath`,
         { cause: e },
       );
     }
@@ -99,7 +99,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: exists`,
+        `IFile: exists`,
         { cause: e },
       );
     }
@@ -111,7 +111,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: isFile`,
+        `IFile: isFile`,
         { cause: e },
       );
     }
@@ -123,7 +123,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: isDirectory`,
+        `IFile: isDirectory`,
         { cause: e },
       );
     }
@@ -135,7 +135,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: isRoot`,
+        `IFile: isRoot`,
         { cause: e },
       );
     }
@@ -152,7 +152,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: isLeaf`,
+        `IFile: isLeaf`,
         { cause: e },
       );
     }
@@ -161,7 +161,7 @@ class IOFile {
   public get root(): this {
     try {
       return new (this.constructor as new (
-        ...args: ConstructorParameters<typeof IOFile>
+        ...args: ConstructorParameters<typeof IFile>
       )=> this)({
         file: this,
         rootOnly: true,
@@ -169,7 +169,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: root`,
+        `IFile: root`,
         { cause: e },
       );
     }
@@ -178,7 +178,7 @@ class IOFile {
   public get parent(): this {
     try {
       return new (this.constructor as new (
-        ...args: ConstructorParameters<typeof IOFile>
+        ...args: ConstructorParameters<typeof IFile>
       )=> this)(
         this.root,
         this._subpath.parent,
@@ -186,7 +186,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: parent`,
+        `IFile: parent`,
         { cause: e },
       );
     }
@@ -200,13 +200,13 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: ls`,
+        `IFile: ls`,
         { cause: e },
       );
     }
   }
 
-  public get descendants(): IOFile[] {
+  public get descendants(): IFile[] {
     try {
       return this.isFile
         ? [this]
@@ -229,7 +229,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: descendants`,
+        `IFile: descendants`,
         { cause: e },
       );
     }
@@ -237,12 +237,12 @@ class IOFile {
 
   public set subpath(subpath: ConstructorParameters<typeof Filepath>[1]) {
     try {
-      this._subpath = new IOFile
+      this._subpath = new IFile
         .Filepath(subpath);
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: subpath`,
+        `IFile: subpath`,
         { cause: e },
       );
     }
@@ -254,12 +254,12 @@ class IOFile {
         instance !== null
         && typeof instance === "object"
         && "name" in instance
-        && (instance as IOFile).name === "IOFile"
+        && (instance as IFile).name === "IFile"
       );
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: [Symbol.hasInstance]`,
+        `IFile: [Symbol.hasInstance]`,
         { cause: e },
       );
     }
@@ -268,7 +268,7 @@ class IOFile {
   public append(...filepaths: Parameters<typeof Filepath.prototype.append>): this {
     try {
       return new (this.constructor as new (
-        ...args: ConstructorParameters<typeof IOFile>
+        ...args: ConstructorParameters<typeof IFile>
       )=> this)(
         this,
         this
@@ -278,7 +278,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: append`,
+        `IFile: append`,
         { cause: e },
       );
     }
@@ -292,7 +292,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: cd`,
+        `IFile: cd`,
         { cause: e },
       );
     }
@@ -313,7 +313,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: read: ${this.path}`,
+        `IFile: read: ${this.path}`,
         { cause: e },
       );
     }
@@ -321,14 +321,14 @@ class IOFile {
 
   public readful(label?: string): stringful {
     try {
-      return IOFile.stringful(
+      return IFile.stringful(
         this.read(true),
         label,
       );
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: readful: ${this.path}`,
+        `IFile: readful: ${this.path}`,
         { cause: e },
       );
     }
@@ -407,7 +407,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: write: ${this.path}`,
+        `IFile: write: ${this.path}`,
         { cause: e },
       );
     }
@@ -467,7 +467,7 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: delete: ${this.path}`,
+        `IFile: delete: ${this.path}`,
         { cause: e },
       );
     }
@@ -479,11 +479,11 @@ class IOFile {
     }
     catch (e) {
       throw new EvalError(
-        `IOFile: toString`,
+        `IFile: toString`,
         { cause: e },
       );
     }
   }
 }
 
-module.exports = IOFile;
+module.exports = IFile;

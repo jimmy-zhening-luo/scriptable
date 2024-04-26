@@ -4,21 +4,23 @@ const stor_Filetype: typeof Filetype = importModule(
 
 class Storage extends stor_Filetype<
   "Storage",
-  typeof IOFile
+  WriteFile
 > {
   constructor(
     appType: string,
     appName: string,
     subpath?: string,
+    extension?: string,
   ) {
     try {
       const subpathful: stringful = subpath !== undefined && subpath.length !== 0
         ? subpath as stringful
-        : "default.txt" as stringful;
+        : "default" as stringful;
 
+      const ext: string = subpathful.contains
       super(
         "Storage",
-        Storage.IOFile,
+        Storage.WriteFile,
         appType,
         appName,
         subpathful,
@@ -34,7 +36,7 @@ class Storage extends stor_Filetype<
 
   public write(
     text: string,
-    overwrite: Parameters<IOFile["write"]>[1] = true,
+    overwrite: Parameters<WriteFile["write"]>[1] = true,
   ): this {
     try {
       this._file.write(

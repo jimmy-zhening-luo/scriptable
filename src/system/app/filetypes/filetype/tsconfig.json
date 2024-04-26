@@ -7,7 +7,7 @@
   ],
   "references": [
     {
-      "path": "file/tsconfig.json"
+      "path": "files/tsconfig.json"
     },
     {
       "path": "../../../../common/validators/filepath/tsconfig.json"

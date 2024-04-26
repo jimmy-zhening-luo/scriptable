@@ -14,7 +14,7 @@ class Setting<
     try {
       super(
         "Setting",
-        Setting.ReadOnlyIOFile,
+        Setting.ReadOnlyFile,
         appType,
         appName + ".json",
       );

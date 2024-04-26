@@ -2,9 +2,16 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
+    "../../../../../../common/validators/filepath/**/*",
     "../../../../../../common/types/**/*"
   ],
   "references": [
+    {
+      "path": "bookmark/tsconfig.json"
+    },
+    {
+      "path": "../../../../../../common/validators/filepath/tsconfig.json"
+    },
     {
       "path": "../../../../../../common/types/tsconfig.json"
     }

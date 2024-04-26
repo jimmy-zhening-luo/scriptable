@@ -1,12 +1,12 @@
 abstract class Filetype<
   Class extends string,
-  F extends typeof IOFile = typeof ReadOnlyIOFile,
+  F extends IFile = ReadOnlyFile,
 > {
-  protected readonly _file: IOFile;
+  protected readonly _file: F;
 
   constructor(
     _class: Class extends "" ? never : Class,
-    FileConstructor: F,
+    FileConstructor: typeof F,
     ...subpaths: string[]
   ) {
     try {
@@ -23,25 +23,25 @@ abstract class Filetype<
     }
   }
 
-  protected static get ReadOnlyIOFile(): typeof ReadOnlyIOFile {
+  protected static get ReadOnlyFile(): typeof ReadOnlyFile {
     try {
-      return importModule("file/ReadOnlyIOFile") as typeof ReadOnlyIOFile;
+      return importModule("files/ReadOnlyFile") as typeof ReadOnlyFile;
     }
     catch (e) {
       throw new ReferenceError(
-        `Filetype: import ReadOnlyIOFile`,
+        `Filetype: import ReadOnlyFile`,
         { cause: e },
       );
     }
   }
 
-  protected static get IOFile(): typeof IOFile {
+  protected static get WriteFile(): typeof WriteFile {
     try {
-      return importModule("file/IOFile") as typeof IOFile;
+      return importModule("files/WriteFile") as typeof WriteFile;
     }
     catch (e) {
       throw new ReferenceError(
-        `Filetype: import IOFile`,
+        `Filetype: import WriteFile`,
         { cause: e },
       );
     }
@@ -102,7 +102,7 @@ abstract class Filetype<
           `Expected app child type name; instead, type is empty`,
         );
       else
-        return new Filetype.IOFile.Bookmark("#" + _type);
+        return new Filetype.WriteFile.Bookmark("#" + _type);
     }
     catch (e) {
       throw new EvalError(
