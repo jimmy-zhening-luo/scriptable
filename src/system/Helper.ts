@@ -11,7 +11,7 @@ abstract class Helper<
     C
   > {
   private readonly _input: Helper<I>["input"];
-  
+
   constructor(input?: I) {
     super("Helper");
     this._input = input ?? null;

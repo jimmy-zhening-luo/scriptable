@@ -1,4 +1,4 @@
-class IFile {
+abstract class IFile {
   public readonly name: string = "IFile";
   protected readonly manager: FileManager = FileManager.iCloud();
   private readonly _root: string;
@@ -417,49 +417,30 @@ class IFile {
     try {
       if (this.exists) {
         if (force)
-          __deleteUsingFileManager(this.path);
+          this.manager.remove(this.path);
         else {
-          const confirm: Alert = new Alert();
+          const prompt: Alert = new Alert();
 
-          confirm
-            .message = `Are you sure you want to delete this file or folder (including all descendants)? Path: ${this.path}`;
-          confirm
+          prompt
+            .message = `Permanently delete?\n${this.path}`;
+          prompt
             .addDestructiveAction(
-              "Yes, DELETE this file",
+              "DELETE",
             );
-          confirm
+          prompt
             .addCancelAction(
               "Cancel",
             );
-          await confirm
+          await prompt
             .present()
             .then(userChoice => {
               userChoice === 0
-                ? __deleteUsingFileManager(
-                  this.path,
-                )
+                ? this.manager.remove(this.path)
                 : console
                   .warn(
-                    `User canceled file deletion of file or folder at path: ${this.path}`,
+                    `Canceled by user, did NOT delete:\n${this.path}`,
                   );
             });
-        }
-      }
-
-      function __deleteUsingFileManager(path: string): void {
-        try {
-          FileManager.iCloud().remove(path);
-
-          if (FileManager.iCloud().fileExists(path))
-            throw new ReferenceError(
-              `Unexpected: FileManager deleted file, but file still exists`,
-            );
-        }
-        catch (e) {
-          throw new EvalError(
-            `__deleteUsingFileManager`,
-            { cause: e },
-          );
         }
       }
 

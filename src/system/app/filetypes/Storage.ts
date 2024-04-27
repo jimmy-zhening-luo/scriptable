@@ -4,21 +4,18 @@ const stor_Filetype: typeof Filetype = importModule(
 
 class Storage extends stor_Filetype<
   "Storage",
-  WriteFile,
-  typeof WriteFile
+  WriteFile
 > {
   constructor(
     appType: string,
     appName: string,
     subpath?: string,
-    extension?: string,
   ) {
     try {
       const subpathful: stringful = subpath !== undefined && subpath.length !== 0
         ? subpath as stringful
         : "default" as stringful;
 
-      const ext: string = subpathful.contains
       super(
         "Storage",
         Storage.WriteFile,

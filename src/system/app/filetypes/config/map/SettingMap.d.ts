@@ -1,1 +1,3 @@
-declare type SettingMap = Record<string, SettingValue>;
+declare interface SettingMap {
+  [key: string]: SettingValue;
+}

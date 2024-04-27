@@ -203,9 +203,9 @@ namespace Search {
               ? [TRANSLATE]
               : t_0.startsWith(TRANSLATE)
                 ? t_0.slice(
-                    TRANSLATE.length,
-                    TRANSLATE.length + LANG.length,
-                  ) === LANG
+                  TRANSLATE.length,
+                  TRANSLATE.length + LANG.length,
+                ) === LANG
                   ? [
                       TRANSLATE,
                       tokens
@@ -219,10 +219,10 @@ namespace Search {
                         ...tokens.shift()!.length > TRANSLATE.length + LANG.length
                           ? [
                               t_0.slice(
-                                TRANSLATE.length + LANG.length
+                                TRANSLATE.length + LANG.length,
                               ) as stringful,
                             ]
-                          : []
+                          : [],
                       ]
                     : []
                 : []
@@ -463,7 +463,7 @@ namespace Search {
 
     protected override transform(query: Query): string[] {
       try {
-        const OP: string = "+"; //static
+        const OP: string = "+";
         const ENCODED_OP: string = "%2B";
         const encodedQuery: string = query
           .terms

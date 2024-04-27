@@ -107,10 +107,12 @@ abstract class App<
       return this.setOutput(output);
     }
     catch (e) {
-      throw this.handleError(
-        new Error(
-          `run\n`,
-          { cause: e },
+      throw new Error(
+        this.handleError(
+          new Error(
+            `run\n`,
+            { cause: e },
+          ),
         ),
       );
     }
@@ -122,10 +124,13 @@ abstract class App<
   ): ReturnType<Storage["read"]> {
     try {
       return eSubpath === undefined
-        ? this.storage().read()
+        ? this.storage()
+          .read()
         : typeof eSubpath === "boolean"
-          ? this.storage().read(eSubpath)
-          : this.storage(eSubpath).read(error);
+          ? this.storage()
+            .read(eSubpath)
+          : this.storage(eSubpath)
+            .read(error);
     }
     catch (e) {
       throw new EvalError(
