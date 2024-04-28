@@ -9,7 +9,7 @@ abstract class IFile {
       | IFile
       | { file: IFile; rootOnly: boolean }
       | Bookmark
-      | ConstructorParameters<typeof Rootpath>[0],
+      | ConstructorParameters<typeof IFilepath>[0],
     ...subpaths: ConstructorParameters<typeof IFilepath>
   ) {
     try {
