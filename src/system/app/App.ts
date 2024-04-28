@@ -178,7 +178,7 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: storage.read`,
+        `App: read`,
         { cause: e },
       );
     }
@@ -194,7 +194,7 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: storage.readful`,
+        `App: readful`,
         { cause: e },
       );
     }
@@ -217,7 +217,7 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: storage.write`,
+        `App: write`,
         { cause: e },
       );
     }

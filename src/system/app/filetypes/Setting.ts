@@ -16,6 +16,7 @@ class Setting<
         "Setting",
         Setting.ReadOnlyFile,
         appClass,
+        app,
         app + ".json",
       );
     }
