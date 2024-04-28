@@ -5,6 +5,7 @@ abstract class App<
   C extends ISetting = NullRecord,
 > {
   protected readonly _class: stringful;
+  private readonly _t0: number = new Date().getTime();
 
   constructor(
     _class: Class extends "" ? never : Class,
@@ -123,7 +124,7 @@ abstract class App<
 
   public run(): Nullable<O> {
     try {
-      const begin: Date = new Date();
+      const _t1: number = new Date().getTime();
       let _output: Nullable<O> = null;
 
       try {
@@ -131,7 +132,7 @@ abstract class App<
       }
       catch (e) {
         throw new Error(
-          `${this.constructor.name}: runtime`,
+          `${this.name}: runtime`,
           { cause: e },
         );
       }
@@ -139,11 +140,11 @@ abstract class App<
       const output: Nullable<O> = _output;
 
       if (this.debug) {
-        const end: Date = new Date();
+        const _t2: number = new Date().getTime();
 
         this.write(
-          `${end.toISOString()}: ${end.getTime() - begin.getTime()} ms`,
-          "_runtime.txt",
+          `${new Date().toISOString()}:: ${_t2 - _t1} ms : ${_t2 - this._t0} ms`,
+          `_${this.name}_runtime.txt`,
           "line",
         );
       }
