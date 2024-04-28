@@ -13,17 +13,15 @@ abstract class IFile {
     ...subpaths: ConstructorParameters<typeof Filepath>
   ) {
     try {
-      this._root = root instanceof IFile
+      this._root = root instanceof IFile || root instanceof IFile.Bookmark
         ? root.path
-        : root instanceof IFile.Bookmark
-          ? root.path
-          : typeof root === "object" && "file" in root && "rootOnly" in root
-            ? root.rootOnly
-              ? root.file._root
-              : root.file.path
-            : new IFile
-              .Rootpath(root)
-              .toString();
+        : typeof root === "object" && "file" in root && "rootOnly" in root
+          ? root.rootOnly
+            ? root.file._root
+            : root.file.path
+          : new IFile
+            .Rootpath(root)
+            .toString();
       this._subpath = new IFile
         .Subpath(...subpaths);
     }
