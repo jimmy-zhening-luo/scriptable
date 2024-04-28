@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+    "../typeful/**/*"
+  ],
+  "references": [
+    {
+      "path": "../typeful/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../.."
+  }
+}

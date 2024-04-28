@@ -73,7 +73,7 @@ abstract class IFile {
 
   private static get stringful(): typeof Stringful {
     try {
-      return importModule("./common/types/literal/Stringful") as typeof Stringful;
+      return importModule("./common/types/literal/string/Stringful") as typeof Stringful;
     }
     catch (e) {
       throw new ReferenceError(
