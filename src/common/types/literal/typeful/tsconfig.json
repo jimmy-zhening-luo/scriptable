@@ -5,10 +5,10 @@
   ],
   "references": [
     {
-      "path": "brand/tsconfig.json"
+      "path": "rejector/tsconfig.json"
     },
     {
-      "path": "rejector/tsconfig.json"
+      "path": "brand/tsconfig.json"
     }
   ],
   "compilerOptions": {

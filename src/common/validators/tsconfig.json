@@ -6,10 +6,10 @@
   ],
   "references": [
     {
-      "path": "filepaths/tsconfig.json"
+      "path": "../types/tsconfig.json"
     },
     {
-      "path": "../types/tsconfig.json"
+      "path": "filepaths/tsconfig.json"
     }
   ],
   "compilerOptions": {

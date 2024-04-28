@@ -5,13 +5,13 @@
   ],
   "references": [
     {
-      "path": "input/tsconfig.json"
+      "path": "setting/tsconfig.json"
     },
     {
       "path": "output/tsconfig.json"
     },
     {
-      "path": "setting/tsconfig.json"
+      "path": "input/tsconfig.json"
     }
   ],
   "compilerOptions": {

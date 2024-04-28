@@ -6,13 +6,13 @@
   ],
   "references": [
     {
-      "path": "filetypes/tsconfig.json"
+      "path": "../../common/tsconfig.json"
     },
     {
       "path": "browsers/tsconfig.json"
     },
     {
-      "path": "../../common/tsconfig.json"
+      "path": "filetypes/tsconfig.json"
     }
   ],
   "compilerOptions": {

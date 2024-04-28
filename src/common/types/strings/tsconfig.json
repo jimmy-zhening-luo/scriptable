@@ -6,13 +6,13 @@
   ],
   "references": [
     {
-      "path": "charstrings/tsconfig.json"
+      "path": "../literal/tsconfig.json"
     },
     {
       "path": "splitter/tsconfig.json"
     },
     {
-      "path": "../literal/tsconfig.json"
+      "path": "charstrings/tsconfig.json"
     }
   ],
   "compilerOptions": {

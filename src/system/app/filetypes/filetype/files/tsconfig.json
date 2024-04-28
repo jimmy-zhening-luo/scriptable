@@ -7,13 +7,13 @@
   ],
   "references": [
     {
-      "path": "file/tsconfig.json"
-    },
-    {
       "path": "../../../../../common/validators/filepaths/tsconfig.json"
     },
     {
       "path": "../../../../../common/types/tsconfig.json"
+    },
+    {
+      "path": "file/tsconfig.json"
     }
   ],
   "compilerOptions": {

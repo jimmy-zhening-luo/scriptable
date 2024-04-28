@@ -6,10 +6,10 @@
   ],
   "references": [
     {
-      "path": "charset/tsconfig.json"
+      "path": "../../../literal/tsconfig.json"
     },
     {
-      "path": "../../../literal/tsconfig.json"
+      "path": "charset/tsconfig.json"
     }
   ],
   "compilerOptions": {

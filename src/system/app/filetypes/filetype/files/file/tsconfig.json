@@ -7,13 +7,13 @@
   ],
   "references": [
     {
-      "path": "bookmark/tsconfig.json"
-    },
-    {
       "path": "../../../../../../common/validators/filepaths/tsconfig.json"
     },
     {
       "path": "../../../../../../common/types/tsconfig.json"
+    },
+    {
+      "path": "bookmark/tsconfig.json"
     }
   ],
   "compilerOptions": {

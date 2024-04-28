@@ -5,13 +5,13 @@
   ],
   "references": [
     {
-      "path": "typeful/tsconfig.json"
+      "path": "number/tsconfig.json"
     },
     {
       "path": "string/tsconfig.json"
     },
     {
-      "path": "number/tsconfig.json"
+      "path": "typeful/tsconfig.json"
     }
   ],
   "compilerOptions": {
