@@ -15,8 +15,8 @@ class Setting<
   ) {
     try {
       super(
-        "Setting",
         Setting.ReadOnlyFile,
+        "Setting",
         appClass,
         app + ".json",
       );

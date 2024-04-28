@@ -14,8 +14,8 @@ class Storage<Class extends string> extends stor_Filetype<
   ) {
     try {
       super(
-        "Storage",
         Storage.WriteFile,
+        "Storage",
         appClass,
         app,
         filename,

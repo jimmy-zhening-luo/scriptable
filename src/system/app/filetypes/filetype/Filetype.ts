@@ -6,8 +6,8 @@ abstract class Filetype<
   protected readonly _file: F;
 
   constructor(
-    filetype: Type extends "" ? never : Type,
     File: new(...args: ConstructorParameters<typeof IFile>)=> IFile & F,
+    filetype: literalful<Type>,
     appClass: literalful<Class>,
     ...subpaths: string[]
   ) {
@@ -98,7 +98,7 @@ abstract class Filetype<
     }
   }
 
-  private _rootBookmark(_type: Type): Bookmark {
+  private _rootBookmark(_type: literalful<Type>): Bookmark {
     try {
       if (_type === "")
         throw new SyntaxError(
