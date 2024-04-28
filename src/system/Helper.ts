@@ -3,7 +3,7 @@ const hp_App: typeof App = importModule("app/App") as typeof App;
 abstract class Helper<
   I extends Nullable<Definite> = null,
   O extends Nullable<Definite> = null,
-  C extends Config = NullRecord,
+  C extends ISetting = NullRecord,
 > extends hp_App<
     "Helper",
     I,

@@ -3,20 +3,20 @@ const set_Filetype: typeof Filetype = importModule(
 ) as typeof Filetype;
 
 class Setting<
-  C extends Config = Record<string, never>,
+  C extends ISetting = Record<string, never>,
 > extends set_Filetype<
     "Setting"
   > {
   constructor(
-    appType: string,
-    appName: string,
+    appClass: stringful,
+    app: stringful,
   ) {
     try {
       super(
         "Setting",
         Setting.ReadOnlyFile,
-        appType,
-        appName + ".json",
+        appClass,
+        app + ".json",
       );
     }
     catch (e) {
@@ -84,6 +84,12 @@ class Setting<
         { cause: e },
       );
     }
+  }
+
+  public write(): never {
+    throw new ReferenceError(
+      `Setting: write: Forbidden: Setting files are readonly`,
+    );
   }
 
   private _cachedSetting?: C;

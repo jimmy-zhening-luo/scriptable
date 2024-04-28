@@ -1,29 +1,31 @@
 abstract class IFile {
   public readonly name: string = "IFile";
   protected readonly manager: FileManager = FileManager.iCloud();
-  private readonly _root: string;
-  private _subpath: Filepath;
+  private readonly _root: stringful;
+  private _subpath: Subpath;
 
   constructor(
     root:
       | IFile
       | { file: IFile; rootOnly: boolean }
       | Bookmark
-      | ConstructorParameters<typeof Filepath>[0],
+      | ConstructorParameters<typeof Rootpath>[0],
     ...subpaths: ConstructorParameters<typeof Filepath>
   ) {
     try {
-      this._root = root instanceof IFile || root instanceof IFile.Bookmark
+      this._root = root instanceof IFile
         ? root.path
-        : typeof root === "object" && "file" in root && "rootOnly" in root
-          ? root.rootOnly
-            ? root.file._root
-            : root.file.path
-          : new IFile
-            .Filepath(root)
-            .toString();
+        : root instanceof IFile.Bookmark
+          ? root.path
+          : typeof root === "object" && "file" in root && "rootOnly" in root
+            ? root.rootOnly
+              ? root.file._root
+              : root.file.path
+            : new IFile
+              .Rootpath(root)
+              .toString();
       this._subpath = new IFile
-        .Filepath(...subpaths);
+        .Subpath(...subpaths);
     }
     catch (e) {
       throw new EvalError(
@@ -45,13 +47,25 @@ abstract class IFile {
     }
   }
 
-  private static get Filepath(): typeof Filepath {
+  private static get Rootpath(): typeof Rootpath {
     try {
-      return importModule("./common/validators/filepath/Filepath") as typeof Filepath;
+      return importModule("./common/validators/filepath/Rootpath") as typeof Rootpath;
     }
     catch (e) {
       throw new ReferenceError(
-        `IFile: import Filepath`,
+        `IFile: import Rootpath`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static get Subpath(): typeof Subpath {
+    try {
+      return importModule("./common/validators/filepath/Subpath") as typeof Subpath;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `IFile: import Subpath`,
         { cause: e },
       );
     }
@@ -59,7 +73,7 @@ abstract class IFile {
 
   private static get stringful(): typeof Stringful {
     try {
-      return importModule("./common/types/strings/Stringful") as typeof Stringful;
+      return importModule("./common/types/literal/Stringful") as typeof Stringful;
     }
     catch (e) {
       throw new ReferenceError(
@@ -69,7 +83,7 @@ abstract class IFile {
     }
   }
 
-  public get path(): string {
+  public get path(): stringful {
     try {
       return this._subpath.prepend(this._root);
     }
@@ -238,7 +252,7 @@ abstract class IFile {
   public set subpath(subpath: ConstructorParameters<typeof Filepath>[1]) {
     try {
       this._subpath = new IFile
-        .Filepath(subpath);
+        .Subpath(subpath);
     }
     catch (e) {
       throw new EvalError(
@@ -319,11 +333,11 @@ abstract class IFile {
     }
   }
 
-  public readful(label?: string): stringful {
+  public readful(errorLabel?: string): stringful {
     try {
       return IFile.stringful(
         this.read(true),
-        label,
+        errorLabel,
       );
     }
     catch (e) {
@@ -335,7 +349,7 @@ abstract class IFile {
   }
 
   public write(
-    data: string,
+    text: string,
     overwrite:
       | boolean
       | "overwrite"
@@ -358,10 +372,10 @@ abstract class IFile {
               this.manager.writeString(
                 this.path,
                 overwrite === "append"
-                  ? this.read() + data
+                  ? this.read() + text
                   : overwrite === "line"
-                    ? data + "\n" + this.read()
-                    : data,
+                    ? text + "\n" + this.read()
+                    : text,
               );
 
               return this;
@@ -391,7 +405,7 @@ abstract class IFile {
           try {
             this.manager.writeString(
               this.path,
-              data,
+              text,
             );
 
             return this;
@@ -454,7 +468,7 @@ abstract class IFile {
     }
   }
 
-  public toString(): string {
+  public toString(): stringful {
     try {
       return this.path;
     }

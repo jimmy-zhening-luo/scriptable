@@ -1,38 +1,36 @@
-class ValidString {
-  public readonly cleaned: string;
-  private readonly _charString: BoundedRepeatCharString;
+class ValidString<Brand extends string> {
+  public readonly string: CharStringful<Brand>["string"];
 
   constructor(
-    candidate: string,
+    input: string,
     {
-      min = 0,
+      min = 1,
       max = Infinity,
       negate = false,
-      allowedChars = [],
+      chars = [],
     }: {
       min?: number;
       max?: number;
       negate?: boolean;
-      allowedChars?: Array<
-        ConstructorParameters<typeof BoundedRepeatCharString>[4]
+      chars?: Array<
+        ConstructorParameters<typeof CharSet>[1]
       >;
     } = {},
-    cleanOptions: Parameters<typeof ValidString._clean>[1] = {},
+    cleanOptions: Parameters<typeof ValidString.clean>[1] = {},
   ) {
     try {
-      this.cleaned = ValidString
-        ._clean(
-          candidate,
-          cleanOptions,
-        );
-      this._charString = new ValidString
-        .BoundedRepeatCharString(
-          min,
-          max,
-          this.cleaned,
-          negate,
-          ...allowedChars,
-        );
+      this.string = new ValidString
+        .CharStringful<Brand>(
+        min,
+        max,
+        ValidString
+          .clean(
+            input,
+            cleanOptions,
+          ),
+        negate,
+        ...chars,
+      ).string;
     }
     catch (e) {
       throw new EvalError(
@@ -44,57 +42,29 @@ class ValidString {
 
   public static get CharSet(): typeof CharSet {
     try {
-      return ValidString.BoundedRepeatCharString.CharSet;
+      return ValidString.CharStringful.CharSet;
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidString: import BoundedRepeatCharString.CharSet`,
+        `ValidString: import CharStringful.CharSet`,
         { cause: e },
       );
     }
   }
 
-  private static get BoundedRepeatCharString(): typeof BoundedRepeatCharString {
+  private static get CharStringful(): typeof CharStringful {
     try {
-      return importModule("charstrings/BoundedRepeatCharString") as typeof BoundedRepeatCharString;
+      return importModule("charstrings/CharStringful") as typeof CharStringful;
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidString: import BoundedRepeatCharString`,
+        `ValidString: import CharStringful`,
         { cause: e },
       );
     }
   }
 
-  public get value(): string {
-    return this._charString.value;
-  }
-
-  public get min(): number {
-    try {
-      return this._charString.min;
-    }
-    catch (e) {
-      throw new EvalError(
-        `ValidString: min`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get max(): number {
-    try {
-      return this._charString.max;
-    }
-    catch (e) {
-      throw new EvalError(
-        `ValidString: max`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static _clean(
+  private static clean(
     raw: string,
     {
       toLower = false,
@@ -119,8 +89,8 @@ class ValidString {
       if (trim)
         raw = raw.trim();
 
-      return ValidString.__trimEdge(
-        ValidString.__trimEdge(
+      return ValidString._trimEdge(
+        ValidString._trimEdge(
           raw,
           "leading",
           trimLeading,
@@ -133,13 +103,13 @@ class ValidString {
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: _clean`,
+        `ValidString: clean`,
         { cause: e },
       );
     }
   }
 
-  private static __trimEdge(
+  private static _trimEdge(
     string: string,
     edge: "leading" | "trailing",
     wordsToTrim: string[],
@@ -179,15 +149,15 @@ class ValidString {
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: __trimEdge`,
+        `ValidString: _trimEdge`,
         { cause: e },
       );
     }
   }
 
-  public toString(): string {
+  public toString(): ValidString<Brand>["string"] {
     try {
-      return this.value;
+      return this.string;
     }
     catch (e) {
       throw new EvalError(

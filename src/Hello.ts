@@ -5,7 +5,6 @@
 
 namespace Hello {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
-  const stringful: typeof Stringful = importModule("common/types/strings/Stringful") as typeof Stringful;
 
   export class Hello extends shortcut<
     null,
@@ -13,28 +12,26 @@ namespace Hello {
     HelloSetting
   > {
     public runtime(): string {
-      this.debug = true;
-
-      const FILENAME_WORLDTIME: string = "world-time.txt";
+      const FILE_WORLDTIME: string = "world-time.txt";
       const HELLO: stringful = this.readful();
       const world: string = this.read(
-        FILENAME_WORLDTIME,
+        FILE_WORLDTIME,
       );
-
-      this.write(
-        `World!\n(Previous: ${
-          new Date()
-            .toISOString()
-        })`,
-        FILENAME_WORLDTIME,
-      );
-
-      const SPACE: stringful = stringful(
+      const SPACE: stringful = Hello.stringful(
         this.app["space"] ?? "",
         "app.space",
       );
       const message: string = HELLO + SPACE + world;
 
+      this.debug = true;
+      this.write(
+        `World!\n(Previous: ${
+
+          new Date()
+            .toISOString()
+        })`,
+        FILE_WORLDTIME,
+      );
       console.warn(message);
 
       return message;

@@ -7,21 +7,17 @@ class Storage extends stor_Filetype<
   WriteFile
 > {
   constructor(
-    appType: string,
-    appName: string,
-    subpath?: string,
+    appClass: stringful,
+    app: stringful,
+    filename: string = "default.txt",
   ) {
     try {
-      const subpathful: stringful = subpath !== undefined && subpath.length !== 0
-        ? subpath as stringful
-        : "default" as stringful;
-
       super(
         "Storage",
         Storage.WriteFile,
-        appType,
-        appName,
-        subpathful,
+        appClass,
+        app,
+        filename,
       );
     }
     catch (e) {
@@ -32,14 +28,10 @@ class Storage extends stor_Filetype<
     }
   }
 
-  public write(
-    text: string,
-    overwrite: Parameters<WriteFile["write"]>[1] = true,
-  ): this {
+  public write(...textOptions: Parameters<WriteFile["write"]>): this {
     try {
       this._file.write(
-        text,
-        overwrite,
+        ...textOptions,
       );
 
       return this;

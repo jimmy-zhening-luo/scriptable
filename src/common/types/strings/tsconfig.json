@@ -1,14 +1,18 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "../literal/**/*"
   ],
   "references": [
     {
       "path": "charstrings/tsconfig.json"
     },
     {
-      "path": "safe/tsconfig.json"
+      "path": "splitter/tsconfig.json"
+    },
+    {
+      "path": "../literal/tsconfig.json"
     }
   ],
   "compilerOptions": {

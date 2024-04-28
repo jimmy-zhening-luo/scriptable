@@ -2,12 +2,29 @@ abstract class App<
   Class extends string,
   I extends Nullable<Definite> = null,
   O extends Nullable<Definite> = null,
-  C extends Config = NullRecord,
+  C extends ISetting = NullRecord,
 > {
+  protected readonly _class: stringful;
+
   constructor(
-    protected readonly _class: Class extends "" ? never : Class,
+    _class: Class extends "" ? never : Class,
     protected debug: boolean = false,
-  ) {}
+  ) {
+    try {
+      if (_class === "")
+        throw new TypeError(
+          `Class name is empty`,
+        );
+      else
+        this._class = App.stringful(_class);
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: ctor`,
+        { cause: e },
+      );
+    }
+  }
 
   protected static get Setting(): typeof Setting {
     try {
@@ -33,12 +50,39 @@ abstract class App<
     }
   }
 
+  protected static get stringful(): typeof Stringful {
+    try {
+      return importModule("./common/types/literal/Stringful") as typeof Stringful;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Stringful`,
+        { cause: e },
+      );
+    }
+  }
+
+  public get name(): stringful {
+    try {
+      if (this._name === undefined)
+        this._name = App.stringful(this.constructor.name);
+
+      return this._name;
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: name`,
+        { cause: e },
+      );
+    }
+  }
+
   public get setting(): Setting<C> {
     try {
       if (this._setting === undefined)
         this._setting = new App.Setting(
           this._class,
-          this.constructor.name,
+          this.name,
         );
 
       return this._setting;
@@ -119,17 +163,17 @@ abstract class App<
   }
 
   public read(
-    eSubpath?: boolean | string,
+    filename?: boolean | string,
     error?: boolean,
   ): ReturnType<Storage["read"]> {
     try {
-      return eSubpath === undefined
+      return filename === undefined
         ? this.storage()
           .read()
-        : typeof eSubpath === "boolean"
+        : typeof filename === "boolean"
           ? this.storage()
-            .read(eSubpath)
-          : this.storage(eSubpath)
+            .read(filename)
+          : this.storage(filename)
             .read(error);
     }
     catch (e) {
@@ -141,11 +185,11 @@ abstract class App<
   }
 
   public readful(
-    subpath?: string,
+    filename?: string,
   ): ReturnType<Storage["readful"]> {
     try {
       return this
-        .storage(subpath)
+        .storage(filename)
         .readful();
     }
     catch (e) {
@@ -158,12 +202,12 @@ abstract class App<
 
   public write(
     data: string,
-    subpath?: string,
+    filename?: string,
     overwrite?: Parameters<Storage["write"]>[1],
   ): this {
     try {
       this
-        .storage(subpath)
+        .storage(filename)
         .write(
           data,
           overwrite,
@@ -179,12 +223,14 @@ abstract class App<
     }
   }
 
-  protected storage(subpath?: string): Storage {
+  protected storage(
+    filename?: string,
+  ): Storage {
     try {
       return new App.Storage(
         this._class,
-        this.constructor.name,
-        subpath,
+        this.name,
+        filename,
       );
     }
     catch (e) {
@@ -232,6 +278,7 @@ abstract class App<
 
   protected abstract setOutput(runtimeOutput: Nullable<O>): Nullable<O>;
 
+  private _name?: stringful;
   private _setting?: Setting<C>;
 }
 

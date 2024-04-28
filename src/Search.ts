@@ -5,7 +5,6 @@
 
 namespace Search {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
-  const stringful: typeof Stringful = importModule("common/types/strings/Stringful") as typeof Stringful;
 
   export class Search extends shortcut<
     SearchInput,
@@ -17,21 +16,21 @@ namespace Search {
         app,
         user,
       }: SearchSettings = this.setting.parsed;
-      const TAG: stringful = stringful(
+      const TAG: stringful = Search.stringful(
         app.tag,
         "app.tag",
       );
-      const CHAT: stringful = stringful(
+      const CHAT: stringful = Search.stringful(
         app.chat,
         "app.chat",
       );
-      const TRANSLATE: stringful = stringful(
+      const TRANSLATE: stringful = Search.stringful(
         app.translate,
         "app.translate",
       );
       const MATH: stringful[] = (app.math ?? []).map(
         s =>
-          stringful(
+          Search.stringful(
             s,
             "app.math?",
           ),

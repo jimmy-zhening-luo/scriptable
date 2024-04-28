@@ -5,13 +5,10 @@
   ],
   "references": [
     {
-      "path": "strings/tsconfig.json"
-    },
-    {
-      "path": "literal/tsconfig.json"
+      "path": "typeful/tsconfig.json"
     }
   ],
   "compilerOptions": {
-    "rootDir": "../.."
+    "rootDir": "../../.."
   }
 }

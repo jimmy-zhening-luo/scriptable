@@ -1,17 +1,18 @@
 abstract class Filetype<
-  Class extends string,
+  Type extends string,
   F extends IFile = ReadOnlyFile,
 > {
   protected readonly _file: F;
 
   constructor(
-    _class: Class extends "" ? never : Class,
-    FileConstructor: new(...args: ConstructorParameters<typeof IFile>)=> IFile & F,
+    filetype: Type extends "" ? never : Type,
+    File: new(...args: ConstructorParameters<typeof IFile>)=> IFile & F,
+    protected readonly appClass: stringful,
     ...subpaths: string[]
   ) {
     try {
-      this._file = new FileConstructor(
-        this._rootBookmark(_class),
+      this._file = new File(
+        this._rootBookmark(filetype),
         ...subpaths,
       );
     }
@@ -47,7 +48,7 @@ abstract class Filetype<
     }
   }
 
-  public get subpath(): string {
+  public get subpath(): F["subpath"] {
     try {
       return this._file.subpath;
     }
@@ -59,9 +60,9 @@ abstract class Filetype<
     }
   }
 
-  public read(error?: boolean): string {
+  public read(...error: Parameters<F["read"]>): string {
     try {
-      return this._file.read(error);
+      return this._file.read(...error);
     }
     catch (e) {
       throw new EvalError(
@@ -95,7 +96,7 @@ abstract class Filetype<
     }
   }
 
-  private _rootBookmark(_type: Class): Bookmark {
+  private _rootBookmark(_type: Type): Bookmark {
     try {
       if (_type === "")
         throw new SyntaxError(
@@ -111,6 +112,10 @@ abstract class Filetype<
       );
     }
   }
+
+  public abstract write(
+    ...args: Parameters<F["write"]>
+  ): ReturnType<F["write"]> extends never ? never : Filetype<Type, F>;
 }
 
 module.exports = Filetype;

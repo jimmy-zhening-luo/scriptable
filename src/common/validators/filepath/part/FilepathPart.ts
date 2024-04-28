@@ -1,31 +1,21 @@
-const fpr_ValidString: typeof ValidString = importModule(
+const fp_ValidString: typeof ValidString = importModule(
   "./common/types/strings/ValidString",
 ) as typeof ValidString;
 
-class FilepathPart extends fpr_ValidString {
-  constructor(part: string) {
+class FilepathPart extends fp_ValidString<"FilepathPart"> {
+  constructor(part: stringful) {
     try {
-      if (part.length < 1)
-        throw new RangeError(
-          `path part is empty; expected part length 1-255`,
-        );
-      else if (part.length > 255)
-        throw new RangeError(
-          `path part exceeds 255 chars; expected part length 1-255`,
-        );
-      else
-        super(
-          part,
-          {
-            min: 1,
-            max: 255,
-            negate: true,
-            allowedChars: [
-              ":",
-              "/",
-            ],
-          },
-        );
+      super(
+        part,
+        {
+          max: 255,
+          negate: true,
+          chars: [
+            fp_ValidString.CharSet.colon,
+            fp_ValidString.CharSet.slash,
+          ],
+        },
+      );
     }
     catch (e) {
       throw new EvalError(

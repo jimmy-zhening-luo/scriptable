@@ -1,7 +1,7 @@
 class Bookmark {
   public readonly name: string = "Bookmark";
   public readonly alias: stringful;
-  public readonly path: stringful;
+  public readonly path: ReturnType<Rootpath["toString"]>;
 
   constructor(bookmark: string | Bookmark) {
     try {
@@ -10,39 +10,43 @@ class Bookmark {
         this.path = bookmark.path;
       }
       else {
-        const alias: string = bookmark.trim();
+        this.alias = Bookmark.stringful(
+          bookmark.trim(),
+          "alias.trim()",
+        );
 
-        if (alias.length === 0)
-          throw new TypeError(
-            `empty bookmark alias`,
-          );
-        else if (
+        if (
           !FileManager
             .iCloud()
-            .bookmarkExists(alias)
+            .bookmarkExists(this.alias)
         )
           throw new ReferenceError(
-            `no Scriptable bookmark with alias: '${alias}'`,
+            `no Scriptable bookmark with alias: '${this.alias}'`,
           );
-        else {
-          this.alias = alias as stringful;
-
-          const path: string = FileManager
-            .iCloud()
-            .bookmarkedPath(alias);
-
-          if (path.length === 0)
-            throw new ReferenceError(
-              `Unexpected: bookmark with alias '${alias}' resolved to empty path even though the bookmark exists in Scriptable`,
-            );
-          else
-            this.path = path as stringful;
-        }
+        else
+          this.path = Bookmark.stringful(
+            FileManager
+              .iCloud()
+              .bookmarkedPath(this.alias),
+            "bookmark exists, but resolves to empty path",
+          );
       }
     }
     catch (e) {
       throw new EvalError(
         `Bookmark: ctor`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static get stringful(): typeof Stringful {
+    try {
+      return importModule("./common/types/literal/Stringful") as typeof Stringful;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Bookmark: import Stringful`,
         { cause: e },
       );
     }

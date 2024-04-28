@@ -10,7 +10,7 @@
       "path": "filetype/tsconfig.json"
     },
     {
-      "path": "config/tsconfig.json"
+      "path": "setting/tsconfig.json"
     },
     {
       "path": "../../../common/validators/filepath/tsconfig.json"
