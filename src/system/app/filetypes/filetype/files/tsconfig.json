@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../../../../../common/validators/filepath/**/*",
+    "../../../../../common/validators/filepaths/**/*",
     "../../../../../common/types/**/*"
   ],
   "references": [
@@ -10,7 +10,7 @@
       "path": "file/tsconfig.json"
     },
     {
-      "path": "../../../../../common/validators/filepath/tsconfig.json"
+      "path": "../../../../../common/validators/filepaths/tsconfig.json"
     },
     {
       "path": "../../../../../common/types/tsconfig.json"

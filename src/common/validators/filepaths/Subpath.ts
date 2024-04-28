@@ -1,4 +1,4 @@
-const s_Filepath: typeof Filepath = importModule("Filepath") as typeof Filepath;
+const s_Filepath: typeof Filepath = importModule("filepath/Filepath") as typeof Filepath;
 
 class Subpath extends s_Filepath<false> {
   public isOk(): true {
@@ -7,7 +7,7 @@ class Subpath extends s_Filepath<false> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: isOk`,
+        `Subpath: isOk`,
         { cause: e },
       );
     }

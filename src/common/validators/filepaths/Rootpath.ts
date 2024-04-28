@@ -1,4 +1,4 @@
-const r_Filepath: typeof Filepath = importModule("Filepath") as typeof Filepath;
+const r_Filepath: typeof Filepath = importModule("filepath/Filepath") as typeof Filepath;
 
 class Rootpath extends r_Filepath<true> {
   public isOk(): boolean {
@@ -7,7 +7,7 @@ class Rootpath extends r_Filepath<true> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: isOk`,
+        `Rootpath: isOk`,
         { cause: e },
       );
     }

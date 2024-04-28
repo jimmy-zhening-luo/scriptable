@@ -2,14 +2,14 @@
   "extends": "../tsconfig.json",
   "include": [
     "**/*",
-    "../../../types/**/*"
+    "../../../../types/**/*"
   ],
   "references": [
     {
-      "path": "../../../types/tsconfig.json"
+      "path": "../../../../types/tsconfig.json"
     }
   ],
   "compilerOptions": {
-    "rootDir": "../../../.."
+    "rootDir": "../../../../.."
   }
 }
