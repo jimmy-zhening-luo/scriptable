@@ -1,25 +1,25 @@
-abstract class Filepath<Root extends boolean> {
-  public readonly name: string = "Filepath";
+abstract class IFilepath<Root extends boolean> {
+  public readonly name: string = "IFilepath";
   protected readonly _tree: Array<FilepathPart["string"]>;
 
   constructor(
     ...subpaths: Array<
       | string
       | string[]
-      | Filepath<boolean>
+      | IFilepath<boolean>
     >
   ) {
     try {
-      this._tree = [...Filepath.cleanValidateParts(...subpaths)];
+      this._tree = [...IFilepath.cleanValidateParts(...subpaths)];
 
       if (!this.isOk())
         throw new TypeError(
-          `Invalid Filepath: '${this.toString()}'`,
+          `Invalid IFilepath: '${this.toString()}'`,
         );
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: ctor`,
+        `IFilepath: ctor`,
         { cause: e },
       );
     }
@@ -31,7 +31,7 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new ReferenceError(
-        `Filepath: import Splitterful`,
+        `IFilepath: import Splitterful`,
         { cause: e },
       );
     }
@@ -43,7 +43,7 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new ReferenceError(
-        `Filepath: import FilepathPart`,
+        `IFilepath: import FilepathPart`,
         { cause: e },
       );
     }
@@ -55,7 +55,7 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: tree`,
+        `IFilepath: tree`,
         { cause: e },
       );
     }
@@ -64,7 +64,7 @@ abstract class Filepath<Root extends boolean> {
   public get parent(): this {
     try {
       const parent: this = new (this.constructor as new (
-        ...args: ConstructorParameters<typeof Filepath>
+        ...args: ConstructorParameters<typeof IFilepath>
       )=> this)(
         this,
       );
@@ -75,7 +75,7 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: parent`,
+        `IFilepath: parent`,
         { cause: e },
       );
     }
@@ -89,7 +89,7 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: leaf`,
+        `IFilepath: leaf`,
         { cause: e },
       );
     }
@@ -101,7 +101,7 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: isEmpty`,
+        `IFilepath: isEmpty`,
         { cause: e },
       );
     }
@@ -113,32 +113,32 @@ abstract class Filepath<Root extends boolean> {
         instance !== null
         && typeof instance === "object"
         && "name" in instance
-        && (instance as Filepath<boolean>).name === "Filepath"
+        && (instance as IFilepath<boolean>).name === "IFilepath"
       );
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: [Symbol.hasInstance]`,
+        `IFilepath: [Symbol.hasInstance]`,
         { cause: e },
       );
     }
   }
 
   private static cleanValidateParts(
-    ...subpaths: ConstructorParameters<typeof Filepath>
-  ): ReturnType<typeof Filepath<false>["validateParts"]> {
+    ...subpaths: ConstructorParameters<typeof IFilepath>
+  ): ReturnType<typeof IFilepath<false>["validateParts"]> {
     try {
       const _tree: Array<FilepathPart["string"]> = [];
 
       while (subpaths.length > 0) {
-        const head: Nullable<ConstructorParameters<typeof Filepath>[0]> = subpaths.shift() ?? null;
+        const head: Nullable<ConstructorParameters<typeof IFilepath>[0]> = subpaths.shift() ?? null;
 
         if (head !== null)
           _tree.push(
-            ...head instanceof Filepath
+            ...head instanceof IFilepath
               ? head._tree
-              : Filepath.validateParts(
-                ...Filepath.cleanSplit(
+              : IFilepath.validateParts(
+                ...IFilepath.cleanSplit(
                   head,
                 ),
               ),
@@ -149,7 +149,7 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: cleanValidate`,
+        `IFilepath: cleanValidate`,
         { cause: e },
       );
     }
@@ -159,7 +159,7 @@ abstract class Filepath<Root extends boolean> {
     subpath: string | string[],
   ): stringful[] {
     try {
-      return new Filepath
+      return new IFilepath
         .Splitterful(
           subpath,
           "/",
@@ -169,34 +169,34 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: clean`,
+        `IFilepath: clean`,
         { cause: e },
       );
     }
   }
 
-  private static validateParts(...parts: stringful[]): Filepath<false>["_tree"] {
+  private static validateParts(...parts: stringful[]): IFilepath<false>["_tree"] {
     try {
       return parts
         .map(
           part =>
-            new Filepath
+            new IFilepath
               .FilepathPart(part)
               .string,
         );
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: validate`,
+        `IFilepath: validate`,
         { cause: e },
       );
     }
   }
 
-  public append(...subpaths: ConstructorParameters<typeof Filepath>): this {
+  public append(...subpaths: ConstructorParameters<typeof IFilepath>): this {
     try {
       return new (this.constructor as new (
-        ...args: ConstructorParameters<typeof Filepath>
+        ...args: ConstructorParameters<typeof IFilepath>
       )=> this)(
         this,
         ...subpaths,
@@ -204,7 +204,7 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: append`,
+        `IFilepath: append`,
         { cause: e },
       );
     }
@@ -218,15 +218,15 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: prepend`,
+        `IFilepath: prepend`,
         { cause: e },
       );
     }
   }
 
-  public cd(...relPaths: ConstructorParameters<typeof Filepath>): this {
+  public cd(...relPaths: ConstructorParameters<typeof IFilepath>): this {
     try {
-      const rel: Filepath<boolean>["_tree"] = Filepath.cleanValidateParts(...relPaths);
+      const rel: IFilepath<boolean>["_tree"] = IFilepath.cleanValidateParts(...relPaths);
 
       for (const node of rel) {
         if (node === "..")
@@ -239,7 +239,7 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: cd`,
+        `IFilepath: cd`,
         { cause: e },
       );
     }
@@ -251,7 +251,7 @@ abstract class Filepath<Root extends boolean> {
     }
     catch (e) {
       throw new EvalError(
-        `Filepath: toString`,
+        `IFilepath: toString`,
         { cause: e },
       );
     }
@@ -261,4 +261,4 @@ abstract class Filepath<Root extends boolean> {
   protected abstract isOk(): Root extends true ? boolean : true;
 }
 
-module.exports = Filepath;
+module.exports = IFilepath;

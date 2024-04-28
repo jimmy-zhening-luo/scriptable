@@ -1,4 +1,4 @@
-const r_Filepath: typeof Filepath = importModule("filepath/Filepath") as typeof Filepath;
+const r_Filepath: typeof IFilepath = importModule("filepath/IFilepath") as typeof IFilepath;
 
 class Rootpath extends r_Filepath<true> {
   public isOk(): boolean {

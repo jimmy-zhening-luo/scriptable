@@ -10,7 +10,7 @@ abstract class IFile {
       | { file: IFile; rootOnly: boolean }
       | Bookmark
       | ConstructorParameters<typeof Rootpath>[0],
-    ...subpaths: ConstructorParameters<typeof Filepath>
+    ...subpaths: ConstructorParameters<typeof IFilepath>
   ) {
     try {
       this._root = root instanceof IFile || root instanceof IFile.Bookmark
@@ -247,7 +247,7 @@ abstract class IFile {
     }
   }
 
-  public set subpath(subpath: ConstructorParameters<typeof Filepath>[1]) {
+  public set subpath(subpath: ConstructorParameters<typeof IFilepath>[1]) {
     try {
       this._subpath = new IFile
         .Subpath(subpath);
@@ -277,7 +277,7 @@ abstract class IFile {
     }
   }
 
-  public append(...filepaths: Parameters<typeof Filepath.prototype.append>): this {
+  public append(...filepaths: Parameters<typeof IFilepath.prototype.append>): this {
     try {
       return new (this.constructor as new (
         ...args: ConstructorParameters<typeof IFile>
@@ -296,7 +296,7 @@ abstract class IFile {
     }
   }
 
-  public cd(...relativeFilepath: Parameters<typeof Filepath.prototype.cd>): this {
+  public cd(...relativeFilepath: Parameters<typeof IFilepath.prototype.cd>): this {
     try {
       this._subpath.cd(...relativeFilepath);
 
