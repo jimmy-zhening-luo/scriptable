@@ -1,11 +1,11 @@
-abstract class ISplitter<StringType extends string = string> {
+abstract class ISplitter<StringType extends string> {
   public readonly parts: StringType[];
 
   constructor(
     unmerged: string | string[],
     public readonly separator: string = "",
-    splitOptions: Parameters<ISplitter["splitAggregate"]>[2] = {},
-    aggregateOptions: Parameters<ISplitter["splitAggregate"]>[3] = {},
+    splitOptions: Parameters<ISplitter<StringType>["splitAggregate"]>[2] = {},
+    aggregateOptions: Parameters<ISplitter<StringType>["splitAggregate"]>[3] = {},
   ) {
     try {
       this.separator = separator;
@@ -51,8 +51,8 @@ abstract class ISplitter<StringType extends string = string> {
   private splitAggregate(
     input: string | string[],
     separator: string,
-    splitOptions: Parameters<ISplitter["split"]>[2] = {},
-    aggregateOptions: Parameters<ISplitter["aggregate"]>[2] = {},
+    splitOptions: Parameters<ISplitter<StringType>["split"]>[2] = {},
+    aggregateOptions: Parameters<ISplitter<StringType>["aggregate"]>[2] = {},
   ): StringType[] {
     try {
       return this.aggregate(
