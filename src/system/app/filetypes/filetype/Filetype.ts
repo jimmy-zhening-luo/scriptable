@@ -8,14 +8,12 @@ abstract class Filetype<
     filetype: Type extends "" ? never : Type,
     File: new(...args: ConstructorParameters<typeof IFile>)=> IFile & F,
     appClass: stringful,
-    app: stringful,
     ...subpaths: string[]
   ) {
     try {
       this._file = new File(
         this._rootBookmark(filetype),
         appClass,
-        app,
         ...subpaths,
       );
     }
