@@ -5,6 +5,6 @@
   ],
   "references": [],
   "compilerOptions": {
-    "rootDir": "../../.."
+    "rootDir": "../../../.."
   }
 }
