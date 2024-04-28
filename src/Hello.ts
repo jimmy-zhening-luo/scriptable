@@ -26,7 +26,6 @@ namespace Hello {
       this.debug = true;
       this.write(
         `World!\n(Previous: ${
-
           new Date()
             .toISOString()
         })`,
