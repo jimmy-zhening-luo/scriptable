@@ -255,7 +255,7 @@ class CharSet {
   }
 
   public static get semicolon(): char[] {
-    return [" as char];" as char];
+    return [";" as char];
   }
 
   public static get slash(): char[] {
