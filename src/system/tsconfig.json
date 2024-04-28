@@ -1,8 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*",
-    "../common/**/*"
+    "../common/**/*",
+    "**/*"
   ],
   "references": [
     {

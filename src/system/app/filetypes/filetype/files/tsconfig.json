@@ -1,9 +1,9 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*",
     "../../../../../common/validators/filepaths/**/*",
-    "../../../../../common/types/**/*"
+    "../../../../../common/types/**/*",
+    "**/*"
   ],
   "references": [
     {

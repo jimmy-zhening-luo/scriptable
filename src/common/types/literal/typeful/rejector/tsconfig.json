@@ -1,8 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "**/*",
-    "../brand/**/*"
+    "../brand/**/*",
+    "**/*"
   ],
   "references": [
     {
