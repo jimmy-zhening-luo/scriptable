@@ -1,5 +1,5 @@
 const f_CharString: typeof CharString = importModule(
-  "repeatcharstring/RepeatCharString",
+  "charstring/CharString",
 ) as typeof CharString;
 
 class CharStringful<Brand extends string> extends f_CharString<
