@@ -3,12 +3,14 @@ const set_Filetype: typeof Filetype = importModule(
 ) as typeof Filetype;
 
 class Setting<
+  Class extends string,
   C extends ISetting = Record<string, never>,
 > extends set_Filetype<
+    Class,
     "Setting"
   > {
   constructor(
-    appClass: stringful,
+    appClass: literalful<Class>,
     app: stringful,
   ) {
     try {

@@ -4,29 +4,13 @@ abstract class App<
   O extends Nullable<Definite> = null,
   C extends ISetting = NullRecord,
 > {
-  protected readonly _class: stringful;
   private readonly _t0: number = new Date()
     .getTime();
 
   constructor(
-    _class: Class extends "" ? never : Class,
+    protected readonly _class: literalful<Class>,
     protected debug: boolean = false,
-  ) {
-    try {
-      if (_class === "")
-        throw new TypeError(
-          `Class name is empty`,
-        );
-      else
-        this._class = App.stringful(_class);
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: ctor`,
-        { cause: e },
-      );
-    }
-  }
+  ) { }
 
   protected static get Setting(): typeof Setting {
     try {
@@ -79,7 +63,7 @@ abstract class App<
     }
   }
 
-  public get setting(): Setting<C> {
+  public get setting(): Setting<Class, C> {
     try {
       if (this._setting === undefined)
         this._setting = new App.Setting(
@@ -97,7 +81,7 @@ abstract class App<
     }
   }
 
-  public get app(): Setting<C>["app"] {
+  public get app(): Setting<Class, C>["app"] {
     try {
       return this.setting.app;
     }
@@ -109,7 +93,7 @@ abstract class App<
     }
   }
 
-  public get user(): Setting<C>["user"] {
+  public get user(): Setting<Class, C>["user"] {
     try {
       return this.setting.user;
     }
@@ -170,7 +154,7 @@ abstract class App<
   public read(
     filename?: boolean | string,
     error?: boolean,
-  ): ReturnType<Storage["read"]> {
+  ): ReturnType<Storage<Class>["read"]> {
     try {
       return filename === undefined
         ? this.storage()
@@ -191,7 +175,7 @@ abstract class App<
 
   public readful(
     filename?: string,
-  ): ReturnType<Storage["readful"]> {
+  ): ReturnType<Storage<Class>["readful"]> {
     try {
       return this
         .storage(filename)
@@ -208,7 +192,7 @@ abstract class App<
   public write(
     data: string,
     filename?: string,
-    overwrite?: Parameters<Storage["write"]>[1],
+    overwrite?: Parameters<Storage<Class>["write"]>[1],
   ): this {
     try {
       this
@@ -230,7 +214,7 @@ abstract class App<
 
   protected storage(
     filename?: string,
-  ): Storage {
+  ): Storage<Class> {
     try {
       return new App.Storage(
         this._class,
@@ -284,7 +268,7 @@ abstract class App<
   protected abstract setOutput(runtimeOutput: Nullable<O>): Nullable<O>;
 
   private _name?: stringful;
-  private _setting?: Setting<C>;
+  private _setting?: Setting<Class, C>;
 }
 
 module.exports = App;

@@ -2,12 +2,13 @@ const stor_Filetype: typeof Filetype = importModule(
   "filetype/Filetype",
 ) as typeof Filetype;
 
-class Storage extends stor_Filetype<
+class Storage<Class extends string> extends stor_Filetype<
+  Class,
   "Storage",
   WriteFile
 > {
   constructor(
-    appClass: stringful,
+    appClass: literalful<Class>,
     app: stringful,
     filename: string = "default.txt",
   ) {

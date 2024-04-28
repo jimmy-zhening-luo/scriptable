@@ -1,4 +1,5 @@
 abstract class Filetype<
+  Class extends string,
   Type extends string,
   F extends IFile = ReadOnlyFile,
 > {
@@ -7,7 +8,7 @@ abstract class Filetype<
   constructor(
     filetype: Type extends "" ? never : Type,
     File: new(...args: ConstructorParameters<typeof IFile>)=> IFile & F,
-    appClass: stringful,
+    appClass: literalful<Class>,
     ...subpaths: string[]
   ) {
     try {
@@ -116,7 +117,7 @@ abstract class Filetype<
 
   public abstract write(
     ...args: Parameters<F["write"]>
-  ): ReturnType<F["write"]> extends never ? never : Filetype<Type, F>;
+  ): ReturnType<F["write"]> extends never ? never : Filetype<Class, Type, F>;
 }
 
 module.exports = Filetype;
