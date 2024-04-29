@@ -103,8 +103,7 @@ abstract class IFilepath<Root extends boolean> {
       return (
         instance !== null
         && typeof instance === "object"
-        && "name" in instance
-        && (instance as IFilepath<boolean>).name as string === "IFilepath"
+        && (instance as { name: string }).name === "IFilepath"
       );
     }
     catch (e) {

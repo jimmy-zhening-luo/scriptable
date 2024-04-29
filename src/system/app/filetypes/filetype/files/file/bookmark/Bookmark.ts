@@ -1,5 +1,5 @@
 class Bookmark {
-  public readonly name: string = "Bookmark";
+  public readonly name: literalful<"Bookmark"> = "Bookmark";
   public readonly alias: stringful;
   public readonly path: ReturnType<Rootpath["toString"]>;
 
@@ -57,8 +57,7 @@ class Bookmark {
       return (
         instance !== null
         && typeof instance === "object"
-        && "name" in instance
-        && instance.name === "Bookmark"
+        && (instance as { name: string }).name === "Bookmark"
       );
     }
     catch (e) {

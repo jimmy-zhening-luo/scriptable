@@ -368,8 +368,7 @@ class CharSet {
       return (
         instance !== null
         && typeof instance === "object"
-        && "name" in instance
-        && (instance as CharSet).name === "CharSet"
+        && (instance as { name: string }).name === "CharSet"
       );
     }
     catch (e) {

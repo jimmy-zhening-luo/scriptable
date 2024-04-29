@@ -1,5 +1,5 @@
 abstract class IFile {
-  public readonly name: string = "IFile";
+  public readonly name: literalful<"IFile"> = "IFile";
   protected readonly manager: FileManager = FileManager.iCloud();
   private readonly _root: FString<true>;
   private _subpath: Subpath;
@@ -265,8 +265,7 @@ abstract class IFile {
       return (
         instance !== null
         && typeof instance === "object"
-        && "name" in instance
-        && (instance as IFile).name === "IFile"
+        && (instance as { name: string }).name === "IFile"
       );
     }
     catch (e) {
