@@ -1,9 +1,16 @@
 {
   "extends": "../tsconfig.json",
   "include": [
+    "../common/**/*",
     "**/*"
   ],
   "references": [
+    {
+      "path": "../common/tsconfig.json"
+    },
+    {
+      "path": "method/tsconfig.json"
+    },
     {
       "path": "setting/tsconfig.json"
     },
