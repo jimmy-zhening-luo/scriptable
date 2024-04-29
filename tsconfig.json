@@ -26,9 +26,9 @@
     "useDefineForClassFields": false /* Default true if ES2022 or ESNext, else default false. Emit ECMAScript-standard-compliant class fields. */,
     "moduleDetection": "auto" /* Default: auto. Seems like it's more relevant to module: nodenext or module: node16 or react-jsx, but less so to commonjs. Control what method is used to detect module-format JS files. */,
     /* Modules */
-    "module": "commonjs" /* Default: if target ES6, commonjs. commonjs is required for Scriptable. See more here: https://devblogs.microsoft.com/typescript/announcing-typescript-4-7/#esm-nodejs && here https://www.typescriptlang.org/tsconfig#moduleResolution Specify what module code is generated. */,
+    "module": "esnext" /* Default: if target ES6, commonjs. commonjs is required for Scriptable. See more here: https://devblogs.microsoft.com/typescript/announcing-typescript-4-7/#esm-nodejs && here https://www.typescriptlang.org/tsconfig#moduleResolution Specify what module code is generated. */,
     // "rootDir": "./src",                                  /* Specify the root folder within your source files. When composite is on, the rootDir setting, if not explicitly set, defaults to the directory containing the tsconfig.json file.*/
-    "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
+    "moduleResolution": "bundler" /* Specify how TypeScript looks up a file from a given module specifier. */,
     // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
     // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
@@ -38,8 +38,10 @@
     // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
     // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
     // "moduleSuffixes": [],                             /* List of file name suffixes to search when resolving a module. */
+    // "allowArbitraryExtensions": false,
+    // "allowImportingTsExtensions": false /* allows TypeScript files to import each other with a TypeScript extension like .ts, .mts, or .tsx. This flag is only allowed when --noEmit or --emitDeclarationOnly is enabled, since these import paths would not be resolvable at runtime in JavaScript output files. The expectation here is that your resolver (e.g. your bundler, a runtime, or some other tool) is going to make these imports between .ts files workAllow importing .ts files even when --allowJs is off. */,
     "resolveJsonModule": false /* Enable importing .json files. */,
-    // "noResolve": true,                                /* Disallow 'import's, 'require's or '<reference>'s from expanding the number of files TypeScript should add to a project. */
+    "noResolve": true, /* Disallow 'import's, 'require's or '<reference>'s from expanding the number of files TypeScript should add to a project. */
     /* JavaScript Support */
     "allowJs": false /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
     "checkJs": false /* Enable error reporting in type-checked JavaScript files. */,
