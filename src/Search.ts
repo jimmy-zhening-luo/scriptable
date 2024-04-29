@@ -92,9 +92,9 @@ namespace Search {
     constructor(
       query: string,
       clip: string,
-      chat: stringful,
-      translate: stringful,
-      math: stringful[] = [],
+      CHAT: stringful,
+      TRANSLATE: stringful,
+      MATH: stringful[] = [],
     ) {
       try {
         const tokens: stringful[] = [
@@ -102,11 +102,11 @@ namespace Search {
             Query.transliterate(
               Query.tokenize(
                 query,
-                chat,
+                CHAT,
               ),
-              translate,
+              TRANSLATE,
             ),
-            math,
+            MATH,
           ),
         ];
 
