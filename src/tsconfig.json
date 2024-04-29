@@ -5,6 +5,9 @@
   ],
   "references": [
     {
+      "path": "method/tsconfig.json"
+    },
+    {
       "path": "apps/tsconfig.json"
     },
     {

@@ -2,6 +2,7 @@
   "extends": "../tsconfig.json",
   "include": [
     "../common/**/*",
+    "../apps/**/*",
     "**/*"
   ],
   "references": [
@@ -9,13 +10,16 @@
       "path": "../common/tsconfig.json"
     },
     {
-      "path": "setting/tsconfig.json"
+      "path": "../apps/tsconfig.json"
     },
     {
-      "path": "output/tsconfig.json"
+      "path": "new/tsconfig.json"
     },
     {
-      "path": "input/tsconfig.json"
+      "path": "gpt/tsconfig.json"
+    },
+    {
+      "path": "search/tsconfig.json"
     }
   ],
   "compilerOptions": {

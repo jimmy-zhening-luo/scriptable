@@ -2,11 +2,22 @@
   "extends": "../tsconfig.json",
   "include": [
     "../../../common/**/*",
+    "../../../apps/**/*",
+    "../query/**/*",
     "**/*"
   ],
   "references": [
     {
       "path": "../../../common/tsconfig.json"
+    },
+    {
+      "path": "../../../apps/tsconfig.json"
+    },
+    {
+      "path": "../query/tsconfig.json"
+    },
+    {
+      "path": "engine/tsconfig.json"
     }
   ],
   "compilerOptions": {
