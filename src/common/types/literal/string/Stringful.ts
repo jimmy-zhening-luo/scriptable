@@ -2,15 +2,15 @@ const s_typeful: typeof typeful = importModule("./common/types/literal/typeful/T
 
 declare type stringful = Brand<"stringful">;
 
-function Stringful(
-  literal: string,
+function Stringful<Input extends string>(
+  literal: Input,
   errorContext?: string,
-): stringful {
+): stringful & Input {
   return s_typeful<
-    stringful,
-    string
+    stringful & Input,
+    Input
   >(
-    (S: string): S is stringful =>
+    (S: Input): S is stringful & Input =>
       S.length !== 0,
     literal,
     "stringful: empty string",

@@ -1,7 +1,7 @@
 abstract class IFile {
   public readonly name: string = "IFile";
   protected readonly manager: FileManager = FileManager.iCloud();
-  private readonly _root: stringful;
+  private readonly _root: FString<true>;
   private _subpath: Subpath;
 
   constructor(
@@ -81,7 +81,7 @@ abstract class IFile {
     }
   }
 
-  public get path(): stringful {
+  public get path(): FString<true> {
     try {
       return this._subpath.prepend(this._root);
     }
@@ -93,7 +93,7 @@ abstract class IFile {
     }
   }
 
-  public get subpath(): string {
+  public get subpath(): FString<false> {
     try {
       return this._subpath.toString();
     }

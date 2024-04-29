@@ -15,7 +15,7 @@ class Subpath extends s_Filepath<false> {
 
   public pop(): string {
     try {
-      return this._tree.pop() ?? "";
+      return this._parts.pop() ?? "";
     }
     catch (e) {
       throw new EvalError(

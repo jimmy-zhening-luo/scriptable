@@ -24,10 +24,10 @@ class Bookmark {
             `no Scriptable bookmark with alias: '${this.alias}'`,
           );
         else
-          this.path = Bookmark.stringful(
+          this.path = Bookmark.stringful<ReturnType<Rootpath["toString"]>>(
             FileManager
               .iCloud()
-              .bookmarkedPath(this.alias),
+              .bookmarkedPath(this.alias) as FString<true>,
             "bookmark exists, but resolves to empty path",
           );
       }

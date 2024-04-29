@@ -1,6 +1,11 @@
+declare const filepath: unique symbol;
+declare type FString<Root extends boolean> = Root extends true
+  ? stringful & { [filepath]: "root" }
+  : string & { [filepath]: "subpath" };
+
 abstract class IFilepath<Root extends boolean> {
-  public readonly name: string = "IFilepath";
-  protected readonly _tree: Array<FilepathPart["string"]>;
+  public readonly name: literalful<"IFilepath"> = "IFilepath";
+  protected readonly _parts: Array<FilepathPart["string"]>;
 
   constructor(
     ...subpaths: Array<
@@ -10,7 +15,7 @@ abstract class IFilepath<Root extends boolean> {
     >
   ) {
     try {
-      this._tree = [...IFilepath.cleanValidateParts(...subpaths)];
+      this._parts = [...IFilepath.cleanValidateParts(...subpaths)];
 
       if (!this.isOk())
         throw new TypeError(
@@ -49,13 +54,13 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public get tree(): stringful[] {
+  public get parts(): IFilepath<Root>["_parts"] {
     try {
-      return [...this._tree];
+      return [...this._parts];
     }
     catch (e) {
       throw new EvalError(
-        `IFilepath: tree`,
+        `IFilepath: parts`,
         { cause: e },
       );
     }
@@ -81,23 +86,9 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public get leaf(): string {
-    try {
-      const treeCopy: string[] = [...this._tree];
-
-      return treeCopy.pop() ?? "";
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: leaf`,
-        { cause: e },
-      );
-    }
-  }
-
   public get isEmpty(): boolean {
     try {
-      return this._tree.length === 0;
+      return this._parts.length === 0;
     }
     catch (e) {
       throw new EvalError(
@@ -113,7 +104,7 @@ abstract class IFilepath<Root extends boolean> {
         instance !== null
         && typeof instance === "object"
         && "name" in instance
-        && (instance as IFilepath<boolean>).name === "IFilepath"
+        && (instance as IFilepath<boolean>).name as string === "IFilepath"
       );
     }
     catch (e) {
@@ -136,7 +127,7 @@ abstract class IFilepath<Root extends boolean> {
         if (head !== null)
           _tree.push(
             ...head instanceof IFilepath
-              ? head._tree
+              ? head._parts
               : IFilepath.validateParts(
                 ...IFilepath.cleanSplit(
                   head,
@@ -175,7 +166,7 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  private static validateParts(...parts: stringful[]): IFilepath<false>["_tree"] {
+  private static validateParts(...parts: stringful[]): IFilepath<boolean>["_parts"] {
     try {
       return parts
         .map(
@@ -210,11 +201,11 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public prepend(root: stringful): stringful {
+  public prepend(root: FString<true>): FString<true> {
     try {
       return this.isEmpty
         ? root
-        : root + "/" + this.toString() as stringful;
+        : root + "/" + this.toString() as FString<true>;
     }
     catch (e) {
       throw new EvalError(
@@ -226,13 +217,13 @@ abstract class IFilepath<Root extends boolean> {
 
   public cd(...relPaths: ConstructorParameters<typeof IFilepath>): this {
     try {
-      const rel: IFilepath<boolean>["_tree"] = IFilepath.cleanValidateParts(...relPaths);
+      const rel: IFilepath<boolean>["_parts"] = IFilepath.cleanValidateParts(...relPaths);
 
       for (const node of rel) {
         if (node === "..")
           this.pop();
         else
-          this._tree.push(node);
+          this._parts.push(node);
       }
 
       return this;
@@ -245,9 +236,9 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public toString(): Root extends true ? stringful : string {
+  public toString(): FString<Root> {
     try {
-      return this._tree.join("/") as Root extends true ? stringful : string;
+      return this._parts.join("/") as FString<Root>;
     }
     catch (e) {
       throw new EvalError(
