@@ -15,7 +15,7 @@ namespace GPT {
       const s: GPTSetting = this
         .setting
         .parsed;
-      const __i: typeof GPT.prototype.input = this.input ?? "";
+      const __i: GPT["input"] = this.input ?? "";
       const _i: GPTOptions = typeof __i === "string"
         ? { prompt: __i }
         : !("prompt" in __i)
