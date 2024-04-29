@@ -20,7 +20,7 @@
     /* Language and Environment */
     "target": "ES6" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "lib": [
-      "es2022"
+      "ES2022.Error"
     ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
     "noLib": false /* Disable including any library files, including the default lib.d.ts. */,
     "useDefineForClassFields": false /* Default true if ES2022 or ESNext, else default false. Emit ECMAScript-standard-compliant class fields. */,
