@@ -33,7 +33,9 @@ class CharString<
 
   public static get CharSet(): typeof CharSet {
     try {
-      return importModule("charset/CharSet") as typeof CharSet;
+      return importModule(
+        "charset/CharSet",
+      ) as typeof CharSet;
     }
     catch (e) {
       throw new ReferenceError(

@@ -54,7 +54,9 @@ class ValidString<Brand extends string> {
 
   private static get CharStringful(): typeof CharStringful {
     try {
-      return importModule("charstrings/CharStringful") as typeof CharStringful;
+      return importModule(
+        "charstrings/CharStringful",
+      ) as typeof CharStringful;
     }
     catch (e) {
       throw new ReferenceError(

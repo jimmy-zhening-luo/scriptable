@@ -1,4 +1,6 @@
-const iint_typeful: typeof typeful = importModule("./common/types/literal/typeful/Typeful") as typeof typeful;
+const iint_typeful: typeof typeful = importModule(
+  "./common/types/literal/typeful/Typeful",
+) as typeof typeful;
 
 declare type infinint = Brand<"infinint", number>;
 

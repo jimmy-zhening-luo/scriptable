@@ -1,4 +1,6 @@
-const r_IFile: typeof IFile = importModule("file/IFile") as typeof IFile;
+const r_IFile: typeof IFile = importModule(
+  "file/IFile",
+) as typeof IFile;
 
 class ReadOnlyFile extends r_IFile {
   public override delete(): never {

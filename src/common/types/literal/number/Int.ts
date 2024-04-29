@@ -1,4 +1,6 @@
-const int_typeful: typeof typeful = importModule("./common/types/literal/typeful/Typeful") as typeof typeful;
+const int_typeful: typeof typeful = importModule(
+  "./common/types/literal/typeful/Typeful",
+) as typeof typeful;
 
 declare type int = Brand<"int", number>;
 

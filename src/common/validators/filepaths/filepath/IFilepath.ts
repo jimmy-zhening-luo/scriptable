@@ -32,7 +32,9 @@ abstract class IFilepath<Root extends boolean> {
 
   private static get Splitterful(): typeof Splitterful {
     try {
-      return importModule("./common/types/strings/Splitterful") as typeof Splitterful;
+      return importModule(
+        "./common/types/strings/Splitterful",
+      ) as typeof Splitterful;
     }
     catch (e) {
       throw new ReferenceError(
@@ -44,7 +46,9 @@ abstract class IFilepath<Root extends boolean> {
 
   private static get FilepathPart(): typeof FilepathPart {
     try {
-      return importModule("part/FilepathPart") as typeof FilepathPart;
+      return importModule(
+        "part/FilepathPart",
+      ) as typeof FilepathPart;
     }
     catch (e) {
       throw new ReferenceError(

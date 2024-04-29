@@ -1,4 +1,6 @@
-const s_typeful: typeof typeful = importModule("./common/types/literal/typeful/Typeful") as typeof typeful;
+const s_typeful: typeof typeful = importModule(
+  "./common/types/literal/typeful/Typeful",
+) as typeof typeful;
 
 declare type stringful = Brand<"stringful">;
 

@@ -1,4 +1,6 @@
-const f_iSplitter: typeof ISplitter = importModule("splitter/ISplitter") as typeof ISplitter;
+const f_iSplitter: typeof ISplitter = importModule(
+  "splitter/ISplitter",
+) as typeof ISplitter;
 
 class Splitterful extends f_iSplitter<stringful> {
   protected filter(parts: string[]): stringful[] {

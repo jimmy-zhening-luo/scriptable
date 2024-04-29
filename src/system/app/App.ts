@@ -14,7 +14,9 @@ abstract class App<
 
   protected static get Setting(): typeof Setting {
     try {
-      return importModule("filetypes/Setting") as typeof Setting;
+      return importModule(
+        "filetypes/Setting",
+      ) as typeof Setting;
     }
     catch (e) {
       throw new ReferenceError(
@@ -26,7 +28,9 @@ abstract class App<
 
   protected static get Storage(): typeof Storage {
     try {
-      return importModule("filetypes/Storage") as typeof Storage;
+      return importModule(
+        "filetypes/Storage",
+      ) as typeof Storage;
     }
     catch (e) {
       throw new ReferenceError(
@@ -38,7 +42,9 @@ abstract class App<
 
   protected static get stringful(): typeof Stringful {
     try {
-      return importModule("./common/types/literal/string/Stringful") as typeof Stringful;
+      return importModule(
+        "./common/types/literal/string/Stringful",
+      ) as typeof Stringful;
     }
     catch (e) {
       throw new ReferenceError(

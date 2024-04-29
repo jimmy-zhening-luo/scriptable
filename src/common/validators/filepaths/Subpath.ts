@@ -1,4 +1,6 @@
-const s_Filepath: typeof IFilepath = importModule("filepath/IFilepath") as typeof IFilepath;
+const s_Filepath: typeof IFilepath = importModule(
+  "filepath/IFilepath",
+) as typeof IFilepath;
 
 class Subpath extends s_Filepath<false> {
   public isOk(): true {

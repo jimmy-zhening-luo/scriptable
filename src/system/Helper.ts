@@ -1,4 +1,6 @@
-const hp_App: typeof App = importModule("app/App") as typeof App;
+const hp_App: typeof App = importModule(
+  "app/App",
+) as typeof App;
 
 abstract class Helper<
   I extends Nullable<Definite> = null,

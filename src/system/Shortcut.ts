@@ -1,4 +1,6 @@
-const sh_App: typeof App = importModule("app/App") as typeof App;
+const sh_App: typeof App = importModule(
+  "app/App",
+) as typeof App;
 
 abstract class Shortcut<
   I extends Nullable<Definite> = null,

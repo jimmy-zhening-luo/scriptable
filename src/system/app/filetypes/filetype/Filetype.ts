@@ -28,7 +28,9 @@ abstract class Filetype<
 
   protected static get ReadOnlyFile(): typeof ReadOnlyFile {
     try {
-      return importModule("files/ReadOnlyFile") as typeof ReadOnlyFile;
+      return importModule(
+        "files/ReadOnlyFile",
+      ) as typeof ReadOnlyFile;
     }
     catch (e) {
       throw new ReferenceError(
@@ -40,7 +42,9 @@ abstract class Filetype<
 
   protected static get WriteFile(): typeof WriteFile {
     try {
-      return importModule("files/WriteFile") as typeof WriteFile;
+      return importModule(
+        "files/WriteFile",
+      ) as typeof WriteFile;
     }
     catch (e) {
       throw new ReferenceError(

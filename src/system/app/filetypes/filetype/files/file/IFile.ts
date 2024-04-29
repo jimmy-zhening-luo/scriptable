@@ -35,7 +35,9 @@ abstract class IFile {
 
   public static get Bookmark(): typeof Bookmark {
     try {
-      return importModule("bookmark/Bookmark") as typeof Bookmark;
+      return importModule(
+        "bookmark/Bookmark",
+      ) as typeof Bookmark;
     }
     catch (e) {
       throw new ReferenceError(
@@ -47,7 +49,9 @@ abstract class IFile {
 
   private static get Rootpath(): typeof Rootpath {
     try {
-      return importModule("./common/validators/filepaths/Rootpath") as typeof Rootpath;
+      return importModule(
+        "./common/validators/filepaths/Rootpath",
+      ) as typeof Rootpath;
     }
     catch (e) {
       throw new ReferenceError(
@@ -59,7 +63,9 @@ abstract class IFile {
 
   private static get Subpath(): typeof Subpath {
     try {
-      return importModule("./common/validators/filepaths/Subpath") as typeof Subpath;
+      return importModule(
+        "./common/validators/filepaths/Subpath",
+      ) as typeof Subpath;
     }
     catch (e) {
       throw new ReferenceError(
@@ -71,7 +77,9 @@ abstract class IFile {
 
   private static get stringful(): typeof Stringful {
     try {
-      return importModule("./common/types/literal/string/Stringful") as typeof Stringful;
+      return importModule(
+        "./common/types/literal/string/Stringful",
+      ) as typeof Stringful;
     }
     catch (e) {
       throw new ReferenceError(
