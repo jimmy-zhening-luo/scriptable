@@ -5,11 +5,7 @@ class Bookmark {
 
   constructor(bookmark: string | Bookmark) {
     try {
-      if (bookmark instanceof Bookmark) {
-        this.alias = bookmark.alias;
-        this.path = bookmark.path;
-      }
-      else {
+      if (typeof bookmark === "string") {
         this.alias = Bookmark.stringful(
           bookmark.trim(),
           "alias.trim()",
@@ -30,6 +26,10 @@ class Bookmark {
               .bookmarkedPath(this.alias) as FString<true>,
             "bookmark exists, but resolves to empty path",
           );
+      }
+      else {
+        this.alias = bookmark.alias;
+        this.path = bookmark.path;
       }
     }
     catch (e) {
