@@ -40,3 +40,5 @@ namespace Hello {
 
 new Hello.Hello(true)
   .run();
+
+export {};

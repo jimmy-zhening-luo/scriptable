@@ -2,8 +2,6 @@ const n_typeful: typeof typeful = importModule(
   "./common/types/literal/typeful/Typeful",
 ) as typeof typeful;
 
-declare type numberful = Brand<"numberful", number>;
-
 function Numberful(
   literal: number,
   errorContext?: string,

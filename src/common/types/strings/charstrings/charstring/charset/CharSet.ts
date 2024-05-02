@@ -1,7 +1,3 @@
-declare const charset: unique symbol;
-
-declare type ValidChar = char & { [charset]: "allowed" };
-
 class CharSet {
   public readonly name: string = "CharSet";
   public readonly chars: char[];

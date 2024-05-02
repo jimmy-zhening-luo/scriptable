@@ -19,3 +19,5 @@ namespace New {
 
 new New.New()
   .run();
+
+export {};

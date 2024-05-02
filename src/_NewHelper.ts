@@ -19,3 +19,5 @@ namespace NewHelper {
 
 new NewHelper.NewHelper()
   .run();
+
+export {};

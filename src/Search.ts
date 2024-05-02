@@ -104,3 +104,5 @@ namespace Search {
 
 new Search.Search()
   .run();
+
+export {};

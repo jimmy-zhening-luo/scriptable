@@ -94,3 +94,5 @@ namespace GPT {
 
 new GPT.GPT()
   .run();
+
+export {};

@@ -2,8 +2,6 @@ const c_typeful: typeof typeful = importModule(
   "./common/types/literal/typeful/Typeful",
 ) as typeof typeful;
 
-type char = Brand<"char">;
-
 function Char(
   literal: string,
   errorContext?: string,

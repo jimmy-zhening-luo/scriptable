@@ -1,6 +1,3 @@
-declare const charstring: unique symbol;
-declare type CString<Brand extends string> = { [charstring]: Brand };
-
 class CharString<
   Brand extends string,
   StringLiteral extends string = string,

@@ -1,8 +1,3 @@
-declare const filepath: unique symbol;
-declare type FString<Root extends boolean> = Root extends true
-  ? stringful & { [filepath]: "root" }
-  : string & { [filepath]: "subpath" };
-
 abstract class IFilepath<Root extends boolean> {
   public readonly name: literalful<"IFilepath"> = "IFilepath";
   protected readonly _parts: Array<FilepathPart["string"]>;
