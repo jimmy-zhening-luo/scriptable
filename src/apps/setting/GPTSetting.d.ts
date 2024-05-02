@@ -47,5 +47,5 @@ declare type GPTUserSetting = {
       | "low";
     preset: string;
   };
-  presets: Record<string?, GPTPreset>;
+  presets: Record<string, GPTPreset>;
 };
