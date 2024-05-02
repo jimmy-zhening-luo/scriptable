@@ -8,7 +8,7 @@
     /* Projects */
     "incremental": true /* default true if composite true. Save .tsbuildinfo files to allow for incremental compilation of projects. */,
     "composite": false /* Enable constraints that allow a TypeScript project to be used with project references. */,
-    "tsBuildInfoFile": "./.tsbuildinfo", /* Note to self: see what the default behavior is. No reason to touch unless default doesn't work with existing composite structure. Specify the path to .tsbuildinfo incremental compilation file. */
+    "tsBuildInfoFile": "./built/.tsbuildinfo", /* Note to self: see what the default behavior is. No reason to touch unless default doesn't work with existing composite structure. Specify the path to .tsbuildinfo incremental compilation file. */
     // "disableSourceOfProjectReferenceRedirect": false /* Disable preferring source files instead of declaration files when referencing composite projects. */,
     // "disableSolutionSearching": false /* Opt a project out of multi-project reference checking when editing. */,
     // "disableReferencedProjectLoad": false /* Reduce the number of projects loaded automatically by TypeScript. */,
@@ -45,7 +45,7 @@
     "resolveJsonModule": true /* Enable importing .json files. */,
     // "resolvePackageJsonExports": false,
     // "resolvePackageJsonImports": false,
-    "noResolve": false, /* Disallow 'import's, 'require's or '<reference>'s from expanding the number of files TypeScript should add to a project. */
+    "noResolve": true, /* Disallow 'import's, 'require's or '<reference>'s from expanding the number of files TypeScript should add to a project. */
     /* JavaScript Support */
     // "allowJs": false /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
     // "checkJs": false /* Enable error reporting in type-checked JavaScript files. */,
@@ -54,8 +54,8 @@
     "declaration": true /* Default true when composite is on. Generate .d.ts files from TypeScript and JavaScript files in your project. */,
     "declarationMap": true /* Create sourcemaps for d.ts files. */,
     // "emitDeclarationOnly": false /* Only output d.ts files and not JavaScript files. */,
-    "sourceMap": true /* Create source map files for emitted JavaScript files. */,
-    "outDir": "./built", /* Specify an output folder for all emitted files. */
+    "sourceMap": false /* Create source map files for emitted JavaScript files. */,
+    "outDir": "./built/js", /* Specify an output folder for all emitted files. */
     "removeComments": false /* Disable emitting comments. */,
     // "noEmit": false /* Disable emitting files from a compilation. */,
     // "importHelpers": true,                            /* Allow importing helper functions from tslib once per project, instead of including them per-file. */
@@ -69,7 +69,7 @@
     // "noEmitHelpers": true,                            /* Disable generating custom helper functions like '__extends' in compiled output. */
     "noEmitOnError": true /* Disable emitting files if any type checking errors are reported. */,
     // "preserveConstEnums": false /* Disable erasing 'const enum' declarations in generated code. */,
-    "declarationDir": "./built", /* Specify the output directory for generated declaration files. */
+    "declarationDir": "./built/d", /* Specify the output directory for generated declaration files. */
     // "preserveValueImports": false /* Preserve unused imported values in the JavaScript output that would otherwise be removed. */,
     /* Interop Constraints */
     // "isolatedModules": false /* Ensure that each file can be safely transpiled without relying on other imports. */,
