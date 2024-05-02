@@ -13,7 +13,8 @@
     "prebuild": "npm run lint:fix && npm run clean",
     "build": "tsc --build",
     "prepack": "npm run build",
-    "pack": "shx mkdir packed && shx cp -r built/js/* packed"
+    "pack": "shx mkdir packed && shx cp -r built/js/* packed",
+    "dev": "npm run pack"
   },
   "repository": {
     "type": "git",
