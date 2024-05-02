@@ -3,10 +3,6 @@ declare type NewSetting = {
   user?: NewUserSetting;
 };
 
-declare type NewAppSetting = {
-  [key: string]: string;
-};
+declare type NewAppSetting = Record<string, string>;
 
-declare type NewUserSetting = {
-  [key: string]: string;
-};
+declare type NewUserSetting = Record<string, string>;

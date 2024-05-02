@@ -1,3 +1,1 @@
-declare type NewInput = {
-  [key: string]: unknown;
-};
+declare type NewInput = Record<string, unknown>;

@@ -1,4 +1,4 @@
-declare interface SearchOutput {
+declare type SearchOutput = {
   app: string;
   actions: string | string[];
   natural?: string;
@@ -6,4 +6,4 @@ declare interface SearchOutput {
   shortcut?: string;
   output?: boolean;
   "native"?: string;
-}
+};

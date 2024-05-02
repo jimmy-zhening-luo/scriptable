@@ -1,4 +1,4 @@
-declare interface GPTOutput {
+declare type GPTOutput = {
   api: string;
   header: {
     auth: string;
@@ -14,4 +14,4 @@ declare interface GPTOutput {
     temperature: number;
     p: number;
   };
-}
+};

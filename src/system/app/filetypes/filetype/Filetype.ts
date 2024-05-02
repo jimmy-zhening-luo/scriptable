@@ -109,7 +109,7 @@ abstract class Filetype<
           `Expected app child type name; instead, type is empty`,
         );
       else
-        return new Filetype.WriteFile.Bookmark("#" + _type);
+        return new Filetype.WriteFile.Bookmark(`#${_type}`);
     }
     catch (e) {
       throw new EvalError(

@@ -44,7 +44,7 @@ namespace Search {
         "app.translate",
       );
       const MATH: stringful[] = (app.math ?? []).map(
-        s =>
+        (s: string): stringful =>
           Search.stringful(
             s,
             "app.math?",
@@ -63,7 +63,7 @@ namespace Search {
       const match: Nullable<SearchEngineSetting> = user
         .engines
         .find(
-          eng =>
+          (eng: SearchEngineSetting): boolean =>
             eng.keys.includes(q.key),
         ) ?? null;
       const resolved: Nullable<IEngine> = match === null
@@ -92,7 +92,7 @@ namespace Search {
                 match.keys,
               );
 
-      if (resolved)
+      if (resolved !== null)
         this.write(q.clean);
 
       return resolved

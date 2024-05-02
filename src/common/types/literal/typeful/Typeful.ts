@@ -4,10 +4,9 @@ function typeful<Brand, T>(
   errorType: string,
   errorContext?: string,
 ): Brand {
-  if (acceptor(literal)) {
+  if (acceptor(literal))
     return literal;
-  }
-  else {
+  else
     throw new TypeError(
       `Safe: ${errorType}${
         errorContext === undefined
@@ -15,7 +14,6 @@ function typeful<Brand, T>(
           : `: ${errorContext}`
       }`,
     );
-  }
 }
 
 module.exports = typeful;

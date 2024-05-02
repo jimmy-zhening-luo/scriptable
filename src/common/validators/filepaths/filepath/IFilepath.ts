@@ -173,7 +173,7 @@ abstract class IFilepath<Root extends boolean> {
     try {
       return parts
         .map(
-          part =>
+          (part: stringful): FilepathPart["string"] =>
             new IFilepath
               .FilepathPart(part)
               .string,
@@ -208,7 +208,7 @@ abstract class IFilepath<Root extends boolean> {
     try {
       return this.isEmpty
         ? root
-        : root + "/" + this.toString() as FString<true>;
+        : `${root}/${this.toString()}` as FString<true>;
     }
     catch (e) {
       throw new EvalError(
@@ -222,12 +222,11 @@ abstract class IFilepath<Root extends boolean> {
     try {
       const rel: IFilepath<boolean>["_parts"] = IFilepath.cleanValidateParts(...relPaths);
 
-      for (const node of rel) {
+      for (const node of rel)
         if (node === "..")
           this.pop();
         else
           this._parts.push(node);
-      }
 
       return this;
     }

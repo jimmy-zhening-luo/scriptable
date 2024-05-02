@@ -257,7 +257,14 @@ abstract class App<
       n.body = messages.join("\n");
       n.sound = "failure";
       n.schedule()
-        .catch(n_e => { throw n_e; });
+        .catch(
+          (n_e: unknown): void => {
+            throw new Error(
+              `notification delivery failed, unknown error`,
+              { cause: n_e },
+            );
+          },
+        );
 
       return root;
     }

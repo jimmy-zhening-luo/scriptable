@@ -16,7 +16,7 @@ abstract class IEngine {
         this.keys = [keys]
           .flat()
           .map(
-            key =>
+            (key: string): string =>
               key.toLowerCase(),
           )
           .filter(

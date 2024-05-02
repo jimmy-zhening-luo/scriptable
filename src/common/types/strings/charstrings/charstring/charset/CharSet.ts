@@ -27,13 +27,15 @@ class CharSet {
       else {
         charsets.unshift(negate);
         this.negate = charsets
-          .some(set =>
-            set instanceof CharSet && set.negate);
+          .some(
+            (set: char | char[] | CharSet): boolean =>
+              set instanceof CharSet && set.negate,
+          );
       }
 
       this.chars = charsets
         .map(
-          set =>
+          (set: char | char[] | CharSet): char[] =>
             set instanceof CharSet
               ? set.chars
               : [set]

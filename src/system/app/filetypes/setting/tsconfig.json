@@ -3,11 +3,7 @@
   "include": [
     "**/*"
   ],
-  "references": [
-    {
-      "path": "record/tsconfig.json"
-    }
-  ],
+  "references": [],
   "compilerOptions": {
     "rootDir": "../../../.."
   }

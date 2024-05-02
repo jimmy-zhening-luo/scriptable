@@ -26,9 +26,9 @@ class BrowserEngine extends b_IEngine {
       this.urls = [urls]
         .flat()
         .filter(
-          url =>
+          (url: string): url is stringful =>
             url.length !== 0,
-        ) as stringful[];
+        );
 
       if (this.urls.length === 0)
         throw new SyntaxError(
@@ -50,11 +50,11 @@ class BrowserEngine extends b_IEngine {
       const encodedQuery: string = query
         .terms
         .map(
-          term =>
+          (term: stringful): string =>
             term
               .split(OP)
               .map(
-                operand =>
+                (operand: string): string =>
                   encodeURI(operand),
               )
               .join(ENCODED_OP),
@@ -64,7 +64,7 @@ class BrowserEngine extends b_IEngine {
       return this
         .urls
         .map(
-          url =>
+          (url: stringful): string =>
             url.replace(
               this.tag,
               encodedQuery,

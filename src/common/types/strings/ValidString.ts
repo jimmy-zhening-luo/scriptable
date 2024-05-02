@@ -85,15 +85,17 @@ class ValidString<Brand extends string> {
     },
   ): string {
     try {
-      if (toLower)
-        raw = raw.toLowerCase();
-
-      if (trim)
-        raw = raw.trim();
-
       return ValidString._trimEdge(
         ValidString._trimEdge(
-          raw,
+          raw[
+            toLower
+              ? "toLowerCase"
+              : "toString"
+          ]()[
+            trim
+              ? "trim"
+              : "toString"
+          ](),
           "leading",
           trimLeading,
           trimLeadingExcept,
@@ -118,6 +120,7 @@ class ValidString<Brand extends string> {
     trimExcept: boolean,
   ): string {
     try {
+      let trimmed: string = string;
       const lookFn:
         | "startsWith"
         | "endsWith" = edge === "leading"
@@ -125,29 +128,33 @@ class ValidString<Brand extends string> {
           : "endsWith";
 
       wordsToTrim
-        .filter(word =>
-          word !== "")
-        .forEach(word => {
-          while (
-            string[lookFn](word) !== trimExcept
-          )
-            string = lookFn === "startsWith"
-              ? string.slice(
-                trimExcept
-                  ? 1
-                  : word.length,
-              )
-              : string.slice(
-                0,
-                0 - (
+        .filter(
+          (word: string): word is stringful =>
+            word !== "",
+        )
+        .forEach(
+          (word: stringful): void => {
+            while (
+              trimmed[lookFn](word) !== trimExcept
+            )
+              trimmed = lookFn === "startsWith"
+                ? trimmed.slice(
                   trimExcept
                     ? 1
-                    : word.length
-                ),
-              );
-        });
+                    : word.length,
+                )
+                : trimmed.slice(
+                  0,
+                  0 - (
+                    trimExcept
+                      ? 1
+                      : word.length
+                  ),
+                );
+          },
+        );
 
-      return string;
+      return trimmed;
     }
     catch (e) {
       throw new EvalError(

@@ -33,7 +33,6 @@ abstract class Shortcut<
           || flat === undefined
           || flat === ""
           || flat === 0
-          || flat === -0
           || typeof flat === "number" && !Number.isFinite(flat)
           || flat === false
           || Array.isArray(flat)
@@ -73,7 +72,7 @@ abstract class Shortcut<
         || typeof this.input === "string"
         || Object.values(this.input)
           .every(
-            val =>
+            (val: unknown): val is undefined | null | "" =>
               val === undefined || val === null || val === "",
           )
         ? null

@@ -84,31 +84,31 @@ abstract class ISplitter<StringType extends string> {
       mergeTo?: "left" | "right";
     },
   ): StringType[] {
-    limit = !Number.isInteger(limit) || limit < 0
+    const limitful: number = !Number.isInteger(limit) || limit < 0
       ? Infinity
       : limit;
 
     return split.length === 0
       ? []
-      : split.length <= limit
+      : split.length <= limitful
         ? split
         : mergeTo === "left"
           ? [
               split
                 .slice(
                   0,
-                  limit - 1,
+                  limitful - 1,
                 )
                 .join(separator) as StringType,
-              ...split.slice(limit - 1),
+              ...split.slice(limitful - 1),
             ]
           : [
               ...split.slice(
                 0,
-                limit - 1,
+                limitful - 1,
               ),
               split
-                .slice(limit - 1)
+                .slice(limitful - 1)
                 .join(separator) as StringType,
             ];
   }
@@ -144,7 +144,7 @@ abstract class ISplitter<StringType extends string> {
                 separator,
               )
               .map(
-                part =>
+                (part: string): string =>
                   trimParts
                     ? part.trim()
                     : part,

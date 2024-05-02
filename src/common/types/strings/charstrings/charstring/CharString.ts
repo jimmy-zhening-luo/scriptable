@@ -63,8 +63,13 @@ class CharString<
     try {
       if (input.length === 0)
         return true;
-      else if (([...input] as char[]).every(c =>
-        this.charset.allows(c)))
+      else if (
+        ([...input] as char[])
+          .every(
+            (c: char): boolean =>
+              this.charset.allows(c),
+          )
+      )
         return true;
       else
         throw new TypeError(

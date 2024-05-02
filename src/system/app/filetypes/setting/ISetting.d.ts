@@ -1,4 +1,4 @@
 declare type ISetting = {
-  app?: SettingRecord;
-  user?: SettingRecord;
+  app?: Record<string, unknown>;
+  user?: Record<string, unknown>;
 };

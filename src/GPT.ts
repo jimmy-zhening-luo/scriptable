@@ -57,17 +57,17 @@ namespace GPT {
           }
         : null;
       const message: GPTOutput["body"]["message"] = typeof i.prompt === "string"
-        ? !preset || preset.system === ""
-            ? { user: i.prompt }
-            : {
-                system: preset.system,
-                user: preset.user.includes(s.app.presetTag)
-                  ? preset.user.replace(
-                    s.app.presetTag,
-                    i.prompt,
-                  )
-                  : i.prompt,
-              }
+        ? preset === null || preset.system === ""
+          ? { user: i.prompt }
+          : {
+              system: preset.system,
+              user: preset.user.includes(s.app.presetTag)
+                ? preset.user.replace(
+                  s.app.presetTag,
+                  i.prompt,
+                )
+                : i.prompt,
+            }
         : i.prompt;
 
       return {

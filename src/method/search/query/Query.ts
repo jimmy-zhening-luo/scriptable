@@ -31,8 +31,9 @@ class Query {
           `Query resolved to 0 tokens`,
         );
       else {
-        this.key = tokens
-          .shift()!
+        this.key = String(
+          tokens.shift(),
+        )
           .toLowerCase() as stringful;
         this.terms = [...tokens];
       }
@@ -60,7 +61,7 @@ class Query {
 
   public get clean(): stringful {
     try {
-      return this.key + " " + this.natural as stringful;
+      return `${this.key} ${this.natural}` as stringful;
     }
     catch (e) {
       throw new EvalError(
@@ -87,9 +88,9 @@ class Query {
           .trim()
           .split(" ")
           .filter(
-            t =>
+            (t: string): t is stringful =>
               t.length !== 0,
-          ) as stringful[],
+          ),
       ];
     }
     catch (e) {
@@ -109,7 +110,10 @@ class Query {
         return [];
       else {
         const LANG: stringful = "@" as stringful; // static
-        const t_0: stringful = tokens[0]!.toLowerCase() as stringful;
+        const t_0: stringful = String(
+          tokens[0],
+        )
+          .toLowerCase() as stringful;
         const pre: stringful[] = t_0.length > 1
           ? t_0.startsWith(LANG)
             ? [TRANSLATE]
@@ -120,15 +124,17 @@ class Query {
               ) === LANG
                 ? [
                     TRANSLATE,
-                    tokens
-                      .shift()!
+                    String(
+                      tokens
+                        .shift(),
+                    )
                       .slice(TRANSLATE.length) as stringful,
                   ]
                 : t_0.length > TRANSLATE.length
                   ? [
                       TRANSLATE,
-                      (LANG + t_0[TRANSLATE.length]) as stringful,
-                      ...tokens.shift()!.length > TRANSLATE.length + LANG.length
+                      `${LANG}${t_0[TRANSLATE.length]}` as stringful,
+                      ...String(tokens.shift()).length > TRANSLATE.length + LANG.length
                         ? [
                             t_0.slice(
                               TRANSLATE.length + LANG.length,
@@ -168,15 +174,15 @@ class Query {
         const t_0_len: number = t_0.length;
         const math_long: Nullable<stringful> = [...M]
           .filter(
-            mk =>
+            (mk: stringful): boolean =>
               mk.length <= t_0_len,
           )
           .sort(
-            (a, b) =>
+            (a: stringful, b: stringful): number =>
               b.length - a.length,
           )
           .find(
-            mk =>
+            (mk: stringful): boolean =>
               t_0.startsWith(mk),
           ) ?? null;
 
@@ -193,7 +199,7 @@ class Query {
         else {
           const math_short: Nullable<stringful> = [...M]
             .sort(
-              (a, b) =>
+              (a: stringful, b: stringful): number =>
                 a.length - b.length,
             )
             .shift() ?? null;

@@ -226,7 +226,7 @@ abstract class IFile {
     }
   }
 
-  public get descendants(): IFile[] {
+  public get descendants(): this[] {
     try {
       return this.isFile
         ? [this]
@@ -234,15 +234,15 @@ abstract class IFile {
           ? []
           : this.ls
             .map(
-              filename =>
+              (filename: string): this =>
                 this.append(filename),
             )
             .filter(
-              child =>
+              (child: this): boolean =>
                 !this.path.startsWith(child.path),
             )
             .map(
-              file =>
+              (file: this): this[] =>
                 file.descendants,
             )
             .flat(1);
@@ -319,14 +319,13 @@ abstract class IFile {
 
   public read(error: boolean = false): string {
     try {
-      if (!this.isFile) {
+      if (!this.isFile)
         if (error)
           throw new ReferenceError(
             `file does not exist`,
           );
         else
           return "";
-      }
       else
         return this.manager.readString(this.path);
     }
@@ -366,8 +365,8 @@ abstract class IFile {
         throw new ReferenceError(
           `Unwriteable: path points to folder`,
         );
-      else {
-        if (this.isFile) {
+      else
+        if (this.isFile)
           if (overwrite === false)
             throw new TypeError(
               `Unwriteable: file already exists && !overwrite`,
@@ -379,7 +378,7 @@ abstract class IFile {
                 overwrite === "append"
                   ? this.read() + text
                   : overwrite === "line"
-                    ? text + "\n" + this.read()
+                    ? `${text}\n${this.read()}`
                     : text,
               );
 
@@ -391,7 +390,7 @@ abstract class IFile {
                 { cause: e },
               );
             }
-        }
+
         else {
           if (!this.parent.isDirectory)
             try {
@@ -422,7 +421,6 @@ abstract class IFile {
             );
           }
         }
-      }
     }
     catch (e) {
       throw new EvalError(
@@ -434,7 +432,7 @@ abstract class IFile {
 
   public async delete(force: boolean = false): Promise<this> {
     try {
-      if (this.exists) {
+      if (this.exists)
         if (force)
           this.manager.remove(this.path);
         else {
@@ -452,7 +450,7 @@ abstract class IFile {
             );
           await prompt
             .present()
-            .then(userChoice => {
+            .then((userChoice: number): void => {
               userChoice === 0
                 ? this.manager.remove(this.path)
                 : console
@@ -461,7 +459,6 @@ abstract class IFile {
                   );
             });
         }
-      }
 
       return this;
     }
