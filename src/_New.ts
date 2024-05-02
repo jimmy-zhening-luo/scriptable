@@ -3,7 +3,7 @@
 // icon-color: deep-gray; icon-glyph: pen;
 "use strict";
 
-export namespace New {
+namespace New {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class New extends shortcut<

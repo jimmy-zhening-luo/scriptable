@@ -3,7 +3,7 @@
 // icon-color: teal; icon-glyph: comment-alt;
 "use strict";
 
-export namespace GPT {
+namespace GPT {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class GPT extends shortcut<

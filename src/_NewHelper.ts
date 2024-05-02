@@ -3,7 +3,7 @@
 // icon-color: light-gray; icon-glyph: code;
 "use strict";
 
-export namespace NewHelper {
+namespace NewHelper {
   const helper: typeof Helper = importModule("system/Helper") as typeof Helper;
 
   export class NewHelper extends helper<

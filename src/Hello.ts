@@ -3,7 +3,7 @@
 // icon-color: yellow; icon-glyph: handshake;
 "use strict";
 
-export namespace Hello {
+namespace Hello {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class Hello extends shortcut<
