@@ -226,7 +226,7 @@ abstract class App<
       const cacheId: string = filename ?? "";
 
       if (cacheId in this._storage)
-        return this._storage(cacheId);
+        return this._storage[cacheId];
       else {
         const newStorage: Storage<Class> = new App.Storage(
           this._class,
