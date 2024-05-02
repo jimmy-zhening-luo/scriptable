@@ -4,7 +4,7 @@
 
 
 #####################
-####   v4.0.0    ####
+####   v5.0.0    ####
 #####################
 
 
@@ -38,11 +38,23 @@
 ## Intention: ignore distro folders in root
 
 /dist/
+
 /build/
+/builds/
 /built/
+
+/bundle/
+/bundles/
+/bundled/
+
+/pkg/
+/pkgs/
+/pack/
+/packs/
 /packed/
 /package/
 /packages/
+/packaged/
 
 
 
