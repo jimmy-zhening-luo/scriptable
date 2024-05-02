@@ -3,7 +3,7 @@
 // icon-color: blue; icon-glyph: search;
 "use strict";
 
-namespace Search {
+export namespace Search {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
   const query: typeof Query = importModule(
     "method/search/query/Query",
@@ -104,5 +104,3 @@ namespace Search {
 
 new Search.Search()
   .run();
-
-export {};
