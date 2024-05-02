@@ -6,6 +6,7 @@ abstract class App<
 > {
   private readonly _t0: number = new Date()
     .getTime();
+  private readonly _storage: Record<string, Storage<Class>> = {};
 
   constructor(
     protected readonly _class: literalful<Class>,
@@ -222,11 +223,21 @@ abstract class App<
     filename?: string,
   ): Storage<Class> {
     try {
-      return new App.Storage(
-        this._class,
-        this.name,
-        filename,
-      );
+      const cacheId: string = filename ?? "";
+
+      if (cacheId in this._storage)
+        return this._storage(cacheId);
+      else {
+        const newStorage: Storage<Class> = new App.Storage(
+          this._class,
+          this.name,
+          filename,
+        );
+
+        this._storage[cacheId] = newStorage;
+
+        return newStorage;
+      }
     }
     catch (e) {
       throw new EvalError(
