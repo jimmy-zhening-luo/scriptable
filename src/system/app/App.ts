@@ -258,7 +258,7 @@ abstract class App<
       n.sound = "failure";
       n.schedule()
         .catch(
-          (n_e: unknown): void => {
+          (n_e: unknown): never => {
             throw new Error(
               `notification delivery failed, unknown error`,
               { cause: n_e },
