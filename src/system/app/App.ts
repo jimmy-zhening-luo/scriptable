@@ -224,9 +224,10 @@ abstract class App<
   ): Storage<Class> {
     try {
       const cacheId: string = filename ?? "";
+      const cached: Nullable<Storage<Class>> = this._storage[cacheId] ?? null;
 
-      if (cacheId in this._storage)
-        return this._storage[cacheId];
+      if (cached !== null)
+        return cached;
       else {
         const newStorage: Storage<Class> = new App.Storage(
           this._class,
