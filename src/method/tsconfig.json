@@ -13,13 +13,16 @@
       "path": "../apps/tsconfig.json"
     },
     {
-      "path": "new/tsconfig.json"
-    },
-    {
       "path": "gpt/tsconfig.json"
     },
     {
       "path": "search/tsconfig.json"
+    },
+    {
+      "path": "_newhelper/tsconfig.json"
+    },
+    {
+      "path": "_new/tsconfig.json"
     }
   ],
   "compilerOptions": {

@@ -12,7 +12,7 @@ abstract class Shortcut<
     O,
     C
   > {
-  constructor(debug: boolean = false) {
+  constructor(debug?: boolean) {
     super(
       "Shortcut",
       debug,

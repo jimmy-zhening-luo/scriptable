@@ -14,8 +14,14 @@ abstract class Helper<
   > {
   private readonly _input: Helper<I>["input"];
 
-  constructor(input?: I) {
-    super("Helper");
+  constructor(
+    input?: I,
+    debug?: boolean,
+  ) {
+    super(
+      "Helper",
+      debug,
+    );
     this._input = input ?? null;
   }
 
