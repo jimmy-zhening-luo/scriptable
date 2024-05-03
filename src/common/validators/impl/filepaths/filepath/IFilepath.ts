@@ -28,7 +28,7 @@ abstract class IFilepath<Root extends boolean> {
   private static get Splitterful(): typeof Splitterful {
     try {
       return importModule(
-        "./common/types/strings/Splitterful",
+        "./common/validators/base/string/splitters/Splitterful",
       ) as typeof Splitterful;
     }
     catch (e) {

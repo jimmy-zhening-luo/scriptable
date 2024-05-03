@@ -50,7 +50,7 @@ abstract class IFile {
   private static get Rootpath(): typeof Rootpath {
     try {
       return importModule(
-        "./common/validators/filepaths/Rootpath",
+        "./common/validators/impl/filepaths/Rootpath",
       ) as typeof Rootpath;
     }
     catch (e) {
@@ -64,7 +64,7 @@ abstract class IFile {
   private static get Subpath(): typeof Subpath {
     try {
       return importModule(
-        "./common/validators/filepaths/Subpath",
+        "./common/validators/impl/filepaths/Subpath",
       ) as typeof Subpath;
     }
     catch (e) {

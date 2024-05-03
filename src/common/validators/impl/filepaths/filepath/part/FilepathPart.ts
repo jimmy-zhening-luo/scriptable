@@ -1,5 +1,5 @@
 const fp_ValidString: typeof ValidString = importModule(
-  "./common/types/strings/ValidString",
+  "./common/validators/base/string/valid/ValidString",
 ) as typeof ValidString;
 
 class FilepathPart extends fp_ValidString<"FilepathPart"> {
