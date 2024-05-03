@@ -62,7 +62,7 @@ class CharStringful<Brand extends string> extends f_CharString<
   private static get posint(): typeof PosInt {
     try {
       return importModule(
-        "./common/types/literal/number/PosInt",
+        "./common/types/literals/number/PosInt",
       ) as typeof PosInt;
     }
     catch (e) {
@@ -76,7 +76,7 @@ class CharStringful<Brand extends string> extends f_CharString<
   private static get posinfinint(): typeof PosInfinInt {
     try {
       return importModule(
-        "./common/types/literal/number/PosInfinInt",
+        "./common/types/literals/number/PosInfinInt",
       ) as typeof PosInfinInt;
     }
     catch (e) {

@@ -1,5 +1,5 @@
 const piint_typeful: typeof typeful = importModule(
-  "./common/types/literal/typeful/Typeful",
+  "./common/types/literals/typeful/Typeful",
 ) as typeof typeful;
 
 function PosInfinInt(

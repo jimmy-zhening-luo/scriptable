@@ -44,7 +44,7 @@ abstract class App<
   protected static get stringful(): typeof Stringful {
     try {
       return importModule(
-        "./common/types/literal/string/Stringful",
+        "./common/types/literals/string/Stringful",
       ) as typeof Stringful;
     }
     catch (e) {
