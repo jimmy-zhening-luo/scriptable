@@ -5,10 +5,14 @@ import Configs from "@jimbojet/lint";
 
 export default [
   ...new Configs(
-    stylistic,
-    ts,
-    tsParser,
-    ["eslint.config.js"],
-    ["src/**/*.ts"],
+    {
+      stylistic,
+      files: ["eslint.config.js"],
+    },
+    {
+      ts,
+      parser: tsParser,
+      files: ["src/**/*.ts"],
+    },
   ).configs,
 ];
