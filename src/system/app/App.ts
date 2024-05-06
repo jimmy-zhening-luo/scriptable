@@ -41,20 +41,6 @@ abstract class App<
     }
   }
 
-  protected get stringful(): typeof Stringful {
-    try {
-      return importModule(
-        "./common/types/literals/string/Stringful",
-      ) as typeof Stringful;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Stringful`,
-        { cause: e },
-      );
-    }
-  }
-
   public get name(): stringful {
     try {
       if (this._name === undefined)
@@ -107,6 +93,20 @@ abstract class App<
     catch (e) {
       throw new EvalError(
         `App: setting.user`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected get stringful(): typeof Stringful {
+    try {
+      return importModule(
+        "./common/types/literals/string/Stringful",
+      ) as typeof Stringful;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Stringful`,
         { cause: e },
       );
     }
