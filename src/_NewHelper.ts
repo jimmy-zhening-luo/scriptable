@@ -9,7 +9,7 @@ namespace NewHelper {
   export class NewHelper extends helper<
     null,
     string,
-    NewHelperSetting
+    NewSetting
   > {
     public runtime(): null {
       return null;
