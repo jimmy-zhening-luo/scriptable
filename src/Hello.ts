@@ -17,7 +17,7 @@ namespace Hello {
       const world: string = this.read(
         FILE_WORLDTIME,
       );
-      const SPACE: stringful = Hello.stringful(
+      const SPACE: stringful = this.stringful(
         this.app["space"] ?? "",
         "app.space",
       );

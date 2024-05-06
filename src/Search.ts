@@ -31,21 +31,21 @@ namespace Search {
         app,
         user,
       }: SearchSettings = this.setting.parsed;
-      const TAG: stringful = Search.stringful(
+      const TAG: stringful = this.stringful(
         app.tag,
         "app.tag",
       );
-      const CHAT: stringful = Search.stringful(
+      const CHAT: stringful = this.stringful(
         app.chat,
         "app.chat",
       );
-      const TRANSLATE: stringful = Search.stringful(
+      const TRANSLATE: stringful = this.stringful(
         app.translate,
         "app.translate",
       );
       const MATH: stringful[] = (app.math ?? []).map(
         (s: string): stringful =>
-          Search.stringful(
+          this.stringful(
             s,
             "app.math?",
           ),

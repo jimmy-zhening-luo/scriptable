@@ -41,7 +41,7 @@ abstract class App<
     }
   }
 
-  protected static get stringful(): typeof Stringful {
+  protected get stringful(): typeof Stringful {
     try {
       return importModule(
         "./common/types/literals/string/Stringful",
