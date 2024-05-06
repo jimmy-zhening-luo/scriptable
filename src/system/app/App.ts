@@ -58,7 +58,7 @@ abstract class App<
   public get name(): stringful {
     try {
       if (this._name === undefined)
-        this._name = App.stringful(this.constructor.name);
+        this._name = this.stringful(this.constructor.name);
 
       return this._name;
     }
