@@ -8,7 +8,7 @@ abstract class Shortcut<
   C extends ISetting = NullRecord,
 > extends sh_App<
     "Shortcut",
-    string | I,
+    I,
     O,
     C
   > {
@@ -19,68 +19,13 @@ abstract class Shortcut<
     );
   }
 
-  public get input(): Nullable<string | I> {
+  protected get setInput(): Nullable<I> {
     try {
-      if (this._input === undefined) {
-        const flat: unknown = Array.isArray(args.shortcutParameter)
-          ? args.shortcutParameter.length === 1
-            ? args.shortcutParameter[0]
-            : null
-          : args.shortcutParameter;
-
-        this._input =
-          flat === null
-          || flat === undefined
-          || flat === ""
-          || flat === 0
-          || typeof flat === "number" && !Number.isFinite(flat)
-          || flat === false
-          || Array.isArray(flat)
-            ? null
-            : typeof flat === "number" || typeof flat === "boolean"
-              ? String(flat)
-              : flat as NonNullable<I>;
-      }
-
-      return this._input;
+      return args.shortcutParameter ?? null as Nullable<I>;
     }
     catch (e) {
       throw new EvalError(
-        `Shortcut: input`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get inputText(): Nullable<string> {
-    try {
-      return this.input === null
-        ? null
-        : String(this.input);
-    }
-    catch (e) {
-      throw new EvalError(
-        `Shortcut: inputText`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get inputData(): Nullable<I> {
-    try {
-      return this.input === null
-        || typeof this.input === "string"
-        || Object.values(this.input)
-          .every(
-            (val: unknown): val is undefined | null | "" =>
-              val === undefined || val === null || val === "",
-          )
-        ? null
-        : this.input;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Shortcut: inputData`,
+        `Shortcut: setInput`,
         { cause: e },
       );
     }
@@ -99,8 +44,6 @@ abstract class Shortcut<
       );
     }
   }
-
-  private _input?: Shortcut<I>["input"];
 }
 
 module.exports = Shortcut;

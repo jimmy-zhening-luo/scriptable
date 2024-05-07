@@ -4,9 +4,13 @@ abstract class App<
   O extends Nullable<Definite> = null,
   C extends ISetting = NullRecord,
 > {
-  private readonly _t0: number = new Date()
-    .getTime();
-  private readonly _storage: Record<string, Storage<Class>> = {};
+  private readonly _d0: Date = new Date();
+  private readonly _storage: Record<
+    string,
+    Storage<Class>
+  > = {};
+  private _name: Nullable<stringful> = null;
+  private _setting: Nullable<Setting<Class, C>> = null;
 
   constructor(
     protected readonly _class: literalful<Class>,
@@ -43,7 +47,7 @@ abstract class App<
 
   public get name(): stringful {
     try {
-      if (this._name === undefined)
+      if (this._name === null)
         this._name = this.stringful(this.constructor.name);
 
       return this._name;
@@ -58,7 +62,7 @@ abstract class App<
 
   public get setting(): Setting<Class, C> {
     try {
-      if (this._setting === undefined)
+      if (this._setting === null)
         this._setting = new App.Setting(
           this._class,
           this.name,
@@ -98,6 +102,63 @@ abstract class App<
     }
   }
 
+  public get input(): Nullable<I> {
+    try {
+      if (typeof this._input === "undefined")
+        this._input === this.setInput;
+
+      return this._input;
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: input`,
+        { cause: e },
+      );
+    }
+  }
+
+  public get inputString(): Nullable<string> {
+    try {
+      if (typeof this._inputString === "undefined")
+        this._inputString = this.falsy(
+          this.input,
+        )
+          ? null
+          : String(this.input);
+        
+      return this._inputString;
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: inputString`,
+        { cause: e },
+      );
+    }
+  }
+
+  public get inputStringful(): stringful {
+    try {
+      if (typeof this._inputStringful === "undefined")
+        if (typeof this.input !== "string")
+          throw new TypeError(
+            `typeof input is non-string`,
+          );
+        else
+          this._inputStringful = this.stringful(
+            this.input ?? "",
+            `App.input`,
+          );
+        
+      return this._inputStringful;
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: inputStringful`,
+        { cause: e },
+      );
+    }
+  }
+
   protected get stringful(): typeof Stringful {
     try {
       return importModule(
@@ -112,12 +173,11 @@ abstract class App<
     }
   }
 
-  public abstract get input(): Nullable<I>;
+  protected abstract get setInput(): Nullable<I>;
 
   public run(): Nullable<O> {
     try {
-      const _t1: number = new Date()
-        .getTime();
+      const _d1: Date = new Date();
       let _output: Nullable<O> = null;
 
       try {
@@ -130,21 +190,19 @@ abstract class App<
         );
       }
 
-      const output: Nullable<O> = _output;
-
       if (this.debug) {
         const _t2: number = new Date()
           .getTime();
 
         this.write(
           `${new Date()
-            .toISOString()}:: ${_t2 - _t1} ms : ${_t2 - this._t0} ms`,
+            .toISOString()}:: ${_t2 - _d1.getTime()} ms : ${_t2 - this._d0.getTime()} ms`,
           `_${this.name}_runtime.txt`,
           "line",
         );
       }
 
-      return this.setOutput(output);
+      return this.setOutput(_output);
     }
     catch (e) {
       throw new Error(
@@ -160,17 +218,14 @@ abstract class App<
 
   public read(
     filename?: boolean | string,
-    error?: boolean,
+    errorNoFile?: boolean,
   ): ReturnType<Storage<Class>["read"]> {
     try {
-      return filename === undefined
+      return typeof filename === "boolean"
         ? this.storage()
-          .read()
-        : typeof filename === "boolean"
-          ? this.storage()
-            .read(filename)
-          : this.storage(filename)
-            .read(error);
+          .read(filename)
+        : this.storage(filename)
+          .read(errorNoFile);
     }
     catch (e) {
       throw new EvalError(
@@ -248,7 +303,64 @@ abstract class App<
     }
   }
 
-  protected handleError(e: Error): string {
+  protected falsy(v: unknown): v is false {
+    try {
+      return !(
+        typeof v === "boolean"
+        && v
+        || Boolean(v)
+        && (
+          typeof v !== "number"
+          || Number.isFinite(v)
+        )
+        && (
+          !Array.isArray(v)
+          || v.length > 0
+          && !v
+            .map(
+              (vi: unknown): vi is true =>
+                this.boolean(vi),
+            )
+            .includes(false)
+        )
+        && (
+          typeof v !== "object"
+          || v !== null
+          && Object.keys(v).length > 0
+          && !Object.keys(v)
+            .map(
+              (vkey: unknown): vkey is true =>
+                this.boolean(v[vkey]),
+            )
+            .includes(false)
+        )
+        && (
+          typeof v !== "string"
+          || ![
+              "false",
+              "null",
+              "undefined",
+              "nan",
+            ].includes(
+              v.trim().toLowerCase(),
+            )
+          && (
+            Number.isNaN(Number(v))
+            || Boolean(Number(v))
+            && Number.isFinite(Number(v))
+          )
+        )
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: falsy`,
+        { cause: e },
+      );
+    }
+  }
+
+  private handleError(e: Error): string {
     try {
       const stack: string[] = [String(e)];
 
@@ -291,9 +403,12 @@ abstract class App<
   public abstract runtime(): Nullable<O>;
 
   protected abstract setOutput(runtimeOutput: Nullable<O>): Nullable<O>;
+  
+  private _input?: Nullable<I>;
 
-  private _name?: stringful;
-  private _setting?: Setting<Class, C>;
+  private _inputString?: Nullable<string>;
+
+  private _inputStringful?: stringful;
 }
 
 module.exports = App;
