@@ -26,7 +26,7 @@ namespace Search {
     SearchOutput,
     SearchSettings
   > {
-    public runtime(): Nullable<SearchOutput> {
+    public runtime(): ReturnType<Search["run"]> {
       const input: string = this.input?.input ?? "";
       const {
         app,

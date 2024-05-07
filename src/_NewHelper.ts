@@ -11,7 +11,7 @@ namespace NewHelper {
     string,
     NewSetting
   > {
-    public runtime(): null {
+    public runtime(): ReturnType<NewHelper["run"]> {
       return null;
     }
   }

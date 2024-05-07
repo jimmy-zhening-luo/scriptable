@@ -11,7 +11,7 @@ namespace Hello {
     string,
     HelloSetting
   > {
-    public runtime(): string {
+    public runtime(): ReturnType<Hello["run"]> {
       const FILE_WORLDTIME: string = "world-time.txt";
       const HELLO: stringful = this.readful();
       const world: string = this.read(

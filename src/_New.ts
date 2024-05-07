@@ -11,7 +11,7 @@ namespace New {
     string,
     NewSetting
   > {
-    public runtime(): null {
+    public runtime(): ReturnType<New["run"]> {
       return null;
     }
   }

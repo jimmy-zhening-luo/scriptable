@@ -11,7 +11,7 @@ namespace GPT {
     GPTOutput,
     GPTSetting
   > {
-    public runtime(): Nullable<GPTOutput> {
+    public runtime(): ReturnType<GPT["run"]> {
       const s: GPTSetting = this
         .setting
         .parsed;
