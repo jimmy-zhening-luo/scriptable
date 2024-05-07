@@ -47,7 +47,7 @@ class CharStringful<Brand extends string> extends f_CharString<
             `length '${this.string.length}' < min '${minInt}' for input: ${this.string}`,
             {
               cause: {
-                "string": this.string,
+                string: this.string,
                 length: this.string.length,
                 min,
                 max,
@@ -63,7 +63,7 @@ class CharStringful<Brand extends string> extends f_CharString<
             `length '${this.string.length}' > max '${maxInt}' for input: ${this.string}`,
             {
               cause: {
-                "string": this.string,
+                string: this.string,
                 length: this.string.length,
                 min,
                 max,

@@ -386,7 +386,7 @@ class CharSet {
           `char '${c}' not allowed`,
           {
             cause: {
-              char: c,
+              "char": c,
               charset: this.toString(),
               negate: this.negate,
             },
