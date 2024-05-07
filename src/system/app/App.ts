@@ -125,7 +125,7 @@ abstract class App<
         )
           ? null
           : String(this.input);
-        
+
       return this._inputString;
     }
     catch (e) {
@@ -148,7 +148,7 @@ abstract class App<
             this.input ?? "",
             `App.input`,
           );
-        
+
       return this._inputStringful;
     }
     catch (e) {
@@ -308,7 +308,7 @@ abstract class App<
       return !(
         typeof v === "boolean"
         && v
-        || Boolean(v)
+        || v
         && (
           typeof v !== "number"
           || Number.isFinite(v)
@@ -337,16 +337,17 @@ abstract class App<
         && (
           typeof v !== "string"
           || ![
-              "false",
-              "null",
-              "undefined",
-              "nan",
-            ].includes(
-              v.trim().toLowerCase(),
-            )
+            "false",
+            "null",
+            "undefined",
+            "nan",
+          ].includes(
+            v.trim()
+              .toLowerCase(),
+          )
           && (
             Number.isNaN(Number(v))
-            || Boolean(Number(v))
+            || Number(v)
             && Number.isFinite(Number(v))
           )
         )
@@ -403,11 +404,9 @@ abstract class App<
   public abstract runtime(): Nullable<O>;
 
   protected abstract setOutput(runtimeOutput: Nullable<O>): Nullable<O>;
-  
+
   private readonly _input?: Nullable<I>;
-
   private readonly _inputString?: Nullable<string>;
-
   private readonly _inputStringful?: stringful;
 }
 
