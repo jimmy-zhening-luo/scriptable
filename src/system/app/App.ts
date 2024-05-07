@@ -1,3 +1,6 @@
+declare const truthy: unique symbol;
+declare type Truthy<T> = T & { [truthy]: true };
+
 abstract class App<
   Class extends string,
   I extends Nullable<Definite> = null,
@@ -305,57 +308,75 @@ abstract class App<
 
   protected falsy(v: unknown): v is false {
     try {
-      return !(
-        typeof v === "boolean"
-        && v
-        || (
-          typeof v !== "number"
-          || Number.isFinite(v)
-        )
-        && (
-          !Array.isArray(v)
-          || v.length > 0
-          && !v
-            .map(
-              (vi: unknown): vi is true =>
-                this.falsy(vi),
-            )
-            .includes(false)
-        )
-        && (
-          typeof v !== "object"
-          || v !== null
-          && Object.keys(v).length > 0
-          && !Object.keys(v)
-            .map(
-              (vkey: string): boolean =>
-                vkey in v
-                && this.falsy((v as Record<string, unknown>)[vkey]),
-            )
-            .includes(false)
-        )
-        && (
-          typeof v !== "string"
-          || ![
-            "false",
-            "null",
-            "undefined",
-            "nan",
-          ].includes(
-            v.trim()
-              .toLowerCase(),
-          )
-          && (
-            Number.isNaN(Number(v))
-            || Number(v) !== 0
-            && Number.isFinite(Number(v))
-          )
-        )
-      );
+      return !this.boolean(v);
     }
     catch (e) {
       throw new EvalError(
         `App: falsy`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected boolean(v: unknown): v is true {
+    try {
+      return typeof v === "boolean"
+        ? v
+        : typeof v === "number" || typeof v === "bigint"
+          ? Number(v) !== 0
+          && Number.isFinite(
+            Number(v),
+          )
+          : typeof v === "string"
+            ? ![
+                "false",
+                "null",
+                "undefined",
+                "nan",
+              ].includes(
+                v
+                  .trim()
+                  .toLowerCase(),
+              )
+              && (
+                Number.isNaN(
+                  Number(v),
+                )
+                || this.boolean(
+                  Number(v),
+                )
+              )
+            : Array.isArray(v)
+              ? v.length > 0
+              && v
+                .map(
+                  (vi: unknown): vi is Truthy<unknown> =>
+                    this.boolean(
+                      vi,
+                    ),
+                )
+                .includes(
+                  true,
+                )
+              : typeof v === "object"
+                ? v !== null
+                && Object.keys(v).length > 0
+                && Object.keys(v)
+                  .map(
+                    (vkey: string): vkey is Truthy<string> =>
+                      this.boolean(
+                        (v as Record<string, unknown>)[vkey],
+                      ),
+                  )
+                  .includes(
+                    true,
+                  )
+                : typeof v === "function"
+                || typeof v === "symbol";
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: boolean`,
         { cause: e },
       );
     }
