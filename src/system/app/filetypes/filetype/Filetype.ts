@@ -66,7 +66,7 @@ abstract class Filetype<
     }
   }
 
-  public read(...error: Parameters<F["read"]>): ReturnType<F["read"]> {
+  public read(...error: Parameters<F["read"]>): string {
     try {
       return this._file.read(...error);
     }
@@ -78,7 +78,7 @@ abstract class Filetype<
     }
   }
 
-  public readful(): ReturnType<F["readful"]> {
+  public readful(): stringful {
     try {
       return this._file.readful(this.subpath);
     }
@@ -90,7 +90,7 @@ abstract class Filetype<
     }
   }
 
-  public toString(): ReturnType<F["toString"]> {
+  public toString(): stringful {
     try {
       return this._file.toString();
     }
