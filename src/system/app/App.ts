@@ -404,11 +404,11 @@ abstract class App<
 
   protected abstract setOutput(runtimeOutput: Nullable<O>): Nullable<O>;
   
-  private _input?: Nullable<I>;
+  private readonly _input?: Nullable<I>;
 
-  private _inputString?: Nullable<string>;
+  private readonly _inputString?: Nullable<string>;
 
-  private _inputStringful?: stringful;
+  private readonly _inputStringful?: stringful;
 }
 
 module.exports = App;
