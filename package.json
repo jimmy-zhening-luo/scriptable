@@ -28,8 +28,8 @@
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "devDependencies": {
     "@jimbojet/lint": "^8.0.3",
-    "@stylistic/eslint-plugin": "^1.8.0",
-    "@types/node": "^20.12.8",
+    "@stylistic/eslint-plugin": "^1.8.1",
+    "@types/node": "^20.12.10",
     "@types/scriptable-ios": "^1.7.7",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
