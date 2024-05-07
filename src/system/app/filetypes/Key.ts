@@ -29,7 +29,7 @@ class Key<Class extends string> extends k_Filetype<
     }
   }
 
-  private get handle(): F["subpath"] {
+  private get handle(): Key["subpath"] {
     try {
       return this.subpath;
     }
@@ -43,7 +43,7 @@ class Key<Class extends string> extends k_Filetype<
 
   public load(fallbackLocal: boolean = false): stringful {
     try {
-      const handle: F["subpath"] = this.handle;
+      const handle: Key["subpath"] = this.handle;
 
       if (!Keychain.contains(handle))
         if (!fallbackLocal)
@@ -90,7 +90,7 @@ class Key<Class extends string> extends k_Filetype<
 
   public add(roll: boolean = false): this {
     try {
-      const handle: F["subpath"] = this.handle;
+      const handle: Key["subpath"] = this.handle;
 
       if (Keychain.contains(handle) && !roll)
         throw new ReferenceError(
@@ -127,7 +127,7 @@ class Key<Class extends string> extends k_Filetype<
             },
           );
         else
-          return local;
+          return this;
       }
     }
     catch (e) {
@@ -152,7 +152,7 @@ class Key<Class extends string> extends k_Filetype<
 
   public remove(): this {
     try {
-      const handle: F["subpath"] = this.handle;
+      const handle: Key["subpath"] = this.handle;
 
       if (Keychain.contains(handle)) {
         Keychain.remove(handle);
