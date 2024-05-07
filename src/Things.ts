@@ -11,7 +11,7 @@ namespace Things {
     ThingsItemOutput[],
     ThingsSetting
   > {
-    public runtime(): null {
+    public runtime(): ReturnType<Things["run"]> {
       const input: stringful = this.inputStringful;
       const {
         tag,
@@ -35,10 +35,10 @@ namespace Things {
             const project: Nullable<string> = finalTag === null || input.length === finalTag + 1
               ? null
               : projects[
-                  this.stringful(
-                    input[finalTag + 1] ?? "",
-                  ) as char,
-                ] ?? null;
+                this.stringful(
+                  input[finalTag + 1] ?? "",
+                )
+              ] ?? null;
             const lines: string[] = item.split(
               delims.line,
             );
