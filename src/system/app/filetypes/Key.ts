@@ -10,7 +10,7 @@ class Key<Class extends string> extends k_Filetype<
   constructor(
     appClass: literalful<Class>,
     app: stringful,
-    alias: string,
+    alias: stringful,
   ) {
     try {
       super(
@@ -54,12 +54,12 @@ class Key<Class extends string> extends k_Filetype<
                 handle,
                 inKeychain: Keychain.contains(handle),
                 fallbackLocal,
-                local: this.read(),
+                local: super.read(),
               },
             },
           );
         else
-          return this.readful();
+          return super.readful();
       else {
         const key: string = Keychain.get(handle);
 
@@ -72,7 +72,7 @@ class Key<Class extends string> extends k_Filetype<
                 inKeychain: Keychain.contains(handle),
                 key,
                 fallbackLocal,
-                local: this.read(),
+                local: super.read(),
               },
             },
           );
@@ -99,14 +99,14 @@ class Key<Class extends string> extends k_Filetype<
             cause: {
               handle,
               roll,
-              local: this.read(),
+              local: super.read(),
               inKeychain: Keychain.contains(handle),
               keychain: Keychain.get(handle),
             },
           },
         );
       else {
-        const local: stringful = this.readful();
+        const local: stringful = super.readful();
 
         Keychain.set(
           handle,
@@ -165,7 +165,7 @@ class Key<Class extends string> extends k_Filetype<
                 handle,
                 inKeychain: Keychain.contains(handle),
                 keychain: Keychain.get(handle),
-                local: this.read(),
+                local: super.read(),
               },
             },
           );
@@ -184,6 +184,20 @@ class Key<Class extends string> extends k_Filetype<
   public write(): never {
     throw new ReferenceError(
       `Key: write: Forbidden: Local key files are readonly`,
+      { cause: { handle: this.handle } },
+    );
+  }
+
+  public override read(): never {
+    throw new ReferenceError(
+      `Key: read: Forbidden: directly reading key from local file disallowed; use 'load(true)' instead`,
+      { cause: { handle: this.handle } },
+    );
+  }
+
+  public override readful(): never {
+    throw new ReferenceError(
+      `Key: readful: Forbidden: directly reading key from local file disallowed; use 'load(true)' instead`,
       { cause: { handle: this.handle } },
     );
   }

@@ -12,6 +12,10 @@ abstract class App<
     string,
     Storage<Class>
   > = {};
+  private readonly _keys: Record<
+    string,
+    Key<Class>
+  > = {};
   private _name: Nullable<stringful> = null;
   private _setting: Nullable<Setting<Class, C>> = null;
 
@@ -43,6 +47,20 @@ abstract class App<
     catch (e) {
       throw new ReferenceError(
         `App: import Storage`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected static get Key(): typeof Key {
+    try {
+      return importModule(
+        "filetypes/Key",
+      ) as typeof Key;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Key`,
         { cause: e },
       );
     }
@@ -145,6 +163,12 @@ abstract class App<
         if (typeof this.input !== "string")
           throw new TypeError(
             `typeof input is non-string`,
+            {
+              cause: {
+                input: this.input,
+                type: typeof this.input,
+              },
+            },
           );
         else
           this._inputStringful = this.stringful(
@@ -277,6 +301,38 @@ abstract class App<
     }
   }
 
+  public load(
+    handle: string,
+  ): ReturnType<Key<Class>["load"]> {
+    try {
+      return this
+        .key(handle)
+        .readful();
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: load`,
+        { cause: e },
+      );
+    }
+  }
+
+  public roll(
+    handle: string,
+  ): ReturnType<Key<Class>["roll"]> {
+    try {
+      return this
+        .key(handle)
+        .roll();
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: load`,
+        { cause: e },
+      );
+    }
+  }
+
   protected storage(
     filename?: string,
   ): Storage<Class> {
@@ -306,7 +362,75 @@ abstract class App<
     }
   }
 
-  protected falsy(v: unknown): v is false {
+  protected key(
+    handle: string,
+  ): Key<Class> {
+    try {
+      const cached: Nullable<Key<Class>> = this._keys[handle] ?? null;
+
+      if (cached !== null)
+        return cached;
+      else {
+        const newKey: Key<Class> = new App.Key(
+          this._class,
+          this.name,
+          this.stringful(handle),
+        );
+
+        this._keys[handle] = newKey;
+
+        return newKey;
+      }
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: key`,
+        { cause: e },
+      );
+    }
+  }
+
+  private handleError(e: Error): string {
+    try {
+      const stack: string[] = [String(e)];
+
+      for (let ec: Error = e; "cause" in ec; ec = ec.cause as Error)
+        stack.push(String(ec.cause));
+
+      const messages: string[] = stack
+        .reverse();
+
+      console.error(
+        messages.join("\n"),
+      );
+
+      const root: string = messages.shift() ?? "";
+      const n: Notification = new Notification();
+
+      n.title = root;
+      n.body = messages.join("\n");
+      n.sound = "failure";
+      n.schedule()
+        .catch(
+          (n_e: unknown): never => {
+            throw new Error(
+              `Unhandled: Scriptable notification delivery failed`,
+              { cause: n_e },
+            );
+          },
+        );
+
+      return root;
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: handleError`,
+        { cause: e },
+      );
+    }
+  }
+
+  private falsy(v: unknown): v is false {
     try {
       return !this.boolean(v);
     }
@@ -318,7 +442,7 @@ abstract class App<
     }
   }
 
-  protected boolean(v: unknown): v is true {
+  private boolean(v: unknown): v is true {
     try {
       return typeof v === "boolean"
         ? v
@@ -377,46 +501,6 @@ abstract class App<
     catch (e) {
       throw new EvalError(
         `App: boolean`,
-        { cause: e },
-      );
-    }
-  }
-
-  private handleError(e: Error): string {
-    try {
-      const stack: string[] = [String(e)];
-
-      for (let ec: Error = e; "cause" in ec; ec = ec.cause as Error)
-        stack.push(String(ec.cause));
-
-      const messages: string[] = stack
-        .reverse();
-
-      console.error(
-        messages.join("\n"),
-      );
-
-      const root: string = messages.shift() ?? "";
-      const n: Notification = new Notification();
-
-      n.title = root;
-      n.body = messages.join("\n");
-      n.sound = "failure";
-      n.schedule()
-        .catch(
-          (n_e: unknown): never => {
-            throw new Error(
-              `notification delivery failed, unknown error`,
-              { cause: n_e },
-            );
-          },
-        );
-
-      return root;
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: handleError`,
         { cause: e },
       );
     }
