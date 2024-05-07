@@ -29,12 +29,6 @@ namespace Things {
         )
         .map(
           (item: string): ThingsItemOutput => {
-            const [
-              title,
-              ...noteLines,
-            ]: [string, string[]] = item.split(
-              delims.line,
-            );
             const finalTag: Nullable<number> = item.includes(tag)
               ? item.lastIndexOf(tag) as posint
               : null;
@@ -45,10 +39,13 @@ namespace Things {
                     input[finalTag + 1] ?? "",
                   ) as char,
                 ] ?? null;
+            const lines: string[] = item.split(
+              delims.line,
+            );
 
             return {
-              title,
-              notes: noteLines.join(delims.line),
+              title: lines.shift() ?? "",
+              notes: lines.join(delims.line),
               today: finalTag !== null && project === null,
               ...project === null
                 ? {}
