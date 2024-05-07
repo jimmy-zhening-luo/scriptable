@@ -107,7 +107,7 @@ abstract class Filetype<
       if (subtype.length === 0)
         throw new SyntaxError(
           `Filetype subclass name is empty`,
-          { { subtype } },
+          { cause: { subtype } },
         );
       else
         return new Filetype.WriteFile.Bookmark(`#${subtype}`);

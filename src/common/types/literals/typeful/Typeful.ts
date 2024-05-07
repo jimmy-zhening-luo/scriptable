@@ -10,7 +10,7 @@ function typeful<Brand, T>(
     throw new TypeError(
       `Safe: ${errorType}`,
       {
-        cause:{
+        cause: {
           errorType,
           error,
         },

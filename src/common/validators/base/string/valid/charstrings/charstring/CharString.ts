@@ -20,6 +20,7 @@ class CharString<
             cause: {
               input,
               charset: this.charset.toString(),
+              charsetNegate: this.charset.negate,
             },
           },
         );
@@ -77,6 +78,13 @@ class CharString<
       else
         throw new TypeError(
           `string contains disallowed chars`,
+          {
+            cause: {
+              input,
+              charset: this.charset.toString(),
+              charsetNegate: this.charset.negate,
+            },
+          },
         );
     }
     catch (e) {

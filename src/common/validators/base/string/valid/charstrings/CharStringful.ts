@@ -29,6 +29,15 @@ class CharStringful<Brand extends string> extends f_CharString<
       if (minInt > maxInt)
         throw RangeError(
           `min '${minInt}' > max '${maxInt}'`,
+          {
+            cause: {
+              min,
+              max,
+              minInt,
+              maxInt,
+              cStringCtorParams,
+            },
+          },
         );
       else {
         super(...cStringCtorParams);
@@ -45,6 +54,7 @@ class CharStringful<Brand extends string> extends f_CharString<
                 minInt,
                 maxInt,
                 charset: this.charset.toString(),
+                charsetNegate: this.charset.negate,
               },
             },
           );
@@ -60,6 +70,7 @@ class CharStringful<Brand extends string> extends f_CharString<
                 minInt,
                 maxInt,
                 charset: this.charset.toString(),
+                charsetNegate: this.charset.negate,
               },
             },
           );
