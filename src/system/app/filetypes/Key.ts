@@ -29,7 +29,7 @@ class Key<Class extends string> extends k_Filetype<
     }
   }
 
-  private get handle(): Key["subpath"] {
+  private get handle(): Key<Class>["subpath"] {
     try {
       return this.subpath;
     }
@@ -43,7 +43,7 @@ class Key<Class extends string> extends k_Filetype<
 
   public load(fallbackLocal: boolean = false): stringful {
     try {
-      const handle: Key["subpath"] = this.handle;
+      const handle: Key<Class>["subpath"] = this.handle;
 
       if (!Keychain.contains(handle))
         if (!fallbackLocal)
@@ -63,7 +63,7 @@ class Key<Class extends string> extends k_Filetype<
       else {
         const key: string = Keychain.get(handle);
 
-        if(key.length === 0)
+        if (key.length === 0)
           throw new ReferenceError(
             `Unexpected: key exists in Keychain but is empty`,
             {
@@ -90,7 +90,7 @@ class Key<Class extends string> extends k_Filetype<
 
   public add(roll: boolean = false): this {
     try {
-      const handle: Key["subpath"] = this.handle;
+      const handle: Key<Class>["subpath"] = this.handle;
 
       if (Keychain.contains(handle) && !roll)
         throw new ReferenceError(
@@ -152,7 +152,7 @@ class Key<Class extends string> extends k_Filetype<
 
   public remove(): this {
     try {
-      const handle: Key["subpath"] = this.handle;
+      const handle: Key<Class>["subpath"] = this.handle;
 
       if (Keychain.contains(handle)) {
         Keychain.remove(handle);
