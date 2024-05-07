@@ -7,7 +7,7 @@ namespace GPT {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class GPT extends shortcut<
-    GPTInput,
+    string | GPTInput,
     GPTOutput,
     GPTSetting
   > {
@@ -15,7 +15,7 @@ namespace GPT {
       const s: GPTSetting = this
         .setting
         .parsed;
-      const __i: GPT["input"] = this.input ?? "";
+      const __i: string | GPTInput = this.input ?? "";
       const _i: GPTOptions = typeof __i === "string"
         ? { prompt: __i }
         : !("prompt" in __i)

@@ -27,6 +27,7 @@ namespace Search {
     SearchSettings
   > {
     public runtime(): Nullable<SearchOutput> {
+      const input: string = this.input?.input ?? "";
       const {
         app,
         user,
@@ -50,12 +51,11 @@ namespace Search {
             "app.math?",
           ),
       );
-      const input: string = this.inputData?.input ?? "";
       const q: Query = new query(
         input.length === 0
           ? this.read()
           : input,
-        this.inputData?.clip ?? "",
+        this.input?.clip ?? "",
         CHAT,
         TRANSLATE,
         MATH,
