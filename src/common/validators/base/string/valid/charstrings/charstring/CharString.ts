@@ -16,6 +16,12 @@ class CharString<
       if (!this.validate(input))
         throw new TypeError(
           `Unqualified string: ${input}`,
+          {
+            cause: {
+              input,
+              charset: this.charset.toString(),
+            },
+          },
         );
       else
         this.string = input;

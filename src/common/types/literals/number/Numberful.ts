@@ -13,7 +13,7 @@ function Numberful(
     (N: number): N is numberful =>
       !Number.isNaN(N),
     literal,
-    "numberful: value is NaN",
+    `numberful: value is NaN`,
     errorContext,
   );
 }

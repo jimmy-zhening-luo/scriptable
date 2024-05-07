@@ -41,7 +41,14 @@ class Setting<
         else
           throw new TypeError(
             `Setting file parsed to valid JSON, but has invalid schema`,
-            { cause: { path: this._file.path } },
+            {
+              cause: {
+                path: this._file.path,
+                raw: this.read(),
+                parsedString: String(parsedJson),
+                parsedJson,
+              },
+            },
           );
       }
 
@@ -58,8 +65,14 @@ class Setting<
   public get app(): C["app"] {
     try {
       if (this.parsed.app === undefined)
-        throw new ReferenceError(
+        throw new TypeError(
           `No app setting found`,
+          {
+            cause: {
+              subpath: this.subpath,
+              parsed: this.parsed,
+            },
+          },
         );
       else
         return this.parsed.app;
@@ -75,8 +88,14 @@ class Setting<
   public get user(): C["user"] {
     try {
       if (this.parsed.user === undefined)
-        throw new ReferenceError(
+        throw new TypeError(
           `No user setting found`,
+          {
+            cause: {
+              subpath: this.subpath,
+              parsed: this.parsed,
+            },
+          },
         );
       else
         return this.parsed.user;
@@ -92,6 +111,7 @@ class Setting<
   public write(): never {
     throw new ReferenceError(
       `Setting: write: Forbidden: Setting files are readonly`,
+      { cause: { subpath: this.subpath } },
     );
   }
 

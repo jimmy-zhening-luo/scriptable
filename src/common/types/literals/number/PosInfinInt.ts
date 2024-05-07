@@ -10,7 +10,7 @@ function PosInfinInt(
     (N: number): N is posinfinint =>
       Number.isInteger(N) && N > 0 || N === Infinity,
     literal,
-    "posinfinint: value is not an [infinite] integer",
+    `posinfinint: value is not an [infinite] integer`,
     errorContext,
   );
 }

@@ -14,7 +14,8 @@ abstract class IFilepath<Root extends boolean> {
 
       if (!this.isOk())
         throw new TypeError(
-          `Invalid IFilepath: '${this.toString()}'`,
+          `Invalid IFilepath`,
+          { cause: { filepath: this.toString() } },
         );
     }
     catch (e) {

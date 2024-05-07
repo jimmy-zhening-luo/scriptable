@@ -13,7 +13,7 @@ function Char(
     (C: string): C is char =>
       C.length === 1,
     literal,
-    "char: length !== 1",
+    `char: length !== 1`,
     errorContext,
   );
 }

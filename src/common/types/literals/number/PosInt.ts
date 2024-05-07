@@ -10,7 +10,7 @@ function PosInt(
     (N: number): N is posint =>
       Number.isInteger(N) && N > 0,
     literal,
-    "posint: value is not a finite, positive integer",
+    `posint: value is not a finite, positive integer`,
     errorContext,
   );
 }

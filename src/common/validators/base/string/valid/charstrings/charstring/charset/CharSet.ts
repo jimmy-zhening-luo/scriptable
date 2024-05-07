@@ -384,6 +384,13 @@ class CharSet {
       else
         throw new TypeError(
           `char '${c}' not allowed`,
+          {
+            cause: {
+              char: c,
+              charset: this.toString(),
+              negate: this.negate,
+            },
+          },
         );
     }
     catch (e) {

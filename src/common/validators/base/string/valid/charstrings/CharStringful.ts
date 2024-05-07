@@ -36,10 +36,32 @@ class CharStringful<Brand extends string> extends f_CharString<
         if (this.string.length < minInt)
           throw RangeError(
             `length '${this.string.length}' < min '${minInt}' for input: ${this.string}`,
+            {
+              cause: {
+                "string": this.string,
+                length: this.string.length,
+                min,
+                max,
+                minInt,
+                maxInt,
+                charset: this.charset.toString(),
+              },
+            },
           );
         else if (this.string.length > maxInt)
           throw RangeError(
             `length '${this.string.length}' > max '${maxInt}' for input: ${this.string}`,
+            {
+              cause: {
+                "string": this.string,
+                length: this.string.length,
+                min,
+                max,
+                minInt,
+                maxInt,
+                charset: this.charset.toString(),
+              },
+            },
           );
         else
           [

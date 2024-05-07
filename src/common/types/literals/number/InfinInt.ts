@@ -10,7 +10,7 @@ function InfinInt(
     (N: number): N is infinint =>
       Number.isInteger(N) || N === Infinity || N === -Infinity,
     literal,
-    "infinint: value is not an [infinite] integer",
+    `infinint: value is not an [infinite] integer`,
     errorContext,
   );
 }

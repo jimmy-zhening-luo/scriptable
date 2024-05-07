@@ -8,7 +8,7 @@ class Bookmark {
       if (typeof bookmark === "string") {
         this.alias = Bookmark.stringful(
           bookmark.trim(),
-          "alias.trim()",
+          `alias.trim()`,
         );
 
         if (
@@ -17,14 +17,15 @@ class Bookmark {
             .bookmarkExists(this.alias)
         )
           throw new ReferenceError(
-            `no Scriptable bookmark with alias: '${this.alias}'`,
+            `no Scriptable bookmark with alias`,
+            { cause: { alias: this.alias } },
           );
         else
           this.path = Bookmark.stringful<ReturnType<Rootpath["toString"]>>(
             FileManager
               .iCloud()
               .bookmarkedPath(this.alias) as FString<true>,
-            "bookmark exists, but resolves to empty path",
+            `bookmark exists, but resolves to empty path`,
           );
       }
       else {

@@ -17,15 +17,32 @@ class Rootpath extends r_Filepath<true> {
 
   public pop(): FilepathPart["string"] {
     try {
+      const numPartsBefore: number = this._parts.length;
       const popped: Nullable<FilepathPart["string"]> = this._parts.pop() ?? null;
 
       if (popped === null)
         throw new RangeError(
           `Impossible: RootPath should always have at least one part`,
+          {
+            cause: {
+              popped,
+              filepath: this.toString(),
+              numPartsBefore,
+              numPartsAfter: this._parts.length,
+            },
+          },
         );
       else if (this.isEmpty)
         throw new TypeError(
-          `popping this element results in an empty path, you lose`,
+          `popping this element results in an empty path`,
+          {
+            cause: {
+              popped,
+              filepath: this.toString(),
+              numPartsBefore,
+              numPartsAfter: this._parts.length,
+            },
+          },
         );
       else
         return popped;

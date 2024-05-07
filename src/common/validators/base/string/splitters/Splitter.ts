@@ -4,7 +4,15 @@ const iSplitter: typeof ISplitter = importModule(
 
 class Splitter extends iSplitter<string> {
   protected filter(parts: string[]): string[] {
-    return parts;
+    try {
+      return parts;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Splitter: filter`,
+        { cause: e },
+      );
+    }
   }
 }
 

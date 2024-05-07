@@ -1,13 +1,13 @@
 abstract class Filetype<
   Class extends string,
-  Type extends string,
+  Subtype extends string,
   F extends IFile = ReadOnlyFile,
 > {
   protected readonly _file: F;
 
   constructor(
     File: new(...args: ConstructorParameters<typeof IFile>)=> IFile & F,
-    filetype: literalful<Type>,
+    filetype: literalful<Subtype>,
     appClass: literalful<Class>,
     ...subpaths: string[]
   ) {
@@ -66,7 +66,7 @@ abstract class Filetype<
     }
   }
 
-  public read(...error: Parameters<F["read"]>): string {
+  public read(...error: Parameters<F["read"]>): ReturnType<F["read"]> {
     try {
       return this._file.read(...error);
     }
@@ -78,7 +78,7 @@ abstract class Filetype<
     }
   }
 
-  public readful(): stringful {
+  public readful(): ReturnType<F["readful"]> {
     try {
       return this._file.readful(this.subpath);
     }
@@ -90,7 +90,7 @@ abstract class Filetype<
     }
   }
 
-  public toString(): string {
+  public toString(): ReturnType<F["toString"]> {
     try {
       return this._file.toString();
     }
@@ -102,14 +102,15 @@ abstract class Filetype<
     }
   }
 
-  private _rootBookmark(_type: literalful<Type>): Bookmark {
+  private _rootBookmark(subtype: literalful<Subtype>): Bookmark {
     try {
-      if (_type === "")
+      if (subtype.length === 0)
         throw new SyntaxError(
-          `Expected app child type name; instead, type is empty`,
+          `Filetype subclass name is empty`,
+          { { subtype } },
         );
       else
-        return new Filetype.WriteFile.Bookmark(`#${_type}`);
+        return new Filetype.WriteFile.Bookmark(`#${subtype}`);
     }
     catch (e) {
       throw new EvalError(
@@ -121,7 +122,7 @@ abstract class Filetype<
 
   public abstract write(
     ...args: Parameters<F["write"]>
-  ): ReturnType<F["write"]> extends never ? never : Filetype<Class, Type, F>;
+  ): ReturnType<F["write"]> extends never ? never : Filetype<Class, Subtype, F>;
 }
 
 module.exports = Filetype;

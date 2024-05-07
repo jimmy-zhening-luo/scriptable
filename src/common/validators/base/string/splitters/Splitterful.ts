@@ -4,10 +4,18 @@ const f_iSplitter: typeof ISplitter = importModule(
 
 class Splitterful extends f_iSplitter<stringful> {
   protected filter(parts: string[]): stringful[] {
-    return parts.filter(
-      (part): part is stringful =>
-        part.length !== 0,
-    );
+    try {
+      return parts.filter(
+        (part): part is stringful =>
+          part.length !== 0,
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `Splitterful: filter`,
+        { cause: e },
+      );
+    }
   }
 }
 

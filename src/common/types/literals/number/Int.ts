@@ -10,7 +10,7 @@ function Int(
     (N: number): N is int =>
       Number.isInteger(N),
     literal,
-    "int: value is not a finite integer",
+    `int: value is not a finite integer`,
     errorContext,
   );
 }
