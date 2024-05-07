@@ -21,7 +21,7 @@ abstract class Shortcut<
 
   protected get setInput(): Nullable<I> {
     try {
-      return args.shortcutParameter ?? null as Nullable<I>;
+      return (args.shortcutParameter as Nullable<I>) ?? null;
     }
     catch (e) {
       throw new EvalError(

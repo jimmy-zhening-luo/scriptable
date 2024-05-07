@@ -105,7 +105,7 @@ abstract class App<
   public get input(): Nullable<I> {
     try {
       if (typeof this._input === "undefined")
-        this._input === this.setInput;
+        this._input = this.setInput;
 
       return this._input;
     }
@@ -145,7 +145,7 @@ abstract class App<
           );
         else
           this._inputStringful = this.stringful(
-            this.input ?? "",
+            this.input,
             `App.input`,
           );
 
@@ -308,8 +308,7 @@ abstract class App<
       return !(
         typeof v === "boolean"
         && v
-        || v
-        && (
+        || (
           typeof v !== "number"
           || Number.isFinite(v)
         )
@@ -319,7 +318,7 @@ abstract class App<
           && !v
             .map(
               (vi: unknown): vi is true =>
-                this.boolean(vi),
+                this.falsy(vi),
             )
             .includes(false)
         )
@@ -329,8 +328,9 @@ abstract class App<
           && Object.keys(v).length > 0
           && !Object.keys(v)
             .map(
-              (vkey: unknown): vkey is true =>
-                this.boolean(v[vkey]),
+              (vkey: string): boolean =>
+                vkey in v
+                && this.falsy((v as Record<string, unknown>)[vkey]),
             )
             .includes(false)
         )
@@ -347,7 +347,7 @@ abstract class App<
           )
           && (
             Number.isNaN(Number(v))
-            || Number(v)
+            || Number(v) !== 0
             && Number.isFinite(Number(v))
           )
         )
@@ -405,9 +405,9 @@ abstract class App<
 
   protected abstract setOutput(runtimeOutput: Nullable<O>): Nullable<O>;
 
-  private readonly _input?: Nullable<I>;
-  private readonly _inputString?: Nullable<string>;
-  private readonly _inputStringful?: stringful;
+  private _input?: Nullable<I>;
+  private _inputString?: Nullable<string>;
+  private _inputStringful?: stringful;
 }
 
 module.exports = App;

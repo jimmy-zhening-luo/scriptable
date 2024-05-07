@@ -12,7 +12,7 @@ abstract class Helper<
     O,
     C
   > {
-  private readonly _input: Helper<I>["input"];
+  private readonly __input: Nullable<I>;
 
   constructor(
     input?: I,
@@ -22,12 +22,12 @@ abstract class Helper<
       "Helper",
       debug,
     );
-    this._input = input ?? null;
+    this.__input = input ?? null;
   }
 
-  public get input(): Nullable<I> {
+  public get setInput(): Nullable<I> {
     try {
-      return this._input;
+      return this.__input;
     }
     catch (e) {
       throw new EvalError(
