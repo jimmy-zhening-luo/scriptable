@@ -40,7 +40,8 @@ class Setting<
           this._cachedSetting = parsedJson as C;
         else
           throw new TypeError(
-            `Setting file parsed to valid JSON, but has invalid schema: ${this._file.path}`,
+            `Setting file parsed to valid JSON, but has invalid schema`,
+            { cause: { path: this._file.path } },
           );
       }
 
