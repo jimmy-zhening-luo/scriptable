@@ -135,34 +135,6 @@ abstract class App<
     }
   }
 
-  public get inputParse(): I {
-    try {
-      if (typeof this._inputParse === "undefined")
-        if (typeof this.input !== "string")
-          throw new TypeError(
-            `parsing error: non-string input`,
-            {
-              cause: {
-                input: this.input,
-                type: typeof this.input,
-              },
-            },
-          );
-        else
-          this._inputParse = JSON.parse(
-            this.input,
-          ) as I;
-
-      return this._inputParse;
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: inputParse`,
-        { cause: e },
-      );
-    }
-  }
-
   public get inputString(): Nullable<string> {
     try {
       if (typeof this._inputString === "undefined")
@@ -538,7 +510,6 @@ abstract class App<
   private _input?: Nullable<I>;
   private _inputString?: Nullable<string>;
   private _inputStringful?: stringful;
-  private _inputParse?: I;
 }
 
 module.exports = App;
