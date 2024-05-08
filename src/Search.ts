@@ -22,14 +22,13 @@ namespace Search {
   ) as typeof ShortcutEngine;
 
   export class Search extends shortcut<
-    SearchInput,
+    string,
     SearchOutput,
     SearchSettings
   > {
     public runtime(): ReturnType<Search["run"]> {
       const input: string = this
-        .inputful
-        .input;
+        .inputString;
       const {
         app,
         user,
@@ -54,9 +53,9 @@ namespace Search {
           ),
       );
       const q: Query = new query(
-        input.length === 0
-          ? this.read()
-          : input,
+        input.length > 0
+          ? input
+          : this.read(),
         CHAT,
         TRANSLATE,
         MATH,
