@@ -1,6 +1,3 @@
-declare const truthy: unique symbol;
-declare type Truthy<T> = T & { [truthy]: true };
-
 abstract class App<
   Class extends string,
   I extends Nullable<Definite> = null,
