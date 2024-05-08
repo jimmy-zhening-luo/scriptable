@@ -29,8 +29,12 @@ namespace Things {
         )
         .map(
           (item: string): ThingsItemOutput => {
-            const finalTag: Nullable<number> = item.includes(tag)
-              ? item.lastIndexOf(tag) as posint
+            const finalTag: Nullable<number> = item.includes(
+              tag,
+            )
+              ? item.lastIndexOf(
+                tag,
+              ) as posint
               : null;
             const project: Nullable<string> = finalTag === null || input.length === finalTag + 1
               ? null
@@ -45,7 +49,9 @@ namespace Things {
 
             return {
               title: lines.shift() ?? "",
-              notes: lines.join(delims.line),
+              notes: lines.join(
+                delims.line,
+              ),
               today: finalTag !== null && project === null,
               ...project === null
                 ? {}
