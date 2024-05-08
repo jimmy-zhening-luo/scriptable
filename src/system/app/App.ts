@@ -135,6 +135,35 @@ abstract class App<
     }
   }
 
+  public get inputful(): I {
+    try {
+      if (typeof this._inputful === "undefined") {
+        const input: Nullable<I> = this.input;
+
+        if (input === null)
+          throw new TypeError(
+            `null input`,
+            {
+              cause: {
+                input,
+                type: typeof input,
+              },
+            },
+          );
+        else
+          this._inputful = input;
+      }
+
+      return this._inputful;
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: inputful`,
+        { cause: e },
+      );
+    }
+  }
+
   public get inputString(): Nullable<string> {
     try {
       if (typeof this._inputString === "undefined")
@@ -508,6 +537,7 @@ abstract class App<
   protected abstract setOutput(runtimeOutput: Nullable<O>): Nullable<O>;
 
   private _input?: Nullable<I>;
+  private _inputful?: I;
   private _inputString?: Nullable<string>;
   private _inputStringful?: stringful;
 }
