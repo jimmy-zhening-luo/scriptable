@@ -27,7 +27,9 @@ namespace Search {
     SearchSettings
   > {
     public runtime(): ReturnType<Search["run"]> {
-      const input: string = this.input?.input ?? "";
+      const input: string = this
+        .inputful
+        .input;
       const {
         app,
         user,
@@ -55,7 +57,6 @@ namespace Search {
         input.length === 0
           ? this.read()
           : input,
-        this.input?.clip ?? "",
         CHAT,
         TRANSLATE,
         MATH,

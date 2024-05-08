@@ -4,7 +4,6 @@ class Query {
 
   constructor(
     query: string,
-    clip: string,
     CHAT: stringful,
     TRANSLATE: stringful,
     MATH: stringful[] = [],
@@ -22,9 +21,6 @@ class Query {
           MATH,
         ),
       ];
-
-      if (tokens.length === 1)
-        tokens.push(...Query.tokenize(clip));
 
       if (tokens.length === 0)
         throw new SyntaxError(
