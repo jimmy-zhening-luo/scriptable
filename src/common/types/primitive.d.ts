@@ -1,4 +1,13 @@
 declare type primitive =
   | string
   | number
-  | boolean;
+  | boolean
+;
+declare type numberlike =
+  | number
+  | bigint
+;
+declare type primitivelike =
+  | primitive
+  | numberlike
+;
