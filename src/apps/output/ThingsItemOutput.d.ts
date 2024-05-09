@@ -1,6 +1,7 @@
 declare type ThingsItemOutput = {
   title: string;
   notes: string;
-  today: boolean;
-  project?: string;
+  triage: string;
+  when?: "today" | "someday";
+  list?: string;
 };

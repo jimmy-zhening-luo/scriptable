@@ -12,5 +12,6 @@ declare type ThingsAppSetting = {
 };
 
 declare type ThingsUserSetting = {
-  projects: Record<string, string>;
+  triage: string;
+  lists: Record<string, string>;
 };

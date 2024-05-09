@@ -17,7 +17,10 @@ namespace Things {
         tag,
         delims,
       }: ThingsAppSetting = this.app;
-      const { projects }: ThingsUserSetting = this.user;
+      const {
+        triage,
+        lists,
+      }: ThingsUserSetting = this.user;
 
       return input
         .split(
@@ -29,33 +32,50 @@ namespace Things {
         )
         .map(
           (item: string): ThingsItemOutput => {
-            const finalTag: Nullable<number> = item.includes(
+            const lines: string[] = item.split(
+              delims.line,
+            );
+            const tagLast: Nullable<number> = item.includes(
               tag,
             )
               ? item.lastIndexOf(
                 tag,
               ) as posint
               : null;
-            const project: Nullable<string> = finalTag === null || input.length === finalTag + 1
-              ? null
-              : projects[
-                this.stringful(
-                  input[finalTag + 1] ?? "",
-                )
-              ] ?? null;
-            const lines: string[] = item.split(
-              delims.line,
-            );
+            const flags: Pick<
+              ThingsItemOutput,
+              "when" | "list"
+            > = tagLast === null
+              ? {}
+              : {
+                when: "today",
+                ...input.length === tagLast + 1
+                  ? {}
+                  : {
+                    list: lists[
+                      this
+                        .stringful(
+                          (input[tagLast + 1] ?? "")
+                            .toLowerCase(),
+                        )
+                    ] ?? null,
+                  }
+              };
+
+            if ("list" in flags && flags.list.length > 0)
+              flags.when = "someday";
 
             return {
-              title: lines.shift() ?? "",
-              notes: lines.join(
-                delims.line,
+              title: encodeURI(
+                lines.shift() ?? "",
               ),
-              today: finalTag !== null && project === null,
-              ...project === null
-                ? {}
-                : { project },
+              notes: encodeURI(
+                lines.join(
+                  delims.line,
+                ),
+              ),
+              triage,
+              ...flags,
             };
           },
         );
