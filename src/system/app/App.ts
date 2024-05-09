@@ -449,14 +449,52 @@ abstract class App<
   }
 
   private handleError(e: Error): string {
+    function print(eLike: ErrorLike): string {
+      function quotelessStringify(v: unknown): string {
+        return Array.isArray(v)
+          ? String(v)
+          : typeof v === "object" && v !== null
+            ? Object.keys(v)
+              .map(
+                (k: string): string =>
+                  `${k}: ${quotelessStringify((v as Record<string, unknown>)[k])}`,
+              )
+              .join(", ")
+            : String(v);
+      }
+
+      return typeof eLike === "object" && "message" in eLike
+        ? eLike.message
+        : quotelessStringify(eLike);
+    }
+
     try {
-      const stack: string[] = [String(e)];
+      const stack: ErrorLike[] = [e];
 
-      for (let ec: Error = e; "cause" in ec; ec = ec.cause as Error)
-        stack.push(String(ec.cause));
+      for (let ei: ErrorLike = e; "cause" in ei; ei = ei.cause as ErrorLike)
+        stack.push(ei.cause as ErrorLike);
 
-      const messages: string[] = stack
+      const queue: ErrorLike[] = [...stack]
         .reverse();
+      const e1: number = queue.findIndex(
+        (e: ErrorLike): e is ErrorLike<true> =>
+          typeof e === "object" && "message" in e,
+      );
+      const hoistedQueue: ErrorLike[] = e1 === -1
+        ? [...queue]
+        : [
+            queue[e1] as ErrorLike<true>,
+            ...queue.slice(
+              0,
+              e1,
+            ),
+            ...queue.slice(e1 + 1),
+          ];
+      const messages: string[] = hoistedQueue
+        .map(
+          (e: ErrorLike): string =>
+            print(e),
+        );
 
       console.error(
         messages.join("\n"),
