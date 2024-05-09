@@ -403,7 +403,13 @@ class CharSet {
 
   public toString(): string {
     try {
-      return this.chars.join(" | ");
+      return `[${
+        this
+          .chars
+          .join(
+            ", ",
+          )
+      }]`;
     }
     catch (e) {
       throw new EvalError(
