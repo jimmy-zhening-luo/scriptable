@@ -27,7 +27,7 @@ class BrowserEngine extends b_IEngine {
         .flat()
         .filter(
           (url: string): url is stringful =>
-            url.length !== 0,
+            url.length > 0,
         );
 
       if (this.urls.length === 0)

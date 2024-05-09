@@ -11,7 +11,7 @@ function Stringful<Input extends string>(
     Input
   >(
     (S: Input): S is stringful & Input =>
-      S.length !== 0,
+      S.length > 0,
     literal,
     `stringful: empty string`,
     errorContext,
