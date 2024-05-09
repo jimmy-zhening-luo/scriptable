@@ -48,19 +48,19 @@ namespace Things {
             > = tagLast === null
               ? {}
               : {
-                when: "today",
-                ...input.length === tagLast + 1
-                  ? {}
-                  : {
-                    list: lists[
-                      this
-                        .stringful(
-                          (input[tagLast + 1] ?? "")
-                            .toLowerCase(),
-                        )
-                    ] ?? "",
-                  }
-              };
+                  when: "today",
+                  ...input.length === tagLast + 1
+                    ? {}
+                    : {
+                        list: lists[
+                          this
+                            .stringful(
+                              (input[tagLast + 1] ?? "")
+                                .toLowerCase(),
+                            )
+                        ] ?? "",
+                      },
+                };
 
             if ("list" in flags && flags.list.length > 0)
               flags.when = "someday";
