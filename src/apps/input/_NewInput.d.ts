@@ -1,1 +1,1 @@
-declare type NewInput = Record<string, unknown>;
+declare type NewInput = never;

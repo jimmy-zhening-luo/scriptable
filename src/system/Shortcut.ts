@@ -3,13 +3,13 @@ const sh_App: typeof App = importModule(
 ) as typeof App;
 
 abstract class Shortcut<
-  I extends Nullable<Definite> = null,
-  O extends Nullable<Definite> = null,
-  C extends ISetting = NullRecord,
+  I = never,
+  O = never,
+  C extends ISetting = never,
 > extends sh_App<
     "Shortcut",
-    I,
-    O,
+    Nullable<I>,
+    Nullable<O>,
     C
   > {
   constructor(debug?: boolean) {
@@ -19,9 +19,18 @@ abstract class Shortcut<
     );
   }
 
-  protected get setInput(): Nullable<I> {
+  protected get getInput(): Shortcut<I>["input"] {
     try {
-      return (args.shortcutParameter as Nullable<I>) ?? null;
+      if (typeof this._getInput === "undefined") {
+        const shortcutInput = args.shortcutParameter as null | undefined | NotUndefined<I>;
+        const definedShortcutInput = shortcutInput ?? null;
+
+        this._getInput = this.falsy(definedShortcutInput)
+          ? null
+          : definedShortcutInput;
+      }
+
+      return this._getInput;
     }
     catch (e) {
       throw new EvalError(
@@ -31,7 +40,7 @@ abstract class Shortcut<
     }
   }
 
-  protected setOutput(runtimeOutput: Nullable<O>): Nullable<O> {
+  protected setOutput(runtimeOutput: ReturnType<Shortcut<I, O>["run"]>): ReturnType<Shortcut<I, O>["run"]> {
     try {
       Script.setShortcutOutput(runtimeOutput);
 
@@ -44,6 +53,8 @@ abstract class Shortcut<
       );
     }
   }
+
+  private _getInput?: Shortcut<I>["getInput"];
 }
 
 module.exports = Shortcut;

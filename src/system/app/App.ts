@@ -1,8 +1,8 @@
 abstract class App<
   Class extends string,
-  I extends Nullable<Definite> = null,
-  O extends Nullable<Definite> = null,
-  C extends ISetting = NullRecord,
+  I = never,
+  O = never,
+  C extends ISetting = never,
 > {
   private readonly _d0: Date = new Date();
   private readonly _storage: Record<
@@ -19,7 +19,7 @@ abstract class App<
   constructor(
     protected readonly _class: literalful<Class>,
     protected debug: boolean = false,
-  ) { }
+  ) {}
 
   protected static get Setting(): typeof Setting {
     try {
@@ -120,10 +120,10 @@ abstract class App<
     }
   }
 
-  public get input(): Nullable<I> {
+  public get input(): NotUndefined<I> {
     try {
       if (typeof this._input === "undefined")
-        this._input = this.setInput;
+        this._input = this.getInput;
 
       return this._input;
     }
@@ -135,23 +135,24 @@ abstract class App<
     }
   }
 
-  public get inputful(): I {
+  public get inputful(): NonNullable<App<string, I>["input"]> {
     try {
       if (typeof this._inputful === "undefined") {
-        const input: Nullable<I> = this.input;
+        const { input } = this;
 
-        if (input === null)
+        if (this.falsy(input))
           throw new TypeError(
             `null input`,
             {
               cause: {
-                input,
-                type: typeof input,
+                input: this.input,
+                type: typeof this.input,
+                falsy: this.falsy(this.input),
               },
             },
           );
-        else
-          this._inputful = input;
+
+        this._inputful = input;
       }
 
       return this._inputful;
@@ -164,14 +165,21 @@ abstract class App<
     }
   }
 
-  public get inputString(): Nullable<string> {
+  public get inputString(): string {
     try {
       if (typeof this._inputString === "undefined")
-        this._inputString = this.falsy(
-          this.input,
-        )
-          ? null
-          : String(this.input);
+        if (typeof this.input !== "string")
+          throw new TypeError(
+            `non-string input`,
+            {
+              cause: {
+                input: this.input,
+                type: typeof this.input,
+              },
+            },
+          );
+        else
+          this._inputString = this.input;
 
       return this._inputString;
     }
@@ -199,7 +207,7 @@ abstract class App<
         else
           this._inputStringful = this.stringful(
             this.input,
-            `App.input`,
+            `App.inputStringful`,
           );
 
       return this._inputStringful;
@@ -226,15 +234,27 @@ abstract class App<
     }
   }
 
-  protected abstract get setInput(): Nullable<I>;
+  protected abstract get getInput(): App<Class, I>["input"];
 
-  public run(): Nullable<O> {
+  public run(): NotUndefined<O> {
     try {
-      const _d1: Date = new Date();
-      let _output: Nullable<O> = null;
-
       try {
-        _output = this.runtime();
+        const _d1: Date = new Date();
+        const _output: NotUndefined<O> = this.runtime();
+
+        if (this.debug) {
+          const _t2: number = new Date()
+            .getTime();
+
+          this.write(
+            `${new Date()
+              .toISOString()}:: ${_t2 - _d1.getTime()} ms : ${_t2 - this._d0.getTime()} ms`,
+            `_${this.name}_runtime.txt`,
+            "line",
+          );
+        }
+
+        return this.setOutput(_output);
       }
       catch (e) {
         throw new Error(
@@ -242,20 +262,6 @@ abstract class App<
           { cause: e },
         );
       }
-
-      if (this.debug) {
-        const _t2: number = new Date()
-          .getTime();
-
-        this.write(
-          `${new Date()
-            .toISOString()}:: ${_t2 - _d1.getTime()} ms : ${_t2 - this._d0.getTime()} ms`,
-          `_${this.name}_runtime.txt`,
-          "line",
-        );
-      }
-
-      return this.setOutput(_output);
     }
     catch (e) {
       throw new Error(
@@ -416,6 +422,32 @@ abstract class App<
     }
   }
 
+  protected falsy(value: I): value is NotUndefined<I> {
+    try {
+      const v: {} = value ?? false;
+
+      return v === false || (
+        typeof v === "string"
+          ? Number(v) === 0
+          : typeof v === "object"
+            ? Object.keys(v).length === 0
+            : Array.isArray(v)
+              ? v.flat(Infinity).length === 0
+              : typeof v === "number"
+                ? v === 0 || Number.isNaN(v)
+                : typeof v === "bigint"
+                  ? Number(v) === 0
+                  : false
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: falsy`,
+        { cause: e },
+      );
+    }
+  }
+
   private handleError(e: Error): string {
     try {
       const stack: string[] = [String(e)];
@@ -456,90 +488,12 @@ abstract class App<
     }
   }
 
-  private falsy(v: unknown): v is false {
-    try {
-      return !this.boolean(v);
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: falsy`,
-        { cause: e },
-      );
-    }
-  }
-
-  private boolean(v: unknown): v is true {
-    try {
-      return typeof v === "boolean"
-        ? v
-        : typeof v === "number" || typeof v === "bigint"
-          ? Number(v) !== 0
-          && Number.isFinite(
-            Number(v),
-          )
-          : typeof v === "string"
-            ? ![
-                "false",
-                "null",
-                "undefined",
-                "nan",
-              ].includes(
-                v
-                  .trim()
-                  .toLowerCase(),
-              )
-              && (
-                Number.isNaN(
-                  Number(v),
-                )
-                || this.boolean(
-                  Number(v),
-                )
-              )
-            : Array.isArray(v)
-              ? v.length > 0
-              && v
-                .map(
-                  (vi: unknown): vi is Truthy<unknown> =>
-                    this.boolean(
-                      vi,
-                    ),
-                )
-                .includes(
-                  true,
-                )
-              : typeof v === "object"
-                ? v !== null
-                && Object.keys(v).length > 0
-                && Object.keys(v)
-                  .map(
-                    (vkey: string): vkey is Truthy<string> =>
-                      this.boolean(
-                        (v as Record<string, unknown>)[vkey],
-                      ),
-                  )
-                  .includes(
-                    true,
-                  )
-                : typeof v === "function"
-                || typeof v === "symbol";
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: boolean`,
-        { cause: e },
-      );
-    }
-  }
-
-  public abstract runtime(): Nullable<O>;
-
-  protected abstract setOutput(runtimeOutput: Nullable<O>): Nullable<O>;
-
-  private _input?: Nullable<I>;
-  private _inputful?: I;
-  private _inputString?: Nullable<string>;
-  private _inputStringful?: stringful;
+  public abstract runtime(): ReturnType<App<Class, I, O>["run"]>;
+  protected abstract setOutput(runtimeOutput: ReturnType<App<Class, I, O>["run"]>): ReturnType<App<Class, I, O>["run"]>;
+  private _input?: App<Class, I>["input"];
+  private _inputful?: App<Class, I>["inputful"];
+  private _inputString?: App<Class, I>["inputString"];
+  private _inputStringful?: App<Class, I>["inputStringful"];
 }
 
 module.exports = App;

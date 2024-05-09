@@ -7,9 +7,9 @@ namespace New {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class New extends shortcut<
-    null,
-    string,
-    NewSetting
+    never,
+    never,
+    never
   > {
     public runtime(): ReturnType<New["run"]> {
       return null;

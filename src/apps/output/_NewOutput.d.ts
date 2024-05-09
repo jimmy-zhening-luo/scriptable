@@ -1,1 +1,1 @@
-declare type NewOutput = string;
+declare type NewOutput = never;

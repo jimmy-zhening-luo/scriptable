@@ -7,7 +7,7 @@ namespace Hello {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class Hello extends shortcut<
-    null,
+    never,
     string,
     HelloSetting
   > {
@@ -18,8 +18,8 @@ namespace Hello {
         FILE_WORLDTIME,
       );
       const SPACE: stringful = this.stringful(
-        this.app["space"] ?? "",
-        "app.space",
+        this.app?.space ?? "",
+        "setting.app.space",
       );
       const message: string = HELLO + SPACE + world;
 

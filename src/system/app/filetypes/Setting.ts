@@ -4,7 +4,7 @@ const set_Filetype: typeof Filetype = importModule(
 
 class Setting<
   Class extends string,
-  C extends ISetting = Record<string, never>,
+  C extends ISetting,
 > extends set_Filetype<
     Class,
     "Setting"

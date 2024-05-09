@@ -7,12 +7,12 @@ namespace NewHelper {
   const helper: typeof Helper = importModule("system/Helper") as typeof Helper;
 
   export class NewHelper extends helper<
-    null,
-    string,
-    NewSetting
+    void,
+    void,
+    never
   > {
     public runtime(): ReturnType<NewHelper["run"]> {
-      return null;
+      console.log(true);
     }
   }
 }

@@ -3,31 +3,28 @@ const hp_App: typeof App = importModule(
 ) as typeof App;
 
 abstract class Helper<
-  I extends Nullable<Definite> = null,
-  O extends Nullable<Definite> = null,
-  C extends ISetting = NullRecord,
+  I = void,
+  O = void,
+  C extends ISetting = never,
 > extends hp_App<
     "Helper",
     I,
     O,
     C
   > {
-  private readonly __input: Nullable<I>;
-
   constructor(
-    input?: I,
+    private readonly helperInput: Helper<I>["input"],
     debug?: boolean,
   ) {
     super(
       "Helper",
       debug,
     );
-    this.__input = input ?? null;
   }
 
-  public get setInput(): Nullable<I> {
+  public get getInput(): Helper<I>["input"] {
     try {
-      return this.__input;
+      return this.helperInput;
     }
     catch (e) {
       throw new EvalError(
@@ -37,7 +34,7 @@ abstract class Helper<
     }
   }
 
-  protected setOutput(runtimeOutput: Nullable<O>): Nullable<O> {
+  protected setOutput(runtimeOutput: ReturnType<Helper<I, O>["run"]>): ReturnType<Helper<I, O>["run"]> {
     try {
       return runtimeOutput;
     }
