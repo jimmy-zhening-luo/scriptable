@@ -1,6 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: deep-gray; icon-glyph: pen;
+// icon-color: deep-blue; icon-glyph: check-circle;
 "use strict";
 
 namespace Things {
