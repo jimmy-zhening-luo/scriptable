@@ -452,12 +452,29 @@ abstract class App<
     function print(eLike: ErrorLike): string {
       function quotelessStringify(v: unknown): string {
         return Array.isArray(v)
-          ? String(v)
+          ? `[${
+            v.map(
+              (vi: unknown): string =>
+                quotelessStringify(
+                  vi,
+                ),
+            )
+              .join(
+                ", ",
+              )
+          }]`
           : typeof v === "object" && v !== null
-            ? Object.keys(v)
+            ? Object
+              .keys(
+                v,
+              )
               .map(
                 (k: string): string =>
-                  `${k}: ${quotelessStringify((v as Record<string, unknown>)[k])}`,
+                  `${k}: ${
+                    quotelessStringify(
+                      (v as Record<string, unknown>)[k],
+                    )
+                  }`,
               )
               .join(", ")
             : String(v);
