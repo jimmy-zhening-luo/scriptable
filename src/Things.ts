@@ -37,7 +37,7 @@ namespace Things {
                 delims.line,
               );
               const lastTaggedLine: number = [...lines]
-                .reverse
+                .reverse()
                 .findIndex(
                   (line: string): boolean =>
                     line.includes(tag),
