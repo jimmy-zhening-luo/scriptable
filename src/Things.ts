@@ -8,7 +8,7 @@ namespace Things {
 
   export class Things extends shortcut<
     string,
-    ThingsItemOutput[],
+    ThingsOutput,
     ThingsSetting
   > {
     public runtime(): ReturnType<Things["run"]> {
@@ -22,63 +22,70 @@ namespace Things {
         lists,
       }: ThingsUserSetting = this.user;
 
-      return input
-        .split(
-          delims.item,
-        )
-        .map(
-          (item: string): string =>
-            item.trim(),
-        )
-        .map(
-          (item: string): ThingsItemOutput => {
-            const lines: string[] = item.split(
-              delims.line,
-            );
-            const tagLast: Nullable<number> = item.includes(
-              tag,
-            )
-              ? item.lastIndexOf(
-                tag,
-              ) as posint
-              : null;
-            const flags: Pick<
-              ThingsItemOutput,
-              "when" | "list"
-            > = tagLast === null
-              ? {}
-              : {
-                  when: "today",
-                  ...input.length === tagLast + 1
-                    ? {}
-                    : {
-                        list: lists[
-                          this
-                            .stringful(
-                              (input[tagLast + 1] ?? "")
-                                .toLowerCase(),
-                            )
-                        ] ?? "",
-                      },
-                };
-
-            if ("list" in flags && flags.list.length > 0)
-              flags.when = "someday";
-
-            return {
-              title: encodeURI(
-                lines.shift() ?? "",
-              ),
-              notes: encodeURI(
-                lines.join(
-                  delims.line,
+      return {
+        items: input
+          .split(
+            delims.item,
+          )
+          .map(
+            (item: string): string =>
+              item.trim(),
+          )
+          .map(
+            (item: string): ThingsItem => {
+              const lines: string[] = item.split(
+                delims.line,
+              );
+              const lastTaggedLine: number = [...lines]
+                .reverse
+                .findIndex(
+                  (line: string): boolean =>
+                    line.includes(tag),
+                );
+              const lastTag: Nullable<number> = lastTaggedLine < 0
+                ? null
+                : (lines[lines.length - 1 - lastTaggedLine] ?? "")
+                  .lastIndexOf(
+                  tag,
+                ) as posint;
+              const flags: Pick<
+                ThingsItem,
+                "when" | "list"
+              > = lastTag === null
+                ? {}
+                : {
+                    when: "today",
+                    ...input.length === lastTag + 1
+                      ? {}
+                      : {
+                          list: lists[
+                            this
+                              .stringful(
+                                (input[lastTag + 1] ?? "")
+                                  .toLowerCase(),
+                              )
+                          ] ?? "",
+                        },
+                  };
+  
+              if ("list" in flags && flags.list.length > 0)
+                flags.when = "someday";
+  
+              return {
+                title: encodeURI(
+                  lines.shift() ?? "",
                 ),
-              ),
-              triage,
-              ...flags,
-            };
-          },
-        );
+                notes: encodeURI(
+                  lines.join(
+                    delims.line,
+                  ),
+                ),
+                triage,
+                ...flags,
+              };
+            },
+          ),
+      };
     }
   }
 }
