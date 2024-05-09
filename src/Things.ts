@@ -58,7 +58,7 @@ namespace Things {
                           (input[tagLast + 1] ?? "")
                             .toLowerCase(),
                         )
-                    ] ?? null,
+                    ] ?? "",
                   }
               };
 
