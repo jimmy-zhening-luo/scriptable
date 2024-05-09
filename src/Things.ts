@@ -45,9 +45,9 @@ namespace Things {
               const lastTag: Nullable<number> = lastTaggedLine < 0
                 ? null
                 : (lines[lines.length - 1 - lastTaggedLine] ?? "")
-                  .lastIndexOf(
-                  tag,
-                ) as posint;
+                    .lastIndexOf(
+                      tag,
+                    ) as posint;
               const flags: Pick<
                 ThingsItem,
                 "when" | "list"
@@ -67,10 +67,10 @@ namespace Things {
                           ] ?? "",
                         },
                   };
-  
+
               if ("list" in flags && flags.list.length > 0)
                 flags.when = "someday";
-  
+
               return {
                 title: encodeURI(
                   lines.shift() ?? "",
