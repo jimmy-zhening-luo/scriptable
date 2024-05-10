@@ -83,6 +83,7 @@ namespace MenuBig {
       return {
         buttons,
         invert,
+        n,
       };
     }
   }
