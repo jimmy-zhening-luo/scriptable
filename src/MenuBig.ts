@@ -17,7 +17,7 @@ namespace MenuBig {
         bar,
         omit,
       }: MenuBigSetting["app"] = this.app;
-      const options: string[] = [this.input]
+      const options: string[] = [this.inputful]
         .flat();
       const n: number = options.length;
 
