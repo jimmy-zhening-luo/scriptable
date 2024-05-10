@@ -135,7 +135,7 @@ abstract class App<
     }
   }
 
-  public get inputful(): NonNullable<App<string, I>["input"]> {
+  public get inputful(): NonNullable<App<Class, I>["input"]> {
     try {
       if (typeof this._inputful === "undefined") {
         const { input } = this;
@@ -167,19 +167,22 @@ abstract class App<
 
   public get inputString(): string {
     try {
-      if (typeof this._inputString === "undefined")
-        if (typeof this.input !== "string")
+      if (typeof this._inputString === "undefined") {
+        const input: string | NonNullable<App<Class, I>["input"]> = this.input ?? "";
+
+        if (typeof input !== "string")
           throw new TypeError(
             `non-string input`,
             {
               cause: {
-                input: this.input,
-                type: typeof this.input,
+                input,
+                type: typeof input,
               },
             },
           );
         else
-          this._inputString = this.input;
+          this._inputString = input;
+      }
 
       return this._inputString;
     }
