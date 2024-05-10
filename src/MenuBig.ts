@@ -29,7 +29,6 @@ namespace MenuBig {
               max,
               n,
               options,
-              rawInputN: this.input.length,
               rawInputfulN: this.inputful.length,
             },
           },
