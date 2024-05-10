@@ -45,7 +45,8 @@ namespace MenuBig {
       const [
         big,
         small,
-      ]: [string, string] = [
+      ]: [string, string,
+      ] = [
         pad,
         n > bar
           ? ""
@@ -54,7 +55,8 @@ namespace MenuBig {
       const [
         top,
         bottom,
-      ]: [string, string] = omit === "bottom"
+      ]: [string, string,
+      ] = omit === "bottom"
         ? [
             big,
             small,
@@ -66,13 +68,15 @@ namespace MenuBig {
       const [
         buttons,
         invert,
-      ]: [string[], Record<string, string>] = [
+      ]: [string[], Record<string, string>,
+      ] = [
         [],
         {},
       ];
 
       for (const option of options) {
         const button: string = `${top}${option}${bottom}`;
+
         buttons.push(button);
         invert[button] = option;
       }
