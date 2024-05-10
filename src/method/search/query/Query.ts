@@ -25,6 +25,7 @@ class Query {
       if (tokens.length === 0)
         throw new SyntaxError(
           `Query resolved to 0 tokens`,
+          { cause: { query } },
         );
       else {
         this.key = String(
