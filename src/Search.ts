@@ -66,37 +66,51 @@ namespace Search {
           (eng: SearchEngineSetting): boolean =>
             eng.keys.includes(q.key),
         ) ?? null;
-      const resolved: Nullable<IEngine> = match === null
-        ? null
-        : "url" in match
-          ? new browserEngine(
-            match.keys,
-            match.url,
-            TAG,
-            match.browser,
-            match.encode,
-          )
-          : "shortcut" in match
-            ? new shortcutEngine(
-              match.keys,
-              match.shortcut,
-              match.output,
-            )
-            : "native" in match
-              ? new nativeEngine(
-                match.keys,
-                match.native,
-              )
-              : new appEngine(
-                match.app,
-                match.keys,
-              );
 
-      if (resolved !== null)
-        this.write(q.clean);
+      if (match === null)
+        throw new ReferenceError(
+          `No search engine matches query key`,
+          {
+            cause: {
+              input,
+              cache: this.read(),
+              parsed: {
+                key: q.key,
+                terms: q.terms,
+                numTerms: q.terms.length,
+              },
+            },
+          },
+        );
+
+      const resolved: IEngine = "url" in match
+        ? new browserEngine(
+          match.keys,
+          match.url,
+          TAG,
+          match.browser,
+          match.encode,
+        )
+        : "shortcut" in match
+          ? new shortcutEngine(
+            match.keys,
+            match.shortcut,
+            match.output,
+          )
+          : "native" in match
+            ? new nativeEngine(
+              match.keys,
+              match.native,
+            )
+            : new appEngine(
+              match.app,
+              match.keys,
+            );
+
+      this.write(q.clean);
 
       return resolved
-        ?.parseQueryToAction(q) ?? null;
+        .parseQueryToAction(q);
     }
   }
 
