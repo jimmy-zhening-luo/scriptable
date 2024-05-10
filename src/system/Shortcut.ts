@@ -8,7 +8,7 @@ abstract class Shortcut<
   C extends ISetting = never,
 > extends sh_App<
     "Shortcut",
-    I,
+    Nullable<I>,
     Nullable<O>,
     C
   > {
