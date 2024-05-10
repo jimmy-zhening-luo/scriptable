@@ -25,9 +25,7 @@ abstract class Shortcut<
         const shortcutInput = args.shortcutParameter as null | undefined | NotUndefined<I>;
         const definedShortcutInput = shortcutInput ?? null;
 
-        this._getInput = this.falsy(definedShortcutInput)
-          ? null
-          : definedShortcutInput;
+        this._getInput = definedShortcutInput;
       }
 
       return this._getInput;
