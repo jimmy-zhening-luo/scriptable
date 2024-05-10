@@ -26,6 +26,7 @@ namespace Things {
         .split(
           delims.item,
         )
+        .reverse()
         .map(
           (item: string): string =>
             item.trim(),
