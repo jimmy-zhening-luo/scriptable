@@ -46,9 +46,9 @@ namespace Things {
               const iLastTag: Nullable<number> = lastTaggedLine === null
                 ? null
                 : lastTaggedLine
-                    .lastIndexOf(
-                      tag,
-                    ) as posint;
+                  .lastIndexOf(
+                    tag,
+                  ) as posint;
               const lastTag: Nullable<string> = lastTaggedLine === null || iLastTag === null
                 ? null
                 : lastTaggedLine.length === iLastTag + 1
