@@ -168,8 +168,6 @@ abstract class App<
   public get inputString(): string {
     try {
       if (typeof this._inputString === "undefined") {
-        const input: string | NonNullable<App<Class, I>["input"]> = this.input ?? "";
-
         if (typeof input !== "string")
           throw new TypeError(
             `non-string input`,
@@ -182,7 +180,6 @@ abstract class App<
           );
         else
           this._inputString = input;
-      }
 
       return this._inputString;
     }
