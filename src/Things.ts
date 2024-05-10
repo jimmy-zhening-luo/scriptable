@@ -36,36 +36,34 @@ namespace Things {
               const lines: string[] = item.split(
                 delims.line,
               );
-              const lastTaggedLine: number = [...lines]
+              const lastTaggedLine: Nullable<string> = [...lines]
                 .reverse()
-                .findIndex(
+                .find(
                   (line: string): boolean =>
                     line.includes(tag),
-                );
-              const lastTag: Nullable<number> = lastTaggedLine < 0
+                ) ?? null;
+              const isTagged: boolean = lastTaggedLine !== null;
+              const iLastTag: Nullable<number> = lastTaggedLine === null
                 ? null
-                : (lines[lines.length - 1 - lastTaggedLine] ?? "")
+                : lastTaggedLine
                     .lastIndexOf(
                       tag,
                     ) as posint;
+              const lastTag: Nullable<string> = lastTaggedLine === null || iLastTag === null
+                ? null
+                : lastTaggedLine.length === iLastTag + 1
+                  ? null
+                  : (lastTaggedLine[iLastTag + 1] ?? "").toLowerCase();
               const flags: Pick<
                 ThingsItem,
                 "when" | "list"
-              > = lastTag === null
+              > = !isTagged
                 ? {}
                 : {
                     when: "today",
-                    ...input.length === lastTag + 1
+                    ...lastTag === null || lastTag.length === 0
                       ? {}
-                      : {
-                          list: lists[
-                            this
-                              .stringful(
-                                (input[lastTag + 1] ?? "")
-                                  .toLowerCase(),
-                              )
-                          ] ?? "",
-                        },
+                      : { list: lists[lastTag] ?? "" },
                   };
 
               if ("list" in flags && flags.list.length > 0)
