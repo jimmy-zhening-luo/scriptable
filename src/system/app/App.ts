@@ -167,7 +167,7 @@ abstract class App<
 
   public get inputString(): string {
     try {
-      if (typeof this._inputString === "undefined") {
+      if (typeof this._inputString === "undefined")
         if (typeof input !== "string")
           throw new TypeError(
             `non-string input`,
