@@ -5,4 +5,3 @@ declare type ThingsItem = {
   when?: "today" | "someday";
   list?: string;
 };
-declare type ThingsOutput = Record<"items", ThingsItem[]>;
