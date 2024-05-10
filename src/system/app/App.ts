@@ -135,7 +135,7 @@ abstract class App<
     }
   }
 
-  public get inputful(): NonNullable<App<Class, I>["input"]> {
+  public get inputful(): NonNullable<App<string, I>["input"]> {
     try {
       if (typeof this._inputful === "undefined") {
         const { input } = this;
