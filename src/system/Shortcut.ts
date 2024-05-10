@@ -8,7 +8,7 @@ abstract class Shortcut<
   C extends ISetting = never,
 > extends sh_App<
     "Shortcut",
-    Nullable<I>,
+    I,
     Nullable<O>,
     C
   > {
@@ -23,7 +23,7 @@ abstract class Shortcut<
     try {
       if (typeof this._getInput === "undefined") {
         const shortcutInput = args.shortcutParameter as null | undefined | NotUndefined<I>;
-        const definedShortcutInput = shortcutInput ?? null;
+        const definedShortcutInput = shortcutInput ?? "";
 
         this._getInput = definedShortcutInput;
       }
