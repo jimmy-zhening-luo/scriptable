@@ -414,7 +414,7 @@ abstract class App<
     }
   }
 
-  protected falsy(value: I): value is Extract<I, null | undefined> {
+  protected falsy(value: I): value is Extract<NotUndefined<I>, null> {
     try {
       const v: {} = value ?? false;
 
