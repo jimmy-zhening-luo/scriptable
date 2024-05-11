@@ -414,7 +414,7 @@ abstract class App<
     }
   }
 
-  protected falsy(value: I): value is NonNullable<I> {
+  protected falsy(value: I): value is null | undefined {
     try {
       const v: {} = value ?? false;
 
