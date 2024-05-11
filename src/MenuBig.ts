@@ -17,18 +17,18 @@ namespace MenuBig {
         bar,
         omit,
       }: MenuBigSetting["app"] = this.app;
-      const options: string[] = [this.input ?? ""]
+      const choices: string[] = [this.input ?? ""]
         .flat();
-      const n: number = options.length;
+      const n: number = choices.length;
 
       if (n > max)
         throw new RangeError(
-          `number of options exceeds largest-supported menu size`,
+          `number of choices exceeds largest-supported menu size`,
           {
             cause: {
               max,
               n,
-              options,
+              choices,
               rawInputfulN: this.inputful.length,
             },
           },
@@ -73,11 +73,11 @@ namespace MenuBig {
         {},
       ];
 
-      for (const option of options) {
-        const button: string = `${top}${option}${bottom}`;
+      for (const choice of choices) {
+        const button: string = `${top}${choice}${bottom}`;
 
         buttons.push(button);
-        invert[button] = option;
+        invert[button] = choice;
       }
 
       return {
