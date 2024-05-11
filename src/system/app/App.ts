@@ -1,6 +1,6 @@
 abstract class App<
   Class extends string,
-  I = never,
+  I,
   O = never,
   C extends ISetting = never,
 > {
@@ -140,7 +140,7 @@ abstract class App<
       if (typeof this._inputful === "undefined") {
         const { input } = this;
 
-        if (this.falsy(input))
+        if (this.falsy(input) || input === null || typeof input === "undefined")
           throw new TypeError(
             `null input`,
             {
@@ -151,8 +151,8 @@ abstract class App<
               },
             },
           );
-
-        this._inputful = input;
+        else
+          this._inputful = input;
       }
 
       return this._inputful;
@@ -414,7 +414,7 @@ abstract class App<
     }
   }
 
-  protected falsy(value: I): value is Extract<NotUndefined<I>, null> {
+  protected falsy(value: unknown): value is (undefined | null) & I {
     try {
       const v: {} = value ?? false;
 
