@@ -120,7 +120,7 @@ abstract class App<
     }
   }
 
-  public get input(): NotUndefined<I> {
+  public get input(): I {
     try {
       if (typeof this._input === "undefined")
         this._input = this.getInput;
@@ -135,7 +135,7 @@ abstract class App<
     }
   }
 
-  public get inputful(): NonNullable<App<string, I>["input"]> {
+  public get inputful(): NonNullable<I> {
     try {
       if (typeof this._inputful === "undefined") {
         const { input } = this;
@@ -167,19 +167,22 @@ abstract class App<
 
   public get inputString(): string {
     try {
-      if (typeof this._inputString === "undefined")
-        if (typeof this.input !== "string")
+      if (typeof this._inputString === "undefined") {
+        const input: string | App<Class, I>["input"] = this.input ?? "";
+
+        if (typeof input !== "string")
           throw new TypeError(
             `non-string input`,
             {
               cause: {
-                input: this.input,
-                type: typeof this.input,
+                input,
+                type: typeof input,
               },
             },
           );
         else
-          this._inputString = this.input;
+          this._inputString = input;
+      }
 
       return this._inputString;
     }
@@ -194,21 +197,10 @@ abstract class App<
   public get inputStringful(): stringful {
     try {
       if (typeof this._inputStringful === "undefined")
-        if (typeof this.input !== "string")
-          throw new TypeError(
-            `non-string input`,
-            {
-              cause: {
-                input: this.input,
-                type: typeof this.input,
-              },
-            },
-          );
-        else
-          this._inputStringful = this.stringful(
-            this.input,
-            `App.inputStringful`,
-          );
+        this._inputStringful = this.stringful(
+          this.inputString,
+          `App.inputStringful`,
+        );
 
       return this._inputStringful;
     }
@@ -422,7 +414,7 @@ abstract class App<
     }
   }
 
-  protected falsy(value: I): value is NotUndefined<I> {
+  protected falsy(value: I): value is NonNullable<I> {
     try {
       const v: {} = value ?? false;
 
