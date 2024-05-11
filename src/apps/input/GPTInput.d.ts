@@ -1,6 +1,7 @@
 declare type GPTInput =
   | GPTPrompt
-  | GPTOptions;
+  | GPTOptions
+;
 
 declare type GPTPrompt = {
   system: string;
