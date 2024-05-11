@@ -7,7 +7,7 @@ namespace MenuBig {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class MenuBig extends shortcut<
-    string | string[],
+    MenuBigInput,
     MenuBigOutput,
     MenuBigSetting
   > {
@@ -17,7 +17,7 @@ namespace MenuBig {
         bar,
         omit,
       }: MenuBigSetting["app"] = this.app;
-      const options: string[] = [this.inputful]
+      const options: string[] = [this.input ?? ""]
         .flat();
       const n: number = options.length;
 
