@@ -55,12 +55,14 @@ class Query {
     try {
       const tokens: stringful[] = [
         ...Query.mathefy(
-          Query.transliterate(
-            Query.tokenize(
-              query,
-              CHAT,
+          Query.dedot(
+            Query.transliterate(
+              Query.tokenize(
+                query,
+                CHAT,
+              ),
+              TRANSLATE,
             ),
-            TRANSLATE,
           ),
           MATH,
           CHAT,
@@ -201,6 +203,34 @@ class Query {
     }
   }
 
+  private static dedot(
+    T: [stringful, ...stringful[]],
+  ): [stringful, ...stringful[]] {
+    try {
+      const T0_Dedot: Nullable<stringful> = T[0].endsWith(".")
+        && !T[0].startsWith(".")
+        ? T[0]
+          .slice(
+            0,
+            -1,
+          ) as stringful
+        : null;
+
+      if (T0_Dedot !== null) {
+        T.shift();
+        T.unshift(T0_Dedot);
+      }
+
+      return T;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: dedot`,
+        { cause: e },
+      );
+    }
+  }
+
   private static mathefy(
     T: [stringful, ...stringful[]],
     M: stringful[],
@@ -258,34 +288,6 @@ class Query {
     catch (e) {
       throw new EvalError(
         `Query: mathefy`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static dedot(
-    T: [stringful, ...stringful[]],
-  ): [stringful, ...stringful[]] {
-    try {
-      const T0_Dedot: Nullable<stringful> = T[0].endsWith(".")
-        && !T[0].startsWith(".")
-        ? T[0]
-          .slice(
-            0,
-            -1,
-          ) as stringful
-        : null;
-
-      if (T0_Dedot !== null) {
-        T.shift();
-        T.unshift(T0_Dedot);
-      }
-
-      return T;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: dedot`,
         { cause: e },
       );
     }
