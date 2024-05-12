@@ -6,7 +6,7 @@
 namespace Search {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
   const query: typeof Query = importModule(
-    "method/search/query/Query",
+    "method/search/Query",
   ) as typeof Query;
   const appEngine: typeof AppEngine = importModule(
     "method/search/engines/AppEngine",
