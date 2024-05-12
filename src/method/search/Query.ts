@@ -68,7 +68,7 @@ class Query {
             TRANSLATE,
             this.numeric,
           ),
-        )
+        ),
       ];
 
       if (tokens.length < 1)
@@ -270,9 +270,9 @@ class Query {
   ): [stringful, ...stringful[]] {
     try {
       const T0_Dedot: Nullable<stringful> = T[0].endsWith(".")
-      && !T[0].startsWith(".")
-        ? T[0].
-          slice(
+        && !T[0].startsWith(".")
+        ? T[0]
+          .slice(
             0,
             -1,
           ) as stringful
@@ -280,7 +280,7 @@ class Query {
 
       if (T0_Dedot !== null) {
         T.shift();
-        T.unshift(T0_Dedot)
+        T.unshift(T0_Dedot);
       }
 
       return T;
