@@ -19,6 +19,8 @@ class Query {
             TRANSLATE,
           ),
           MATH,
+          CHAT,
+          TRANSLATE,
         ),
       ];
 
@@ -70,14 +72,12 @@ class Query {
 
   private static tokenize(
     query: string,
-    CHAT?: stringful,
+    CHAT: stringful,
   ): stringful[] {
     try {
-      const pre: stringful[] = CHAT === undefined
-        ? []
-        : query.startsWith(" ")
-          ? [CHAT]
-          : [];
+      const pre: stringful[] = query.startsWith(" ")
+        ? [CHAT]
+        : [];
 
       return [
         ...pre,
@@ -86,7 +86,7 @@ class Query {
           .split(" ")
           .filter(
             (t: string): t is stringful =>
-              t.length !== 0,
+              t.length > 0,
           ),
       ];
     }
@@ -160,13 +160,16 @@ class Query {
   private static mathefy(
     T: stringful[],
     M: stringful[],
+    CHAT: stringful,
+    TRANSLATE: stringful,
   ): stringful[] {
     try {
-      if (
-        M.length > 0
-        && T.length > 0
-        && T[0] !== undefined
-      ) {
+      M.push(
+        CHAT,
+        TRANSLATE,
+      );
+
+      if (T.length > 0 && T[0] !== undefined) {
         const t_0: stringful = T[0].toLowerCase() as stringful;
         const t_0_len: number = t_0.length;
         const math_long: Nullable<stringful> = [...M]
