@@ -28,7 +28,7 @@ namespace Search {
   > {
     public runtime(): ReturnType<Search["run"]> {
       const input: string = this
-        .inputString;
+        .input ?? "";
       const {
         app,
         user,
