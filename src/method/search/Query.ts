@@ -65,6 +65,7 @@ class Query {
           MATH,
           CHAT,
           TRANSLATE,
+          this.numeric,
         ),
       ];
 
@@ -206,6 +207,7 @@ class Query {
     M: stringful[],
     CHAT: stringful,
     TRANSLATE: stringful,
+    numeric: stringful[],
   ): [stringful, ...stringful[]] {
     try {
       M.push(
@@ -247,7 +249,7 @@ class Query {
           )
           .shift() ?? null;
 
-        if (math_short !== null && this.numeric.includes(t0[0] as stringful))
+        if (math_short !== null && numeric.includes(t0[0] as stringful))
           T.unshift(math_short);
       }
 
