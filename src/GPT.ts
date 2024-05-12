@@ -72,6 +72,22 @@ namespace GPT {
                 : i.prompt,
             }
         : i.prompt;
+      const locationPlugin: string = [
+        s.app.plugins.locationPlugin,
+        i.location,
+      ]
+        .join("");
+
+      message.user = message.user.replace(
+        s.app.tags.locationTag,
+        locationPlugin,
+      );
+
+      if ("system" in message)
+        message.system = message.system.replace(
+          s.app.tags.locationTag,
+          locationPlugin,
+        );
 
       return {
         api: [
