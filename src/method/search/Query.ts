@@ -54,20 +54,18 @@ class Query {
   ) {
     try {
       const tokens: stringful[] = [
-        ...Query.dedot(
-          Query.mathefy(
-            Query.transliterate(
-              Query.tokenize(
-                query,
-                CHAT,
-              ),
-              TRANSLATE,
+        ...Query.mathefy(
+          Query.transliterate(
+            Query.tokenize(
+              query,
+              CHAT,
             ),
-            MATH,
-            CHAT,
             TRANSLATE,
-            this.numeric,
           ),
+          MATH,
+          CHAT,
+          TRANSLATE,
+          this.numeric,
         ),
       ];
 
