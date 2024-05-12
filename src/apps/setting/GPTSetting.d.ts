@@ -4,8 +4,13 @@ declare type GPTSetting = {
 };
 
 declare type GPTAppSetting = {
-  presetTag: string;
-  locationPlugin: string;
+  tags: {
+    presetTag: string;
+    locationTag: string;
+  };
+  plugins: {
+    locationPlugin: string;
+  };
   api: {
     host: string;
     version: string;

@@ -64,9 +64,9 @@ namespace GPT {
           ? { user: i.prompt }
           : {
               system: preset.system,
-              user: preset.user.includes(s.app.presetTag)
+              user: preset.user.includes(s.app.tags.presetTag)
                 ? preset.user.replace(
-                  s.app.presetTag,
+                  s.app.tags.presetTag,
                   i.prompt,
                 )
                 : i.prompt,
