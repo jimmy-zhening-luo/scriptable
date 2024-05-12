@@ -5,6 +5,7 @@ declare type GPTSetting = {
 
 declare type GPTAppSetting = {
   presetTag: string;
+  locationPlugin: string;
   api: {
     host: string;
     version: string;
@@ -46,6 +47,7 @@ declare type GPTUserSetting = {
       | "high"
       | "low";
     preset: string;
+    location: string;
   };
   presets: Record<string, GPTPreset>;
 };

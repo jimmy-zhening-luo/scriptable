@@ -49,6 +49,9 @@ namespace GPT {
         preset: "preset" in _i && _i.preset in s.user.presets
           ? _i.preset
           : s.user.default.preset,
+        location: "location" in _i
+          ? _i.location
+          : s.user.default.location,
       };
       const preset: Nullable<Required<GPTPreset>> = typeof i.prompt === "string"
         ? {

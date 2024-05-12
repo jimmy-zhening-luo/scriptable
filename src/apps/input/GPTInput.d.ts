@@ -20,4 +20,5 @@ declare type GPTOptions = {
     | "high"
     | "low";
   preset?: string;
+  location?: string;
 };
