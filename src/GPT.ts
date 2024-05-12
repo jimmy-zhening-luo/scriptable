@@ -16,12 +16,12 @@ namespace GPT {
         .setting
         .parsed;
       const __i: string | GPTInput = this.input ?? "";
-      const _i: GPTOptions = typeof __i === "string"
+      const _i: GPTInputOptions = typeof __i === "string"
         ? { prompt: __i }
         : !("prompt" in __i)
             ? { prompt: __i }
             : __i;
-      const i: Required<GPTOptions> = {
+      const i: Required<GPTInputOptions> = {
         prompt: _i.prompt,
         model: "model" in _i
           ? _i.model
