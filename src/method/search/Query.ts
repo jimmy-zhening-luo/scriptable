@@ -152,7 +152,7 @@ class Query {
   private static transliterate(
     T: [stringful, ...stringful[]],
     TRANSLATE: stringful,
-  ): stringful[] {
+  ): [stringful, ...stringful[]] {
     try {
       const LANG: stringful = "@" as stringful;
       const t0: stringful = T[0]
@@ -189,10 +189,9 @@ class Query {
             : []
         : [];
 
-      return [
-        ...pre,
-        ...T,
-      ] as [stringful, ...stringful[]];
+      T.unshift(...pre);
+
+      return T;
     }
     catch (e) {
       throw new EvalError(
