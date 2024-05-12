@@ -139,7 +139,7 @@ class Query {
           `query contains 0 tokens`,
         );
       else
-        return tokenized as [stringful, ...stringful[]]
+        return tokenized as [stringful, ...stringful[]];
     }
     catch (e) {
       throw new EvalError(
@@ -253,7 +253,7 @@ class Query {
           T.unshift(math_short);
       }
 
-      return T as [stringful, ...stringful[]];
+      return T;
     }
     catch (e) {
       throw new EvalError(
