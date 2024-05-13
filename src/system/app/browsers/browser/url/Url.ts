@@ -126,7 +126,7 @@ class Url {
 
   public get path(): string {
     try {
-      return this.path
+      return this._path
         .join(
           "/",
         );
