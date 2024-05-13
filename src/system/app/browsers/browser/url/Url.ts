@@ -15,8 +15,27 @@ class Url {
     fragment?: string,
   ) {
     try {
-      { this } = (
-        typeof base === "string"
+      (
+        {
+          scheme: this.scheme,
+          host: this.host,
+          port: this.port,
+          _path: this[
+            typeof base === "string"
+              ? "path"
+              : "_path"
+          ],
+          _query: this[
+            typeof base === "string"
+              ? "query"
+              : "_query"
+          ],
+          _fragment: this[
+            typeof base === "string"
+              ? "fragment"
+              : "_fragment"
+          ],
+        } = typeof base === "string"
           ? Url.parse(
               base,
             )
@@ -80,6 +99,9 @@ class Url {
         scheme: "foo" as stringful,
         host: url,
         port: null,
+        _path: "",
+        _query: "",
+        _fragment: "",
       }
     }
     catch (e) {
