@@ -15,9 +15,13 @@ class Url {
     fragment?: string,
   ) {
     try {
-      { this } = typeof Url === "string"
-        ? Url.parse(base)
-        : Url;
+      { this } = (
+        typeof base === "string"
+          ? Url.parse(
+              base,
+            )
+          : base
+      );
 
       if (typeof host !== "undefined")
         this.host = host;
