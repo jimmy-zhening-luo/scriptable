@@ -2,9 +2,9 @@ class Url {
   public readonly scheme: stringful;
   public readonly host: string;
   public readonly port: Nullable<posint>;
-  private _path: stringful[] = [];
-  private _query: Record<stringful, string> = {};
-  private _fragment: string = "";
+  protected _path: stringful[] = [];
+  protected _query: Record<stringful, string> = {};
+  protected _fragment: string = "";
 
   constructor(
     base: string | Url,
