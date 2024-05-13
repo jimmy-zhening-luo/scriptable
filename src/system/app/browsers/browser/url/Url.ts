@@ -77,6 +77,34 @@ class Url {
     }
   }
 
+  protected static get stringful(): typeof Stringful {
+    try {
+      return importModule(
+        "./common/types/literals/string/Stringful",
+      ) as typeof Stringful;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Url: import Stringful`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected static get posint(): typeof PosInt {
+    try {
+      return importModule(
+        "./common/types/literals/number/PosInt",
+      ) as typeof PosInt;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Url: import PosInt`,
+        { cause: e },
+      );
+    }
+  }
+
   public get path(): string {
     try {
       return this._path
@@ -168,34 +196,6 @@ class Url {
     catch (e) {
       throw new EvalError(
         `Url: set fragment`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected static get stringful(): typeof Stringful {
-    try {
-      return importModule(
-        "./common/types/literals/string/Stringful",
-      ) as typeof Stringful;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Url: import Stringful`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected static get posint(): typeof PosInt {
-    try {
-      return importModule(
-        "./common/types/literals/number/PosInt",
-      ) as typeof PosInt;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Url: import PosInt`,
         { cause: e },
       );
     }
