@@ -20,17 +20,17 @@ class Url {
           scheme: this.scheme,
           host: this.host,
           port: this.port,
-          _path: this[
+          "_path": this[
             typeof base === "string"
               ? "path"
               : "_path"
           ],
-          _query: this[
+          "_query": this[
             typeof base === "string"
               ? "query"
               : "_query"
           ],
-          _fragment: this[
+          "_fragment": this[
             typeof base === "string"
               ? "fragment"
               : "_fragment"
