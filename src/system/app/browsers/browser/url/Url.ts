@@ -65,18 +65,6 @@ class Url {
     }
   }
 
-  public get url(): stringful {
-    try { // TBD
-      return this.scheme;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Url: url`,
-        { cause: e },
-      );
-    }
-  }
-
   protected static get stringful(): typeof Stringful {
     try {
       return importModule(
@@ -100,6 +88,18 @@ class Url {
     catch (e) {
       throw new ReferenceError(
         `Url: import PosInt`,
+        { cause: e },
+      );
+    }
+  }
+
+  public get url(): stringful {
+    try { // TBD
+      return this.scheme;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Url: url`,
         { cause: e },
       );
     }
