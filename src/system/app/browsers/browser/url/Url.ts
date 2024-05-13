@@ -65,53 +65,6 @@ class Url {
     }
   }
 
-  protected static get stringful(): typeof Stringful {
-    try {
-      return importModule(
-        "./common/types/literals/string/Stringful",
-      ) as typeof Stringful;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Url: import Stringful`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected static get posint(): typeof PosInt {
-    try {
-      return importModule(
-        "./common/types/literals/number/PosInt",
-      ) as typeof PosInt;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Url: import PosInt`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static parse(url: string): ParsedUrl {
-    try { // TBD
-      return {
-        scheme: "foo" as stringful,
-        host: url,
-        port: null,
-        _path: "",
-        _query: "",
-        _fragment: "",
-      }
-    }
-    catch (e) {
-      throw new EvalError(
-        `Url: parse`,
-        { cause: e },
-      );
-    }
-  }
-
   public get url(): stringful {
     try { // TBD
       return this.scheme;
@@ -215,6 +168,53 @@ class Url {
     catch (e) {
       throw new EvalError(
         `Url: set fragment`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected static get stringful(): typeof Stringful {
+    try {
+      return importModule(
+        "./common/types/literals/string/Stringful",
+      ) as typeof Stringful;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Url: import Stringful`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected static get posint(): typeof PosInt {
+    try {
+      return importModule(
+        "./common/types/literals/number/PosInt",
+      ) as typeof PosInt;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Url: import PosInt`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static parse(url: string): ParsedUrl {
+    try { // TBD
+      return {
+        scheme: "foo" as stringful,
+        host: url,
+        port: null,
+        _path: "",
+        _query: "",
+        _fragment: "",
+      }
+    }
+    catch (e) {
+      throw new EvalError(
+        `Url: parse`,
         { cause: e },
       );
     }
