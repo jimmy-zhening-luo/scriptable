@@ -37,23 +37,27 @@ class Url {
           ],
         } = typeof base === "string"
           ? Url.parse(
-              base,
-            )
+            base,
+          )
           : base
       );
 
       if (typeof host !== "undefined")
         this.host = host;
+
       if (typeof port !== "undefined")
         this.port = port === null
           ? null
           : Url.posint(
-              port,
-            );
+            port,
+          );
+
       if (typeof path !== "undefined")
         this.path = path;
+
       if (typeof query !== "undefined")
         this.query = query;
+
       if (typeof fragment !== "undefined")
         this.fragment = fragment;
     }
@@ -210,7 +214,7 @@ class Url {
         _path: "",
         _query: "",
         _fragment: "",
-      }
+      };
     }
     catch (e) {
       throw new EvalError(
