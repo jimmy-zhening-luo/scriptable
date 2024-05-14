@@ -1,52 +1,37 @@
-declare type SearchSettings = {
+declare type K = string;
+
+declare type SearchSetting = {
   app: {
     tag: string;
     key: {
-      chat: string;
-      translate: string;
-      math?: string[];
+      chat: K;
+      translate: K;
+      math?: K[];
     };
   };
   user: {
-    key: Record<string, string>;
-    engine: SearchEngineSetting[];
+    alias: Record<string, K>;
+    engine: Record<
+      string,
+      | InlineEngineSetting
+      | NativeEngineSetting
+      | ShortcutEngineSetting
+      | UrlEngineSetting
+    >;
   };
 };
 
-declare type SearchEngineSetting =
-  | AppEngineSetting
-  | ShortcutEngineSetting
-  | NativeEngineSetting
-  | BrowserEngineSetting;
-
-declare type ISearchEngineSetting = {
-  keys: string | string[];
-};
-
-declare type AppEngineSetting = {
-  app: string;
-} & ISearchEngineSetting;
-
-declare type ShortcutEngineSetting = {
-  shortcut: string;
+declare type InlineEngineSetting = Record<"inline", string>;
+declare type NativeEngineSetting = Record<"native", string>;
+declare type ShortcutEngineSetting = Record<"shortcut", string> & {
   output?: boolean;
-} & ISearchEngineSetting;
-
-declare type NativeEngineSetting = {
-  "native": string;
-} & ISearchEngineSetting;
-
-declare type BrowserEngineSetting = {
-  url: string | string[];
-  browser?: BrowserAction;
-  encode?: BrowserEncode;
-} & ISearchEngineSetting;
-
-declare type BrowserAction =
-  | "api"
-  | "force"
-  | "default";
-
-declare type BrowserEncode =
-  | "%20"
-  | "+";
+};
+declare type UrlEngineSetting = Record<"url", string | string[]> & {
+  browser?:
+    | "api"
+    | "force"
+  ;
+  encode?:
+    | "%20"
+  ;
+};

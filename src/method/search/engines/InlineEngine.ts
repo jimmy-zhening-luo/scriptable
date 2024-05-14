@@ -2,7 +2,7 @@ const a_IEngine: typeof IEngine = importModule(
   "engine/IEngine",
 ) as typeof IEngine;
 
-class AppEngine extends a_IEngine {
+class InlineEngine extends a_IEngine {
   protected options(): Record<string, never> {
     try {
       return {};
@@ -16,4 +16,4 @@ class AppEngine extends a_IEngine {
   }
 }
 
-module.exports = AppEngine;
+module.exports = InlineEngine;

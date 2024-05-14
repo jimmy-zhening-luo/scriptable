@@ -6,14 +6,10 @@ class NativeEngine extends n_IEngine {
   public readonly native: stringful;
 
   constructor(
-    keys: string | string[],
     native: string,
   ) {
     try {
-      super(
-        "native",
-        keys,
-      );
+      super("native");
 
       if (native.length === 0)
         throw new SyntaxError(

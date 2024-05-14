@@ -2,24 +2,20 @@ const b_IEngine: typeof IEngine = importModule(
   "engine/IEngine",
 ) as typeof IEngine;
 
-class BrowserEngine extends b_IEngine {
+class UrlEngine extends b_IEngine {
   public readonly urls: stringful[];
   public readonly tag: stringful;
-  public readonly browser: BrowserAction;
-  public readonly encode: BrowserEncode;
+  public readonly browser: UrlEngineSetting["browser"];
+  public readonly encode: UrlEngineSetting["encode"];
 
   constructor(
-    keys: string | string[],
     urls: string | string[],
     TAG: stringful,
-    browser: BrowserAction = "default",
-    encode: BrowserEncode = "+",
+    browser?: UrlEngineSetting["browser"],
+    encode?: UrlEngine["encode"],
   ) {
     try {
-      super(
-        "safari",
-        keys,
-      );
+      super("safari");
       this.tag = TAG;
       this.browser = browser; // unsafe
       this.encode = encode; // unsafe
@@ -45,21 +41,19 @@ class BrowserEngine extends b_IEngine {
 
   protected override transform(query: Query): string[] {
     try {
-      const OP: string = "+";
-      const ENCODED_OP: string = "%2B";
       const encodedQuery: string = query
         .terms
         .map(
           (term: stringful): string =>
             term
-              .split(OP)
+              .split("+")
               .map(
                 (operand: string): string =>
                   encodeURI(operand),
               )
-              .join(ENCODED_OP),
+              .join("%2B"),
         )
-        .join(this.encode);
+        .join(this.encode ?? "+");
 
       return this
         .urls
@@ -95,4 +89,4 @@ class BrowserEngine extends b_IEngine {
   }
 }
 
-module.exports = BrowserEngine;
+module.exports = UrlEngine;

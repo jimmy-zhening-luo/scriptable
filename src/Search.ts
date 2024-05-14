@@ -5,34 +5,37 @@
 
 namespace Search {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
-  const query: typeof Query = importModule(
+  const _Query: typeof Query = importModule(
     "method/search/Query",
   ) as typeof Query;
-  const appEngine: typeof AppEngine = importModule(
-    "method/search/engines/AppEngine",
-  ) as typeof AppEngine;
-  const browserEngine: typeof BrowserEngine = importModule(
-    "method/search/engines/BrowserEngine",
-  ) as typeof BrowserEngine;
-  const nativeEngine: typeof NativeEngine = importModule(
+  const _InlineEngine: typeof InlineEngine = importModule(
+    "method/search/engines/InlineEngine",
+  ) as typeof InlineEngine;
+  const _NativeEngine: typeof NativeEngine = importModule(
     "method/search/engines/NativeEngine",
   ) as typeof NativeEngine;
-  const shortcutEngine: typeof ShortcutEngine = importModule(
+  const _ShortcutEngine: typeof ShortcutEngine = importModule(
     "method/search/engines/ShortcutEngine",
   ) as typeof ShortcutEngine;
+  const _UrlEngine: typeof UrlEngine = importModule(
+    "method/search/engines/UrlEngine",
+  ) as typeof UrlEngine;
 
   export class Search extends shortcut<
     string,
     SearchOutput,
-    SearchSettings
+    SearchSetting
   > {
     public runtime(): ReturnType<Search["run"]> {
       const input: string = this
         .input ?? "";
       const {
         app,
-        user,
-      }: SearchSettings = this.setting.parsed;
+        user: {
+          engine,
+          alias,
+        },
+      }: SearchSetting = this.setting.parsed;
       const TAG: stringful = this.stringful(
         app.tag,
         "app.tag",
@@ -52,7 +55,7 @@ namespace Search {
             "app.math?",
           ),
       );
-      const q: Query = new query(
+      const q: Query = new _Query(
         input.length > 0
           ? input
           : this.read(),
@@ -60,51 +63,71 @@ namespace Search {
         TRANSLATE,
         MATH,
       );
-      const match: Nullable<SearchEngineSetting> = user
-        .engine
-        .find(
-          (eng: SearchEngineSetting): boolean =>
-            eng.keys.includes(q.key),
-        ) ?? null;
+      const keys: string[] = Object
+        .keys(
+          engine,
+        );
+      const keyUnaliased: Nullable<string> = alias[q.key] ?? null;
+      const key: Nullable<string> = keys
+        .includes(
+          q.key,
+        )
+        ? q.key
+        : keyUnaliased === null
+          ? null
+          : keys
+            .includes(
+              keyUnaliased,
+            )
+            ? keyUnaliased
+            : null;
+      const cause = {
+        cause: {
+          input,
+          cache: this.read(),
+          parsed: {
+            key,
+            keyUnaliased,
+            query: {
+              key: q.key,
+              terms: q.terms,
+            },
+          },
+        },
+      };
+
+      if (key === null)
+        throw new ReferenceError(
+          `Key is neither primary nor alias`,
+          { cause },
+        );
+
+      const match = engine[key] ?? null;
 
       if (match === null)
         throw new ReferenceError(
-          `No search engine matches query key`,
-          {
-            cause: {
-              input,
-              cache: this.read(),
-              parsed: {
-                key: q.key,
-                terms: q.terms,
-                numTerms: q.terms.length,
-              },
-            },
-          },
+          `Unexpected: Key is primary or alias, but engine[key] is null`,
+          { cause },
         );
 
       const resolved: IEngine = "url" in match
-        ? new browserEngine(
-          match.keys,
+        ? new _UrlEngine(
           match.url,
           TAG,
           match.browser,
           match.encode,
         )
         : "shortcut" in match
-          ? new shortcutEngine(
-            match.keys,
+          ? new _ShortcutEngine(
             match.shortcut,
             match.output,
           )
           : "native" in match
-            ? new nativeEngine(
-              match.keys,
+            ? new _NativeEngine(
               match.native,
             )
-            : new appEngine(
-              match.app,
-              match.keys,
+            : new _InlineEngine(
+              match.inline,
             );
 
       this.write(q.clean);

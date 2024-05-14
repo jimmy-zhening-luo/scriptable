@@ -7,15 +7,11 @@ class ShortcutEngine extends s_IEngine {
   public readonly output: boolean;
 
   constructor(
-    keys: string | string[],
     shortcut: string,
     output: boolean = false,
   ) {
     try {
-      super(
-        "shortcut",
-        keys,
-      );
+      super("shortcut");
 
       if (shortcut.length === 0)
         throw new SyntaxError(
