@@ -35,9 +35,7 @@ class Url {
             host: this.host,
             port: this.port,
           } = base
-        );
-
-        this._path = base._path;
+        );        this._path = base._path;
         this._query = base._query;
         this._fragment = base._fragment;
       }
