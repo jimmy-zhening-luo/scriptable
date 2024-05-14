@@ -38,14 +38,14 @@ namespace Search {
         "app.tag",
       );
       const CHAT: stringful = this.stringful(
-        app.chat,
+        app.key.chat,
         "app.chat",
       );
       const TRANSLATE: stringful = this.stringful(
-        app.translate,
+        app.key.translate,
         "app.translate",
       );
-      const MATH: stringful[] = (app.math ?? []).map(
+      const MATH: stringful[] = (app.key.math ?? []).map(
         (s: string): stringful =>
           this.stringful(
             s,
