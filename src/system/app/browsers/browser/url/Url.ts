@@ -35,7 +35,8 @@ class Url {
             host: this.host,
             port: this.port,
           } = base
-        );        this._path = base._path;
+        );
+        this._path = base._path;
         this._query = base._query;
         this._fragment = base._fragment;
       }
@@ -96,8 +97,43 @@ class Url {
   }
 
   public get url(): stringful {
-    try { // TBD
-      return this.scheme;
+    try {
+      return [
+        [
+          [
+            [
+              this.scheme,
+              ...this.host.length > 0
+                ? [
+                    this.host,
+                    ...this.port === null
+                      ? []
+                      : [String(this.port)],
+                  ]
+                    .join(":")
+                : [""],
+            ]
+              .join("://"),
+            ...this._path
+              .length > 0
+              ? [this.path]
+              : [],
+          ]
+            .join("/"),
+          ...Object.keys(
+            this._query,
+          )
+            .length > 0
+            ? [this.query]
+            : [],
+        ]
+          .join("?"),
+        ...this.fragment
+          .length > 0
+          ? [this.fragment]
+          : [],
+      ]
+        .join("#");
     }
     catch (e) {
       throw new EvalError(
