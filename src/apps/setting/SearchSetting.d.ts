@@ -26,12 +26,15 @@ declare type NativeEngineSetting = Record<"native", string>;
 declare type ShortcutEngineSetting = Record<"shortcut", string> & {
   output?: boolean;
 };
-declare type UrlEngineSetting = Record<"url", string | string[]> & {
-  browser?:
-    | "api"
-    | "force"
-  ;
-  encode?:
+declare type UrlEngineSetting =
+  | string
+  | string[]
+  | Record<"url", string | string[]> & {
+    browser?:
+      | "api"
+      | "force"
+    ;
+    encode?:
     | "%20"
-  ;
-};
+    ;
+  };

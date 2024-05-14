@@ -110,25 +110,30 @@ namespace Search {
           { cause },
         );
 
-      const resolved: IEngine = "url" in match
+      const resolved: IEngine = typeof match === "string" || Array.isArray(match)
         ? new _UrlEngine(
-          match.url,
+          match,
           TAG,
-          match.browser,
-          match.encode,
         )
-        : "shortcut" in match
-          ? new _ShortcutEngine(
-            match.shortcut,
-            match.output,
+        : "url" in match
+          ? new _UrlEngine(
+            match.url,
+            TAG,
+            match.browser,
+            match.encode,
           )
-          : "native" in match
-            ? new _NativeEngine(
-              match.native,
+          : "shortcut" in match
+            ? new _ShortcutEngine(
+              match.shortcut,
+              match.output,
             )
-            : new _InlineEngine(
-              match.inline,
-            );
+            : "native" in match
+              ? new _NativeEngine(
+                match.native,
+              )
+              : new _InlineEngine(
+                match.inline,
+              );
 
       this.write(q.clean);
 
