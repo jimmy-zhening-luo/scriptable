@@ -61,7 +61,7 @@ namespace Search {
         MATH,
       );
       const match: Nullable<SearchEngineSetting> = user
-        .engines
+        .engine
         .find(
           (eng: SearchEngineSetting): boolean =>
             eng.keys.includes(q.key),

@@ -9,7 +9,7 @@ declare type SearchSettings = {
   };
   user: {
     key: Record<string, string>;
-    engines: SearchEngineSetting[];
+    engine: SearchEngineSetting[];
   };
 };
 
