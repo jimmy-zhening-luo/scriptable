@@ -103,37 +103,38 @@ class Url {
           [
             [
               this.scheme,
-              ...this.host.length > 0
+              ...this.host
+              .length > 0
                 ? [
-                    this.host,
+                    this.host as stringful,
                     ...this.port === null
                       ? []
-                      : [String(this.port)],
+                      : [String(this.port) as stringful],
                   ]
-                    .join(":")
+                    .join(":") as stringful
                 : [""],
             ]
-              .join("://"),
+              .join("://") as stringful,
             ...this._path
               .length > 0
-              ? [this.path]
+              ? [this.path as stringful]
               : [],
           ]
-            .join("/"),
+            .join("/") as stringful,
           ...Object.keys(
             this._query,
           )
             .length > 0
-            ? [this.query]
+            ? [this.query as stringful]
             : [],
         ]
-          .join("?"),
+          .join("?") as stringful,
         ...this.fragment
           .length > 0
-          ? [this.fragment]
+          ? [this.fragment as stringful]
           : [],
       ]
-        .join("#");
+        .join("#") as stringful;
     }
     catch (e) {
       throw new EvalError(
