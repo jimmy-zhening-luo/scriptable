@@ -39,10 +39,6 @@ declare type GPTUserSetting = {
     token: string;
     org: string;
   };
-  log: {
-    enable: boolean;
-    path: string;
-  };
   "default": {
     token: number;
     temperature: number;
