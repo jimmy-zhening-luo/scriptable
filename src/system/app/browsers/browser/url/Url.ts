@@ -37,9 +37,9 @@ class Url {
           } = base
         );
 
-        this._path: base._path,
-        this._query: base._query,
-        this._fragment: base._fragment,
+        this._path = base._path,
+        this._query = base._query,
+        this._fragment = base._fragment,
       }
 
       if (typeof host !== "undefined")
