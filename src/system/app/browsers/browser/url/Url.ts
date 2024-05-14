@@ -104,7 +104,7 @@ class Url {
             [
               this.scheme,
               ...this.host
-              .length > 0
+                .length > 0
                 ? [
                     this.host as stringful,
                     ...this.port === null
