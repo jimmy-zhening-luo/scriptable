@@ -2,9 +2,9 @@ class Url {
   public readonly scheme: stringful;
   public readonly host: string;
   public readonly port: Nullable<posint>;
-  protected _path: stringful[] = [];
-  protected _query: Record<stringful, string> = {};
-  protected _fragment: string = "";
+  private _path: stringful[] = [];
+  private _query: Record<stringful, string> = {};
+  private _fragment: string = "";
 
   constructor(
     base: string | Url,
@@ -15,32 +15,32 @@ class Url {
     fragment?: string,
   ) {
     try {
-      (
-        {
-          scheme: this.scheme,
-          host: this.host,
-          port: this.port,
-          "_path": this[
-            typeof base === "string"
-              ? "path"
-              : "_path"
-          ],
-          "_query": this[
-            typeof base === "string"
-              ? "query"
-              : "_query"
-          ],
-          "_fragment": this[
-            typeof base === "string"
-              ? "fragment"
-              : "_fragment"
-          ],
-        } = typeof base === "string"
-          ? Url.parse(
+      if (typeof base === "string")
+        (
+          {
+            scheme: this.scheme,
+            host: this.host,
+            port: this.port,
+            path: this.path,
+            query: this.query,
+            fragment: this.fragment,
+          } = Url.parse(
             base,
           )
-          : base
-      );
+        );
+      else {
+        (
+          {
+            scheme: this.scheme,
+            host: this.host,
+            port: this.port,
+          } = base
+        );
+
+        this._path: base._path,
+        this._query: base._query,
+        this._fragment: base._fragment,
+      }
 
       if (typeof host !== "undefined")
         this.host = host;
@@ -211,9 +211,9 @@ class Url {
         scheme: "foo" as stringful,
         host: url,
         port: null,
-        _path: "",
-        _query: "",
-        _fragment: "",
+        path: "",
+        query: "",
+        fragment: "",
       };
     }
     catch (e) {
