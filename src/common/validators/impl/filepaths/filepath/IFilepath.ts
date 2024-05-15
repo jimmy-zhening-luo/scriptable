@@ -121,7 +121,7 @@ abstract class IFilepath<Root extends boolean> {
       const _tree: Array<FilepathPart["string"]> = [];
 
       while (subpaths.length > 0) {
-        const head: Nullable<ConstructorParameters<typeof IFilepath>[0]> = subpaths.shift() ?? null;
+        const head: Null<ConstructorParameters<typeof IFilepath>[0]> = subpaths.shift() ?? null;
 
         if (head !== null)
           _tree.push(

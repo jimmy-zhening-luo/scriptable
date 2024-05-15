@@ -3,11 +3,10 @@ declare type K = string;
 declare type SearchSetting = {
   app: {
     tag: string;
-    key: {
-      chat: K;
-      translate: K;
-      math?: K[];
-    };
+    key:
+      & Record<"chat" | "translate", string>
+      & Record<"math", string[]>
+    ;
   };
   user: {
     alias: Record<string, K>;
@@ -16,19 +15,19 @@ declare type SearchSetting = {
       | string
       | string[]
       | InlineEngineSetting
-      | NativeEngineSetting
+      | FindEngineSetting
       | ShortcutEngineSetting
       | UrlEngineSetting
     >;
   };
 };
 
-declare type InlineEngineSetting = Record<"inline", string>;
-declare type NativeEngineSetting = Record<"native", string>;
-declare type ShortcutEngineSetting = Record<"shortcut", string> & {
+declare type InlineEngineSetting = EngineProp<"inline">;
+declare type FindEngineSetting = EngineProp<"find">;
+declare type ShortcutEngineSetting = EngineProp<"shortcut"> & {
   output?: boolean;
 };
-declare type UrlEngineSetting = Record<"url", string | string[]> & {
+declare type UrlEngineSetting = EngineProp<"url", string[]> & {
   browser?:
     | "api"
     | "force"
@@ -37,3 +36,5 @@ declare type UrlEngineSetting = Record<"url", string | string[]> & {
     | "%20"
   ;
 };
+
+type EngineProp<P extends string, T = string> = Record<P, string | T>;

@@ -5,27 +5,42 @@
 
 namespace Search {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
-  const _Query: typeof Query = importModule(
-    "method/search/Query",
-  ) as typeof Query;
-  const _InlineEngine: typeof InlineEngine = importModule(
-    "method/search/engines/InlineEngine",
-  ) as typeof InlineEngine;
-  const _NativeEngine: typeof NativeEngine = importModule(
-    "method/search/engines/NativeEngine",
-  ) as typeof NativeEngine;
-  const _ShortcutEngine: typeof ShortcutEngine = importModule(
-    "method/search/engines/ShortcutEngine",
-  ) as typeof ShortcutEngine;
-  const _UrlEngine: typeof UrlEngine = importModule(
-    "method/search/engines/UrlEngine",
-  ) as typeof UrlEngine;
 
   export class Search extends shortcut<
     string,
     SearchOutput,
     SearchSetting
   > {
+    private static get Query(): typeof Query {
+      try {
+        return importModule(
+          "method/search/Query",
+        ) as typeof Query;
+      }
+      catch (e) {
+        throw new EvalError(
+          `Search: import Query`,
+          { cause: e },
+        );
+      }
+    }
+
+    private static Engine<T>(
+      flavor: string,
+    ): T {
+      try {
+        return importModule(
+          `method/search/engines/${flavor}`,
+        ) as T;
+      }
+      catch (e) {
+        throw new EvalError(
+          `Search: import <T>Engine`,
+          { cause: e },
+        );
+      }
+    }
+
     public runtime(): ReturnType<Search["run"]> {
       const input: string = this
         .input ?? "";
@@ -48,14 +63,14 @@ namespace Search {
         app.key.translate,
         "app.translate",
       );
-      const MATH: stringful[] = (app.key.math ?? []).map(
+      const MATH: stringful[] = app.key.math.map(
         (s: string): stringful =>
           this.stringful(
             s,
-            "app.math?",
+            "app.math",
           ),
       );
-      const q: Query = new _Query(
+      const q: Query = new Search.Query(
         input.length > 0
           ? input
           : this.read(),
@@ -67,8 +82,8 @@ namespace Search {
         .keys(
           engine,
         );
-      const keyUnaliased: Nullable<string> = alias[q.key] ?? null;
-      const key: Nullable<string> = keys
+      const keyUnaliased: Null<string> = alias[q.key] ?? null;
+      const key: Null<string> = keys
         .includes(
           q.key,
         )
@@ -102,7 +117,9 @@ namespace Search {
           { cause },
         );
 
-      const match = engine[key] ?? null;
+      const match: Null<
+        SearchSetting["user"]["engine"][string]
+      > = engine[key] ?? null;
 
       if (match === null)
         throw new ReferenceError(
@@ -111,27 +128,27 @@ namespace Search {
         );
 
       const resolved: IEngine = typeof match === "string" || Array.isArray(match)
-        ? new _UrlEngine(
+        ? new (Search.Engine<typeof UrlEngine>("UrlEngine"))(
           match,
           TAG,
         )
         : "url" in match
-          ? new _UrlEngine(
+          ? new (Search.Engine<typeof UrlEngine>("UrlEngine"))(
             match.url,
             TAG,
             match.browser,
             match.encode,
           )
           : "shortcut" in match
-            ? new _ShortcutEngine(
+            ? new (Search.Engine<typeof ShortcutEngine>("ShortcutEngine"))(
               match.shortcut,
               match.output,
             )
-            : "native" in match
-              ? new _NativeEngine(
-                match.native,
+            : "find" in match
+              ? new (Search.Engine<typeof FindEngine>("FindEngine"))(
+                match.find,
               )
-              : new _InlineEngine(
+              : new (Search.Engine<typeof InlineEngine>("InlineEngine"))(
                 match.inline,
               );
 
@@ -141,7 +158,6 @@ namespace Search {
         .parseQueryToAction(q);
     }
   }
-
 }
 
 new Search.Search()

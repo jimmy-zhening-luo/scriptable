@@ -1,5 +1,5 @@
 declare type HelloSetting = {
-  app?: {
-    space?: string;
-  };
+  app?: Partial<
+    Record<"space", string>
+  >;
 };

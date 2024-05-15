@@ -5,7 +5,7 @@ abstract class IEngine {
     try {
       return {
         app: this.app,
-        actions: this.transform(query),
+        action: this.transform(query),
         ...this.options(query),
       };
     }
@@ -29,7 +29,7 @@ abstract class IEngine {
     }
   }
 
-  protected abstract options(query: Query): Omit<SearchOutput, "app" | "actions">;
+  protected abstract options(query: Query): Omit<SearchOutput, "app" | "action">;
 }
 
 module.exports = IEngine;

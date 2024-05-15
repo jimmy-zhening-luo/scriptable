@@ -14,13 +14,15 @@ namespace Things {
     public runtime(): ReturnType<Things["run"]> {
       const input: stringful = this.inputStringful;
       const {
-        tag,
-        delims,
-      }: ThingsAppSetting = this.app;
-      const {
-        triage,
-        lists,
-      }: ThingsUserSetting = this.user;
+        app: {
+          tag,
+          delims,
+        },
+        user: {
+          triage,
+          lists,
+        },
+      }: ThingsSetting = this.setting.parsed;
 
       return input
         .split(
@@ -36,20 +38,20 @@ namespace Things {
             const lines: string[] = item.split(
               delims.line,
             );
-            const lastTaggedLine: Nullable<string> = [...lines]
+            const lastTaggedLine: Null<string> = [...lines]
               .reverse()
               .find(
                 (line: string): boolean =>
                   line.includes(tag),
               ) ?? null;
             const isTagged: boolean = lastTaggedLine !== null;
-            const iLastTag: Nullable<number> = lastTaggedLine === null
+            const iLastTag: Null<number> = lastTaggedLine === null
               ? null
               : lastTaggedLine
                 .lastIndexOf(
                   tag,
                 ) as posint;
-            const lastTag: Nullable<string> = lastTaggedLine === null || iLastTag === null
+            const lastTag: Null<string> = lastTaggedLine === null || iLastTag === null
               ? null
               : lastTaggedLine.length === iLastTag + 1
                 ? null

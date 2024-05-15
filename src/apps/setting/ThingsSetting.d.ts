@@ -1,17 +1,10 @@
 declare type ThingsSetting = {
-  app: ThingsAppSetting;
-  user: ThingsUserSetting;
-};
-
-declare type ThingsAppSetting = {
-  tag: string;
-  delims: {
-    item: string;
-    line: string;
+  app: {
+    tag: string;
+    delims: Record<"item" | "line", string>;
   };
-};
-
-declare type ThingsUserSetting = {
-  triage: string;
-  lists: Record<string, string>;
+  user: {
+    triage: string;
+    lists: Record<string, string>;
+  };
 };

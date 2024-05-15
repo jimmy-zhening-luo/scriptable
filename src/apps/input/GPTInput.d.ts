@@ -1,14 +1,13 @@
-declare type GPTInput =
-  | GPTPrompt
-  | GPTPromptOptions
+declare type GptInput =
+  | GptInputFullyWrapped
+  | GptInputPrompt
 ;
 
-declare type GPTPrompt =
+declare type GptInputFullyWrapped =
+  & Record<"prompt", GptInputPrompt>
+  & Partial<GptProps>
+;
+declare type GptInputPrompt =
   | string
   | Record<"system" | "user", string>
 ;
-
-declare type GPTPromptOptions = Record<
-  "prompt",
-  GPTPrompt
-> & Partial<GPTOptions>;

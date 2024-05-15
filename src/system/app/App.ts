@@ -13,8 +13,8 @@ abstract class App<
     string,
     Key<Class>
   > = {};
-  private _name: Nullable<stringful> = null;
-  private _setting: Nullable<Setting<Class, C>> = null;
+  private _name: Null<stringful> = null;
+  private _setting: Null<Setting<Class, C>> = null;
 
   constructor(
     protected readonly _class: literalful<Class>,
@@ -362,7 +362,7 @@ abstract class App<
   ): Storage<Class> {
     try {
       const cacheId: string = filename ?? "";
-      const cached: Nullable<Storage<Class>> = this._storage[cacheId] ?? null;
+      const cached: Null<Storage<Class>> = this._storage[cacheId] ?? null;
 
       if (cached !== null)
         return cached;
@@ -390,7 +390,7 @@ abstract class App<
     handle: string,
   ): Key<Class> {
     try {
-      const cached: Nullable<Key<Class>> = this._keys[handle] ?? null;
+      const cached: Null<Key<Class>> = this._keys[handle] ?? null;
 
       if (cached !== null)
         return cached;

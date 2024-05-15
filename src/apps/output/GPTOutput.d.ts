@@ -1,4 +1,4 @@
-declare type GPTOutput = {
+declare type GptOutput = {
   api: string;
   header: {
     auth: string;

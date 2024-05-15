@@ -18,7 +18,7 @@ class Rootpath extends r_Filepath<true> {
   public pop(): FilepathPart["string"] {
     try {
       const numPartsBefore: number = this._parts.length;
-      const popped: Nullable<FilepathPart["string"]> = this._parts.pop() ?? null;
+      const popped: Null<FilepathPart["string"]> = this._parts.pop() ?? null;
 
       if (popped === null)
         throw new RangeError(

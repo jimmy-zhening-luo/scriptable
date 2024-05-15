@@ -207,7 +207,7 @@ class Query {
     T: [stringful, ...stringful[]],
   ): [stringful, ...stringful[]] {
     try {
-      const T0_Dedot: Nullable<stringful> = T[0].endsWith(".")
+      const T0_Dedot: Null<stringful> = T[0].endsWith(".")
         && !T[0].startsWith(".")
         ? T[0]
           .slice(
@@ -247,7 +247,7 @@ class Query {
       const t0: stringful = T[0]
         .toLowerCase() as stringful;
       const t0_len: number = t0.length;
-      const math_long: Nullable<stringful> = [...M]
+      const math_long: Null<stringful> = [...M]
         .filter(
           (mk: stringful): boolean =>
             mk.length <= t0_len,
@@ -272,7 +272,7 @@ class Query {
         T.unshift(math_long);
       }
       else {
-        const math_short: Nullable<stringful> = [...M]
+        const math_short: Null<stringful> = [...M]
           .sort(
             (a: stringful, b: stringful): number =>
               a.length - b.length,

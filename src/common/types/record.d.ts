@@ -1,3 +1,13 @@
+type Optional<Record, K extends keyof Record> = Omit<
+  Record,
+  K
+> & Pick<
+  Partial<
+    Record
+  >,
+  K
+>;
+
 declare type Exact<
   Actual,
   Prototype,

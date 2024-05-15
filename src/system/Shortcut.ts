@@ -9,7 +9,7 @@ abstract class Shortcut<
 > extends sh_App<
     "Shortcut",
     null | NonNullable<I>,
-    Nullable<O>,
+    Null<O>,
     C
   > {
   constructor(debug?: boolean) {

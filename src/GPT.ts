@@ -7,9 +7,9 @@ namespace GPT {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class GPT extends shortcut<
-    GPTInput,
-    GPTOutput,
-    GPTSetting
+    GptInput,
+    GptOutput,
+    GptSetting
   > {
     public runtime(): ReturnType<GPT["run"]> {
       const {
@@ -28,11 +28,11 @@ namespace GPT {
       } = this
         .setting
         .parsed;
-      const arg: GPTInput = this.input ?? "";
-      const ii: GPTPromptOptions = typeof arg !== "string" && "prompt" in arg
+      const arg: GptInput = this.input ?? "";
+      const ii: GptInputFullyWrapped = typeof arg !== "string" && "prompt" in arg
         ? arg
         : { prompt: arg };
-      const i: Required<GPTPromptOptions> = {
+      const i: Required<GptInputFullyWrapped> = {
         prompt: ii.prompt,
         model:
           "model" in ii
@@ -68,7 +68,7 @@ namespace GPT {
             ? ii.location
             : defaults.location,
       };
-      const preset: Nullable<Required<GPTPreset>> = typeof i.prompt === "string"
+      const preset: Null<GptPromptFull> = typeof i.prompt === "string"
         ? {
             system: presets[i.preset]?.system ?? "",
             user: presets[i.preset]?.user ?? "",
@@ -79,7 +79,7 @@ namespace GPT {
         i.location,
       ]
         .join("");
-      const message: GPTOutput["body"]["message"] = typeof i.prompt === "string"
+      const message: GptOutput["body"]["message"] = typeof i.prompt === "string"
         ? preset === null || preset.system === ""
           ? { user: i.prompt }
           : {

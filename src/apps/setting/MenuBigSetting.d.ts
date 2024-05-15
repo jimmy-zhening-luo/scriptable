@@ -1,7 +1,6 @@
 declare type MenuBigSetting = {
-  app: {
-    max: number;
-    bar: number;
-    omit: "top" | "bottom";
-  };
+  app:
+    & Record<"max" | "bar", number>
+    & Record<"omit", "top" | "bottom">
+  ;
 };
