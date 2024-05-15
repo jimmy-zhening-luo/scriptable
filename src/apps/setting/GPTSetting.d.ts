@@ -3,21 +3,18 @@ declare type GPTSetting = {
     tags: Record<
       | "preset"
       | "location"
-      ,
-      string
+      , string
     >;
     plugins: Record<
       | "location"
-      ,
-      string
+      , string
     >;
     api: Record<"host" | "version" | "action", string>;
     models: Record<
       | "ultra"
       | "high"
       | "low"
-      ,
-      string
+      , string
     >;
     limit: {
       token: number;
