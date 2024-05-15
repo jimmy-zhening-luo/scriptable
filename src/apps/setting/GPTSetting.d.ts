@@ -27,7 +27,7 @@ declare type GPTSetting = {
   };
   user: {
     id: Record<"token" | "org", string>;
-    "default": GPTOptions;
+    defaults: GPTOptions;
     presets: Record<string, GPTPreset>;
   };
 };

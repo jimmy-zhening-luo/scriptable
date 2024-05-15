@@ -22,7 +22,7 @@ namespace GPT {
         },
         user: {
           id,
-          default,
+          defaults,
           presets,
         },
       } = this
@@ -37,36 +37,36 @@ namespace GPT {
         model:
           "model" in ii
             ? ii.model
-            : default.model,
+            : defaults.model,
         token:
           "token" in ii
           && Number.isInteger(ii.token)
           && ii.token <= limit.token
             ? ii.token
-            : default.token,
+            : defaults.token,
         temperature:
           "temperature" in ii
           && Number.isFinite(ii.temperature)
           && ii.temperature >= limit.temperature.min
           && ii.temperature <= limit.temperature.max
             ? ii.temperature
-            : default.temperature,
+            : defaults.temperature,
         p:
           "p" in ii
           && Number.isFinite(ii.p)
           && ii.p >= limit.p.min
           && ii.p <= limit.p.max
             ? ii.p
-            : default.p,
+            : defaults.p,
         preset:
           "preset" in ii
           && ii.preset in presets
             ? ii.preset
-            : default.preset,
+            : defaults.preset,
         location:
           "location" in ii
             ? ii.location
-            : default.location,
+            : defaults.location,
       };
       const preset: Nullable<Required<GPTPreset>> = typeof i.prompt === "string"
         ? {
