@@ -28,7 +28,9 @@ namespace GPT {
       } = this
         .setting
         .parsed;
-      const arg: GptInput = this.input ?? "";
+      const arg:
+        | GptInputFullyWrapped
+        | GptInputPrompt = this.input ?? "";
       const ii: GptInputFullyWrapped = typeof arg !== "string" && "prompt" in arg
         ? arg
         : { prompt: arg };
@@ -41,7 +43,8 @@ namespace GPT {
         token:
           "token" in ii
           && Number.isInteger(ii.token)
-          && ii.token <= limit.token
+          && ii.token >= limit.token.min
+          && ii.token <= limit.token.max
             ? ii.token
             : defaults.token,
         temperature:
