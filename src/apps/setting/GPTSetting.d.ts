@@ -12,7 +12,7 @@ declare type GptSetting = {
       string
     >;
     api: Record<"host" | "version" | "action", string>;
-    models: Record<"ultra" | "high" | "low", string>;
+    models: Record<"ultra" | "low", string>;
     limit: Record<
       | "token"
       | "temperature"
