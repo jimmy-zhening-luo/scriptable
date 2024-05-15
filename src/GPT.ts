@@ -7,103 +7,118 @@ namespace GPT {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class GPT extends shortcut<
-    string | GPTInput,
+    GPTInput,
     GPTOutput,
     GPTSetting
   > {
     public runtime(): ReturnType<GPT["run"]> {
-      const s: GPTSetting = this
+      const {
+        app: {
+          tags,
+          plugins,
+          api,
+          models,
+          limit,
+        },
+        user: {
+          id,
+          default,
+          presets,
+        },
+      } = this
         .setting
         .parsed;
-      const __i: string | GPTInput = this.input ?? "";
-      const _i: GPTInputOptions = typeof __i === "string"
-        ? { prompt: __i }
-        : !("prompt" in __i)
-            ? { prompt: __i }
-            : __i;
-      const i: Required<GPTInputOptions> = {
-        prompt: _i.prompt,
-        model: "model" in _i
-          ? _i.model
-          : s.user.default.model,
+      const arg: GPTInput = this.input ?? "";
+      const ii: GPTPromptOptions = typeof arg !== "string" && "prompt" in arg
+        ? arg
+        : { prompt: arg };
+      const i: Required<GPTPromptOptions> = {
+        prompt: ii.prompt,
+        model:
+          "model" in ii
+            ? ii.model
+            : default.model,
         token:
-            "token" in _i
-            && Number.isInteger(_i.token)
-            && _i.token <= s.app.limit.token
-              ? _i.token
-              : s.user.default.token,
+          "token" in ii
+          && Number.isInteger(ii.token)
+          && ii.token <= limit.token
+            ? ii.token
+            : default.token,
         temperature:
-          "temperature" in _i
-          && Number.isFinite(_i.temperature)
-          && _i.temperature >= s.app.limit.temperature.min
-          && _i.temperature <= s.app.limit.temperature.max
-            ? _i.temperature
-            : s.user.default.temperature,
+          "temperature" in ii
+          && Number.isFinite(ii.temperature)
+          && ii.temperature >= limit.temperature.min
+          && ii.temperature <= limit.temperature.max
+            ? ii.temperature
+            : default.temperature,
         p:
-          "p" in _i
-          && Number.isFinite(_i.p)
-          && _i.p >= s.app.limit.p.min
-          && _i.p <= s.app.limit.p.max
-            ? _i.p
-            : s.user.default.p,
-        preset: "preset" in _i && _i.preset in s.user.presets
-          ? _i.preset
-          : s.user.default.preset,
-        location: "location" in _i
-          ? _i.location
-          : s.user.default.location,
+          "p" in ii
+          && Number.isFinite(ii.p)
+          && ii.p >= limit.p.min
+          && ii.p <= limit.p.max
+            ? ii.p
+            : default.p,
+        preset:
+          "preset" in ii
+          && ii.preset in presets
+            ? ii.preset
+            : default.preset,
+        location:
+          "location" in ii
+            ? ii.location
+            : default.location,
       };
       const preset: Nullable<Required<GPTPreset>> = typeof i.prompt === "string"
         ? {
-            system: s.user.presets[i.preset]?.system ?? "",
-            user: s.user.presets[i.preset]?.user ?? "",
+            system: presets[i.preset]?.system ?? "",
+            user: presets[i.preset]?.user ?? "",
           }
         : null;
+      const location: string = [
+        plugins.location,
+        i.location,
+      ]
+        .join("");
       const message: GPTOutput["body"]["message"] = typeof i.prompt === "string"
         ? preset === null || preset.system === ""
           ? { user: i.prompt }
           : {
               system: preset.system,
-              user: preset.user.includes(s.app.tags.presetTag)
+              user: preset.user.includes(tags.preset)
                 ? preset.user.replace(
-                  s.app.tags.presetTag,
+                  tags.preset,
                   i.prompt,
                 )
                 : i.prompt,
             }
         : i.prompt;
-      const locationPlugin: string = [
-        s.app.plugins.locationPlugin,
-        i.location,
-      ]
-        .join("");
 
       message.user = message.user.replace(
-        s.app.tags.locationTag,
-        locationPlugin,
+        tags.location,
+        location,
       );
 
       if ("system" in message)
         message.system = message.system.replace(
-          s.app.tags.locationTag,
-          locationPlugin,
+          tags.location,
+          location,
         );
 
       return {
         api: [
-          s.app.api.host,
-          s.app.api.version,
-          s.app.api.action,
+          api.host,
+          api.version,
+          api.action,
         ].join("/"),
         header: {
-          auth: s.user.id.token,
-          org: s.user.id.org,
+          auth: id.token,
+          org: id.org,
         },
         body: {
           message,
           temperature: i.temperature,
           p: i.p,
-          model: s.app.models[i.model],
+          model: models[i.model],
           token: i.token,
         },
       };
