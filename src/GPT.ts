@@ -118,16 +118,16 @@ namespace GPT {
             ]
       )
         .map(
-          (message: GptMessage<"system" | "user">): GptMessage<"system" | "user"> => (
-              {
-                role: message.role,
-                content: message.content
-                  .replace(
-                    tags.location,
-                    location,
-                  ),
-              }
-            ),
+          (message: GptMessage<"system" | "user">): GptMessage<"system" | "user"> => {
+            return {
+              role: message.role,
+              content: message.content
+                .replace(
+                  tags.location,
+                  location,
+                ),
+            };
+          },
         );
 
       return {
