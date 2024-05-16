@@ -54,7 +54,10 @@ class Query {
     MATH_LONG: stringful,
   ) {
     try {
-      const [K, ...terms]: [stringful, ...stringful[]] = this.mathefy(
+      const [
+        K,
+        ...terms]: [stringful, ...stringful[],
+      ] = this.mathefy(
         this.dedot(
           this.transliterate(
             this.tokenize(
@@ -104,10 +107,12 @@ class Query {
       const [
         key,
         natural,
-      ]: [stringful, stringful] = [
+      ]: [stringful, string,
+      ] = [
         this.key,
         this.natural,
       ];
+
       return `${key} ${natural}` as stringful;
     }
     catch (e) {
