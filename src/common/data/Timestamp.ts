@@ -1,12 +1,12 @@
 class Timestamp {
   constructor(
-    public readonly d: Date = new Date(),
+    public readonly moment: Date = new Date(),
   ) {}
 
   public get epoch(): number {
     try {
       return this
-        .d
+        .moment
         .getTime();
     }
     catch (e) {
@@ -32,7 +32,7 @@ class Timestamp {
   public get date(): stringful {
     try {
       return this
-        .d
+        .moment
         .toLocaleDateString(
           "en-US",
           {
@@ -65,7 +65,7 @@ class Timestamp {
   public get local(): stringful {
     try {
       return this
-        .d
+        .moment
         .toLocaleTimeString(
           "en-US",
           {
@@ -88,7 +88,7 @@ class Timestamp {
     try {
       return (
         this
-          .d
+          .moment
           .getTimezoneOffset() / -60
       )
         .toLocaleString(
