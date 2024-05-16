@@ -73,8 +73,20 @@ namespace GPT {
       };
       const preset: Null<GptPromptFull> = typeof i.prompt === "string"
         ? {
-            system: presets[i.preset]?.system ?? "",
-            user: presets[i.preset]?.user ?? "",
+            system: (
+              presets[i.preset]?.system ?? ""
+            )
+              .replace(
+                tags.location,
+                location,
+              ),
+            user: (
+              presets[i.preset]?.user ?? ""
+            )
+              .replace(
+                tags.location,
+                location,
+              ),
           }
         : null;
       const location: string = [
@@ -82,53 +94,50 @@ namespace GPT {
         i.location,
       ]
         .join("");
-      const messages: GptMessages<boolean> = (
-        typeof i.prompt === "string"
-          ? preset === null || preset.system === ""
-            ? [
-                {
-                  role: "user",
-                  content: i.prompt,
-                },
-              ]
-            : [
-                {
-                  role: "system",
-                  content: preset.system,
-                },
-                {
-                  role: "user",
-                  content: preset.user.includes(tags.preset)
-                    ? preset.user.replace(
-                      tags.preset,
-                      i.prompt,
-                    )
-                    : i.prompt,
-                },
-              ]
-          : [
-              {
-                role: "system",
-                content: i.prompt.system,
-              },
-              {
+      const messageBox: {
+        user: GptMessage<"user">;
+        system?: GptMessage<"system">;
+      } = typeof i.prompt === "string"
+        ? preset === null || preset.system === ""
+          ? {
+              user: {
                 role: "user",
-                content: i.prompt.user,
+                content: i.prompt,
               },
-            ]
-      )
-        .map(
-          (message): GptMessage<"system" | "user"> => {
-            return {
-              role: message.role,
-              content: message.content
-                .replace(
-                  tags.location,
-                  location,
-                ),
-            };
-          },
-        );
+            }
+          : {
+              system: {
+                role: "system",
+                content: preset.system,
+              },
+              user: {
+                role: "user",
+                content: preset.user.includes(tags.preset)
+                  ? preset.user.replace(
+                    tags.preset,
+                    i.prompt,
+                  )
+                  : i.prompt,
+              },
+            }
+        : {
+            system: {
+              role: "system",
+              content: i.prompt.system,
+            },
+            user: {
+              role: "user",
+              content: i.prompt.user,
+            },
+          };
+      const messages: GptMessages<boolean> = "system" in messageBox
+        ? [
+            messageBox.system,
+            messageBox.user,
+          ]
+        : [
+            messageBox.user,
+          ];
 
       return {
         api: [
