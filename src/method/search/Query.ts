@@ -54,39 +54,29 @@ class Query {
     MATH_LONG: stringful,
   ) {
     try {
-      const tokens: stringful[] = [
-        ...this.mathefy(
-          this.dedot(
-            this.transliterate(
-              this.tokenize(
-                query,
-                CHAT,
-                TRANSLATE,
-                MATH_SHORT,
-              ),
+      const [K, ...terms]: [stringful, ...stringful[]] = this.mathefy(
+        this.dedot(
+          this.transliterate(
+            this.tokenize(
+              query,
+              CHAT,
               TRANSLATE,
+              MATH_SHORT,
             ),
+            TRANSLATE,
           ),
-          CHAT,
-          TRANSLATE,
-          MATH_SHORT,
-          MATH_LONG,
-          this.NUMERIC,
         ),
-      ];
+        CHAT,
+        TRANSLATE,
+        MATH_SHORT,
+        MATH_LONG,
+        this.NUMERIC,
+      );
 
-      if (tokens.length < 1)
-        throw new SyntaxError(
-          `Query resolved to 0 tokens`,
-          { cause: { query } },
-        );
-      else {
-        this.key = String(
-          tokens.shift(),
-        )
-          .toLowerCase() as stringful;
-        this.terms = [...tokens];
-      }
+      this.key = this.toStringfulLower(
+        K,
+      );
+      this.terms = terms;
     }
     catch (e) {
       throw new EvalError(
@@ -111,7 +101,14 @@ class Query {
 
   public get clean(): stringful {
     try {
-      return `${this.key} ${this.natural}` as stringful;
+      const [
+        key,
+        natural,
+      ]: [stringful, stringful] = [
+        this.key,
+        this.natural,
+      ];
+      return `${key} ${natural}` as stringful;
     }
     catch (e) {
       throw new EvalError(
@@ -166,40 +163,39 @@ class Query {
     TRANSLATE: stringful,
   ): [stringful, ...stringful[]] {
     try {
-      const LANG: stringful = "@" as stringful;
-      const t0: stringful = T[0]
-        .toLowerCase() as stringful;
-      const pre: stringful[] = t0.length > 1
-        ? t0.startsWith(LANG)
-          ? [TRANSLATE]
-          : t0.startsWith(TRANSLATE)
-            ? t0.slice(
-              TRANSLATE.length,
-              TRANSLATE.length + LANG.length,
-            ) === LANG
+      const LANG_TAG: stringful = "@" as stringful;
+      const t0: stringful = this.toStringfulLower(
+        T[0],
+      );
+      const pre: stringful[] = t0.startsWith(LANG_TAG)
+        ? [TRANSLATE]
+        : t0.startsWith(TRANSLATE)
+          ? t0.slice(
+            TRANSLATE.length,
+            TRANSLATE.length + LANG_TAG.length,
+          ) === LANG_TAG
+            ? [
+                TRANSLATE,
+                String(
+                  T
+                    .shift(),
+                )
+                  .slice(TRANSLATE.length) as stringful,
+              ]
+            : t0.length > TRANSLATE.length
               ? [
                   TRANSLATE,
-                  String(
-                    T
-                      .shift(),
-                  )
-                    .slice(TRANSLATE.length) as stringful,
+                  `${LANG_TAG}${t0[TRANSLATE.length]}` as stringful,
+                  ...String(T.shift()).length > TRANSLATE.length + LANG_TAG.length
+                    ? [
+                        t0.slice(
+                          TRANSLATE.length + LANG_TAG.length,
+                        ) as stringful,
+                      ]
+                    : [],
                 ]
-              : t0.length > TRANSLATE.length
-                ? [
-                    TRANSLATE,
-                    `${LANG}${t0[TRANSLATE.length]}` as stringful,
-                    ...String(T.shift()).length > TRANSLATE.length + LANG.length
-                      ? [
-                          t0.slice(
-                            TRANSLATE.length + LANG.length,
-                          ) as stringful,
-                        ]
-                      : [],
-                  ]
-                : []
-            : []
-        : [];
+              : []
+          : [];
 
       T.unshift(...pre);
 
@@ -256,8 +252,9 @@ class Query {
         TRANSLATE,
         MATH_LONG,
       ];
-      const t0: stringful = T[0]
-        .toLowerCase() as stringful;
+      const t0: stringful = this.toStringfulLower(
+        T[0],
+      );
       const t0_len: number = t0.length;
       const longest: Null<stringful> = [...M]
         .filter(
@@ -282,7 +279,7 @@ class Query {
           .shift()
           ?.slice(longest.length) ?? "";
 
-        if (operand_0.length !== 0)
+        if (operand_0.length > 0)
           T.unshift(operand_0 as stringful);
 
         T.unshift(longest);
@@ -293,6 +290,32 @@ class Query {
     catch (e) {
       throw new EvalError(
         `Query: mathefy`,
+        { cause: e },
+      );
+    }
+  }
+
+  private toStringfulLower(S: stringful): stringful {
+    try {
+      const s = S.toLowerCase();
+
+      if (s.length < 1)
+        throw new TypeError(
+          `stringful converted to lowercase has 0 length`,
+          {
+            cause: {
+              input: S,
+              lowercase: s,
+              deltaLength: S.length - s.length,
+            },
+          },
+        );
+      else
+        return s as stringful;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: toStringfulLower`,
         { cause: e },
       );
     }
