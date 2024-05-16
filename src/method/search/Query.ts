@@ -260,6 +260,10 @@ class Query {
         .toLowerCase() as stringful;
       const t0_len: number = t0.length;
       const longest: Null<stringful> = [...M]
+        .filter(
+          (mk: stringful): boolean =>
+            mk.length <= t0_len,
+        )
         .sort(
           (a: stringful, b: stringful): number =>
             b.length - a.length,
@@ -271,7 +275,7 @@ class Query {
 
       if (longest === null)
         if (NUMERIC.includes(t0[0] as stringful))
-          T.unshift(math_short);
+          T.unshift(MATH_SHORT);
         else {
           const operand_0: string = T
             .shift()
