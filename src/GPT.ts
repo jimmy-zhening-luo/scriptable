@@ -118,7 +118,7 @@ namespace GPT {
             ]
       )
         .map(
-          (message: GptMessage<"system" | "user">): GptMessage<"system" | "user"> => {
+          (message): GptMessage<"system" | "user"> => {
             return {
               role: message.role,
               content: message.content
