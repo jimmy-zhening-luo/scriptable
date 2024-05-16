@@ -179,7 +179,7 @@ abstract class IFilepath<Root extends boolean> {
 
   private cleanValidateParts(
     ...subpaths: ConstructorParameters<typeof IFilepath>
-  ): ReturnType<typeof IFilepath<false>["validateParts"]> {
+  ): ReturnType<IFilepath<false>["validateParts"]> {
     try {
       const _tree: Array<FilepathPart["string"]> = [];
 
