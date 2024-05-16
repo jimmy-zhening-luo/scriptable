@@ -5,10 +5,7 @@ declare type GptOutput = {
     org: string;
   };
   body: {
-    message: {
-      user: string;
-      system?: string;
-    };
+    messages: GptMessages<boolean>;
     model: string;
     token: number;
     temperature: number;

@@ -82,29 +82,52 @@ namespace GPT {
         i.location,
       ]
         .join("");
-      const message: GptOutput["body"]["message"] = typeof i.prompt === "string"
-        ? preset === null || preset.system === ""
-          ? { user: i.prompt }
-          : {
-              system: preset.system,
-              user: preset.user.includes(tags.preset)
-                ? preset.user.replace(
-                  tags.preset,
-                  i.prompt,
-                )
-                : i.prompt,
-            }
-        : i.prompt;
-
-      message.user = message.user.replace(
-        tags.location,
-        location,
-      );
-
-      if ("system" in message)
-        message.system = message.system.replace(
-          tags.location,
-          location,
+      const messages: GptMessages<boolean> = (
+        typeof i.prompt === "string"
+          ? preset === null || preset.system === ""
+            ? [
+                {
+                  role: "user",
+                  content: i.prompt,
+                },
+              ]
+            : [
+                {
+                  role: "system",
+                  content: preset.system,
+                },
+                {
+                  role: "user",
+                  content: preset.user.includes(tags.preset)
+                    ? preset.user.replace(
+                      tags.preset,
+                      i.prompt,
+                    )
+                    : i.prompt,
+                },
+              ]
+          : [
+              {
+                role: "system",
+                content: i.prompt.system,
+              },
+              {
+                role: "user",
+                content: i.prompt.user,
+              },
+            ]
+      )
+        .map(
+          (message: GptMessage<"system" | "user">): GptMessage<"system" | "user"> => (
+              {
+                role: message.role,
+                content: message.content
+                  .replace(
+                    tags.location,
+                    location,
+                  ),
+              }
+            ),
         );
 
       return {
