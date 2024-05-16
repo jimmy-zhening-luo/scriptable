@@ -14,7 +14,7 @@ namespace Search {
     private get Query(): typeof Query {
       try {
         return importModule(
-          "method/search/Query",
+          "apps/method/search/Query",
         ) as typeof Query;
       }
       catch (e) {
@@ -149,7 +149,7 @@ namespace Search {
     ): T {
       try {
         return importModule(
-          `method/search/engines/${flavor}`,
+          `apps/method/search/engines/${flavor}`,
         ) as T;
       }
       catch (e) {
