@@ -141,7 +141,7 @@ namespace GPT {
           org: id.org,
         },
         body: {
-          message,
+          messages,
           temperature: i.temperature,
           p: i.p,
           model: models[i.model],
