@@ -3,19 +3,8 @@
   "version": "6.7.0-alpha.74",
   "description": "Building block classes and scripts to do complex automation on iOS.",
   "type": "module",
+  "private": false,
   "main": "",
-  "scripts": {
-    "lint": "eslint --cache --cache-strategy content -c eslint.config.js src/**/*.ts",
-    "lint:fix": "npm run lint -- --fix",
-    "clean": "npm run clean:built && npm run clean:packed",
-    "clean:built": "shx rm -rf built",
-    "clean:packed": "shx rm -rf packed",
-    "prebuild": "npm run lint:fix && npm run clean",
-    "build": "tsc --build",
-    "prepack": "npm run build",
-    "pack": "shx mkdir packed && shx cp -r built/js/* packed",
-    "dev": "npm run pack"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jimmy-zhening-luo/scriptable-wild.git"
@@ -26,6 +15,18 @@
     "url": "https://github.com/jimmy-zhening-luo/scriptable-wild/issues"
   },
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
+  "scripts": {
+    "clean:packed": "shx rm -rf packed",
+    "lint": "eslint --cache --cache-strategy content -c eslint.config.js src/**/*.ts",
+    "lint:fix": "npm run lint -- --fix",
+    "prebuild": "npm run lint:fix && npm run clean",
+    "build": "tsc",
+    "prepack": "npm run build && npm run clean:packed",
+    "pack": "shx mkdir packed && shx cp -r built/js/* packed",
+    "pretest": "npm run pack",
+    "test": "exit 1",
+    "dev": "npm run test"
+  },
   "devDependencies": {
     "@jimbojet/lint": "~8.0.11",
     "@stylistic/eslint-plugin": "~2.1.0",
