@@ -167,10 +167,13 @@ class Query {
   ): [stringful, ...stringful[]] {
     try {
       const LANG_TAG: stringful = "@" as stringful;
-      const [T0]: [stringful] = T;
+      const [T0, ...Trest]: [stringful, ...stringful[]] = T;
       const t0: stringful = T0.toLowerCase() as stringful;
-      const pre: stringful[] = t0.startsWith(LANG_TAG)
-        ? [TRANSLATE]
+      const pre: [stringful, stringful[]] = t0.startsWith(LANG_TAG)
+        ? [
+            TRANSLATE,
+            T0,
+          ]
         : t0.startsWith(TRANSLATE)
           ? t0.slice(
             TRANSLATE.length,
@@ -178,30 +181,29 @@ class Query {
           ) === LANG_TAG
             ? [
                 TRANSLATE,
-                String(
-                  T
-                    .shift(),
-                )
-                  .slice(TRANSLATE.length) as stringful,
+                T0.slice(
+                  TRANSLATE.length,
+                ) as stringful,
               ]
-            : t0.length > TRANSLATE.length
+            : T0.length > TRANSLATE.length
               ? [
                   TRANSLATE,
                   `${LANG_TAG}${t0[TRANSLATE.length]}` as stringful,
-                  ...String(T.shift()).length > TRANSLATE.length + LANG_TAG.length
+                  ...T0.length > TRANSLATE.length + LANG_TAG.length
                     ? [
-                        t0.slice(
+                        T0.slice(
                           TRANSLATE.length + LANG_TAG.length,
                         ) as stringful,
                       ]
                     : [],
                 ]
-              : []
-          : [];
+              : [T0]
+          : [T0];
 
-      T.unshift(...pre);
-
-      return T;
+      return [
+        ...pre,
+        ...Trest,
+      ];
     }
     catch (e) {
       throw new EvalError(
@@ -254,7 +256,7 @@ class Query {
         TRANSLATE,
         MATH_LONG,
       ];
-      const [T0]: [stringful] = T;
+      const T0: stringful = T[0];
       const t0: stringful = T0.toLowerCase() as stringful;
       const t0_len: number = t0.length;
       const longest: Null<stringful> = [...M]
