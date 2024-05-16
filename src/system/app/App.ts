@@ -4,7 +4,7 @@ abstract class App<
   O = never,
   C extends ISetting = never,
 > {
-  private readonly _d0: Date = new Date();
+  private readonly t0: number = Date.now();
   private readonly _storage: Record<
     string,
     Storage<Class>
@@ -20,48 +20,6 @@ abstract class App<
     protected readonly _class: literalful<Class>,
     protected debug: boolean = false,
   ) {}
-
-  protected static get Setting(): typeof Setting {
-    try {
-      return importModule(
-        "filetypes/Setting",
-      ) as typeof Setting;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Setting`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected static get Storage(): typeof Storage {
-    try {
-      return importModule(
-        "filetypes/Storage",
-      ) as typeof Storage;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Storage`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected static get Key(): typeof Key {
-    try {
-      return importModule(
-        "filetypes/Key",
-      ) as typeof Key;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Key`,
-        { cause: e },
-      );
-    }
-  }
 
   public get name(): stringful {
     try {
@@ -226,22 +184,62 @@ abstract class App<
     }
   }
 
+  private get Setting(): typeof Setting {
+    try {
+      return importModule(
+        "filetypes/Setting",
+      ) as typeof Setting;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Setting`,
+        { cause: e },
+      );
+    }
+  }
+
+  private get Storage(): typeof Storage {
+    try {
+      return importModule(
+        "filetypes/Storage",
+      ) as typeof Storage;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Storage`,
+        { cause: e },
+      );
+    }
+  }
+
+  private get Key(): typeof Key {
+    try {
+      return importModule(
+        "filetypes/Key",
+      ) as typeof Key;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Key`,
+        { cause: e },
+      );
+    }
+  }
+
   protected abstract get getInput(): App<Class, I>["input"];
 
   public run(): NotUndefined<O> {
     try {
       try {
-        const _d1: Date = new Date();
+        const t1: number = Date.now();
         const _output: NotUndefined<O> = this.runtime();
 
         if (this.debug) {
-          const _t2: number = new Date()
-            .getTime();
+          const t2: number = Date.now();
 
           this.write(
-            `${new Date()
-              .toISOString()}:: ${_t2 - _d1.getTime()} ms : ${_t2 - this._d0.getTime()} ms`,
-            `_${this.name}_runtime.txt`,
+            `${new this.Timestamp().full} :: ${t2 - t1} ms : ${t2 - this.t0} ms :: t2`,
+            `_runtime-${this.name}.txt`,
             "line",
           );
         }
