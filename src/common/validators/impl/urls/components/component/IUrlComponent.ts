@@ -1,5 +1,5 @@
-abstract class IUrlComponent {
-  protected readonly validator: ValidString;
+abstract class IUrlComponent<UC> {
+  protected readonly validator: ValidString<UC>;
 
   constructor(component: string) {
     try {
@@ -29,7 +29,7 @@ abstract class IUrlComponent {
     }
   }
 
-  protected abstract validate(component: string): ValidString;
+  protected abstract validate(component: string): IUrlComponent<UC>["validator"];
 }
 
 module.exports = IUrlComponent;
