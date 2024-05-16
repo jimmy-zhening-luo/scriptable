@@ -13,7 +13,7 @@ abstract class Filetype<
   ) {
     try {
       this._file = new File(
-        this._rootBookmark(filetype),
+        this.root(filetype),
         appClass,
         ...subpaths,
       );
@@ -66,6 +66,20 @@ abstract class Filetype<
     }
   }
 
+  private get Bookmark(): typeof Bookmark {
+    try {
+      return importModule(
+        "files/file/bookmark/Bookmark",
+      ) as typeof Bookmark;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Filetype: import Bookmark`,
+        { cause: e },
+      );
+    }
+  }
+
   public read(...error: Parameters<F["read"]>): string {
     try {
       return this._file.read(...error);
@@ -102,7 +116,7 @@ abstract class Filetype<
     }
   }
 
-  private _rootBookmark(subtype: literalful<Subtype>): Bookmark {
+  private root(subtype: literalful<Subtype>): Bookmark {
     try {
       if (subtype.length === 0)
         throw new SyntaxError(
@@ -110,15 +124,14 @@ abstract class Filetype<
           { cause: { subtype } },
         );
       else
-        return new Filetype
-          .WriteFile
+        return new this
           .Bookmark(
             `#${subtype}`,
           );
     }
     catch (e) {
       throw new EvalError(
-        `Filetype: _rootBookmark`,
+        `Filetype: root`,
         { cause: e },
       );
     }

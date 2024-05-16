@@ -199,7 +199,7 @@ abstract class IFile {
     }
   }
 
-  public get Bookmark(): typeof Bookmark {
+  private get Bookmark(): typeof Bookmark {
     try {
       return importModule(
         "bookmark/Bookmark",

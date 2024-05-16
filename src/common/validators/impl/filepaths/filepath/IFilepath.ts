@@ -10,7 +10,7 @@ abstract class IFilepath<Root extends boolean> {
     >
   ) {
     try {
-      this._parts = [...IFilepath.cleanValidateParts(...subpaths)];
+      this._parts = [...this.cleanValidateParts(...subpaths)];
 
       if (!this.isOk())
         throw new TypeError(
@@ -114,75 +114,6 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  private static cleanValidateParts(
-    ...subpaths: ConstructorParameters<typeof IFilepath>
-  ): ReturnType<typeof IFilepath<false>["validateParts"]> {
-    try {
-      const _tree: Array<FilepathPart["string"]> = [];
-
-      while (subpaths.length > 0) {
-        const head: Null<ConstructorParameters<typeof IFilepath>[0]> = subpaths.shift() ?? null;
-
-        if (head !== null)
-          _tree.push(
-            ...head instanceof IFilepath
-              ? head._parts
-              : IFilepath.validateParts(
-                ...IFilepath.cleanSplit(
-                  head,
-                ),
-              ),
-          );
-      }
-
-      return [..._tree];
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: cleanValidate`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static cleanSplit(
-    subpath: string | string[],
-  ): stringful[] {
-    try {
-      return new this
-        .Splitterful(
-          subpath,
-          "/",
-          { trimParts: true },
-        )
-        .parts;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: clean`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static validateParts(...parts: stringful[]): IFilepath<boolean>["_parts"] {
-    try {
-      return parts
-        .map(
-          (part: stringful): FilepathPart["string"] =>
-            new this
-              .FilepathPart(part)
-              .string,
-        );
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: validate`,
-        { cause: e },
-      );
-    }
-  }
-
   public append(...subpaths: ConstructorParameters<typeof IFilepath>): this {
     try {
       return new (this.constructor as new (
@@ -216,7 +147,7 @@ abstract class IFilepath<Root extends boolean> {
 
   public cd(...relPaths: ConstructorParameters<typeof IFilepath>): this {
     try {
-      const rel: IFilepath<boolean>["_parts"] = IFilepath.cleanValidateParts(...relPaths);
+      const rel: IFilepath<boolean>["_parts"] = this.cleanValidateParts(...relPaths);
 
       for (const node of rel)
         if (node === "..")
@@ -241,6 +172,75 @@ abstract class IFilepath<Root extends boolean> {
     catch (e) {
       throw new EvalError(
         `IFilepath: toString`,
+        { cause: e },
+      );
+    }
+  }
+
+  private cleanValidateParts(
+    ...subpaths: ConstructorParameters<typeof IFilepath>
+  ): ReturnType<typeof IFilepath<false>["validateParts"]> {
+    try {
+      const _tree: Array<FilepathPart["string"]> = [];
+
+      while (subpaths.length > 0) {
+        const head: Null<ConstructorParameters<typeof IFilepath>[0]> = subpaths.shift() ?? null;
+
+        if (head !== null)
+          _tree.push(
+            ...head instanceof IFilepath
+              ? head._parts
+              : this.validateParts(
+                ...this.cleanSplit(
+                  head,
+                ),
+              ),
+          );
+      }
+
+      return [..._tree];
+    }
+    catch (e) {
+      throw new EvalError(
+        `IFilepath: cleanValidate`,
+        { cause: e },
+      );
+    }
+  }
+
+  private cleanSplit(
+    subpath: string | string[],
+  ): stringful[] {
+    try {
+      return new this
+        .Splitterful(
+          subpath,
+          "/",
+          { trimParts: true },
+        )
+        .parts;
+    }
+    catch (e) {
+      throw new EvalError(
+        `IFilepath: clean`,
+        { cause: e },
+      );
+    }
+  }
+
+  private validateParts(...parts: stringful[]): IFilepath<boolean>["_parts"] {
+    try {
+      return parts
+        .map(
+          (part: stringful): FilepathPart["string"] =>
+            new this
+              .FilepathPart(part)
+              .string,
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `IFilepath: validate`,
         { cause: e },
       );
     }
