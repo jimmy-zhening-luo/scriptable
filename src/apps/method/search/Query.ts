@@ -167,13 +167,10 @@ class Query {
   ): [stringful, ...stringful[]] {
     try {
       const LANG_TAG: stringful = "@" as stringful;
-      const [T0, ...Trest]: [stringful, ...stringful[]] = T;
+      const T0: stringful = T[0];
       const t0: stringful = T0.toLowerCase() as stringful;
-      const pre: [stringful, ...stringful[]] = t0.startsWith(LANG_TAG)
-        ? [
-            TRANSLATE,
-            T0,
-          ]
+      const pre: stringful[] = t0.startsWith(LANG_TAG)
+        ? [TRANSLATE]
         : t0.startsWith(TRANSLATE)
           ? t0.slice(
             TRANSLATE.length,
@@ -181,29 +178,30 @@ class Query {
           ) === LANG_TAG
             ? [
                 TRANSLATE,
-                T0.slice(
-                  TRANSLATE.length,
-                ) as stringful,
+                String(
+                  T
+                    .shift(),
+                )
+                  .slice(TRANSLATE.length) as stringful,
               ]
-            : T0.length > TRANSLATE.length
+            : t0.length > TRANSLATE.length
               ? [
                   TRANSLATE,
                   `${LANG_TAG}${t0[TRANSLATE.length]}` as stringful,
-                  ...T0.length > TRANSLATE.length + LANG_TAG.length
+                  ...String(T.shift()).length > TRANSLATE.length + LANG_TAG.length
                     ? [
-                        T0.slice(
+                        t0.slice(
                           TRANSLATE.length + LANG_TAG.length,
                         ) as stringful,
                       ]
                     : [],
                 ]
-              : [T0]
-          : [T0];
+              : []
+          : [];
 
-      return [
-        ...pre,
-        ...Trest,
-      ];
+      T.unshift(...pre);
+
+      return T;
     }
     catch (e) {
       throw new EvalError(
