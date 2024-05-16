@@ -1,7 +1,7 @@
 class Query {
   public readonly key: stringful;
   public readonly terms: stringful[];
-  private readonly numeric: stringful[] = [
+  private readonly NUMERIC: stringful[] = [
     "0",
     "1",
     "2",
@@ -50,7 +50,8 @@ class Query {
     query: string,
     CHAT: stringful,
     TRANSLATE: stringful,
-    MATH: stringful[] = [],
+    MATH_SHORT: stringful,
+    MATH_LONG: stringful,
   ) {
     try {
       const tokens: stringful[] = [
@@ -60,14 +61,17 @@ class Query {
               this.tokenize(
                 query,
                 CHAT,
+                TRANSLATE,
+                MATH_SHORT,
               ),
               TRANSLATE,
             ),
           ),
-          MATH,
           CHAT,
           TRANSLATE,
-          this.numeric,
+          MATH_SHORT,
+          MATH_LONG,
+          this.NUMERIC,
         ),
       ];
 
@@ -123,7 +127,11 @@ class Query {
   ): [stringful, ...stringful[]] {
     try {
       const preprocessed: stringful[] = query.startsWith(" ")
-        ? [CHAT]
+        ? query.startsWith("  ")
+          ? query.startsWith("   ")
+            ? [TRANSLATE]
+            : [CHAT]
+          : [MATH_SHORT]
         : [];
       const tokenized: stringful[] = [
         ...preprocessed,
@@ -233,25 +241,23 @@ class Query {
 
   private mathefy(
     T: [stringful, ...stringful[]],
-    M: stringful[],
     CHAT: stringful,
     TRANSLATE: stringful,
-    numeric: stringful[],
+    MATH_SHORT: stringful,
+    MATH_LONG: stringful,
+    NUMERIC: stringful[],
   ): [stringful, ...stringful[]] {
     try {
-      M.push(
+      const M: [stringful, stringful, stringful, stringful] = [
+        MATH_SHORT,
         CHAT,
         TRANSLATE,
-      );
-
+        MATH_LONG,
+      ];
       const t0: stringful = T[0]
         .toLowerCase() as stringful;
       const t0_len: number = t0.length;
-      const math_long: Null<stringful> = [...M]
-        .filter(
-          (mk: stringful): boolean =>
-            mk.length <= t0_len,
-        )
+      const longest: Null<stringful> = [...M]
         .sort(
           (a: stringful, b: stringful): number =>
             b.length - a.length,
@@ -261,26 +267,18 @@ class Query {
             t0.startsWith(mk),
         ) ?? null;
 
-      if (math_long !== null) {
+      if (longest === null)
+        if (NUMERIC.includes(t0[0] as stringful))
+          T.unshift(math_short);
+      else {
         const operand_0: string = T
           .shift()
-          ?.slice(math_long.length) ?? "";
+          ?.slice(longest.length) ?? "";
 
         if (operand_0.length !== 0)
           T.unshift(operand_0 as stringful);
 
-        T.unshift(math_long);
-      }
-      else {
-        const math_short: Null<stringful> = [...M]
-          .sort(
-            (a: stringful, b: stringful): number =>
-              a.length - b.length,
-          )
-          .shift() ?? null;
-
-        if (math_short !== null && numeric.includes(t0[0] as stringful))
-          T.unshift(math_short);
+        T.unshift(longest);
       }
 
       return T;

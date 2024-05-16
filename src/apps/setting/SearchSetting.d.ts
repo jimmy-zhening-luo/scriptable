@@ -3,10 +3,14 @@ declare type K = string;
 declare type SearchSetting = {
   app: {
     tag: string;
-    key:
-      & Record<"chat" | "translate", string>
-      & Record<"math", string[]>
-    ;
+    key: Record<
+      | "chat"
+      | "translate"
+      | "mathShort"
+      | "mathLong"
+      ,
+      string
+    >;
   };
   user: {
     alias: Record<string, K>;

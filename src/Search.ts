@@ -47,12 +47,13 @@ namespace Search {
         app.key.translate,
         "app.translate",
       );
-      const MATH: stringful[] = app.key.math.map(
-        (s: string): stringful =>
-          this.stringful(
-            s,
-            "app.math",
-          ),
+      const MATH_SHORT: stringful = this.stringful(
+        app.key.mathShort,
+        "app.mathShort",
+      );
+      const MATH_LONG: stringful = this.stringful(
+        app.key.mathLong,
+        "app.mathLong",
       );
       const q: Query = new this.Query(
         input.length > 0
@@ -60,7 +61,8 @@ namespace Search {
           : this.read(),
         CHAT,
         TRANSLATE,
-        MATH,
+        MATH_SHORT,
+        MATH_LONG,
       );
       const keys: string[] = Object
         .keys(
