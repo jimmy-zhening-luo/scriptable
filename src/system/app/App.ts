@@ -184,6 +184,20 @@ abstract class App<
     }
   }
 
+  protected get Timestamp(): typeof Timestamp {
+    try {
+      return importModule(
+        "./common/data/Timestamp",
+      ) as typeof Timestamp;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Stringful`,
+        { cause: e },
+      );
+    }
+  }
+
   private get Setting(): typeof Setting {
     try {
       return importModule(
