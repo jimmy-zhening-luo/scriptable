@@ -24,7 +24,7 @@ class Url {
             path: this.path,
             query: this.query,
             fragment: this.fragment,
-          } = Url.parse(
+          } = this.parse(
             base,
           )
         );
@@ -240,25 +240,6 @@ class Url {
     }
   }
 
-  private static parse(url: string): ParsedUrl {
-    try { // TBD
-      return {
-        scheme: "foo" as stringful,
-        host: url,
-        port: null,
-        path: "",
-        query: "",
-        fragment: "",
-      };
-    }
-    catch (e) {
-      throw new EvalError(
-        `Url: parse`,
-        { cause: e },
-      );
-    }
-  }
-
   public append(
     subpath: string | string[],
   ): this {
@@ -300,6 +281,25 @@ class Url {
     catch (e) {
       throw new EvalError(
         `Url: toString`,
+        { cause: e },
+      );
+    }
+  }
+
+  private parse(url: string): ParsedUrl {
+    try { // TBD
+      return {
+        scheme: "foo" as stringful,
+        host: url,
+        port: null,
+        path: "",
+        query: "",
+        fragment: "",
+      };
+    }
+    catch (e) {
+      throw new EvalError(
+        `Url: parse`,
         { cause: e },
       );
     }
