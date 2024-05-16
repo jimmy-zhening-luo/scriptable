@@ -169,7 +169,7 @@ class Query {
       const LANG_TAG: stringful = "@" as stringful;
       const [T0, ...Trest]: [stringful, ...stringful[]] = T;
       const t0: stringful = T0.toLowerCase() as stringful;
-      const pre: [stringful, stringful[]] = t0.startsWith(LANG_TAG)
+      const pre: [stringful, ...stringful[]] = t0.startsWith(LANG_TAG)
         ? [
             TRANSLATE,
             T0,
