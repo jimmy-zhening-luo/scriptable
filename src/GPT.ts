@@ -135,9 +135,7 @@ namespace GPT {
             messageBox.system,
             messageBox.user,
           ]
-        : [
-            messageBox.user,
-          ];
+        : [messageBox.user];
 
       return {
         api: [
