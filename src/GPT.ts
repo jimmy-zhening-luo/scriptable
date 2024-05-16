@@ -71,6 +71,11 @@ namespace GPT {
             ? ii.location
             : defaults.location,
       };
+      const location: string = [
+        plugins.location,
+        i.location,
+      ]
+        .join("");
       const preset: Null<GptPromptFull> = typeof i.prompt === "string"
         ? {
             system: (
@@ -89,11 +94,6 @@ namespace GPT {
               ),
           }
         : null;
-      const location: string = [
-        plugins.location,
-        i.location,
-      ]
-        .join("");
       const messageBox: {
         user: GptMessage<"user">;
         system?: GptMessage<"system">;
