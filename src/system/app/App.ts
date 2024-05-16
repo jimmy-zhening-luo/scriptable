@@ -245,14 +245,13 @@ abstract class App<
   public run(): NotUndefined<O> {
     try {
       try {
-        const t1: number = Date.now();
         const _output: NotUndefined<O> = this.runtime();
 
         if (this.debug) {
-          const t2: number = Date.now();
+          const t1: number = Date.now();
 
           this.write(
-            `${new this.Timestamp().full} :: ${t2 - t1} ms : ${t2 - this.t0} ms :: t2`,
+            `${new this.Timestamp().full} :: ${t1 - this.t0} ms : ${t1}`,
             `_runtime-${this.name}.txt`,
             "line",
           );
