@@ -76,9 +76,7 @@ class Query {
         this.NUMERIC,
       );
 
-      this.key = this.toStringfulLower(
-        K,
-      );
+      this.key = K.toLowerCase() as stringful;
       this.terms = terms;
     }
     catch (e) {
@@ -169,9 +167,8 @@ class Query {
   ): [stringful, ...stringful[]] {
     try {
       const LANG_TAG: stringful = "@" as stringful;
-      const t0: stringful = this.toStringfulLower(
-        T[0],
-      );
+      const [T0]: [stringful] = T;
+      const t0: stringful = T0.toLowerCase() as stringful;
       const pre: stringful[] = t0.startsWith(LANG_TAG)
         ? [TRANSLATE]
         : t0.startsWith(TRANSLATE)
@@ -257,9 +254,8 @@ class Query {
         TRANSLATE,
         MATH_LONG,
       ];
-      const t0: stringful = this.toStringfulLower(
-        T[0],
-      );
+      const [T0]: [stringful] = T;
+      const t0: stringful = T0.toLowerCase() as stringful;
       const t0_len: number = t0.length;
       const longest: Null<stringful> = [...M]
         .filter(
@@ -295,32 +291,6 @@ class Query {
     catch (e) {
       throw new EvalError(
         `Query: mathefy`,
-        { cause: e },
-      );
-    }
-  }
-
-  private toStringfulLower(S: stringful): stringful {
-    try {
-      const s = S.toLowerCase();
-
-      if (s.length < 1)
-        throw new TypeError(
-          `stringful converted to lowercase has 0 length`,
-          {
-            cause: {
-              input: S,
-              lowercase: s,
-              deltaLength: S.length - s.length,
-            },
-          },
-        );
-      else
-        return s as stringful;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: toStringfulLower`,
         { cause: e },
       );
     }
