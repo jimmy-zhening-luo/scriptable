@@ -54,10 +54,10 @@ class Query {
   ) {
     try {
       const tokens: stringful[] = [
-        ...Query.mathefy(
-          Query.dedot(
-            Query.transliterate(
-              Query.tokenize(
+        ...this.mathefy(
+          this.dedot(
+            this.transliterate(
+              this.tokenize(
                 query,
                 CHAT,
               ),
@@ -117,7 +117,7 @@ class Query {
     }
   }
 
-  private static tokenize(
+  private tokenize(
     query: string,
     CHAT: stringful,
   ): [stringful, ...stringful[]] {
@@ -151,7 +151,7 @@ class Query {
     }
   }
 
-  private static transliterate(
+  private transliterate(
     T: [stringful, ...stringful[]],
     TRANSLATE: stringful,
   ): [stringful, ...stringful[]] {
@@ -203,7 +203,7 @@ class Query {
     }
   }
 
-  private static dedot(
+  private dedot(
     T: [stringful, ...stringful[]],
   ): [stringful, ...stringful[]] {
     try {
@@ -231,7 +231,7 @@ class Query {
     }
   }
 
-  private static mathefy(
+  private mathefy(
     T: [stringful, ...stringful[]],
     M: stringful[],
     CHAT: stringful,

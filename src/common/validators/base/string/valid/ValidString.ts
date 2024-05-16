@@ -16,18 +16,17 @@ class ValidString<Brand extends string> {
         ConstructorParameters<typeof CharSet>[1]
       >;
     } = {},
-    cleanOptions: Parameters<typeof ValidString.clean>[1] = {},
+    cleanOptions: Parameters<ValidString["clean"]>[1] = {},
   ) {
     try {
       this.string = new this
         .CharStringful<Brand>(
         min,
         max,
-        ValidString
-          .clean(
-            input,
-            cleanOptions,
-          ),
+        this.clean(
+          input,
+          cleanOptions,
+        ),
         negate,
         ...chars,
       ).string;
@@ -68,7 +67,19 @@ class ValidString<Brand extends string> {
     }
   }
 
-  private static clean(
+  public toString(): ValidString<Brand>["string"] {
+    try {
+      return this.string;
+    }
+    catch (e) {
+      throw new EvalError(
+        `ValidString: toString`,
+        { cause: e },
+      );
+    }
+  }
+
+  private clean(
     raw: string,
     {
       toLower = false,
@@ -87,8 +98,8 @@ class ValidString<Brand extends string> {
     },
   ): string {
     try {
-      return ValidString._trimEdge(
-        ValidString._trimEdge(
+      return this._trimEdge(
+        this._trimEdge(
           raw[
             toLower
               ? "toLowerCase"
@@ -115,7 +126,7 @@ class ValidString<Brand extends string> {
     }
   }
 
-  private static _trimEdge(
+  private _trimEdge(
     string: string,
     edge: "leading" | "trailing",
     wordsToTrim: string[],
@@ -161,18 +172,6 @@ class ValidString<Brand extends string> {
     catch (e) {
       throw new EvalError(
         `ValidString: _trimEdge`,
-        { cause: e },
-      );
-    }
-  }
-
-  public toString(): ValidString<Brand>["string"] {
-    try {
-      return this.string;
-    }
-    catch (e) {
-      throw new EvalError(
-        `ValidString: toString`,
         { cause: e },
       );
     }
