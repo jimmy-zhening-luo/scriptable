@@ -273,19 +273,20 @@ class Query {
             t0.startsWith(mk),
         ) ?? null;
 
-      if (longest === null)
+      if (longest === null) {
         if (NUMERIC.includes(t0[0] as stringful))
           T.unshift(MATH_SHORT);
-        else {
-          const operand_0: string = T
-            .shift()
-            ?.slice(longest.length) ?? "";
+      }
+      else {
+        const operand_0: string = T
+          .shift()
+          ?.slice(longest.length) ?? "";
 
-          if (operand_0.length !== 0)
-            T.unshift(operand_0 as stringful);
+        if (operand_0.length !== 0)
+          T.unshift(operand_0 as stringful);
 
-          T.unshift(longest);
-        }
+        T.unshift(longest);
+      }
 
       return T;
     }
