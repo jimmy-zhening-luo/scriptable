@@ -39,7 +39,7 @@ abstract class App<
   public get setting(): Setting<Class, C> {
     try {
       if (this._setting === null)
-        this._setting = new App.Setting(
+        this._setting = new this.Setting(
           this._class,
           this.name,
         );
@@ -365,7 +365,7 @@ abstract class App<
       if (cached !== null)
         return cached;
       else {
-        const newStorage: Storage<Class> = new App.Storage(
+        const newStorage: Storage<Class> = new this.Storage(
           this._class,
           this.name,
           filename,
@@ -393,7 +393,7 @@ abstract class App<
       if (cached !== null)
         return cached;
       else {
-        const newKey: Key<Class> = new App.Key(
+        const newKey: Key<Class> = new this.Key(
           this._class,
           this.name,
           this.stringful(handle),
