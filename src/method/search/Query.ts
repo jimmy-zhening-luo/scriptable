@@ -124,6 +124,8 @@ class Query {
   private tokenize(
     query: string,
     CHAT: stringful,
+    TRANSLATE: stringful,
+    MATH_SHORT: stringful,
   ): [stringful, ...stringful[]] {
     try {
       const preprocessed: stringful[] = query.startsWith(" ")
