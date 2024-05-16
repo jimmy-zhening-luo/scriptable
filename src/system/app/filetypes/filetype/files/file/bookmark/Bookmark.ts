@@ -6,7 +6,7 @@ class Bookmark {
   constructor(bookmark: string | Bookmark) {
     try {
       if (typeof bookmark === "string") {
-        this.alias = Bookmark.stringful(
+        this.alias = this.stringful(
           bookmark.trim(),
           `alias.trim()`,
         );
@@ -21,7 +21,7 @@ class Bookmark {
             { cause: { alias: this.alias } },
           );
         else
-          this.path = Bookmark.stringful<ReturnType<Rootpath["toString"]>>(
+          this.path = this.stringful<ReturnType<Rootpath["toString"]>>(
             FileManager
               .iCloud()
               .bookmarkedPath(this.alias) as FString<true>,
@@ -41,7 +41,7 @@ class Bookmark {
     }
   }
 
-  private static get stringful(): typeof Stringful {
+  private get stringful(): typeof Stringful {
     try {
       return importModule(
         "./common/types/literals/string/Stringful",

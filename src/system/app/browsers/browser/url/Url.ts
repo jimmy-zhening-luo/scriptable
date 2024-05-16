@@ -47,7 +47,7 @@ class Url {
       if (typeof port !== "undefined")
         this.port = port === null
           ? null
-          : Url.posint(
+          : this.posint(
             port,
           );
 
@@ -63,34 +63,6 @@ class Url {
     catch (e) {
       throw new EvalError(
         `Url: ctor`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected static get stringful(): typeof Stringful {
-    try {
-      return importModule(
-        "./common/types/literals/string/Stringful",
-      ) as typeof Stringful;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Url: import Stringful`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected static get posint(): typeof PosInt {
-    try {
-      return importModule(
-        "./common/types/literals/number/PosInt",
-      ) as typeof PosInt;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Url: import PosInt`,
         { cause: e },
       );
     }
@@ -191,6 +163,34 @@ class Url {
     catch (e) {
       throw new EvalError(
         `Url: fragment`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected get stringful(): typeof Stringful {
+    try {
+      return importModule(
+        "./common/types/literals/string/Stringful",
+      ) as typeof Stringful;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Url: import Stringful`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected get posint(): typeof PosInt {
+    try {
+      return importModule(
+        "./common/types/literals/number/PosInt",
+      ) as typeof PosInt;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Url: import PosInt`,
         { cause: e },
       );
     }

@@ -110,7 +110,11 @@ abstract class Filetype<
           { cause: { subtype } },
         );
       else
-        return new Filetype.WriteFile.Bookmark(`#${subtype}`);
+        return new Filetype
+          .WriteFile
+          .Bookmark(
+            `#${subtype}`,
+          );
     }
     catch (e) {
       throw new EvalError(

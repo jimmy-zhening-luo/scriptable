@@ -13,77 +13,21 @@ abstract class IFile {
     ...subpaths: ConstructorParameters<typeof IFilepath>
   ) {
     try {
-      this._root = root instanceof IFile || root instanceof IFile.Bookmark
+      this._root = root instanceof IFile || root instanceof this.Bookmark
         ? root.path
         : typeof root === "object" && "file" in root && "rootOnly" in root
           ? root.rootOnly
             ? root.file._root
             : root.file.path
-          : new IFile
+          : new this
             .Rootpath(root)
             .toString();
-      this._subpath = new IFile
+      this._subpath = new this
         .Subpath(...subpaths);
     }
     catch (e) {
       throw new EvalError(
         `IFile: ctor`,
-        { cause: e },
-      );
-    }
-  }
-
-  public static get Bookmark(): typeof Bookmark {
-    try {
-      return importModule(
-        "bookmark/Bookmark",
-      ) as typeof Bookmark;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `IFile: import Bookmark`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static get Rootpath(): typeof Rootpath {
-    try {
-      return importModule(
-        "./common/validators/impl/filepaths/Rootpath",
-      ) as typeof Rootpath;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `IFile: import Rootpath`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static get Subpath(): typeof Subpath {
-    try {
-      return importModule(
-        "./common/validators/impl/filepaths/Subpath",
-      ) as typeof Subpath;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `IFile: import Subpath`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static get stringful(): typeof Stringful {
-    try {
-      return importModule(
-        "./common/types/literals/string/Stringful",
-      ) as typeof Stringful;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `IFile: import Stringful`,
         { cause: e },
       );
     }
@@ -255,9 +199,65 @@ abstract class IFile {
     }
   }
 
+  public get Bookmark(): typeof Bookmark {
+    try {
+      return importModule(
+        "bookmark/Bookmark",
+      ) as typeof Bookmark;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `IFile: import Bookmark`,
+        { cause: e },
+      );
+    }
+  }
+
+  private get Rootpath(): typeof Rootpath {
+    try {
+      return importModule(
+        "./common/validators/impl/filepaths/Rootpath",
+      ) as typeof Rootpath;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `IFile: import Rootpath`,
+        { cause: e },
+      );
+    }
+  }
+
+  private get Subpath(): typeof Subpath {
+    try {
+      return importModule(
+        "./common/validators/impl/filepaths/Subpath",
+      ) as typeof Subpath;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `IFile: import Subpath`,
+        { cause: e },
+      );
+    }
+  }
+
+  private get stringful(): typeof Stringful {
+    try {
+      return importModule(
+        "./common/types/literals/string/Stringful",
+      ) as typeof Stringful;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `IFile: import Stringful`,
+        { cause: e },
+      );
+    }
+  }
+
   public set subpath(subpath: ConstructorParameters<typeof IFilepath>[1]) {
     try {
-      this._subpath = new IFile
+      this._subpath = new this
         .Subpath(subpath);
     }
     catch (e) {
@@ -339,7 +339,7 @@ abstract class IFile {
 
   public readful(errorLabel?: string): stringful {
     try {
-      return IFile.stringful(
+      return this.stringful(
         this.read(true),
         errorLabel,
       );

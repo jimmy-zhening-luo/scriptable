@@ -19,7 +19,7 @@ class ValidString<Brand extends string> {
     cleanOptions: Parameters<typeof ValidString.clean>[1] = {},
   ) {
     try {
-      this.string = new ValidString
+      this.string = new this
         .CharStringful<Brand>(
         min,
         max,
@@ -42,17 +42,19 @@ class ValidString<Brand extends string> {
 
   public static get CharSet(): typeof CharSet {
     try {
-      return ValidString.CharStringful.CharSet;
+      return importModule(
+        "charstrings/charstring/charset/CharSet",
+      ) as typeof CharSet;
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidString: import CharStringful.CharSet`,
+        `ValidString: import CharSet`,
         { cause: e },
       );
     }
   }
 
-  private static get CharStringful(): typeof CharStringful {
+  private get CharStringful(): typeof CharStringful {
     try {
       return importModule(
         "charstrings/CharStringful",

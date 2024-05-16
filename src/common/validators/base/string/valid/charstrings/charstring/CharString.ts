@@ -10,7 +10,7 @@ class CharString<
     ...charsets: ConstructorParameters<typeof CharSet>
   ) {
     try {
-      this.charset = new CharString
+      this.charset = new this
         .CharSet(...charsets);
 
       if (!this.validate(input))
@@ -35,7 +35,7 @@ class CharString<
     }
   }
 
-  public static get CharSet(): typeof CharSet {
+  public get CharSet(): typeof CharSet {
     try {
       return importModule(
         "charset/CharSet",

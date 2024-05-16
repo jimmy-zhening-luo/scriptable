@@ -26,34 +26,6 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  private static get Splitterful(): typeof Splitterful {
-    try {
-      return importModule(
-        "./common/validators/base/string/splitters/Splitterful",
-      ) as typeof Splitterful;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `IFilepath: import Splitterful`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static get FilepathPart(): typeof FilepathPart {
-    try {
-      return importModule(
-        "part/FilepathPart",
-      ) as typeof FilepathPart;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `IFilepath: import FilepathPart`,
-        { cause: e },
-      );
-    }
-  }
-
   public get parts(): IFilepath<Root>["_parts"] {
     try {
       return [...this._parts];
@@ -93,6 +65,34 @@ abstract class IFilepath<Root extends boolean> {
     catch (e) {
       throw new EvalError(
         `IFilepath: isEmpty`,
+        { cause: e },
+      );
+    }
+  }
+
+  private get Splitterful(): typeof Splitterful {
+    try {
+      return importModule(
+        "./common/validators/base/string/splitters/Splitterful",
+      ) as typeof Splitterful;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `IFilepath: import Splitterful`,
+        { cause: e },
+      );
+    }
+  }
+
+  private get FilepathPart(): typeof FilepathPart {
+    try {
+      return importModule(
+        "part/FilepathPart",
+      ) as typeof FilepathPart;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `IFilepath: import FilepathPart`,
         { cause: e },
       );
     }
@@ -149,7 +149,7 @@ abstract class IFilepath<Root extends boolean> {
     subpath: string | string[],
   ): stringful[] {
     try {
-      return new IFilepath
+      return new this
         .Splitterful(
           subpath,
           "/",
@@ -170,7 +170,7 @@ abstract class IFilepath<Root extends boolean> {
       return parts
         .map(
           (part: stringful): FilepathPart["string"] =>
-            new IFilepath
+            new this
               .FilepathPart(part)
               .string,
         );

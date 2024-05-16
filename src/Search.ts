@@ -11,7 +11,7 @@ namespace Search {
     SearchOutput,
     SearchSetting
   > {
-    private static get Query(): typeof Query {
+    private get Query(): typeof Query {
       try {
         return importModule(
           "method/search/Query",
@@ -20,22 +20,6 @@ namespace Search {
       catch (e) {
         throw new EvalError(
           `Search: import Query`,
-          { cause: e },
-        );
-      }
-    }
-
-    private static Engine<T>(
-      flavor: string,
-    ): T {
-      try {
-        return importModule(
-          `method/search/engines/${flavor}`,
-        ) as T;
-      }
-      catch (e) {
-        throw new EvalError(
-          `Search: import <T>Engine`,
           { cause: e },
         );
       }
@@ -70,7 +54,7 @@ namespace Search {
             "app.math",
           ),
       );
-      const q: Query = new Search.Query(
+      const q: Query = new this.Query(
         input.length > 0
           ? input
           : this.read(),
@@ -128,27 +112,27 @@ namespace Search {
         );
 
       const resolved: IEngine = typeof match === "string" || Array.isArray(match)
-        ? new (Search.Engine<typeof UrlEngine>("UrlEngine"))(
+        ? new (this.Engine<typeof UrlEngine>("UrlEngine"))(
           match,
           TAG,
         )
         : "url" in match
-          ? new (Search.Engine<typeof UrlEngine>("UrlEngine"))(
+          ? new (this.Engine<typeof UrlEngine>("UrlEngine"))(
             match.url,
             TAG,
             match.browser,
             match.encode,
           )
           : "shortcut" in match
-            ? new (Search.Engine<typeof ShortcutEngine>("ShortcutEngine"))(
+            ? new (this.Engine<typeof ShortcutEngine>("ShortcutEngine"))(
               match.shortcut,
               match.output,
             )
             : "find" in match
-              ? new (Search.Engine<typeof FindEngine>("FindEngine"))(
+              ? new (this.Engine<typeof FindEngine>("FindEngine"))(
                 match.find,
               )
-              : new (Search.Engine<typeof InlineEngine>("InlineEngine"))(
+              : new (this.Engine<typeof InlineEngine>("InlineEngine"))(
                 match.inline,
               );
 
@@ -156,6 +140,22 @@ namespace Search {
 
       return resolved
         .parseQueryToAction(q);
+    }
+
+    private Engine<T>(
+      flavor: string,
+    ): T {
+      try {
+        return importModule(
+          `method/search/engines/${flavor}`,
+        ) as T;
+      }
+      catch (e) {
+        throw new EvalError(
+          `Search: import <T>Engine`,
+          { cause: e },
+        );
+      }
     }
   }
 }
