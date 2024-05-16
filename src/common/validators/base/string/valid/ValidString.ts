@@ -16,7 +16,7 @@ class ValidString<Brand extends string> {
         ConstructorParameters<typeof CharSet>[1]
       >;
     } = {},
-    cleanOptions: Parameters<ValidString["clean"]>[1] = {},
+    cleanOptions: Parameters<ValidString<Brand>["clean"]>[1] = {},
   ) {
     try {
       this.string = new this
