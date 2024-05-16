@@ -1,4 +1,4 @@
-abstract class IUrlComponent<UC> {
+abstract class IUrlComponent<UC extends string> {
   protected readonly validator: ValidString<UC>;
 
   constructor(component: string) {
