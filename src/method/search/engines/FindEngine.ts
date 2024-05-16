@@ -9,7 +9,7 @@ class FindEngine extends f_IEngine {
     try {
       super("find");
 
-      if (find.length === 0)
+      if (find.length < 1)
         throw new SyntaxError(
           `no iOS Find provider specified`,
         );

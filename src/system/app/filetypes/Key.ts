@@ -63,7 +63,7 @@ class Key<Class extends string> extends k_Filetype<
       else {
         const key: string = Keychain.get(handle);
 
-        if (key.length === 0)
+        if (key.length < 1)
           throw new ReferenceError(
             `Unexpected: key exists in Keychain but is empty`,
             {

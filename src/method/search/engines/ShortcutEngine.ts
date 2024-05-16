@@ -13,7 +13,7 @@ class ShortcutEngine extends s_IEngine {
     try {
       super("shortcut");
 
-      if (shortcut.length === 0)
+      if (shortcut.length < 1)
         throw new SyntaxError(
           `shortcut engine has empty shortcut name`,
         );
