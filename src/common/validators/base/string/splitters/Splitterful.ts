@@ -7,7 +7,7 @@ class Splitterful extends f_iSplitter<stringful> {
     try {
       return parts.filter(
         (part): part is stringful =>
-          part.length !== 0,
+          part.length > 0,
       );
     }
     catch (e) {
