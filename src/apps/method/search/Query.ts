@@ -57,7 +57,8 @@ class Query {
       const [
         K,
         ...terms
-      ]: Arrayful<stringful> = this.mathefy(
+      ]: Arrayful<stringful
+      > = this.mathefy(
         this.dedot(
           this.transliterate(
             this.tokenize(
@@ -105,7 +106,8 @@ class Query {
       const [
         key,
         natural,
-      ]: [stringful, string] = [
+      ]: [stringful, string,
+      ] = [
         this.key,
         this.natural,
       ];

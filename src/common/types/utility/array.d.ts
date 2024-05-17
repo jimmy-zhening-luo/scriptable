@@ -30,15 +30,13 @@ declare type ArrayMin<T, Length extends number> = Length extends Length
 type BuildTuple<
   T,
   Length extends number,
-  Rest extends unknown[]
-> = Rest['length'] extends Length
+  Rest extends unknown[],
+> = Rest["length"] extends Length
   ? Rest
-  : BuildTuple<T, Length, [T, ...Rest]>;
-
-type BuildArray<
+  : BuildTuple<T, Length, [T, ...Rest]>;type BuildArray<
   T,
   Length extends number,
-  Head extends T[]
-> = Head['length'] extends Length
+  Head extends T[],
+> = Head["length"] extends Length
   ? [...Head, ...T[]]
   : BuildArray<T, Length, [...Head, T]>;
