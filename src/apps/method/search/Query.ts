@@ -57,7 +57,8 @@ class Query {
       const [
         K,
         ...terms
-      ]: Arrayful<stringful
+      ]: Arrayful<
+        stringful
       > = this.mathefy(
         this.dedot(
           this.transliterate(
