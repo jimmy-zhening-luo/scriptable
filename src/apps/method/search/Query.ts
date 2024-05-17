@@ -126,7 +126,7 @@ class Query {
     CHAT: stringful,
     TRANSLATE: stringful,
     MATH_SHORT: stringful,
-  ): [stringful, ...stringful[]] {
+  ): Arrayful<stringful> {
     try {
       const preprocessed: stringful[] = query.startsWith(" ")
         ? query.startsWith("  ")
@@ -151,7 +151,7 @@ class Query {
           `query contains 0 tokens`,
         );
       else
-        return tokenized as [stringful, ...stringful[]];
+        return tokenized as Arrayful<stringful>;
     }
     catch (e) {
       throw new EvalError(
@@ -162,9 +162,9 @@ class Query {
   }
 
   private transliterate(
-    T: [stringful, ...stringful[]],
+    T: Arrayful<stringful>,
     TRANSLATE: stringful,
-  ): [stringful, ...stringful[]] {
+  ): Arrayful<stringful> {
     try {
       const LANG_TAG: stringful = "@" as stringful;
       const T0: stringful = T[0];
@@ -212,8 +212,8 @@ class Query {
   }
 
   private dedot(
-    T: [stringful, ...stringful[]],
-  ): [stringful, ...stringful[]] {
+    T: Arrayful<stringful>,
+  ): Arrayful<stringful> {
     try {
       const T0_Dedot: Null<stringful> = T[0].endsWith(".")
         && !T[0].startsWith(".")
@@ -240,13 +240,13 @@ class Query {
   }
 
   private mathefy(
-    T: [stringful, ...stringful[]],
+    T: Arrayful<stringful>,
     CHAT: stringful,
     TRANSLATE: stringful,
     MATH_SHORT: stringful,
     MATH_LONG: stringful,
     NUMERIC: stringful[],
-  ): [stringful, ...stringful[]] {
+  ): Arrayful<stringful> {
     try {
       const M: [stringful, stringful, stringful, stringful] = [
         MATH_SHORT,
