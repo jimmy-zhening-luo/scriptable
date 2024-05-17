@@ -1,6 +1,11 @@
 abstract class IFilepath<Root extends boolean> {
   public readonly name: literalful<"IFilepath"> = "IFilepath";
-  protected readonly _parts: Array<FilepathPart["string"]>;
+  protected readonly _parts: ArrayMin<
+    FilepathPart["string"],
+    Root extends true
+      ? 1
+      : 0
+  >;
 
   constructor(
     ...subpaths: Array<

@@ -17,35 +17,25 @@ class Rootpath extends r_Filepath<true> {
 
   public pop(): FilepathPart["string"] {
     try {
-      const numPartsBefore: number = this._parts.length;
-      const popped: Null<FilepathPart["string"]> = this._parts.pop() ?? null;
-
-      if (popped === null)
+      if (this._parts.length < 2)
         throw new RangeError(
-          `Impossible: RootPath should always have at least one part`,
+          `Forbidden: pop() would cause empty root path`,
           {
             cause: {
-              popped,
               filepath: this.toString(),
-              numPartsBefore,
-              numPartsAfter: this._parts.length,
+              parts: this._parts,
+              length: this._parts.length,
+              hypotheticalPop: this._parts[0],
             },
           },
         );
-      else if (this.isEmpty)
-        throw new TypeError(
-          `popping this element results in an empty path`,
-          {
-            cause: {
-              popped,
-              filepath: this.toString(),
-              numPartsBefore,
-              numPartsAfter: this._parts.length,
-            },
-          },
-        );
-      else
+      else {
+        const popped: this._parts[0];
+
+        this._parts.pop();
+
         return popped;
+      }
     }
     catch (e) {
       throw new EvalError(
