@@ -55,7 +55,7 @@ namespace Search {
         app.key.mathLong,
         "app.mathLong",
       );
-      const q: Query = new this.Query(
+      const query: Query = new this.Query(
         input.length > 0
           ? input
           : this.read(),
@@ -68,12 +68,12 @@ namespace Search {
         .keys(
           engine,
         );
-      const keyUnaliased: Null<string> = alias[q.key] ?? null;
+      const keyUnaliased: Null<string> = alias[query.key] ?? null;
       const key: Null<string> = keys
         .includes(
-          q.key,
+          query.key,
         )
-        ? q.key
+        ? query.key
         : keyUnaliased === null
           ? null
           : keys
@@ -90,8 +90,8 @@ namespace Search {
             key,
             keyUnaliased,
             query: {
-              key: q.key,
-              terms: q.terms,
+              key: query.key,
+              terms: query.terms,
             },
           },
         },
@@ -138,10 +138,14 @@ namespace Search {
                 match.inline,
               );
 
-      this.write(q.clean);
+      this.write(
+        query.clean,
+      );
 
       return resolved
-        .parseQueryToAction(q);
+        .parseQueryToAction(
+          query,
+        );
     }
 
     private Engine<T>(
