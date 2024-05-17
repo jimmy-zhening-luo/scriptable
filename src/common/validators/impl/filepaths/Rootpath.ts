@@ -30,7 +30,7 @@ class Rootpath extends r_Filepath<true> {
           },
         );
       else {
-        const popped: this._parts[0];
+        const popped: FilepathPart["string"] = this._parts[0];
 
         this._parts.pop();
 
