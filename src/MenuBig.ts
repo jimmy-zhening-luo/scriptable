@@ -44,8 +44,9 @@ namespace MenuBig {
       const [
         big,
         small,
-      ]: [string, string,
-      ] = [
+      ]: Twople<
+        string
+      > = [
         pad,
         n > bar
           ? ""
@@ -54,8 +55,9 @@ namespace MenuBig {
       const [
         top,
         bottom,
-      ]: [string, string,
-      ] = omit === "bottom"
+      ]: Twople<
+        string
+      > = omit === "bottom"
         ? [
             big,
             small,
@@ -67,7 +69,9 @@ namespace MenuBig {
       const [
         buttons,
         invert,
-      ]: [string[], Record<string, string>,
+      ]: [
+        string[],
+        Record<string, string>,
       ] = [
         [],
         {},
