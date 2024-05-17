@@ -56,8 +56,8 @@ class Query {
     try {
       const [
         K,
-        ...terms]: [stringful, ...stringful[],
-      ] = this.mathefy(
+        ...terms
+      ]: Arrayful<stringful> = this.mathefy(
         this.dedot(
           this.transliterate(
             this.tokenize(
@@ -105,8 +105,7 @@ class Query {
       const [
         key,
         natural,
-      ]: [stringful, string,
-      ] = [
+      ]: [stringful, string] = [
         this.key,
         this.natural,
       ];
@@ -248,7 +247,7 @@ class Query {
     NUMERIC: stringful[],
   ): Arrayful<stringful> {
     try {
-      const M: [stringful, stringful, stringful, stringful] = [
+      const M: Fourple<stringful> = [
         MATH_SHORT,
         CHAT,
         TRANSLATE,
