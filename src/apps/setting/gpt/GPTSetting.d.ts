@@ -33,6 +33,6 @@ declare type GptSetting = {
   user: {
     id: Record<"token" | "org", string>;
     defaults: GptProps;
-    presets: Record<string, Optional<GptPromptFull, "user">>;
+    presets: Record<string, Unrequire<GptPromptFull, "user">>;
   };
 };
