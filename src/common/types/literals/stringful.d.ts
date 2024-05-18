@@ -1,1 +1,4 @@
-declare type stringful = Brand<"stringful", string> & { 0: stringful };
+declare type stringful =
+  & Brand<"stringful", string>
+  & Head<char>
+;

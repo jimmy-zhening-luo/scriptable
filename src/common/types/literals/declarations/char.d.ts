@@ -1,6 +1,4 @@
-declare type char = StringLength<
-  1,
-  stringful,
-  char
->
+declare type char =
+  & stringful
+  & Length<1>
 ;
