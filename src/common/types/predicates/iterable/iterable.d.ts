@@ -1,4 +1,4 @@
-declare type measurable =
+declare type iterable =
   | string
   | unknown[]
 ;
