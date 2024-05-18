@@ -103,7 +103,7 @@ abstract class IFilepath<Root extends boolean> {
 
         return partsQueue[0];
       }
-      else 
+      else
         throw new RangeError(
           `filepath unpoppable`,
           {
