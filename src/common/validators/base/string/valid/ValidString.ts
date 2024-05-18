@@ -18,7 +18,7 @@ class ValidString<
     cleanOptions: Parameters<ValidString<V, T>["clean"]>[1] = {},
   ) {
     try {
-      this.string = new this.BoundString<V>(
+      this.string = new this.BoundString<V, T>(
         min,
         max,
         this.clean(
