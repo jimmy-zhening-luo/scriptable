@@ -14,5 +14,6 @@ declare type rootpath = Joint<
 
 declare type subpath = Joint<
   filepath,
-  Part
+  Part,
+  false
 >;
