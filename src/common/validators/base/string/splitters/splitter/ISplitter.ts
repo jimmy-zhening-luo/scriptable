@@ -1,11 +1,11 @@
-abstract class ISplitter<StringType extends string> {
-  public readonly parts: StringType[];
+abstract class ISplitter<T extends string> {
+  public readonly parts: T[];
 
   constructor(
     unmerged: string | string[],
     public readonly separator: string = "",
-    splitOptions: Parameters<ISplitter<StringType>["splitAggregate"]>[2] = {},
-    aggregateOptions: Parameters<ISplitter<StringType>["splitAggregate"]>[3] = {},
+    splitOptions: Parameters<ISplitter<T>["splitAggregate"]>[2] = {},
+    aggregateOptions: Parameters<ISplitter<T>["splitAggregate"]>[3] = {},
   ) {
     try {
       this.separator = separator;
@@ -51,9 +51,9 @@ abstract class ISplitter<StringType extends string> {
   private splitAggregate(
     input: string | string[],
     separator: string,
-    splitOptions: Parameters<ISplitter<StringType>["split"]>[2] = {},
-    aggregateOptions: Parameters<ISplitter<StringType>["aggregate"]>[2] = {},
-  ): StringType[] {
+    splitOptions: Parameters<ISplitter<T>["split"]>[2] = {},
+    aggregateOptions: Parameters<ISplitter<T>["aggregate"]>[2] = {},
+  ): T[] {
     try {
       return this.aggregate(
         this.split(
@@ -74,7 +74,7 @@ abstract class ISplitter<StringType extends string> {
   }
 
   private aggregate(
-    split: StringType[],
+    split: T[],
     separator: string,
     {
       limit = Infinity,
@@ -83,7 +83,7 @@ abstract class ISplitter<StringType extends string> {
       limit?: number;
       mergeTo?: "left" | "right";
     },
-  ): StringType[] {
+  ): T[] {
     const limitful: number = !Number.isInteger(limit) || limit < 0
       ? Infinity
       : limit;
@@ -99,7 +99,7 @@ abstract class ISplitter<StringType extends string> {
                   0,
                   limitful - 1,
                 )
-                .join(separator) as StringType,
+                .join(separator) as T,
               ...split.slice(limitful - 1),
             ]
           : [
@@ -109,7 +109,7 @@ abstract class ISplitter<StringType extends string> {
               ),
               split
                 .slice(limitful - 1)
-                .join(separator) as StringType,
+                .join(separator) as T,
             ];
   }
 
@@ -123,7 +123,7 @@ abstract class ISplitter<StringType extends string> {
       trim?: boolean;
       trimParts?: boolean;
     },
-  ): StringType[] {
+  ): T[] {
     try {
       const trimmedString: string = [input]
         .flat()
@@ -159,7 +159,7 @@ abstract class ISplitter<StringType extends string> {
     }
   }
 
-  protected abstract filter(parts: string[]): StringType[];
+  protected abstract filter(parts: string[]): T[];
 }
 
 module.exports = ISplitter;
