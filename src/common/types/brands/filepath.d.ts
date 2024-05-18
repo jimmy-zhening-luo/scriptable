@@ -6,6 +6,14 @@ declare type filepath<Root extends boolean = false> = FilepathLevel<Root> & Root
   ? stringful
   : string;
 
-declare type rootpath = filepath<true>;
+declare type rootpath = Joint<
+  filepath<true>,
+  Part,
+  true
+>;
 
-declare type subpath = filepath;
+declare type subpath = Joint<
+  filepath,
+  Part,
+  false
+>;
