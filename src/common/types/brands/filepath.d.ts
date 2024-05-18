@@ -1,10 +1,4 @@
-declare const fileroot: unique symbol;
-
-type FilepathLevel<B> = { [fileroot]: B };
-
-declare type filepath<Root extends boolean = false> = FilepathLevel<
-  Root
-> & Joint<
+declare type filepath<Root extends boolean = false> = Joint<
   stringful,
   Part,
   Root
