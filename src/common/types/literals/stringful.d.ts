@@ -1,1 +1,1 @@
-declare type stringful<S extends string = string> = Brand<"stringful", S>;
+declare type stringful = Brand<"stringful", string>;
