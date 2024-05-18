@@ -377,7 +377,7 @@ class CharSet {
     }
   }
 
-  public allows(c: char): c is ValidChar {
+  public allows(c: char): c is validchar {
     try {
       if (this.chars.includes(c) !== this.negate)
         return true;

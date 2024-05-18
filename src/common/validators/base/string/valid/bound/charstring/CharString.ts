@@ -1,21 +1,27 @@
 class CharString<
-  Brand extends string,
-  StringLiteral extends string = string,
+  V extends string = "CharString",
+  T extends string = string
 > {
   public readonly charset: CharSet;
-  public readonly string: StringLiteral & CString<Brand>;
+  public readonly string: validstring<
+    `CharString:${V}`,
+    T
+  >;
 
   constructor(
     input: string = "",
     ...charsets: ConstructorParameters<typeof CharSet>
   ) {
     try {
-      this.charset = new this
-        .CharSet(...charsets);
+      this.charset = new this.CharSet(
+        ...charsets,
+      );
 
-      if (!this.validate(input))
+      if (this.validate(input))
+        this.string = input;
+      else
         throw new TypeError(
-          `Unqualified string: ${input}`,
+          `Invalid string`,
           {
             cause: {
               input,
@@ -24,8 +30,6 @@ class CharString<
             },
           },
         );
-      else
-        this.string = input;
     }
     catch (e) {
       throw new EvalError(
@@ -49,7 +53,7 @@ class CharString<
     }
   }
 
-  public toString(): string {
+  public toString(): CharString<V, T>["string"] {
     try {
       return this.string;
     }
@@ -63,14 +67,14 @@ class CharString<
 
   private validate(
     input: string,
-  ): input is StringLiteral & CString<Brand> {
+  ): input is CharString<V, T>["string"] {
     try {
-      if (input.length === 0)
+      if (input.length < 1)
         return true;
       else if (
         ([...input] as char[])
           .every(
-            (c: char): boolean =>
+            (c: char): c is validchar =>
               this.charset.allows(c),
           )
       )

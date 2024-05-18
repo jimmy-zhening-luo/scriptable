@@ -1,26 +1,24 @@
-class ValidString<Brand extends string> {
-  public readonly string: CharStringful<Brand>["string"];
+class ValidString<
+  V extends string = "Valid",
+  T extends stringful = stringful
+> {
+  public readonly string: BoundString<
+    `Valid:${V}`,
+    T
+  >["string"];
 
   constructor(
     input: string,
-    {
-      min = 1,
-      max = Infinity,
-      negate = false,
-      chars = [],
-    }: {
-      min?: number;
-      max?: number;
-      negate?: boolean;
-      chars?: Array<
-        ConstructorParameters<typeof CharSet>[1]
-      >;
-    } = {},
-    cleanOptions: Parameters<ValidString<Brand>["clean"]>[1] = {},
+    chars: Array<
+      ConstructorParameters<typeof CharSet>[1]
+    >,
+    min: number,
+    max: number = Infinity,
+    negate: boolean = false,
+    cleanOptions: Parameters<ValidString<V, T>["clean"]>[1] = {},
   ) {
     try {
-      this.string = new this
-        .CharStringful<Brand>(
+      this.string = new this.BoundString<V>(
         min,
         max,
         this.clean(
@@ -42,7 +40,7 @@ class ValidString<Brand extends string> {
   public static get CharSet(): typeof CharSet {
     try {
       return importModule(
-        "charstrings/charstring/charset/CharSet",
+        "bound/charstring/charset/CharSet",
       ) as typeof CharSet;
     }
     catch (e) {
@@ -53,21 +51,21 @@ class ValidString<Brand extends string> {
     }
   }
 
-  private get CharStringful(): typeof CharStringful {
+  private get BoundString(): typeof BoundString {
     try {
       return importModule(
-        "charstrings/CharStringful",
-      ) as typeof CharStringful;
+        "bound/BoundString",
+      ) as typeof BoundString;
     }
     catch (e) {
       throw new ReferenceError(
-        `ValidString: import CharStringful`,
+        `ValidString: import BoundString`,
         { cause: e },
       );
     }
   }
 
-  public toString(): ValidString<Brand>["string"] {
+  public toString(): ValidString<V, T>["string"] {
     try {
       return this.string;
     }

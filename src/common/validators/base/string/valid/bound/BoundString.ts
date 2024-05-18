@@ -2,9 +2,12 @@ const f_CharString: typeof CharString = importModule(
   "charstring/CharString",
 ) as typeof CharString;
 
-class CharStringful<Brand extends string> extends f_CharString<
-  Brand,
-  stringful
+class BoundString<
+  V extends string = "Bound",
+  T extends stringful = stringful
+> extends f_CharString<
+  `Bound:${V}`,
+  T
 > {
   public readonly min: posint;
   public readonly max: posinfinint;
@@ -17,11 +20,11 @@ class CharStringful<Brand extends string> extends f_CharString<
     >
   ) {
     try {
-      const minInt: posint = CharStringful.posint(
+      const minInt: posint = BoundString.posint(
         min,
         "min",
       );
-      const maxInt: posinfinint = CharStringful.posinfinint(
+      const maxInt: posinfinint = BoundString.posinfinint(
         max,
         "max",
       );
@@ -86,7 +89,7 @@ class CharStringful<Brand extends string> extends f_CharString<
     }
     catch (e) {
       throw new EvalError(
-        `CharStringful: ctor: { min: ${min}, max: ${max} }`,
+        `BoundString: ctor: { min: ${min}, max: ${max} }`,
         { cause: e },
       );
     }
@@ -121,4 +124,4 @@ class CharStringful<Brand extends string> extends f_CharString<
   }
 }
 
-module.exports = CharStringful;
+module.exports = BoundString;
