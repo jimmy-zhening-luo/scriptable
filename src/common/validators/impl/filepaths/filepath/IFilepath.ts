@@ -95,7 +95,7 @@ abstract class IFilepath<Root extends boolean> {
 
   public pop(): Part {
     try {
-      const partsQueue: Parts[] = [...this._parts]
+      const partsQueue: Part[] = [...this._parts]
         .reverse();
 
       if (this.poppable(partsQueue)) {
