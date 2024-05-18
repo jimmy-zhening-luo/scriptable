@@ -181,10 +181,10 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public toString(): filestring<Root> {
+  public toString(): filepath<Root> {
     try {
       return [...this._parts]
-        .join("/") as filestring<Root>;
+        .join("/") as filepath<Root>;
     }
     catch (e) {
       throw new EvalError(
