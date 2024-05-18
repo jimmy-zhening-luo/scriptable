@@ -5,7 +5,7 @@ declare type Keys<O> = Extract<
 
 declare type Unrequire<
   O,
-  K extends keyof O,
+  K extends Keys<O>,
 > =
   & Omit<O, K>
   & Pick<Partial<O>, K>

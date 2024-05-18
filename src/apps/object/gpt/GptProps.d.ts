@@ -1,14 +1,14 @@
 declare type GptProps =
   & Record<
-    keyof GptSetting["app"]["tags"],
+    Keys<GptSetting["app"]["tags"]>,
     string
   >
   & Record<
     "model",
-    keyof GptSetting["app"]["models"]
+    Keys<GptSetting["app"]["models"]>
   >
   & Record<
-    keyof GptSetting["app"]["limit"],
+    Keys<GptSetting["app"]["limit"]>,
     number
   >
 ;
