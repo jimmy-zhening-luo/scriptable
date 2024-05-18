@@ -4,11 +4,11 @@ const f_CharString: typeof CharString = importModule(
 
 class BoundString<
   V extends string = "Bound",
-  T extends stringful = stringful
+  T extends stringful = stringful,
 > extends f_CharString<
   `Bound:${V}`,
-  T
-> {
+    T
+  > {
   public readonly min: posint;
   public readonly max: posinfinint;
 

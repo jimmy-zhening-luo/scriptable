@@ -1,6 +1,6 @@
 class ValidString<
   V extends string = "Valid",
-  T extends stringful = stringful
+  T extends stringful = stringful,
 > {
   public readonly string: BoundString<
     `Valid:${V}`,

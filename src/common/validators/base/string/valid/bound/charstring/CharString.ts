@@ -1,6 +1,6 @@
 class CharString<
   V extends string = "CharString",
-  T extends string = string
+  T extends string = string,
 > {
   public readonly charset: CharSet;
   public readonly string: validstring<
