@@ -19,7 +19,7 @@ abstract class IFile {
     >
   ) {
     try {
-      this._root = (
+      this._root =
         typeof root === "string"
         || Array.isArray(root)
         || typeof root === "object"
@@ -31,12 +31,11 @@ abstract class IFile {
             .toString()
           : "file" in root && "rootOnly" in root
             ? root.file[
-                root.rootOnly
-                  ? "_root"
-                  : "path"
-              ]
-            : root.path
-      );
+              root.rootOnly
+                ? "_root"
+                : "path"
+            ]
+            : root.path;
       this._subpath = new this.Subpath(
         ...subpaths,
       );

@@ -220,10 +220,10 @@ abstract class IFilepath<Root extends boolean> {
             typeof subpath !== "string" && !Array.isArray(subpath)
               ? subpath._parts
               : new this.Splitterful(
-                  subpath,
-                  "/",
-                  { trimParts: true },
-                )
+                subpath,
+                "/",
+                { trimParts: true },
+              )
                 .parts
                 .map(
                   (part: stringful): Part =>
