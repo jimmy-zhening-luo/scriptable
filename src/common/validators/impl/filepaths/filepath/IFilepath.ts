@@ -1,10 +1,10 @@
-abstract class IFilepath<Root extends boolean = false> {
+abstract class IFilepath<Root extends boolean> {
   protected readonly _parts: Root extends true
     ? Arrayful<Part>
     : Part[];
 
   constructor(
-    ...subpaths: Parameters<IFilepath["compose"]>
+    ...subpaths: Parameters<IFilepath<Root>["compose"]>
   ) {
     try {
       this._parts = this.check(
@@ -135,7 +135,7 @@ abstract class IFilepath<Root extends boolean = false> {
   }
 
   public append(
-    ...subpaths: Parameters<IFilepath["compose"]>
+    ...subpaths: Parameters<IFilepath<Root>["compose"]>
   ): this {
     try {
       return new (this.constructor as new (
@@ -170,7 +170,7 @@ abstract class IFilepath<Root extends boolean = false> {
   }
 
   public cd(
-    ...relPaths: Parameters<IFilepath["compose"]>
+    ...relPaths: Parameters<IFilepath<Root>["compose"]>
   ): this {
     try {
       const rel: Part[] = this.compose(
@@ -210,13 +210,13 @@ abstract class IFilepath<Root extends boolean = false> {
     ...subpaths: Array<
       | string
       | string[]
-      | IFilepath
+      | IFilepath<boolean>
     >
   ): Part[] {
     try {
       return subpaths
         .map(
-          (subpath: string | string[] | IFilepath): Part[] =>
+          (subpath: string | string[] | IFilepath<boolean>): Part[] =>
             typeof subpath !== "string" && !Array.isArray(subpath)
               ? subpath._parts
               : new this.Splitterful(

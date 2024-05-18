@@ -2,7 +2,7 @@ const s_Filepath: typeof IFilepath = importModule(
   "filepath/IFilepath",
 ) as typeof IFilepath;
 
-class Subpath extends s_Filepath {
+class Subpath extends s_Filepath<false> {
   protected check(
     parts: Part[],
   ): Part[] {
