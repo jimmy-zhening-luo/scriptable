@@ -28,24 +28,13 @@ class Rootpath extends r_Filepath<true> {
     }
   }
 
-  protected popLeaf(partsQueue: Arrayful<Part>): Part {
+  protected poppable(parts: Part[]): parts is Arrayful<Part> {
     try {
-      if (partsQueue.length > 1)
-        return partsQueue[0];
-      else
-        throw new RangeError(
-          `root path has 1 part left, pop blocked`,
-          {
-            cause: {
-              parts: this._parts,
-              length: this._parts.length,
-            },
-          },
-        );
+      return parts.length > 1;
     }
     catch (e) {
       throw new EvalError(
-        `Rootpath: popLeaf`,
+        `Rootpath: poppable`,
         { cause: e },
       );
     }

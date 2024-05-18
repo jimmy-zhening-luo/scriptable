@@ -95,9 +95,17 @@ abstract class IFilepath<Root extends boolean> {
 
   public pop(): Part {
     try {
-      if (this._parts.length < 1)
+      const partsQueue: Parts[] = [...this._parts]
+        .reverse();
+
+      if (this.poppable(partsQueue)) {
+        this._parts.pop();
+
+        return partsQueue[0];
+      }
+      else 
         throw new RangeError(
-          `path has 0 parts`,
+          `filepath unpoppable`,
           {
             cause: {
               parts: this._parts,
@@ -105,20 +113,10 @@ abstract class IFilepath<Root extends boolean> {
             },
           },
         );
-      else {
-        const partsQueue = [...this._parts];
-
-        partsQueue.reverse();
-        this._parts.pop();
-
-        return this.popLeaf(
-          partsQueue,
-        );
-      }
     }
     catch (e) {
       throw new EvalError(
-        `Rootpath: pop`,
+        `IFilepath: pop`,
         { cause: e },
       );
     }
@@ -234,7 +232,7 @@ abstract class IFilepath<Root extends boolean> {
 
   protected abstract check(parts: Part[]): IFilepath<Root>["_parts"];
 
-  protected abstract popLeaf(partsQueue: Arrayful<Part>): Part;
+  protected abstract poppable(parts: Part[]): parts is Arrayful<Part>;
 }
 
 module.exports = IFilepath;

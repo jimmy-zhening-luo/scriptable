@@ -17,13 +17,13 @@ class Subpath extends s_Filepath<false> {
     }
   }
 
-  protected popLeaf(partsQueue: Arrayful<Part>): Part {
+  protected poppable(parts: Part[]): parts is Arrayful<Part> {
     try {
-      return partsQueue[0];
+      return parts.length > 0;
     }
     catch (e) {
       throw new EvalError(
-        `Subpath: popLeaf`,
+        `Subpath: poppable`,
         { cause: e },
       );
     }
