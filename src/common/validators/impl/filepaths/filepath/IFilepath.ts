@@ -29,7 +29,7 @@ abstract class IFilepath<Root extends boolean = false> {
       throw new EvalError(
         `IFilepath: parts`,
         { cause: e },
-      po@);
+      );
     }
   }
 
