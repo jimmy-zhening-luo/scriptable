@@ -1,4 +1,4 @@
 declare type stringful =
   & Brand<"stringful", string>
-  & Head<stringful>
+  & Head<string & Length<1> & Brand<"stringful", string>>
 ;
