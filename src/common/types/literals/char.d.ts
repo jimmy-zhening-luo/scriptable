@@ -1,1 +1,1 @@
-declare type char = Brand<"char">;
+declare type char = Lengthy<1, stringful>;
