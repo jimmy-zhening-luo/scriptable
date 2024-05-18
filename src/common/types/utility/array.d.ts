@@ -15,18 +15,18 @@ declare type Array3<T> = ArrayMin<T, 3>;
 declare type Array4<T> = ArrayMin<T, 4>;
 declare type Array5<T> = ArrayMin<T, 5>;
 
-declare type Tuple<T, Length extends number> = { 0: T, length: Length } & T[];
+declare type Tuple<T, L extends number> = { 0: T, length: L } & T[];
 
-declare type ArrayMin<T, Length extends number> = Length extends Length
-  ? number extends Length
+declare type ArrayMin<T, L extends number> = L extends L
+  ? number extends L
     ? never
-    : BuildArray<T, Length, []>
+    : BuildArray<T, L, []>
   : never;
 
 type BuildArray<
   T,
-  Length extends number,
+  L extends number,
   Head extends T[],
-> = Head["length"] extends Length
+> = Head["length"] extends L
   ? [...Head, ...T[]]
-  : BuildArray<T, Length, [...Head, T]>;
+  : BuildArray<T, L, [...Head, T]>;
