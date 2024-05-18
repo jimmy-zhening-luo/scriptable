@@ -3,43 +3,38 @@ const r_Filepath: typeof IFilepath = importModule(
 ) as typeof IFilepath;
 
 class Rootpath extends r_Filepath<true> {
-  public isOk(): boolean {
+  protected check(
+    parts: Part[],
+  ): Arrayful<Part> {
     try {
-      return !this.isEmpty;
+      if (parts.length < 1)
+        throw new RangeError(
+          `root path constructed with 0 parts`,
+          {
+            cause: {
+              parts,
+              length: parts.length,
+            },
+          },
+        );
+      else
+        return parts;
     }
     catch (e) {
       throw new EvalError(
-        `Rootpath: isOk`,
+        `Rootpath: check`,
         { cause: e },
       );
     }
   }
 
-  public pop(): FilepathPart["string"] {
+  protected popRoot(): false {
     try {
-      if (this._parts.length < 2)
-        throw new RangeError(
-          `Forbidden: pop() would cause empty root path`,
-          {
-            cause: {
-              filepath: this.toString(),
-              parts: this._parts,
-              length: this._parts.length,
-              hypotheticalPop: this._parts[0],
-            },
-          },
-        );
-      else {
-        const popped: FilepathPart["string"] = this._parts[0];
-
-        this._parts.pop();
-
-        return popped;
-      }
+      return false;
     }
     catch (e) {
       throw new EvalError(
-        `Rootpath: pop`,
+        `Rootpath: popRoot`,
         { cause: e },
       );
     }

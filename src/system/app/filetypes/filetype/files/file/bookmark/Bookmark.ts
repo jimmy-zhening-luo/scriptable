@@ -55,22 +55,6 @@ class Bookmark {
     }
   }
 
-  public static [Symbol.hasInstance](instance: unknown): boolean {
-    try {
-      return (
-        instance !== null
-        && typeof instance === "object"
-        && (instance as { name: string }).name === "Bookmark"
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `Bookmark: [Symbol.hasInstance]`,
-        { cause: e },
-      );
-    }
-  }
-
   public toString(): string {
     try {
       return this.path;

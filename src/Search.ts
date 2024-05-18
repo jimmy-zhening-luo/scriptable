@@ -82,25 +82,10 @@ namespace Search {
             )
             ? keyUnaliased
             : null;
-      const cause = {
-        cause: {
-          input,
-          cache: this.read(),
-          parsed: {
-            key,
-            keyUnaliased,
-            query: {
-              key: query.key,
-              terms: query.terms,
-            },
-          },
-        },
-      };
 
       if (key === null)
         throw new ReferenceError(
           `Key is neither primary nor alias`,
-          { cause },
         );
 
       const match: Null<
@@ -110,7 +95,6 @@ namespace Search {
       if (match === null)
         throw new ReferenceError(
           `Unexpected: Key is primary or alias, but engine[key] is null`,
-          { cause },
         );
 
       const resolved: IEngine = typeof match === "string" || Array.isArray(match)

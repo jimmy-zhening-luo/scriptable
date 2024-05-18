@@ -1,27 +1,17 @@
-abstract class IFilepath<Root extends boolean> {
-  public readonly name: literalful<"IFilepath"> = "IFilepath";
-  protected readonly _parts: ArrayMin<
-    FilepathPart["string"],
-    Root extends true
-      ? 1
-      : 0
-  >;
+abstract class IFilepath<Root extends boolean = false> {
+  protected readonly _parts: Root extends true
+    ? Arrayful<Part>
+    : Part[];
 
   constructor(
-    ...subpaths: Array<
-      | string
-      | string[]
-      | IFilepath<boolean>
-    >
+    ...subpaths: Parameters<IFilepath["compose"]>
   ) {
     try {
-      this._parts = [...this.cleanValidateParts(...subpaths)];
-
-      if (!this.isOk())
-        throw new TypeError(
-          `Invalid IFilepath`,
-          { cause: { filepath: this.toString() } },
-        );
+      this._parts = this.check(
+        this.compose(
+          ...subpaths,
+        ),
+      );
     }
     catch (e) {
       throw new EvalError(
@@ -39,7 +29,7 @@ abstract class IFilepath<Root extends boolean> {
       throw new EvalError(
         `IFilepath: parts`,
         { cause: e },
-      );
+      po@);
     }
   }
 
@@ -65,7 +55,7 @@ abstract class IFilepath<Root extends boolean> {
 
   public get isEmpty(): boolean {
     try {
-      return this._parts.length === 0;
+      return this._parts.length < 1;
     }
     catch (e) {
       throw new EvalError(
@@ -103,23 +93,50 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public static [Symbol.hasInstance](instance: unknown): boolean {
+  public pop(): Part {
     try {
-      return (
-        instance !== null
-        && typeof instance === "object"
-        && (instance as { name: string }).name === "IFilepath"
-      );
+      if (this._parts.length < 1)
+        throw new RangeError(
+          `path has 0 parts`,
+          {
+            cause: {
+              parts: this._parts,
+              length: this._parts.length,
+              hypotheticalPop: this._parts.pop(),
+            },
+          },
+        );
+      else if (this._parts.length < 2 && !this.popRoot)
+        throw new RangeError(
+          `root path has 1 part left, pop blocked`,
+          {
+            cause: {
+              parts: this._parts,
+              length: this._parts.length,
+              hypotheticalPop: this._parts.pop(),
+            },
+          },
+        );
+      else {
+        const partsQueue = [...this._parts];
+
+        this._parts.pop();
+        partsQueue.reverse();
+
+        return partsQueue[0];
+      }
     }
     catch (e) {
       throw new EvalError(
-        `IFilepath: [Symbol.hasInstance]`,
+        `Rootpath: pop`,
         { cause: e },
       );
     }
   }
 
-  public append(...subpaths: ConstructorParameters<typeof IFilepath>): this {
+  public append(
+    ...subpaths: Parameters<IFilepath["compose"]>
+  ): this {
     try {
       return new (this.constructor as new (
         ...args: ConstructorParameters<typeof IFilepath>
@@ -136,7 +153,9 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public prepend(root: FString<true>): FString<true> {
+  public prepend(
+    root: FString<true>,
+  ): FString<true> {
     try {
       return this.isEmpty
         ? root
@@ -150,9 +169,13 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public cd(...relPaths: ConstructorParameters<typeof IFilepath>): this {
+  public cd(
+    ...relPaths: Parameters<IFilepath["compose"]>
+  ): this {
     try {
-      const rel: IFilepath<boolean>["_parts"] = this.cleanValidateParts(...relPaths);
+      const rel: Part[] = this.compose(
+        ...relPaths,
+      );
 
       for (const node of rel)
         if (node === "..")
@@ -172,7 +195,8 @@ abstract class IFilepath<Root extends boolean> {
 
   public toString(): FString<Root> {
     try {
-      return this._parts.join("/") as FString<Root>;
+      return [...this._parts]
+        .join("/") as FString<Root>;
     }
     catch (e) {
       throw new EvalError(
@@ -182,77 +206,45 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  private cleanValidateParts(
-    ...subpaths: ConstructorParameters<typeof IFilepath>
-  ): ReturnType<IFilepath<false>["validateParts"]> {
+  private compose(
+    ...subpaths: Array<
+      | string
+      | string[]
+      | IFilepath
+    >
+  ): Part[] {
     try {
-      const _tree: Array<FilepathPart["string"]> = [];
-
-      while (subpaths.length > 0) {
-        const head: Null<ConstructorParameters<typeof IFilepath>[0]> = subpaths.shift() ?? null;
-
-        if (head !== null)
-          _tree.push(
-            ...head instanceof IFilepath
-              ? head._parts
-              : this.validateParts(
-                ...this.cleanSplit(
-                  head,
-                ),
-              ),
-          );
-      }
-
-      return [..._tree];
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: cleanValidate`,
-        { cause: e },
-      );
-    }
-  }
-
-  private cleanSplit(
-    subpath: string | string[],
-  ): stringful[] {
-    try {
-      return new this
-        .Splitterful(
-          subpath,
-          "/",
-          { trimParts: true },
-        )
-        .parts;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: clean`,
-        { cause: e },
-      );
-    }
-  }
-
-  private validateParts(...parts: stringful[]): IFilepath<boolean>["_parts"] {
-    try {
-      return parts
+      return subpaths
         .map(
-          (part: stringful): FilepathPart["string"] =>
-            new this
-              .FilepathPart(part)
-              .string,
-        );
+          (subpath: string | string[] | IFilepath): Part[] =>
+            typeof subpath !== "string" && !Array.isArray(subpath)
+              ? subpath._parts
+              : new this.Splitterful(
+                  subpath,
+                  "/",
+                  { trimParts: true },
+                )
+                .parts
+                .map(
+                  (part: stringful): Part =>
+                    new this
+                      .FilepathPart(part)
+                      .string,
+                ),
+        )
+        .flat();
     }
     catch (e) {
       throw new EvalError(
-        `IFilepath: validate`,
+        `IFilepath: compose`,
         { cause: e },
       );
     }
   }
 
-  public abstract pop(): Root extends true ? FilepathPart["string"] : string;
-  protected abstract isOk(): Root extends true ? boolean : true;
+  protected abstract check(parts: Part[]): IFilepath<Root>["_parts"];
+
+  protected abstract popRoot(): Root extends true ? false : true;
 }
 
 module.exports = IFilepath;

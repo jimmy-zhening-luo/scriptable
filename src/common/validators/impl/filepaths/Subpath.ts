@@ -2,26 +2,28 @@ const s_Filepath: typeof IFilepath = importModule(
   "filepath/IFilepath",
 ) as typeof IFilepath;
 
-class Subpath extends s_Filepath<false> {
-  public isOk(): true {
+class Subpath extends s_Filepath {
+  protected check(
+    parts: Part[],
+  ): Part[] {
     try {
-      return true;
+      return parts;
     }
     catch (e) {
       throw new EvalError(
-        `Subpath: isOk`,
+        `Subpath: check`,
         { cause: e },
       );
     }
   }
 
-  public pop(): string {
+  protected popRoot(): true {
     try {
-      return this._parts.pop() ?? "";
+      return true;
     }
     catch (e) {
       throw new EvalError(
-        `Subpath: pop`,
+        `Subpath: popRoot`,
         { cause: e },
       );
     }

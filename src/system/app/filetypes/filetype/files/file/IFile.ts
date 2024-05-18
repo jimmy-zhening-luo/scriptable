@@ -6,24 +6,40 @@ abstract class IFile {
 
   constructor(
     root:
-      | IFile
       | { file: IFile; rootOnly: boolean }
+      | IFile
       | Bookmark
-      | ConstructorParameters<typeof IFilepath>[0],
-    ...subpaths: ConstructorParameters<typeof IFilepath>
+      | string
+      | string[]
+      | IFilepath,
+    ...subpaths: Array<
+      | string
+      | string[]
+      | IFilepath
+    >
   ) {
     try {
-      this._root = root instanceof IFile || root instanceof this.Bookmark
-        ? root.path
-        : typeof root === "object" && "file" in root && "rootOnly" in root
-          ? root.rootOnly
-            ? root.file._root
-            : root.file.path
-          : new this
-            .Rootpath(root)
-            .toString();
-      this._subpath = new this
-        .Subpath(...subpaths);
+      this._root = (
+        typeof root === "string"
+        || Array.isArray(root)
+        || typeof root === "object"
+        && "parts" in root
+          ? new this
+            .Rootpath(
+              root,
+            )
+            .toString()
+          : "file" in root && "rootOnly" in root
+            ? root.file[
+                root.rootOnly
+                  ? "_root"
+                  : "path"
+              ]
+            : root.path
+      );
+      this._subpath = new this.Subpath(
+        ...subpaths,
+      );
     }
     catch (e) {
       throw new EvalError(
@@ -263,22 +279,6 @@ abstract class IFile {
     catch (e) {
       throw new EvalError(
         `IFile: subpath`,
-        { cause: e },
-      );
-    }
-  }
-
-  public static [Symbol.hasInstance](instance: unknown): boolean {
-    try {
-      return (
-        instance !== null
-        && typeof instance === "object"
-        && (instance as { name: string }).name === "IFile"
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFile: [Symbol.hasInstance]`,
         { cause: e },
       );
     }
