@@ -242,10 +242,10 @@ abstract class App<
 
   protected abstract get getInput(): App<Class, I>["input"];
 
-  public run(): NotUndefined<O> {
+  public run(): NonUndefined<O> {
     try {
       try {
-        const _output: NotUndefined<O> = this.runtime();
+        const _output: NonUndefined<O> = this.runtime();
 
         if (this.debug) {
           const t1: number = Date.now();
