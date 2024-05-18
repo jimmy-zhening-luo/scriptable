@@ -1,5 +1,5 @@
 abstract class IUrlComponent<
-  UC extends string
+  UC extends string,
 > {
   protected readonly validator: ValidString<UC>;
 
