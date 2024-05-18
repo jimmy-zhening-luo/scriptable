@@ -6,4 +6,4 @@ declare type literalful<S extends string> = literal<S> extends ""
   ? never
   : literal<S>;
 
-declare type stringlen<N extends number> = { 0: string, length: N } & string;
+declare type stringlen<N extends number> = { 0: string; length: N } & string;
