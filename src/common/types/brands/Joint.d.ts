@@ -3,8 +3,9 @@ declare const joined: unique symbol;
 type Joined<A> = { [joined]: A };
 
 declare type Joint<
-  S extends stringful,
+  Outer extends stringful,
+  Inner extends stringful,
   Full extends boolean
 > = Full extends true
-  ? Joined<Arrayful<S>>
-  : Joined<S[]>;
+  ? Outer & Joined<Arrayful<Inner>>
+  : string & Joined<Inner[]>;
