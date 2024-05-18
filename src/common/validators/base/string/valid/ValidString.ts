@@ -15,10 +15,10 @@ class ValidString<
     min: number,
     max: number = Infinity,
     negate: boolean = false,
-    cleanOptions: Parameters<ValidString<V, T>["clean"]>[1] = {},
+    cleanOptions: Parameters<ValidString<string, T>["clean"]>[1] = {},
   ) {
     try {
-      this.string = new this.BoundString<V, T>(
+      this.string = new this.BoundString<`Valid:${V}`, T>(
         min,
         max,
         this.clean(
