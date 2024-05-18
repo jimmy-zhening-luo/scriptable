@@ -15,7 +15,7 @@ declare type Array3<T> = ArrayMin<T, 3>;
 declare type Array4<T> = ArrayMin<T, 4>;
 declare type Array5<T> = ArrayMin<T, 5>;
 
-declare type Tuple<T, L extends number> = { 0: T, length: L } & T[];
+declare type Tuple<T, L extends number> = { 0: T; length: L } & T[];
 
 declare type ArrayMin<T, L extends number> = L extends L
   ? number extends L
