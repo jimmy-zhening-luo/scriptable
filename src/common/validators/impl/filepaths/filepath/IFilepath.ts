@@ -105,7 +105,6 @@ abstract class IFilepath<Root extends boolean> {
             },
           },
         );
-      else if (this._parts.length < 2 && !this.popLeaf)
       else {
         const partsQueue = [...this._parts];
 
