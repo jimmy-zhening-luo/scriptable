@@ -102,28 +102,19 @@ abstract class IFilepath<Root extends boolean> {
             cause: {
               parts: this._parts,
               length: this._parts.length,
-              hypotheticalPop: this._parts.pop(),
             },
           },
         );
-      else if (this._parts.length < 2 && !this.popRoot)
-        throw new RangeError(
-          `root path has 1 part left, pop blocked`,
-          {
-            cause: {
-              parts: this._parts,
-              length: this._parts.length,
-              hypotheticalPop: this._parts.pop(),
-            },
-          },
-        );
+      else if (this._parts.length < 2 && !this.popLeaf)
       else {
         const partsQueue = [...this._parts];
 
-        this._parts.pop();
         partsQueue.reverse();
+        this._parts.pop();
 
-        return partsQueue[0];
+        return this.popLeaf(
+          partsQueue,
+        );
       }
     }
     catch (e) {
@@ -244,7 +235,7 @@ abstract class IFilepath<Root extends boolean> {
 
   protected abstract check(parts: Part[]): IFilepath<Root>["_parts"];
 
-  protected abstract popRoot(): Root extends true ? false : true;
+  protected abstract popLeaf(partsQueue: Arrayful<Part>): Part;
 }
 
 module.exports = IFilepath;

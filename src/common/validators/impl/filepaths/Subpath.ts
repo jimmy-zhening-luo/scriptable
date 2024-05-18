@@ -17,13 +17,13 @@ class Subpath extends s_Filepath<false> {
     }
   }
 
-  protected popRoot(): true {
+  protected popLeaf(partsQueue: Arrayful<Part>): Part {
     try {
-      return true;
+      return partsQueue[0];
     }
     catch (e) {
       throw new EvalError(
-        `Subpath: popRoot`,
+        `Subpath: popLeaf`,
         { cause: e },
       );
     }
