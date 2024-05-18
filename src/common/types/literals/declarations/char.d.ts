@@ -1,1 +1,6 @@
-declare type char = Lengthy<1, stringful>;
+declare type char = StringLength<
+  1,
+  stringful,
+  char
+>
+;
