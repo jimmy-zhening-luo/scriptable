@@ -18,7 +18,7 @@ class Rootpath extends r_Filepath<true> {
           },
         );
       else
-        return parts;
+        return parts as Arrayful<Part>;
     }
     catch (e) {
       throw new EvalError(
