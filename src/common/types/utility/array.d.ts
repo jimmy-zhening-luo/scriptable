@@ -20,12 +20,7 @@ declare type Tuple<T, L extends number> = T[] & {
   length: L;
 };
 
-declare type ArrayMin<T, L extends number> = [
-  ...Tuple<T, L>,
-  ...T[]
-];
-
-declare type XArrayMin<T, L extends number> = L extends L
+declare type ArrayMin<T, L extends number> = L extends L
   ? number extends L
     ? never
     : BuildArray<T, L, []>
