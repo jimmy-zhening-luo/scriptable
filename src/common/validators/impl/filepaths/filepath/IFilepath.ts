@@ -142,12 +142,12 @@ abstract class IFilepath<Root extends boolean> {
   }
 
   public prepend(
-    root: FString<true>,
-  ): FString<true> {
+    root: rootpath,
+  ): rootpath {
     try {
       return this.isEmpty
         ? root
-        : `${root}/${this.toString()}` as FString<true>;
+        : `${root}/${this.toString()}` as rootpath;
     }
     catch (e) {
       throw new EvalError(
@@ -181,10 +181,10 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public toString(): FString<Root> {
+  public toString(): filestring<Root> {
     try {
       return [...this._parts]
-        .join("/") as FString<Root>;
+        .join("/") as filestring<Root>;
     }
     catch (e) {
       throw new EvalError(

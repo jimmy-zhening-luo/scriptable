@@ -21,10 +21,10 @@ class Bookmark {
             { cause: { alias: this.alias } },
           );
         else
-          this.path = this.stringful<ReturnType<Rootpath["toString"]>>(
+          this.path = this.stringful<rootpath>(
             FileManager
               .iCloud()
-              .bookmarkedPath(this.alias) as FString<true>,
+              .bookmarkedPath(this.alias) as rootpath,
             `bookmark exists, but resolves to empty path`,
           );
       }
