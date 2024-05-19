@@ -8,7 +8,7 @@ function Stringful<S extends string>(
 ): S & stringful {
   return s_Primitiveful(
     (s: S): s is S & stringful =>
-      string.length > 0,
+      s.length > 0,
     s,
     `stringful: string is empty`,
     context,
