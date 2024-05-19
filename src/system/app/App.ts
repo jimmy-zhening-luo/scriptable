@@ -187,7 +187,7 @@ abstract class App<
   protected get Timestamp(): typeof Timestamp {
     try {
       return importModule(
-        "./common/format/time/Timestamp",
+        "./common/formats/time/Timestamp",
       ) as typeof Timestamp;
     }
     catch (e) {
