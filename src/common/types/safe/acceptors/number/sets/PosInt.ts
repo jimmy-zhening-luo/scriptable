@@ -7,7 +7,7 @@ function PosInt(
   context?: string,
 ): posint {
   return pint_Primitiveful(
-    (number: number): number is posint =>
+    (number: number): number is number & posint =>
       Number.isInteger(number) && number > 0,
     number,
     `posint: number is not a finite, positive integer`,
