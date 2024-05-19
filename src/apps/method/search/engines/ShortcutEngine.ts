@@ -15,7 +15,7 @@ class ShortcutEngine extends s_IEngine {
 
       if (shortcut.length < 1)
         throw new SyntaxError(
-          `shortcut engine has empty shortcut name`,
+          `shortcut engine has no name`,
         );
       else {
         this.shortcut = shortcut as stringful;
