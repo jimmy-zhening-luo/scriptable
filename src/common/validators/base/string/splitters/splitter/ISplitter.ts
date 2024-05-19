@@ -1,5 +1,5 @@
 abstract class ISplitter<T extends string> {
-  public readonly parts: T[];
+  public readonly segments: T[];
 
   constructor(
     unmerged: string | string[],
@@ -9,7 +9,7 @@ abstract class ISplitter<T extends string> {
   ) {
     try {
       this.separator = separator;
-      this.parts = this.splitAggregate(
+      this.segments = this.splitAggregate(
         unmerged,
         separator,
         splitOptions,
@@ -26,7 +26,7 @@ abstract class ISplitter<T extends string> {
 
   public get length(): number {
     try {
-      return this.parts.length;
+      return this.segments.length;
     }
     catch (e) {
       throw new EvalError(
@@ -38,7 +38,7 @@ abstract class ISplitter<T extends string> {
 
   public toString(): string {
     try {
-      return this.parts.join(this.separator);
+      return this.segments.join(this.separator);
     }
     catch (e) {
       throw new EvalError(
@@ -118,10 +118,10 @@ abstract class ISplitter<T extends string> {
     separator: string,
     {
       trim = true,
-      trimParts = false,
+      trimSegment = false,
     }: {
       trim?: boolean;
-      trimParts?: boolean;
+      trimSegment?: boolean;
     },
   ): T[] {
     try {
@@ -144,10 +144,10 @@ abstract class ISplitter<T extends string> {
                 separator,
               )
               .map(
-                (part: string): string =>
-                  trimParts
-                    ? part.trim()
-                    : part,
+                (segment: string): string =>
+                  trimSegment
+                    ? segment.trim()
+                    : segment,
               ),
           );
     }
@@ -159,7 +159,7 @@ abstract class ISplitter<T extends string> {
     }
   }
 
-  protected abstract filter(parts: string[]): T[];
+  protected abstract filter(segments: string[]): T[];
 }
 
 module.exports = ISplitter;

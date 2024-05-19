@@ -3,11 +3,11 @@ const f_iSplitter: typeof ISplitter = importModule(
 ) as typeof ISplitter;
 
 class Splitterful extends f_iSplitter<stringful> {
-  protected filter(parts: string[]): stringful[] {
+  protected filter(segments: string[]): stringful[] {
     try {
-      return parts.filter(
-        (part): part is stringful =>
-          part.length > 0,
+      return segments.filter(
+        (segment): segment is stringful =>
+          segment.length > 0,
       );
     }
     catch (e) {

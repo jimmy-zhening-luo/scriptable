@@ -1,6 +1,6 @@
 declare type filepath<Root extends boolean = false> = Joint<
   stringful,
-  Part,
+  filenode,
   Root
 >;
 

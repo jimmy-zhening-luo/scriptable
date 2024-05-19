@@ -4,10 +4,10 @@ const s_Filepath: typeof IFilepath = importModule(
 
 class Subpath extends s_Filepath<false> {
   protected check(
-    parts: Part[],
-  ): Part[] {
+    nodes: filenode[],
+  ): filenode[] {
     try {
-      return parts;
+      return nodes;
     }
     catch (e) {
       throw new EvalError(
@@ -17,9 +17,9 @@ class Subpath extends s_Filepath<false> {
     }
   }
 
-  protected poppable(parts: Part[]): parts is Arrayful<Part> {
+  protected poppable(nodes: filenode[]): nodes is Arrayful<filenode> {
     try {
-      return parts.length > 0;
+      return nodes.length > 0;
     }
     catch (e) {
       throw new EvalError(

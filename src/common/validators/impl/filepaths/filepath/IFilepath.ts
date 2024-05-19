@@ -1,13 +1,13 @@
 abstract class IFilepath<Root extends boolean> {
-  protected readonly _parts: Root extends true
-    ? Arrayful<Part>
-    : Part[];
+  protected readonly _nodes: Root extends true
+    ? Arrayful<filenode>
+    : filenode[];
 
   constructor(
     ...subpaths: Parameters<IFilepath<Root>["compose"]>
   ) {
     try {
-      this._parts = this.check(
+      this._nodes = this.check(
         this.compose(
           ...subpaths,
         ),
@@ -21,13 +21,13 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public get parts(): IFilepath<Root>["_parts"] {
+  public get nodes(): IFilepath<Root>["_nodes"] {
     try {
-      return [...this._parts];
+      return [...this._nodes];
     }
     catch (e) {
       throw new EvalError(
-        `IFilepath: parts`,
+        `IFilepath: nodes`,
         { cause: e },
       );
     }
@@ -55,7 +55,7 @@ abstract class IFilepath<Root extends boolean> {
 
   public get isEmpty(): boolean {
     try {
-      return this._parts.length < 1;
+      return this._nodes.length < 1;
     }
     catch (e) {
       throw new EvalError(
@@ -79,37 +79,37 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  private get FilepathPart(): typeof FilepathPart {
+  private get FilepathNode(): typeof FilepathNode {
     try {
       return importModule(
-        "part/FilepathPart",
-      ) as typeof FilepathPart;
+        "node/FilepathNode",
+      ) as typeof FilepathNode;
     }
     catch (e) {
       throw new ReferenceError(
-        `IFilepath: import FilepathPart`,
+        `IFilepath: import FilepathNode`,
         { cause: e },
       );
     }
   }
 
-  public pop(): Part {
+  public pop(): filenode {
     try {
-      const partsQueue: Part[] = [...this._parts]
+      const nodeQ: filenode[] = [...this._nodes]
         .reverse();
 
-      if (this.poppable(partsQueue)) {
-        this._parts.pop();
+      if (this.poppable(nodeQ)) {
+        this._nodes.pop();
 
-        return partsQueue[0];
+        return nodeQ[0];
       }
       else
         throw new RangeError(
           `filepath unpoppable`,
           {
             cause: {
-              parts: this._parts,
-              length: this._parts.length,
+              nodes: this._nodes,
+              length: this._nodes.length,
             },
           },
         );
@@ -161,7 +161,7 @@ abstract class IFilepath<Root extends boolean> {
     ...relPaths: Parameters<IFilepath<Root>["compose"]>
   ): this {
     try {
-      const rel: Part[] = this.compose(
+      const rel: filenode[] = this.compose(
         ...relPaths,
       );
 
@@ -169,7 +169,7 @@ abstract class IFilepath<Root extends boolean> {
         if (node === "..")
           this.pop();
         else
-          this._parts.push(node);
+          this._nodes.push(node);
 
       return this;
     }
@@ -183,7 +183,7 @@ abstract class IFilepath<Root extends boolean> {
 
   public toString(): filepath<Root> {
     try {
-      return [...this._parts]
+      return [...this._nodes]
         .join("/") as filepath<Root>;
     }
     catch (e) {
@@ -200,23 +200,23 @@ abstract class IFilepath<Root extends boolean> {
       | string[]
       | IFilepath<boolean>
     >
-  ): Part[] {
+  ): filenode[] {
     try {
       return subpaths
         .map(
-          (subpath: string | string[] | IFilepath<boolean>): Part[] =>
+          (subpath: string | string[] | IFilepath<boolean>): filenode[] =>
             typeof subpath !== "string" && !Array.isArray(subpath)
-              ? subpath._parts
+              ? subpath._nodes
               : new this.Splitterful(
                 subpath,
                 "/",
-                { trimParts: true },
+                { trimSegment: true },
               )
-                .parts
+                .segments
                 .map(
-                  (part: stringful): Part =>
+                  (node: stringful): filenode =>
                     new this
-                      .FilepathPart(part)
+                      .FilepathNode(node)
                       .string,
                 ),
         )
@@ -230,9 +230,9 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  protected abstract check(parts: Part[]): IFilepath<Root>["_parts"];
+  protected abstract check(nodes: filenode[]): IFilepath<Root>["_nodes"];
 
-  protected abstract poppable(parts: Part[]): parts is Arrayful<Part>;
+  protected abstract poppable(nodes: filenode[]): nodes is Arrayful<filenode>;
 }
 
 module.exports = IFilepath;

@@ -3,9 +3,9 @@ const iSplitter: typeof ISplitter = importModule(
 ) as typeof ISplitter;
 
 class Splitter extends iSplitter<string> {
-  protected filter(parts: string[]): string[] {
+  protected filter(segments: string[]): string[] {
     try {
-      return parts;
+      return segments;
     }
     catch (e) {
       throw new EvalError(

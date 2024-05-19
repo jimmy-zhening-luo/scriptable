@@ -2,14 +2,14 @@ const fp_ValidString: typeof ValidString = importModule(
   "./common/validators/base/string/valid/ValidString",
 ) as typeof ValidString;
 
-class FilepathPart extends fp_ValidString<
+class FilepathNode extends fp_ValidString<
   stringful,
-  "FilepathPart"
+  "FilepathNode"
 > {
-  constructor(part: stringful) {
+  constructor(node: stringful) {
     try {
       super(
-        part,
+        node,
         [
           fp_ValidString.CharSet.colon,
           fp_ValidString.CharSet.slash,
@@ -21,11 +21,11 @@ class FilepathPart extends fp_ValidString<
     }
     catch (e) {
       throw new EvalError(
-        `FilepathPart: ctor`,
+        `FilepathNode: ctor`,
         { cause: e },
       );
     }
   }
 }
 
-module.exports = FilepathPart;
+module.exports = FilepathNode;

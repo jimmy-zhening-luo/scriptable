@@ -4,21 +4,21 @@ const r_Filepath: typeof IFilepath = importModule(
 
 class Rootpath extends r_Filepath<true> {
   protected check(
-    parts: Part[],
-  ): Arrayful<Part> {
+    nodes: filenode[],
+  ): Arrayful<filenode> {
     try {
-      if (parts.length < 1)
+      if (nodes.length < 1)
         throw new RangeError(
-          `root path constructed with 0 parts`,
+          `root path constructed with 0 nodes`,
           {
             cause: {
-              parts,
-              length: parts.length,
+              nodes,
+              length: nodes.length,
             },
           },
         );
       else
-        return parts as Arrayful<Part>;
+        return nodes as Arrayful<filenode>;
     }
     catch (e) {
       throw new EvalError(
@@ -28,9 +28,9 @@ class Rootpath extends r_Filepath<true> {
     }
   }
 
-  protected poppable(parts: Part[]): parts is Arrayful<Part> {
+  protected poppable(nodes: filenode[]): nodes is Arrayful<filenode> {
     try {
-      return parts.length > 1;
+      return nodes.length > 1;
     }
     catch (e) {
       throw new EvalError(
