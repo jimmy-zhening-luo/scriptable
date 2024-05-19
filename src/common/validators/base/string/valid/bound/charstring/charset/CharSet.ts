@@ -1,5 +1,5 @@
 class CharSet {
-  public readonly name: string = "CharSet";
+  public readonly name: literalful<"CharSet"> = "CharSet";
   public readonly chars: char[];
   public readonly negate: boolean;
 

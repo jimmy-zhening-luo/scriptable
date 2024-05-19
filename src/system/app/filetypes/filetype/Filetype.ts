@@ -120,7 +120,7 @@ abstract class Filetype<
     try {
       if (subtype.length === 0)
         throw new SyntaxError(
-          `Filetype subclass name is empty`,
+          `Filetype subclass has no name`,
           { cause: { subtype } },
         );
       else
