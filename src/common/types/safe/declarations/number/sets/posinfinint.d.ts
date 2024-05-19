@@ -1,4 +1,4 @@
-declare type posinfinint = Accept<
+declare type posinfinint = Safe<
   number,
   "posinfinint"
 >;

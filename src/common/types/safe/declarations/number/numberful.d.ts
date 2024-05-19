@@ -1,4 +1,4 @@
-declare type numberful = Accept<
+declare type numberful = Safe<
   number,
   "numberful"
 >;

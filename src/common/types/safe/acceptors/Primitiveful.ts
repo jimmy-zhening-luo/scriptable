@@ -1,9 +1,13 @@
-function Primitiveful<P extends primitive, A>(
-  acceptor: Acceptor<P, A>,
+function Primitiveful<
+  P extends primitive,
+  A extends string,
+  SP extends P & Safe<P, A> = P & Safe<P, A>,
+>(
+  acceptor: Acceptor<P, A, SP>,
   primitive: P,
   rejection: string,
   context?: string,
-): P & A {
+): P & SP {
   if (acceptor(primitive))
     return primitive;
   else

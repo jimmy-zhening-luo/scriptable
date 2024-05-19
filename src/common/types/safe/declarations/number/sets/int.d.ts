@@ -1,4 +1,4 @@
-declare type int = Accept<
+declare type int = Safe<
   number,
   "int"
 >;

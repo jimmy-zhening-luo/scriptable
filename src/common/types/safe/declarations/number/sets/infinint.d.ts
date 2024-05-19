@@ -1,4 +1,4 @@
-declare type infinint = Accept<
+declare type infinint = Safe<
   number,
   "infinint"
 >;

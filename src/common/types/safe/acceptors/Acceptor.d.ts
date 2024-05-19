@@ -1,4 +1,5 @@
 declare type Acceptor<
-  P extends primitive,
-  A extends P,
-> = (primitive: P)=> primitive is P & A;
+  T,
+  A extends string,
+  ST extends T & Safe<T, A> = T & Safe<T, A>,
+> = (t: T)=> t is T & ST;

@@ -5,9 +5,9 @@ const piint_Primitiveful: typeof Primitiveful = importModule(
 function PosInfinInt(
   number: number,
   context?: string,
-): posinfinint {
-  return piint_Primitiveful(
-    (number: number): number is posinfinint =>
+): posint {
+  return piint_Primitiveful<number, "posint", posint>(
+    (number: number): number is posint =>
       Number.isInteger(number) && number > 0 || number === Infinity,
     number,
     `posinfinint: number is not an [infinite] integer`,

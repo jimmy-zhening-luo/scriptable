@@ -6,7 +6,7 @@ function PosInt(
   number: number,
   context?: string,
 ): posint {
-  return pint_Primitiveful(
+  return pint_Primitiveful<number, "posint", posint>(
     (number: number): number is number & posint =>
       Number.isInteger(number) && number > 0,
     number,

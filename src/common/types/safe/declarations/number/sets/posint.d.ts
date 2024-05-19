@@ -1,4 +1,4 @@
-declare type posint = Accept<
+declare type posint = Safe<
   number,
   "posint"
 >;
