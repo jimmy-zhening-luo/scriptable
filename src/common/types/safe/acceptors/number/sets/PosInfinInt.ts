@@ -6,7 +6,7 @@ function PosInfinInt(
   number: number,
   context?: string,
 ): posint {
-  return piint_Primitiveful<number, "posint", posint>(
+  return piint_Primitiveful<number, "posinfinint", posinfinint>(
     (number: number): number is posint =>
       Number.isInteger(number) && number > 0 || number === Infinity,
     number,
