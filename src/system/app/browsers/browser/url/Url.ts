@@ -171,7 +171,7 @@ class Url {
   protected get stringful(): typeof Stringful {
     try {
       return importModule(
-        "./common/types/literals/string/Stringful",
+        "./common/types/safe/acceptors/string/Stringful",
       ) as typeof Stringful;
     }
     catch (e) {
@@ -185,7 +185,7 @@ class Url {
   protected get posint(): typeof PosInt {
     try {
       return importModule(
-        "./common/types/literals/number/PosInt",
+        "./common/types/safe/acceptors/number/sets/PosInt",
       ) as typeof PosInt;
     }
     catch (e) {

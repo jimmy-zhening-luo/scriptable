@@ -244,7 +244,7 @@ abstract class IFile {
   private get stringful(): typeof Stringful {
     try {
       return importModule(
-        "./common/types/literals/string/Stringful",
+        "./common/types/safe/acceptors/string/Stringful",
       ) as typeof Stringful;
     }
     catch (e) {

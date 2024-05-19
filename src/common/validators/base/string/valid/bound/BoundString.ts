@@ -98,7 +98,7 @@ class BoundString<
   private static get posint(): typeof PosInt {
     try {
       return importModule(
-        "./common/types/literals/number/PosInt",
+        "./common/types/safe/acceptors/number/sets/PosInt",
       ) as typeof PosInt;
     }
     catch (e) {
@@ -112,7 +112,7 @@ class BoundString<
   private static get posinfinint(): typeof PosInfinInt {
     try {
       return importModule(
-        "./common/types/literals/number/PosInfinInt",
+        "./common/types/safe/acceptors/number/sets/PosInfinInt",
       ) as typeof PosInfinInt;
     }
     catch (e) {
