@@ -1,4 +1,4 @@
-function Primitiveful<A, P extends primitive>(
+function Primitiveful<P extends primitive, A>(
   acceptor: Acceptor<P, A>,
   primitive: P,
   rejection: string,
