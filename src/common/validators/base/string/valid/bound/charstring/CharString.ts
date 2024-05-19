@@ -1,11 +1,11 @@
 class CharString<
-  V extends string = "CharString",
   T extends string = string,
+  V extends string = "CharString",
 > {
   public readonly charset: CharSet;
   public readonly string: validstring<
-    `CharString:${V}`,
-    T
+    T,
+    `CharString:${V}`
   >;
 
   constructor(
@@ -53,7 +53,7 @@ class CharString<
     }
   }
 
-  public toString(): CharString<V, T>["string"] {
+  public toString(): CharString<T, V>["string"] {
     try {
       return this.string;
     }
@@ -67,7 +67,7 @@ class CharString<
 
   private validate(
     input: string,
-  ): input is CharString<V, T>["string"] {
+  ): input is CharString<T, V>["string"] {
     try {
       if (input.length < 1)
         return true;

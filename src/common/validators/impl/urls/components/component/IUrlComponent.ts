@@ -1,7 +1,7 @@
 abstract class IUrlComponent<
   UC extends string,
 > {
-  protected readonly validator: ValidString<UC>;
+  protected readonly validator: ValidString<urlcomponent<UC>, UC>;
 
   constructor(component: string) {
     try {

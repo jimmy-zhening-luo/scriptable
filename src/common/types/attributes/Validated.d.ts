@@ -1,5 +1,10 @@
 declare const validator: unique symbol;
 
-type ValidatedBy<V> = { [validator]: V };
+type ValidatedBy<V extends string> = { [validator]: literalful<V> };
 
-declare type Validated<V extends string, T> = T & ValidatedBy<V>;
+declare type Validated<
+  T,
+  V extends string,
+> =
+  & T
+  & ValidatedBy<V>;

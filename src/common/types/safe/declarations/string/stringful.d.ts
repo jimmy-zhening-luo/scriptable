@@ -1,8 +1,13 @@
 declare type stringful =
-  & Safe<string, "stringful">
+  & Safe<
+    string,
+    "stringful"
+  >
   & Head<
-    & string
+    & Safe<
+      string,
+      "stringful"
+    >
     & Length<1>
-    & Safe<string, "stringful">
   >
 ;

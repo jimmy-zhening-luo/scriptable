@@ -6,9 +6,14 @@ function PosInt(
   number: number,
   context?: string,
 ): posint {
-  return pint_Primitiveful<number, "posint", posint>(
+  return pint_Primitiveful<
+    number,
+    "posint",
+    posint
+  >(
     (number: number): number is number & posint =>
-      Number.isInteger(number) && number > 0,
+      Number.isInteger(number)
+      && number > 0,
     number,
     `posint: number is not a finite, positive integer`,
     context,

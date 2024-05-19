@@ -6,7 +6,11 @@ function Numberful(
   number: number,
   context?: string,
 ): numberful {
-  return n_Primitiveful<number, "numberful", numberful>(
+  return n_Primitiveful<
+    number,
+    "numberful",
+    numberful
+  >(
     (number: number): number is numberful =>
       !Number.isNaN(number),
     number,

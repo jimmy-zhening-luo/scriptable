@@ -1,1 +1,4 @@
-declare type validchar = Validated<"CharSet", char>;
+declare type validchar = Validated<
+  char,
+  "CharSet"
+>;

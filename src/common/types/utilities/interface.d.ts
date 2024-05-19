@@ -7,6 +7,12 @@ declare type Unrequire<
   O,
   K extends Keys<O>,
 > =
-  & Omit<O, K>
-  & Pick<Partial<O>, K>
+  & Omit<
+    O,
+    K
+  >
+  & Pick<
+    Partial<O>,
+    K
+  >
 ;

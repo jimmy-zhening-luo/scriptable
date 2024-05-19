@@ -8,13 +8,12 @@ declare type Length<L extends number> = { length: L };
 
 declare type Head<I> = { 0: I };
 
-declare type Indexable<
+declare type SafeIterable<
   L extends number,
   I,
 > = L extends 0
   ? never
-  : Length<L> & Head<I>
-;
+  : Length<L> & Head<I>;
 
 declare type StringLength<
   L extends number,
@@ -22,5 +21,7 @@ declare type StringLength<
   S0 extends stringful = S,
 > =
   & S
-  & Indexable<L, S0 & Length<1>>
-;
+  & SafeIterable<
+    L,
+    S0 & Length<1>
+  >;

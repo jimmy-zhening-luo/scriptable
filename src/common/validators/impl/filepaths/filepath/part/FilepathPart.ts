@@ -3,6 +3,7 @@ const fp_ValidString: typeof ValidString = importModule(
 ) as typeof ValidString;
 
 class FilepathPart extends fp_ValidString<
+  stringful,
   "FilepathPart"
 > {
   constructor(part: stringful) {

@@ -15,9 +15,18 @@ declare type Array3<I> = ArrayMin<I, 3>;
 declare type Array4<I> = ArrayMin<I, 4>;
 declare type Array5<I> = ArrayMin<I, 5>;
 
-declare type Tuple<I, L extends number> = I[] & Indexable<L, I>;
+declare type Tuple<
+  I,
+  L extends number,
+> =
+  & I[]
+  & SafeIterable<L, I>
+ ;
 
-declare type ArrayMin<I, L extends number> = L extends L
+declare type ArrayMin<
+  I,
+  L extends number,
+> = L extends L
   ? number extends L
     ? never
     : BuildArray<I, L, []>

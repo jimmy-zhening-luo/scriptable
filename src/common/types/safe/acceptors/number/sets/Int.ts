@@ -6,7 +6,11 @@ function Int(
   number: number,
   context?: string,
 ): int {
-  return int_Primitiveful<number, "int", int>(
+  return int_Primitiveful<
+    number,
+    "int",
+    int
+  >(
     (number: number): number is int =>
       Number.isInteger(number),
     number,

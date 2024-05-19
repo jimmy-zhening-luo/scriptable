@@ -1,7 +1,7 @@
 function Primitiveful<
   P extends primitive,
   A extends string,
-  SP extends P & Safe<P, A> = P & Safe<P, A>,
+  SP extends P & Safe<P, A>,
 >(
   acceptor: Acceptor<P, A, SP>,
   primitive: P,

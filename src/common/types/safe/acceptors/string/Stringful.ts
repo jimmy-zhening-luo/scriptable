@@ -3,13 +3,17 @@ const s_Primitiveful: typeof Primitiveful = importModule(
 ) as typeof Primitiveful;
 
 function Stringful<S extends string>(
-  s: S & string,
+  string: S,
   context?: string,
 ): S & stringful {
-  return s_Primitiveful<S & string, "stringful", S & stringful>(
-    (s: S): s is S & stringful =>
-      s.length > 0,
-    s,
+  return s_Primitiveful<
+    S,
+    "stringful",
+   S & stringful
+  >(
+    (string: S): string is S & stringful =>
+      string.length > 0,
+    string,
     `stringful: string is empty`,
     context,
   );
