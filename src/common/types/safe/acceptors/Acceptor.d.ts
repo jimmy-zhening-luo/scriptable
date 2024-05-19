@@ -1,4 +1,4 @@
 declare type Acceptor<
   P extends primitive,
-  A,
+  A extends P,
 > = (primitive: P)=> primitive is P & A;
