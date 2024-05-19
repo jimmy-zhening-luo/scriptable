@@ -16,7 +16,7 @@ class CharSet {
     >
   ) {
     try {
-      if (negate === undefined)
+      if (typeof negate === "undefined")
         this.negate = false;
       else if (typeof negate === "boolean")
         this.negate = negate;
@@ -24,14 +24,25 @@ class CharSet {
         charsets.unshift(negate);
         this.negate = charsets
           .some(
-            (set: char | char[] | CharSet): boolean =>
-              set instanceof CharSet && set.negate,
+            (
+              set:
+                | char
+                | char[]
+                | CharSet,
+            ): boolean =>
+              set instanceof CharSet
+              && set.negate,
           );
       }
 
       this.chars = charsets
         .map(
-          (set: char | char[] | CharSet): char[] =>
+          (
+            set:
+              | char
+              | char[]
+              | CharSet,
+          ): char[] =>
             set instanceof CharSet
               ? set.chars
               : [set]

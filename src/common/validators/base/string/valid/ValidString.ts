@@ -1,10 +1,10 @@
 class ValidString<
-  T extends stringful = stringful,
-  V extends string = "Valid",
+  T extends stringful,
+  V extends string,
 > {
   public readonly string: BoundString<
     T,
-    `Valid:${V}`
+    `Valid:${literalful<V>}`
   >["string"];
 
   constructor(
@@ -18,7 +18,7 @@ class ValidString<
     cleanOptions: Parameters<ValidString<T, string>["clean"]>[1] = {},
   ) {
     try {
-      this.string = new this.BoundString<T, `Valid:${V}`>(
+      this.string = new this.BoundString<T, `Valid:${literalful<V>}`>(
         min,
         max,
         this.clean(

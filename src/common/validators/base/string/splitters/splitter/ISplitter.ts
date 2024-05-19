@@ -5,7 +5,7 @@ abstract class ISplitter<T extends string> {
     unmerged: string | string[],
     public readonly separator: string = "",
     splitOptions: Parameters<ISplitter<T>["splitAggregate"]>[2] = {},
-    aggregateOptions: Parameters<ISplitter<T>["splitAggregate"]>[3] = {},
+    joinOptions: Parameters<ISplitter<T>["splitAggregate"]>[3] = {},
   ) {
     try {
       this.separator = separator;
@@ -13,7 +13,7 @@ abstract class ISplitter<T extends string> {
         unmerged,
         separator,
         splitOptions,
-        aggregateOptions,
+        joinOptions,
       );
     }
     catch (e) {
@@ -125,7 +125,7 @@ abstract class ISplitter<T extends string> {
     },
   ): T[] {
     try {
-      const trimmedString: string = [input]
+      const trimmed: string = [input]
         .flat()
         .join(
           separator,
@@ -135,11 +135,11 @@ abstract class ISplitter<T extends string> {
             : "toString"
         ]();
 
-      return trimmedString === ""
+      return trimmed === ""
         ? []
         : this
           .filter(
-            trimmedString
+            trimmed
               .split(
                 separator,
               )

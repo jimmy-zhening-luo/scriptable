@@ -1,11 +1,11 @@
 class CharString<
-  T extends string = string,
-  V extends string = "CharString",
+  T extends string,
+  V extends string,
 > {
   public readonly charset: CharSet;
   public readonly string: validstring<
     T,
-    `CharString:${V}`
+    `CharString:${literalful<V>}`
   >;
 
   constructor(
