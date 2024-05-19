@@ -3,12 +3,12 @@ const iint_Primitiveful: typeof Primitiveful = importModule(
 ) as typeof Primitiveful;
 
 function InfinInt(
-  integer: number,
+  number: number,
   context?: string,
 ): infinint {
   return iint_Primitiveful(
-    (integer: number): integer is infinint =>
-      Number.isInteger(integer) || integer === Infinity || integer === -Infinity,
+    (number: number): number is infinint =>
+      Number.isInteger(number) || number === Infinity || number === -Infinity,
     number,
     `infinint: number is not an [infinite] integer`,
     context,

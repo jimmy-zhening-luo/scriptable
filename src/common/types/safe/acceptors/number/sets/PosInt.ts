@@ -3,13 +3,13 @@ const pint_Primitiveful: typeof Primitiveful = importModule(
 ) as typeof Primitiveful;
 
 function PosInt(
-  integer: number,
+  number: number,
   context?: string,
 ): posint {
   return pint_Primitiveful(
-    (integer: number): integer is posint =>
-      Number.isInteger(integer) && integer > 0,
-    integer,
+    (number: number): number is posint =>
+      Number.isInteger(number) && number > 0,
+    number,
     `posint: number is not a finite, positive integer`,
     context,
   );

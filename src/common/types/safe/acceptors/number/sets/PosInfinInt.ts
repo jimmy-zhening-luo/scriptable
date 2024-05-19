@@ -3,13 +3,13 @@ const piint_Primitiveful: typeof Primitiveful = importModule(
 ) as typeof Primitiveful;
 
 function PosInfinInt(
-  integer: number,
+  number: number,
   context?: string,
 ): posinfinint {
   return piint_Primitiveful(
-    (integer: number): integer is posinfinint =>
-      Number.isInteger(integer) && integer > 0 || integer === Infinity,
-    integer,
+    (number: number): number is posinfinint =>
+      Number.isInteger(number) && number > 0 || number === Infinity,
+    number,
     `posinfinint: number is not an [infinite] integer`,
     context,
   );
