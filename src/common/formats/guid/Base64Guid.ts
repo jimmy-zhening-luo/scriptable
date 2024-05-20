@@ -1,8 +1,8 @@
 type guidchars = Tuple<hexchar, 32>;
 
 function Base64Guid(): base64guid {
-  function guidchars(chars: string[]): guidchars {
-    if (chars.length !== 32)
+  function guidchars(guid: string): guidchars {
+    if (guid.length !== 32)
       throw new RangeError(
         `generated guid does not have 32 hex chars`,
         {
@@ -13,8 +13,9 @@ function Base64Guid(): base64guid {
         },
       );
     else
-      return chars as guidchars; // skip check bad char, will error later anyway
+      return [...guid] as guidchars; // skip check bad char, will error later anyway
   }
+
   function base64guid(bg: string): base64guid {
     if (bg.length !== 8)
       throw new RangeError(
@@ -128,22 +129,19 @@ function Base64Guid(): base64guid {
       [],
     ];
     const guid: guidchars = guidchars(
-      [
-        ...UUID
-          .string()
-          .replaceAll(
-            "-",
-            "",
-          ),
-      ],
+      UUID
+        .string()
+        .replaceAll(
+          "-",
+          "",
+        ),
     );
 
-    for (let i = 0; i < 32; ++i) {
+    for (let i = 0; i < 32; ++i)
       (buffer[Math.floor(i / 4)] ?? error)
         .push(
           hexBase10[guid[i]],
         );
-    }
 
     if (error.length > 0)
       throw new RangeError(
@@ -163,7 +161,7 @@ function Base64Guid(): base64guid {
             (quad): number =>
               quad
                 .reduce(
-                  (acc, vi) =>
+                  (acc, vi): number =>
                     acc + vi,
                   0,
                 ),
