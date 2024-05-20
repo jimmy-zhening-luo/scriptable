@@ -11,7 +11,7 @@ namespace _Hello {
     string,
     HelloSetting
   > {
-    public runtime(): ReturnType<_Hello["run"]> {
+    public runtime() {
       this.debug = true;
 
       const FILENAME_WORLDTIME = "worldtime.txt";

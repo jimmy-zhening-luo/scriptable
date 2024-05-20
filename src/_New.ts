@@ -11,7 +11,7 @@ namespace New {
     never,
     never
   > {
-    public runtime(): ReturnType<New["run"]> {
+    public runtime() {
       return null;
     }
   }

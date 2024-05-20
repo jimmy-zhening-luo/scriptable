@@ -11,7 +11,7 @@ namespace GPT {
     GptOutput,
     GptSetting
   > {
-    public runtime(): ReturnType<GPT["run"]> {
+    public runtime() {
       const {
         app: {
           tags,

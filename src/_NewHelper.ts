@@ -11,7 +11,7 @@ namespace NewHelper {
     void,
     never
   > {
-    public runtime(): ReturnType<NewHelper["run"]> {
+    public runtime() {
       console.log(true);
     }
   }

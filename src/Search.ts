@@ -11,7 +11,7 @@ namespace Search {
     SearchOutput,
     SearchSetting
   > {
-    private get Query(): typeof Query {
+    private get Query() {
       try {
         return importModule(
           "apps/method/search/Query",
@@ -25,7 +25,7 @@ namespace Search {
       }
     }
 
-    public runtime(): ReturnType<Search["run"]> {
+    public runtime() {
       const input: string = this
         .input ?? "";
       const {

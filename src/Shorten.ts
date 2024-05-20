@@ -11,7 +11,7 @@ namespace Shorten {
     never,
     never
   > {
-    public runtime(): ReturnType<Shorten["run"]> {
+    public runtime() {
       const urls: string[] = [this.input ?? []]
         .flat();
       const data = this.data<

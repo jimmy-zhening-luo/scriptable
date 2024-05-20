@@ -11,7 +11,7 @@ namespace Things {
     ThingsItem[],
     ThingsSetting
   > {
-    public runtime(): ReturnType<Things["run"]> {
+    public runtime() {
       const input: stringful = this.inputStringful;
       const {
         app: {

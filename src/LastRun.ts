@@ -11,7 +11,7 @@ namespace LastRun {
     never,
     never
   > {
-    public runtime(): ReturnType<LastRun["run"]> {
+    public runtime() {
       return null;
     }
   }
