@@ -92,10 +92,10 @@ class ErrorHandler {
     try {
       return typeof e === "object"
         && "message" in e
-          ? e.message
-          : this.quotelessStringify(
-            e,
-          );
+        ? e.message
+        : this.quotelessStringify(
+          e,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -104,7 +104,7 @@ class ErrorHandler {
       );
     }
   }
-    
+
   private quotelessStringify(v: unknown): string {
     try {
       return Array.isArray(v)
