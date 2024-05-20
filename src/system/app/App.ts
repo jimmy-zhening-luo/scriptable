@@ -296,14 +296,14 @@ abstract class App<
 
   public read(
     filename?: boolean | string,
-    errorNoFile?: boolean,
+    errorNotFound?: boolean,
   ): ReturnType<Storage<Class>["read"]> {
     try {
       return typeof filename === "boolean"
         ? this.storage()
           .read(filename)
         : this.storage(filename)
-          .read(errorNoFile);
+          .read(errorNotFound);
     }
     catch (e) {
       throw new EvalError(
@@ -331,14 +331,14 @@ abstract class App<
 
   public data<D>(
     filename?: boolean | string,
-    errorNoFile?: boolean,
+    errorNotFound?: boolean,
   ): Null<D> {
     try {
       return typeof filename === "boolean"
         ? this.storage()
           .data<D>(filename)
         : this.storage(filename)
-          .data<D>(errorNoFile);
+          .data<D>(errorNotFound);
     }
     catch (e) {
       throw new EvalError(
