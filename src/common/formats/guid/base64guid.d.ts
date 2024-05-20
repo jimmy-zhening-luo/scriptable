@@ -1,1 +1,1 @@
-declare type base64Guid = stringful;
+declare type base64guid = stringful;
