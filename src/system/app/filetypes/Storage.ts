@@ -31,7 +31,7 @@ class Storage<Class extends string> extends stor_Filetype<
 
   public write(
     data: unknown,
-    overwrite: 
+    overwrite:
       | boolean
       | "overwrite"
       | "append"
@@ -48,11 +48,11 @@ class Storage<Class extends string> extends stor_Filetype<
           || typeof data === "number"
           || typeof data === "boolean"
             ? String(
-                data
-              )
+              data,
+            )
             : JSON.stringify(
-                data
-              ),
+              data,
+            ),
           overwrite,
         );
 

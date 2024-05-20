@@ -289,7 +289,7 @@ abstract class App<
               `run\n`,
               { cause: e },
             ),
-        ),
+          ),
       );
     }
   }
