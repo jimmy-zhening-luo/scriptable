@@ -111,7 +111,7 @@ abstract class Filetype<
       return string.length > 0
         ? JSON.parse(
             string,
-          ) as D & Record<string, string>;
+          ) as D & Record<string, string>
         : {};
     }
     catch (e) {
