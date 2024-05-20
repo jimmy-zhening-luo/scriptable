@@ -24,16 +24,17 @@ namespace _Hello {
         "setting.app.space",
       );
       const notification = `${
-          HELLO
-        }${
-          SPACE
-        }${
-          worldtime
-        }`;
+        HELLO
+      }${
+        SPACE
+      }${
+        worldtime
+      }`;
 
       this.write(
         `World!\n(Previous: ${
-          new Date().toISOString()
+          new Date()
+            .toISOString()
         })`,
         FILENAME_WORLDTIME,
       );
