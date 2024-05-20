@@ -86,7 +86,7 @@ abstract class IFile {
         .fileExists(
           this.path,
         )
-      && !this.isDirectory;
+        && !this.isDirectory;
     }
     catch (e) {
       throw new EvalError(
@@ -514,11 +514,11 @@ abstract class IFile {
                       this.path,
                     )
                   : console.warn(
-                      `Canceled by user, did NOT delete:\n${
-                        this.path
-                      }`,
-                    );
-              }
+                    `Canceled by user, did NOT delete:\n${
+                      this.path
+                    }`,
+                  );
+              },
             );
         }
 

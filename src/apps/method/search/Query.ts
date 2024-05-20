@@ -242,9 +242,9 @@ class Query {
       const T0_Dedot: Null<stringful> = T[0].endsWith(
         ".",
       )
-        && !T[0].startsWith(
-          ".",
-        )
+      && !T[0].startsWith(
+        ".",
+      )
         ? T[0]
           .slice(
             0,
