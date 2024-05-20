@@ -240,6 +240,20 @@ abstract class App<
     }
   }
 
+  private get ErrorHandler(): typeof ErrorHandler {
+    try {
+      return importModule(
+        "error/ErrorHandler",
+      ) as typeof ErrorHandler;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import ErrorHandler`,
+        { cause: e },
+      );
+    }
+  }
+
   protected abstract get getInput(): App<Class, I>["input"];
 
   public run(): NonUndefined<O> {
@@ -268,11 +282,13 @@ abstract class App<
     }
     catch (e) {
       throw new Error(
-        this.handleError(
-          new Error(
-            `run\n`,
-            { cause: e },
-          ),
+        new this
+          .ErrorHandler()
+          .handle(
+            new Error(
+              `run\n`,
+              { cause: e },
+            ),
         ),
       );
     }
@@ -313,8 +329,27 @@ abstract class App<
     }
   }
 
+  public data<D>(
+    filename?: boolean | string,
+    errorNoFile?: boolean,
+  ): D & Record<string, string> {
+    try {
+      return typeof filename === "boolean"
+        ? this.storage()
+          .data<D>(filename)
+        : this.storage(filename)
+          .data<D>(errorNoFile);
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: data`,
+        { cause: e },
+      );
+    }
+  }
+
   public write(
-    data: string,
+    data: unknown,
     filename?: string,
     overwrite?: Parameters<Storage<Class>["write"]>[1],
   ): this {
@@ -446,101 +481,6 @@ abstract class App<
     catch (e) {
       throw new EvalError(
         `App: falsy`,
-        { cause: e },
-      );
-    }
-  }
-
-  private handleError(e: Error): string {
-    function print(eLike: ErrorLike): string {
-      function quotelessStringify(v: unknown): string {
-        return Array.isArray(v)
-          ? `[${
-            v.map(
-              (vi: unknown): string =>
-                quotelessStringify(
-                  vi,
-                ),
-            )
-              .join(
-                ", ",
-              )
-          }]`
-          : typeof v === "object" && v !== null
-            ? Object
-              .keys(
-                v,
-              )
-              .map(
-                (k: string): string =>
-                  `${k}: ${
-                    quotelessStringify(
-                      (v as Record<string, unknown>)[k],
-                    )
-                  }`,
-              )
-              .join(", ")
-            : String(v);
-      }
-
-      return typeof eLike === "object" && "message" in eLike
-        ? eLike.message
-        : quotelessStringify(eLike);
-    }
-
-    try {
-      const stack: ErrorLike[] = [e];
-
-      for (let ei: ErrorLike = e; "cause" in ei; ei = ei.cause as ErrorLike)
-        stack.push(ei.cause as ErrorLike);
-
-      const queue: ErrorLike[] = [...stack]
-        .reverse();
-      const e1: number = queue.findIndex(
-        (e: ErrorLike): e is ErrorLike<true> =>
-          typeof e === "object" && "message" in e,
-      );
-      const hoistedQueue: ErrorLike[] = e1 === -1
-        ? [...queue]
-        : [
-            queue[e1] as ErrorLike<true>,
-            ...queue.slice(
-              0,
-              e1,
-            ),
-            ...queue.slice(e1 + 1),
-          ];
-      const messages: string[] = hoistedQueue
-        .map(
-          (e: ErrorLike): string =>
-            print(e),
-        );
-
-      console.error(
-        messages.join("\n"),
-      );
-
-      const root: string = messages.shift() ?? "";
-      const n: Notification = new Notification();
-
-      n.title = root;
-      n.body = messages.join("\n");
-      n.sound = "failure";
-      n.schedule()
-        .catch(
-          (n_e: unknown): never => {
-            throw new Error(
-              `Unhandled: Scriptable notification delivery failed`,
-              { cause: n_e },
-            );
-          },
-        );
-
-      return root;
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: handleError`,
         { cause: e },
       );
     }

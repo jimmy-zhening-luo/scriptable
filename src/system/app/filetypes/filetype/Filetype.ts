@@ -104,6 +104,24 @@ abstract class Filetype<
     }
   }
 
+  public data<D>(...error: Parameters<F["read"]>): D & Record<string, string> {
+    try {
+      const string: string = this._file.read(...error);
+
+      return string.length > 0
+        ? JSON.parse(
+            string,
+          ) as D & Record<string, string>;
+        : {};
+    }
+    catch (e) {
+      throw new EvalError(
+        `Filetype: data`,
+        { cause: e },
+      );
+    }
+  }
+
   public toString(): stringful {
     try {
       return this._file.toString();

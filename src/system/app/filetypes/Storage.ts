@@ -30,16 +30,34 @@ class Storage<Class extends string> extends stor_Filetype<
   }
 
   public write(
-    text: Parameters<WriteFile["write"]>[0],
-    overwrite: Parameters<WriteFile["write"]>[1] = true,
+    data: unknown,
+    overwrite: 
+      | boolean
+      | "overwrite"
+      | "append"
+      | "line" = true,
   ): this {
     try {
-      this._file.write(
-        text,
-        overwrite,
-      );
+      if (typeof data === "undefined" || data === null)
+        throw new TypeError(
+          `input is null or undefined`,
+        );
+      else {
+        this._file.write(
+          typeof data === "string"
+          || typeof data === "number"
+          || typeof data === "boolean"
+            ? String(
+                data
+              )
+            : JSON.stringify(
+                data
+              ),
+          overwrite,
+        );
 
-      return this;
+        return this;
+      }
     }
     catch (e) {
       throw new EvalError(

@@ -353,7 +353,7 @@ abstract class IFile {
   }
 
   public write(
-    text: string,
+    string: string,
     overwrite:
       | boolean
       | "overwrite"
@@ -376,10 +376,10 @@ abstract class IFile {
               this.manager.writeString(
                 this.path,
                 overwrite === "append"
-                  ? this.read() + text
+                  ? this.read() + string
                   : overwrite === "line"
-                    ? `${text}\n${this.read()}`
-                    : text,
+                    ? `${string}\n${this.read()}`
+                    : string,
               );
 
               return this;
@@ -409,7 +409,7 @@ abstract class IFile {
           try {
             this.manager.writeString(
               this.path,
-              text,
+              string,
             );
 
             return this;
