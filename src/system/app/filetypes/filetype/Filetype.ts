@@ -104,14 +104,14 @@ abstract class Filetype<
     }
   }
 
-  public data<D>(...error: Parameters<F["read"]>): D & Record<string, string> {
+  public data<D extends Record<string, unknown>>(...error: Parameters<F["read"]>): D {
     try {
       const string: string = this._file.read(...error);
 
       return string.length > 0
         ? JSON.parse(
           string,
-        ) as D & Record<string, string>
+        ) as D
         : {};
     }
     catch (e) {
