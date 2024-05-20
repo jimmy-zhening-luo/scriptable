@@ -147,7 +147,11 @@ abstract class IFilepath<Root extends boolean> {
     try {
       return this.isEmpty
         ? root
-        : `${root}/${this.toString()}` as rootpath;
+        : `${
+          root
+        }/${
+          this.toString()
+        }` as rootpath;
     }
     catch (e) {
       throw new EvalError(
@@ -169,7 +173,9 @@ abstract class IFilepath<Root extends boolean> {
         if (node === "..")
           this.pop();
         else
-          this._nodes.push(node);
+          this._nodes.push(
+            node,
+          );
 
       return this;
     }
@@ -184,7 +190,9 @@ abstract class IFilepath<Root extends boolean> {
   public toString(): filepath<Root> {
     try {
       return [...this._nodes]
-        .join("/") as filepath<Root>;
+        .join(
+          "/",
+        ) as filepath<Root>;
     }
     catch (e) {
       throw new EvalError(
@@ -205,7 +213,8 @@ abstract class IFilepath<Root extends boolean> {
       return subpaths
         .map(
           (subpath: string | string[] | IFilepath<boolean>): filenode[] =>
-            typeof subpath !== "string" && !Array.isArray(subpath)
+            typeof subpath !== "string"
+            && !Array.isArray(subpath)
               ? subpath._nodes
               : new this.Splitterful(
                 subpath,
@@ -216,7 +225,9 @@ abstract class IFilepath<Root extends boolean> {
                 .map(
                   (node: stringful): filenode =>
                     new this
-                      .FilepathNode(node)
+                      .FilepathNode(
+                        node,
+                      )
                       .string,
                 ),
         )

@@ -3,7 +3,11 @@ class Bookmark {
   public readonly alias: stringful;
   public readonly path: ReturnType<Rootpath["toString"]>;
 
-  constructor(bookmark: string | Bookmark) {
+  constructor(
+    bookmark:
+      | string
+      | Bookmark,
+  ) {
     try {
       if (typeof bookmark === "string") {
         this.alias = this.stringful(
@@ -12,9 +16,10 @@ class Bookmark {
         );
 
         if (
-          !FileManager
-            .iCloud()
-            .bookmarkExists(this.alias)
+          !FileManager.iCloud()
+            .bookmarkExists(
+              this.alias,
+            )
         )
           throw new ReferenceError(
             `no Scriptable bookmark with alias`,
@@ -22,9 +27,10 @@ class Bookmark {
           );
         else
           this.path = this.stringful<rootpath>(
-            FileManager
-              .iCloud()
-              .bookmarkedPath(this.alias) as rootpath,
+            FileManager.iCloud()
+              .bookmarkedPath(
+                this.alias,
+              ) as rootpath,
             `bookmark exists, but resolves to empty path`,
           );
       }

@@ -265,8 +265,16 @@ abstract class App<
           const t1: number = Date.now();
 
           this.write(
-            `${new this.Timestamp().full} :: ${t1 - this.t0} ms : ${t1}`,
-            `_runtime-${this.name}.txt`,
+            `${
+              new this.Timestamp().full
+            } :: ${
+              t1 - this.t0
+            } ms : ${
+              t1
+            }`,
+            `_runtime-${
+              this.name
+            }.txt`,
             "line",
           );
         }
@@ -275,7 +283,9 @@ abstract class App<
       }
       catch (e) {
         throw new Error(
-          `${this.name}: runtime`,
+          `${
+            this.name
+          }: runtime`,
           { cause: e },
         );
       }

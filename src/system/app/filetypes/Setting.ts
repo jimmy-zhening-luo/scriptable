@@ -18,7 +18,9 @@ class Setting<
         Setting.ReadOnlyFile,
         "Setting",
         appClass,
-        `${app}.json`,
+        `${
+          app
+        }.json`,
       );
     }
     catch (e) {

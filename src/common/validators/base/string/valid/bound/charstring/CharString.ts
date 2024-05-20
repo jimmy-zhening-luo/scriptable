@@ -5,7 +5,9 @@ class CharString<
   public readonly charset: CharSet;
   public readonly string: validstring<
     T,
-    `CharString:${literalful<V>}`
+    `CharString:${
+      literalful<V>
+    }`
   >;
 
   constructor(
@@ -75,7 +77,10 @@ class CharString<
         ([...input] as char[])
           .every(
             (c: char): c is validchar =>
-              this.charset.allows(c),
+              this.charset
+                .allows(
+                  c,
+                ),
           )
       )
         return true;
@@ -93,7 +98,9 @@ class CharString<
     }
     catch (e) {
       throw new EvalError(
-        `CharString: validate: invalid string: ${input}`,
+        `CharString: validate: invalid string: ${
+          input
+        }`,
         { cause: e },
       );
     }

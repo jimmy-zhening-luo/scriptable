@@ -19,7 +19,11 @@ class Timestamp {
 
   public get full(): stringful {
     try {
-      return `${this.date} ${this.time}` as stringful;
+      return `${
+        this.date
+      } ${
+        this.time
+      }` as stringful;
     }
     catch (e) {
       throw new EvalError(
@@ -52,7 +56,11 @@ class Timestamp {
 
   public get time(): stringful {
     try {
-      return `${this.local}${this.offset}` as stringful;
+      return `${
+        this.local
+      }${
+        this.offset
+      }` as stringful;
     }
     catch (e) {
       throw new EvalError(

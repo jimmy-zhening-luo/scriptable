@@ -137,7 +137,9 @@ namespace Search {
     ): T {
       try {
         return importModule(
-          `apps/method/search/engines/${flavor}`,
+          `apps/method/search/engines/${
+            flavor
+          }`,
         ) as T;
       }
       catch (e) {

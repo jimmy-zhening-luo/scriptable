@@ -83,7 +83,8 @@ class Query {
     }
     catch (e) {
       throw new EvalError(
-        `Query: ctor \n${e as string}`,
+        `Query: ctor`,
+        { cause: e },
       );
     }
   }
@@ -115,7 +116,11 @@ class Query {
         this.natural,
       ];
 
-      return `${key} ${natural}` as stringful;
+      return `${
+        key
+      } ${
+        natural
+      }` as stringful;
     }
     catch (e) {
       throw new EvalError(
@@ -173,9 +178,13 @@ class Query {
       const LANG_TAG: stringful = "@" as stringful;
       const T0: stringful = T[0];
       const t0: stringful = T0.toLowerCase() as stringful;
-      const pre: stringful[] = t0.startsWith(LANG_TAG)
+      const pre: stringful[] = t0.startsWith(
+        LANG_TAG,
+      )
         ? [TRANSLATE]
-        : t0.startsWith(TRANSLATE)
+        : t0.startsWith(
+          TRANSLATE,
+        )
           ? t0.slice(
             TRANSLATE.length,
             TRANSLATE.length + LANG_TAG.length,
@@ -186,13 +195,22 @@ class Query {
                   T
                     .shift(),
                 )
-                  .slice(TRANSLATE.length) as stringful,
+                  .slice(
+                    TRANSLATE.length,
+                  ) as stringful,
               ]
             : t0.length > TRANSLATE.length
               ? [
                   TRANSLATE,
-                  `${LANG_TAG}${t0[TRANSLATE.length]}` as stringful,
-                  ...String(T.shift()).length > TRANSLATE.length + LANG_TAG.length
+                  `${
+                    LANG_TAG
+                  }${
+                    t0[TRANSLATE.length]
+                  }` as stringful,
+                  ...String(
+                    T
+                      .shift(),
+                  ).length > TRANSLATE.length + LANG_TAG.length
                     ? [
                         t0.slice(
                           TRANSLATE.length + LANG_TAG.length,
@@ -203,7 +221,9 @@ class Query {
               : []
           : [];
 
-      T.unshift(...pre);
+      T.unshift(
+        ...pre,
+      );
 
       return T;
     }
@@ -219,8 +239,12 @@ class Query {
     T: Arrayful<stringful>,
   ): Arrayful<stringful> {
     try {
-      const T0_Dedot: Null<stringful> = T[0].endsWith(".")
-        && !T[0].startsWith(".")
+      const T0_Dedot: Null<stringful> = T[0].endsWith(
+        ".",
+      )
+        && !T[0].startsWith(
+          ".",
+        )
         ? T[0]
           .slice(
             0,
@@ -230,7 +254,9 @@ class Query {
 
       if (T0_Dedot !== null) {
         T.shift();
-        T.unshift(T0_Dedot);
+        T.unshift(
+          T0_Dedot,
+        );
       }
 
       return T;
@@ -259,7 +285,8 @@ class Query {
         MATH_LONG,
       ];
       const T0: stringful = T[0];
-      const t0: stringful = T0.toLowerCase() as stringful;
+      const t0: stringful = T0
+        .toLowerCase() as stringful;
       const t0_len: number = t0.length;
       const longest: Null<stringful> = [...M]
         .filter(
@@ -272,22 +299,32 @@ class Query {
         )
         .find(
           (mk: stringful): boolean =>
-            t0.startsWith(mk),
+            t0.startsWith(
+              mk,
+            ),
         ) ?? null;
 
       if (longest === null) {
         if (NUMERIC.includes(t0[0] as stringful))
-          T.unshift(MATH_SHORT);
+          T.unshift(
+            MATH_SHORT,
+          );
       }
       else {
         const operand_0: string = T
           .shift()
-          ?.slice(longest.length) ?? "";
+          ?.slice(
+            longest.length,
+          ) ?? "";
 
         if (operand_0.length > 0)
-          T.unshift(operand_0 as stringful);
+          T.unshift(
+            operand_0 as stringful,
+          );
 
-        T.unshift(longest);
+        T.unshift(
+          longest,
+        );
       }
 
       return T;

@@ -144,7 +144,9 @@ abstract class Filetype<
       else
         return new this
           .Bookmark(
-            `#${subtype}`,
+            `#${
+              subtype
+            }`,
           );
     }
     catch (e) {

@@ -6,9 +6,11 @@ class BoundString<
   T extends stringful,
   V extends string,
 > extends f_CharString<
-    T,
-  `Bound:${literalful<V>}`
-  > {
+  T,
+  `Bound:${
+    literalful<V>
+  }`
+> {
   public readonly min: posint;
   public readonly max: posinfinint;
 
@@ -31,7 +33,7 @@ class BoundString<
 
       if (minInt > maxInt)
         throw RangeError(
-          `min '${minInt}' > max '${maxInt}'`,
+          `min > max`
           {
             cause: {
               min,
@@ -47,7 +49,7 @@ class BoundString<
 
         if (this.string.length < minInt)
           throw RangeError(
-            `length '${this.string.length}' < min '${minInt}' for input: ${this.string}`,
+            `length < min`,
             {
               cause: {
                 string: this.string,
@@ -63,7 +65,7 @@ class BoundString<
           );
         else if (this.string.length > maxInt)
           throw RangeError(
-            `length '${this.string.length}' > max '${maxInt}' for input: ${this.string}`,
+            `length > max`,
             {
               cause: {
                 string: this.string,
@@ -89,7 +91,11 @@ class BoundString<
     }
     catch (e) {
       throw new EvalError(
-        `BoundString: ctor: { min: ${min}, max: ${max} }`,
+        `BoundString: ctor: { min: ${
+          min
+        }, max: ${
+          max
+        } }`,
         { cause: e },
       );
     }

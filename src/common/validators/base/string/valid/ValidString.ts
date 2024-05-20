@@ -4,7 +4,9 @@ class ValidString<
 > {
   public readonly string: BoundString<
     T,
-    `Valid:${literalful<V>}`
+    `Valid:${
+      literalful<V>
+    }`
   >["string"];
 
   constructor(

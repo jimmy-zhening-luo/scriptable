@@ -13,17 +13,24 @@ abstract class IFile {
     ...subpaths: ConstructorParameters<typeof IFilepath>
   ) {
     try {
-      this._root = root instanceof this.Bookmark || root instanceof IFile
+      this._root = root instanceof IFile
+      || root instanceof this.Bookmark
         ? root.path
-        : typeof root === "object" && "file" in root && "rootOnly" in root
+        : typeof root === "object"
+        && "file" in root
+        && "rootOnly" in root
           ? root.rootOnly
             ? root.file._root
             : root.file.path
           : new this
-            .Rootpath(root)
+            .Rootpath(
+              root,
+            )
             .toString();
       this._subpath = new this
-        .Subpath(...subpaths);
+        .Subpath(
+          ...subpaths,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -35,7 +42,10 @@ abstract class IFile {
 
   public get path(): rootpath {
     try {
-      return this._subpath.prepend(this._root);
+      return this._subpath
+        .prepend(
+          this._root,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -47,7 +57,8 @@ abstract class IFile {
 
   public get subpath(): subpath {
     try {
-      return this._subpath.toString();
+      return this._subpath
+        .toString();
     }
     catch (e) {
       throw new EvalError(
@@ -71,7 +82,11 @@ abstract class IFile {
 
   public get isFile(): boolean {
     try {
-      return this.manager.fileExists(this.path) && !this.isDirectory;
+      return this.manager
+        .fileExists(
+          this.path,
+        )
+      && !this.isDirectory;
     }
     catch (e) {
       throw new EvalError(
@@ -83,7 +98,10 @@ abstract class IFile {
 
   public get isDirectory(): boolean {
     try {
-      return this.manager.isDirectory(this.path);
+      return this.manager
+        .isDirectory(
+          this.path,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -95,7 +113,8 @@ abstract class IFile {
 
   public get isRoot(): boolean {
     try {
-      return this._subpath.isEmpty;
+      return this._subpath
+        .isEmpty;
     }
     catch (e) {
       throw new EvalError(
@@ -159,7 +178,10 @@ abstract class IFile {
   public get ls(): string[] {
     try {
       return this.isDirectory
-        ? this.manager.listContents(this.path)
+        ? this.manager
+          .listContents(
+            this.path,
+          )
         : [];
     }
     catch (e) {
@@ -179,11 +201,16 @@ abstract class IFile {
           : this.ls
             .map(
               (filename: string): this =>
-                this.append(filename),
+                this.append(
+                  filename,
+                ),
             )
             .filter(
               (child: this): boolean =>
-                !this.path.startsWith(child.path),
+                !this.path
+                  .startsWith(
+                    child.path,
+                  ),
             )
             .map(
               (file: this): this[] =>
@@ -257,8 +284,9 @@ abstract class IFile {
 
   public set subpath(subpath: ConstructorParameters<typeof IFilepath>[1]) {
     try {
-      this._subpath = new this
-        .Subpath(subpath);
+      this._subpath = new this.Subpath(
+        subpath,
+      );
     }
     catch (e) {
       throw new EvalError(
@@ -290,9 +318,10 @@ abstract class IFile {
         ...args: ConstructorParameters<typeof IFile>
       )=> this)(
         this,
-        this
-          ._subpath
-          .append(...filepaths),
+        this._subpath
+          .append(
+            ...filepaths,
+          ),
       );
     }
     catch (e) {
@@ -305,7 +334,10 @@ abstract class IFile {
 
   public cd(...relativeFilepath: Parameters<typeof IFilepath.prototype.cd>): this {
     try {
-      this._subpath.cd(...relativeFilepath);
+      this._subpath
+        .cd(
+          ...relativeFilepath,
+        );
 
       return this;
     }
@@ -327,11 +359,16 @@ abstract class IFile {
         else
           return "";
       else
-        return this.manager.readString(this.path);
+        return this.manager
+          .readString(
+            this.path,
+          );
     }
     catch (e) {
       throw new EvalError(
-        `IFile: read: ${this.path}`,
+        `IFile: read: ${
+          this.path
+        }`,
         { cause: e },
       );
     }
@@ -340,13 +377,17 @@ abstract class IFile {
   public readful(errorLabel?: string): stringful {
     try {
       return this.stringful(
-        this.read(true),
+        this.read(
+          true,
+        ),
         errorLabel,
       );
     }
     catch (e) {
       throw new EvalError(
-        `IFile: readful: ${this.path}`,
+        `IFile: readful: ${
+          this.path
+        }`,
         { cause: e },
       );
     }
@@ -373,14 +414,23 @@ abstract class IFile {
             );
           else
             try {
-              this.manager.writeString(
-                this.path,
-                overwrite === "append"
-                  ? this.read() + string
-                  : overwrite === "line"
-                    ? `${string}\n${this.read()}`
-                    : string,
-              );
+              this.manager
+                .writeString(
+                  this.path,
+                  overwrite === "append"
+                    ? `${
+                      this.read()
+                    }${
+                      string
+                    }`
+                    : overwrite === "line"
+                      ? `${
+                        string
+                      }\n${
+                        this.read()
+                      }`
+                      : string,
+                );
 
               return this;
             }
@@ -394,10 +444,11 @@ abstract class IFile {
         else {
           if (!this.parent.isDirectory)
             try {
-              this.manager.createDirectory(
-                this.parent.path,
-                true,
-              );
+              this.manager
+                .createDirectory(
+                  this.parent.path,
+                  true,
+                );
             }
             catch (e) {
               throw new EvalError(
@@ -407,10 +458,11 @@ abstract class IFile {
             }
 
           try {
-            this.manager.writeString(
-              this.path,
-              string,
-            );
+            this.manager
+              .writeString(
+                this.path,
+                string,
+              );
 
             return this;
           }
@@ -424,7 +476,9 @@ abstract class IFile {
     }
     catch (e) {
       throw new EvalError(
-        `IFile: write: ${this.path}`,
+        `IFile: write: ${
+          this.path
+        }`,
         { cause: e },
       );
     }
@@ -434,37 +488,47 @@ abstract class IFile {
     try {
       if (this.exists)
         if (force)
-          this.manager.remove(this.path);
+          this.manager
+            .remove(
+              this.path,
+            );
         else {
-          const prompt: Alert = new Alert();
+          const prompt = new Alert();
 
-          prompt
-            .message = `Permanently delete?\n${this.path}`;
-          prompt
-            .addDestructiveAction(
-              "DELETE",
-            );
-          prompt
-            .addCancelAction(
-              "Cancel",
-            );
+          prompt.message = `Permanently delete?\n${
+            this.path
+          }`;
+          prompt.addDestructiveAction(
+            "DELETE",
+          );
+          prompt.addCancelAction(
+            "Cancel",
+          );
           await prompt
             .present()
-            .then((userChoice: number): void => {
-              userChoice === 0
-                ? this.manager.remove(this.path)
-                : console
-                  .warn(
-                    `Canceled by user, did NOT delete:\n${this.path}`,
-                  );
-            });
+            .then(
+              (userChoice: number): void => {
+                userChoice === 0
+                  ? this.manager
+                    .remove(
+                      this.path,
+                    )
+                  : console.warn(
+                      `Canceled by user, did NOT delete:\n${
+                        this.path
+                      }`,
+                    );
+              }
+            );
         }
 
       return this;
     }
     catch (e) {
       throw new EvalError(
-        `IFile: delete: ${this.path}`,
+        `IFile: delete: ${
+          this.path
+        }`,
         { cause: e },
       );
     }

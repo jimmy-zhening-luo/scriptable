@@ -12,7 +12,9 @@ function Primitiveful<
     return primitive;
   else
     throw new TypeError(
-      `primitiveful: ${rejection}`,
+      `primitiveful: ${
+        rejection
+      }`,
       {
         cause: {
           primitive,
