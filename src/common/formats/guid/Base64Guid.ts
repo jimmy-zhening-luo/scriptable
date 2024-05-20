@@ -46,7 +46,7 @@ function Base64Guid(): base64guid {
     D: 13,
     E: 14,
     F: 15,
-  } as const;
+  };
   const base64Index: Tuple<base64char, 64> = [
     "A",
     "B",
@@ -115,7 +115,7 @@ function Base64Guid(): base64guid {
   ];
 
   try {
-    const error = [];
+    const error: number[] = [];
     const buffer = [
       [],
       [],
@@ -138,7 +138,7 @@ function Base64Guid(): base64guid {
     for (let i = 0; i < 32; ++i)
       (buffer[Math.floor(i / 4)] ?? error)
         .push(
-          hexBase10[guid[i]],
+          hexBase10[guid[i] as keyof typeof hexBase10],
         );
 
     if (error.length > 0)
@@ -159,7 +159,10 @@ function Base64Guid(): base64guid {
             (quad): number =>
               quad
                 .reduce(
-                  (acc, vi): number =>
+                  (
+                    acc: number,
+                    vi: number,
+                  ): number =>
                     acc + vi,
                   0,
                 ),
