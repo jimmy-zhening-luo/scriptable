@@ -1,5 +1,3 @@
-type guidchars = Tuple<hexchar, 32>;
-
 function Base64Guid(): base64guid {
   function guidchars(guid: string): guidchars {
     if (guid.length !== 32)
