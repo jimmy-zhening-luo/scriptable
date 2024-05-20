@@ -20,6 +20,9 @@ namespace Shorten {
         "urls.json",
       );
 
+      console.log(String(urls));
+      console.log(String(data));
+
       return null;
     }
   }
