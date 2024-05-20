@@ -24,9 +24,9 @@ namespace _Hello {
         "setting.app.space",
       );
       const notification = `${
-          hello
+          HELLO
         }${
-          space
+          SPACE
         }${
           worldtime
         }`;
