@@ -6,11 +6,11 @@ class BoundString<
   T extends stringful,
   V extends string,
 > extends f_CharString<
-  T,
+    T,
   `Bound:${
     literalful<V>
   }`
-> {
+  > {
   public readonly min: posint;
   public readonly max: posinfinint;
 
