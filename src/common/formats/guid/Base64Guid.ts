@@ -7,8 +7,8 @@ function Base64Guid(): base64guid {
         `generated guid does not have 32 hex chars`,
         {
           cause: {
-            chars,
-            length: chars.length,
+            guid,
+            length: guid.length,
           },
         },
       );
