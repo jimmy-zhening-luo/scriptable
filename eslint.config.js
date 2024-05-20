@@ -14,5 +14,14 @@ export default [
       parser: tsParser,
       files: ["src/**/*.ts"],
     },
+    {
+      overrideTs: {
+        "@typescript-eslint/explicit-function-return-type": [
+          "error",
+          { allowFunctionsWithoutTypeParameters: true },
+        ],
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+      },
+    },
   ).configs,
 ];
