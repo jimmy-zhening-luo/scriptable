@@ -1,5 +1,5 @@
 class ErrorHandler {
-  public static handle(e: Error): string {
+  public handle(e: Error): string {
     try {
       const stack: ErrorLike[] = [e];
 
@@ -49,7 +49,7 @@ class ErrorHandler {
     }
   }
 
-  private static log(messages: string[]): void {
+  private log(messages: string[]): void {
     try {
       console.error(
         messages.join("\n"),
@@ -63,7 +63,7 @@ class ErrorHandler {
     }
   }
 
-  private static notify(messages: string[]): void {
+  private notify(messages: string[]): void {
     try {
       const n = new Notification();
 
@@ -88,7 +88,7 @@ class ErrorHandler {
     }
   }
 
-  private static print(e: ErrorLike): string {
+  private print(e: ErrorLike): string {
     try {
       return typeof e === "object"
         && "message" in e
@@ -105,7 +105,7 @@ class ErrorHandler {
     }
   }
     
-  private static quotelessStringify(v: unknown): string {
+  private quotelessStringify(v: unknown): string {
     try {
       return Array.isArray(v)
         ? `[${
