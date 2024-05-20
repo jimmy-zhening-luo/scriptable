@@ -329,10 +329,10 @@ abstract class App<
     }
   }
 
-  public data<D extends Record<string, unknown>>(
+  public data<D>(
     filename?: boolean | string,
     errorNoFile?: boolean,
-  ): D {
+  ): Null<D> {
     try {
       return typeof filename === "boolean"
         ? this.storage()

@@ -104,7 +104,7 @@ abstract class Filetype<
     }
   }
 
-  public data<D extends Record<string, unknown>>(...error: Parameters<F["read"]>): D {
+  public data<D>(...error: Parameters<F["read"]>): Null<D> {
     try {
       const string: string = this._file.read(...error);
 
@@ -112,7 +112,7 @@ abstract class Filetype<
         ? JSON.parse(
           string,
         ) as D
-        : {};
+        : null;
     }
     catch (e) {
       throw new EvalError(
