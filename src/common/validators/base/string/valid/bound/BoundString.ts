@@ -33,7 +33,7 @@ class BoundString<
 
       if (minInt > maxInt)
         throw RangeError(
-          `min > max`
+          `min > max`,
           {
             cause: {
               min,
