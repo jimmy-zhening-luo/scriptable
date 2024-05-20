@@ -7,11 +7,19 @@ namespace Shorten {
   const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class Shorten extends shortcut<
-    never,
+    string | string[],
     never,
     never
   > {
     public runtime(): ReturnType<Shorten["run"]> {
+      const urls: string[] = [this.input ?? []]
+        .flat();
+      const data = this.data<
+        Record<string, string>
+      >(
+        "urls.json",
+      );
+
       return null;
     }
   }
