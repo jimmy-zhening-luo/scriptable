@@ -1,6 +1,6 @@
-declare type Arrayful<I> = ArrayMin<I, 1>;
+declare type Arrayful<I> = ArrayN<I, 1>;
 
-declare type ArrayMin<
+declare type ArrayN<
   I,
   Length extends number,
   Head extends I[] = [],
@@ -14,9 +14,11 @@ declare type ArrayMin<
           ...Head,
           ...I[],
         ]
-      : ArrayMin<
-        I,
-        Length,
+      : ArrayN<
+        I
+        ,
+        Length
+        ,
         [
           ...Head,
           I,
