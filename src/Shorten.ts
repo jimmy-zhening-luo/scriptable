@@ -14,20 +14,40 @@ namespace Shorten {
     never
   > {
     public runtime() {
-      const urls =
-        [
-          this
-            .input ?? [],
-        ]
-          .flat();
+      const newUrls =
+        Object
+          .fromEntries(
+            [
+              this
+                .input ?? [],
+            ]
+              .flat()
+              .map(
+                (url): Dyad<string> =>
+                  [
+                    this
+                      .base64guid(
+                        url,
+                      ),
+                    url,
+                  ],
+              )
+          );
       const data =
         this
           .data<Record<string, string>>(
           "urls.json",
         );
+      const newData = {
+        ...data,
+        ...newUrls,
+      }
 
-      console.log(String(urls));
-      console.log(String(data));
+      this
+        .write(
+          newData,
+          "urls.json"
+        );
 
       return null;
     }
