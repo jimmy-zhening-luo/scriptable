@@ -125,8 +125,8 @@ function Base64Guid() {
   ] as const;
 
   try {
-    const buffer: Eightple<
-      number[]
+    const buffer: Octad<
+      hex[]
     > = [
       [],
       [],
@@ -167,17 +167,21 @@ function Base64Guid() {
 
     const shortGuid = base64guid(
       buffer
+        .filter(
+          (row): row is Quad<
+            hex
+          > =>
+            row
+              .length === 4,
+        )
         .map(
           quad =>
-            quad
-              .reduce(
-                (
-                  acc: base64,
-                  vi,
-                ) =>
-                  (acc + vi) as base64,
-                0,
-              ),
+            (
+              quad[0]
+              + quad[1]
+              + quad[2]
+              + quad[3]
+            ) as base64,
         )
         .filter(
           (word): word is base64 =>
