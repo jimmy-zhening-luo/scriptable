@@ -148,20 +148,20 @@ function Base64Guid() {
     );
 
     for (
-      let i = 0;
+      let i: base32 = 0;
       i < 32;
-      ++i
+      i = (i + 1) as base32
     )
       buffer[
         Math
           .floor(
-            i as base32 / 4,
+            i / 4,
           ) as octal
       ]
         .push(
           hexcharToHex[
             guid[
-              i as base32
+              i
             ]
           ],
         );
