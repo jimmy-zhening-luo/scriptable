@@ -1,4 +1,4 @@
-name: Publish to Azure (dev - push)
+name: Publish Azure (dev/push)
 on:
   push:
     branches:
