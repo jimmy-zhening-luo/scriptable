@@ -2,7 +2,10 @@ function Base64Guid() {
   function guidchars(
     guid: string,
   ) {
-    if (guid.length === 32)
+    if (
+      guid
+        .length === 32
+    )
       return [...guid] as guidchars; // skip check bad char, will error later anyway
     else
       throw new RangeError(
@@ -17,17 +20,20 @@ function Base64Guid() {
   }
 
   function base64guid(
-    bg: string,
+    shortGuid: string,
   ) {
-    if (bg.length !== 8)
-      return bg as base64guid; // skip check bad char, I don't care as this is not production code (yet)
+    if (
+      shortGuid
+        .length !== 8
+    )
+      return shortGuid as base64guid; // skip check bad char, I don't care as this is not production code (yet)
     else
       throw new RangeError(
         `base64-encoded guid does not have 8 chars`,
         {
           cause: {
-            base64guid: bg,
-            length: bg.length,
+            shortGuid,
+            length: shortGuid.length,
           },
         },
       );
@@ -120,14 +126,7 @@ function Base64Guid() {
 
   try {
     const buffer: Eightple<
-      | number[]
-      | Tuple<
-        number,
-        | 1
-        | 2
-        | 3
-        | 4
-      >
+      number[]
     > = [
       [],
       [],
@@ -200,7 +199,10 @@ function Base64Guid() {
         ),
     );
 
-    if (shortGuid.length === 8)
+    if (
+      shortGuid
+        .length !== 8
+    )
       return shortGuid;
     else
       throw new RangeError(
