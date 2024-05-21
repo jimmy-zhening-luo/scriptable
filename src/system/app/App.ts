@@ -214,6 +214,20 @@ abstract class App<
     }
   }
 
+  protected get base64guid() {
+    try {
+      return importModule(
+        "./common/formats/guid/Base64Guid",
+      ) as typeof Base64Guid;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Base64Guid`,
+        { cause: e },
+      );
+    }
+  }
+
   protected get Timestamp() {
     try {
       return importModule(
