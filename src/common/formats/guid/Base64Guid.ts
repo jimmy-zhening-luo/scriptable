@@ -168,14 +168,14 @@ function Base64Guid() {
     const shortGuid = base64guid(
       buffer
         .map(
-          (quad): number =>
+          quad =>
             quad
               .reduce(
                 (
-                  acc: number,
-                  vi: number,
-                ): number =>
-                  acc + vi,
+                  acc: base64,
+                  vi,
+                ) =>
+                  (acc + vi) as base64,
                 0,
               ),
         )
