@@ -15,10 +15,10 @@ declare type GptInputFullyWrapped =
 
 declare type GptInputPrompt =
   | string
-  | Record<
-    | "system"
-    | "user"
-    ,
-    string
-  >
+  | GptPrompt
 ;
+
+declare type GptPrompt = Field<
+  | "system"
+  | "user"
+>;

@@ -1,11 +1,6 @@
-declare type ISetting = Partial<
-  Record<
-    | "app"
-    | "user"
-    ,
-    Record<
-      string,
-      unknown
-    >
-  >
+declare type ISetting = PartialRecord<
+  | "app"
+  | "user"
+  ,
+  Table
 >;

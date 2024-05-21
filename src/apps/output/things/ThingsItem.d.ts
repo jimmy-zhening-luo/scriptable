@@ -1,10 +1,8 @@
 declare type ThingsItem =
-  & Record<
+  & Field<
     | "title"
     | "notes"
     | "triage"
-    ,
-    string
   >
   & {
     list?: string;

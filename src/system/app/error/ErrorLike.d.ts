@@ -9,10 +9,9 @@ declare type ErrorLike<
     :
       | string[]
       | Error
-      | Partial<
-        Record<
-          "cause",
-          Error
-        >
+      | PartialRecord<
+        "cause"
+        ,
+        Error
       >
 ;

@@ -1,9 +1,7 @@
 declare type HelloSetting = {
-  app?: Partial<
-    Record<
-      "space"
-      ,
-      string
-    >
+  app?: Field<
+    | "space"
+    ,
+    true
   >;
 };

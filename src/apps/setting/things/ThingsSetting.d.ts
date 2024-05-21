@@ -1,18 +1,13 @@
 declare type ThingsSetting = {
   app: {
     tag: string;
-    delims: Record<
+    delims: Field<
       | "item"
       | "line"
-      ,
-      string
     >;
   };
   user: {
     triage: string;
-    lists: Record<
-      string,
-      string
-    >;
+    lists: FieldTable;
   };
 };

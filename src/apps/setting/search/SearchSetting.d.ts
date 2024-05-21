@@ -1,25 +1,16 @@
-declare type K = string;
-
 declare type SearchSetting = {
   app: {
     tag: string;
-    key: Record<
+    key: Field<
       | "chat"
       | "translate"
       | "mathShort"
       | "mathLong"
-      ,
-      string
     >;
   };
   user: {
-    alias: Record<
-      string,
-      K
-    >;
-    engine: Record<
-      string
-      ,
+    alias: FieldTable;
+    engine: Table<
       | string
       | string[]
       | InlineEngineSetting
@@ -46,14 +37,15 @@ declare type ShortcutEngineSetting =
   & EngineProp<
     "shortcut"
   >
-  & SettingFlag<
+  & Flag<
     "output"
   >
 ;
 
 declare type UrlEngineSetting =
   & EngineProp<
-    "url",
+    "url"
+    ,
     string[]
   >
   & {
@@ -77,7 +69,7 @@ type EngineProp<
     | T
     | string
   >
-  & SettingFlag<
-    "normalizeQuotes"
+  & Flag<
+    | "requote"
   >
 ;

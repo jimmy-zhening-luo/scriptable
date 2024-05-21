@@ -1,54 +1,42 @@
 declare type GptSetting = {
   app: {
-    tags: Record<
+    tags: Field<
       | "preset"
       | "location"
-      ,
-      string
     >;
-    plugins: Record<
+    plugins: Field<
       "location"
-      ,
-      string
     >;
-    api: Record<
+    api: Field<
       | "host"
       | "version"
       | "action"
-      ,
-      string
     >;
-    models: Record<
+    models: Field<
       | "ultra"
       | "fast"
       | "beta"
       | "image"
       | "tts"
       | "transcript"
-      ,
-      string
     >;
-    limit: Record<
+    limit: Limit<
       | "token"
       | "temperature"
       | "p"
-      ,
-      SettingLimit
     >;
   };
   user: {
-    id: Record<
+    id: Field<
       | "token"
       | "org"
-      ,
-      string
     >;
     defaults: GptProps;
-    presets: Record<
-      string,
+    presets: Table<
       Unrequire<
-        GptPromptFull,
-        "user"
+        GptPrompt
+        ,
+        | "user"
       >
     >;
   };

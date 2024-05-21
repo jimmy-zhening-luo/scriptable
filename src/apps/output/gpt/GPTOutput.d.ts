@@ -1,22 +1,31 @@
-declare type GptOutput = {
-  api: string;
-  header: Record<
-    | "auth"
-    | "org"
+declare type GptOutput =
+  & Field<
+    "api"
+  >
+  & Record<
+    "header"
     ,
-    string
-  >;
-  body:
-    & {
-      messages: GptMessages<boolean>;
-      model: string;
-    }
-    & Record<
-      | "token"
-      | "temperature"
-      | "p"
-      ,
-      number
+    Field<
+      | "auth"
+      | "org"
     >
-  ;
-};
+  >
+  & {
+    body:
+      & Record<
+        "messages"
+        ,
+        GptMessages<
+          boolean
+        >
+      >
+      & Field<
+        "model"
+      >
+      & Scalar<
+        | "token"
+        | "temperature"
+        | "p"
+      >;
+  }
+;

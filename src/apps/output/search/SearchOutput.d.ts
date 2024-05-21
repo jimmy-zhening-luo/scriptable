@@ -1,12 +1,26 @@
-declare type SearchOutput = {
-  app: string;
-  action:
+declare type SearchOutput =
+  & Field<
+    "app"
+  >
+  & Record<
+    "action"
+    ,
     | string
     | string[]
-  ;
-  natural?: string;
-  browser?: UrlEngine["browser"];
-  shortcut?: string;
-  output?: boolean;
-  find?: string;
-};
+  >
+  & Field<
+    | "natural"
+    | "shortcut"
+    | "find"
+    ,
+    true
+  >
+  & Flag<
+    "output"
+  >
+  & PartialRecord<
+    "browser"
+    ,
+    UrlEngine["browser"]
+  >
+;
