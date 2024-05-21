@@ -1,3 +1,5 @@
-declare type NonUndefined<T> = T extends undefined
+declare type NonUndefined<
+  O,
+> = O extends undefined
   ? never
-  : T;
+  : O;

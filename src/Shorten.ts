@@ -4,21 +4,27 @@
 "use strict";
 
 namespace Shorten {
-  const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
+  const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class Shorten extends shortcut<
-    string | string[],
+    | string
+    | string[]
+    ,
     never,
     never
   > {
     public runtime() {
-      const urls: string[] = [this.input ?? []]
-        .flat();
-      const data = this.data<
-        Record<string, string>
-      >(
-        "urls.json",
-      );
+      const urls =
+        [
+          this
+            .input ?? [],
+        ]
+          .flat();
+      const data =
+        this
+          .data<Record<string, string>>(
+          "urls.json",
+        );
 
       console.log(String(urls));
       console.log(String(data));

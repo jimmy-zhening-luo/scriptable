@@ -4,7 +4,7 @@
 "use strict";
 
 namespace _Hello {
-  const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
+  const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class _Hello extends shortcut<
     never,
@@ -15,14 +15,19 @@ namespace _Hello {
       this.debug = true;
 
       const FILENAME_WORLDTIME = "worldtime.txt";
-      const HELLO = this.readful();
-      const worldtime = this.read(
-        FILENAME_WORLDTIME,
-      );
-      const SPACE = this.stringful(
-        this.app?.space ?? "",
-        "setting.app.space",
-      );
+      const HELLO = this
+        .readful();
+      const worldtime = this
+        .read(
+          FILENAME_WORLDTIME,
+        );
+      const SPACE = this
+        .stringful(
+          this
+            .app
+            ?.space ?? "",
+          "setting.app.space",
+        );
       const notification = `${
         HELLO
       }${
@@ -31,19 +36,25 @@ namespace _Hello {
         worldtime
       }`;
 
-      this.write(
-        `World!\n(Previous: ${
-          new Date()
-            .toISOString()
-        })`,
-        FILENAME_WORLDTIME,
-      );
-      console.warn(notification);
+      this
+        .write(
+          `World!\n(Previous: ${
+            new Date()
+              .toISOString()
+          })`,
+          FILENAME_WORLDTIME,
+        );
+      console
+        .warn(
+          notification,
+        );
 
       return notification;
     }
   }
 }
 
-new _Hello._Hello(true)
+new _Hello._Hello(
+  true,
+)
   .run();

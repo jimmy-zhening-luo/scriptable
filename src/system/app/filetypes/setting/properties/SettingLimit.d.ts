@@ -1,1 +1,6 @@
-declare type SettingLimit = Record<"min" | "max", number>;
+declare type SettingLimit = Record<
+  | "min"
+  | "max"
+  ,
+  number
+>;

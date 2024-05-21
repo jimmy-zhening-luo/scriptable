@@ -4,7 +4,7 @@
 "use strict";
 
 namespace GPT {
-  const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
+  const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class GPT extends shortcut<
     GptInput,
@@ -28,131 +28,196 @@ namespace GPT {
       } = this
         .setting
         .parsed;
-      const arg:
-        | GptInputFullyWrapped
-        | GptInputPrompt = this.input ?? "";
-      const ii: GptInputFullyWrapped = typeof arg !== "string" && "prompt" in arg
-        ? arg
-        : { prompt: arg };
-      const i: Required<GptInputFullyWrapped> = {
-        prompt: ii.prompt,
+      const raw =
+        this
+          .input ?? "";
+      const ii =
+        typeof raw !== "string"
+        && "prompt" in raw
+          ? raw
+          : { prompt: raw };
+      const i = {
+        prompt:
+          ii
+            .prompt,
         model:
           "model" in ii
-            ? ii.model
-            : defaults.model,
+            ? ii
+              .model
+            : defaults
+              .model,
         token:
           "token" in ii
           && Number.isInteger(ii.token)
           && ii.token >= limit.token.min
           && ii.token <= limit.token.max
-            ? ii.token
-            : defaults.token,
+            ? ii
+              .token
+            : defaults
+              .token,
         temperature:
           "temperature" in ii
           && Number.isFinite(ii.temperature)
           && ii.temperature >= limit.temperature.min
           && ii.temperature <= limit.temperature.max
-            ? ii.temperature
-            : defaults.temperature,
+            ? ii
+              .temperature
+            : defaults
+              .temperature,
         p:
           "p" in ii
           && Number.isFinite(ii.p)
           && ii.p >= limit.p.min
           && ii.p <= limit.p.max
-            ? ii.p
-            : defaults.p,
+            ? ii
+              .p
+            : defaults
+              .p,
         preset:
           "preset" in ii
           && ii.preset in presets
-            ? ii.preset
-            : defaults.preset,
+            ? ii
+              .preset
+            : defaults
+              .preset,
         location:
           "location" in ii
-            ? ii.location
-            : defaults.location,
+            ? ii
+              .location
+            : defaults
+              .location,
       };
-      const location: string = [
-        plugins.location,
-        i.location,
-      ]
-        .join("");
-      const preset: Null<GptPromptFull> = typeof i.prompt === "string"
-        ? {
-            system: (
-              presets[i.preset]?.system ?? ""
-            )
-              .replace(
-                tags.location,
-                location,
-              ),
-            user: (
-              presets[i.preset]?.user ?? ""
-            )
-              .replace(
-                tags.location,
-                location,
-              ),
-          }
-        : null;
+      const location =
+        [
+          plugins
+            .location,
+          i
+            .location,
+        ]
+          .join(
+            "",
+          );
+      const preset =
+        typeof i.prompt === "string"
+          ? {
+              system: (
+                presets[
+                  i.preset
+                ]
+                  ?.system ?? ""
+              )
+                .replace(
+                  tags
+                    .location,
+                  location,
+                ),
+              user: (
+                presets[
+                  i.preset
+                ]
+                  ?.user ?? ""
+              )
+                .replace(
+                  tags
+                    .location,
+                  location,
+                ),
+            }
+          : null;
       const messageBox: {
         user: GptMessage<"user">;
         system?: GptMessage<"system">;
-      } = typeof i.prompt === "string"
-        ? preset === null || preset.system === ""
-          ? {
-              user: {
-                role: "user",
-                content: i.prompt,
-              },
-            }
+      } =
+        typeof i.prompt === "string"
+          ? preset === null
+          || preset.system === ""
+            ? {
+                user: {
+                  role: "user",
+                  content: i
+                    .prompt,
+                },
+              }
+            : {
+                system: {
+                  role: "system",
+                  content: preset
+                    .system,
+                },
+                user: {
+                  role: "user",
+                  content: preset
+                    .user
+                    .includes(
+                      tags
+                        .preset,
+                    )
+                    ? preset
+                      .user
+                      .replace(
+                        tags
+                          .preset,
+                        i
+                          .prompt,
+                      )
+                    : i
+                      .prompt,
+                },
+              }
           : {
               system: {
                 role: "system",
-                content: preset.system,
+                content: i
+                  .prompt
+                  .system,
               },
               user: {
                 role: "user",
-                content: preset.user.includes(tags.preset)
-                  ? preset.user.replace(
-                    tags.preset,
-                    i.prompt,
-                  )
-                  : i.prompt,
+                content: i
+                  .prompt
+                  .user,
               },
-            }
-        : {
-            system: {
-              role: "system",
-              content: i.prompt.system,
-            },
-            user: {
-              role: "user",
-              content: i.prompt.user,
-            },
-          };
-      const messages: GptMessages<boolean> = "system" in messageBox
-        ? [
-            messageBox.system,
-            messageBox.user,
-          ]
-        : [messageBox.user];
+            };
+      const messages =
+        "system" in messageBox
+          ? [
+              messageBox
+                .system,
+              messageBox
+                .user,
+            ] as GptMessages<true>
+          : [
+              messageBox
+                .user,
+            ] as GptMessages;
 
       return {
         api: [
-          api.host,
-          api.version,
-          api.action,
-        ].join("/"),
+          api
+            .host,
+          api
+            .version,
+          api
+            .action,
+        ]
+          .join(
+            "/",
+          ),
         header: {
-          auth: id.token,
-          org: id.org,
+          auth: id
+            .token,
+          org: id
+            .org,
         },
         body: {
           messages,
-          temperature: i.temperature,
-          p: i.p,
           model: models[i.model],
-          token: i.token,
+          token: i
+            .token,
+          temperature: i
+            .temperature,
+          p: i
+            .p,
         },
       };
     }

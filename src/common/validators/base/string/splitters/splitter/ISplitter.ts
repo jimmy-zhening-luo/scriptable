@@ -1,20 +1,23 @@
-abstract class ISplitter<T extends string> {
-  public readonly segments: T[];
+abstract class ISplitter<
+  S extends string,
+> {
+  public readonly segments: S[];
 
   constructor(
-    unmerged: string | string[],
-    public readonly separator: string = "",
-    splitOptions: Parameters<ISplitter<T>["splitAggregate"]>[2] = {},
-    joinOptions: Parameters<ISplitter<T>["splitAggregate"]>[3] = {},
+    unmerged:
+      | string
+      | string[],
+    public readonly separator = "",
+    splitOptions: Parameters<ISplitter<S>["splitAggregate"]>[1] = {},
+    joinOptions: Parameters<ISplitter<S>["splitAggregate"]>[2] = {},
   ) {
     try {
-      this.separator = separator;
-      this.segments = this.splitAggregate(
-        unmerged,
-        separator,
-        splitOptions,
-        joinOptions,
-      );
+      this.segments = this
+        .splitAggregate(
+          unmerged,
+          splitOptions,
+          joinOptions,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -24,9 +27,11 @@ abstract class ISplitter<T extends string> {
     }
   }
 
-  public get length(): number {
+  public get length() {
     try {
-      return this.segments.length;
+      return this
+        .segments
+        .length;
     }
     catch (e) {
       throw new EvalError(
@@ -36,9 +41,14 @@ abstract class ISplitter<T extends string> {
     }
   }
 
-  public toString(): string {
+  public toString() {
     try {
-      return this.segments.join(this.separator);
+      return this
+        .segments
+        .join(
+          this
+            .separator,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -49,21 +59,22 @@ abstract class ISplitter<T extends string> {
   }
 
   private splitAggregate(
-    input: string | string[],
-    separator: string,
-    splitOptions: Parameters<ISplitter<T>["split"]>[2] = {},
-    aggregateOptions: Parameters<ISplitter<T>["aggregate"]>[2] = {},
-  ): T[] {
+    input:
+      | string
+      | string[],
+    splitOptions: Parameters<ISplitter<S>["split"]>[1] = {},
+    aggregateOptions: Parameters<ISplitter<S>["aggregate"]>[1] = {},
+  ) {
     try {
-      return this.aggregate(
-        this.split(
-          input,
-          separator,
-          splitOptions,
-        ),
-        separator,
-        aggregateOptions,
-      );
+      return this
+        .aggregate(
+          this
+            .split(
+              input,
+              splitOptions,
+            ),
+          aggregateOptions,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -74,19 +85,26 @@ abstract class ISplitter<T extends string> {
   }
 
   private aggregate(
-    split: T[],
-    separator: string,
+    split: S[],
     {
       limit = Infinity,
       mergeTo = "right",
     }: {
       limit?: number;
-      mergeTo?: "left" | "right";
+      mergeTo?:
+        | "left"
+        | "right"
+      ;
     },
-  ): T[] {
-    const limitful: number = !Number.isInteger(limit) || limit < 0
-      ? Infinity
-      : limit;
+  ) {
+    const limitful =
+      limit < 0
+      || !Number
+        .isInteger(
+          limit,
+        )
+        ? Infinity
+        : limit;
 
     return split.length < 1
       ? []
@@ -99,23 +117,36 @@ abstract class ISplitter<T extends string> {
                   0,
                   limitful - 1,
                 )
-                .join(separator) as T,
-              ...split.slice(limitful - 1),
+                .join(
+                  this
+                    .separator,
+                ) as S,
+              ...split
+                .slice(
+                  limitful - 1,
+                ),
             ]
           : [
-              ...split.slice(
-                0,
-                limitful - 1,
-              ),
+              ...split
+                .slice(
+                  0,
+                  limitful - 1,
+                ),
               split
-                .slice(limitful - 1)
-                .join(separator) as T,
+                .slice(
+                  limitful - 1,
+                )
+                .join(
+                  this
+                    .separator,
+                ) as S,
             ];
   }
 
   private split(
-    input: string | string[],
-    separator: string,
+    input:
+      | string
+      | string[],
     {
       trim = true,
       trimSegment = false,
@@ -123,12 +154,13 @@ abstract class ISplitter<T extends string> {
       trim?: boolean;
       trimSegment?: boolean;
     },
-  ): T[] {
+  ) {
     try {
       const trimmed: string = [input]
         .flat()
         .join(
-          separator,
+          this
+            .separator,
         )[
           trim
             ? "trim"
@@ -141,12 +173,14 @@ abstract class ISplitter<T extends string> {
           .filter(
             trimmed
               .split(
-                separator,
+                this
+                  .separator,
               )
               .map(
-                (segment: string): string =>
+                segment =>
                   trimSegment
-                    ? segment.trim()
+                    ? segment
+                      .trim()
                     : segment,
               ),
           );
@@ -159,7 +193,7 @@ abstract class ISplitter<T extends string> {
     }
   }
 
-  protected abstract filter(segments: string[]): T[];
+  protected abstract filter(segments: string[]): S[];
 }
 
 module.exports = ISplitter;

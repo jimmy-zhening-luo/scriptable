@@ -4,7 +4,7 @@
 "use strict";
 
 namespace NewHelper {
-  const helper: typeof Helper = importModule("system/Helper") as typeof Helper;
+  const helper = importModule("system/Helper") as typeof Helper;
 
   export class NewHelper extends helper<
     void,
@@ -12,7 +12,7 @@ namespace NewHelper {
     never
   > {
     public runtime() {
-      console.log(true);
+      //
     }
   }
 }

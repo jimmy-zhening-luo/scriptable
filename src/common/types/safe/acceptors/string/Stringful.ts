@@ -1,18 +1,26 @@
-const s_Primitiveful: typeof Primitiveful = importModule(
+const s_Primitiveful = importModule(
   "./common/types/safe/acceptors/Primitiveful",
 ) as typeof Primitiveful;
 
-function Stringful<S extends string>(
+function Stringful<
+  S extends string,
+>(
   string: S,
   context?: string,
-): S & stringful {
+):
+  & S
+  & stringful {
   return s_Primitiveful<
     S,
     "stringful",
-   S & stringful
+    & S
+    & stringful
   >(
-    (string: S): string is S & stringful =>
-      string.length > 0,
+    (string): string is
+    & S
+    & stringful =>
+      string
+        .length > 0,
     string,
     `stringful: string is empty`,
     context,

@@ -4,7 +4,7 @@
 "use strict";
 
 namespace Things {
-  const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
+  const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class Things extends shortcut<
     string,
@@ -12,7 +12,8 @@ namespace Things {
     ThingsSetting
   > {
     public runtime() {
-      const input: stringful = this.inputStringful;
+      const input = this
+        .inputStringful;
       const {
         app: {
           tag,
@@ -22,63 +23,94 @@ namespace Things {
           triage,
           lists,
         },
-      }: ThingsSetting = this.setting.parsed;
+      } = this
+        .setting
+        .parsed;
 
       return input
         .split(
-          delims.item,
+          delims
+            .item,
         )
         .reverse()
         .map(
-          (item: string): string =>
-            item.trim(),
+          item =>
+            item
+              .trim(),
         )
         .map(
-          (item: string): ThingsItem => {
-            const lines: string[] = item.split(
-              delims.line,
-            );
-            const lastTaggedLine: Null<string> = [...lines]
+          (item): ThingsItem => {
+            const lines = item
+              .split(
+                delims
+                  .line,
+              );
+            const lastTaggedLine = [...lines]
               .reverse()
               .find(
-                (line: string): boolean =>
-                  line.includes(tag),
+                line =>
+                  line
+                    .includes(
+                      tag,
+                    ),
               ) ?? null;
-            const isTagged: boolean = lastTaggedLine !== null;
-            const iLastTag: Null<number> = lastTaggedLine === null
-              ? null
-              : lastTaggedLine
-                .lastIndexOf(
-                  tag,
-                ) as posint;
-            const lastTag: Null<string> = lastTaggedLine === null || iLastTag === null
-              ? null
-              : lastTaggedLine.length === iLastTag + 1
+            const isTagged = lastTaggedLine !== null;
+            const iLastTag =
+              lastTaggedLine === null
                 ? null
-                : (lastTaggedLine[iLastTag + 1] ?? "").toLowerCase();
+                : lastTaggedLine
+                  .lastIndexOf(
+                    tag,
+                  ) as posint;
+            const lastTag =
+              lastTaggedLine === null
+              || iLastTag === null
+                ? null
+                : lastTaggedLine.length === iLastTag + 1
+                  ? null
+                  : (
+                      lastTaggedLine[
+                        iLastTag + 1
+                      ] ?? ""
+                    )
+                      .toLowerCase();
             const flags: Pick<
               ThingsItem,
-              "when" | "list"
-            > = !isTagged
-              ? {}
-              : {
-                  when: "today",
-                  ...lastTag === null || lastTag.length === 0
-                    ? {}
-                    : { list: lists[lastTag] ?? "" },
-                };
+              | "when"
+              | "list"
+            > =
+              !isTagged
+                ? {}
+                : {
+                    when: "today",
+                    ...lastTag === null
+                    || lastTag.length === 0
+                      ? {}
+                      : {
+                          list: lists[
+                            lastTag
+                          ] ?? "",
+                        },
+                  };
 
-            if ("list" in flags && flags.list.length > 0)
-              flags.when = "someday";
+            if (
+              "list" in flags
+              && flags.list.length > 0
+            )
+              flags
+                .when = "someday";
 
             return {
               title: encodeURI(
-                lines.shift() ?? "",
+                lines
+                  .shift() ?? "",
               ),
               notes: encodeURI(
-                lines.join(
-                  delims.line,
-                ),
+                lines
+                  .join(
+                    delims
+                      .line,
+                  ),
               ),
               triage,
               ...flags,

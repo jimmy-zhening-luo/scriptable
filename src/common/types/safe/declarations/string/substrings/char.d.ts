@@ -1,4 +1,6 @@
 declare type char =
   & stringful
-  & Length<1>
+  & Length<
+    1
+  >
 ;

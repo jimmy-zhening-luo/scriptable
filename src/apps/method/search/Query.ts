@@ -1,7 +1,7 @@
 class Query {
   public readonly key: stringful;
   public readonly terms: stringful[];
-  private readonly NUMERIC: stringful[] = [
+  private readonly NUMERIC = [
     "0",
     "1",
     "2",
@@ -55,31 +55,34 @@ class Query {
   ) {
     try {
       const [
-        K,
+        key,
         ...terms
-      ]: Arrayful<
-        stringful
-      > = this.mathefy(
-        this.dedot(
-          this.transliterate(
-            this.tokenize(
-              query,
-              CHAT,
-              TRANSLATE,
-              MATH_SHORT,
-            ),
+      ] =
+        this
+          .mathefy(
+            this
+              .dedot(
+                this
+                  .transliterate(
+                    this
+                      .tokenize(
+                        query,
+                        CHAT,
+                        TRANSLATE,
+                        MATH_SHORT,
+                      ),
+                    TRANSLATE,
+                  ),
+              ),
+            CHAT,
             TRANSLATE,
-          ),
-        ),
-        CHAT,
-        TRANSLATE,
-        MATH_SHORT,
-        MATH_LONG,
-        this.NUMERIC,
-      );
+            MATH_SHORT,
+            MATH_LONG,
+          );
 
-      this.key = K.toLowerCase() as stringful;
       this.terms = terms;
+      this.key = key
+        .toLowerCase() as stringful;
     }
     catch (e) {
       throw new EvalError(
@@ -89,11 +92,13 @@ class Query {
     }
   }
 
-  public get natural(): string {
+  public get natural() {
     try {
       return this
         .terms
-        .join(" ");
+        .join(
+          " ",
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -103,23 +108,14 @@ class Query {
     }
   }
 
-  public get clean(): stringful {
+  public get clean() {
     try {
-      const [
-        key,
-        natural,
-      ]: [
-        stringful,
-        string,
-      ] = [
-        this.key,
-        this.natural,
-      ];
-
       return `${
-        key
+        this
+          .key
       } ${
-        natural
+        this
+          .natural
       }` as stringful;
     }
     catch (e) {
@@ -135,11 +131,20 @@ class Query {
     CHAT: stringful,
     TRANSLATE: stringful,
     MATH_SHORT: stringful,
-  ): Arrayful<stringful> {
+  ) {
     try {
-      const preprocessed: stringful[] = query.startsWith(" ")
-        ? query.startsWith("  ")
-          ? query.startsWith("   ")
+      const preprocessed = query
+        .startsWith(
+          " ",
+        )
+        ? query
+          .startsWith(
+            "  ",
+          )
+          ? query
+            .startsWith(
+              "   ",
+            )
             ? [TRANSLATE]
             : [CHAT]
           : [MATH_SHORT]
@@ -148,16 +153,22 @@ class Query {
         ...preprocessed,
         ...query
           .trim()
-          .split(" ")
+          .split(
+            " ",
+          )
           .filter(
-            (t: string): t is stringful =>
-              t.length > 0,
+            (t): t is stringful =>
+              t
+                .length > 0,
           ),
       ];
 
-      if (tokenized.length < 1)
+      if (
+        tokenized
+          .length < 1
+      )
         throw new SyntaxError(
-          `query contains 0 tokens`,
+          `query has 0 tokens`,
         );
       else
         return tokenized as Arrayful<stringful>;
@@ -173,57 +184,68 @@ class Query {
   private transliterate(
     T: Arrayful<stringful>,
     TRANSLATE: stringful,
-  ): Arrayful<stringful> {
+  ) {
     try {
-      const LANG_TAG: stringful = "@" as stringful;
-      const T0: stringful = T[0];
-      const t0: stringful = T0.toLowerCase() as stringful;
-      const pre: stringful[] = t0.startsWith(
-        LANG_TAG,
-      )
-        ? [TRANSLATE]
-        : t0.startsWith(
-          TRANSLATE,
-        )
-          ? t0.slice(
-            TRANSLATE.length,
-            TRANSLATE.length + LANG_TAG.length,
-          ) === LANG_TAG
-            ? [
-                TRANSLATE,
-                String(
-                  T
-                    .shift(),
-                )
-                  .slice(
-                    TRANSLATE.length,
-                  ) as stringful,
-              ]
-            : t0.length > TRANSLATE.length
+      const LANG_TAG = "@" as stringful;
+      const [T0] = T;
+      const t0 = T0
+        .toLowerCase() as stringful;
+      const pre =
+        t0
+          .startsWith(
+            LANG_TAG,
+          )
+          ? [TRANSLATE]
+          : t0
+            .startsWith(
+              TRANSLATE,
+            )
+            ? t0
+              .slice(
+                TRANSLATE.length,
+                TRANSLATE.length + LANG_TAG.length,
+              ) === LANG_TAG
               ? [
                   TRANSLATE,
-                  `${
-                    LANG_TAG
-                  }${
-                    t0[TRANSLATE.length]
-                  }` as stringful,
-                  ...String(
+                  String(
                     T
                       .shift(),
-                  ).length > TRANSLATE.length + LANG_TAG.length
-                    ? [
-                        t0.slice(
-                          TRANSLATE.length + LANG_TAG.length,
-                        ) as stringful,
-                      ]
-                    : [],
+                  )
+                    .slice(
+                      TRANSLATE
+                        .length,
+                    ) as stringful,
                 ]
-              : []
-          : [];
+              : t0.length > TRANSLATE.length
+                ? [
+                    TRANSLATE,
+                    `${
+                      LANG_TAG
+                    }${
+                      t0[
+                        TRANSLATE
+                          .length
+                      ]
+                    }` as stringful,
+                    ...TRANSLATE.length + LANG_TAG.length < String(
+                      T
+                        .shift(),
+                    ).length
+                      ? [
+                          t0
+                            .slice(
+                              TRANSLATE.length + LANG_TAG.length,
+                            ) as stringful,
+                        ]
+                      : [],
+                  ]
+                : []
+            : [];
 
-      T.unshift(
-        ...pre,
-      );
+      T
+        .unshift(
+          ...pre,
+        );
 
       return T;
     }
@@ -237,26 +259,30 @@ class Query {
 
   private dedot(
     T: Arrayful<stringful>,
-  ): Arrayful<stringful> {
+  ) {
     try {
-      const T0_Dedot: Null<stringful> = T[0].endsWith(
-        ".",
-      )
-      && !T[0].startsWith(
-        ".",
-      )
-        ? T[0]
-          .slice(
-            0,
-            -1,
-          ) as stringful
-        : null;
+      const [T0] = T;
+      const T0_Dedot =
+        T0.endsWith(
+          ".",
+        )
+        && !T0.startsWith(
+          ".",
+        )
+          ? T0
+            .slice(
+              0,
+              -1,
+            ) as stringful
+          : null;
 
       if (T0_Dedot !== null) {
-        T.shift();
-        T.unshift(
-          T0_Dedot,
-        );
+        T
+          .shift();
+        T
+          .unshift(
+            T0_Dedot,
+          );
       }
 
       return T;
@@ -275,56 +301,70 @@ class Query {
     TRANSLATE: stringful,
     MATH_SHORT: stringful,
     MATH_LONG: stringful,
-    NUMERIC: stringful[],
-  ): Arrayful<stringful> {
+  ) {
     try {
-      const M: Fourple<stringful> = [
+      const M = [
         MATH_SHORT,
         CHAT,
         TRANSLATE,
         MATH_LONG,
-      ];
-      const T0: stringful = T[0];
-      const t0: stringful = T0
+      ] as const;
+      const [T0] = T;
+      const t0 = T0
         .toLowerCase() as stringful;
-      const t0_len: number = t0.length;
-      const longest: Null<stringful> = [...M]
+      const t0_len = t0.length;
+      const longest = [...M]
         .filter(
-          (mk: stringful): boolean =>
-            mk.length <= t0_len,
+          mk =>
+            t0_len >= mk
+              .length,
         )
         .sort(
-          (a: stringful, b: stringful): number =>
+          (a, b) =>
             b.length - a.length,
         )
         .find(
-          (mk: stringful): boolean =>
-            t0.startsWith(
-              mk,
-            ),
+          mk =>
+            t0
+              .startsWith(
+                mk,
+              ),
         ) ?? null;
 
       if (longest === null) {
-        if (NUMERIC.includes(t0[0] as stringful))
-          T.unshift(
-            MATH_SHORT,
-          );
+        if (
+          this
+            .NUMERIC
+            .includes(
+              t0[0],
+            )
+        )
+          T
+            .unshift(
+              MATH_SHORT,
+            );
       }
       else {
-        const operand_0: string = T
+        const operand_0 = T
           .shift()
           ?.slice(
-            longest.length,
+            longest
+              .length,
           ) ?? "";
 
-        if (operand_0.length > 0)
-          T.unshift(
-            operand_0 as stringful,
-          );
+        if (
+          operand_0
+            .length > 0
+        )
+          T
+            .unshift(
+              operand_0 as stringful,
+            );
 
-        T.unshift(
-          longest,
-        );
+        T
+          .unshift(
+            longest,
+          );
       }
 
       return T;

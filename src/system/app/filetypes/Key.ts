@@ -1,12 +1,14 @@
-const k_Filetype: typeof Filetype = importModule(
+const k_Filetype = importModule(
   "filetype/Filetype",
 ) as typeof Filetype;
 
-class Key<Class extends string> extends k_Filetype<
-  Class,
-  "Key",
-  ReadOnlyFile
-> {
+class Key<
+  Class extends string,
+> extends k_Filetype<
+    Class,
+    "Key",
+    ReadOnlyFile
+  > {
   constructor(
     appClass: literalful<Class>,
     app: stringful,
@@ -29,9 +31,10 @@ class Key<Class extends string> extends k_Filetype<
     }
   }
 
-  private get handle(): Key<Class>["subpath"] {
+  private get handle() {
     try {
-      return this.subpath;
+      return this
+        .subpath;
     }
     catch (e) {
       throw new EvalError(
@@ -41,9 +44,11 @@ class Key<Class extends string> extends k_Filetype<
     }
   }
 
-  public load(fallbackLocal: boolean = false): stringful {
+  public load(
+    fallbackLocal = false,
+  ) {
     try {
-      const handle: Key<Class>["subpath"] = this.handle;
+      const { handle } = this;
 
       if (!Keychain.contains(handle))
         if (!fallbackLocal)
@@ -59,9 +64,13 @@ class Key<Class extends string> extends k_Filetype<
             },
           );
         else
-          return super.readful();
+          return super
+            .readful();
       else {
-        const key: string = Keychain.get(handle);
+        const key = Keychain
+          .get(
+            handle,
+          );
 
         if (key.length < 1)
           throw new ReferenceError(
@@ -88,9 +97,11 @@ class Key<Class extends string> extends k_Filetype<
     }
   }
 
-  public add(roll: boolean = false): this {
+  public add(
+    roll = false,
+  ) {
     try {
-      const handle: Key<Class>["subpath"] = this.handle;
+      const { handle } = this;
 
       if (Keychain.contains(handle) && !roll)
         throw new ReferenceError(
@@ -106,12 +117,14 @@ class Key<Class extends string> extends k_Filetype<
           },
         );
       else {
-        const local: stringful = super.readful();
+        const local = super
+          .readful();
 
-        Keychain.set(
-          handle,
-          local,
-        );
+        Keychain
+          .set(
+            handle,
+            local,
+          );
 
         if (local !== Keychain.get(handle))
           throw new EvalError(
@@ -126,8 +139,6 @@ class Key<Class extends string> extends k_Filetype<
               },
             },
           );
-        else
-          return this;
       }
     }
     catch (e) {
@@ -138,9 +149,12 @@ class Key<Class extends string> extends k_Filetype<
     }
   }
 
-  public roll(): this {
+  public roll() {
     try {
-      return this.add(true);
+      this
+        .add(
+          true,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -150,12 +164,15 @@ class Key<Class extends string> extends k_Filetype<
     }
   }
 
-  public remove(): this {
+  public remove() {
     try {
-      const handle: Key<Class>["subpath"] = this.handle;
+      const { handle } = this;
 
       if (Keychain.contains(handle)) {
-        Keychain.remove(handle);
+        Keychain
+          .remove(
+            handle,
+          );
 
         if (Keychain.contains(handle))
           throw new EvalError(
@@ -170,8 +187,6 @@ class Key<Class extends string> extends k_Filetype<
             },
           );
       }
-
-      return this;
     }
     catch (e) {
       throw new EvalError(
@@ -179,13 +194,6 @@ class Key<Class extends string> extends k_Filetype<
         { cause: e },
       );
     }
-  }
-
-  public write(): never {
-    throw new ReferenceError(
-      `Key: write: Forbidden: Local key files are readonly`,
-      { cause: { handle: this.handle } },
-    );
   }
 
   public override read(): never {
@@ -198,6 +206,20 @@ class Key<Class extends string> extends k_Filetype<
   public override readful(): never {
     throw new ReferenceError(
       `Key: readful: Forbidden: directly reading key from local file disallowed; use 'load(true)' instead`,
+      { cause: { handle: this.handle } },
+    );
+  }
+
+  public write(): never {
+    throw new ReferenceError(
+      `Key: write: Forbidden: Local key files are readonly`,
+      { cause: { handle: this.handle } },
+    );
+  }
+
+  public delete(): never {
+    throw new ReferenceError(
+      `Key: delete: Forbidden: Local key files are readonly`,
       { cause: { handle: this.handle } },
     );
   }

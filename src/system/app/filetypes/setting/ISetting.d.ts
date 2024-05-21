@@ -1,4 +1,11 @@
-declare type ISetting = {
-  app?: Record<string, unknown>;
-  user?: Record<string, unknown>;
-};
+declare type ISetting = Partial<
+  Record<
+    | "app"
+    | "user"
+    ,
+    Record<
+      string,
+      unknown
+    >
+  >
+>;

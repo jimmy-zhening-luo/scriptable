@@ -1,4 +1,4 @@
-const sh_App: typeof App = importModule(
+const sh_App = importModule(
   "app/App",
 ) as typeof App;
 
@@ -7,28 +7,33 @@ abstract class Shortcut<
   O = never,
   C extends ISetting = never,
 > extends sh_App<
-    "Shortcut",
-    null | NonNullable<I>,
+    Null<NonNullable<I>>,
     Null<O>,
-    C
+    C,
+    "Shortcut"
   > {
-  constructor(debug?: boolean) {
+  constructor(
+    debug?: boolean,
+  ) {
     super(
       "Shortcut",
       debug,
     );
   }
 
-  protected get getInput(): Shortcut<I>["input"] {
+  protected get getInput() {
     try {
       if (typeof this._getInput === "undefined") {
-        const shortcutInput = args.shortcutParameter as null | undefined | I;
-        const definedShortcutInput: null | NonNullable<I> = shortcutInput ?? null;
+        const shortcutInput = args
+          .shortcutParameter as Null<undefined | I>;
+        const definedShortcutInput = shortcutInput ?? null;
 
-        this._getInput = definedShortcutInput;
+        this
+          ._getInput = definedShortcutInput;
       }
 
-      return this._getInput;
+      return this
+        ._getInput;
     }
     catch (e) {
       throw new EvalError(
@@ -38,9 +43,14 @@ abstract class Shortcut<
     }
   }
 
-  protected setOutput(runtimeOutput: ReturnType<Shortcut<I, O>["run"]>): ReturnType<Shortcut<I, O>["run"]> {
+  protected setOutput(
+    runtimeOutput: ReturnType<Shortcut<I, O>["run"]>,
+  ) {
     try {
-      Script.setShortcutOutput(runtimeOutput);
+      Script
+        .setShortcutOutput(
+          runtimeOutput,
+        );
 
       return runtimeOutput;
     }
@@ -52,7 +62,7 @@ abstract class Shortcut<
     }
   }
 
-  private _getInput?: Shortcut<I>["getInput"];
+  private _getInput?: Shortcut<I>["input"];
 }
 
 module.exports = Shortcut;

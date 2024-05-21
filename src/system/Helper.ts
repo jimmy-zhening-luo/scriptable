@@ -1,4 +1,4 @@
-const hp_App: typeof App = importModule(
+const hp_App = importModule(
   "app/App",
 ) as typeof App;
 
@@ -7,10 +7,10 @@ abstract class Helper<
   O = void,
   C extends ISetting = never,
 > extends hp_App<
-    "Helper",
     I,
     O,
-    C
+    C,
+    "Helper"
   > {
   constructor(
     private readonly helperInput: Helper<I>["input"],
@@ -22,9 +22,10 @@ abstract class Helper<
     );
   }
 
-  public get getInput(): Helper<I>["input"] {
+  public get getInput() {
     try {
-      return this.helperInput;
+      return this
+        .helperInput;
     }
     catch (e) {
       throw new EvalError(
@@ -34,7 +35,9 @@ abstract class Helper<
     }
   }
 
-  protected setOutput(runtimeOutput: ReturnType<Helper<I, O>["run"]>): ReturnType<Helper<I, O>["run"]> {
+  protected setOutput(
+    runtimeOutput: ReturnType<Helper<I, O>["run"]>,
+  ) {
     try {
       return runtimeOutput;
     }

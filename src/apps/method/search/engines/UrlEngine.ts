@@ -9,7 +9,9 @@ class UrlEngine extends b_IEngine {
   public readonly encode: UrlEngineSetting["encode"];
 
   constructor(
-    urls: string | string[],
+    urls:
+      | string
+      | string[],
     TAG: stringful,
     browser?: UrlEngineSetting["browser"],
     encode?: UrlEngine["encode"],
@@ -17,16 +19,20 @@ class UrlEngine extends b_IEngine {
     try {
       super("safari");
       this.tag = TAG;
-      this.browser = browser; // unsafe
-      this.encode = encode; // unsafe
+      this.browser = browser;
+      this.encode = encode;
       this.urls = [urls]
         .flat()
         .filter(
-          (url: string): url is stringful =>
+          (url): url is stringful =>
             url.length > 0,
         );
 
-      if (this.urls.length === 0)
+      if (
+        this
+          .urls
+          .length < 1
+      )
         throw new SyntaxError(
           `engine has 0 urls`,
         );
@@ -39,30 +45,43 @@ class UrlEngine extends b_IEngine {
     }
   }
 
-  protected override transform(query: Query): string[] {
+  protected override transform(
+    query: Query,
+  ) {
     try {
-      const encodedQuery: string = query
+      const encodedQuery = query
         .terms
         .map(
-          (term: stringful): string =>
+          term =>
             term
-              .split("+")
-              .map(
-                (operand: string): string =>
-                  encodeURI(operand),
+              .split(
+                "+",
               )
-              .join("%2B"),
+              .map(
+                operand =>
+                  encodeURI(
+                    operand,
+                  ),
+              )
+              .join(
+                "%2B",
+              ),
         )
-        .join(this.encode ?? "+");
+        .join(
+          this
+            .encode ?? "+",
+        );
 
       return this
         .urls
         .map(
-          (url: stringful): string =>
-            url.replace(
-              this.tag,
-              encodedQuery,
-            ),
+          url =>
+            url
+              .replace(
+                this
+                  .tag,
+                encodedQuery,
+              ),
         );
     }
     catch (e) {
@@ -73,7 +92,9 @@ class UrlEngine extends b_IEngine {
     }
   }
 
-  protected options(query: Query): Required<Pick<SearchOutput, "natural" | "browser">> {
+  protected options(
+    query: Query,
+  ) {
     try {
       return {
         natural: query.natural,

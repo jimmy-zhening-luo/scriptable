@@ -3,11 +3,7 @@ declare type stringful =
     string,
     "stringful"
   >
-  & Head<
-    & Safe<
-      string,
-      "stringful"
-    >
-    & Length<1>
-  >
+  & {
+    0: stringful & { length: 1 };
+  }
 ;

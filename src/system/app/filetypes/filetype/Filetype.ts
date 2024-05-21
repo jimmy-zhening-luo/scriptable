@@ -13,7 +13,10 @@ abstract class Filetype<
   ) {
     try {
       this._file = new File(
-        this.root(filetype),
+        this
+          .root(
+            filetype,
+          ),
         appClass,
         ...subpaths,
       );
@@ -26,7 +29,7 @@ abstract class Filetype<
     }
   }
 
-  protected static get ReadOnlyFile(): typeof ReadOnlyFile {
+  protected static get ReadOnlyFile() {
     try {
       return importModule(
         "files/ReadOnlyFile",
@@ -40,7 +43,7 @@ abstract class Filetype<
     }
   }
 
-  protected static get WriteFile(): typeof WriteFile {
+  protected static get WriteFile() {
     try {
       return importModule(
         "files/WriteFile",
@@ -54,9 +57,11 @@ abstract class Filetype<
     }
   }
 
-  public get subpath(): F["subpath"] {
+  public get subpath() {
     try {
-      return this._file.subpath;
+      return this
+        ._file
+        .subpath;
     }
     catch (e) {
       throw new EvalError(
@@ -66,7 +71,7 @@ abstract class Filetype<
     }
   }
 
-  private get Bookmark(): typeof Bookmark {
+  private get Bookmark() {
     try {
       return importModule(
         "files/file/bookmark/Bookmark",
@@ -80,9 +85,15 @@ abstract class Filetype<
     }
   }
 
-  public read(...error: Parameters<F["read"]>): string {
+  public read(
+    ...error: Parameters<F["read"]>
+  ) {
     try {
-      return this._file.read(...error);
+      return this
+        ._file
+        .read(
+          ...error,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -94,7 +105,12 @@ abstract class Filetype<
 
   public readful(): stringful {
     try {
-      return this._file.readful(this.subpath);
+      return this
+        ._file
+        .readful(
+          this
+            .subpath,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -104,14 +120,21 @@ abstract class Filetype<
     }
   }
 
-  public data<D>(...error: Parameters<F["read"]>): Null<D> {
+  public data<D>(
+    ...error: Parameters<F["read"]>
+  ): Null<D> {
     try {
-      const string: string = this._file.read(...error);
+      const string: string = this
+        ._file
+        .read(
+          ...error,
+        );
 
       return string.length > 0
-        ? JSON.parse(
-          string,
-        ) as D
+        ? JSON
+          .parse(
+            string,
+          ) as D
         : null;
     }
     catch (e) {
@@ -122,9 +145,11 @@ abstract class Filetype<
     }
   }
 
-  public toString(): stringful {
+  public toString() {
     try {
-      return this._file.toString();
+      return this
+        ._file
+        .toString();
     }
     catch (e) {
       throw new EvalError(
@@ -134,7 +159,9 @@ abstract class Filetype<
     }
   }
 
-  private root(subtype: literalful<Subtype>): Bookmark {
+  private root(
+    subtype: literalful<Subtype>,
+  ) {
     try {
       if (subtype.length === 0)
         throw new SyntaxError(
@@ -157,9 +184,9 @@ abstract class Filetype<
     }
   }
 
-  public abstract write(
-    ...args: Parameters<F["write"]>
-  ): ReturnType<F["write"]> extends never ? never : Filetype<Class, Subtype, F>;
+  public abstract write(...args: Parameters<F["write"]>): ReturnType<F["write"]>;
+
+  public abstract delete(...args: Parameters<F["delete"]>): ReturnType<F["delete"]>;
 }
 
 module.exports = Filetype;

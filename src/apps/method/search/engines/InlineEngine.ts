@@ -3,7 +3,7 @@ const a_IEngine: typeof IEngine = importModule(
 ) as typeof IEngine;
 
 class InlineEngine extends a_IEngine {
-  protected options(): Record<string, never> {
+  protected options() {
     try {
       return {};
     }

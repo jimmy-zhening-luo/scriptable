@@ -1,12 +1,23 @@
 abstract class IEngine {
-  constructor(public readonly app: string) {}
+  constructor(
+    public readonly app: string,
+  ) {}
 
-  public parseQueryToAction(query: Query): SearchOutput {
+  public parseQueryToAction(
+    query: Query,
+  ) {
     try {
       return {
-        app: this.app,
-        action: this.transform(query),
-        ...this.options(query),
+        app: this
+          .app,
+        action: this
+          .transform(
+            query,
+          ),
+        ...this
+          .options(
+            query,
+          ),
       };
     }
     catch (e) {
@@ -17,9 +28,14 @@ abstract class IEngine {
     }
   }
 
-  protected transform(query: Query): string | string[] {
+  protected transform(
+    query: Query,
+  ):
+    | string
+    | string[] {
     try {
-      return query.natural;
+      return query
+        .natural;
     }
     catch (e) {
       throw new EvalError(

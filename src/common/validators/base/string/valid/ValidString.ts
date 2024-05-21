@@ -14,22 +14,28 @@ class ValidString<
     chars: Array<
       ConstructorParameters<typeof CharSet>[1]
     >,
-    min: number,
-    max: number = Infinity,
-    negate: boolean = false,
+    min = 1,
+    max = Infinity,
+    negate = false,
     cleanOptions: Parameters<ValidString<T, string>["clean"]>[1] = {},
   ) {
     try {
-      this.string = new this.BoundString<T, `Valid:${literalful<V>}`>(
+      this.string = new this
+        .BoundString<
+        T,
+         `Valid:${literalful<V>}`
+      >(
         min,
         max,
-        this.clean(
-          input,
-          cleanOptions,
-        ),
+        this
+          .clean(
+            input,
+            cleanOptions,
+          ),
         negate,
         ...chars,
-      ).string;
+      )
+        .string;
     }
     catch (e) {
       throw new EvalError(
@@ -39,7 +45,7 @@ class ValidString<
     }
   }
 
-  public static get CharSet(): typeof CharSet {
+  public static get CharSet() {
     try {
       return importModule(
         "bound/charstring/charset/CharSet",
@@ -53,7 +59,7 @@ class ValidString<
     }
   }
 
-  private get BoundString(): typeof BoundString {
+  private get BoundString() {
     try {
       return importModule(
         "bound/BoundString",
@@ -67,9 +73,10 @@ class ValidString<
     }
   }
 
-  public toString(): ValidString<T, V>["string"] {
+  public toString() {
     try {
-      return this.string;
+      return this
+        .string;
     }
     catch (e) {
       throw new EvalError(
@@ -96,27 +103,29 @@ class ValidString<
       trimLeading?: string[];
       trimTrailing?: string[];
     },
-  ): string {
+  ) {
     try {
-      return this._trimEdge(
-        this._trimEdge(
-          raw[
-            toLower
-              ? "toLowerCase"
-              : "toString"
-          ]()[
-            trim
-              ? "trim"
-              : "toString"
-          ](),
-          "leading",
-          trimLeading,
-          trimLeadingExcept,
-        ),
-        "trailing",
-        trimTrailing,
-        trimTrailingExcept,
-      );
+      return this
+        ._trimEdge(
+          this
+            ._trimEdge(
+              raw[
+                toLower
+                  ? "toLowerCase"
+                  : "toString"
+              ]()[
+                trim
+                  ? "trim"
+                  : "toString"
+              ](),
+              "leading",
+              trimLeading,
+              trimLeadingExcept,
+            ),
+          "trailing",
+          trimTrailing,
+          trimTrailingExcept,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -128,42 +137,51 @@ class ValidString<
 
   private _trimEdge(
     string: string,
-    edge: "leading" | "trailing",
+    edge:
+      | "leading"
+      | "trailing",
     wordsToTrim: string[],
     trimExcept: boolean,
-  ): string {
+  ) {
     try {
-      let trimmed: string = string;
-      const lookFn:
-        | "startsWith"
-        | "endsWith" = edge === "leading"
+      let trimmed = string;
+      const lookFn =
+        edge === "leading"
           ? "startsWith"
           : "endsWith";
 
       wordsToTrim
         .filter(
-          (word: string): word is stringful =>
-            word !== "",
+          (word): word is stringful =>
+            word.length > 0,
         )
         .forEach(
-          (word: stringful): void => {
+          word => {
             while (
-              trimmed[lookFn](word) !== trimExcept
+              trimExcept !== trimmed[
+                lookFn
+              ](
+                word,
+              )
             )
               trimmed = lookFn === "startsWith"
-                ? trimmed.slice(
-                  trimExcept
-                    ? 1
-                    : word.length,
-                )
-                : trimmed.slice(
-                  0,
-                  0 - (
+                ? trimmed
+                  .slice(
                     trimExcept
                       ? 1
-                      : word.length
-                  ),
-                );
+                      : word
+                        .length,
+                  )
+                : trimmed
+                  .slice(
+                    0,
+                    0 - (
+                      trimExcept
+                        ? 1
+                        : word
+                          .length
+                    ),
+                  );
           },
         );
 

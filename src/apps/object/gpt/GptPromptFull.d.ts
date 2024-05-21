@@ -1,4 +1,6 @@
 declare type GptPromptFull = Record<
-  "system" | "user",
+  | "system"
+  | "user"
+  ,
   string
 >;

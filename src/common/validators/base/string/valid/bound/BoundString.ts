@@ -1,4 +1,4 @@
-const f_CharString: typeof CharString = importModule(
+const f_CharString = importModule(
   "charstring/CharString",
 ) as typeof CharString;
 
@@ -7,29 +7,29 @@ class BoundString<
   V extends string,
 > extends f_CharString<
     T,
-  `Bound:${
-    literalful<V>
-  }`
+    `Bound:${
+      literalful<V>
+    }`
   > {
   public readonly min: posint;
   public readonly max: posinfinint;
 
   constructor(
-    min: number = 1,
-    max: number = Infinity,
-    ...cStringCtorParams: ConstructorParameters<
-      typeof CharString
-    >
+    min = 1,
+    max = Infinity,
+    ...cStringCtorParams: ConstructorParameters<typeof CharString>
   ) {
     try {
-      const minInt: posint = BoundString.posint(
-        min,
-        "min",
-      );
-      const maxInt: posinfinint = BoundString.posinfinint(
-        max,
-        "max",
-      );
+      const minInt = BoundString
+        .posint(
+          min,
+          "min",
+        );
+      const maxInt = BoundString
+        .posinfinint(
+          max,
+          "max",
+        );
 
       if (minInt > maxInt)
         throw RangeError(
@@ -45,9 +45,15 @@ class BoundString<
           },
         );
       else {
-        super(...cStringCtorParams);
+        super(
+          ...cStringCtorParams,
+        );
 
-        if (this.string.length < minInt)
+        if (
+          minInt > this
+            .string
+            .length
+        )
           throw RangeError(
             `length < min`,
             {
@@ -63,7 +69,11 @@ class BoundString<
               },
             },
           );
-        else if (this.string.length > maxInt)
+        else if (
+          maxInt < this
+            .string
+            .length
+        )
           throw RangeError(
             `length > max`,
             {
@@ -81,8 +91,10 @@ class BoundString<
           );
         else
           [
-            this.min,
-            this.max,
+            this
+              .min,
+            this
+              .max,
           ] = [
             minInt,
             maxInt,
@@ -101,7 +113,7 @@ class BoundString<
     }
   }
 
-  private static get posint(): typeof PosInt {
+  private static get posint() {
     try {
       return importModule(
         "./common/types/safe/acceptors/number/sets/PosInt",
@@ -115,7 +127,7 @@ class BoundString<
     }
   }
 
-  private static get posinfinint(): typeof PosInfinInt {
+  private static get posinfinint() {
     try {
       return importModule(
         "./common/types/safe/acceptors/number/sets/PosInfinInt",

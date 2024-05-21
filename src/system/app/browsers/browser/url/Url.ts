@@ -3,15 +3,27 @@ class Url {
   public readonly host: string;
   public readonly port: Null<posint>;
   private _path: stringful[] = [];
-  private _query: Record<stringful, string> = {};
+  private _query: Record<
+    stringful,
+    string
+  > = {};
   private _fragment: string = "";
 
   constructor(
-    base: string | Url,
+    base:
+      | string
+      | Url,
     host?: string,
     port?: Null<number>,
-    path?: string | string[],
-    query?: string | Record<string, string>,
+    path?:
+      | string
+      | string[],
+    query?:
+      | string
+      | Record<
+        string,
+        string
+      >,
     fragment?: string,
   ) {
     try {
@@ -24,9 +36,10 @@ class Url {
             path: this.path,
             query: this.query,
             fragment: this.fragment,
-          } = this.parse(
-            base,
-          )
+          } = this
+            .parse(
+              base,
+            )
         );
       else {
         (
@@ -47,9 +60,10 @@ class Url {
       if (typeof port !== "undefined")
         this.port = port === null
           ? null
-          : this.posint(
-            port,
-          );
+          : this
+            .posint(
+              port,
+            );
 
       if (typeof path !== "undefined")
         this.path = path;
@@ -68,45 +82,70 @@ class Url {
     }
   }
 
-  public get url(): stringful {
+  public get url() {
     try {
       return [
         [
           [
             [
-              this.scheme,
-              ...this.host
-                .length > 0
+              this
+                .scheme,
+              ...this.host.length > 0
                 ? [
-                    this.host as stringful,
+                    this
+                      .host as stringful,
                     ...this.port === null
                       ? []
-                      : [String(this.port) as stringful],
+                      : [
+                          String(
+                            this
+                              .port,
+                          ) as stringful,
+                        ],
                   ]
-                    .join(":") as stringful
+                    .join(
+                      ":",
+                    ) as stringful
                 : [""],
             ]
-              .join("://") as stringful,
-            ...this._path
-              .length > 0
-              ? [this.path as stringful]
+              .join(
+                "://",
+              ) as stringful,
+            ...this._path.length > 0
+              ? [
+                  this
+                    .path as stringful,
+                ]
               : [],
           ]
-            .join("/") as stringful,
-          ...Object.keys(
-            this._query,
-          )
+            .join(
+              "/",
+            ) as stringful,
+          ...Object
+            .keys(
+              this
+                ._query,
+            )
             .length > 0
-            ? [this.query as stringful]
+            ? [
+                this
+                  .query as stringful,
+              ]
             : [],
         ]
-          .join("?") as stringful,
-        ...this.fragment
-          .length > 0
-          ? [this.fragment as stringful]
+          .join(
+            "?",
+          ) as stringful,
+        ...this.fragment.length > 0
+          ? [
+              this
+                .fragment as stringful,
+            ]
           : [],
       ]
-        .join("#") as stringful;
+        .join(
+          "#",
+        ) as stringful;
     }
     catch (e) {
       throw new EvalError(
@@ -118,7 +157,8 @@ class Url {
 
   public get path(): string {
     try {
-      return this._path
+      return this
+        ._path
         .join(
           "/",
         );
@@ -135,10 +175,11 @@ class Url {
     try {
       return Object
         .entries(
-          this._query,
+          this
+            ._query,
         )
         .map(
-          (entry: [string, string]): string =>
+          entry =>
             entry
               .join(
                 "=",
@@ -156,9 +197,10 @@ class Url {
     }
   }
 
-  public get fragment(): string {
+  public get fragment() {
     try {
-      return this._fragment;
+      return this
+        ._fragment;
     }
     catch (e) {
       throw new EvalError(
@@ -168,7 +210,7 @@ class Url {
     }
   }
 
-  protected get stringful(): typeof Stringful {
+  protected get stringful() {
     try {
       return importModule(
         "./common/types/safe/acceptors/string/Stringful",
@@ -182,7 +224,7 @@ class Url {
     }
   }
 
-  protected get posint(): typeof PosInt {
+  protected get posint() {
     try {
       return importModule(
         "./common/types/safe/acceptors/number/sets/PosInt",
@@ -196,12 +238,16 @@ class Url {
     }
   }
 
-  public set path(
-    path: string | string[],
+  public set path( // TBD
+    path:
+      | string
+      | string[]
+    ,
   ) {
-    try { // TBD
+    try {
       if (typeof path === "string")
-        this._path = [];
+        this
+          ._path = [];
     }
     catch (e) {
       throw new EvalError(
@@ -211,12 +257,16 @@ class Url {
     }
   }
 
-  public set query(
-    query: string | Record<string, string>,
+  public set query( // TBD
+    query:
+      | string
+      | Record<string, string>
+    ,
   ) {
-    try { // TBD
+    try {
       if (typeof query === "string")
-        this._query = {};
+        this
+          ._query = {};
     }
     catch (e) {
       throw new EvalError(
@@ -226,11 +276,12 @@ class Url {
     }
   }
 
-  public set fragment(
+  public set fragment( // TBD
     fragment: string,
   ) {
-    try { // TBD
-      this._fragment = fragment;
+    try {
+      this
+        ._fragment = fragment;
     }
     catch (e) {
       throw new EvalError(
@@ -240,14 +291,16 @@ class Url {
     }
   }
 
-  public append(
-    subpath: string | string[],
-  ): this {
-    try { // TBD
+  public append( // TBD
+    subpath:
+      | string
+      | string[]
+    ,
+  ) {
+    try {
       if (typeof subpath === "string")
-        this._path = [];
-
-      return this;
+        this
+          ._path = [];
     }
     catch (e) {
       throw new EvalError(
@@ -257,14 +310,16 @@ class Url {
     }
   }
 
-  public addQuery(
-    params: string | Record<string, string>,
-  ): this {
-    try { // TBD
+  public addQuery( // TBD
+    params:
+      | string
+      | Record<string, string>
+    ,
+  ) {
+    try {
       if (typeof params === "string")
-        this._query = {};
-
-      return this;
+        this
+          ._query = {};
     }
     catch (e) {
       throw new EvalError(
@@ -274,9 +329,10 @@ class Url {
     }
   }
 
-  public toString(): stringful {
+  public toString() {
     try {
-      return this.url;
+      return this
+        .url;
     }
     catch (e) {
       throw new EvalError(
@@ -286,8 +342,10 @@ class Url {
     }
   }
 
-  private parse(url: string): ParsedUrl {
-    try { // TBD
+  private parse( // TBD
+    url: string,
+  ): ParsedUrl {
+    try {
       return {
         scheme: "foo" as stringful,
         host: url,

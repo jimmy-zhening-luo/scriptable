@@ -1,8 +1,8 @@
 abstract class App<
-  Class extends string,
   I,
-  O = never,
-  C extends ISetting = never,
+  O,
+  C extends ISetting,
+  Class extends string,
 > {
   private readonly t0: number = Date.now();
   private readonly _storage: Record<
@@ -18,15 +18,22 @@ abstract class App<
 
   constructor(
     protected readonly _class: literalful<Class>,
-    protected debug: boolean = false,
+    protected debug = false,
   ) {}
 
-  public get name(): stringful {
+  public get name() {
     try {
       if (this._name === null)
-        this._name = this.stringful(this.constructor.name);
+        this
+          ._name = this
+            .stringful(
+              this
+                .constructor
+                .name,
+            );
 
-      return this._name;
+      return this
+        ._name;
     }
     catch (e) {
       throw new EvalError(
@@ -36,15 +43,20 @@ abstract class App<
     }
   }
 
-  public get setting(): Setting<Class, C> {
+  public get setting() {
     try {
       if (this._setting === null)
-        this._setting = new this.Setting(
-          this._class,
-          this.name,
-        );
+        this
+          ._setting = new this
+            .Setting(
+              this
+                ._class,
+              this
+                .name,
+            );
 
-      return this._setting;
+      return this
+        ._setting;
     }
     catch (e) {
       throw new EvalError(
@@ -54,9 +66,11 @@ abstract class App<
     }
   }
 
-  public get app(): Setting<Class, C>["app"] {
+  public get app() {
     try {
-      return this.setting.app;
+      return this
+        .setting
+        .app;
     }
     catch (e) {
       throw new EvalError(
@@ -66,9 +80,11 @@ abstract class App<
     }
   }
 
-  public get user(): Setting<Class, C>["user"] {
+  public get user() {
     try {
-      return this.setting.user;
+      return this
+        .setting
+        .user;
     }
     catch (e) {
       throw new EvalError(
@@ -81,9 +97,12 @@ abstract class App<
   public get input(): I {
     try {
       if (typeof this._input === "undefined")
-        this._input = this.getInput;
+        this
+          ._input = this
+            .getInput;
 
-      return this._input;
+      return this
+        ._input;
     }
     catch (e) {
       throw new EvalError(
@@ -98,7 +117,11 @@ abstract class App<
       if (typeof this._inputful === "undefined") {
         const { input } = this;
 
-        if (this.falsy(input) || input === null || typeof input === "undefined")
+        if (
+          typeof input === "undefined"
+          || input === null
+          || this.falsy(input)
+        )
           throw new TypeError(
             `null input`,
             {
@@ -110,10 +133,12 @@ abstract class App<
             },
           );
         else
-          this._inputful = input;
+          this
+            ._inputful = input;
       }
 
-      return this._inputful;
+      return this
+        ._inputful;
     }
     catch (e) {
       throw new EvalError(
@@ -126,7 +151,8 @@ abstract class App<
   public get inputString(): string {
     try {
       if (typeof this._inputString === "undefined") {
-        const input: string | App<Class, I>["input"] = this.input ?? "";
+        const input = this
+          .input ?? "";
 
         if (typeof input !== "string")
           throw new TypeError(
@@ -139,10 +165,12 @@ abstract class App<
             },
           );
         else
-          this._inputString = input;
+          this
+            ._inputString = input;
       }
 
-      return this._inputString;
+      return this
+        ._inputString;
     }
     catch (e) {
       throw new EvalError(
@@ -155,12 +183,16 @@ abstract class App<
   public get inputStringful(): stringful {
     try {
       if (typeof this._inputStringful === "undefined")
-        this._inputStringful = this.stringful(
-          this.inputString,
-          `App.inputStringful`,
-        );
+        this
+          ._inputStringful = this
+            .stringful(
+              this
+                .inputString,
+              `App.inputStringful`,
+            );
 
-      return this._inputStringful;
+      return this
+        ._inputStringful;
     }
     catch (e) {
       throw new EvalError(
@@ -170,7 +202,7 @@ abstract class App<
     }
   }
 
-  protected get stringful(): typeof Stringful {
+  protected get stringful() {
     try {
       return importModule(
         "./common/types/safe/acceptors/string/Stringful",
@@ -184,7 +216,7 @@ abstract class App<
     }
   }
 
-  protected get Timestamp(): typeof Timestamp {
+  protected get Timestamp() {
     try {
       return importModule(
         "./common/formats/time/Timestamp",
@@ -198,7 +230,7 @@ abstract class App<
     }
   }
 
-  private get Setting(): typeof Setting {
+  private get Setting() {
     try {
       return importModule(
         "filetypes/Setting",
@@ -212,7 +244,7 @@ abstract class App<
     }
   }
 
-  private get Storage(): typeof Storage {
+  private get Storage() {
     try {
       return importModule(
         "filetypes/Storage",
@@ -226,7 +258,7 @@ abstract class App<
     }
   }
 
-  private get Key(): typeof Key {
+  private get Key() {
     try {
       return importModule(
         "filetypes/Key",
@@ -240,7 +272,7 @@ abstract class App<
     }
   }
 
-  private get ErrorHandler(): typeof ErrorHandler {
+  private get ErrorHandler() {
     try {
       return importModule(
         "error/ErrorHandler",
@@ -254,37 +286,47 @@ abstract class App<
     }
   }
 
-  protected abstract get getInput(): App<Class, I>["input"];
+  protected abstract get getInput(): App<I, O, C, Class>["input"];
 
   public run(): NonUndefined<O> {
     try {
       try {
-        const _output: NonUndefined<O> = this.runtime();
+        const _output = this
+          .runtime();
 
         if (this.debug) {
           const t1: number = Date.now();
 
-          this.write(
-            `${
-              new this.Timestamp().full
-            } :: ${
-              t1 - this.t0
-            } ms : ${
-              t1
-            }`,
-            `_runtime-${
-              this.name
-            }.txt`,
-            "line",
-          );
+          this
+            .write(
+              `${
+                new this
+                  .Timestamp()
+                  .full
+              } :: ${
+                t1 - this
+                  .t0
+              } ms : ${
+                t1
+              }`,
+              `_runtime-${
+                this
+                  .name
+              }.txt`,
+              "line",
+            );
         }
 
-        return this.setOutput(_output);
+        return this
+          .setOutput(
+            _output,
+          );
       }
       catch (e) {
         throw new Error(
           `${
-            this.name
+            this
+              .name
           }: runtime`,
           { cause: e },
         );
@@ -305,15 +347,25 @@ abstract class App<
   }
 
   public read(
-    filename?: boolean | string,
+    filenameOrError?:
+      | boolean
+      | string,
     errorNotFound?: boolean,
-  ): ReturnType<Storage<Class>["read"]> {
+  ) {
     try {
-      return typeof filename === "boolean"
-        ? this.storage()
-          .read(filename)
-        : this.storage(filename)
-          .read(errorNotFound);
+      return typeof filenameOrError === "boolean"
+        ? this
+          .storage()
+          .read(
+            filenameOrError,
+          )
+        : this
+          .storage(
+            filenameOrError,
+          )
+          .read(
+            errorNotFound,
+          );
     }
     catch (e) {
       throw new EvalError(
@@ -325,10 +377,12 @@ abstract class App<
 
   public readful(
     filename?: string,
-  ): ReturnType<Storage<Class>["readful"]> {
+  ) {
     try {
       return this
-        .storage(filename)
+        .storage(
+          filename,
+        )
         .readful();
     }
     catch (e) {
@@ -340,14 +394,20 @@ abstract class App<
   }
 
   public data<D>(
-    filename?: boolean | string,
+    filenameOrError?:
+      | boolean
+      | string,
     errorNotFound?: boolean,
   ): Null<D> {
     try {
-      return typeof filename === "boolean"
-        ? this.storage()
-          .data<D>(filename)
-        : this.storage(filename)
+      return typeof filenameOrError === "boolean"
+        ? this
+          .storage()
+          .data<D>(filenameOrError)
+        : this
+          .storage(
+            filenameOrError,
+          )
           .data<D>(errorNotFound);
     }
     catch (e) {
@@ -361,11 +421,18 @@ abstract class App<
   public write(
     data: unknown,
     filename?: string,
-    overwrite?: Parameters<Storage<Class>["write"]>[1],
-  ): this {
+    overwrite?:
+      | boolean
+      | "overwrite"
+      | "append"
+      | "line"
+    ,
+  ) {
     try {
       this
-        .storage(filename)
+        .storage(
+          filename,
+        )
         .write(
           data,
           overwrite,
@@ -383,11 +450,13 @@ abstract class App<
 
   public load(
     handle: string,
-  ): ReturnType<Key<Class>["load"]> {
+  ) {
     try {
       return this
-        .key(handle)
-        .readful();
+        .key(
+          handle,
+        )
+        .load();
     }
     catch (e) {
       throw new EvalError(
@@ -399,10 +468,12 @@ abstract class App<
 
   public roll(
     handle: string,
-  ): ReturnType<Key<Class>["roll"]> {
+  ) {
     try {
-      return this
-        .key(handle)
+      this
+        .key(
+          handle,
+        )
         .roll();
     }
     catch (e) {
@@ -415,21 +486,30 @@ abstract class App<
 
   protected storage(
     filename?: string,
-  ): Storage<Class> {
+  ) {
     try {
-      const cacheId: string = filename ?? "";
-      const cached: Null<Storage<Class>> = this._storage[cacheId] ?? null;
+      const cacheId = filename ?? "";
+      const cached = this
+        ._storage[
+          cacheId
+        ] ?? null;
 
       if (cached !== null)
         return cached;
       else {
-        const newStorage: Storage<Class> = new this.Storage(
-          this._class,
-          this.name,
-          filename,
-        );
+        const newStorage: Storage<Class> = new this
+          .Storage(
+            this
+              ._class,
+            this
+              .name,
+            filename,
+          );
 
-        this._storage[cacheId] = newStorage;
+        this
+          ._storage[
+            cacheId
+          ] = newStorage;
 
         return newStorage;
       }
@@ -444,20 +524,32 @@ abstract class App<
 
   protected key(
     handle: string,
-  ): Key<Class> {
+  ) {
     try {
-      const cached: Null<Key<Class>> = this._keys[handle] ?? null;
+      const cached = this
+        ._keys[
+          handle
+        ] ?? null;
 
       if (cached !== null)
         return cached;
       else {
-        const newKey: Key<Class> = new this.Key(
-          this._class,
-          this.name,
-          this.stringful(handle),
-        );
+        const newKey: Key<Class> = new this
+          .Key(
+            this
+              ._class,
+            this
+              .name,
+            this
+              .stringful(
+                handle,
+              ),
+          );
 
-        this._keys[handle] = newKey;
+        this
+          ._keys[
+            handle
+          ] = newKey;
 
         return newKey;
       }
@@ -470,23 +562,43 @@ abstract class App<
     }
   }
 
-  protected falsy(value: unknown): value is (undefined | null) & I {
+  protected falsy(
+    value: unknown,
+  ): value is
+  & I
+  & (
+    | undefined
+    | null
+    ) {
     try {
-      const v: {} = value ?? false;
+      const v = value ?? false;
 
-      return v === false || (
-        typeof v === "string"
-          ? Number(v) === 0
-          : typeof v === "object"
-            ? Object.keys(v).length === 0
-            : Array.isArray(v)
-              ? v.flat(Infinity).length === 0
-              : typeof v === "number"
-                ? v === 0 || Number.isNaN(v)
-                : typeof v === "bigint"
-                  ? Number(v) === 0
-                  : false
-      );
+      return v === false
+        || (
+          typeof v === "string"
+            ? Number(v) === 0
+            : typeof v === "object"
+              ? Object
+                .keys(
+                  v,
+                )
+                .length === 0
+              : Array.isArray(v)
+                ? v
+                  .flat(
+                    Infinity,
+                  )
+                  .length === 0
+                : typeof v === "number"
+                  ? v === 0
+                  || Number
+                    .isNaN(
+                      v,
+                    )
+                  : typeof v === "bigint"
+                    ? Number(v) === 0
+                    : false
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -496,12 +608,12 @@ abstract class App<
     }
   }
 
-  public abstract runtime(): ReturnType<App<Class, I, O>["run"]>;
-  protected abstract setOutput(runtimeOutput: ReturnType<App<Class, I, O>["run"]>): ReturnType<App<Class, I, O>["run"]>;
-  private _input?: App<Class, I>["input"];
-  private _inputful?: App<Class, I>["inputful"];
-  private _inputString?: App<Class, I>["inputString"];
-  private _inputStringful?: App<Class, I>["inputStringful"];
+  public abstract runtime(): ReturnType<App<I, O, C, Class>["run"]>;
+  protected abstract setOutput(runtimeOutput: ReturnType<App<I, O, C, Class>["run"]>): ReturnType<App<I, O, C, Class>["run"]>;
+  private _input?: App<I, O, C, Class>["input"];
+  private _inputful?: App<I, O, C, Class>["inputful"];
+  private _inputString?: App<I, O, C, Class>["inputString"];
+  private _inputStringful?: App<I, O, C, Class>["inputStringful"];
 }
 
 module.exports = App;

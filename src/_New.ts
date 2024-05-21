@@ -4,7 +4,7 @@
 "use strict";
 
 namespace New {
-  const shortcut: typeof Shortcut = importModule("system/Shortcut") as typeof Shortcut;
+  const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class New extends shortcut<
     never,

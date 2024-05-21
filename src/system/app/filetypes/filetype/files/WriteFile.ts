@@ -1,4 +1,4 @@
-const w_IFile: typeof IFile = importModule(
+const w_IFile = importModule(
   "file/IFile",
 ) as typeof IFile;
 

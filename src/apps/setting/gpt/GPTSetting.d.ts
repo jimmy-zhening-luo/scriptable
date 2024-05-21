@@ -7,11 +7,17 @@ declare type GptSetting = {
       string
     >;
     plugins: Record<
-    | "location"
+      "location"
       ,
       string
     >;
-    api: Record<"host" | "version" | "action", string>;
+    api: Record<
+      | "host"
+      | "version"
+      | "action"
+      ,
+      string
+    >;
     models: Record<
       | "ultra"
       | "fast"
@@ -31,8 +37,19 @@ declare type GptSetting = {
     >;
   };
   user: {
-    id: Record<"token" | "org", string>;
+    id: Record<
+      | "token"
+      | "org"
+      ,
+      string
+    >;
     defaults: GptProps;
-    presets: Record<string, Unrequire<GptPromptFull, "user">>;
+    presets: Record<
+      string,
+      Unrequire<
+        GptPromptFull,
+        "user"
+      >
+    >;
   };
 };

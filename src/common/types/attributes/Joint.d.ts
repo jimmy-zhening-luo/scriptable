@@ -1,11 +1,20 @@
 declare const joined: unique symbol;
-
 type Joined<A> = { [joined]: A };
 
 declare type Joint<
-  Outer extends stringful,
-  Inner extends stringful,
-  Ful extends boolean = false,
-> = Ful extends true
-  ? Outer & Joined<Arrayful<Inner>>
-  : string & Joined<Inner[]>;
+  Out extends stringful,
+  In extends stringful,
+  Full extends boolean = false,
+> = Full extends true
+  ?
+  & Out
+  & Joined<
+    Arrayful<
+      In
+    >
+  >
+  :
+    & string
+    & Joined<
+      In[]
+    >;

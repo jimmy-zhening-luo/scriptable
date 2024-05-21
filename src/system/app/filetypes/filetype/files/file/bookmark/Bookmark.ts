@@ -6,7 +6,8 @@ class Bookmark {
   constructor(
     bookmark:
       | string
-      | Bookmark,
+      | Bookmark
+    ,
   ) {
     try {
       if (typeof bookmark === "string") {
@@ -47,7 +48,7 @@ class Bookmark {
     }
   }
 
-  private get stringful(): typeof Stringful {
+  private get stringful() {
     try {
       return importModule(
         "./common/types/safe/acceptors/string/Stringful",
@@ -61,7 +62,7 @@ class Bookmark {
     }
   }
 
-  public static [Symbol.hasInstance](instance: unknown): boolean {
+  public static [Symbol.hasInstance](instance: unknown) {
     try {
       return (
         instance !== null
@@ -77,9 +78,10 @@ class Bookmark {
     }
   }
 
-  public toString(): string {
+  public toString() {
     try {
-      return this.path;
+      return this
+        .path;
     }
     catch (e) {
       throw new EvalError(

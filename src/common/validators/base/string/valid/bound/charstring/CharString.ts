@@ -11,16 +11,18 @@ class CharString<
   >;
 
   constructor(
-    input: string = "",
+    input: string,
     ...charsets: ConstructorParameters<typeof CharSet>
   ) {
     try {
-      this.charset = new this.CharSet(
-        ...charsets,
-      );
+      this.charset = new this
+        .CharSet(
+          ...charsets,
+        );
 
       if (this.validate(input))
-        this.string = input;
+        this
+          .string = input;
       else
         throw new TypeError(
           `Invalid string`,
@@ -41,7 +43,7 @@ class CharString<
     }
   }
 
-  public get CharSet(): typeof CharSet {
+  public get CharSet() {
     try {
       return importModule(
         "charset/CharSet",
@@ -55,9 +57,10 @@ class CharString<
     }
   }
 
-  public toString(): CharString<T, V>["string"] {
+  public toString() {
     try {
-      return this.string;
+      return this
+        .string;
     }
     catch (e) {
       throw new EvalError(
@@ -74,12 +77,15 @@ class CharString<
       if (input.length < 1)
         return true;
       else if (
-        ([...input] as char[])
+        (
+          [...input] as char[]
+        )
           .every(
-            (c: char): c is validchar =>
-              this.charset
+            (char): char is validchar =>
+              this
+                .charset
                 .allows(
-                  c,
+                  char,
                 ),
           )
       )

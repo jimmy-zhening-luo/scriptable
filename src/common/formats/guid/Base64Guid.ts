@@ -1,6 +1,10 @@
-function Base64Guid(): base64guid {
-  function guidchars(guid: string): guidchars {
-    if (guid.length !== 32)
+function Base64Guid() {
+  function guidchars(
+    guid: string,
+  ) {
+    if (guid.length === 32)
+      return [...guid] as guidchars; // skip check bad char, will error later anyway
+    else
       throw new RangeError(
         `generated guid does not have 32 hex chars`,
         {
@@ -10,12 +14,14 @@ function Base64Guid(): base64guid {
           },
         },
       );
-    else
-      return [...guid] as guidchars; // skip check bad char, will error later anyway
   }
 
-  function base64guid(bg: string): base64guid {
+  function base64guid(
+    bg: string,
+  ) {
     if (bg.length !== 8)
+      return bg as base64guid; // skip check bad char, I don't care as this is not production code (yet)
+    else
       throw new RangeError(
         `base64-encoded guid does not have 8 chars`,
         {
@@ -25,11 +31,9 @@ function Base64Guid(): base64guid {
           },
         },
       );
-    else
-      return bg as base64guid; // skip check bad char, I don't care as this is not production code (yet)
   }
 
-  const hexBase10 = {
+  const hexcharToHex = {
     0: 0,
     1: 1,
     2: 2,
@@ -46,8 +50,8 @@ function Base64Guid(): base64guid {
     D: 13,
     E: 14,
     F: 15,
-  };
-  const base64Index: Tuple<base64char, 64> = [
+  } as const;
+  const base64ToBase64Char = [
     "A",
     "B",
     "C",
@@ -112,11 +116,19 @@ function Base64Guid(): base64guid {
     "9",
     "+",
     "/",
-  ];
+  ] as const;
 
   try {
-    const error: number[] = [];
-    const buffer = [
+    const buffer: Eightple<
+      | number[]
+      | Tuple<
+        number,
+        | 1
+        | 2
+        | 3
+        | 4
+      >
+    > = [
       [],
       [],
       [],
@@ -126,7 +138,7 @@ function Base64Guid(): base64guid {
       [],
       [],
     ];
-    const guid: guidchars = guidchars(
+    const guid = guidchars(
       UUID
         .string()
         .replaceAll(
@@ -135,49 +147,74 @@ function Base64Guid(): base64guid {
         ),
     );
 
-    for (let i = 0; i < 32; ++i)
-      (buffer[Math.floor(i / 4)] ?? error)
+    for (
+      let i = 0;
+      i < 32;
+      ++i
+    )
+      buffer[
+        Math
+          .floor(
+            i as base32 / 4,
+          ) as octal
+      ]
         .push(
-          hexBase10[guid[i] as keyof typeof hexBase10],
+          hexcharToHex[
+            guid[
+              i as base32
+            ]
+          ],
         );
 
-    if (error.length > 0)
+    const shortGuid = base64guid(
+      buffer
+        .map(
+          (quad): number =>
+            quad
+              .reduce(
+                (
+                  acc: number,
+                  vi: number,
+                ): number =>
+                  acc + vi,
+                0,
+              ),
+        )
+        .filter(
+          (word): word is base64 =>
+            word >= 0
+            && word < 64,
+        )
+        .map(
+          word =>
+            base64ToBase64Char[
+              word
+            ],
+        )
+        .filter(
+          (base64char): base64char is base64char =>
+            typeof base64char === "string",
+        )
+        .join(
+          "",
+        ),
+    );
+
+    if (shortGuid.length === 8)
+      return shortGuid;
+    else
       throw new RangeError(
-        `hex guid char placed into out-of-range word buffer`,
+        `generated base64-encoded guid does not have 8 chars`,
         {
           cause: {
             guid,
-            error,
-            buffer,
+            shortGuid,
+            length: {
+              guid: guid.length,
+              shortGuid: shortGuid.length,
+            },
           },
         },
-      );
-    else
-      return base64guid(
-        buffer
-          .map(
-            (quad): number =>
-              quad
-                .reduce(
-                  (
-                    acc: number,
-                    vi: number,
-                  ): number =>
-                    acc + vi,
-                  0,
-                ),
-          )
-          .map(
-            (word10): Null<base64char> =>
-              base64Index[word10] ?? null,
-          )
-          .filter(
-            (word64): word64 is base64char =>
-              word64 !== null,
-          )
-          .join(
-            "",
-          ),
       );
   }
   catch (e) {

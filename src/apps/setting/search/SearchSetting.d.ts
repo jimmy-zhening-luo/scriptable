@@ -13,9 +13,13 @@ declare type SearchSetting = {
     >;
   };
   user: {
-    alias: Record<string, K>;
-    engine: Record<
+    alias: Record<
       string,
+      K
+    >;
+    engine: Record<
+      string
+      ,
       | string
       | string[]
       | InlineEngineSetting
@@ -26,19 +30,49 @@ declare type SearchSetting = {
   };
 };
 
-declare type InlineEngineSetting = EngineProp<"inline">;
-declare type FindEngineSetting = EngineProp<"find">;
-declare type ShortcutEngineSetting = EngineProp<"shortcut"> & {
-  output?: boolean;
-};
-declare type UrlEngineSetting = EngineProp<"url", string[]> & {
-  browser?:
-    | "api"
-    | "force"
-  ;
-  encode?:
-    | "%20"
-  ;
-};
+declare type InlineEngineSetting =
+  & EngineProp<
+    "inline"
+  >
+;
 
-type EngineProp<P extends string, T = string> = Record<P, string | T>;
+declare type FindEngineSetting =
+  & EngineProp<
+    "find"
+  >
+;
+
+declare type ShortcutEngineSetting =
+  & EngineProp<
+    "shortcut"
+  >
+  & {
+    output?: boolean;
+  }
+;
+
+declare type UrlEngineSetting =
+  & EngineProp<
+    "url",
+    string[]
+  >
+  & {
+    browser?:
+      | "api"
+      | "force"
+    ;
+    encode?:
+      | "%20"
+    ;
+  }
+;
+
+type EngineProp<
+  P extends string,
+  T = string,
+> = Record<
+  P
+  ,
+  | T
+  | string
+>;

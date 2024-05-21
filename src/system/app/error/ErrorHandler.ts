@@ -1,14 +1,16 @@
 class ErrorHandler {
-  public handle(e: Error): string {
+  public handle(
+    e: Error,
+  ) {
     try {
       const stack: ErrorLike[] = [e];
 
       for (let ei: ErrorLike = e; "cause" in ei; ei = ei.cause as ErrorLike)
         stack.push(ei.cause as ErrorLike);
 
-      const queue = [...stack]
+      const queue: ErrorLike[] = [...stack]
         .reverse();
-      const hoist: number = queue
+      const hoist = queue
         .findIndex(
           (e): e is ErrorLike<true> =>
             typeof e === "object"
@@ -49,11 +51,17 @@ class ErrorHandler {
     }
   }
 
-  private log(messages: string[]): void {
+  private log(
+    messages: string[],
+  ) {
     try {
-      console.error(
-        messages.join("\n"),
-      );
+      console
+        .error(
+          messages
+            .join(
+              "\n",
+            ),
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -63,16 +71,21 @@ class ErrorHandler {
     }
   }
 
-  private notify(messages: string[]): void {
+  private notify(
+    messages: string[],
+  ) {
     try {
       const n = new Notification();
 
       n.title = messages.shift() ?? "";
-      n.body = messages.join("\n");
+      n.body = messages
+        .join(
+          "\n",
+        );
       n.sound = "failure";
       n.schedule()
         .catch(
-          (n_e: unknown): never => {
+          (n_e: unknown) => {
             throw new Error(
               `Unhandled: Scriptable notification delivery failed`,
               { cause: n_e },
@@ -88,14 +101,18 @@ class ErrorHandler {
     }
   }
 
-  private print(e: ErrorLike): string {
+  private print(
+    e: ErrorLike,
+  ) {
     try {
       return typeof e === "object"
         && "message" in e
-        ? e.message
-        : this.quotelessStringify(
-          e,
-        );
+        ? e
+          .message
+        : this
+          .quotelessStringify(
+            e,
+          );
     }
     catch (e) {
       throw new EvalError(
@@ -105,34 +122,41 @@ class ErrorHandler {
     }
   }
 
-  private quotelessStringify(v: unknown): string {
+  private quotelessStringify(
+    v: unknown,
+  ): string {
     try {
       return Array.isArray(v)
         ? `[${
-          v.map(
-            (vi: unknown): string =>
-              this.quotelessStringify(
-                vi,
-              ),
-          )
+          v
+            .map(
+              (vi: unknown) =>
+                this
+                  .quotelessStringify(
+                    vi,
+                  ),
+            )
             .join(
               ", ",
             )
         }]`
-        : typeof v === "object" && v !== null
+        : typeof v === "object"
+        && v !== null
           ? Object
             .keys(
               v,
             )
             .map(
-              (k: string): string =>
+              k =>
                 `${k}: ${
                   this.quotelessStringify(
                     (v as Record<string, unknown>)[k],
                   )
                 }`,
             )
-            .join(", ")
+            .join(
+              ", ",
+            )
           : String(v);
     }
     catch (e) {

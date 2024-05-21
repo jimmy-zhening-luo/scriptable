@@ -1,11 +1,11 @@
-const set_Filetype: typeof Filetype = importModule(
+const se_Filetype = importModule(
   "filetype/Filetype",
 ) as typeof Filetype;
 
 class Setting<
   Class extends string,
   C extends ISetting,
-> extends set_Filetype<
+> extends se_Filetype<
     Class,
     "Setting"
   > {
@@ -34,12 +34,15 @@ class Setting<
   public get parsed(): C {
     try {
       if (this._cachedSetting === undefined) {
-        const parsedJson: unknown = JSON.parse(
-          this.readful(),
-        );
+        const parsedJson: unknown = JSON
+          .parse(
+            this
+              .readful(),
+          );
 
         if (parsedJson !== undefined)
-          this._cachedSetting = parsedJson as C;
+          this
+            ._cachedSetting = parsedJson as C;
         else
           throw new TypeError(
             `Setting file parsed to valid JSON, but has invalid schema`,
@@ -54,7 +57,8 @@ class Setting<
           );
       }
 
-      return this._cachedSetting;
+      return this
+        ._cachedSetting;
     }
     catch (e) {
       throw new EvalError(
@@ -77,7 +81,9 @@ class Setting<
           },
         );
       else
-        return this.parsed.app;
+        return this
+          .parsed
+          .app;
     }
     catch (e) {
       throw new EvalError(
@@ -100,7 +106,9 @@ class Setting<
           },
         );
       else
-        return this.parsed.user;
+        return this
+          .parsed
+          .user;
     }
     catch (e) {
       throw new EvalError(
@@ -113,6 +121,13 @@ class Setting<
   public write(): never {
     throw new ReferenceError(
       `Setting: write: Forbidden: Setting files are readonly`,
+      { cause: { subpath: this.subpath } },
+    );
+  }
+
+  public delete(): never {
+    throw new ReferenceError(
+      `Setting: delete: Forbidden: Setting files are readonly`,
       { cause: { subpath: this.subpath } },
     );
   }

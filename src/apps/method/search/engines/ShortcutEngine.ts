@@ -3,22 +3,24 @@ const s_IEngine: typeof IEngine = importModule(
 ) as typeof IEngine;
 
 class ShortcutEngine extends s_IEngine {
-  public readonly shortcut: stringful;
+  public readonly shortcut: string;
   public readonly output: boolean;
 
   constructor(
     shortcut: string,
-    output: boolean = false,
+    output = false,
   ) {
     try {
-      super("shortcut");
+      super(
+        "shortcut",
+      );
 
       if (shortcut.length < 1)
         throw new SyntaxError(
           `shortcut engine has no name`,
         );
       else {
-        this.shortcut = shortcut as stringful;
+        this.shortcut = shortcut;
         this.output = output;
       }
     }
@@ -30,7 +32,7 @@ class ShortcutEngine extends s_IEngine {
     }
   }
 
-  protected options(): Required<Pick<SearchOutput, "shortcut" | "output">> {
+  protected options() {
     try {
       return {
         shortcut: this.shortcut,

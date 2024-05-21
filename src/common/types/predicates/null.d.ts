@@ -1,9 +1,15 @@
-declare type Null<T> =
+declare type Null<
+  O,
+> =
   | null
-  | T
+  | O
 ;
 
-declare type Nullable<T> =
-  | null
-  | NonNullable<T>
-;
+declare type Nullable<
+  O,
+> =
+  Null<
+    NonNullable<
+      O
+    >
+  >;

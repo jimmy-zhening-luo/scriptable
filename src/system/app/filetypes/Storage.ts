@@ -1,12 +1,14 @@
-const stor_Filetype: typeof Filetype = importModule(
+const st_Filetype = importModule(
   "filetype/Filetype",
 ) as typeof Filetype;
 
-class Storage<Class extends string> extends stor_Filetype<
-  Class,
-  "Storage",
-  WriteFile
-> {
+class Storage<
+  Class extends string,
+> extends st_Filetype<
+    Class,
+    "Storage",
+    WriteFile
+  > {
   constructor(
     appClass: literalful<Class>,
     app: stringful,
@@ -35,29 +37,28 @@ class Storage<Class extends string> extends stor_Filetype<
       | boolean
       | "overwrite"
       | "append"
-      | "line" = true,
-  ): this {
+      | "line" = true
+    ,
+  ) {
     try {
       if (typeof data === "undefined" || data === null)
         throw new TypeError(
           `input is null or undefined`,
         );
-      else {
-        this._file.write(
-          typeof data === "string"
-          || typeof data === "number"
-          || typeof data === "boolean"
-            ? String(
-              data,
-            )
-            : JSON.stringify(
-              data,
-            ),
-          overwrite,
-        );
-
-        return this;
-      }
+      else
+        this
+          ._file
+          .write(
+            typeof data === "string"
+            || typeof data === "number"
+            || typeof data === "boolean"
+              ? String(data)
+              : JSON
+                .stringify(
+                  data,
+                ),
+            overwrite,
+          );
     }
     catch (e) {
       throw new EvalError(
@@ -67,11 +68,11 @@ class Storage<Class extends string> extends stor_Filetype<
     }
   }
 
-  public async delete(): Promise<this> {
+  public async delete() {
     try {
-      await this._file.delete();
-
-      return this;
+      await this
+        ._file
+        .delete();
     }
     catch (e) {
       throw new EvalError(

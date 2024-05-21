@@ -1,9 +1,9 @@
 class Timestamp {
   constructor(
-    public readonly moment: Date = new Date(),
+    public readonly moment = new Date(),
   ) {}
 
-  public get epoch(): number {
+  public get epoch() {
     try {
       return this
         .moment
@@ -17,12 +17,14 @@ class Timestamp {
     }
   }
 
-  public get full(): stringful {
+  public get full() {
     try {
       return `${
-        this.date
+        this
+          .date
       } ${
-        this.time
+        this
+          .time
       }` as stringful;
     }
     catch (e) {
@@ -33,7 +35,7 @@ class Timestamp {
     }
   }
 
-  public get date(): stringful {
+  public get date() {
     try {
       return this
         .moment
@@ -54,12 +56,14 @@ class Timestamp {
     }
   }
 
-  public get time(): stringful {
+  public get time() {
     try {
       return `${
-        this.local
+        this
+          .local
       }${
-        this.offset
+        this
+          .offset
       }` as stringful;
     }
     catch (e) {
@@ -70,7 +74,7 @@ class Timestamp {
     }
   }
 
-  public get local(): stringful {
+  public get local() {
     try {
       return this
         .moment
@@ -92,7 +96,7 @@ class Timestamp {
     }
   }
 
-  public get offset(): stringful {
+  public get offset() {
     try {
       return (
         this
@@ -116,9 +120,10 @@ class Timestamp {
     }
   }
 
-  public toString(): stringful {
+  public toString() {
     try {
-      return this.full;
+      return this
+        .full;
     }
     catch (e) {
       throw new EvalError(

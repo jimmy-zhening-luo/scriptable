@@ -53,7 +53,7 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public get isEmpty(): boolean {
+  public get isEmpty() {
     try {
       return this._nodes.length < 1;
     }

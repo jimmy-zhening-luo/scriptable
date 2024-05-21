@@ -3,18 +3,22 @@ const f_IEngine: typeof IEngine = importModule(
 ) as typeof IEngine;
 
 class FindEngine extends f_IEngine {
-  public readonly find: stringful;
+  public readonly find: string;
 
-  constructor(find: string) {
+  constructor(
+    find: string,
+  ) {
     try {
-      super("find");
+      super(
+        "find",
+      );
 
       if (find.length < 1)
         throw new SyntaxError(
           `no iOS Find provider specified`,
         );
       else
-        this.find = find as stringful;
+        this.find = find;
     }
     catch (e) {
       throw new EvalError(
@@ -24,7 +28,7 @@ class FindEngine extends f_IEngine {
     }
   }
 
-  protected options(): Required<Pick<SearchOutput, "find">> {
+  protected options() {
     try {
       return { find: this.find };
     }

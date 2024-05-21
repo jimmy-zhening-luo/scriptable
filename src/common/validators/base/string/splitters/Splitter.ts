@@ -1,9 +1,13 @@
-const iSplitter: typeof ISplitter = importModule(
+const iSplitter = importModule(
   "splitter/ISplitter",
 ) as typeof ISplitter;
 
-class Splitter extends iSplitter<string> {
-  protected filter(segments: string[]): string[] {
+class Splitter extends iSplitter<
+  string
+> {
+  protected filter(
+    segments: string[],
+  ) {
     try {
       return segments;
     }
