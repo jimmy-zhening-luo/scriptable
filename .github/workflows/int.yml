@@ -1,4 +1,4 @@
-name: Publish to Azure (int - push)
+name: Publish Azure (int/push)
 on:
   push:
     branches:
@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: int
-      url: https://${{ vars.AZ_ACCOUNT_NAME }}.blob.core.windows.net/${{ vars.AZ_CONTAINER_NAME }}
+      url: https://${{ vars.AZ_ACCOUNT }}.blob.core.windows.net/${{ vars.AZ_CONTAINER }}/${{ vars.PACKAGE }}.zip
     name: Publish (int)
     steps:
       - name: Checkout Source
@@ -25,15 +25,13 @@ jobs:
       - name: Build/Pack Distro
         id: buildpack
         run: npm run pack
-      - name: Azure - Delete Old Distro
-        id: delold
+      - name: Zip Distro
+        id: zip
+        run: |
+          zip -r ${{ vars.PACKAGE }}.zip ${{ vars.PACKAGE }}
+      - name: Azure - Publish Distro
+        id: pub
         uses: Azure/cli@v1
         with:
           inlineScript: |
-            az storage blob delete-batch -s '${{ vars.AZ_CONTAINER_NAME }}' --pattern '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}/*' --account-name '${{ vars.AZ_ACCOUNT_NAME }}' --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
-      - name: Azure - Publish New Distro
-        id: pubnew
-        uses: Azure/cli@v1
-        with:
-          inlineScript: |
-            az storage blob upload-batch -d '${{ vars.AZ_CONTAINER_NAME }}' -s '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}' --pattern '*.js' --destination-path '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}' --overwrite 'true' --account-name '${{ vars.AZ_ACCOUNT_NAME }}' --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
+            az storage blob upload -c ${{ vars.AZ_CONTAINER }} -f ${{ vars.PACKAGE }}.zip -n ${{ vars.PACKAGE }}.zip --overwrite true --account-name ${{ vars.AZ_ACCOUNT }} --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
