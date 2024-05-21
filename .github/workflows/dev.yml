@@ -34,4 +34,4 @@ jobs:
         uses: Azure/cli@v1
         with:
           inlineScript: |
-            az storage blob upload -c ${{ vars.AZ_CONTAINER_NAME }} -f ${{ vars.AZ_CONTAINER_DESTINATION_PATH }}.zip -n '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}' --overwrite 'true' --account-name '${{ vars.AZ_ACCOUNT_NAME }}' --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
+            az storage blob upload -c '${{ vars.AZ_CONTAINER_NAME }}' -f '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}.zip' -n '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}.zip' --overwrite 'true' --account-name '${{ vars.AZ_ACCOUNT_NAME }}' --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
