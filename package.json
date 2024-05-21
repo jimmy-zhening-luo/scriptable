@@ -28,7 +28,7 @@
     "dev": "npm run test"
   },
   "devDependencies": {
-    "@jimbojet/lint": "~8.0.14",
+    "@jimbojet/lint": "~8.0.15",
     "@stylistic/eslint-plugin": "~2.1.0",
     "@types/node": "^20.12.12",
     "@types/scriptable-ios": "^1.7.7",
