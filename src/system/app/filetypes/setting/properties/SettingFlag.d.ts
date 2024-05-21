@@ -1,13 +1,13 @@
 declare type SettingFlag<
-  K extends string
+  K extends string,
 > = K extends K
   ? string extends K
-    ? Partial<
+    ? never
+    : Partial<
       Record<
         K
         ,
         boolean
       >
     >
-    : never
   : never;
