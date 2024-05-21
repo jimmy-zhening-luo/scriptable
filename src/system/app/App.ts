@@ -13,17 +13,15 @@ abstract class App<
     string,
     Key<Class>
   > = {};
-  private _name: Null<stringful> = null;
-  private _setting: Null<Setting<Class, C>> = null;
 
   constructor(
     protected readonly _class: literalful<Class>,
     protected debug = false,
   ) {}
 
-  public get name() {
+  public get name(): stringful {
     try {
-      if (this._name === null)
+      if (typeof this._name === "undefined")
         this
           ._name = this
             .stringful(
@@ -43,9 +41,9 @@ abstract class App<
     }
   }
 
-  public get setting() {
+  public get setting(): Setting<Class, C> {
     try {
-      if (this._setting === null)
+      if (typeof this._setting === "undefined")
         this
           ._setting = new this
             .Setting(
@@ -291,11 +289,12 @@ abstract class App<
   public run(): NonUndefined<O> {
     try {
       try {
-        const _output = this
+        const output = this
           .runtime();
 
         if (this.debug) {
-          const t1: number = Date.now();
+          const t1 = Date
+            .now();
 
           this
             .write(
@@ -319,7 +318,7 @@ abstract class App<
 
         return this
           .setOutput(
-            _output,
+            output,
           );
       }
       catch (e) {
@@ -610,6 +609,8 @@ abstract class App<
 
   public abstract runtime(): ReturnType<App<I, O, C, Class>["run"]>;
   protected abstract setOutput(runtimeOutput: ReturnType<App<I, O, C, Class>["run"]>): ReturnType<App<I, O, C, Class>["run"]>;
+  private _name?: App<I, O, C, Class>["name"];
+  private _setting?: App<I, O, C, Class>["setting"];
   private _input?: App<I, O, C, Class>["input"];
   private _inputful?: App<I, O, C, Class>["inputful"];
   private _inputString?: App<I, O, C, Class>["inputString"];
