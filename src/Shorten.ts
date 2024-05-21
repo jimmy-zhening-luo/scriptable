@@ -26,9 +26,7 @@ namespace Shorten {
                 (url): Dyad<string> =>
                   [
                     this
-                      .base64guid(
-                        url,
-                      ),
+                      .base64guid(),
                     url,
                   ],
               )
