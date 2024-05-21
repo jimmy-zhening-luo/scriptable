@@ -25,15 +25,13 @@ jobs:
       - name: Build/Pack Distro
         id: buildpack
         run: npm run pack
-      - name: Azure - Delete Old Distro
-        id: delold
-        uses: Azure/cli@v1
-        with:
-          inlineScript: |
-            az storage blob delete-batch -s '${{ vars.AZ_CONTAINER_NAME }}' --pattern '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}/*' --account-name '${{ vars.AZ_ACCOUNT_NAME }}' --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
+      - name: Zip Distro
+        id: zip
+        run: |
+          zip -r ${{ vars.AZ_CONTAINER_DESTINATION_PATH }}.zip ${{ vars.AZ_CONTAINER_DESTINATION_PATH }}
       - name: Azure - Publish New Distro
         id: pubnew
         uses: Azure/cli@v1
         with:
           inlineScript: |
-            az storage blob upload-batch -d '${{ vars.AZ_CONTAINER_NAME }}' -s '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}' --pattern '*.js' --destination-path '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}' --overwrite 'true' --account-name '${{ vars.AZ_ACCOUNT_NAME }}' --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
+            az storage blob upload -c ${{ vars.AZ_CONTAINER_NAME }} -f ${{ vars.AZ_CONTAINER_DESTINATION_PATH }}.zip -n '${{ vars.AZ_CONTAINER_DESTINATION_PATH }}' --overwrite 'true' --account-name '${{ vars.AZ_ACCOUNT_NAME }}' --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
