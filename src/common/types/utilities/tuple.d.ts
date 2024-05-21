@@ -27,8 +27,10 @@ declare type Tuple<
     ] extends Length
       ? Head
       : Tuple<
-        I,
-        Length,
+        I
+        ,
+        Length
+        ,
         [
           ...Head,
           I,
