@@ -1,4 +1,4 @@
-declare type SettingFlags<
+declare type SettingFlag<
   K extends string
 > = K extends K
   ? string extends K

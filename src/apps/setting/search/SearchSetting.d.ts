@@ -46,9 +46,9 @@ declare type ShortcutEngineSetting =
   & EngineProp<
     "shortcut"
   >
-  & {
-    output?: boolean;
-  }
+  & SettingFlag<
+    "output"
+  >
 ;
 
 declare type UrlEngineSetting =
@@ -70,9 +70,14 @@ declare type UrlEngineSetting =
 type EngineProp<
   P extends string,
   T = string,
-> = Record<
-  P
-  ,
-  | T
-  | string
->;
+> =
+  & Record<
+    P
+    ,
+    | T
+    | string
+  >
+  & SettingFlag<
+    "normalizeQuotes"
+  >
+;
