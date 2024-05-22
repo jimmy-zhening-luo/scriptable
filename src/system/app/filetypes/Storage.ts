@@ -44,7 +44,7 @@ class Storage<
         throw new TypeError(
           `undefined data`,
         );
-      else if (typeof data !== object)
+      else if (typeof data !== "object")
         this
           .file
           .write(
