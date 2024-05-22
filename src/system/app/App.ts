@@ -359,6 +359,17 @@ abstract class App<
     }
   }
 
+  public synthetic<A>(
+    app: A,
+    input: A extends App<unknown, infer O, unknown, unknown> ? I : never,
+  ): A extends App<unknown, infer O, unknown, unknown> ? O : never
+  {
+    if (A instanceof App)
+      return A.run();
+    else
+      throw new Error("foo");
+  }
+
   public read(
     filenameOrError?:
       | boolean
