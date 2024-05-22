@@ -459,88 +459,74 @@ abstract class IFile {
   public write(
     string: string,
     overwrite:
-      | boolean
-      | "overwrite"
+      | "line"
       | "append"
-      | "line" = false
+      | boolean = false
     ,
   ) {
     try {
-      if (this.isDirectory)
+      if (
+        this
+          .isDirectory
+      )
         throw new ReferenceError(
-          `Unwriteable: path points to folder`,
+          `path is folder`,
         );
       else
-        if (this.isFile)
-          if (overwrite === false)
+        if (
+          this
+            .isFile
+        )
+          if (
+            overwrite === false
+          )
             throw new TypeError(
-              `Unwriteable: file already exists && !overwrite`,
+              `file exists & overwrite false`,
             );
           else
-            try {
-              this
-                .manager
-                .writeString(
-                  this
-                    .path,
-                  overwrite === "append"
-                    ? `${
-                      this
-                        .read()
-                    }${
-                      string
-                    }`
-                    : overwrite === "line"
-                      ? `${
-                        string
-                      }\n${
-                        this
-                          .read()
-                      }`
-                      : string,
-                );
-            }
-            catch (e) {
-              throw new EvalError(
-                `Unexpected: FileManager tried but failed to overwrite data to existing file`,
-                { cause: e },
-              );
-            }
-
-        else {
-          if (!this.parent.isDirectory)
-            try {
-              this
-                .manager
-                .createDirectory(
-                  this
-                    .parent
-                    .path,
-                  true,
-                );
-            }
-            catch (e) {
-              throw new EvalError(
-                `Unexpected: FileManager tried to create parent folder because both file and parent do not exist, but failed`,
-                { cause: e },
-              );
-            }
-
-          try {
             this
               .manager
               .writeString(
                 this
                   .path,
-                string,
+                overwrite === "append"
+                  ? `${
+                    this
+                      .read()
+                  }${
+                    string
+                  }`
+                  : overwrite === "line"
+                    ? `${
+                      string
+                    }\n${
+                      this
+                        .read()
+                    }`
+                    : string,
               );
-          }
-          catch (e) {
-            throw new EvalError(
-              `Unexpected: FileManager tried but failed to write data to new file`,
-              { cause: e },
+        else {
+          if (
+            !this
+              .parent
+              .isDirectory
+          )
+            this
+              .manager
+              .createDirectory(
+                this
+                  .parent
+                  .path,
+                true,
+              );
+
+          this
+            .manager
+            .writeString(
+              this
+                .path,
+              string,
             );
-          }
         }
     }
     catch (e) {

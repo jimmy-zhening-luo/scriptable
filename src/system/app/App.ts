@@ -498,10 +498,9 @@ abstract class App<
     data: unknown,
     filename?: string,
     overwrite?:
-      | boolean
-      | "overwrite"
-      | "append"
       | "line"
+      | "append"
+      | boolean
     ,
   ) {
     try {

@@ -3,7 +3,7 @@ abstract class Filetype<
   Subtype extends string,
   F extends IFile = ReadOnlyFile,
 > {
-  protected readonly _file: F;
+  protected readonly file: F;
 
   constructor(
     File: new(...args: ConstructorParameters<typeof IFile>)=> IFile & F,
@@ -12,7 +12,7 @@ abstract class Filetype<
     ...subpaths: string[]
   ) {
     try {
-      this._file = new File(
+      this.file = new File(
         this
           .root(
             filetype,
@@ -60,7 +60,7 @@ abstract class Filetype<
   public get subpath() {
     try {
       return this
-        ._file
+        .file
         .subpath;
     }
     catch (e) {
@@ -90,7 +90,7 @@ abstract class Filetype<
   ) {
     try {
       return this
-        ._file
+        .file
         .read(
           ...error,
         );
@@ -106,7 +106,7 @@ abstract class Filetype<
   public readful(): stringful {
     try {
       return this
-        ._file
+        .file
         .readful(
           this
             .subpath,
@@ -125,7 +125,7 @@ abstract class Filetype<
   ): Null<D> {
     try {
       const string = this
-        ._file
+        .file
         .read(
           ...error,
         )
@@ -149,7 +149,7 @@ abstract class Filetype<
   public toString() {
     try {
       return this
-        ._file
+        .file
         .toString();
     }
     catch (e) {

@@ -34,30 +34,55 @@ class Storage<
   public write(
     data: unknown,
     overwrite:
-      | boolean
-      | "overwrite"
+      | "line"
       | "append"
-      | "line" = true
+      | boolean = true
     ,
   ) {
     try {
-      if (
-        typeof data === "undefined"
-        || data === null
-      )
+      if (typeof data === "undefined")
         throw new TypeError(
-          `write data is null or undefined`,
+          `undefined data`,
         );
-      else
+      else if (typeof data !== object)
         this
-          ._file
+          .file
           .write(
-            JSON
-              .stringify(
-                data,
-              ),
+            String(
+              data,
+            ),
             overwrite,
           );
+      else
+        if (data === null)
+          throw new TypeError(
+            `null data`,
+          );
+        else if (Array.isArray(data))
+          this
+            .file
+            .write(
+              data
+                .join(
+                  "\n",
+                )
+                .reverse(),
+              overwrite === false
+                ? false
+                : "line",
+            );
+        else
+          this
+            .file
+            .write(
+              JSON
+                .stringify(
+                  data,
+                ),
+              overwrite === false
+                ? false
+                : true,
+            );
     }
     catch (e) {
       throw new EvalError(
@@ -70,7 +95,7 @@ class Storage<
   public async delete() {
     try {
       await this
-        ._file
+        .file
         .delete();
     }
     catch (e) {

@@ -48,7 +48,7 @@ class Setting<
             `Setting file parsed to valid JSON, but has invalid schema`,
             {
               cause: {
-                path: this._file.path,
+                path: this.file.path,
                 raw: this.read(),
                 parsedString: String(parsedJson),
                 parsedJson,

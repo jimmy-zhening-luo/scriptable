@@ -11,11 +11,12 @@ namespace Shorten {
     string
   > {
     public runtime() {
+      const STORE = "url.json";
       const url = this
         .inputStringful
         .trim();
       const map = this
-        .data<FieldTable>("urls.json")
+        .data<FieldTable>(STORE)
         ?? {};
       const entries = Object
         .entries(
@@ -42,7 +43,7 @@ namespace Shorten {
               ...map,
               [short]: url,
             },
-            "urls.json",
+            STORE,
           );
 
         return short;
