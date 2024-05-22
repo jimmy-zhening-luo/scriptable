@@ -31,7 +31,7 @@ namespace Shorten {
       const newShorts = newMappings
         .map(
           mapping =>
-            mapping[1],
+            mapping[0],
         );
       const newData = {
         ...this
