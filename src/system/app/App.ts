@@ -364,7 +364,7 @@ abstract class App<
     input: A extends App<infer I, unknown, unknown, unknown> ? I : never,
   ): A extends App<unknown, infer O, unknown, unknown> ? O : never
   {
-    if (app instanceof App)
+    if (app instanceof App) {
       const appCopy = app;
 
       appCopy._input = input;
