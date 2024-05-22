@@ -70,9 +70,7 @@ class Storage<
                 .stringify(
                   data,
                 ),
-              overwrite === false
-                ? false
-                : true,
+              overwrite !== false,
             );
       else
         this
