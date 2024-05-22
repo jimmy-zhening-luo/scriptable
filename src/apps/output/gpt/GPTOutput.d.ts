@@ -25,7 +25,7 @@ declare type GptOutput =
       & Field<
         | "max_tokens"
         | "temperature"
-        | "p"
+        | "top_p"
       >;
   }
 ;

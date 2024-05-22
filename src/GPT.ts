@@ -218,7 +218,7 @@ namespace GPT {
           temperature: i
             .temperature
             .toString(),
-          p: i
+          "top_p": i
             .p
             .toString(),
         },
