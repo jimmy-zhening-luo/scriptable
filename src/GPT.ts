@@ -212,13 +212,13 @@ namespace GPT {
         body: {
           messages,
           model: models[i.model],
-          "max_tokens": i
+          max_tokens: i
             .token
             .toString(),
           temperature: i
             .temperature
             .toString(),
-          "top_p": i
+          top_p: i
             .p
             .toString(),
         },
