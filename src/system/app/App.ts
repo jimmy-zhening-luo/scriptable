@@ -4,7 +4,7 @@ abstract class App<
   C extends ISetting,
   Class extends string,
 > {
-  public readonly name: literalful<"App"> = "App";
+  public readonly __proto: literalful<"App"> = "App";
   private readonly t0: number = Date.now();
   private readonly _storage: Record<
     string,
@@ -306,7 +306,7 @@ abstract class App<
       return (
         instance !== null
         && typeof instance === "object"
-        && (instance as { name: string }).name === "App"
+        && (instance as { __proto: string }).__proto === "App"
       );
     }
     catch (e) {
