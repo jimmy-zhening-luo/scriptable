@@ -131,7 +131,7 @@ abstract class Filetype<
         .read(
           ...error,
         )
-        .trim(),
+        .trim();
 
       return string.length > 0
         ? JSON

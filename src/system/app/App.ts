@@ -406,12 +406,16 @@ abstract class App<
     }
   }
 
-  public data<D>(
+  public data<
+    D extends Field,
+  >(
     filenameOrError?:
       | boolean
       | string,
     errorNotFound?: boolean,
-  ): Null<D> {
+  ):
+  & D
+  & Field {
     try {
       return typeof filenameOrError === "boolean"
         ? this
