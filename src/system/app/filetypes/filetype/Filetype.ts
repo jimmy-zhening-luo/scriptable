@@ -120,22 +120,25 @@ abstract class Filetype<
     }
   }
 
-  public data<D>(
+  public data<D extends Table>(
     ...error: Parameters<F["read"]>
-  ): Null<D> {
+  ):
+  & D
+  & Table {
     try {
-      const string: string = this
+      const string = this
         ._file
         .read(
           ...error,
-        );
+        )
+        .trim(),
 
       return string.length > 0
         ? JSON
           .parse(
             string,
           ) as D
-        : null;
+        : {};
     }
     catch (e) {
       throw new EvalError(
