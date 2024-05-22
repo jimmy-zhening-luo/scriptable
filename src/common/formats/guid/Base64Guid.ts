@@ -205,7 +205,7 @@ function Base64Guid() {
 
     if (
       shortGuid
-        .length !== 8
+        .length === 8
     )
       return shortGuid;
     else
