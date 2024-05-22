@@ -23,7 +23,7 @@ declare type GptOutput =
         "model"
       >
       & Field<
-        | "token"
+        | "max_tokens"
         | "temperature"
         | "p"
       >;
