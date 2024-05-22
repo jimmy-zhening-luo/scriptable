@@ -4,6 +4,7 @@ abstract class App<
   C extends ISetting,
   Class extends string,
 > {
+  public readonly name: literalful<"App"> = "App";
   private readonly t0: number = Date.now();
   private readonly _storage: Record<
     string,
@@ -299,6 +300,22 @@ abstract class App<
   }
 
   protected abstract get getInput(): App<I, O, C, Class>["input"];
+
+  public static [Symbol.hasInstance](instance: unknown) {
+    try {
+      return (
+        instance !== null
+        && typeof instance === "object"
+        && (instance as { name: string }).name === "App"
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: [Symbol.hasInstance]`,
+        { cause: e },
+      );
+    }
+  }
 
   public run(): NonUndefined<O> {
     try {
