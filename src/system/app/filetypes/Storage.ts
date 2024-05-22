@@ -54,10 +54,10 @@ class Storage<
             .file
             .write(
               data
+                .reverse()
                 .join(
                   "\n",
-                )
-                .reverse(),
+                ),
               overwrite === false
                 ? false
                 : "line",
