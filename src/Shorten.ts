@@ -7,50 +7,46 @@ namespace Shorten {
   const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class Shorten extends shortcut<
-    | string
-    | string[]
-    ,
-    string[],
-    never
+    string,
+    string
   > {
     public runtime() {
-      const newMappings =
-        [
-          this
-            .input ?? [],
-        ]
-          .flat()
-          .map(
-            (url): Dyad<string> =>
-              [
-                this
-                  .base64guid(),
-                url,
-              ],
+      const url = this
+        .inputStringful
+        .trim();
+      const map = this
+        .data<Record<string, string>>("urls.json")
+        ?? {};
+      const entries = Object
+        .entries(
+          map,
+        );
+      const i = entries
+        .find(
+          pair =>
+            pair[
+              1
+            ] === url,
+        )
+        ?? null;
+
+      if (i !== null)
+        return i[0];
+      else {
+        const short = this
+          .base64guid();
+
+        this
+          .write(
+            {
+              ...map,
+              [short]: url,
+            },
+            "urls.json",
           );
-      const newShorts = newMappings
-        .map(
-          mapping =>
-            mapping[0],
-        );
-      const newData = {
-        ...this
-          .data<Record<string, string>>(
-          "urls.json",
-        ),
-        ...Object
-          .fromEntries(
-            newMappings,
-          ),
-      };
 
-      this
-        .write(
-          newData,
-          "urls.json",
-        );
-
-      return newShorts;
+        return short;
+      }
     }
   }
 }
