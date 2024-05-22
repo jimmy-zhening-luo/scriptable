@@ -288,7 +288,7 @@ abstract class App<
   private get ErrorHandler() {
     try {
       return importModule(
-        "error/ErrorHandler",
+        "interface/private/error/ErrorHandler",
       ) as typeof ErrorHandler;
     }
     catch (e) {
