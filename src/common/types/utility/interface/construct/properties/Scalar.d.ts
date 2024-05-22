@@ -4,7 +4,7 @@ declare type Scalar<
   | K
   | boolean = false
   ,
-> = IProp<
+> = IProperty<
   number
   ,
   K

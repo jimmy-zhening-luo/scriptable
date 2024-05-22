@@ -1,4 +1,4 @@
-declare type IProp<
+declare type IProperty<
   V,
   K extends string,
   Optional extends

@@ -1,11 +1,11 @@
-declare type Flag<
+declare type Field<
   K extends string,
   Optional extends
   | K
-  | boolean = true
+  | boolean = false
   ,
-> = IProp<
-  boolean
+> = IProperty<
+  string
   ,
   K
   ,

@@ -4,7 +4,7 @@ declare type Limit<
   | K
   | boolean = false
   ,
-> = IProp<
+> = IProperty<
   Boundary
   ,
   K
