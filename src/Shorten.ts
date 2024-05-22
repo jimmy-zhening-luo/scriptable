@@ -14,7 +14,7 @@ namespace Shorten {
     never
   > {
     public runtime() {
-      const newMappings = 
+      const newMappings =
         [
           this
             .input ?? [],
@@ -27,7 +27,7 @@ namespace Shorten {
                   .base64guid(),
                 url,
               ],
-          )
+          );
       const newShorts = newMappings
         .map(
           mapping =>
@@ -42,12 +42,12 @@ namespace Shorten {
           .fromEntries(
             newMappings,
           ),
-      }
+      };
 
       this
         .write(
           newData,
-          "urls.json"
+          "urls.json",
         );
 
       return newShorts;
