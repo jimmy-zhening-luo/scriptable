@@ -24,7 +24,7 @@ function Base64Guid() {
   ) {
     if (
       shortGuid
-        .length !== 8
+        .length === 8
     )
       return shortGuid as base64guid; // skip check bad char, I don't care as this is not production code (yet)
     else
