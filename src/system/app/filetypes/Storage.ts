@@ -44,16 +44,7 @@ class Storage<
         throw new TypeError(
           `undefined data`,
         );
-      else if (typeof data !== "object")
-        this
-          .file
-          .write(
-            String(
-              data,
-            ),
-            overwrite,
-          );
-      else
+      else if (typeof data === "object")
         if (data === null)
           throw new TypeError(
             `null data`,
@@ -83,6 +74,15 @@ class Storage<
                 ? false
                 : true,
             );
+      else
+        this
+          .file
+          .write(
+            String(
+              data,
+            ),
+            overwrite,
+          );
     }
     catch (e) {
       throw new EvalError(
