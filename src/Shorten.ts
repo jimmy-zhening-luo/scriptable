@@ -15,7 +15,7 @@ namespace Shorten {
         .inputStringful
         .trim();
       const map = this
-        .data<Record<string, string>>("urls.json")
+        .data<FieldTable>("urls.json")
         ?? {};
       const entries = Object
         .entries(
