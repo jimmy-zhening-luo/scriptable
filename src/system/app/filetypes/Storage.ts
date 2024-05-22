@@ -41,22 +41,21 @@ class Storage<
     ,
   ) {
     try {
-      if (typeof data === "undefined" || data === null)
+      if (
+        typeof data === "undefined"
+        || data === null
+      )
         throw new TypeError(
-          `input is null or undefined`,
+          `write data is null or undefined`,
         );
       else
         this
           ._file
           .write(
-            typeof data === "string"
-            || typeof data === "number"
-            || typeof data === "boolean"
-              ? String(data)
-              : JSON
-                .stringify(
-                  data,
-                ),
+            JSON
+              .stringify(
+                data,
+              ),
             overwrite,
           );
     }
