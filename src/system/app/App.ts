@@ -359,17 +359,47 @@ abstract class App<
     }
   }
 
-  public synthetic<A>(
-    app: A,
-    input: A extends App<infer I, unknown, unknown, unknown> ? I : never,
-  ): A extends App<unknown, infer O, unknown, unknown> ? O : never
-  {
+  public synthetic<A, O>(
+    app: A extends App<
+      infer I,
+      O,
+      infer C,
+      infer Class
+    >
+      ? App<
+        I,
+        O,
+        C,
+        Class
+      >
+      : never,
+    input: A extends App<
+      infer I,
+      O,
+      infer C,
+      infer Class
+    >
+      ? App<
+        I,
+        O,
+        C,
+        Class
+      >[
+        "input"
+      ]
+      : never
+    ,
+  ): NonUndefined<
+      O
+    > {
     if (app instanceof App) {
       const appCopy = app;
 
       appCopy._input = input;
 
-      return appCopy.run();
+      const output = appCopy.run();
+
+      return output;
     }
     else
       throw new Error("foo");
