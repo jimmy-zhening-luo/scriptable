@@ -361,12 +361,15 @@ abstract class App<
 
   public synthetic<A>(
     app: A,
-    input: A extends App<unknown, infer O, unknown, unknown> ? I : never,
+    input: A extends App<infer I, unknown, unknown, unknown> ? I : never,
   ): A extends App<unknown, infer O, unknown, unknown> ? O : never
   {
-    if (app instanceof App) {
-      app._input = input;
-      return app.run();
+    if (app instanceof App)
+      const appCopy = app;
+
+      appCopy._input = input;
+
+      return appCopy.run();
     }
     else
       throw new Error("foo");
