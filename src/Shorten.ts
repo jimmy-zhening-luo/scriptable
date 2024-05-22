@@ -10,35 +10,38 @@ namespace Shorten {
     | string
     | string[]
     ,
-    never,
+    string[],
     never
   > {
     public runtime() {
-      const newUrls =
-        Object
-          .fromEntries(
-            [
-              this
-                .input ?? [],
-            ]
-              .flat()
-              .map(
-                (url): Dyad<string> =>
-                  [
-                    this
-                      .base64guid(),
-                    url,
-                  ],
-              )
-          );
-      const data =
-        this
-          .data<Record<string, string>>(
-          "urls.json",
+      const newMappings = 
+        [
+          this
+            .input ?? [],
+        ]
+          .flat()
+          .map(
+            (url): Dyad<string> =>
+              [
+                this
+                  .base64guid(),
+                url,
+              ],
+          )
+      const newShorts = newMappings
+        .map(
+          mapping =>
+            mapping[1],
         );
       const newData = {
-        ...data,
-        ...newUrls,
+        ...this
+          .data<Record<string, string>>(
+          "urls.json",
+        ),
+        ...Object
+          .fromEntries(
+            newMappings,
+          ),
       }
 
       this
@@ -47,7 +50,7 @@ namespace Shorten {
           "urls.json"
         );
 
-      return null;
+      return newShorts;
     }
   }
 }
