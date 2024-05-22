@@ -213,11 +213,14 @@ namespace GPT {
           messages,
           model: models[i.model],
           token: i
-            .token,
+            .token
+            .toString(),
           temperature: i
-            .temperature,
+            .temperature
+            .toString(),
           p: i
-            .p,
+            .p
+            .toString(),
         },
       };
     }

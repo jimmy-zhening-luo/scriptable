@@ -22,7 +22,7 @@ declare type GptOutput =
       & Field<
         "model"
       >
-      & Scalar<
+      & Field<
         | "token"
         | "temperature"
         | "p"
