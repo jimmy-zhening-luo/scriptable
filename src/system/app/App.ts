@@ -406,16 +406,12 @@ abstract class App<
     }
   }
 
-  public data<
-    D extends Table,
-  >(
+  public data<D>(
     filenameOrError?:
       | boolean
       | string,
     errorNotFound?: boolean,
-  ):
-  & D
-  & Table {
+  ): Null<D> {
     try {
       return typeof filenameOrError === "boolean"
         ? this

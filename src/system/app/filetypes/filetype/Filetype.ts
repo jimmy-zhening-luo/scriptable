@@ -120,11 +120,9 @@ abstract class Filetype<
     }
   }
 
-  public data<D extends Table>(
+  public data<D>(
     ...error: Parameters<F["read"]>
-  ):
-  & D
-  & Table {
+  ): Null<D> {
     try {
       const string = this
         ._file
@@ -138,7 +136,7 @@ abstract class Filetype<
           .parse(
             string,
           ) as D
-        : {};
+        : null;
     }
     catch (e) {
       throw new EvalError(
