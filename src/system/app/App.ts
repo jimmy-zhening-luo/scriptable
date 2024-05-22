@@ -364,8 +364,8 @@ abstract class App<
     input: A extends App<unknown, infer O, unknown, unknown> ? I : never,
   ): A extends App<unknown, infer O, unknown, unknown> ? O : never
   {
-    if (A instanceof App)
-      return A.run();
+    if (app instanceof App)
+      return app.run();
     else
       throw new Error("foo");
   }
