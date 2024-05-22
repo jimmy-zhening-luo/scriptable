@@ -407,7 +407,7 @@ abstract class App<
   }
 
   public data<
-    D extends Field,
+    D extends Table,
   >(
     filenameOrError?:
       | boolean
@@ -415,7 +415,7 @@ abstract class App<
     errorNotFound?: boolean,
   ):
   & D
-  & Field {
+  & Table {
     try {
       return typeof filenameOrError === "boolean"
         ? this
