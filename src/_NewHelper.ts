@@ -1,6 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: light-gray; icon-glyph: code;
+// icon-color: gray; icon-glyph: code;
 "use strict";
 
 namespace NewHelper {
