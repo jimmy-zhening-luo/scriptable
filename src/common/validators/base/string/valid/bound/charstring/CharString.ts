@@ -11,7 +11,7 @@ class CharString<
   >;
 
   constructor(
-    input: string,
+    string: string,
     ...charsets: ConstructorParameters<typeof CharSet>
   ) {
     try {
@@ -19,31 +19,20 @@ class CharString<
         .CharSet(
           ...charsets,
         );
-
-      if (this.validate(input))
-        this
-          .string = input;
-      else
-        throw new TypeError(
-          `Invalid string`,
-          {
-            cause: {
-              input,
-              charset: this.charset.toString(),
-              charsetNegate: this.charset.negate,
-            },
-          },
+      this.string = this
+        .validate(
+          string,
         );
     }
     catch (e) {
       throw new EvalError(
-        `CharString: ctor`,
+        `CharString: ctor: `,
         { cause: e },
       );
     }
   }
 
-  public get CharSet() {
+  private get CharSet() {
     try {
       return importModule(
         "charset/CharSet",
@@ -71,42 +60,32 @@ class CharString<
   }
 
   private validate(
-    input: string,
-  ): input is CharString<T, V>["string"] {
+    string: string,
+  ) {
     try {
-      if (input.length < 1)
-        return true;
-      else if (
-        (
-          [...input] as char[]
-        )
-          .every(
-            (char): char is validchar =>
-              this
-                .charset
-                .allows(
-                  char,
-                ),
+      if (
+        this
+          .charset
+          .allows<CharString<T, V>["string"]>(
+            string,
           )
       )
-        return true;
+        return string;
       else
         throw new TypeError(
-          `string contains disallowed chars`,
+          `string has invalid chars`,
           {
             cause: {
-              input,
+              "string": string,
               charset: this.charset.toString(),
-              charsetNegate: this.charset.negate,
+              negate: this.charset.negate,
             },
           },
         );
     }
     catch (e) {
       throw new EvalError(
-        `CharString: validate: invalid string: ${
-          input
-        }`,
+        `CharString: validate`,
         { cause: e },
       );
     }

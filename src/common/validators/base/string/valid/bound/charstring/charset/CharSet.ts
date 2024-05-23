@@ -34,31 +34,25 @@ class CharSet {
     }
   }
 
-  public allows(
-    c: char,
-  ): c is validchar {
+  public allows<
+    V extends string,
+  >(
+    string: string,
+  ): string is V {
     try {
-      if (
-        this.negate !== this
-          .chars
-          .includes(
-            c,
-          )
-      )
-        return true;
-      else
-        throw new TypeError(
-          `char '${
-            c
-          }' not allowed`,
-          {
-            cause: {
-              "char": c,
-              charset: this.toString(),
-              negate: this.negate,
-            },
-          },
-        );
+      const negate = this
+        .negate;
+
+      return string.length < 1
+        || [...string]
+          .every(
+            char =>
+              negate !== this
+                .chars
+                .includes(
+                  char,
+                ),
+          );
     }
     catch (e) {
       throw new EvalError(
