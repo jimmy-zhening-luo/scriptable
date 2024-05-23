@@ -1,133 +1,36 @@
-class Timestamp {
-  constructor(
-    public readonly moment = new Date(),
-  ) {}
+const s_IMoment = importModule(
+  "moment/IMoment",
+) as typeof IMoment;
 
-  public get epoch() {
+class Timestamp extends s_IMoment {
+  public get dateOptions() {
     try {
-      return this
-        .moment
-        .getTime();
+      return {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+      };
     }
     catch (e) {
       throw new EvalError(
-        `Timestamp: epoch`,
+        `Timestamp: dateOptions`,
         { cause: e },
       );
     }
   }
 
-  public get full() {
+  public get localTimeOptions() {
     try {
-      return `${
-        this
-          .date
-      } ${
-        this
-          .time
-      }` as stringful;
+      return {
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      };
     }
     catch (e) {
       throw new EvalError(
-        `Timestamp: full`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get date() {
-    try {
-      return this
-        .moment
-        .toLocaleDateString(
-          "en-US",
-          {
-            month: "2-digit",
-            day: "2-digit",
-            year: "numeric",
-          },
-        ) as stringful;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Timestamp: date`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get time() {
-    try {
-      return `${
-        this
-          .local
-      }${
-        this
-          .offset
-      }` as stringful;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Timestamp: time`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get local() {
-    try {
-      return this
-        .moment
-        .toLocaleTimeString(
-          "en-US",
-          {
-            hour12: false,
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          },
-        ) as stringful;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Timestamp: local`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get offset() {
-    try {
-      return (
-        this
-          .moment
-          .getTimezoneOffset() / -60
-      )
-        .toLocaleString(
-          "en-US",
-          {
-            signDisplay: "always",
-            minimumIntegerDigits: 2,
-            maximumFractionDigits: 1,
-          },
-        ) as stringful;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Timestamp: offset`,
-        { cause: e },
-      );
-    }
-  }
-
-  public toString() {
-    try {
-      return this
-        .full;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Timestamp: toString`,
+        `Timestamp: localTimeOptions`,
         { cause: e },
       );
     }
