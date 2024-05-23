@@ -1,8 +1,8 @@
-const s_IMoment = importModule(
+const p_IMoment = importModule(
   "moment/IMoment",
 ) as typeof IMoment;
 
-class Timeprint extends s_IMoment {
+class Timeprint extends p_IMoment {
   public override get offset() {
     try {
       return "";
