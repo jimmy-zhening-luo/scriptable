@@ -4,9 +4,6 @@ declare type GptSetting = {
       | "preset"
       | "location"
     >;
-    plugins: Field<
-      "location"
-    >;
     api: Field<
       | "host"
       | "version"

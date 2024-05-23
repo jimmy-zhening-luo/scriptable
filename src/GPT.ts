@@ -15,7 +15,6 @@ namespace GPT {
       const {
         app: {
           tags,
-          plugins,
           api,
           models,
           limit,
@@ -88,15 +87,8 @@ namespace GPT {
               .location,
       };
       const location =
-        [
-          plugins
-            .location,
-          i
-            .location,
-        ]
-          .join(
-            "",
-          );
+        i
+          .location;
       const preset =
         typeof i.prompt === "string"
           ? {
