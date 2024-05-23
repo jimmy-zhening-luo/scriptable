@@ -14,8 +14,7 @@ class Timeprint extends p_IMoment {
       );
     }
   }
-  
-  
+
   protected get dateOptions() {
     try {
       return {
@@ -35,9 +34,7 @@ class Timeprint extends p_IMoment {
 
   protected get localTimeOptions() {
     try {
-      return {
-        timeStyle: "short",
-      };
+      return { timeStyle: "short" };
     }
     catch (e) {
       throw new EvalError(
