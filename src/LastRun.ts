@@ -14,7 +14,7 @@ namespace LastRun {
       const now = Date
         .now();
       const input = this
-        .stringful
+        .inputStringful
         .split(";");
       const [id] = input;
       const m = Number(
