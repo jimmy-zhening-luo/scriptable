@@ -6,13 +6,15 @@ class FilepathNode extends fp_ValidString<
   stringful,
   "FilepathNode"
 > {
-  constructor(node: stringful) {
+  constructor(
+    node: string,
+  ) {
     try {
       super(
         node,
         [
-          fp_ValidString.CharSet.colon,
-          fp_ValidString.CharSet.slash,
+          ":" as char,
+          "/" as char,
         ],
         1,
         255,
