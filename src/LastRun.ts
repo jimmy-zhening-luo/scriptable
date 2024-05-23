@@ -15,13 +15,13 @@ namespace LastRun {
         .now();
       const input = this
         .inputStringful
-        .split(";");
+        .split(";") as [string, string?];
       const [id] = input;
       const m = Number(
         input[
           1
         ]
-          ?? 2,
+        ?? 2,
       );
       const table = this
         .data<FieldTable>()
