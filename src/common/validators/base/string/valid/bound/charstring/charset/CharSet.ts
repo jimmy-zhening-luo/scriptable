@@ -40,8 +40,7 @@ class CharSet {
     string: string,
   ): string is V {
     try {
-      const negate = this
-        .negate;
+      const { negate } = this;
 
       return string.length < 1
         || [...string]
