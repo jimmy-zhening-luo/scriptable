@@ -7,19 +7,22 @@ namespace LastRun {
   const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class LastRun extends shortcut<
-    & Field<"id">
-    & Scalar<"m">
-    ,
+    string,
     boolean
   > {
     public runtime() {
       const now = Date
         .now();
-      const {
-        id,
-        m,
-      } = this
-        .inputful;
+      const input = this
+        .stringful
+        .split(";");
+      const [id] = input;
+      const m = Number(
+        input[
+          1
+        ]
+          ?? 2,
+      );
       const table = this
         .data<FieldTable>()
         ?? {};
@@ -31,7 +34,8 @@ namespace LastRun {
         id
       ] = String(
         now,
-      );      this
+      );
+      this
         .write(
           table,
         );
