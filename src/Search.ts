@@ -111,7 +111,8 @@ namespace Search {
 
       if (key === null)
         throw new ReferenceError(
-          `Key is neither primary nor alias`,
+          `No engine for key`,
+          { options: { key }},
         );
 
       const match =
