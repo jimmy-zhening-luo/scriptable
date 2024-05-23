@@ -19,7 +19,7 @@ class BoundString<
   ) {
     try {
       if (min > max)
-        throw RangeError(
+        throw new RangeError(
           `min > max`,
           {
             cause: {
@@ -33,10 +33,10 @@ class BoundString<
       else if (
         min > string
           .length
-        || max < string
-          .length
+          || max < string
+            .length
       )
-        throw RangeError(
+        throw new RangeError(
           `string length out-of-bounds`,
           {
             cause: {
@@ -47,13 +47,11 @@ class BoundString<
             },
           },
         );
-      else {
-        this
-          .super(
-            string,
-            ...charset,
-          );
-      }
+      else
+        super(
+          string,
+          ...charset,
+        );
     }
     catch (e) {
       throw new EvalError(
