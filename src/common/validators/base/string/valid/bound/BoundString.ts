@@ -12,8 +12,8 @@ class BoundString<
     }`
   > {
   constructor(
-    min: posint = 1 as posint,
-    max: posinfinint = Infinity as posinfinint,
+    min: posint,
+    max: posinfinint,
     string: string,
     ...charset: ConstructorParameters<typeof CharSet>
   ) {
