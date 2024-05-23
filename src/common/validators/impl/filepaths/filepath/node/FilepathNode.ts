@@ -15,8 +15,8 @@ class FilepathNode extends fp_ValidString<
           ":" as char,
           "/" as char,
         ],
-        1,
-        255,
+        1 as posint,
+        255 as posinfinint,
         true,
       );
     }
