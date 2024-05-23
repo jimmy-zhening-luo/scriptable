@@ -1,6 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: brown; icon-glyph: less-than-equal;
+// icon-color: light-gray; icon-glyph: less-than-equal;
 "use strict";
 
 namespace LastRun {

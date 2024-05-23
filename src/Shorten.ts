@@ -1,6 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: deep-green; icon-glyph: cut;
+// icon-color: light-gray; icon-glyph: cut;
 "use strict";
 
 namespace Shorten {

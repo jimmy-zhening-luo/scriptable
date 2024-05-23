@@ -1,6 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: teal; icon-glyph: comment-alt;
+// icon-color: deep-purple; icon-glyph: comment-alt;
 "use strict";
 
 namespace GPT {
