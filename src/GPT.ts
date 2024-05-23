@@ -85,10 +85,14 @@ namespace GPT {
               .location
             : defaults
               .location,
+        date:
+          "date" in ii
+            ? ii
+              .date
+            : new this
+              .Timeprint()
+              .date,
       };
-      const location =
-        i
-          .location;
       const preset =
         typeof i.prompt === "string"
           ? {
@@ -101,19 +105,21 @@ namespace GPT {
                 .replace(
                   tags
                     .location,
-                  location,
+                  i
+                    .location,
+                )
+                .replace(
+                  tags
+                    .date,
+                  i
+                    .date,
                 ),
               user: (
                 presets[
                   i.preset
                 ]
                   ?.user ?? ""
-              )
-                .replace(
-                  tags
-                    .location,
-                  location,
-                ),
+              ),
             }
           : null;
       const messageBox: {
