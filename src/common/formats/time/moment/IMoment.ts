@@ -27,8 +27,8 @@ abstract class IMoment {
           .time,
       ]
         .join(
-          this.
-            join,
+          this
+            .join,
         ) as stringful;
     }
     catch (e) {
