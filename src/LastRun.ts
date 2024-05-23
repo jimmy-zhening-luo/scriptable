@@ -7,12 +7,41 @@ namespace LastRun {
   const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class LastRun extends shortcut<
-    never,
-    never,
-    never
+    & Field<"id">
+    & Scalar<"m">
+    ,
+    boolean
   > {
     public runtime() {
-      return null;
+      const now = Date
+        .now();
+      const {
+        id,
+        m,
+      } = this
+        .inputful;
+      const table = this
+        .data<FieldTable>()
+        ?? {};
+      const savedRun = table[
+        id
+      ] ?? null;
+
+      table[
+        id
+      ] = String(
+        now,
+      );
+
+      this
+        .write(
+          table,
+        );
+
+      return savedRun === null
+        || now - Number(
+            savedRun,
+          ) > 60000 * m;
     }
   }
 }
