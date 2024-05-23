@@ -3,6 +3,7 @@ declare type GptSetting = {
     tags: Field<
       | "preset"
       | "location"
+      | "date"
     >;
     api: Field<
       | "host"
