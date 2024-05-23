@@ -31,17 +31,15 @@ namespace LastRun {
         id
       ] = String(
         now,
-      );
-
-      this
+      );      this
         .write(
           table,
         );
 
       return savedRun === null
         || now - Number(
-            savedRun,
-          ) > 60000 * m;
+          savedRun,
+        ) > 60000 * m;
     }
   }
 }
