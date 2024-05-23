@@ -243,6 +243,20 @@ abstract class App<
     }
   }
 
+  protected get Timeprint() {
+    try {
+      return importModule(
+        "./common/formats/time/Timeprint",
+      ) as typeof Timeprint;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Timeprint`,
+        { cause: e },
+      );
+    }
+  }
+
   private get Setting() {
     try {
       return importModule(
