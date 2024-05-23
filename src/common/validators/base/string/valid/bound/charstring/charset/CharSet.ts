@@ -1,6 +1,6 @@
 class CharSet {
   public readonly chars: char[];
-  public readonly negate = false;
+  public readonly negate: boolean = false;
 
   constructor(
     negate?:
