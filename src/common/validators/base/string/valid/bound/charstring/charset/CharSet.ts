@@ -50,7 +50,7 @@ class CharSet {
               negate !== this
                 .chars
                 .includes(
-                  char,
+                  char as char,
                 ),
           );
     }
