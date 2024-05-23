@@ -3,7 +3,7 @@ const s_IMoment = importModule(
 ) as typeof IMoment;
 
 class Timestamp extends s_IMoment {
-  public get dateOptions() {
+  protected get dateOptions() {
     try {
       return {
         month: "2-digit",
@@ -19,7 +19,7 @@ class Timestamp extends s_IMoment {
     }
   }
 
-  public get localTimeOptions() {
+  protected get localTimeOptions() {
     try {
       return {
         hour12: false,

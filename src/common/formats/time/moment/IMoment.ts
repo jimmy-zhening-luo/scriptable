@@ -107,7 +107,7 @@ abstract class IMoment {
             minimumIntegerDigits: 2,
             maximumFractionDigits: 1,
           },
-        ) as stringful;
+        );
     }
     catch (e) {
       throw new EvalError(
