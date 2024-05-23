@@ -112,7 +112,7 @@ namespace Search {
       if (key === null)
         throw new ReferenceError(
           `No engine for key`,
-          { cause: { key } },
+          { cause: { key: query.key } },
         );
 
       const match =
