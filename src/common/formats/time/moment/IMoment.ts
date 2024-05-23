@@ -1,7 +1,7 @@
 abstract class IMoment {
   constructor(
     public readonly moment = new Date(),
-    protected readonly join = " ";
+    protected readonly join = " ",
   ) {}
 
   public get epoch() {
