@@ -223,7 +223,7 @@ abstract class IFilepath<Root extends boolean> {
               )
                 .segments
                 .map(
-                  (node: stringful): filenode =>
+                  node =>
                     new this
                       .FilepathNode(
                         node,

@@ -1,41 +1,37 @@
+const v_BoundString = importModule(
+  "bound/BoundString",
+) as typeof BoundString;
+
 class ValidString<
-  T extends stringful,
   V extends string,
-> {
-  public readonly string: BoundString<
-    T,
+> extends v_BoundString<
+    stringful,
     `Valid:${
       literalful<V>
     }`
-  >["string"];
-
+  > {
   constructor(
-    input: string,
-    chars: Array<
-      ConstructorParameters<typeof CharSet>[1]
+    string: string,
+    chars: UnflatArray<
+      char
     >,
-    min = 1,
-    max = Infinity,
-    negate = false,
-    cleanOptions: Parameters<ValidString<T, string>["clean"]>[1] = {},
+    min: posint = 1 as posint,
+    max: posinfinint = Infinity as posinfinint,
+    negate: boolean = false,
+    cleanOptions: Parameters<ValidString<V, T>["clean"]>[1] = {},
   ) {
     try {
-      this.string = new this
-        .BoundString<
-        T,
-         `Valid:${literalful<V>}`
-      >(
+      super(
         min,
         max,
-        this
+        ValidString
           .clean(
-            input,
+            string,
             cleanOptions,
           ),
         negate,
         ...chars,
       )
-        .string;
     }
     catch (e) {
       throw new EvalError(
@@ -45,49 +41,8 @@ class ValidString<
     }
   }
 
-  public static get CharSet() {
-    try {
-      return importModule(
-        "bound/charstring/charset/CharSet",
-      ) as typeof CharSet;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `ValidString: import CharSet`,
-        { cause: e },
-      );
-    }
-  }
-
-  private get BoundString() {
-    try {
-      return importModule(
-        "bound/BoundString",
-      ) as typeof BoundString;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `ValidString: import BoundString`,
-        { cause: e },
-      );
-    }
-  }
-
-  public toString() {
-    try {
-      return this
-        .string;
-    }
-    catch (e) {
-      throw new EvalError(
-        `ValidString: toString`,
-        { cause: e },
-      );
-    }
-  }
-
-  private clean(
-    raw: string,
+  private static clean(
+    string: string,
     {
       toLower = false,
       trim = false,
@@ -106,10 +61,10 @@ class ValidString<
   ) {
     try {
       return this
-        ._trimEdge(
+        .trimEdge(
           this
-            ._trimEdge(
-              raw[
+            .trimEdge(
+              string[
                 toLower
                   ? "toLowerCase"
                   : "toString"
@@ -135,7 +90,7 @@ class ValidString<
     }
   }
 
-  private _trimEdge(
+  private static trimEdge(
     string: string,
     edge:
       | "leading"
@@ -189,7 +144,20 @@ class ValidString<
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: _trimEdge`,
+        `ValidString: trimEdge`,
+        { cause: e },
+      );
+    }
+  }
+
+  public toString() {
+    try {
+      return this
+        .string;
+    }
+    catch (e) {
+      throw new EvalError(
+        `ValidString: toString`,
         { cause: e },
       );
     }

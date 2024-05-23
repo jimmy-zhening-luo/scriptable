@@ -12,12 +12,12 @@ class CharString<
 
   constructor(
     string: string,
-    ...charsets: ConstructorParameters<typeof CharSet>
+    ...charset: ConstructorParameters<typeof CharSet>
   ) {
     try {
       this.charset = new this
         .CharSet(
-          ...charsets,
+          ...charset,
         );
       this.string = this
         .validate(

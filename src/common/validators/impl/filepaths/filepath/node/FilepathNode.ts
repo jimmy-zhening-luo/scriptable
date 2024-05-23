@@ -1,11 +1,10 @@
-const fp_ValidString: typeof ValidString = importModule(
+const fp_ValidString = importModule(
   "./common/validators/base/string/valid/ValidString",
 ) as typeof ValidString;
 
 class FilepathNode extends fp_ValidString<
-  stringful,
-  "FilepathNode"
-> {
+    "FilepathNode"
+  > {
   constructor(
     node: string,
   ) {
