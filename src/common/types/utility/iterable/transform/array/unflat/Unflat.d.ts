@@ -1,7 +1,9 @@
 declare type UnflatArray<
   I,
-> = Unflat<
-  I
+> = Array<
+  Unflat<
+    I
+  >
 >;
 
 declare type Unflat<
