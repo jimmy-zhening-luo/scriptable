@@ -31,7 +31,12 @@ declare type GptSetting = {
     >;
     defaults: GptProps;
     presets: Table<
-      Unrequire<
+      & PartialRecord<
+        "plugin"
+        ,
+        FieldTable
+      >
+      & Unrequire<
         GptPrompt
         ,
         | "user"
