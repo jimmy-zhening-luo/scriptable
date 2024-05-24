@@ -12,7 +12,8 @@ namespace _Hello {
     HelloSetting
   > {
     public runtime() {
-      this.debug = true;
+      this
+        .debug = true;
 
       const FILENAME_WORLDTIME = "worldtime.txt";
       const HELLO = this
@@ -26,7 +27,7 @@ namespace _Hello {
           this
             .app
             ?.space ?? "",
-          "setting.app.space",
+          "space",
         );
       const notification = `${
         HELLO

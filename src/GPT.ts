@@ -47,34 +47,65 @@ namespace GPT {
               .model,
         token:
           "token" in ii
-          && Number.isInteger(ii.token)
-          && ii.token >= limit.token.min
-          && ii.token <= limit.token.max
+          && Number
+            .isInteger(
+              ii
+                .token,
+            )
+          && ii
+            .token >= limit
+              .token
+              .min
+          && ii
+            .token <= limit
+              .token
+              .max
             ? ii
               .token
             : defaults
               .token,
         temperature:
           "temperature" in ii
-          && Number.isFinite(ii.temperature)
-          && ii.temperature >= limit.temperature.min
-          && ii.temperature <= limit.temperature.max
+          && Number
+            .isFinite(
+              ii
+                .temperature,
+            )
+          && ii
+            .temperature >= limit
+              .temperature
+              .min
+          && ii
+            .temperature <= limit
+              .temperature
+              .max
             ? ii
               .temperature
             : defaults
               .temperature,
         p:
           "p" in ii
-          && Number.isFinite(ii.p)
-          && ii.p >= limit.p.min
-          && ii.p <= limit.p.max
+          && Number
+            .isFinite(
+              ii
+                .p,
+            )
+          && ii
+            .p >= limit
+              .p
+              .min
+          && ii
+            .p <= limit
+              .p
+              .max
             ? ii
               .p
             : defaults
               .p,
         preset:
           "preset" in ii
-          && ii.preset in presets
+          && ii
+            .preset in presets
             ? ii
               .preset
             : defaults
@@ -98,7 +129,8 @@ namespace GPT {
           ? {
               system: (
                 presets[
-                  i.preset
+                  i
+                    .preset
                 ]
                   ?.system ?? ""
               )
@@ -116,19 +148,26 @@ namespace GPT {
                 ),
               user: (
                 presets[
-                  i.preset
+                  i
+                    .preset
                 ]
                   ?.user ?? ""
               ),
             }
           : null;
       const messageBox: {
-        user: GptMessage<"user">;
-        system?: GptMessage<"system">;
+        user: GptMessage<
+          "user"
+        >;
+        system?: GptMessage<
+          "system"
+        >;
       } =
-        typeof i.prompt === "string"
+        typeof i
+          .prompt === "string"
           ? preset === null
-          || preset.system === ""
+          || preset
+            .system === ""
             ? {
                 user: {
                   role: "user",
@@ -183,7 +222,9 @@ namespace GPT {
                 .system,
               messageBox
                 .user,
-            ] as GptMessages<true>
+            ] as GptMessages<
+              true
+            >
           : [
               messageBox
                 .user,
@@ -209,7 +250,10 @@ namespace GPT {
         },
         body: {
           messages,
-          model: models[i.model],
+          model: models[
+            i
+              .model
+          ],
           max_tokens: i
             .token
             .toString(),

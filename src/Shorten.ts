@@ -32,7 +32,9 @@ namespace Shorten {
         ?? null;
 
       if (i !== null)
-        return i[0];
+        return i[
+          0
+        ];
       else {
         const short = this
           .base64guid();

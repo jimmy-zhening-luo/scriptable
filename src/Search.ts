@@ -70,14 +70,19 @@ namespace Search {
               .stringful(
                 key,
               ),
-        ) as Tuple<stringful, 9>;
+        ) as Tuple<
+          stringful
+          ,
+          9
+        >;
       const query =
         new this
           .Query(
-            input.length > 0
-              ? input
-              : this
-                .read(),
+            input
+              .length > 0
+                ? input
+                : this
+                  .read(),
             CHAT,
             TRANSLATE,
             MATH_SHORT,
@@ -95,7 +100,8 @@ namespace Search {
         alias[
           query
             .key
-        ] ?? null;
+        ]
+        ?? null;
       const keyMatch =
         keys
           .includes(
@@ -133,10 +139,14 @@ namespace Search {
           );
       const match =
         engine[
-          keyMatch ?? REST
-        ] ?? null;
+          keyMatch
+          ?? REST
+        ]
+        ?? null;
 
-      if (match === null)
+      if (
+        match === null
+      )
         throw new ReferenceError(
           `No engine for key`,
           { cause: { key: requery.key } },
@@ -144,7 +154,9 @@ namespace Search {
 
       const resolved: IEngine =
         typeof match === "string"
-        || Array.isArray(match)
+        || Array.isArray(
+          match,
+        )
           ? new (
             this
               .Engine<typeof UrlEngine>(

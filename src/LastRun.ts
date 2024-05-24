@@ -15,7 +15,12 @@ namespace LastRun {
         .now();
       const input = this
         .inputStringful
-        .split(";") as [string, string?];
+        .split(
+          ";",
+        ) as [
+          string,
+          string?
+        ];
       const [id] = input;
       const m = Number(
         input[
