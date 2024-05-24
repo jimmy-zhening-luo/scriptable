@@ -13,7 +13,7 @@ class ErrorHandler {
         stack
           .push(
             ei
-              .cause as ErrorLike
+              .cause as ErrorLike,
           );
 
       const queue: ErrorLike[] = [...stack]
