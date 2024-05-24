@@ -2,16 +2,21 @@ declare type literals<
   K,
 > = literalful<
   Extract<
-    K,
+    K
+    ,
     string
   >
 >;
 
 declare type literalful<
   S,
-> = literal<S> extends ""
+> = literal<
+  S
+> extends ""
   ? never
-  : literal<S>;
+  : literal<
+    S
+  >;
 
 declare type literal<
   S,

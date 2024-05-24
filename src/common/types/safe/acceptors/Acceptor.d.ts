@@ -4,11 +4,14 @@ declare type Acceptor<
   ST extends
   & T
   & Safe<
-    T,
+    T
+    ,
     A
   >
   ,
-> = (t: T)=>
+> = (
+  t: T
+)=>
   t is
   & T
   & ST

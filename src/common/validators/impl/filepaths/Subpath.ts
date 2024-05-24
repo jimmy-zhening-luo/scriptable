@@ -1,11 +1,13 @@
-const s_Filepath: typeof IFilepath = importModule(
+const s_Filepath = importModule(
   "filepath/IFilepath",
 ) as typeof IFilepath;
 
-class Subpath extends s_Filepath<false> {
+class Subpath extends s_Filepath<
+  false
+> {
   protected check(
     nodes: filenode[],
-  ): filenode[] {
+  ) {
     try {
       return nodes;
     }
@@ -17,9 +19,14 @@ class Subpath extends s_Filepath<false> {
     }
   }
 
-  protected poppable(nodes: filenode[]): nodes is Arrayful<filenode> {
+  protected poppable(
+    nodes: filenode[],
+  ): nodes is Arrayful<
+    filenode
+  > {
     try {
-      return nodes.length > 0;
+      return nodes
+        .length > 0;
     }
     catch (e) {
       throw new EvalError(

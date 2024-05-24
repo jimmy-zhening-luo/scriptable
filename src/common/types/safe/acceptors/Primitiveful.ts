@@ -4,7 +4,8 @@ function Primitiveful<
   SP extends
   & P
   & Safe<
-    P,
+    P
+    ,
     A
   >
   ,

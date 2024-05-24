@@ -17,5 +17,3 @@ declare type TupleLength<
           : N
         : never
       : never;
-
-type TupleLengthTest = TupleLength<[] | readonly [] | unknown[]>;

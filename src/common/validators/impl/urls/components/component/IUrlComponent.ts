@@ -9,7 +9,7 @@ abstract class IUrlComponent<
       literalful<UC>
     }`
   > {
-  // 
+  //
 }
 
 module.exports = IUrlComponent;

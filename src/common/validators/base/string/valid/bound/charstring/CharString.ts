@@ -67,8 +67,8 @@ class CharString<
         this
           .charset
           .allows<CharString<T, V>["string"]>(
-            string,
-          )
+          string,
+        )
       )
         return string;
       else
@@ -76,7 +76,7 @@ class CharString<
           `string has invalid chars`,
           {
             cause: {
-              "string": string,
+              string,
               charset: this.charset.toString(),
               negate: this.charset.negate,
             },

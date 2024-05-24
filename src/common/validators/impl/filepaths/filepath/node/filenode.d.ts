@@ -1,1 +1,3 @@
-declare type filenode = FilepathNode["string"];
+declare type filenode = FilepathNode[
+  "string"
+];

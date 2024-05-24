@@ -1,1 +1,7 @@
-declare type Arrayful<I> = ArrayN<I, 1>;
+declare type Arrayful<
+  I,
+> = ArrayN<
+  I
+  ,
+  1
+>;

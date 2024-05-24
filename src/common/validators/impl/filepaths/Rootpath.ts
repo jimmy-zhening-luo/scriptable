@@ -1,13 +1,18 @@
-const r_Filepath: typeof IFilepath = importModule(
+const r_Filepath = importModule(
   "filepath/IFilepath",
 ) as typeof IFilepath;
 
-class Rootpath extends r_Filepath<true> {
+class Rootpath extends r_Filepath<
+  true
+> {
   protected check(
     nodes: filenode[],
-  ): Arrayful<filenode> {
+  ) {
     try {
-      if (nodes.length < 1)
+      if (
+        nodes
+          .length < 1
+      )
         throw new RangeError(
           `root path constructed with 0 nodes`,
           {
@@ -18,7 +23,9 @@ class Rootpath extends r_Filepath<true> {
           },
         );
       else
-        return nodes as Arrayful<filenode>;
+        return nodes as Arrayful<
+          filenode
+        >;
     }
     catch (e) {
       throw new EvalError(
@@ -28,9 +35,14 @@ class Rootpath extends r_Filepath<true> {
     }
   }
 
-  protected poppable(nodes: filenode[]): nodes is Arrayful<filenode> {
+  protected poppable(
+    nodes: filenode[],
+  ): nodes is Arrayful<
+    filenode
+  > {
     try {
-      return nodes.length > 1;
+      return nodes
+        .length > 1;
     }
     catch (e) {
       throw new EvalError(

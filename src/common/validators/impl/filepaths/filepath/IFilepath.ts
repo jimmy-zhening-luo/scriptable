@@ -1,17 +1,23 @@
-abstract class IFilepath<Root extends boolean> {
+abstract class IFilepath<
+  Root extends boolean,
+> {
   protected readonly _nodes: Root extends true
-    ? Arrayful<filenode>
+    ? Arrayful<
+      filenode
+    >
     : filenode[];
 
   constructor(
     ...subpaths: Parameters<IFilepath<Root>["compose"]>
   ) {
     try {
-      this._nodes = this.check(
-        this.compose(
-          ...subpaths,
-        ),
-      );
+      this._nodes = this
+        .check(
+          this
+            .compose(
+              ...subpaths,
+            ),
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -21,9 +27,16 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public get nodes(): IFilepath<Root>["_nodes"] {
+  public get nodes() {
     try {
-      return [...this._nodes];
+      return [
+        ...this
+          ._nodes,
+      ] as IFilepath<
+        Root
+      >[
+        "_nodes"
+      ];
     }
     catch (e) {
       throw new EvalError(
@@ -33,15 +46,20 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public get parent(): this {
+  public get parent() {
     try {
-      const parent: this = new (this.constructor as new (
-        ...args: ConstructorParameters<typeof IFilepath>
-      )=> this)(
+      const parent: this = new (
+        this
+          .constructor as new (
+          ...args: ConstructorParameters<typeof IFilepath>
+        )=>
+        this
+      )(
         this,
       );
 
-      parent.pop();
+      parent
+        .pop();
 
       return parent;
     }
@@ -55,7 +73,9 @@ abstract class IFilepath<Root extends boolean> {
 
   public get isEmpty() {
     try {
-      return this._nodes.length < 1;
+      return this
+        ._nodes
+        .length < 1;
     }
     catch (e) {
       throw new EvalError(
@@ -65,7 +85,7 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  private get Splitterful(): typeof Splitterful {
+  private get Splitterful() {
     try {
       return importModule(
         "./common/validators/base/string/splitters/Splitterful",
@@ -79,7 +99,7 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  private get FilepathNode(): typeof FilepathNode {
+  private get FilepathNode() {
     try {
       return importModule(
         "node/FilepathNode",
@@ -93,15 +113,27 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public pop(): filenode {
+  public pop() {
     try {
-      const nodeQ: filenode[] = [...this._nodes]
+      const nodeQ = [
+        ...this
+          ._nodes,
+      ]
         .reverse();
 
-      if (this.poppable(nodeQ)) {
-        this._nodes.pop();
+      if (
+        this
+          .poppable(
+            nodeQ,
+          )
+      ) {
+        this
+          ._nodes
+          .pop();
 
-        return nodeQ[0];
+        return nodeQ[
+          0
+        ];
       }
       else
         throw new RangeError(
@@ -124,11 +156,15 @@ abstract class IFilepath<Root extends boolean> {
 
   public append(
     ...subpaths: Parameters<IFilepath<Root>["compose"]>
-  ): this {
+  ) {
     try {
-      return new (this.constructor as new (
-        ...args: ConstructorParameters<typeof IFilepath>
-      )=> this)(
+      return new (
+        this
+          .constructor as new (
+          ...args: ConstructorParameters<typeof IFilepath>
+        )=>
+        this
+      )(
         this,
         ...subpaths,
       );
@@ -143,14 +179,15 @@ abstract class IFilepath<Root extends boolean> {
 
   public prepend(
     root: rootpath,
-  ): rootpath {
+  ) {
     try {
       return this.isEmpty
         ? root
         : `${
           root
         }/${
-          this.toString()
+          this
+            .toString()
         }` as rootpath;
     }
     catch (e) {
@@ -163,19 +200,23 @@ abstract class IFilepath<Root extends boolean> {
 
   public cd(
     ...relPaths: Parameters<IFilepath<Root>["compose"]>
-  ): this {
+  ) {
     try {
-      const rel: filenode[] = this.compose(
-        ...relPaths,
-      );
+      const rel = this
+        .compose(
+          ...relPaths,
+        );
 
       for (const node of rel)
         if (node === "..")
-          this.pop();
+          this
+            .pop();
         else
-          this._nodes.push(
-            node,
-          );
+          this
+            ._nodes
+            .push(
+              node,
+            );
 
       return this;
     }
@@ -187,12 +228,17 @@ abstract class IFilepath<Root extends boolean> {
     }
   }
 
-  public toString(): filepath<Root> {
+  public toString() {
     try {
-      return [...this._nodes]
+      return [
+        ...this
+          ._nodes,
+      ]
         .join(
           "/",
-        ) as filepath<Root>;
+        ) as filepath<
+        Root
+      >;
     }
     catch (e) {
       throw new EvalError(
@@ -206,21 +252,27 @@ abstract class IFilepath<Root extends boolean> {
     ...subpaths: Array<
       | string
       | string[]
-      | IFilepath<boolean>
+      | IFilepath<
+        boolean
+      >
     >
-  ): filenode[] {
+  ) {
     try {
       return subpaths
         .map(
-          (subpath: string | string[] | IFilepath<boolean>): filenode[] =>
+          subpath =>
             typeof subpath !== "string"
-            && !Array.isArray(subpath)
-              ? subpath._nodes
-              : new this.Splitterful(
-                subpath,
-                "/",
-                { trimSegment: true },
-              )
+            && !Array.isArray(
+              subpath,
+            )
+              ? subpath
+                ._nodes
+              : new this
+                .Splitterful(
+                  subpath,
+                  "/",
+                  { trimSegment: true },
+                )
                 .segments
                 .map(
                   node =>
