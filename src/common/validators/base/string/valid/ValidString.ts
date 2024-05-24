@@ -18,7 +18,7 @@ class ValidString<
     min: posint = 1 as posint,
     max: posinfinint = Infinity as posinfinint,
     negate: boolean = false,
-    cleanOptions: Parameters<ValidString<V, T>["clean"]>[1] = {},
+    cleanOptions: Parameters<typeof ValidString.clean>[1] = {},
   ) {
     try {
       super(
@@ -31,7 +31,7 @@ class ValidString<
           ),
         negate,
         ...chars,
-      )
+      );
     }
     catch (e) {
       throw new EvalError(
@@ -145,19 +145,6 @@ class ValidString<
     catch (e) {
       throw new EvalError(
         `ValidString: trimEdge`,
-        { cause: e },
-      );
-    }
-  }
-
-  public toString() {
-    try {
-      return this
-        .string;
-    }
-    catch (e) {
-      throw new EvalError(
-        `ValidString: toString`,
         { cause: e },
       );
     }

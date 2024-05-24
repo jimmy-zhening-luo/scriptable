@@ -3,8 +3,8 @@ const fp_ValidString = importModule(
 ) as typeof ValidString;
 
 class FilepathNode extends fp_ValidString<
-    "FilepathNode"
-  > {
+  "FilepathNode"
+> {
   constructor(
     node: string,
   ) {
