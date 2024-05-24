@@ -5,21 +5,35 @@ class ErrorHandler {
     try {
       const stack: ErrorLike[] = [e];
 
-      for (let ei: ErrorLike = e; "cause" in ei; ei = ei.cause as ErrorLike)
-        stack.push(ei.cause as ErrorLike);
+      for (
+        let ei: ErrorLike = e;
+        "cause" in ei;
+        ei = ei.cause as ErrorLike
+      )
+        stack
+          .push(
+            ei
+              .cause as ErrorLike
+          );
 
       const queue: ErrorLike[] = [...stack]
         .reverse();
       const hoist = queue
         .findIndex(
-          (e): e is ErrorLike<true> =>
+          (e): e is ErrorLike<
+            true
+          > =>
             typeof e === "object"
             && "message" in e,
         );
       const hoistedQueue: ErrorLike[] = hoist === -1
         ? queue
         : [
-            queue[hoist] as ErrorLike<true>,
+            queue[
+              hoist
+            ] as ErrorLike<
+              true
+            >,
             ...queue
               .slice(
                 0,
@@ -30,18 +44,26 @@ class ErrorHandler {
                 hoist + 1,
               ),
           ];
-      const messages: string[] = hoistedQueue
+      const messages = hoistedQueue
         .map(
-          (e: ErrorLike): string =>
-            this.print(
-              e,
-            ),
+          e =>
+            this
+              .print(
+                e,
+              ),
         );
 
-      this.log(messages);
-      this.notify(messages);
+      this
+        .log(
+          messages,
+        );
+      this
+        .notify(
+          messages,
+        );
 
-      return messages.shift() ?? "";
+      return messages
+        .shift() ?? "";
     }
     catch (e) {
       throw new EvalError(
@@ -77,17 +99,23 @@ class ErrorHandler {
     try {
       const n = new Notification();
 
-      n.title = messages.shift() ?? "";
-      n.body = messages
-        .join(
-          "\n",
-        );
-      n.sound = "failure";
-      n.schedule()
+      n
+        .title = messages
+          .shift()
+          ?? "";
+      n
+        .body = messages
+          .join(
+            "\n",
+          );
+      n
+        .sound = "failure";
+      n
+        .schedule()
         .catch(
           (n_e: unknown) => {
             throw new Error(
-              `Unhandled: Scriptable notification delivery failed`,
+              `Unhandled: Scriptable failed to schedule notification`,
               { cause: n_e },
             );
           },
@@ -126,7 +154,9 @@ class ErrorHandler {
     v: unknown,
   ): string {
     try {
-      return Array.isArray(v)
+      return Array.isArray(
+        v,
+      )
         ? `[${
           v
             .map(
@@ -148,16 +178,28 @@ class ErrorHandler {
             )
             .map(
               k =>
-                `${k}: ${
-                  this.quotelessStringify(
-                    (v as Record<string, unknown>)[k],
-                  )
+                `${
+                  k
+                }: ${
+                  this
+                    .quotelessStringify(
+                      (
+                        v as Record<
+                          string,
+                          unknown
+                        >
+                      )[
+                        k
+                      ],
+                    )
                 }`,
             )
             .join(
               ", ",
             )
-          : String(v);
+          : String(
+            v,
+          );
     }
     catch (e) {
       throw new EvalError(
