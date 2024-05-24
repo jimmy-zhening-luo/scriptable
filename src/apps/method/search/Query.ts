@@ -148,9 +148,9 @@ class Query {
             .startsWith(
               "   ",
             )
-            ? [TRANSLATE]
-            : [CHAT]
-          : [MATH_SHORT]
+            ? [THREE]
+            : [TWO]
+          : [ONE]
         : [];
       const tokenized: stringful[] = [
         ...preprocessed,
