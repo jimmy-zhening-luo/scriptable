@@ -117,7 +117,7 @@ namespace Search {
         : new this
           .Query(
             [
-              rest,
+              REST,
               input,
             ]
               .join(
@@ -133,7 +133,7 @@ namespace Search {
           );
       const match =
         engine[
-          keyMatch ?? rest
+          keyMatch ?? REST
         ] ?? null;
 
       if (match === null)
