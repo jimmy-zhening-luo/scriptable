@@ -7,6 +7,12 @@ declare type SearchSetting = {
       | "mathShort"
       | "mathLong"
     >;
+    fallback: Field<
+      | "rest"
+      | "one"
+      | "two"
+      | "three"
+    >
   };
   user: {
     alias: FieldTable;
