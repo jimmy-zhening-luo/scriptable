@@ -22,7 +22,11 @@ namespace Search {
         this
           .input ?? "";
       const {
-        app,
+        app: {
+          tag,
+          key,
+          fallback,
+        },
         user: {
           engine,
           alias,
@@ -31,45 +35,42 @@ namespace Search {
         this
           .setting
           .parsed;
-      const TAG =
-        this
-          .stringful(
-            app
-              .tag,
-            "app.tag",
-          );
-      const CHAT =
-        this
-          .stringful(
-            app
-              .key
-              .chat,
-            "app.chat",
-          );
-      const TRANSLATE =
-        this
-          .stringful(
-            app
-              .key
-              .translate,
-            "app.translate",
-          );
-      const MATH_SHORT =
-        this
-          .stringful(
-            app
-              .key
-              .mathShort,
-            "app.mathShort",
-          );
-      const MATH_LONG =
-        this
-          .stringful(
-            app
-              .key
-              .mathLong,
-            "app.mathLong",
-          );
+      const [
+        TAG,
+        CHAT,
+        TRANSLATE,
+        MATH_SHORT,
+        MATH_LONG,
+        REST,
+        ONE,
+        TWO,
+        THREE,
+      ] = [
+        tag,
+        key
+          .chat,
+        key
+          .translate,
+        key
+          .mathShort,
+        key
+          .mathLong,
+        fallback
+          .rest,
+        fallback
+          .one,
+        fallback
+          .two,
+        fallback
+          .three,
+      ]
+        .map(
+          key =>
+            this
+              .stringful(
+                key,
+              ),
+        ) as Tuple<stringful, 9>;
       const query =
         new this
           .Query(
@@ -81,6 +82,9 @@ namespace Search {
             TRANSLATE,
             MATH_SHORT,
             MATH_LONG,
+            ONE,
+            TWO,
+            THREE,
           );
       const keys =
         Object
@@ -92,7 +96,7 @@ namespace Search {
           query
             .key
         ] ?? null;
-      const key =
+      const keyMatch =
         keys
           .includes(
             query
@@ -108,21 +112,34 @@ namespace Search {
               )
               ? keyUnaliased
               : null;
-
-      if (key === null)
-        throw new ReferenceError(
-          `No engine for key`,
-          { cause: { key: query.key } },
-        );
-
+      const requery = keyMatch !== null
+        ? query
+        : new this
+          .Query(
+            [
+              rest,
+              input,
+            ]
+              .join(
+                " ",
+              ),
+            CHAT,
+            TRANSLATE,
+            MATH_SHORT,
+            MATH_LONG,
+            ONE,
+            TWO,
+            THREE,
+          );
       const match =
         engine[
-          key
+          keyMatch ?? rest
         ] ?? null;
 
       if (match === null)
         throw new ReferenceError(
-          `Unexpected: Key is primary or alias, but engine[key] is null`,
+          `No engine for key`,
+          { cause: { key: requery.key } },
         );
 
       const resolved: IEngine =
@@ -186,13 +203,13 @@ namespace Search {
 
       this
         .write(
-          query
+          requery
             .clean,
         );
 
       return resolved
         .parseQueryToAction(
-          query,
+          requery,
         );
     }
 

@@ -52,6 +52,9 @@ class Query {
     TRANSLATE: stringful,
     MATH_SHORT: stringful,
     MATH_LONG: stringful,
+    ONE: stringful,
+    TWO: stringful,
+    THREE: stringful,
   ) {
     try {
       const [
@@ -67,9 +70,9 @@ class Query {
                     this
                       .tokenize(
                         query,
-                        CHAT,
-                        TRANSLATE,
-                        MATH_SHORT,
+                        ONE,
+                        TWO,
+                        THREE,
                       ),
                     TRANSLATE,
                   ),
@@ -128,9 +131,9 @@ class Query {
 
   private tokenize(
     query: string,
-    CHAT: stringful,
-    TRANSLATE: stringful,
-    MATH_SHORT: stringful,
+    ONE: stringful,
+    TWO: stringful,
+    THREE: stringful,
   ) {
     try {
       const preprocessed = query
