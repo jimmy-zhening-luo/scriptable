@@ -1,27 +1,27 @@
 declare type GptSetting = {
   app: {
-    tags: Field<
-      | "preset"
-      | "location"
-      | "date"
-    >;
     api: Field<
       | "host"
       | "version"
       | "action"
     >;
     models: Field<
-      | "ultra"
-      | "fast"
-      | "beta"
-      | "image"
+      | "stable"
+      | "legacy"
       | "tts"
+      | "image"
       | "transcript"
+      | "preview"
     >;
     limit: Limit<
       | "token"
       | "temperature"
       | "p"
+    >;
+    tags: Field<
+      | "preset"
+      | "location"
+      | "date"
     >;
   };
   user: {
