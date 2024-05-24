@@ -8,13 +8,15 @@ declare type literals<
 >;
 
 declare type literalful<
-  S extends string,
+  S,
 > = literal<S> extends ""
   ? never
   : literal<S>;
 
 declare type literal<
-  S extends string,
-> = string extends S
-  ? never
-  : S;
+  S,
+> = S extends string
+  ? string extends S
+    ? never
+    : S
+  : never;

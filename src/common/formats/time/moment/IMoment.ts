@@ -4,11 +4,11 @@ abstract class IMoment {
     protected readonly join = " ",
   ) {}
 
-  public get epoch() {
+  public get epoch(): posint {
     try {
       return this
         .moment
-        .getTime();
+        .getTime() as posint;
     }
     catch (e) {
       throw new EvalError(
@@ -20,16 +20,18 @@ abstract class IMoment {
 
   public get full() {
     try {
-      return [
+      const datetime = [
         this
           .date,
         this
           .time,
-      ]
+      ] as const;
+
+      return datetime
         .join(
           this
             .join,
-        ) as stringful;
+        ) as Join<typeof datetime>;
     }
     catch (e) {
       throw new EvalError(
@@ -41,13 +43,21 @@ abstract class IMoment {
 
   public get date() {
     try {
-      return this
+      const date = this
         .moment
         .toLocaleDateString(
           "en-US",
           this
             .dateOptions,
-        ) as stringful;
+        );
+
+      if (date.length > 0)
+        return date as stringful;
+      else
+        throw new RangeError(
+          `date is empty`,
+          { cause: { dateOptions: this.dateOptions } },
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -59,13 +69,18 @@ abstract class IMoment {
 
   public get time() {
     try {
-      return [
+      const localoffset = [
         this
           .local,
         this
           .offset,
-      ]
-        .join("") as stringful;
+      ] as const;
+
+      return localoffset
+        .join("") as Join<
+        typeof localoffset,
+        ""
+      >;
     }
     catch (e) {
       throw new EvalError(
@@ -77,13 +92,21 @@ abstract class IMoment {
 
   public get local() {
     try {
-      return this
+      const local = this
         .moment
         .toLocaleTimeString(
           "en-US",
           this
             .localTimeOptions,
-        ) as stringful;
+        );
+
+      if (local.length > 0)
+        return local as stringful;
+      else
+        throw new RangeError(
+          `local time is empty`,
+          { cause: { localTimeOptions: this.localTimeOptions } },
+        );
     }
     catch (e) {
       throw new EvalError(
