@@ -52,14 +52,14 @@ namespace GPT {
               ii
                 .token,
             )
-          && ii
-            .token >= limit
+            && ii
+              .token >= limit
               .token
               .min
-          && ii
-            .token <= limit
-              .token
-              .max
+              && ii
+                .token <= limit
+                .token
+                .max
             ? ii
               .token
             : defaults
@@ -71,14 +71,14 @@ namespace GPT {
               ii
                 .temperature,
             )
-          && ii
-            .temperature >= limit
+            && ii
+              .temperature >= limit
               .temperature
               .min
-          && ii
-            .temperature <= limit
-              .temperature
-              .max
+              && ii
+                .temperature <= limit
+                .temperature
+                .max
             ? ii
               .temperature
             : defaults
@@ -90,14 +90,14 @@ namespace GPT {
               ii
                 .p,
             )
-          && ii
-            .p >= limit
+            && ii
+              .p >= limit
               .p
               .min
-          && ii
-            .p <= limit
-              .p
-              .max
+              && ii
+                .p <= limit
+                .p
+                .max
             ? ii
               .p
             : defaults
@@ -146,13 +146,13 @@ namespace GPT {
                   i
                     .date,
                 ),
-              user: (
+              user:
                 presets[
                   i
                     .preset
                 ]
                   ?.user ?? ""
-              ),
+              ,
             }
           : null;
       const messageBox: {

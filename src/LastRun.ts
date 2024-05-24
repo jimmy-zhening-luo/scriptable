@@ -18,9 +18,9 @@ namespace LastRun {
         .split(
           ";",
         ) as [
-          string,
-          string?
-        ];
+        string,
+          string?,
+      ];
       const [id] = input;
       const m = Number(
         input[

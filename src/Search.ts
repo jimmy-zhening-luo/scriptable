@@ -71,18 +71,18 @@ namespace Search {
                 key,
               ),
         ) as Tuple<
-          stringful
-          ,
-          9
-        >;
+        stringful
+        ,
+        9
+      >;
       const query =
         new this
           .Query(
             input
               .length > 0
-                ? input
-                : this
-                  .read(),
+              ? input
+              : this
+                .read(),
             CHAT,
             TRANSLATE,
             MATH_SHORT,
