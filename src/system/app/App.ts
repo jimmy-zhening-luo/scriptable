@@ -302,7 +302,7 @@ abstract class App<
   private get ErrorHandler() {
     try {
       return importModule(
-        "interface/private/error/ErrorHandler",
+        "private/error/ErrorHandler",
       ) as typeof ErrorHandler;
     }
     catch (e) {
