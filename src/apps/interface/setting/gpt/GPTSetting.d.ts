@@ -29,18 +29,9 @@ declare type GptSetting = {
       | "token"
       | "org"
     >;
-    defaults: GptProps;
+    defaults: GptOpts;
     presets: Table<
-      & PartialRecord<
-        "plugin"
-        ,
-        FieldTable
-      >
-      & Unrequire<
-        GptPrompt
-        ,
-        | "user"
-      >
+      GptPreset
     >;
   };
 };

@@ -1,4 +1,4 @@
-declare type GptProps =
+declare type GptOpts =
   & Field<
     Keys<
       GptSetting["app"]["tags"]

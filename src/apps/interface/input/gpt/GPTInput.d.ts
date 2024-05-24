@@ -1,24 +1,4 @@
 declare type GptInput =
-  | GptInputFullyWrapped
-  | GptInputPrompt
+  | GptInputUnwrapped
+  | GptInputWrapped
 ;
-
-declare type GptInputFullyWrapped =
-  & Record<
-    "prompt",
-    GptInputPrompt
-  >
-  & Partial<
-    GptProps
-  >
-;
-
-declare type GptInputPrompt =
-  | string
-  | GptPrompt
-;
-
-declare type GptPrompt = Field<
-  | "system"
-  | "user"
->;
