@@ -100,7 +100,7 @@ namespace Filelink {
         else if (
           length < 2
         )
-          throw new TypeError(
+          throw new RangeError(
             `Path has no leaves`,
             {
               cause: {
