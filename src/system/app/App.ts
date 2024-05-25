@@ -413,14 +413,14 @@ abstract class App<
   }
 
   protected stringfulArray(
-    ...args: string[]
+    array: string[],
   ) {
     try {
       if (
-        args
+        array
           .every(
-            (arg): arg is stringful =>
-              arg
+            (node): node is stringful =>
+              node
                 .length > 0,
           )
       )
