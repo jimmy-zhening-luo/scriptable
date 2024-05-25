@@ -12,7 +12,7 @@ declare type SearchSetting = {
       | "one"
       | "two"
       | "three"
-    >
+    >;
   };
   user: {
     alias: FieldTable;
