@@ -3,15 +3,18 @@ declare type FileProvider<
 > =
   & C extends false
     ?
+    & Field<
+      "providerRoot"
+    >
     & Record<
       "hasContainers"
       ,
       false
     >
-    & Field<
-      "providerRoot"
-    >
     :
+      & Field<
+        "providerRoot"
+      >
       & Record<
         "hasContainers"
         ,
@@ -20,9 +23,8 @@ declare type FileProvider<
       & Field<
         | "folderRoot"
         | "preAppRoot"
+        ,
+        "preAppRoot"
       >
       & FileContainerManifest
-      & Field<
-        "providerRoot"
-      >
 ;
