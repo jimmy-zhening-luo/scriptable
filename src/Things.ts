@@ -24,8 +24,7 @@ namespace Things {
           lists,
         },
       } = this
-        .setting
-        .parsed;
+        .setting;
 
       return input
         .split(

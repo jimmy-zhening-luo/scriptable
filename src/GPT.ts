@@ -32,8 +32,7 @@ namespace GPT {
           presets,
         },
       } = this
-        .setting
-        .parsed;
+        .setting;
       const input = this
         .inputful;
       const wrap =
@@ -163,35 +162,32 @@ namespace GPT {
                     : wrap
                       .prompt,
             };
-      const messagesTemplate: Array<
-        [
-          GptRole,
-          string,
-        ]
-      > = [
-        [
-          "user",
-          promptTemplate
-            .user,
-        ],
-      ];
-
-      if ("system" in promptTemplate)
-        messagesTemplate
-          .unshift(
+      const messagesTemplate = "system" in promptTemplate
+        ? [
             [
               "system",
               promptTemplate
                 .system,
             ],
-          );
-
+            [
+              "user",
+              promptTemplate
+                .user,
+            ],
+          ] as const
+        : [
+            [
+              "user",
+              promptTemplate
+                .user,
+            ],
+          ] as const;
       const messagesFilled = messagesTemplate
         .map(
           ([
             role,
             prompt,
-          ]): [GptRole, string] =>
+          ]) =>
             [
               role,
               plugs
@@ -227,7 +223,7 @@ namespace GPT {
                   opts
                     .date,
                 ),
-            ],
+            ] as const,
         );
       const messages = messagesFilled
         .map(

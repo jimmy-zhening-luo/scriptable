@@ -33,8 +33,7 @@ namespace Search {
         },
       } =
         this
-          .setting
-          .parsed;
+          .setting;
       const [
         TAG,
         CHAT,
