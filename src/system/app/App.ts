@@ -412,23 +412,6 @@ abstract class App<
     }
   }
 
-  protected flat(
-    elements: Unflat<
-      string
-    >,
-  ) {
-    try {
-      return [elements]
-        .flat();
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: flat`,
-        { cause: e },
-      );
-    }
-  }
-
   protected stringfulArray(
     ...args: string[]
   ) {
