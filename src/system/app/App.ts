@@ -719,7 +719,7 @@ abstract class App<
     }
   }
 
-  public abstract runtime(): NonUndefined<O>;
+  protected abstract runtime(): NonUndefined<O>;
   protected abstract setOutput(runtimeOutput: ReturnType<App<I, O, C, Class>["runtime"]>): ReturnType<App<I, O, C, Class>["runtime"]>;
   private _name?: stringful;
   private _input?: I;
