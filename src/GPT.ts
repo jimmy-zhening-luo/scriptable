@@ -21,214 +21,176 @@ namespace GPT {
         },
         user: {
           id,
-          defaults,
+          defaults: {
+            model,
+            token,
+            temperature,
+            p,
+            preset
+            location,
+          },
           presets,
         },
       } = this
         .setting
         .parsed;
-      const input =
-        this
-          .input ?? "";
-      const ii =
+      const input = this
+        .inputful;
+      const wrap =
         typeof input !== "string"
         && "prompt" in input
           ? input
           : { prompt: input };
-      const i = {
-        prompt:
-          ii
-            .prompt,
+      const opts = {
         model:
-          "model" in ii
-            ? ii
+          "model" in wrap
+          && `${
+            wrap
               .model
-            : defaults
-              .model,
+          }` in models
+            ?
+          wrap
+            .model
+            ?? model,
         token:
-          "token" in ii
-          && Number
-            .isInteger(
-              ii
-                .token,
-            )
-            && ii
-              .token >= limit
+          "token" in wrap
+          && wrap
+            .token >= limit
+            .token
+            .min
+            && wrap
+              .token <= limit
               .token
-              .min
-              && ii
-                .token <= limit
-                .token
-                .max
-            ? ii
+              .max
+            ? wrap
               .token
-            : defaults
-              .token,
+            : token,
         temperature:
-          "temperature" in ii
-          && Number
-            .isFinite(
-              ii
-                .temperature,
-            )
-            && ii
-              .temperature >= limit
+          "temperature" in wrap
+          && wrap
+            .temperature >= limit
+            .temperature
+            .min
+            && wrap
+              .temperature <= limit
               .temperature
-              .min
-              && ii
-                .temperature <= limit
-                .temperature
-                .max
-            ? ii
+              .max
+            ? wrap
               .temperature
-            : defaults
-              .temperature,
+            : temperature,
         p:
-          "p" in ii
-          && Number
-            .isFinite(
-              ii
-                .p,
-            )
-            && ii
-              .p >= limit
+          "p" in wrap
+          && wrap
+            .p >= limit
+            .p
+            .min
+            && wrap
+              .p <= limit
               .p
-              .min
-              && ii
-                .p <= limit
-                .p
-                .max
-            ? ii
+              .max
+            ? wrap
               .p
-            : defaults
-              .p,
+            : p,
         preset:
-          "preset" in ii
-          && ii
+          "preset" in wrap
+          && wrap
             .preset in presets
-            ? ii
+            ? wrap
               .preset
-            : defaults
-              .preset,
+            : preset,
         location:
-          "location" in ii
-            ? ii
-              .location
-            : defaults
-              .location,
+          wrap
+            .location
+            ?? location,
         date:
-          "date" in ii
-            ? ii
-              .date
-            : new this
+          wrap
+            .date
+            ?? new this
               .Timeprint()
               .date,
       };
-      const preset =
-        typeof i.prompt === "string"
-          ? {
-              system: (
-                presets[
-                  i
-                    .preset
-                ]
-                  ?.system ?? ""
-              )
-                .replace(
-                  tags
-                    .location,
-                  i
-                    .location,
-                )
-                .replace(
-                  tags
-                    .date,
-                  i
-                    .date,
-                ),
-              user:
-                presets[
-                  i
-                    .preset
-                ]
-                  ?.user ?? ""
-              ,
-            }
-          : null;
-      const messageBox: {
-        user: GptMessage<
-          "user"
-        >;
-        system?: GptMessage<
-          "system"
-        >;
-      } =
-        typeof i
-          .prompt === "string"
-          ? preset === null
-          || preset
-            .system === ""
+      const presetConfig = presets[
+        opts
+          .preset
+      ]
+        ?? null;
+      const promptTemplate = typeof wrap
+        .prompt !== "string"
+          ? wrap
+            .prompt
+          : presetConfig === null
             ? {
-                user: {
-                  role: "user",
-                  content: i
-                    .prompt,
-                },
+                user: wrap
+                  .prompt,
               }
             : {
-                system: {
-                  role: "system",
-                  content: preset
-                    .system,
-                },
-                user: {
-                  role: "user",
-                  content: preset
-                    .user
+                system: presetConfig
+                  .system,
+                user:
+                  "user" in presetConfig
+                  && presetConfig
                     .includes(
                       tags
                         .preset,
                     )
-                    ? preset
+                    ? presetConfig
                       .user
                       .replace(
                         tags
                           .preset,
-                        i
+                        wrap
                           .prompt,
                       )
-                    : i
+                    : wrap
                       .prompt,
-                },
-              }
-          : {
-              system: {
-                role: "system",
-                content: i
-                  .prompt
-                  .system,
-              },
-              user: {
-                role: "user",
-                content: i
-                  .prompt
-                  .user,
-              },
-            };
-      const messages =
-        "system" in messageBox
+              };
+      const messageQueue: Array<
+        [
+          GptRole,
+          string
+        ]
+      > = [
+        ..."system" in promptTemplate
           ? [
-              messageBox
+              "system",
+              promptTemplate
                 .system,
-              messageBox
-                .user,
-            ] as GptMessages<
-              true
-            >
-          : [
-              messageBox
-                .user,
-            ] as GptMessages;
+            ]
+          : []
+        [
+          "user",
+          promptTemplate
+            .user,
+        ]
+      
+      ]
+        .map(
+          [role, content] =>
+            [
+              role,
+              content
+                .replaceAll(
+                  tags
+                    .location,
+                  opts
+                    .location,
+                )
+                .replaceAll(
+                  tags
+                    .date,
+                  opts
+                    .date,
+                ),
+            ],
+        );
+      const messages = messageQueue
+        .map(
+          ([role, content]): GptMessage =>
+            {
+              role,
+              content,
+            },
+        );
 
       return {
         api: [
@@ -251,16 +213,16 @@ namespace GPT {
         body: {
           messages,
           model: models[
-            i
+            opts
               .model
           ],
-          max_tokens: i
+          max_tokens: opts
             .token
             .toString(),
-          temperature: i
+          temperature: opts
             .temperature
             .toString(),
-          top_p: i
+          top_p: opts
             .p
             .toString(),
         },

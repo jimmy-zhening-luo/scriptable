@@ -10,22 +10,19 @@ declare type GptOutput =
       | "org"
     >
   >
-  & {
-    body:
-      & Record<
-        "messages"
-        ,
-        GptMessages<
-          boolean
-        >
-      >
-      & Field<
-        "model"
-      >
-      & Field<
-        | "max_tokens"
-        | "temperature"
-        | "top_p"
-      >;
-  }
+  & Record<
+    "body"
+    ,
+    & Field<
+      | "model"
+      | "max_tokens"
+      | "temperature"
+      | "top_p"
+    >
+    & Record<
+      "messages"
+      ,
+      GptMessage[]
+    >
+  >
 ;
