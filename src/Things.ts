@@ -11,7 +11,7 @@ namespace Things {
     ThingsItem[],
     ThingsSetting
   > {
-    public runtime() {
+    protected runtime() {
       const input = this
         .inputStringful;
       const {

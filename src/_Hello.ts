@@ -11,7 +11,7 @@ namespace _Hello {
     string,
     HelloSetting
   > {
-    public runtime() {
+    protected runtime() {
       this
         .debug = true;
 

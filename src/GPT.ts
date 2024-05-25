@@ -11,7 +11,7 @@ namespace GPT {
     GptOutput,
     GptSetting
   > {
-    public runtime() {
+    protected runtime() {
       const {
         app: {
           tags,

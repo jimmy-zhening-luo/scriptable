@@ -10,7 +10,7 @@ namespace Shorten {
     string,
     string
   > {
-    public runtime() {
+    protected runtime() {
       const STORE = "url.json";
       const url = this
         .inputStringful

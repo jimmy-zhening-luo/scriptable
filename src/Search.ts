@@ -17,7 +17,7 @@ namespace Search {
       ) as typeof Query;
     }
 
-    public runtime() {
+    protected runtime() {
       const input =
         this
           .input ?? "";

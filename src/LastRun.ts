@@ -10,7 +10,7 @@ namespace LastRun {
     string,
     boolean
   > {
-    public runtime() {
+    protected runtime() {
       const now = Date
         .now();
       const input = this
