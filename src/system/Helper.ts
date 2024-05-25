@@ -13,7 +13,7 @@ abstract class Helper<
     "Helper"
   > {
   constructor(
-    private readonly helperInput: Helper<I>["input"],
+    private readonly argument: Helper<I>["input"],
     debug?: boolean,
   ) {
     super(
@@ -22,10 +22,10 @@ abstract class Helper<
     );
   }
 
-  public get getInput() {
+  protected get getInput() {
     try {
       return this
-        .helperInput;
+        .argument;
     }
     catch (e) {
       throw new EvalError(
