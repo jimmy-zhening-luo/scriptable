@@ -111,6 +111,27 @@ namespace GPT {
           .preset
       ]
       ?? null;
+      const [
+        presetPlugins,
+        plugins,
+      ] =
+        presetConfig === null
+        || !("plugins" in presetConfig)
+          ? [
+              {},
+              {},
+            ]
+          : [
+              presetConfig
+                .plugins,
+              wrap
+                .plugins
+                ?? {},
+            ];
+      const plugs = Object
+        .keys(
+          presetPlugins,
+        );
       const promptTemplate = typeof wrap
         .prompt !== "string"
         ? wrap
@@ -142,7 +163,7 @@ namespace GPT {
                     : wrap
                       .prompt,
             };
-      const messageBeef: Array<
+      const messagesTemplate: Array<
         [
           GptRole,
           string,
@@ -156,7 +177,7 @@ namespace GPT {
       ];
 
       if ("system" in promptTemplate)
-        messageBeef
+        messagesTemplate
           .unshift(
             [
               "system",
@@ -165,7 +186,7 @@ namespace GPT {
             ],
           );
 
-      const messageQueue = messageBeef
+      const messagesFilled = messagesTemplate
         .map(
           ([
             role,
@@ -173,7 +194,27 @@ namespace GPT {
           ]): [GptRole, string] =>
             [
               role,
-              prompt
+              plugs
+                .reduce(
+                  (
+                    tagged,
+                    plug,
+                  ) =>
+                    tagged
+                      .replaceAll(
+                        `{{${
+                          plug
+                        }}}`,
+                        plugins[
+                          plug
+                        ]
+                          ?? presetPlugins[
+                            plug
+                          ]
+                          ?? "",
+                      ),
+                  prompt,
+                )
                 .replaceAll(
                   tags
                     .location,
@@ -188,7 +229,7 @@ namespace GPT {
                 ),
             ],
         );
-      const messages = messageQueue
+      const messages = messagesFilled
         .map(
           ([
             role,

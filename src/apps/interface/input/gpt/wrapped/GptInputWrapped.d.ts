@@ -4,12 +4,8 @@ declare type GptInputWrapped =
     ,
     GptInputUnwrapped
   >
+  & GptPlugins
   & Partial<
     GptOpts
-  >
-  & PartialRecord<
-    "plugins"
-    ,
-    FieldTable
   >
 ;
