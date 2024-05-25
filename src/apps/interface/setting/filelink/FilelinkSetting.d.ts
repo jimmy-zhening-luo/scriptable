@@ -3,7 +3,7 @@ declare type FilelinkSetting = {
     "providers"
     ,
     Table<
-      | FileProvider
+      | FileProvider<false>
       | FileProvider<true>
     >
   >;

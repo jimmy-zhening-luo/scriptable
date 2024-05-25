@@ -1,28 +1,28 @@
 declare type FileProvider<
-  C extends boolean = false,
+  C extends boolean,
 > =
-  boolean extends C
-    ? never
+  & C extends false
+    ?
+    & Record<
+      "hasContainers"
+      ,
+      false
+    >
+    & Field<
+      "providerRoot"
+    >
     :
+      & Record<
+        "hasContainers"
+        ,
+        true
+      >
+      & Field<
+        | "folderRoot"
+        | "preAppRoot"
+      >
+      & FileContainerManifest
       & Field<
         "providerRoot"
       >
-      & C extends false
-        ?
-          & Record<
-            "hasContainers"
-            ,
-            false
-          >
-        :
-          & Record<
-            "hasContainers"
-            ,
-            true
-          >
-          & Field<
-            | "folderRoot"
-            | "preAppRoot"
-          >
-          & FileContainerManifest
 ;

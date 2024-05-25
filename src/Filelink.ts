@@ -11,22 +11,115 @@ namespace Filelink {
     string,
     FilelinkSetting
   > {
-    public runtime() {
-      const { providers } = this.user;
+    protected runtime() {
       const {
         nodes,
         ext,
         type,
       } = this
         .inputful;
-      const path = [nodes]
-        .flat();
-      const [p0] = path;
+      const path = this
+        .validPath(
+          nodes,
+        );
+      const [rootNode] = path;
+      const { providers } = this
+        .user;
+      const provider = providers[
+        rootNode
+      ]
+      ?? null;
 
-      if (typeof p0 === "undefined" || !(p0 in providers))
-        return null;
-      else // TBD
-        return `TMP: ${ext} ${type}`;
+      if (provider === null)
+        throw new ReferenceError(
+          `Provider not found`,
+          {
+            cause: {
+              rootNode,
+              providers: Object.keys(providers),
+            },
+          },
+        );
+      else {
+        path
+          .shift();
+
+        const { providerRoot } = provider;
+        const leafNode = path
+          .pop() as unknown as stringful;
+        const leaf = type === "Folder"
+          ? leafNode
+          : [
+              leafNode,
+              ext,
+            ]
+              .join(
+                ".",
+              );
+
+        if (
+          !provider
+            .hasContainers
+        )
+          return [
+            providerRoot,
+            ...path,
+            leaf,
+          ]
+            .join(
+              "/",
+            );
+        else
+          throw new SyntaxError(
+            `NOT YET IMPLEMENTED: Provider has containers`,
+          );
+      }
+    }
+
+    private validPath(
+      nodes: Unflat<
+        string
+      >,
+    ) {
+      try {
+        const path = this
+          .stringfulArray(
+            [nodes]
+              .flat(),
+          );
+        const { length } = path;
+
+        if (
+          length < 1
+        )
+          throw new SyntaxError(
+            `Input path empty`,
+          );
+        else if (
+          length < 2
+        )
+          throw new TypeError(
+            `Path has no leaves`,
+            {
+              cause: {
+                path,
+                length,
+              },
+            },
+          );
+        else
+          return path as ArrayN<
+            stringful
+            ,
+            2
+          >;
+      }
+      catch (e) {
+        throw new EvalError(
+          `Filelink: validPath`,
+          { cause: e },
+        );
+      }
     }
   }
 }
