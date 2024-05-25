@@ -412,6 +412,50 @@ abstract class App<
     }
   }
 
+  protected flat(
+    elements: Unflat<
+      string
+    >,
+  ) {
+    try {
+      return [elements]
+        .flat();
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: flat`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected stringfulArray(
+    ...args: string[]
+  ) {
+    try {
+      if (
+        args
+          .every(
+            (arg): arg is stringful =>
+              arg
+                .length > 0,
+          )
+      )
+        return args;
+      else
+        throw new TypeError(
+          `string array contains empty string`,
+          { cause: args },
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: allStringful`,
+        { cause: e },
+      );
+    }
+  }
+
   protected synthetic<A, O>(
     app: A extends App<
       infer I,
