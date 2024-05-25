@@ -30,7 +30,9 @@ namespace Filelink {
       ]
       ?? null;
 
-      if (provider === null)
+      if (
+        provider === null
+      )
         throw new ReferenceError(
           `Provider not found`,
           {
