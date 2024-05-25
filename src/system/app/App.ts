@@ -671,9 +671,8 @@ abstract class App<
   protected falsy(
     value: unknown,
   ): value is
-    | undefined
-    | null
-  {
+  | undefined
+  | null {
     try {
       const v = value ?? false;
       const bv = Boolean(v);
