@@ -4,19 +4,27 @@ abstract class App<
   C extends ISetting,
   AppClass extends string,
 > {
-  public readonly __proto: literalful<"App"> = "App";
+  public readonly __proto: literalful<
+    "App"
+  > = "App";
   private readonly t0: number = Date.now();
   private readonly _storage: Record<
     string,
-    Storage<AppClass>
+    Storage<
+      AppClass
+    >
   > = {};
   private readonly _keys: Record<
     string,
-    Key<AppClass>
+    Key<
+      AppClass
+    >
   > = {};
 
   constructor(
-    protected readonly _class: literalful<AppClass>,
+    private readonly _class: literalful<
+      AppClass
+    >,
     protected debug = false,
   ) {}
 
