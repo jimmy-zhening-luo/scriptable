@@ -661,32 +661,26 @@ abstract class App<
     ) {
     try {
       const v = value ?? false;
+      const bv = Boolean(v);
 
-      return v === false
+      return !bv
         || (
           typeof v === "string"
-            ? Number(v) === 0
-            : typeof v === "object"
-              ? Object
-                .keys(
-                  v,
+            ? Number(
+              v,
+            ) === 0
+            : Array.isArray(
+              v,
+            )
+              ? v
+                .flat(
+                  Infinity,
+                )
+                .join(
+                  "",
                 )
                 .length === 0
-              : Array.isArray(v)
-                ? v
-                  .flat(
-                    Infinity,
-                  )
-                  .length === 0
-                : typeof v === "number"
-                  ? v === 0
-                  || Number
-                    .isNaN(
-                      v,
-                    )
-                  : typeof v === "bigint"
-                    ? Number(v) === 0
-                    : false
+              : false
         );
     }
     catch (e) {

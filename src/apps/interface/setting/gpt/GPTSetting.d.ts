@@ -10,7 +10,7 @@ declare type GptSetting = {
       | "legacy"
       | "tts"
       | "image"
-      | "transcript"
+      | "transcribe"
       | "preview"
     >;
     limit: Limit<

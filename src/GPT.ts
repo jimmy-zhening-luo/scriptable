@@ -27,14 +27,14 @@ namespace GPT {
       } = this
         .setting
         .parsed;
-      const raw =
+      const input =
         this
           .input ?? "";
       const ii =
-        typeof raw !== "string"
-        && "prompt" in raw
-          ? raw
-          : { prompt: raw };
+        typeof input !== "string"
+        && "prompt" in input
+          ? input
+          : { prompt: input };
       const i = {
         prompt:
           ii
