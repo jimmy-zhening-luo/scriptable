@@ -117,23 +117,23 @@ abstract class App<
         const { input } = this;
 
         if (
-          typeof input === "undefined"
-          || input === null
-          || this.falsy(input)
+          this
+            .truthy(
+              input,
+            )
         )
+          this
+            ._inputful = input;
+        else
           throw new TypeError(
             `null input`,
             {
               cause: {
                 input: this.input,
                 type: typeof this.input,
-                falsy: this.falsy(this.input),
               },
             },
           );
-        else
-          this
-            ._inputful = input;
       }
 
       return this
@@ -651,14 +651,29 @@ abstract class App<
     }
   }
 
+  protected truthy(
+    value: I,
+  ): value is NonNullable<I> {
+    try {
+      return !this
+        .falsy(
+          value,
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: truthy`,
+        { cause: e },
+      );
+    }
+  }
+
   protected falsy(
     value: unknown,
   ): value is
-  & I
-  & (
     | undefined
     | null
-    ) {
+  {
     try {
       const v = value ?? false;
       const bv = Boolean(v);
