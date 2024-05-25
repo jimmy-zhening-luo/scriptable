@@ -20,6 +20,62 @@ abstract class App<
     protected debug = false,
   ) {}
 
+  protected get stringful() {
+    try {
+      return importModule(
+        "./common/types/safe/acceptors/string/Stringful",
+      ) as typeof Stringful;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Stringful`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected get base64guid() {
+    try {
+      return importModule(
+        "./common/formats/guid/Base64Guid",
+      ) as typeof Base64Guid;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Base64Guid`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected get Timestamp() {
+    try {
+      return importModule(
+        "./common/formats/time/Timestamp",
+      ) as typeof Timestamp;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Stringful`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected get Timeprint() {
+    try {
+      return importModule(
+        "./common/formats/time/Timeprint",
+      ) as typeof Timeprint;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Timeprint`,
+        { cause: e },
+      );
+    }
+  }
+
   protected get name() {
     try {
       if (typeof this._name === "undefined")
@@ -187,62 +243,6 @@ abstract class App<
     catch (e) {
       throw new EvalError(
         `App: inputStringful`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected get stringful() {
-    try {
-      return importModule(
-        "./common/types/safe/acceptors/string/Stringful",
-      ) as typeof Stringful;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Stringful`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected get base64guid() {
-    try {
-      return importModule(
-        "./common/formats/guid/Base64Guid",
-      ) as typeof Base64Guid;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Base64Guid`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected get Timestamp() {
-    try {
-      return importModule(
-        "./common/formats/time/Timestamp",
-      ) as typeof Timestamp;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Stringful`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected get Timeprint() {
-    try {
-      return importModule(
-        "./common/formats/time/Timeprint",
-      ) as typeof Timeprint;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Timeprint`,
         { cause: e },
       );
     }
