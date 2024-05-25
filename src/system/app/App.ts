@@ -20,7 +20,7 @@ abstract class App<
     protected debug = false,
   ) {}
 
-  public get name(): stringful {
+  public get name() {
     try {
       if (typeof this._name === "undefined")
         this
@@ -42,20 +42,11 @@ abstract class App<
     }
   }
 
-  public get setting(): Setting<Class, C> {
+  public get setting() {
     try {
-      if (typeof this._setting === "undefined")
-        this
-          ._setting = new this
-            .Setting(
-              this
-                ._class,
-              this
-                .name,
-            );
-
       return this
-        ._setting;
+        ._setting
+        .parsed;
     }
     catch (e) {
       throw new EvalError(
@@ -68,7 +59,7 @@ abstract class App<
   public get app() {
     try {
       return this
-        .setting
+        ._setting
         .app;
     }
     catch (e) {
@@ -82,7 +73,7 @@ abstract class App<
   public get user() {
     try {
       return this
-        .setting
+        ._setting
         .user;
     }
     catch (e) {
@@ -93,7 +84,7 @@ abstract class App<
     }
   }
 
-  public get input(): I {
+  public get input() {
     try {
       if (typeof this._input === "undefined")
         this
@@ -111,7 +102,7 @@ abstract class App<
     }
   }
 
-  public get inputful(): NonNullable<I> {
+  public get inputful() {
     try {
       if (typeof this._inputful === "undefined") {
         const { input } = this;
@@ -147,7 +138,7 @@ abstract class App<
     }
   }
 
-  public get inputString(): string {
+  public get inputString() {
     try {
       if (typeof this._inputString === "undefined") {
         const input = this
@@ -179,7 +170,7 @@ abstract class App<
     }
   }
 
-  public get inputStringful(): stringful {
+  public get inputStringful() {
     try {
       if (typeof this._inputStringful === "undefined")
         this
@@ -313,7 +304,30 @@ abstract class App<
     }
   }
 
-  protected abstract get getInput(): App<I, O, C, Class>["input"];
+  private get _setting() {
+    try {
+      if (typeof this.__setting === "undefined")
+        this
+          .__setting = new this
+            .Setting<Class, C>(
+            this
+              ._class,
+            this
+              .name,
+          );
+
+      return this
+        .__setting;
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: _settingCache`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected abstract get getInput(): I;
 
   public static [Symbol.hasInstance](instance: unknown) {
     try {
@@ -331,7 +345,7 @@ abstract class App<
     }
   }
 
-  public run(): NonUndefined<O> {
+  public run() {
     try {
       try {
         const output = this
@@ -705,14 +719,14 @@ abstract class App<
     }
   }
 
-  public abstract runtime(): ReturnType<App<I, O, C, Class>["run"]>;
-  protected abstract setOutput(runtimeOutput: ReturnType<App<I, O, C, Class>["run"]>): ReturnType<App<I, O, C, Class>["run"]>;
-  private _name?: App<I, O, C, Class>["name"];
-  private _setting?: App<I, O, C, Class>["setting"];
-  private _input?: App<I, O, C, Class>["input"];
-  private _inputful?: App<I, O, C, Class>["inputful"];
-  private _inputString?: App<I, O, C, Class>["inputString"];
-  private _inputStringful?: App<I, O, C, Class>["inputStringful"];
+  public abstract runtime(): NonUndefined<O>;
+  protected abstract setOutput(runtimeOutput: ReturnType<App<I, O, C, Class>["runtime"]>): ReturnType<App<I, O, C, Class>["runtime"]>;
+  private _name?: stringful;
+  private _input?: I;
+  private _inputful?: NonNullable<I>;
+  private _inputString?: string;
+  private _inputStringful?: stringful;
+  private __setting?: Setting<Class, C>;
 }
 
 module.exports = App;
