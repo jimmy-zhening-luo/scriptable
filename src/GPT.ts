@@ -26,7 +26,7 @@ namespace GPT {
             token,
             temperature,
             p,
-            preset
+            preset,
             location,
           },
           presets,
