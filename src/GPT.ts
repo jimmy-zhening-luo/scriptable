@@ -208,10 +208,10 @@ namespace GPT {
                         plugins[
                           plug
                         ]
-                          ?? presetPlugins[
-                            plug
-                          ]
-                          ?? "",
+                        ?? presetPlugins[
+                          plug
+                        ]
+                        ?? "",
                       ),
                   prompt,
                 )
