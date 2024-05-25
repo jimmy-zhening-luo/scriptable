@@ -68,13 +68,32 @@ namespace Filelink {
             ...path,
             leaf,
           ]
+            .filter(
+              segment =>
+                segment
+                  .length < 0,
+            )
             .join(
               "/",
             );
-        else
+        else {
+          const {
+            containers,
+            folderRoot,
+            preAppRoot,
+          } = provider;
+
           throw new SyntaxError(
             `NOT YET IMPLEMENTED: Provider has containers`,
+            {
+              cause: {
+                containers,
+                folderRoot,
+                preAppRoot,
+              },
+            },
           );
+        }
       }
     }
 
