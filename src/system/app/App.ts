@@ -20,7 +20,7 @@ abstract class App<
     protected debug = false,
   ) {}
 
-  public get name() {
+  protected get name() {
     try {
       if (typeof this._name === "undefined")
         this
@@ -42,7 +42,7 @@ abstract class App<
     }
   }
 
-  public get setting() {
+  protected get setting() {
     try {
       return this
         ._setting
@@ -56,7 +56,7 @@ abstract class App<
     }
   }
 
-  public get app() {
+  protected get app() {
     try {
       return this
         ._setting
@@ -70,7 +70,7 @@ abstract class App<
     }
   }
 
-  public get user() {
+  protected get user() {
     try {
       return this
         ._setting
@@ -84,7 +84,7 @@ abstract class App<
     }
   }
 
-  public get input() {
+  protected get input() {
     try {
       if (typeof this._input === "undefined")
         this
@@ -102,7 +102,7 @@ abstract class App<
     }
   }
 
-  public get inputful() {
+  protected get inputful() {
     try {
       if (typeof this._inputful === "undefined") {
         const { input } = this;
@@ -138,7 +138,7 @@ abstract class App<
     }
   }
 
-  public get inputString() {
+  protected get inputString() {
     try {
       if (typeof this._inputString === "undefined") {
         const input = this
@@ -170,7 +170,7 @@ abstract class App<
     }
   }
 
-  public get inputStringful() {
+  protected get inputStringful() {
     try {
       if (typeof this._inputStringful === "undefined")
         this
@@ -404,7 +404,7 @@ abstract class App<
     }
   }
 
-  public synthetic<A, O>(
+  protected synthetic<A, O>(
     app: A extends App<
       infer I,
       O,
@@ -450,7 +450,7 @@ abstract class App<
       throw new Error("foo");
   }
 
-  public read(
+  protected read(
     filenameOrError?:
       | boolean
       | string,
@@ -479,7 +479,7 @@ abstract class App<
     }
   }
 
-  public readful(
+  protected readful(
     filename?: string,
   ) {
     try {
@@ -497,7 +497,7 @@ abstract class App<
     }
   }
 
-  public data<D>(
+  protected data<D>(
     filenameOrError?:
       | boolean
       | string,
@@ -522,7 +522,7 @@ abstract class App<
     }
   }
 
-  public write(
+  protected write(
     data: unknown,
     filename?: string,
     overwrite?:
@@ -551,7 +551,7 @@ abstract class App<
     }
   }
 
-  public load(
+  protected load(
     handle: string,
   ) {
     try {
@@ -569,7 +569,7 @@ abstract class App<
     }
   }
 
-  public roll(
+  protected roll(
     handle: string,
   ) {
     try {
