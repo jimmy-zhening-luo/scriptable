@@ -11,7 +11,7 @@ namespace NewHelper {
     void,
     never
   > {
-    public runtime() {
+    protected runtime() {
       //
     }
   }

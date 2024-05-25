@@ -11,7 +11,7 @@ namespace New {
     never,
     never
   > {
-    public runtime() {
+    protected runtime() {
       return null;
     }
   }
