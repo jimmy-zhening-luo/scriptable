@@ -23,8 +23,7 @@ namespace Things {
           triage,
           lists,
         },
-      } = this
-        .setting;
+      } = this;
 
       return input
         .split(

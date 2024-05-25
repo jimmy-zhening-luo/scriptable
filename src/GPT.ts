@@ -13,26 +13,27 @@ namespace GPT {
   > {
     protected runtime() {
       const {
-        app: {
-          tags,
-          api,
-          models,
-          limit,
+        app,
+        user,
+      } = this;
+      const {
+        api,
+        models,
+        limit,
+        tags,
+      } = app;
+      const {
+        id,
+        presets,
+        defaults: {
+          model,
+          preset,
+          location,
+          token,
+          temperature,
+          p,
         },
-        user: {
-          id,
-          defaults: {
-            model,
-            token,
-            temperature,
-            p,
-            preset,
-            location,
-          },
-          presets,
-        },
-      } = this
-        .setting;
+      } = user;
       const input = this
         .inputful;
       const wrap =
@@ -43,8 +44,10 @@ namespace GPT {
       const opts = {
         model:
           "model" in wrap
-          && String(wrap
-            .model) in models
+          && String(
+            wrap
+              .model,
+          ) in models
             ? wrap
               .model
             : model,
@@ -115,7 +118,9 @@ namespace GPT {
         plugins,
       ] =
         presetConfig === null
-        || !("plugins" in presetConfig)
+        || !(
+          "plugins" in presetConfig
+        )
           ? [
               {},
               {},

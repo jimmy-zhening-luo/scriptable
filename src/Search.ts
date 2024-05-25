@@ -18,22 +18,19 @@ namespace Search {
     }
 
     protected runtime() {
-      const input =
-        this
-          .input ?? "";
       const {
-        app: {
-          tag,
-          key,
-          fallback,
-        },
-        user: {
-          engine,
-          alias,
-        },
-      } =
-        this
-          .setting;
+        app,
+        user,
+      } = this;
+      const {
+        tag,
+        key,
+        fallback,
+      } = app;
+      const {
+        engine,
+        alias,
+      } = user;
       const [
         TAG,
         CHAT,
@@ -74,6 +71,9 @@ namespace Search {
         ,
         9
       >;
+      const input =
+          this
+            .input ?? "";
       const query =
         new this
           .Query(
