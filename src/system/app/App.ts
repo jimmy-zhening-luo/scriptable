@@ -2,21 +2,21 @@ abstract class App<
   I,
   O,
   C extends ISetting,
-  Class extends string,
+  AppClass extends string,
 > {
   public readonly __proto: literalful<"App"> = "App";
   private readonly t0: number = Date.now();
   private readonly _storage: Record<
     string,
-    Storage<Class>
+    Storage<AppClass>
   > = {};
   private readonly _keys: Record<
     string,
-    Key<Class>
+    Key<AppClass>
   > = {};
 
   constructor(
-    protected readonly _class: literalful<Class>,
+    protected readonly _class: literalful<AppClass>,
     protected debug = false,
   ) {}
 
@@ -309,7 +309,7 @@ abstract class App<
       if (typeof this.__setting === "undefined")
         this
           .__setting = new this
-            .Setting<Class, C>(
+            .Setting<AppClass, C>(
             this
               ._class,
             this
@@ -600,7 +600,7 @@ abstract class App<
       if (cached !== null)
         return cached;
       else {
-        const newStorage: Storage<Class> = new this
+        const newStorage: Storage<AppClass> = new this
           .Storage(
             this
               ._class,
@@ -637,7 +637,7 @@ abstract class App<
       if (cached !== null)
         return cached;
       else {
-        const newKey: Key<Class> = new this
+        const newKey: Key<AppClass> = new this
           .Key(
             this
               ._class,
@@ -720,13 +720,13 @@ abstract class App<
   }
 
   protected abstract runtime(): NonUndefined<O>;
-  protected abstract setOutput(runtimeOutput: ReturnType<App<I, O, C, Class>["runtime"]>): ReturnType<App<I, O, C, Class>["runtime"]>;
+  protected abstract setOutput(runtimeOutput: ReturnType<App<I, O, C, AppClass>["runtime"]>): ReturnType<App<I, O, C, AppClass>["runtime"]>;
   private _name?: stringful;
   private _input?: I;
   private _inputful?: NonNullable<I>;
   private _inputString?: string;
   private _inputStringful?: stringful;
-  private __setting?: Setting<Class, C>;
+  private __setting?: Setting<AppClass, C>;
 }
 
 module.exports = App;
