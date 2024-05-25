@@ -2,11 +2,8 @@ declare type SearchOutput =
   & Field<
     "app"
   >
-  & Record<
+  & Listish<
     "action"
-    ,
-    | string
-    | string[]
   >
   & Field<
     | "natural"

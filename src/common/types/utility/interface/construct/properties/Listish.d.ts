@@ -1,11 +1,13 @@
-declare type List<
+declare type Listish<
   K extends string,
   Optional extends
   | K
   | boolean = false
   ,
 > = IProperty<
-  string[]
+  Unflat<
+    string
+  >
   ,
   K
   ,

@@ -1,5 +1,5 @@
 declare type FilelinkInput =
-  & List<
+  & Listish<
     | "nodes"
   >
   & Field<

@@ -52,7 +52,7 @@ declare type UrlEngineSetting =
   & EngineProp<
     "url"
     ,
-    string[]
+    true
   >
   & {
     browser?:
@@ -67,15 +67,16 @@ declare type UrlEngineSetting =
 
 type EngineProp<
   P extends string,
-  T = string,
+  Many extends boolean = false,
 > =
-  & Record<
-    P
-    ,
-    | T
-    | string
-  >
   & Flag<
     | "requote"
   >
+  & Many extends true
+    ? Listish<
+      P
+    >
+    : Field<
+      P
+    >
 ;
