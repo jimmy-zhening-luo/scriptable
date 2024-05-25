@@ -3,9 +3,4 @@ declare type GptPromptful =
     | "system"
     | "user"
   >
-  & PartialRecord<
-    "plugin"
-    ,
-    FieldTable
-  >
 ;
