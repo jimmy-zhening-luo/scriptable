@@ -23,7 +23,7 @@ namespace Filelink {
         .flat();
       const [p0] = path;
 
-      if (typeof p0 === "undefined" || !(p0 in user))
+      if (typeof p0 === "undefined" || !(p0 in providers))
         return null;
       else // TBD
         return `TMP: ${ext} ${type}`;
