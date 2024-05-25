@@ -1,14 +1,12 @@
 declare type FilelinkSetting = {
-  user: {
-    folder: Table<
-      | FileProvider<
-        true
-      >
-      | FileProvider<
-        false
-      >
-    >;
-  };
+  user: Table<
+    | FileProvider<
+      true
+    >
+    | FileProvider<
+      false
+    >
+  >;
 };
 
 declare type FileProvider<

@@ -12,7 +12,21 @@ namespace Filelink {
     FilelinkSetting
   > {
     public runtime() {
-      return "";
+      const { user } = this;
+      const {
+        nodes,
+        ext,
+        type,
+      } = this
+        .inputful;
+      const path = [nodes]
+        .flat();
+      const [p0] = path;
+
+      if (typeof p0 === "undefined" || !(p0 in user))
+        return null;
+      else // TBD
+        return `TMP: ${ext} ${type}`;
     }
   }
 }
