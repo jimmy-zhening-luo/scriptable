@@ -424,11 +424,16 @@ abstract class App<
                 .length > 0,
           )
       )
-        return args;
+        return array;
       else
         throw new TypeError(
           `string array contains empty string`,
-          { cause: args },
+          {
+            cause: {
+              array,
+              length: array.length,
+            },
+          },
         );
     }
     catch (e) {
