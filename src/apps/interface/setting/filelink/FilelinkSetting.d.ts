@@ -1,16 +1,16 @@
 declare type FilelinkSetting = {
-  user: Table<
-    | FileProvider<
-      true
-    >
-    | FileProvider<
-      false
+  user: Record<
+    "providers"
+    ,
+    Table<
+      | FileProvider
+      | FileProvider<true>
     >
   >;
 };
 
 declare type FileProvider<
-  C extends boolean,
+  C extends boolean = false,
 > =
   boolean extends C
     ? never

@@ -12,7 +12,7 @@ namespace Filelink {
     FilelinkSetting
   > {
     public runtime() {
-      const { user } = this;
+      const { providers } = this.user;
       const {
         nodes,
         ext,
