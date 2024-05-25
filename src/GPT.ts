@@ -44,14 +44,11 @@ namespace GPT {
       const opts = {
         model:
           "model" in wrap
-          && `${
-            wrap
+          && String(wrap
+            .model) in models
+            ? wrap
               .model
-          }` in models
-            ?
-          wrap
-            .model
-            ?? model,
+            : model,
         token:
           "token" in wrap
           && wrap
@@ -113,22 +110,23 @@ namespace GPT {
         opts
           .preset
       ]
-        ?? null;
+      ?? null;
       const promptTemplate = typeof wrap
         .prompt !== "string"
-          ? wrap
-            .prompt
-          : presetConfig === null
-            ? {
-                user: wrap
-                  .prompt,
-              }
-            : {
-                system: presetConfig
-                  .system,
-                user:
+        ? wrap
+          .prompt
+        : presetConfig === null
+          ? {
+              user: wrap
+                .prompt,
+            }
+          : {
+              system: presetConfig
+                .system,
+              user:
                   "user" in presetConfig
                   && presetConfig
+                    .user
                     .includes(
                       tags
                         .preset,
@@ -143,32 +141,39 @@ namespace GPT {
                       )
                     : wrap
                       .prompt,
-              };
-      const messageQueue: Array<
+            };
+      const messageBeef: Array<
         [
           GptRole,
-          string
+          string,
         ]
       > = [
-        ..."system" in promptTemplate
-          ? [
-              "system",
-              promptTemplate
-                .system,
-            ]
-          : []
         [
           "user",
           promptTemplate
             .user,
-        ]
-      
-      ]
+        ],
+      ];
+
+      if ("system" in promptTemplate)
+        messageBeef
+          .unshift(
+            [
+              "system",
+              promptTemplate
+                .system,
+            ],
+          );
+
+      const messageQueue = messageBeef
         .map(
-          [role, content] =>
+          ([
+            role,
+            prompt,
+          ]): [GptRole, string] =>
             [
               role,
-              content
+              prompt
                 .replaceAll(
                   tags
                     .location,
@@ -185,11 +190,15 @@ namespace GPT {
         );
       const messages = messageQueue
         .map(
-          ([role, content]): GptMessage =>
-            {
+          ([
+            role,
+            content,
+          ]) => {
+            return {
               role,
               content,
-            },
+            };
+          },
         );
 
       return {
