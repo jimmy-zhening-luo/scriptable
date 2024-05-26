@@ -1,7 +1,11 @@
 declare type IsTupleful<
   A,
-> = TuplefulLength<
+> = IsTuple<
   A
-> extends never
+> extends false
   ? false
-  : true;
+  : 0 extends TupleLength<
+    A
+  >
+    ? false
+    : true;
