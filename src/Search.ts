@@ -178,7 +178,9 @@ namespace Search {
               match
                 .browser,
               match
-                .encode,
+                .separator,
+              match
+                .encodeComponent,
             )
             : "shortcut" in match
               ? new (

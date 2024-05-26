@@ -3,7 +3,7 @@ const f_IEngine: typeof IEngine = importModule(
 ) as typeof IEngine;
 
 class FindEngine extends f_IEngine {
-  public readonly find: string;
+  protected readonly find: string;
 
   constructor(
     find: string,
@@ -13,12 +13,16 @@ class FindEngine extends f_IEngine {
         "find",
       );
 
-      if (find.length < 1)
-        throw new SyntaxError(
-          `no iOS Find provider specified`,
-        );
+      if (
+        find
+          .length > 0
+      )
+        this
+          .find = find;
       else
-        this.find = find;
+        throw new SyntaxError(
+          `iOS Find engine provider empty`,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -30,7 +34,9 @@ class FindEngine extends f_IEngine {
 
   protected options() {
     try {
-      return { find: this.find };
+      const { find } = this;
+
+      return { find };
     }
     catch (e) {
       throw new EvalError(

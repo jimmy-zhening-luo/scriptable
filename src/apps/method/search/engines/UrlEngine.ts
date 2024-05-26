@@ -3,38 +3,53 @@ const b_IEngine: typeof IEngine = importModule(
 ) as typeof IEngine;
 
 class UrlEngine extends b_IEngine {
-  public readonly urls: stringful[];
-  public readonly tag: stringful;
-  public readonly browser: UrlEngineSetting["browser"];
-  public readonly encode: UrlEngineSetting["encode"];
+  protected readonly urls: stringful[];
+  protected readonly TAG: stringful;
+  protected readonly browser: string;
+  protected readonly separator: string;
+  protected readonly encodeComponent: boolean;
+  private readonly plus = "+";
+  private readonly plusEncoded = "%2B";
 
   constructor(
     urls:
       | string
       | string[],
     TAG: stringful,
-    browser?: UrlEngineSetting["browser"],
-    encode?: UrlEngine["encode"],
+    browser = "",
+    separator = "+",
+    encodeComponent = false,
   ) {
     try {
-      super("safari");
-      this.tag = TAG;
-      this.browser = browser;
-      this.encode = encode;
-      this.urls = [urls]
+      super(
+        "safari",
+      );
+      this
+        .TAG = TAG;
+      this
+        .browser = browser;
+      this
+        .separator = separator;
+      this
+        .encodeComponent = encodeComponent;
+
+      const stringfulUrls = [urls]
         .flat()
         .filter(
           (url): url is stringful =>
-            url.length > 0,
+            url
+              .length > 0,
         );
 
       if (
-        this
-          .urls
-          .length < 1
+        stringfulUrls
+          .length > 0
       )
+        this
+          .urls = stringfulUrls;
+      else
         throw new SyntaxError(
-          `engine has 0 urls`,
+          `URL engine has no URLs`,
         );
     }
     catch (e) {
@@ -49,27 +64,45 @@ class UrlEngine extends b_IEngine {
     query: Query,
   ) {
     try {
+      const {
+        TAG,
+        separator,
+        encodeComponent,
+        plus,
+        plusEncoded,
+      } = this;
+      const encoder = encodeComponent
+        ? (
+            function(operand: string): string {
+              encodeURI(
+                operand,
+              );
+            }
+          )
+        : (
+            function(operand: string): string {
+              encodeURIComponent(
+                operand,
+              );
+            }
+          );
       const encodedQuery = query
         .terms
         .map(
           term =>
             term
               .split(
-                "+",
+                plus,
               )
               .map(
-                operand =>
-                  encodeURI(
-                    operand,
-                  ),
+                encoder,
               )
               .join(
-                "%2B",
+                plusEncoded,
               ),
         )
         .join(
-          this
-            .encode ?? "+",
+          separator,
         );
 
       return this
@@ -78,8 +111,7 @@ class UrlEngine extends b_IEngine {
           url =>
             url
               .replace(
-                this
-                  .tag,
+                TAG,
                 encodedQuery,
               ),
         );
@@ -96,9 +128,12 @@ class UrlEngine extends b_IEngine {
     query: Query,
   ) {
     try {
+      const { browser } = this;
+      const { natural } = query;
+
       return {
-        natural: query.natural,
-        browser: this.browser,
+        browser,
+        natural,
       };
     }
     catch (e) {

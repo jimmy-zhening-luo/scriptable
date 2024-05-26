@@ -1,6 +1,6 @@
 abstract class IEngine {
   constructor(
-    public readonly app: string,
+    protected readonly app: string,
   ) {}
 
   public parseQueryToAction(
