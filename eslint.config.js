@@ -14,10 +14,7 @@ export default [
       parser: tsParser,
       files: ["src/**/*.ts"],
     },
-    {
-      overrideTs: {
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-      },
-    },
-  ).configs,
+    { overrideTs: { "@typescript-eslint/explicit-module-boundary-types": "off" } },
+  )
+    .configs,
 ];
