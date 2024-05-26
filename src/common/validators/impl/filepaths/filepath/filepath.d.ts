@@ -1,6 +1,6 @@
 declare type filepath<
   Root extends boolean = false,
-> = Joint<
+> = Joined<
   stringful
   ,
   filenode
