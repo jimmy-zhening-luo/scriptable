@@ -7,12 +7,12 @@ namespace Link {
   const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class Link extends shortcut<
-    never,
-    never,
-    never
+    string,
+    string
   > {
     protected runtime() {
-      return null;
+      return this
+        .inputful;
     }
   }
 }
