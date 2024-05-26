@@ -72,20 +72,17 @@ class UrlEngine extends b_IEngine {
         plusEncoded,
       } = this;
       const encoder = encodeComponent
-        ? (
-            function(operand: string): string {
-              encodeURI(
-                operand,
-              );
-            }
-          )
-        : (
-            function(operand: string): string {
-              encodeURIComponent(
-                operand,
-              );
-            }
+        ? function (operand: string): string {
+          encodeURI(
+            operand,
           );
+        }
+
+        : function (operand: string): string {
+          encodeURIComponent(
+            operand,
+          );
+        };
       const encodedQuery = query
         .terms
         .map(
