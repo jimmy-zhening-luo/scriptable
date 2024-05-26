@@ -4,20 +4,17 @@ type Joint<A> = { [joined]: A };
 declare type Joined<
   Out extends stringful
   ,
-  In extends stringful
-  ,
-  Full extends boolean = false,
-> = Full extends true
+  In,
+
+> = Join<In> extends stringful
   ?
   & Out
   & Joint<
-    Arrayful<
-      In
-    >
+    In
   >
   :
     & string
     & Joint<
-      In[]
+      In
     >
 ;

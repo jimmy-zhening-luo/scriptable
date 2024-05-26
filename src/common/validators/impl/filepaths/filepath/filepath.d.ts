@@ -3,9 +3,9 @@ declare type filepath<
 > = Joined<
   stringful
   ,
-  filenode
-  ,
-  Root
+  Root extends true
+    ? Arrayful<filenode>
+    : filenode[]
 >;
 
 declare type rootpath = filepath<
