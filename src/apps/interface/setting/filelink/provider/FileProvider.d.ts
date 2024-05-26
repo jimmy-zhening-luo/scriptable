@@ -20,6 +20,7 @@ declare type FileProvider<
         >
         & FileContainerManifest
         & Field<
+          | "postContainerRoot"
           | "folderRoot"
           | "preAppRoot"
           ,

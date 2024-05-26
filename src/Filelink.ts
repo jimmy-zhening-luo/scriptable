@@ -13,7 +13,6 @@ namespace Filelink {
   > {
     protected runtime() {
       const SCHEME_ROOT = "shareddocuments://private/var/mobile";
-      const POST_APP = "Documents";
       const {
         nodes,
         ext,
@@ -94,14 +93,14 @@ namespace Filelink {
             );
         else {
           const {
-            containers,
+            postContainerRoot,
             folderRoot,
             preAppRoot,
+            containers: {
+              folders,
+              apps,
+            },
           } = provider;
-          const {
-            folders,
-            apps,
-          } = containers;
 
           if (
             remainingPath
@@ -138,7 +137,7 @@ namespace Filelink {
                         ? []
                         : [preAppRoot],
                       apps[containerNode] as unknown as string,
-                      POST_APP,
+                      postContainerRoot,
                     ]
                       .map(
                         segment =>
