@@ -378,7 +378,7 @@ abstract class App<
               `_runtime-${
                 this
                   .name
-              }.txt`,
+              }.md`,
               "line",
             );
         }
