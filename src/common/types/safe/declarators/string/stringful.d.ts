@@ -4,6 +4,10 @@ declare type stringful =
     "stringful"
   >
   & {
-    0: stringful & { length: 1 };
+    0:
+      & stringful
+      & Length<
+        1
+      >;
   }
 ;
