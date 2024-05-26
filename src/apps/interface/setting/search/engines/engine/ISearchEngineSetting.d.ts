@@ -7,11 +7,13 @@ declare type ISearchEngineSetting<
     | "requote"
     | ExtraFlags
   >
-  & Multi extends true
-    ? Listish<
-      Prop
-    >
-    : Field<
-      Prop
-    >
+  & (
+    Multi extends true
+      ? Listish<
+        Prop
+      >
+      : Field<
+        Prop
+      >
+  )
 ;

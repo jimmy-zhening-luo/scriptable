@@ -4,7 +4,7 @@ declare type UrlEngineSetting =
     ,
     | "encodeComponent"
     ,
-    true,
+    true
   >
   & PartialRecord<
     "browser"
