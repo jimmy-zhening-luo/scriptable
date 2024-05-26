@@ -8,8 +8,8 @@ class UrlEngine extends b_IEngine {
   protected readonly browser: string;
   protected readonly separator: string;
   protected readonly encodeComponent: boolean;
-  private readonly plus = "+";
-  private readonly plusEncoded = "%2B";
+  private readonly plus: string;
+  private readonly plusEncoded: string;
 
   constructor(
     urls:
@@ -32,6 +32,10 @@ class UrlEngine extends b_IEngine {
         .separator = separator;
       this
         .encodeComponent = encodeComponent;
+      this
+        .plus = "+";
+      this
+        .plusEncoded = "%20";
 
       const stringfulUrls = [urls]
         .flat()
@@ -73,13 +77,13 @@ class UrlEngine extends b_IEngine {
       } = this;
       const encoder = encodeComponent
         ? function (operand: string): string {
-          encodeURI(
+          return encodeURI(
             operand,
           );
         }
 
         : function (operand: string): string {
-          encodeURIComponent(
+          return encodeURIComponent(
             operand,
           );
         };
