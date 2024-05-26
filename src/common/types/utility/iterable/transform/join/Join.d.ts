@@ -5,7 +5,7 @@ declare type Join<
   A
 > extends false
   ? never
-  : IsTupleful<
+  : IsArrayful<
     A
   > extends false
     ? string
@@ -32,7 +32,9 @@ declare type Join<
           > extends never
             ? Separator extends stringful
               ? stringful
-              : string
+              :
+                | string
+                | stringful
             : stringful
         : stringful
       : stringful;
