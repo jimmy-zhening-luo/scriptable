@@ -219,7 +219,7 @@ namespace Filelink {
             },
           );
         else
-          return path as ArrayN<
+          return path as ArrayMin<
             stringful
             ,
             2

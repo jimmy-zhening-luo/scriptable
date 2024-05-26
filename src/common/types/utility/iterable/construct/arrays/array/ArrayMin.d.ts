@@ -1,21 +1,21 @@
-declare type ArrayN<
+declare type ArrayMin<
   I,
-  Length extends number,
+  L extends number,
   Head extends I[] = [],
-> = Length extends Length
-  ? number extends Length
+> = L extends L
+  ? number extends L
     ? never
     : Head[
       "length"
-    ] extends Length
+    ] extends L
       ? [
           ...Head,
           ...I[],
         ]
-      : ArrayN<
+      : ArrayMin<
         I
         ,
-        Length
+        L
         ,
         [
           ...Head,
