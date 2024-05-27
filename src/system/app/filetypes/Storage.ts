@@ -47,20 +47,33 @@ class Storage<
     ,
   ) {
     try {
-      if (typeof data === "undefined")
+      const buffer = data
+        ?? null;
+
+      if (
+        buffer === null
+      )
         throw new TypeError(
-          `undefined data`,
+          `null data`,
         );
-      else if (typeof data === "object")
-        if (data === null)
-          throw new TypeError(
-            `null data`,
-          );
-        else if (Array.isArray(data))
+      else if (
+        typeof buffer === "object"
+      ) {
+        if (
+          Array
+            .isArray(
+              buffer,
+            ) 
+          && buffer
+            .every(
+              element =>
+                typeof element === "string",
+            )
+        )
           this
             .file
             .write(
-              data
+              buffer
                 .reverse()
                 .join(
                   "\n",
@@ -75,16 +88,17 @@ class Storage<
             .write(
               JSON
                 .stringify(
-                  data,
+                  buffer,
                 ),
               overwrite !== false,
             );
+      }
       else
         this
           .file
           .write(
             String(
-              data,
+              buffer,
             ),
             overwrite,
           );
