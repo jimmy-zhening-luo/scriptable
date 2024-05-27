@@ -15,9 +15,9 @@ class Bookmark {
       )
         {
           alias: this
-            .alias,
+            .alias;
           path: this
-            .path,
+            .path;
         } = bookmark;
       else {
 
