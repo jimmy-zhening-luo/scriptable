@@ -1,7 +1,7 @@
 class Bookmark {
   public readonly __proto: literalful<"Bookmark"> = "Bookmark";
-  public readonly alias: stringful;
-  public readonly path: ReturnType<Rootpath["toString"]>;
+  public readonly alias: Alias;
+  public readonly path: rootpath;
 
   constructor(
     bookmark:
@@ -10,53 +10,34 @@ class Bookmark {
     ,
   ) {
     try {
-      if (typeof bookmark === "string") {
-        this.alias = this.stringful(
-          bookmark.trim(),
-          `alias.trim()`,
-        );
-
-        if (
-          !FileManager.iCloud()
-            .bookmarkExists(
-              this.alias,
-            )
-        )
-          throw new ReferenceError(
-            `no Scriptable bookmark with alias`,
-            { cause: { alias: this.alias } },
-          );
-        else
-          this.path = this.stringful<rootpath>(
-            FileManager.iCloud()
-              .bookmarkedPath(
-                this.alias,
-              ) as rootpath,
-            `bookmark exists, but resolves to empty path`,
-          );
-      }
+      if (
+        typeof bookmark !== "string"
+      )
+        {
+          alias: this
+            .alias,
+          path: this
+            .path,
+        } = bookmark;
       else {
-        this.alias = bookmark.alias;
-        this.path = bookmark.path;
+
+        else
+          this
+            .alias = Bookmark
+              .toAlias(
+                bookmark,
+              );
+          this
+            .path = FileManager
+              .iCloud()
+              .bookmarkedPath(
+                bookmark,
+              ) as rootpath;
       }
     }
     catch (e) {
       throw new EvalError(
         `Bookmark: ctor`,
-        { cause: e },
-      );
-    }
-  }
-
-  private get stringful() {
-    try {
-      return importModule(
-        "./common/types/safe/acceptors/string/Stringful",
-      ) as typeof Stringful;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Bookmark: import Stringful`,
         { cause: e },
       );
     }
@@ -73,6 +54,63 @@ class Bookmark {
     catch (e) {
       throw new EvalError(
         `Bookmark: [Symbol.hasInstance]`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static toAlias(
+    string: string,
+  ) {
+    try {
+      const alias = Bookmark
+        .stringful(
+          string,
+        );
+
+      if (
+        !FileManager
+          .iCloud()
+          .bookmarkExists(
+            alias,
+          )
+      )
+        throw new ReferenceError(
+          `no Scriptable bookmark with alias`,
+          { cause: { alias } },
+        );
+      else
+        return alias as Alias;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Bookmark: toAlias`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static stringful(
+    string: string,
+  ) {
+    try {
+      const trimmed = string
+        .trim();
+
+      if (
+        trimmed
+          .length < 1
+      )
+        throw new SyntaxError(
+          `trimmed alias is empty string`,
+          { cause: { string } },
+        );
+      else
+        return trimmed as stringful;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Bookmark: stringful`,
         { cause: e },
       );
     }

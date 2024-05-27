@@ -191,18 +191,20 @@ abstract class Filetype<
     subtype: literalful<T>,
   ) {
     try {
-      if (subtype.length === 0)
-        throw new SyntaxError(
-          `Filetype subclass has no name`,
-          { cause: { subtype } },
-        );
-      else
+      if (
+        subtype
+          .length > 0
+      )
         return new this
           .Bookmark(
             `#${
               subtype
             }`,
           );
+      else
+        throw new SyntaxError(
+          `Unnamed Filetype`,
+        );
     }
     catch (e) {
       throw new EvalError(
