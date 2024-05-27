@@ -16,7 +16,9 @@ abstract class Helper<
     S
   > {
   constructor(
-    private readonly argument: Helper<I>["input"],
+    private readonly argument: Helper<
+      I
+    >["input"],
     debug?: boolean,
   ) {
     super(
@@ -39,7 +41,13 @@ abstract class Helper<
   }
 
   protected setOutput(
-    runtimeOutput: ReturnType<Helper<I, O>["run"]>,
+    runtimeOutput: ReturnType<
+      Helper<
+        I
+        ,
+        O
+      >["run"]
+    >,
   ) {
     try {
       return runtimeOutput;
