@@ -1,7 +1,7 @@
 {
   "include": [
-    "./eslint.config.js",
-    "./src/**/*",
+    "*.config.js",
+    "src/**/*",
   ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */

@@ -17,7 +17,7 @@
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "scripts": {
     "clean:packed": "shx rm -rf packed",
-    "lint": "eslint --cache --cache-strategy content -c eslint.config.js src/**/*.ts",
+    "lint": "eslint --cache --cache-strategy content -c eslint.config.js *.config.js src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
     "prebuild": "npm run lint:fix",
     "build": "tsc",

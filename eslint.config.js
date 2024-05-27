@@ -7,7 +7,7 @@ export default [
   ...new Configs(
     {
       stylistic,
-      files: ["eslint.config.js"],
+      files: ["*.config.js"],
     },
     {
       ts,
