@@ -16,7 +16,8 @@ namespace Link {
       | "fragment"
     >
     ,
-    string,
+    string
+    ,
     LinkSetting
   > {
     protected runtime() {
