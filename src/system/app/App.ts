@@ -7,15 +7,18 @@ abstract class App<
   public readonly __proto: literalful<
     "App"
   > = "App";
-  private readonly t0: number = Date.now();
+  private readonly t0: number = Date
+    .now();
   private readonly _storage: Record<
-    string,
+    string
+    ,
     Storage<
       C
     >
   > = {};
   private readonly _keys: Record<
-    string,
+    string
+    ,
     Key<
       C
     >
@@ -86,14 +89,24 @@ abstract class App<
 
   protected get name() {
     try {
-      if (typeof this._name === "undefined")
-        this
-          ._name = this
-            .stringful(
-              this
-                .constructor
-                .name,
-            );
+      if (
+        typeof this
+          ._name === "undefined"
+      ) {
+        const { name } = this
+          .constructor;
+
+        if (
+          name
+            .length > 0
+        )
+          this
+            ._name = name;
+        else
+          throw new EvalError(
+            `nameless app instance`,
+          );
+      }
 
       return this
         ._name;
@@ -114,7 +127,7 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: setting`,
+        `App: setting (setting.parsed)`,
         { cause: e },
       );
     }
@@ -128,7 +141,7 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: setting.app`,
+        `App: app (setting.app)`,
         { cause: e },
       );
     }
@@ -142,7 +155,7 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: setting.user`,
+        `App: user (setting.user)`,
         { cause: e },
       );
     }
@@ -150,7 +163,10 @@ abstract class App<
 
   protected get input() {
     try {
-      if (typeof this._input === "undefined")
+      if (
+        typeof this
+          ._input === "undefined"
+      )
         this
           ._input = this
             .getInput;
@@ -168,7 +184,10 @@ abstract class App<
 
   protected get inputful() {
     try {
-      if (typeof this._inputful === "undefined") {
+      if (
+        typeof this
+          ._inputful === "undefined"
+      ) {
         const { input } = this;
 
         if (
@@ -204,11 +223,16 @@ abstract class App<
 
   protected get inputString() {
     try {
-      if (typeof this._inputString === "undefined") {
+      if (
+        typeof this
+          ._inputString === "undefined"
+      ) {
         const input = this
           .input ?? "";
 
-        if (typeof input !== "string")
+        if (
+          typeof input !== "string"
+        )
           throw new TypeError(
             `non-string input`,
             {
@@ -236,14 +260,23 @@ abstract class App<
 
   protected get inputStringful() {
     try {
-      if (typeof this._inputStringful === "undefined")
-        this
-          ._inputStringful = this
-            .stringful(
-              this
-                .inputString,
-              `App.inputStringful`,
-            );
+      if (
+        typeof this
+          ._inputStringful === "undefined"
+      ) {
+        const { inputString } = this;
+
+        if (
+          inputString
+            .length > 0
+        )
+          this
+            ._inputStringful = inputString;
+        else
+          throw new TypeError(
+            `input string empty`,
+          );
+      }
 
       return this
         ._inputStringful;
@@ -314,7 +347,10 @@ abstract class App<
 
   private get _setting() {
     try {
-      if (typeof this.__setting === "undefined")
+      if (
+        typeof this
+          .__setting === "undefined"
+      )
         this
           .__setting = new this
             .Setting<C, S>(
@@ -329,7 +365,7 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: _settingCache`,
+        `App: _setting`,
         { cause: e },
       );
     }
@@ -435,7 +471,7 @@ abstract class App<
         return array;
       else
         throw new TypeError(
-          `string array contains empty string`,
+          `string array has empty string`,
           {
             cause: {
               array,
@@ -446,7 +482,7 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: allStringful`,
+        `App: stringfulArray`,
         { cause: e },
       );
     }
@@ -485,17 +521,33 @@ abstract class App<
   ): NonUndefined<
       O
     > {
-    if (app instanceof App) {
-      const appCopy = app;
+    try {
+      if (
+        app instanceof App
+      ) {
+        app
+          ._input = input;
 
-      appCopy._input = input;
-
-      const output = appCopy.run();
-
-      return output;
+        return app
+          .run();
+      }
+      else
+        throw new TypeError(
+          `invalid app`,
+          {
+            cause: {
+              input,
+              appType: typeof app,
+            },
+          }
+        );
     }
-    else
-      throw new Error("foo");
+    catch (e) {
+      throw new EvalError(
+        `App: synthetic`,
+        { cause: e },
+      );
+    }
   }
 
   protected read(
@@ -657,7 +709,7 @@ abstract class App<
     }
     catch (e) {
       throw new EvalError(
-        `App: load`,
+        `App: roll`,
         { cause: e },
       );
     }
@@ -720,7 +772,9 @@ abstract class App<
           handle
         ] ?? null;
 
-      if (cached !== null)
+      if (
+        cached !== null
+      )
         return cached;
       else {
         const newKey: Key<C> = new this
@@ -753,7 +807,9 @@ abstract class App<
 
   protected truthy(
     value: I,
-  ): value is NonNullable<I> {
+  ): value is NonNullable<
+    I
+  > {
     try {
       return !this
         .falsy(
@@ -774,8 +830,11 @@ abstract class App<
   | undefined
   | null {
     try {
-      const v = value ?? false;
-      const bv = Boolean(v);
+      const v = value
+        ?? false;
+      const bv = Boolean(
+        v,
+      );
 
       return !bv
         || (
