@@ -71,7 +71,7 @@ namespace Link {
       const keepParam = keepQueryParam[
         Host
       ]
-        ?? null;
+      ?? null;
       const Query = keepParam === null
         ? ""
         : keepParam
