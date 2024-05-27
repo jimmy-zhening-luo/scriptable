@@ -525,10 +525,12 @@ abstract class App<
       if (
         app instanceof App
       ) {
-        app
+        const appShallowCopy = app;
+
+        appShallowCopy
           ._input = input;
 
-        return app
+        return appShallowCopy
           .run();
       }
       else
