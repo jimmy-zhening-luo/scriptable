@@ -13,12 +13,14 @@ class Bookmark {
       if (
         typeof bookmark !== "string"
       )
-        {
-          alias: this
-            .alias;
-          path: this
-            .path;
-        } = bookmark;
+        (
+          {
+            alias: this
+              .alias;
+            path: this
+              .path;
+          } = bookmark
+        );
       else {
 
         else
