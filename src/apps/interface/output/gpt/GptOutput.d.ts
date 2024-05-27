@@ -1,4 +1,7 @@
 declare type GptOutput =
+  & Flag<
+    "noLog"
+  >
   & Field<
     "api"
   >

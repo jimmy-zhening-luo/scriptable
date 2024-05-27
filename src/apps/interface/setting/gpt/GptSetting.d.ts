@@ -1,17 +1,20 @@
 declare type GptSetting = {
   app: {
-    api: Field<
-      | "host"
-      | "version"
-      | "action"
-    >;
+    api: 
+      & Field<
+        | "host"
+        | "version"
+      >
+      & Record<
+        | "action"
+        ,
+        | Field<
+          | GptModel
+        >
+      >
+    ;
     models: Field<
-      | "stable"
-      | "legacy"
-      | "tts"
-      | "image"
-      | "transcribe"
-      | "preview"
+      | GptModel
     >;
     limit: Limit<
       | "token"
@@ -31,7 +34,7 @@ declare type GptSetting = {
     >;
     defaults: GptOpts;
     presets: Table<
-      GptPreset
+      | GptPreset
     >;
   };
 };

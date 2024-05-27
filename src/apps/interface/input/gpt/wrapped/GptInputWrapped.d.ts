@@ -8,4 +8,7 @@ declare type GptInputWrapped =
   & Partial<
     GptOpts
   >
+  & Flag<
+    "noLog"
+  >
 ;
