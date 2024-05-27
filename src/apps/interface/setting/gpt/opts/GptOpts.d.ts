@@ -12,6 +12,6 @@ declare type GptOpts =
   & Record<
     "model"
     ,
-    GptModel,
+    GptModel
   >
 ;
