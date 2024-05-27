@@ -25,7 +25,7 @@ namespace Link {
           keepWww,
           swapHost,
         },
-        query: { keepQuery },
+        query: { keepQueryParam },
         fragment: { omitFragment },
       } = this
         .user;
@@ -68,12 +68,34 @@ namespace Link {
       ]
       ?? trimmedHost;
       const Port = port;
-      const Query = keepQuery
-        .includes(
-          Host,
-        )
-        ? query
-        : "";
+      const keepParam = keepQueryParam[
+        Host
+      ]
+        ?? null;
+      const Query = keepParam === null
+        ? ""
+        : keepParam
+          .length < 1
+          ? query
+          : query
+            .split(
+              "&",
+            )
+            .filter(
+              param =>
+                keepParam
+                  .includes(
+                    param
+                      .split(
+                        "=",
+                      )
+                      .shift()
+                      ?? "",
+                  ),
+            )
+            .join(
+              "&",
+            );
       const Fragment = omitFragment
         .includes(
           Host,

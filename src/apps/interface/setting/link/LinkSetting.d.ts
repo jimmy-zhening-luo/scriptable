@@ -10,8 +10,10 @@ declare type LinkSetting = {
         FieldTable
       >
     ;
-    query: List<
-      "keepQuery"
+    query: Record<
+      "keepQueryParam"
+      ,
+      ListTable
     >;
     fragment: List<
       "omitFragment"
