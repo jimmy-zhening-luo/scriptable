@@ -9,6 +9,6 @@ declare type GptInputWrapped =
     GptOpts
   >
   & Flag<
-    "log"
+    "noLog"
   >
 ;
