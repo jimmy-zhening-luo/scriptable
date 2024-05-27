@@ -91,7 +91,25 @@ namespace Link {
               "/dp/",
             )
         )
-          Path = ""; // TMP
+          Path = [
+            "/dp/",
+            (
+              Path
+                .split(
+                  "/dp/",
+                )
+                .pop()
+                ?? ""
+            )
+              .split(
+                "/",
+              )
+              .shift()
+              ?? "",
+          ]
+            .join(
+              "",
+            );
       }
       else if (
         Host === "linkedin.com"
@@ -132,7 +150,8 @@ namespace Link {
             [
               [
                 [
-                  ...scheme.length > 0
+                  ...scheme
+                    .length > 0
                     ? [scheme]
                     : [],
                   host,
@@ -140,7 +159,8 @@ namespace Link {
                   .join(
                     "://",
                   ),
-                ...port.length > 0
+                ...port
+                  .length > 0
                   ? [port]
                   : [],
               ]
@@ -154,14 +174,16 @@ namespace Link {
               .join(
                 "",
               ),
-            ...query.length > 0
+            ...query
+              .length > 0
               ? [query]
               : [],
           ]
             .join(
               "?",
             ),
-          ...fragment.length > 0
+          ...fragment
+            .length > 0
             ? [fragment]
             : [],
         ]
