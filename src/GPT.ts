@@ -250,7 +250,10 @@ namespace GPT {
           api
             .version,
           api
-            .action,
+            .action[
+              opts
+                .model
+            ],
         ]
           .join(
             "/",
