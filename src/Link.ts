@@ -24,13 +24,9 @@ namespace Link {
         host: {
           keepWww,
           swapHost,
-        }
-        query: {
-          keepQuery,
         },
-        fragment: {
-          omitFragment,
-        },
+        query: { keepQuery },
+        fragment: { omitFragment },
       } = this
         .user;
       const {
@@ -49,15 +45,15 @@ namespace Link {
           .startsWith(
             "www.",
           )
-        && !keepWww
-          .includes(
-            host,
-          )
-            ? host
-              .slice(
-                4,
-              )
-            : host;
+          && !keepWww
+            .includes(
+              host,
+            )
+          ? host
+            .slice(
+              4,
+            )
+          : host;
       const Scheme = [
         "http",
         "https",
@@ -65,8 +61,8 @@ namespace Link {
         .includes(
           lowerScheme,
         )
-          ? ""
-          : lowerScheme;
+        ? ""
+        : lowerScheme;
       const Host = swapHost[
         trimmedHost
       ]
@@ -76,19 +72,19 @@ namespace Link {
         .includes(
           Host,
         )
-          ? query
-          : "";
+        ? query
+        : "";
       const Fragment = omitFragment
         .includes(
           Host,
         )
-          ? ""
-          : fragment;
+        ? ""
+        : fragment;
       let Path: string = path;
 
       if (
         Host === "amazon.com"
-      )
+      ) {
         if (
           Path
             .includes(
@@ -96,6 +92,7 @@ namespace Link {
             )
         )
           Path = ""; // TMP
+      }
       else if (
         Host === "linkedin.com"
       )
