@@ -58,17 +58,17 @@ class Storage<
         );
       else if (
         typeof buffer === "object"
-      ) {
+      )
         if (
           Array
             .isArray(
               buffer,
-            ) 
-          && buffer
-            .every(
-              element =>
-                typeof element === "string",
             )
+            && buffer
+              .every(
+                element =>
+                  typeof element === "string",
+              )
         )
           this
             .file
@@ -92,7 +92,7 @@ class Storage<
                 ),
               overwrite !== false,
             );
-      }
+
       else
         this
           .file
