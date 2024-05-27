@@ -107,6 +107,10 @@ namespace GPT {
             ?? new this
               .Timeprint()
               .date,
+        noLog:
+          wrap
+            .noLog
+            ?? false,
       };
       const presetConfig = presets[
         opts
@@ -244,6 +248,8 @@ namespace GPT {
         );
 
       return {
+        noLog: opts
+          .noLog,
         api: [
           api
             .host,

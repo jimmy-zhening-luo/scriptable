@@ -10,9 +10,8 @@ declare type GptOpts =
     >
   >
   & Record<
-    "model",
-    Keys<
-      GptSetting["app"]["models"]
-    >
+    "model"
+    ,
+    GptModel,
   >
 ;
