@@ -22,19 +22,17 @@ class Bookmark {
           } = bookmark
         );
       else {
-
-        else
-          this
-            .alias = Bookmark
-              .toAlias(
-                bookmark,
-              );
-          this
-            .path = FileManager
-              .iCloud()
-              .bookmarkedPath(
-                bookmark,
-              ) as rootpath;
+        this
+          .alias = Bookmark
+            .toAlias(
+              bookmark,
+            );
+        this
+          .path = FileManager
+            .iCloud()
+            .bookmarkedPath(
+              bookmark,
+            ) as rootpath;
       }
     }
     catch (e) {
@@ -71,18 +69,18 @@ class Bookmark {
         );
 
       if (
-        !FileManager
+        FileManager
           .iCloud()
           .bookmarkExists(
             alias,
           )
       )
+        return alias as Alias;
+      else
         throw new ReferenceError(
           `no Scriptable bookmark with alias`,
           { cause: { alias } },
         );
-      else
-        return alias as Alias;
     }
     catch (e) {
       throw new EvalError(
@@ -101,14 +99,13 @@ class Bookmark {
 
       if (
         trimmed
-          .length < 1
+          .length > 0
       )
+        return trimmed as stringful;
+      else
         throw new SyntaxError(
           `trimmed alias is empty string`,
-          { cause: { string } },
         );
-      else
-        return trimmed as stringful;
     }
     catch (e) {
       throw new EvalError(
