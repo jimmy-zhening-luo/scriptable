@@ -5,12 +5,15 @@ const hp_App = importModule(
 abstract class Helper<
   I = void,
   O = void,
-  C extends ISetting = never,
+  S extends ISetting = never,
 > extends hp_App<
-    I,
-    O,
-    C,
     "Helper"
+    ,
+    I
+    ,
+    O
+    ,
+    S
   > {
   constructor(
     private readonly argument: Helper<I>["input"],

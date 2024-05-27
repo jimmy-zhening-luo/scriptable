@@ -1,25 +1,52 @@
 abstract class Filetype<
-  Class extends string,
-  Subtype extends string,
-  F extends IFile = ReadOnlyFile,
+  T extends string,
+  C extends string,
+  File extends IFile = ReadOnlyFile,
 > {
-  protected readonly file: F;
+  protected readonly file: File;
 
   constructor(
-    File: new(...args: ConstructorParameters<typeof IFile>)=> IFile & F,
-    filetype: literalful<Subtype>,
-    appClass: literalful<Class>,
-    ...subpaths: string[]
+    filetype: literalful<
+      T
+    >,
+    category: literalful<
+      C
+    >,
+    FileCtor: new(...args: ConstructorParameters<typeof IFile>)=> IFile & File,
+    ext: string,
+    subpath: string,
+    filename?: string,
   ) {
     try {
-      this.file = new File(
-        this
-          .root(
-            filetype,
-          ),
-        appClass,
-        ...subpaths,
-      );
+      this
+        .file = new FileCtor(
+          this
+            .root(
+              filetype,
+            ),
+          category,
+          ...typeof filename === "undefined"
+            ? [
+                [
+                  subpath,
+                  ext,
+                ]
+                  .join(
+                    ".",
+                  ),
+              ]
+            : [
+                subpath,
+                [
+                  filename,
+                  ext,
+                ]
+                  .join(
+                    ".",
+                  ),
+              ],
+
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -86,7 +113,7 @@ abstract class Filetype<
   }
 
   public read(
-    ...error: Parameters<F["read"]>
+    ...error: Parameters<File["read"]>
   ) {
     try {
       return this
@@ -121,7 +148,7 @@ abstract class Filetype<
   }
 
   public data<D>(
-    ...error: Parameters<F["read"]>
+    ...error: Parameters<File["read"]>
   ): Null<D> {
     try {
       const string = this
@@ -161,7 +188,7 @@ abstract class Filetype<
   }
 
   private root(
-    subtype: literalful<Subtype>,
+    subtype: literalful<T>,
   ) {
     try {
       if (subtype.length === 0)
@@ -185,9 +212,9 @@ abstract class Filetype<
     }
   }
 
-  public abstract write(...args: Parameters<F["write"]>): ReturnType<F["write"]>;
+  public abstract write(...args: Parameters<File["write"]>): ReturnType<File["write"]>;
 
-  public abstract delete(...args: Parameters<F["delete"]>): ReturnType<F["delete"]>;
+  public abstract delete(...args: Parameters<File["delete"]>): ReturnType<File["delete"]>;
 }
 
 module.exports = Filetype;

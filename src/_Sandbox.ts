@@ -5,4 +5,7 @@
 
 const foo = true;
 
-console.log(foo);
+console
+  .log(
+    foo,
+  );

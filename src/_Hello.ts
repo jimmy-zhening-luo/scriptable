@@ -9,17 +9,18 @@ namespace _Hello {
   export class _Hello extends shortcut<
     never,
     string,
-    HelloSetting
+    { app?: { space?: string } }
   > {
     protected runtime() {
       this
         .debug = true;
 
-      const FILENAME_WORLDTIME = "worldtime.txt";
+      const FILENAME_WORLDTIME = "worldtime";
       const HELLO = this
         .readful();
       const worldtime = this
         .read(
+          "txt",
           FILENAME_WORLDTIME,
         );
       const SPACE = this
@@ -43,6 +44,7 @@ namespace _Hello {
             new Date()
               .toISOString()
           })`,
+          "txt",
           FILENAME_WORLDTIME,
         );
       console

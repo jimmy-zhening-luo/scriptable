@@ -3,24 +3,28 @@ const k_Filetype = importModule(
 ) as typeof Filetype;
 
 class Key<
-  Class extends string,
+  C extends string,
 > extends k_Filetype<
-    Class,
-    "Key",
-    ReadOnlyFile
+    "Key"
+    ,
+    C
   > {
   constructor(
-    appClass: literalful<Class>,
+    category: literalful<
+      C
+    >,
     app: stringful,
-    alias: stringful,
+    handle: stringful,
   ) {
     try {
       super(
-        Key.ReadOnlyFile,
         "Key",
-        appClass,
+        category,
+        Key
+          .ReadOnlyFile,
+        "txt",
         app,
-        alias,
+        handle,
       );
     }
     catch (e) {
@@ -31,7 +35,7 @@ class Key<
     }
   }
 
-  private get handle() {
+  private get fullname() {
     try {
       return this
         .subpath;
@@ -48,16 +52,16 @@ class Key<
     fallbackLocal = false,
   ) {
     try {
-      const { handle } = this;
+      const { fullname } = this;
 
-      if (!Keychain.contains(handle))
+      if (!Keychain.contains(fullname))
         if (!fallbackLocal)
           throw new ReferenceError(
             `key does not exist in Keychain, and fallbackLocal is 'false'`,
             {
               cause: {
-                handle,
-                inKeychain: Keychain.contains(handle),
+                fullname,
+                inKeychain: Keychain.contains(fullname),
                 fallbackLocal,
                 local: super.read(),
               },
@@ -69,7 +73,7 @@ class Key<
       else {
         const key = Keychain
           .get(
-            handle,
+            fullname,
           );
 
         if (key.length < 1)
@@ -77,8 +81,8 @@ class Key<
             `Unexpected: key exists in Keychain but is empty`,
             {
               cause: {
-                handle,
-                inKeychain: Keychain.contains(handle),
+                fullname,
+                inKeychain: Keychain.contains(fullname),
                 key,
                 fallbackLocal,
                 local: super.read(),
@@ -101,18 +105,18 @@ class Key<
     roll = false,
   ) {
     try {
-      const { handle } = this;
+      const { fullname } = this;
 
-      if (Keychain.contains(handle) && !roll)
+      if (Keychain.contains(fullname) && !roll)
         throw new ReferenceError(
           `cannot overwrite existing key with roll set to 'false'`,
           {
             cause: {
-              handle,
+              fullname,
               roll,
               local: super.read(),
-              inKeychain: Keychain.contains(handle),
-              keychain: Keychain.get(handle),
+              inKeychain: Keychain.contains(fullname),
+              keychain: Keychain.get(fullname),
             },
           },
         );
@@ -122,20 +126,20 @@ class Key<
 
         Keychain
           .set(
-            handle,
+            fullname,
             local,
           );
 
-        if (local !== Keychain.get(handle))
+        if (local !== Keychain.get(fullname))
           throw new EvalError(
             `attempted to initialize key in Keychain, but Keychain value after setting does not match the intended value`,
             {
               cause: {
-                handle,
+                fullname,
                 roll,
                 local,
-                inKeychain: Keychain.contains(handle),
-                keychain: Keychain.get(handle),
+                inKeychain: Keychain.contains(fullname),
+                keychain: Keychain.get(fullname),
               },
             },
           );
@@ -166,22 +170,22 @@ class Key<
 
   public remove() {
     try {
-      const { handle } = this;
+      const { fullname } = this;
 
-      if (Keychain.contains(handle)) {
+      if (Keychain.contains(fullname)) {
         Keychain
           .remove(
-            handle,
+            fullname,
           );
 
-        if (Keychain.contains(handle))
+        if (Keychain.contains(fullname))
           throw new EvalError(
             `removed key from Keychain, but key is still in Keychain`,
             {
               cause: {
-                handle,
-                inKeychain: Keychain.contains(handle),
-                keychain: Keychain.get(handle),
+                fullname,
+                inKeychain: Keychain.contains(fullname),
+                keychain: Keychain.get(fullname),
                 local: super.read(),
               },
             },
@@ -199,28 +203,28 @@ class Key<
   public override read(): never {
     throw new ReferenceError(
       `Key: read: Forbidden: directly reading key from local file disallowed; use 'load(true)' instead`,
-      { cause: { handle: this.handle } },
+      { cause: { handle: this.fullname } },
     );
   }
 
   public override readful(): never {
     throw new ReferenceError(
       `Key: readful: Forbidden: directly reading key from local file disallowed; use 'load(true)' instead`,
-      { cause: { handle: this.handle } },
+      { cause: { handle: this.fullname } },
     );
   }
 
   public write(): never {
     throw new ReferenceError(
       `Key: write: Forbidden: Local key files are readonly`,
-      { cause: { handle: this.handle } },
+      { cause: { handle: this.fullname } },
     );
   }
 
   public delete(): never {
     throw new ReferenceError(
       `Key: delete: Forbidden: Local key files are readonly`,
-      { cause: { handle: this.handle } },
+      { cause: { handle: this.fullname } },
     );
   }
 }

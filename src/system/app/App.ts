@@ -1,8 +1,8 @@
 abstract class App<
+  C extends string,
   I,
   O,
-  C extends ISetting,
-  AppClass extends string,
+  S extends ISetting,
 > {
   public readonly __proto: literalful<
     "App"
@@ -11,19 +11,19 @@ abstract class App<
   private readonly _storage: Record<
     string,
     Storage<
-      AppClass
+      C
     >
   > = {};
   private readonly _keys: Record<
     string,
     Key<
-      AppClass
+      C
     >
   > = {};
 
   constructor(
     private readonly _class: literalful<
-      AppClass
+      C
     >,
     protected debug = false,
   ) {}
@@ -317,7 +317,7 @@ abstract class App<
       if (typeof this.__setting === "undefined")
         this
           .__setting = new this
-            .Setting<AppClass, C>(
+            .Setting<C, S>(
             this
               ._class,
             this
@@ -359,7 +359,10 @@ abstract class App<
         const output = this
           .runtime();
 
-        if (this.debug) {
+        if (
+          this
+            .debug
+        ) {
           const t1 = Date
             .now();
 
@@ -375,10 +378,15 @@ abstract class App<
               } ms : ${
                 t1
               }`,
-              `_runtime-${
+              "md",
+              [
+                "_runtime",
                 this
-                  .name
-              }.md`,
+                  .name,
+              ]
+                .join(
+                  "-",
+                ),
               "line",
             );
         }
@@ -446,29 +454,29 @@ abstract class App<
 
   protected synthetic<A, O>(
     app: A extends App<
+      infer C,
       infer I,
       O,
-      infer C,
-      infer Class
+      infer S
     >
       ? App<
+        C,
         I,
         O,
-        C,
-        Class
+        S
       >
       : never,
     input: A extends App<
+      infer C,
       infer I,
       O,
-      infer C,
-      infer Class
+      infer S
     >
       ? App<
+        C,
         I,
         O,
-        C,
-        Class
+        S
       >[
         "input"
       ]
@@ -491,25 +499,35 @@ abstract class App<
   }
 
   protected read(
-    filenameOrError?:
+    extE?:
       | boolean
       | string,
-    errorNotFound?: boolean,
+    filenameE?:
+      | boolean
+      | string,
+    E?: boolean,
   ) {
     try {
-      return typeof filenameOrError === "boolean"
+      return typeof extE === "undefined"
         ? this
           .storage()
-          .read(
-            filenameOrError,
-          )
-        : this
-          .storage(
-            filenameOrError,
-          )
-          .read(
-            errorNotFound,
-          );
+          .read()
+        : typeof extE === "boolean"
+          ? this
+            .storage()
+            .read(extE)
+          : typeof filenameE === "boolean"
+            ? this
+              .storage(
+                extE,
+              )
+              .read(filenameE)
+            : this
+              .storage(
+                extE,
+                filenameE,
+              )
+              .read(E);
     }
     catch (e) {
       throw new EvalError(
@@ -520,11 +538,13 @@ abstract class App<
   }
 
   protected readful(
+    ext?: string,
     filename?: string,
   ) {
     try {
       return this
         .storage(
+          ext,
           filename,
         )
         .readful();
@@ -538,21 +558,35 @@ abstract class App<
   }
 
   protected data<D>(
-    filenameOrError?:
+    extE?:
       | boolean
       | string,
-    errorNotFound?: boolean,
+    filenameE?:
+      | boolean
+      | string,
+    E?: boolean,
   ): Null<D> {
     try {
-      return typeof filenameOrError === "boolean"
+      return typeof extE === "undefined"
         ? this
           .storage()
-          .data<D>(filenameOrError)
-        : this
-          .storage(
-            filenameOrError,
-          )
-          .data<D>(errorNotFound);
+          .data<D>()
+        : typeof extE === "boolean"
+          ? this
+            .storage()
+            .data<D>(extE)
+          : typeof filenameE === "boolean"
+            ? this
+              .storage(
+                extE,
+              )
+              .data<D>(filenameE)
+            : this
+              .storage(
+                extE,
+                filenameE,
+              )
+              .data<D>(E);
     }
     catch (e) {
       throw new EvalError(
@@ -564,6 +598,7 @@ abstract class App<
 
   protected write(
     data: unknown,
+    ext?: string,
     filename?: string,
     overwrite?:
       | "line"
@@ -574,6 +609,7 @@ abstract class App<
     try {
       this
         .storage(
+          ext,
           filename,
         )
         .write(
@@ -628,24 +664,34 @@ abstract class App<
   }
 
   protected storage(
+    ext?: string,
     filename?: string,
   ) {
     try {
-      const cacheId = filename ?? "";
+      const cacheId = [
+        filename ?? "",
+        ext ?? "",
+      ]
+        .join(
+          ":",
+        );
       const cached = this
         ._storage[
           cacheId
         ] ?? null;
 
-      if (cached !== null)
+      if (
+        cached !== null
+      )
         return cached;
       else {
-        const newStorage: Storage<AppClass> = new this
+        const newStorage: Storage<C> = new this
           .Storage(
             this
               ._class,
             this
               .name,
+            ext,
             filename,
           );
 
@@ -677,7 +723,7 @@ abstract class App<
       if (cached !== null)
         return cached;
       else {
-        const newKey: Key<AppClass> = new this
+        const newKey: Key<C> = new this
           .Key(
             this
               ._class,
@@ -760,13 +806,13 @@ abstract class App<
   }
 
   protected abstract runtime(): NonUndefined<O>;
-  protected abstract setOutput(runtimeOutput: ReturnType<App<I, O, C, AppClass>["runtime"]>): ReturnType<App<I, O, C, AppClass>["runtime"]>;
+  protected abstract setOutput(runtimeOutput: ReturnType<App<C, I, O, S>["runtime"]>): ReturnType<App<C, I, O, S>["runtime"]>;
   private _name?: stringful;
   private _input?: I;
   private _inputful?: NonNullable<I>;
   private _inputString?: string;
   private _inputStringful?: stringful;
-  private __setting?: Setting<AppClass, C>;
+  private __setting?: Setting<C, S>;
 }
 
 module.exports = App;

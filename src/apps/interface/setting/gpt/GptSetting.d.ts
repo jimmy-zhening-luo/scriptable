@@ -1,6 +1,6 @@
 declare type GptSetting = {
   app: {
-    api: 
+    api:
       & Field<
         | "host"
         | "version"

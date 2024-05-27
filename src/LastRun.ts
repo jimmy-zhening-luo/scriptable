@@ -29,7 +29,7 @@ namespace LastRun {
         ?? 2,
       );
       const table = this
-        .data<FieldTable>()
+        .data<FieldTable>("json")
         ?? {};
       const savedRun = table[
         id
@@ -43,6 +43,7 @@ namespace LastRun {
       this
         .write(
           table,
+          "json",
         );
 
       return savedRun === null

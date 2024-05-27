@@ -12,7 +12,6 @@ namespace Filelink {
     FilelinkSetting
   > {
     protected runtime() {
-      const SCHEME_ROOT = "shareddocuments://private/var/mobile";
       const {
         nodes,
         ext,
@@ -24,6 +23,18 @@ namespace Filelink {
           nodes,
         );
       const [rootNode] = path;
+      const {
+        scheme,
+        commonRoot,
+      } = this
+        .app;
+      const SCHEME_ROOT = [
+        scheme,
+        commonRoot,
+      ]
+        .join(
+          "://",
+        );
       const { providers } = this
         .user;
       const provider = providers[

@@ -3,24 +3,27 @@ const se_Filetype = importModule(
 ) as typeof Filetype;
 
 class Setting<
-  Class extends string,
-  C extends ISetting,
+  C extends string,
+  S extends ISetting,
 > extends se_Filetype<
-    Class,
     "Setting"
+    ,
+    C
   > {
   constructor(
-    appClass: literalful<Class>,
+    category: literalful<
+      C
+    >,
     app: stringful,
   ) {
     try {
       super(
-        Setting.ReadOnlyFile,
         "Setting",
-        appClass,
-        `${
-          app
-        }.json`,
+        category,
+        Setting
+          .ReadOnlyFile,
+        "json",
+        app,
       );
     }
     catch (e) {
@@ -31,7 +34,7 @@ class Setting<
     }
   }
 
-  public get parsed(): C {
+  public get parsed(): S {
     try {
       if (this._cachedSetting === undefined) {
         const parsedJson: unknown = JSON
@@ -42,7 +45,7 @@ class Setting<
 
         if (parsedJson !== undefined)
           this
-            ._cachedSetting = parsedJson as C;
+            ._cachedSetting = parsedJson as S;
         else
           throw new TypeError(
             `Setting file parsed to valid JSON, but has invalid schema`,
@@ -68,7 +71,7 @@ class Setting<
     }
   }
 
-  public get app(): C["app"] {
+  public get app(): S["app"] {
     try {
       if (this.parsed.app === undefined)
         throw new TypeError(
@@ -93,7 +96,7 @@ class Setting<
     }
   }
 
-  public get user(): C["user"] {
+  public get user(): S["user"] {
     try {
       if (this.parsed.user === undefined)
         throw new TypeError(
@@ -132,7 +135,7 @@ class Setting<
     );
   }
 
-  private _cachedSetting?: C;
+  private _cachedSetting?: S;
 }
 
 module.exports = Setting;

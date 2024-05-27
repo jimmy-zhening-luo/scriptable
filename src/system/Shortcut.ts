@@ -5,12 +5,21 @@ const sh_App = importModule(
 abstract class Shortcut<
   I = never,
   O = never,
-  C extends ISetting = never,
+  S extends ISetting = never,
 > extends sh_App<
-    Null<NonNullable<I>>,
-    Null<O>,
-    C,
     "Shortcut"
+    ,
+    Null<
+      NonNullable<
+        I
+      >
+    >
+    ,
+    Null<
+      O
+    >
+    ,
+    S
   > {
   constructor(
     debug?: boolean,

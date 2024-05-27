@@ -3,24 +3,31 @@ const st_Filetype = importModule(
 ) as typeof Filetype;
 
 class Storage<
-  Class extends string,
+  C extends string,
 > extends st_Filetype<
-    Class,
-    "Storage",
+    "Storage"
+    ,
+    C
+    ,
     WriteFile
   > {
   constructor(
-    appClass: literalful<Class>,
+    category: literalful<
+      C
+    >,
     app: stringful,
-    filename: string = "default.txt",
+    ext = "txt",
+    filename?: string,
   ) {
     try {
       super(
-        Storage.WriteFile,
         "Storage",
-        appClass,
+        category,
+        Storage
+          .WriteFile,
+        ext,
         app,
-        filename,
+        filename ?? app,
       );
     }
     catch (e) {
