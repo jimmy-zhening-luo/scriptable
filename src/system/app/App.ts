@@ -721,8 +721,10 @@ abstract class App<
   ) {
     try {
       const cacheId = [
-        filename ?? "",
-        ext ?? "",
+        filename
+        ?? "",
+        ext
+        ?? "",
       ]
         .join(
           ":",
@@ -730,7 +732,8 @@ abstract class App<
       const cached = this
         ._storage[
           cacheId
-        ] ?? null;
+        ]
+        ?? null;
 
       if (
         cached !== null
@@ -770,7 +773,8 @@ abstract class App<
       const cached = this
         ._keys[
           handle
-        ] ?? null;
+        ]
+        ?? null;
 
       if (
         cached !== null
