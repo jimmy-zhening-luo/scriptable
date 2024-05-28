@@ -31,20 +31,6 @@ abstract class App<
     protected debug = false,
   ) {}
 
-  protected get stringful() {
-    try {
-      return importModule(
-        "./common/types/safe/acceptors/string/Stringful",
-      ) as typeof Stringful;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Stringful`,
-        { cause: e },
-      );
-    }
-  }
-
   protected get base64guid() {
     try {
       return importModule(
@@ -92,21 +78,15 @@ abstract class App<
       if (
         typeof this
           ._name === "undefined"
-      ) {
-        const { name } = this
-          .constructor;
-
-        if (
-          name
-            .length > 0
-        )
-          this
-            ._name = name;
-        else
-          throw new EvalError(
-            `nameless app instance`,
-          );
-      }
+      )
+        this
+          ._name = this
+            .stringful(
+              this
+                .constructor
+                .name,
+              `nameless app instance`,
+            );
 
       return this
         ._name;
@@ -263,20 +243,14 @@ abstract class App<
       if (
         typeof this
           ._inputStringful === "undefined"
-      ) {
-        const { inputString } = this;
-
-        if (
-          inputString
-            .length > 0
-        )
-          this
-            ._inputStringful = inputString;
-        else
-          throw new TypeError(
-            `input string empty`,
-          );
-      }
+      )
+        this
+          ._inputStringful = this
+            .stringful(
+              this
+                .inputString,
+              `input string empty`,
+            );
 
       return this
         ._inputStringful;
@@ -456,6 +430,35 @@ abstract class App<
     }
   }
 
+  protected stringful(
+    string: string,
+    errorLabel: string = "",
+  ) {
+    try {
+      if (
+        string
+          .length > 0
+      )
+        return string as stringful;
+      else
+        throw new TypeError(
+          `empty string`,
+          {
+            cause: {
+              string,
+              errorLabel,
+            },
+          },
+        );
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Stringful`,
+        { cause: e },
+      );
+    }
+  }
+
   protected stringfulArray(
     array: string[],
   ) {
@@ -541,7 +544,7 @@ abstract class App<
               input,
               appType: typeof app,
             },
-          }
+          },
         );
     }
     catch (e) {
