@@ -488,9 +488,12 @@ abstract class App<
 
   protected synthetic<A, O>(
     app: A extends App<
-      infer C,
-      infer I,
-      O,
+      infer C
+      ,
+      infer I
+      ,
+      O
+      ,
       infer S
     >
       ? App<
@@ -501,9 +504,12 @@ abstract class App<
       >
       : never,
     input: A extends App<
-      infer C,
-      infer I,
-      O,
+      infer C
+      ,
+      infer I
+      ,
+      O
+      ,
       infer S
     >
       ? App<
