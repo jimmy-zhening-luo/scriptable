@@ -107,46 +107,30 @@ namespace Link {
 
       if (
         Host === "amazon.com"
-      ) {
-        if (
-          Path
-            .includes(
-              "/dp/",
+      )
+        Path = new (
+          this
+            .Processor<typeof AmazonPathProcessor>(
+              "AmazonPathProcessor",
             )
-        )
-          Path = [
-            "/dp/",
-            (
-              Path
-                .split(
-                  "/dp/",
-                )
-                .pop()
-                ?? ""
-            )
-              .split(
-                "/",
-              )
-              .shift()
-              ?? "",
-          ]
-            .join(
-              "",
-            );
-      }
+          )(
+            Host,
+            Path,
+          )
+            .processed;
       else if (
         Host === "linkedin.com"
       )
-        if (
-          Path
-            .startsWith(
-              "/mwlite/",
+        Path = new (
+          this
+            .Processor<typeof LinkedInPathProcessor>(
+              "LinkedInPathProcessor",
             )
-        )
-          Path = Path
-            .slice(
-              7,
-            );
+          )(
+            Host,
+            Path,
+          )
+            .processed;
 
       return this
         .buildURL(
@@ -217,6 +201,24 @@ namespace Link {
       catch (e) {
         throw new EvalError(
           `Link: buildURL`,
+          { cause: e },
+        );
+      }
+    }
+
+    private Processor<P>(
+      processor: string,
+    ): P {
+      try {
+        return importModule(
+          `apps/method/link/${
+            processor
+          }`,
+        ) as P;
+      }
+      catch (e) {
+        throw new EvalError(
+          `Link: import <P>Processor`,
           { cause: e },
         );
       }

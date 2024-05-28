@@ -4,7 +4,9 @@ abstract class ILinkPathProcessor<
   public readonly processed: string;
 
   constructor(
-    protected readonly host: literalful<H>,
+    protected readonly host: literalful<
+      H
+    >,
     path: string,
   ) {
     try {
