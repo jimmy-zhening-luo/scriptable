@@ -9,16 +9,15 @@ class LinkedInPathProcessor extends lnkd_ILinkPathProcessor<
     path: string,
   ) {
     try {
-        if (
-          path
-            .startsWith(
-              "/mwlite/",
-            )
+      return path
+        .startsWith(
+          "/mwlite/",
         )
-          path = path
-            .slice(
-              7,
-            );
+        ? path
+          .slice(
+            7,
+          )
+        : path;
     }
     catch (e) {
       throw new EvalError(
