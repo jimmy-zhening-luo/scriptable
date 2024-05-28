@@ -5,9 +5,12 @@ const v_BoundString = importModule(
 class ValidString<
   V extends string,
 > extends v_BoundString<
-    stringful,
+    stringful
+    ,
     `Valid:${
-      literalful<V>
+      literalful<
+        V
+      >
     }`
   > {
   constructor(
@@ -100,15 +103,15 @@ class ValidString<
   ) {
     try {
       let trimmed = string;
-      const lookFn =
-        edge === "leading"
-          ? "startsWith"
-          : "endsWith";
+      const lookFn = edge === "leading"
+        ? "startsWith"
+        : "endsWith";
 
       wordsToTrim
         .filter(
           (word): word is stringful =>
-            word.length > 0,
+            word
+              .length > 0,
         )
         .forEach(
           word => {

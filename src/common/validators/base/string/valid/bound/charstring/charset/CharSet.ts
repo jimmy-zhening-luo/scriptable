@@ -13,10 +13,14 @@ class CharSet {
     >
   ) {
     try {
-      if (typeof negate === "boolean")
+      if (
+        typeof negate === "boolean"
+      )
         this
           .negate = negate;
-      else if (typeof negate !== "undefined")
+      else if (
+        typeof negate !== "undefined"
+      )
         charsets
           .unshift(
             negate,
@@ -42,7 +46,8 @@ class CharSet {
     try {
       const { negate } = this;
 
-      return string.length < 1
+      return string
+        .length < 1
         || [...string]
           .every(
             char =>

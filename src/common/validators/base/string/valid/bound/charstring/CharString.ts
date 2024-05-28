@@ -4,9 +4,12 @@ class CharString<
 > {
   public readonly charset: CharSet;
   public readonly string: validstring<
-    T,
+    T
+    ,
     `CharString:${
-      literalful<V>
+      literalful<
+        V
+      >
     }`
   >;
 
@@ -15,14 +18,16 @@ class CharString<
     ...charset: ConstructorParameters<typeof CharSet>
   ) {
     try {
-      this.charset = new this
-        .CharSet(
-          ...charset,
-        );
-      this.string = this
-        .validate(
-          string,
-        );
+      this
+        .charset = new this
+          .CharSet(
+            ...charset,
+          );
+      this
+        .string = this
+          .validate(
+            string,
+          );
     }
     catch (e) {
       throw new EvalError(

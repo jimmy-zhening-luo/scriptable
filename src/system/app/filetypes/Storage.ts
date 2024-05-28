@@ -27,7 +27,8 @@ class Storage<
           .WriteFile,
         ext,
         app,
-        filename ?? app,
+        filename
+        ?? app,
       );
     }
     catch (e) {
@@ -60,15 +61,14 @@ class Storage<
         typeof buffer === "object"
       )
         if (
-          Array
-            .isArray(
-              buffer,
+          Array.isArray(
+            buffer,
+          )
+          && buffer
+            .every(
+              element =>
+                typeof element === "string",
             )
-            && buffer
-              .every(
-                element =>
-                  typeof element === "string",
-              )
         )
           this
             .file

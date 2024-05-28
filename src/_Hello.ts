@@ -7,8 +7,10 @@ namespace _Hello {
   const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class _Hello extends shortcut<
-    never,
-    string,
+    never
+    ,
+    string
+    ,
     { app?: { space?: string } }
   > {
     protected runtime() {

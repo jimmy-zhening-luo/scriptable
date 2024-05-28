@@ -51,7 +51,10 @@ abstract class IMoment {
             .dateOptions,
         );
 
-      if (date.length > 0)
+      if (
+        date
+          .length > 0
+      )
         return date as stringful;
       else
         throw new RangeError(
@@ -100,7 +103,10 @@ abstract class IMoment {
             .localTimeOptions,
         );
 
-      if (local.length > 0)
+      if (
+        local
+          .length > 0
+      )
         return local as stringful;
       else
         throw new RangeError(

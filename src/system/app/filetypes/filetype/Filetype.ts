@@ -113,7 +113,9 @@ abstract class Filetype<
   }
 
   public read(
-    ...error: Parameters<File["read"]>
+    ...error: Parameters<
+      File["read"]
+    >
   ) {
     try {
       return this
@@ -130,7 +132,7 @@ abstract class Filetype<
     }
   }
 
-  public readful(): stringful {
+  public readful() {
     try {
       return this
         .file
@@ -148,7 +150,9 @@ abstract class Filetype<
   }
 
   public data<D>(
-    ...error: Parameters<File["read"]>
+    ...error: Parameters<
+      File["read"]
+    >
   ): Null<D> {
     try {
       const string = this
@@ -158,7 +162,8 @@ abstract class Filetype<
         )
         .trim();
 
-      return string.length > 0
+      return string
+        .length > 0
         ? JSON
           .parse(
             string,
@@ -188,7 +193,9 @@ abstract class Filetype<
   }
 
   private root(
-    subtype: literalful<T>,
+    subtype: literalful<
+      T
+    >,
   ) {
     try {
       if (

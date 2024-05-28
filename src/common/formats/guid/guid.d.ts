@@ -1,6 +1,7 @@
-declare type base64guid = stringful; // replace with stringbuilder later
+declare type base64guid = stringful;
 
 declare type guidchars = Tuple<
-  hexchar,
+  hexchar
+  ,
   32
 >;

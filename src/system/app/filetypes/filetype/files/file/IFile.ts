@@ -17,9 +17,11 @@ abstract class IFile {
     ...subpaths: ConstructorParameters<typeof IFilepath>
   ) {
     try {
-      this._root =
+      this
+        ._root =
         root instanceof IFile
-        || root instanceof this.Bookmark
+        || root instanceof this
+          .Bookmark
           ? root
             .path
           : typeof root === "object"
@@ -38,10 +40,11 @@ abstract class IFile {
                 root,
               )
               .toString();
-      this._subpath = new this
-        .Subpath(
-          ...subpaths,
-        );
+      this
+        ._subpath = new this
+          .Subpath(
+            ...subpaths,
+          );
     }
     catch (e) {
       throw new EvalError(
@@ -150,7 +153,9 @@ abstract class IFile {
         !this.exists
         || this.isFile
         || this.isDirectory
-        && this.ls.length === 0
+        && this
+          .ls
+          .length === 0
       );
     }
     catch (e) {
@@ -235,14 +240,14 @@ abstract class IFile {
           : this
             .ls
             .map(
-              (filename: string): this =>
+              filename =>
                 this
                   .append(
                     filename,
                   ),
             )
             .filter(
-              (child: this) =>
+              child =>
                 !this
                   .path
                   .startsWith(
@@ -251,7 +256,7 @@ abstract class IFile {
                   ),
             )
             .map(
-              (file: this): this[] =>
+              file =>
                 file
                   .descendants,
             )
@@ -304,20 +309,6 @@ abstract class IFile {
     catch (e) {
       throw new ReferenceError(
         `IFile: import Subpath`,
-        { cause: e },
-      );
-    }
-  }
-
-  private get stringful() {
-    try {
-      return importModule(
-        "./common/types/safe/acceptors/string/Stringful",
-      ) as typeof Stringful;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `IFile: import Stringful`,
         { cause: e },
       );
     }
@@ -406,8 +397,13 @@ abstract class IFile {
     error = false,
   ) {
     try {
-      if (!this.isFile)
-        if (error)
+      if (
+        !this
+          .isFile
+      )
+        if (
+          error
+        )
           throw new ReferenceError(
             `file does not exist`,
           );
@@ -433,16 +429,23 @@ abstract class IFile {
   }
 
   public readful(
-    errorLabel?: string,
+    errorLabel: string = "",
   ): stringful {
     try {
-      return this
-        .stringful(
-          this
-            .read(
-              true,
-            ),
-          errorLabel,
+      const read = this
+        .read(
+          true,
+        );
+
+      if (
+        read
+          .length > 0
+      )
+        return read as stringful;
+      else
+        throw new TypeError(
+          `file empty`,
+          { cause: { errorLabel } },
         );
     }
     catch (e) {
@@ -544,8 +547,13 @@ abstract class IFile {
     force = false,
   ) {
     try {
-      if (this.exists)
-        if (force)
+      if (
+        this
+          .exists
+      )
+        if (
+          force
+        )
           this
             .manager
             .remove(
@@ -555,16 +563,19 @@ abstract class IFile {
         else {
           const alert = new Alert();
 
-          alert.message = `Permanently delete?\n${
-            this
-              .path
-          }`;
-          alert.addDestructiveAction(
-            "DELETE",
-          );
-          alert.addCancelAction(
-            "Cancel",
-          );
+          alert
+            .message = `Permanently delete?\n${
+              this
+                .path
+            }`;
+          alert
+            .addDestructiveAction(
+              "DELETE",
+            );
+          alert
+            .addCancelAction(
+              "Cancel",
+            );
           await alert
             .present()
             .then(

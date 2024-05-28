@@ -8,7 +8,8 @@ class ErrorHandler {
       for (
         let ei: ErrorLike = e;
         "cause" in ei;
-        ei = ei.cause as ErrorLike
+        ei = ei
+          .cause as ErrorLike
       )
         stack
           .push(
@@ -63,7 +64,8 @@ class ErrorHandler {
         );
 
       return messages
-        .shift() ?? "";
+        .shift()
+        ?? "";
     }
     catch (e) {
       throw new EvalError(
@@ -185,7 +187,8 @@ class ErrorHandler {
                     .quotelessStringify(
                       (
                         v as Record<
-                          string,
+                          string
+                          ,
                           unknown
                         >
                       )[

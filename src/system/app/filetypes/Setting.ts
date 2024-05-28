@@ -36,14 +36,19 @@ class Setting<
 
   public get parsed(): S {
     try {
-      if (this._cachedSetting === undefined) {
+      if (
+        this
+          ._cachedSetting === undefined
+      ) {
         const parsedJson: unknown = JSON
           .parse(
             this
               .readful(),
           );
 
-        if (parsedJson !== undefined)
+        if (
+          parsedJson !== undefined
+        )
           this
             ._cachedSetting = parsedJson as S;
         else
@@ -73,7 +78,11 @@ class Setting<
 
   public get app(): S["app"] {
     try {
-      if (this.parsed.app === undefined)
+      if (
+        this
+          .parsed
+          .app === undefined
+      )
         throw new TypeError(
           `No app setting found`,
           {
@@ -98,7 +107,11 @@ class Setting<
 
   public get user(): S["user"] {
     try {
-      if (this.parsed.user === undefined)
+      if (
+        this
+          .parsed
+          .user === undefined
+      )
         throw new TypeError(
           `No user setting found`,
           {

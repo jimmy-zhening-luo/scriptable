@@ -18,7 +18,9 @@ abstract class Helper<
   constructor(
     private readonly argument: Helper<
       I
-    >["input"],
+    >[
+      "input"
+    ],
     debug?: boolean,
   ) {
     super(
@@ -46,7 +48,9 @@ abstract class Helper<
         I
         ,
         O
-      >["run"]
+      >[
+        "run"
+      ]
     >,
   ) {
     try {

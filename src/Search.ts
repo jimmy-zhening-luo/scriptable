@@ -7,8 +7,10 @@ namespace Search {
   const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class Search extends shortcut<
-    string,
-    SearchOutput,
+    string
+    ,
+    SearchOutput
+    ,
     SearchSetting
   > {
     private get Query() {

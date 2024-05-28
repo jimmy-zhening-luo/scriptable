@@ -6,9 +6,12 @@ class BoundString<
   T extends stringful,
   V extends string,
 > extends f_CharString<
-    T,
+    T
+    ,
     `Bound:${
-      literalful<V>
+      literalful<
+        V
+      >
     }`
   > {
   constructor(
@@ -18,7 +21,9 @@ class BoundString<
     ...charset: ConstructorParameters<typeof CharSet>
   ) {
     try {
-      if (min > max)
+      if (
+        min > max
+      )
         throw new RangeError(
           `min > max`,
           {

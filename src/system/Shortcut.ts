@@ -40,7 +40,7 @@ abstract class Shortcut<
           .shortcutParameter as Null<
             | undefined
             | I
-          >;
+        >;
         const definedShortcutInput = shortcutInput
           ?? null;
 
@@ -65,7 +65,9 @@ abstract class Shortcut<
         I
         ,
         O
-      >["run"]
+      >[
+        "run"
+      ]
     >,
   ) {
     try {

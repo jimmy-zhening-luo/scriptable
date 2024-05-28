@@ -54,8 +54,15 @@ class Key<
     try {
       const { fullname } = this;
 
-      if (!Keychain.contains(fullname))
-        if (!fallbackLocal)
+      if (
+        !Keychain
+          .contains(
+            fullname,
+          )
+      )
+        if (
+          !fallbackLocal
+        )
           throw new ReferenceError(
             `key does not exist in Keychain, and fallbackLocal is 'false'`,
             {
@@ -76,7 +83,10 @@ class Key<
             fullname,
           );
 
-        if (key.length < 1)
+        if (
+          key
+            .length < 1
+        )
           throw new ReferenceError(
             `Unexpected: key exists in Keychain but is empty`,
             {
@@ -107,7 +117,13 @@ class Key<
     try {
       const { fullname } = this;
 
-      if (Keychain.contains(fullname) && !roll)
+      if (
+        Keychain
+          .contains(
+            fullname,
+          )
+          && !roll
+      )
         throw new ReferenceError(
           `cannot overwrite existing key with roll set to 'false'`,
           {
@@ -130,7 +146,12 @@ class Key<
             local,
           );
 
-        if (local !== Keychain.get(fullname))
+        if (
+          local !== Keychain
+            .get(
+              fullname,
+            )
+        )
           throw new EvalError(
             `attempted to initialize key in Keychain, but Keychain value after setting does not match the intended value`,
             {
@@ -172,13 +193,23 @@ class Key<
     try {
       const { fullname } = this;
 
-      if (Keychain.contains(fullname)) {
+      if (
+        Keychain
+          .contains(
+            fullname,
+          )
+      ) {
         Keychain
           .remove(
             fullname,
           );
 
-        if (Keychain.contains(fullname))
+        if (
+          Keychain
+            .contains(
+              fullname,
+            )
+        )
           throw new EvalError(
             `removed key from Keychain, but key is still in Keychain`,
             {

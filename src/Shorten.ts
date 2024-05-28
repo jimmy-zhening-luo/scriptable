@@ -7,7 +7,8 @@ namespace Shorten {
   const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class Shorten extends shortcut<
-    string,
+    string
+    ,
     string
   > {
     protected runtime() {

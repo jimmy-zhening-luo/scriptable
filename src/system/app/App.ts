@@ -443,17 +443,12 @@ abstract class App<
       else
         throw new TypeError(
           `empty string`,
-          {
-            cause: {
-              string,
-              errorLabel,
-            },
-          },
+          { cause: { errorLabel } },
         );
     }
     catch (e) {
       throw new ReferenceError(
-        `App: import Stringful`,
+        `App: stringful`,
         { cause: e },
       );
     }

@@ -7,8 +7,10 @@ namespace Filelink {
   const shortcut = importModule("system/Shortcut") as typeof Shortcut;
 
   export class Filelink extends shortcut<
-    FilelinkInput,
-    string,
+    FilelinkInput
+    ,
+    string
+    ,
     FilelinkSetting
   > {
     protected runtime() {
