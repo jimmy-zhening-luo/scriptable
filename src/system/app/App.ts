@@ -183,8 +183,8 @@ abstract class App<
             `null input`,
             {
               cause: {
-                input: this.input,
-                type: typeof this.input,
+                input,
+                type: typeof input,
               },
             },
           );
