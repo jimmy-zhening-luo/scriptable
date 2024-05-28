@@ -1,4 +1,4 @@
-const f_IEngine: typeof IEngine = importModule(
+const f_IEngine = importModule(
   "engine/IEngine",
 ) as typeof IEngine;
 
