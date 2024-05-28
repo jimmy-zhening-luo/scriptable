@@ -13,26 +13,26 @@ class AmazonPathProcessor extends amzn_ILinkPathProcessor<
         .includes(
           "/dp/",
         )
-          ? [
-              "/dp/",
-              (
-                path
-                  .split(
-                    "/dp/",
-                  )
-                  .pop()
-                  ?? ""
-              )
+        ? [
+            "/dp/",
+            (
+              path
                 .split(
-                  "/",
+                  "/dp/",
                 )
-                .shift()
-                ?? "",
-            ]
-              .join(
-                "",
+                .pop()
+                ?? ""
+            )
+              .split(
+                "/",
               )
-          : path;
+              .shift()
+              ?? "",
+          ]
+            .join(
+              "",
+            )
+        : path;
     }
     catch (e) {
       throw new EvalError(
