@@ -41,6 +41,15 @@ namespace Link {
         .inputful;
       const lowerScheme = scheme
         .toLowerCase();
+      const Scheme = [
+        "http",
+        "https",
+      ]
+        .includes(
+          lowerScheme,
+        )
+        ? ""
+        : lowerScheme;
       const trimmedHost =
         host
           .startsWith(
@@ -55,15 +64,6 @@ namespace Link {
               4,
             )
           : host;
-      const Scheme = [
-        "http",
-        "https",
-      ]
-        .includes(
-          lowerScheme,
-        )
-        ? ""
-        : lowerScheme;
       const Host = swapHost[
         trimmedHost
       ]
@@ -109,28 +109,38 @@ namespace Link {
         Host === "amazon.com"
       )
         Path = new (
-          this
-            .Processor<typeof AmazonPathProcessor>(
-              "AmazonPathProcessor",
-            )
-          )(
-            Host,
-            Path,
+          this.Processor<typeof AmazonPathProcessor>(
+            "AmazonPathProcessor",
           )
-            .processed;
+        )(
+          Host,
+          Path,
+        )
+          .processed;
       else if (
         Host === "linkedin.com"
       )
         Path = new (
-          this
-            .Processor<typeof LinkedInPathProcessor>(
-              "LinkedInPathProcessor",
-            )
-          )(
-            Host,
-            Path,
+          this.Processor<typeof LinkedInPathProcessor>(
+            "LinkedInPathProcessor",
           )
-            .processed;
+        )(
+          Host,
+          Path,
+        )
+          .processed;
+      else if (
+        Host === "dropbox.com"
+      )
+        Path = new (
+          this.Processor<typeof DropboxPathProcessor>(
+            "DropboxPathProcessor",
+          )
+        )(
+          Host,
+          Path,
+        )
+          .processed;
 
       return this
         .buildURL(
