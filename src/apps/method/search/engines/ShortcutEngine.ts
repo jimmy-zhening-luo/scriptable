@@ -9,6 +9,7 @@ class ShortcutEngine extends s_IEngine {
   constructor(
     shortcut: string,
     output = false,
+    write = false,
   ) {
     try {
       super(
@@ -23,6 +24,8 @@ class ShortcutEngine extends s_IEngine {
           .shortcut = shortcut;
         this
           .output = output;
+        this
+          .write = write;
       }
       else
         throw new SyntaxError(
@@ -42,11 +45,13 @@ class ShortcutEngine extends s_IEngine {
       const {
         shortcut,
         output,
+        write,
       } = this;
 
       return {
         shortcut,
         output,
+        write,
       };
     }
     catch (e) {
