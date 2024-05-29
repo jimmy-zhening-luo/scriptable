@@ -195,6 +195,8 @@ namespace Search {
                   .shortcut,
                 match
                   .output,
+                match
+                  .write,
               )
               : "find" in match
                 ? new (

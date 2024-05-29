@@ -25,7 +25,8 @@ declare type SearchSetting = {
       | ISearchEngineSetting<
         "shortcut"
         ,
-        "output"
+        | "output"
+        | "write"
       >
     >;
   };
