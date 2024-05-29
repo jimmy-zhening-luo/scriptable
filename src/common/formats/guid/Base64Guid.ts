@@ -179,12 +179,12 @@ function Base64Guid() {
               .length === 4,
         )
         .map(
-          [
+          ([
             q0,
             q1,
             q2,
             q3,
-          ] =>
+          ]) =>
             (
               q0
               + q1
