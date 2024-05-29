@@ -179,12 +179,17 @@ function Base64Guid() {
               .length === 4,
         )
         .map(
-          quad =>
+          [
+            q0,
+            q1,
+            q2,
+            q3,
+          ] =>
             (
-              quad[0]
-              + quad[1]
-              + quad[2]
-              + quad[3]
+              q0
+              + q1
+              + q2
+              + q3
             ) as base64,
         )
         .filter(
