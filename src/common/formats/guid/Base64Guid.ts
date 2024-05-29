@@ -6,10 +6,14 @@ function Base64Guid() {
       guid
         .length === 32
     )
-      return [...guid] as guidchars; // skip check bad char, will error later anyway
+      return [...guid] as Tuple<
+        hexchar
+        ,
+        32
+      >;
     else
-      throw new RangeError(
-        `generated guid does not have 32 hex chars`,
+      throw new TypeError(
+        `Unexpected: invalid guid (length !== 32)`,
         {
           cause: {
             guid,
@@ -20,19 +24,19 @@ function Base64Guid() {
   }
 
   function base64guid(
-    shortGuid: string,
+    encodedGuid: string,
   ) {
     if (
-      shortGuid
+      encodedGuid
         .length === 8
     )
-      return shortGuid as base64guid; // skip check bad char, I don't care as this is not production code (yet)
+      return encodedGuid as stringful; // unsafe
     else
-      throw new RangeError(
-        `base64-encoded guid does not have 8 chars`,
+      throw new TypeError(
+        `Unexpected: invalid base64-encoded guid (length !== 8)`,
         {
           cause: {
-            shortGuid,
+            encodedGuid,
             length: shortGuid.length,
           },
         },
@@ -165,7 +169,7 @@ function Base64Guid() {
           ],
         );
 
-    const shortGuid = base64guid(
+    const encodedGuid = base64guid(
       buffer
         .filter(
           (row): row is Quad<
@@ -203,25 +207,7 @@ function Base64Guid() {
         ),
     );
 
-    if (
-      shortGuid
-        .length === 8
-    )
-      return shortGuid;
-    else
-      throw new RangeError(
-        `generated base64-encoded guid does not have 8 chars`,
-        {
-          cause: {
-            guid,
-            shortGuid,
-            length: {
-              guid: guid.length,
-              shortGuid: shortGuid.length,
-            },
-          },
-        },
-      );
+    return encodedGuid;
   }
   catch (e) {
     throw new EvalError(
