@@ -37,7 +37,7 @@ function Base64Guid() {
         {
           cause: {
             encodedGuid,
-            length: shortGuid.length,
+            length: encodedGuid.length,
           },
         },
       );
