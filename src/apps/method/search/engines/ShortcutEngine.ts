@@ -5,6 +5,7 @@ const s_IEngine = importModule(
 class ShortcutEngine extends s_IEngine {
   protected readonly shortcut: string;
   protected readonly output: boolean;
+  protected readonly write: boolean;
 
   constructor(
     shortcut: string,
