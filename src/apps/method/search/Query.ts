@@ -115,13 +115,12 @@ class Query {
 
   public get natural() {
     try {
-      const [terms] = this;
-
-      return terms
+      return this
+        .terms
         .join(
           " ",
         ) as Join<
-          typeof terms
+          stringful[]
           ,
           " "
         >;
