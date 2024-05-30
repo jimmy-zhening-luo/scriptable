@@ -1,6 +1,6 @@
 class Query {
-  public readonly key: stringful;
   public readonly terms: stringful[];
+  protected _key: stringful;
   private readonly NUMERIC = [
     "0",
     "1",
@@ -44,7 +44,7 @@ class Query {
     "#",
     "$",
     "°",
-  ] as stringful[];
+  ];
 
   constructor(
     query: string,
@@ -60,32 +60,37 @@ class Query {
       const [
         key,
         ...terms
-      ] =
-        this
-          .mathefy(
-            this
-              .dedot(
-                this
-                  .transliterate(
-                    this
-                      .tokenize(
-                        query,
-                        ONE,
-                        TWO,
-                        THREE,
-                      ),
-                    TRANSLATE,
-                  ),
-              ),
-            CHAT,
-            TRANSLATE,
-            MATH_SHORT,
-            MATH_LONG,
-          );
+      ] = Query
+        .mathefy(
+          Query
+            .dedot(
+              Query
+                .transliterate(
+                  Query
+                    .tokenize(
+                      query,
+                      ONE,
+                      TWO,
+                      THREE,
+                    ),
+                  TRANSLATE,
+                ),
+            ),
+          CHAT,
+          TRANSLATE,
+          MATH_SHORT,
+          MATH_LONG,
+          this
+            .NUMERIC,
+        );
 
-      this.terms = terms;
-      this.key = key
-        .toLowerCase() as stringful;
+      this
+        .terms = terms;
+      this
+        ._key = Query
+          .toLower(
+            key,
+          );
     }
     catch (e) {
       throw new EvalError(
@@ -95,11 +100,48 @@ class Query {
     }
   }
 
-  public get natural() {
+  public get key() {
     try {
       return this
-        .terms
+        ._key;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: key`,
+        { cause: e },
+      );
+    }
+  }
+
+  public get natural() {
+    try {
+      return Query
         .join(
+          this
+            .terms,
+          " ",
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: natural`,
+        { cause: e },
+      );
+    }
+  }
+
+  public get clean() {
+    try {
+      const clean = [
+        this
+          .key,
+        this
+          .natural,
+      ] as const;
+
+      return Query
+        .join(
+          clean,
           " ",
         );
     }
@@ -111,25 +153,7 @@ class Query {
     }
   }
 
-  public get clean() {
-    try {
-      return `${
-        this
-          .key
-      } ${
-        this
-          .natural
-      }` as stringful;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: clean`,
-        { cause: e },
-      );
-    }
-  }
-
-  private tokenize(
+  private static tokenize(
     query: string,
     ONE: stringful,
     TWO: stringful,
@@ -152,7 +176,7 @@ class Query {
             : [TWO]
           : [ONE]
         : [];
-      const tokenized: stringful[] = [
+      const tokens = [
         ...preprocessed,
         ...query
           .trim()
@@ -160,21 +184,23 @@ class Query {
             " ",
           )
           .filter(
-            (t): t is stringful =>
-              t
+            (token): token is stringful =>
+              token
                 .length > 0,
           ),
       ];
 
       if (
-        tokenized
-          .length < 1
+        tokens
+          .length > 0
       )
-        throw new SyntaxError(
-          `query has 0 tokens`,
-        );
+        return tokens as Arrayful<
+          stringful
+        >;
       else
-        return tokenized as Arrayful<stringful>;
+        throw new SyntaxError(
+          `no tokens in query`,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -184,73 +210,91 @@ class Query {
     }
   }
 
-  private transliterate(
-    T: Arrayful<stringful>,
+  private static transliterate(
+    tokens: Arrayful<
+      stringful
+    >,
     TRANSLATE: stringful,
   ) {
     try {
       const LANG_TAG = "@" as stringful;
-      const [T0] = T;
-      const t0 = T0
-        .toLowerCase() as stringful;
-      const pre =
-        t0
+      const [T0] = tokens;
+      const t0 = Query
+        .toLower(
+          T0,
+        );
+      const pre = t0
+        .startsWith(
+          LANG_TAG,
+        )
+        ? [TRANSLATE]
+        : t0
           .startsWith(
-            LANG_TAG,
+            TRANSLATE,
           )
-          ? [TRANSLATE]
-          : t0
-            .startsWith(
-              TRANSLATE,
+          ? LANG_TAG === t0
+            .slice(
+              TRANSLATE
+                .length,
+              TRANSLATE
+                .length + LANG_TAG
+                  .length,
             )
-            ? t0
-              .slice(
-                TRANSLATE.length,
-                TRANSLATE.length + LANG_TAG.length,
-              ) === LANG_TAG
+            ? [
+                TRANSLATE,
+                String(
+                  tokens
+                    .shift(),
+                )
+                  .slice(
+                    TRANSLATE
+                      .length,
+                  ) as stringful,
+              ]
+            : TRANSLATE
+              .length > t0
+                .length
               ? [
                   TRANSLATE,
-                  String(
-                    T
-                      .shift(),
-                  )
-                    .slice(
-                      TRANSLATE
-                        .length,
-                    ) as stringful,
-                ]
-              : t0.length > TRANSLATE.length
-                ? [
-                    TRANSLATE,
-                    `${
-                      LANG_TAG
-                    }${
-                      t0[
-                        TRANSLATE
+                  Query
+                    .join(
+                      [
+                        LANG_TAG,
+                        t0[
+                          TRANSLATE
+                            .length
+                        ],
+                      ] as Dyad<
+                        stringful
+                      >,
+                      "",
+                    ),
+                  ...TRANSLATE
+                    .length + LANG_TAG
+                      .length < String(
+                        tokens
+                          .shift(),
+                        )
                           .length
+                    ? [
+                        t0
+                          .slice(
+                            TRANSLATE
+                              .length + LANG_TAG
+                                .length,
+                          ) as stringful,
                       ]
-                    }` as stringful,
-                    ...TRANSLATE.length + LANG_TAG.length < String(
-                      T
-                        .shift(),
-                    ).length
-                      ? [
-                          t0
-                            .slice(
-                              TRANSLATE.length + LANG_TAG.length,
-                            ) as stringful,
-                        ]
-                      : [],
-                  ]
-                : []
-            : [];
+                    : [],
+                ]
+              : []
+          : [];
 
-      T
+      tokens
         .unshift(
           ...pre,
         );
 
-      return T;
+      return tokens;
     }
     catch (e) {
       throw new EvalError(
@@ -260,35 +304,40 @@ class Query {
     }
   }
 
-  private dedot(
-    T: Arrayful<stringful>,
+  private static dedot(
+    tokens: Arrayful<
+      stringful
+    >,
   ) {
     try {
-      const [T0] = T;
-      const T0_Dedot =
-        T0.endsWith(
+      const [T0] = tokens;
+      const T0_Dedot = T0
+        .endsWith(
           ".",
         )
-        && !T0.startsWith(
-          ".",
-        )
-          ? T0
-            .slice(
-              0,
-              -1,
-            ) as stringful
-          : null;
+        && !T0
+          .startsWith(
+            ".",
+          )
+            ? T0
+              .slice(
+                0,
+                -1,
+              ) as stringful
+            : null;
 
-      if (T0_Dedot !== null) {
-        T
+      if (
+        T0_Dedot !== null
+      ) {
+        tokens
           .shift();
-        T
+        tokens
           .unshift(
             T0_Dedot,
           );
       }
 
-      return T;
+      return tokens;
     }
     catch (e) {
       throw new EvalError(
@@ -298,12 +347,15 @@ class Query {
     }
   }
 
-  private mathefy(
-    T: Arrayful<stringful>,
+  private static mathefy(
+    tokens: Arrayful<
+      stringful
+    >,
     CHAT: stringful,
     TRANSLATE: stringful,
     MATH_SHORT: stringful,
     MATH_LONG: stringful,
+    NUMERIC: string[],
   ) {
     try {
       const M = [
@@ -312,10 +364,13 @@ class Query {
         TRANSLATE,
         MATH_LONG,
       ] as const;
-      const [T0] = T;
-      const t0 = T0
-        .toLowerCase() as stringful;
-      const t0_len = t0.length;
+      const [T0] = tokens;
+      const t0 = Query
+        .toLower(
+          T0,
+        );
+      const t0_len = t0
+        .length;
       const longest = [...M]
         .filter(
           mk =>
@@ -332,49 +387,125 @@ class Query {
               .startsWith(
                 mk,
               ),
-        ) ?? null;
+        )
+        ?? null;
 
-      if (longest === null) {
+      if (
+        longest === null
+      ) {
         if (
-          this
-            .NUMERIC
+          NUMERIC
             .includes(
-              t0[0],
+              t0[
+                0
+              ],
             )
         )
-          T
+          tokens
             .unshift(
               MATH_SHORT,
             );
       }
       else {
-        const operand_0 = T
+        const operand_0 = tokens
           .shift()
           ?.slice(
             longest
               .length,
-          ) ?? "";
+          )
+          ?? "";
 
         if (
           operand_0
             .length > 0
         )
-          T
+          tokens
             .unshift(
               operand_0 as stringful,
             );
 
-        T
+        tokens
           .unshift(
             longest,
           );
       }
 
-      return T;
+      return tokens;
     }
     catch (e) {
       throw new EvalError(
         `Query: mathefy`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static join(
+    stringfuls: Arrayful<
+      stringful
+    >,
+    separator: string = "",
+  ) {
+    try {
+      return stringfuls
+        .join(
+          separator,
+        ) as stringful;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: join`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static toLower(
+    stringful: stringful,
+  ) {
+    try {
+      return stringful
+        .toLowerCase() as stringful;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: toLower`,
+        { cause: e },
+      );
+    }
+  }
+
+  public dealias(
+    dealias: stringful,
+  ) {
+    try {
+      this
+        ._key = dealias;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: dealias`,
+        { cause: e },
+      );
+    }
+  }
+
+  public fallback(
+    REST: stringful,
+  ) {
+    try {
+      this
+        .terms
+        .unshift(
+          this
+            .key;
+        );
+      this
+        ._key = REST;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: fallback`,
         { cause: e },
       );
     }

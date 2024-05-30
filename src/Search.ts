@@ -73,91 +73,83 @@ namespace Search {
         ,
         9
       >;
-      const input =
-          this
-            .input ?? "";
-      const query =
-        new this
-          .Query(
-            input
-              .length > 0
-              ? input
-              : this
-                .read(),
-            CHAT,
-            TRANSLATE,
-            MATH_SHORT,
-            MATH_LONG,
-            ONE,
-            TWO,
-            THREE,
-          );
-      const keys =
-        Object
-          .keys(
-            engine,
-          );
-      const keyUnaliased =
-        alias[
-          query
-            .key
-        ]
+      const input = this
+        .input
+        ?? "";
+      const query = new this
+        .Query(
+          input
+            .length > 0
+            ? input
+            : this
+              .read(),
+          CHAT,
+          TRANSLATE,
+          MATH_SHORT,
+          MATH_LONG,
+          ONE,
+          TWO,
+          THREE,
+        );
+      const keys = Object
+        .keys(
+          engine,
+        );
+      const keyUnaliased = alias[
+        query
+          .key
+      ]
         ?? null;
-      const keyMatch =
-        keys
-          .includes(
-            query
-              .key,
-          )
-          ? query
-            .key
-          : keyUnaliased === null
-            ? null
-            : keys
-              .includes(
-                keyUnaliased,
-              )
-              ? keyUnaliased
-              : null;
-      const requery = keyMatch !== null
+      const keyMatch = keys
+        .includes(
+          query
+            .key,
+        )
         ? query
-        : new this
-          .Query(
-            [
-              REST,
-              input,
-            ]
-              .join(
-                " ",
-              ),
-            CHAT,
-            TRANSLATE,
-            MATH_SHORT,
-            MATH_LONG,
-            ONE,
-            TWO,
-            THREE,
+          .key
+        : keyUnaliased === null
+          ? null
+          : !keys
+            .includes(
+              keyUnaliased,
+            )
+            ? null
+            : keyUnaliased
+              .length < 1
+              ? null
+              : keyUnaliased as stringful;
+
+      if (
+        keyMatch === null
+      )
+        query
+          .fallback(
+            REST,
           );
-      const match =
-        engine[
-          keyMatch
-          ?? REST
-        ]
+      else
+        query
+          .dealias(
+            keyMatch,
+          );
+
+      const match = engine[
+        query
+          .key
+      ]
         ?? null;
 
       if (
         match === null
       )
         throw new ReferenceError(
-          `No engine for key`,
-          { cause: { key: requery.key } },
+          `Engine config missing for key`,
+          { cause: { key: query.key } },
         );
 
-      const resolved: IEngine =
-        typeof match === "string"
-        || Array.isArray(
+      const resolved: IEngine = Array.isArray(
           match,
         )
+        || typeof match === "string"
           ? new (
             this
               .Engine<typeof UrlEngine>(
@@ -220,13 +212,13 @@ namespace Search {
 
       this
         .write(
-          requery
+          query
             .clean,
         );
 
       return resolved
         .parseQueryToAction(
-          requery,
+          query,
         );
     }
 
