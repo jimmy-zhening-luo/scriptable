@@ -95,20 +95,18 @@ namespace Search {
         );
       const keyToken = query
         .key;
+      const dealias = alias[
+        keyToken
+      ]
+        ?? null;
 
       query
         .lock(
           keyToken in engines
             ? keyToken
-            : keyToken in alias
-              ? (
-                  alias[
-                    keyToken
-                  ] as string
-                ) in engines
-                ? alias[
-                    keyToken
-                  ] as stringful
+            : dealias !== null
+              ? dealias in engines
+                ? dealias
                 : null
               : null,
         );
