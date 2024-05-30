@@ -98,7 +98,7 @@ namespace Search {
       const dealias = alias[
         keyToken
       ]
-        ?? null;
+      ?? null;
 
       query
         .lock(
@@ -118,7 +118,7 @@ namespace Search {
       const setting = engines[
         key
       ]
-        ?? null;
+      ?? null;
 
       if (
         setting === null
@@ -129,68 +129,68 @@ namespace Search {
         );
       else {
         const engine: IEngine = Array.isArray(
+          setting,
+        )
+        || typeof setting === "string"
+          ? new (
+            this
+              .Engine<typeof UrlEngine>(
+              "UrlEngine",
+            )
+          )(
             setting,
+            TAG,
           )
-          || typeof setting === "string"
+          : "url" in setting
             ? new (
               this
                 .Engine<typeof UrlEngine>(
                 "UrlEngine",
               )
             )(
-              setting,
+              setting
+                .url,
               TAG,
+              setting
+                .browser,
+              setting
+                .separator,
+              setting
+                .encodeComponent,
             )
-            : "url" in setting
+            : "shortcut" in setting
               ? new (
                 this
-                  .Engine<typeof UrlEngine>(
-                  "UrlEngine",
+                  .Engine<typeof ShortcutEngine>(
+                  "ShortcutEngine",
                 )
               )(
                 setting
-                  .url,
-                TAG,
+                  .shortcut,
                 setting
-                  .browser,
+                  .output,
                 setting
-                  .separator,
-                setting
-                  .encodeComponent,
+                  .write,
               )
-              : "shortcut" in setting
+              : "find" in setting
                 ? new (
                   this
-                    .Engine<typeof ShortcutEngine>(
-                    "ShortcutEngine",
+                    .Engine<typeof FindEngine>(
+                    "FindEngine",
                   )
                 )(
                   setting
-                    .shortcut,
-                  setting
-                    .output,
-                  setting
-                    .write,
+                    .find,
                 )
-                : "find" in setting
-                  ? new (
-                    this
-                      .Engine<typeof FindEngine>(
-                      "FindEngine",
-                    )
-                  )(
-                    setting
-                      .find,
+                : new (
+                  this
+                    .Engine<typeof InlineEngine>(
+                    "InlineEngine",
                   )
-                  : new (
-                    this
-                      .Engine<typeof InlineEngine>(
-                      "InlineEngine",
-                    )
-                  )(
-                    setting
-                      .inline,
-                  );
+                )(
+                  setting
+                    .inline,
+                );
 
         this
           .write(
