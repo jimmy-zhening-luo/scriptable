@@ -171,7 +171,7 @@ abstract class App<
         const { input } = this;
 
         if (
-          this
+          App
             .truthy(
               input,
             )
@@ -208,7 +208,7 @@ abstract class App<
           ._inputString === "undefined"
       ) {
         const { input } = this;
-        const truthyInput = this
+        const truthyInput = App
           .truthy(
             input,
           )
@@ -365,6 +365,65 @@ abstract class App<
     catch (e) {
       throw new EvalError(
         `App: [Symbol.hasInstance]`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected static truthy(
+    value: I,
+  ): value is NonNullable<
+    I
+  > {
+    try {
+      return !this
+        .falsy(
+          value,
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: truthy`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected static falsy(
+    value: unknown,
+  ): value is
+  | undefined
+  | null {
+    try {
+      const v = value
+        ?? false;
+      const bv = Boolean(
+        v,
+      );
+
+      return !bv
+        || (
+          typeof v === "string"
+            ? Number(
+              v,
+            ) === 0
+            : Array.isArray(
+              v,
+            )
+              ? v
+                .flat(
+                  Infinity,
+                )
+                .join(
+                  "",
+                )
+                .length === 0
+              : false
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: falsy`,
         { cause: e },
       );
     }
@@ -817,65 +876,6 @@ abstract class App<
     catch (e) {
       throw new EvalError(
         `App: key`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected truthy(
-    value: I,
-  ): value is NonNullable<
-    I
-  > {
-    try {
-      return !this
-        .falsy(
-          value,
-        );
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: truthy`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected falsy(
-    value: unknown,
-  ): value is
-  | undefined
-  | null {
-    try {
-      const v = value
-        ?? false;
-      const bv = Boolean(
-        v,
-      );
-
-      return !bv
-        || (
-          typeof v === "string"
-            ? Number(
-              v,
-            ) === 0
-            : Array.isArray(
-              v,
-            )
-              ? v
-                .flat(
-                  Infinity,
-                )
-                .join(
-                  "",
-                )
-                .length === 0
-              : false
-        );
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: falsy`,
         { cause: e },
       );
     }
