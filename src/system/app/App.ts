@@ -392,13 +392,10 @@ abstract class App<
               v,
             )
               ? v
-                .flat(
-                  Infinity,
-                )
                 .join(
                   "",
                 )
-                .length === 0
+                .length < 1
               : false
         );
     }
