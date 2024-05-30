@@ -21,7 +21,7 @@ class FindEngine extends f_IEngine {
           .find = find;
       else
         throw new SyntaxError(
-          `iOS Find engine provider empty`,
+          `'find' field empty`,
         );
     }
     catch (e) {

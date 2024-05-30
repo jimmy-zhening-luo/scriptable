@@ -30,7 +30,7 @@ class ShortcutEngine extends s_IEngine {
       }
       else
         throw new SyntaxError(
-          `Shortcut engine name empty`,
+          `'shortcut' field empty`,
         );
     }
     catch (e) {

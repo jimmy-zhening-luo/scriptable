@@ -1,9 +1,10 @@
 declare type SearchOutput =
-  & Field<
-    "app"
-  >
   & Listish<
     "action"
+  >
+  & Field<
+    | "app"
+    | "postfix"
   >
   & Field<
     | "natural"

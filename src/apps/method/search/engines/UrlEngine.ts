@@ -53,7 +53,7 @@ class UrlEngine extends b_IEngine {
           .urls = stringfulUrls;
       else
         throw new SyntaxError(
-          `URL engine has no URLs`,
+          `no URLs`,
         );
     }
     catch (e) {

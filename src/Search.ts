@@ -26,8 +26,18 @@ namespace Search {
       } = this;
       const {
         tag,
-        key,
-        fallback,
+        key: {
+          chat,
+          translate,
+          mathShort,
+          mathLong,
+        },
+        fallback: {
+          one,
+          two,
+          three,
+          rest,
+        },
       } = app;
       const {
         engine,
@@ -39,28 +49,20 @@ namespace Search {
         TRANSLATE,
         MATH_SHORT,
         MATH_LONG,
-        REST,
         ONE,
         TWO,
         THREE,
+        REST,
       ] = [
         tag,
-        key
-          .chat,
-        key
-          .translate,
-        key
-          .mathShort,
-        key
-          .mathLong,
-        fallback
-          .rest,
-        fallback
-          .one,
-        fallback
-          .two,
-        fallback
-          .three,
+        chat,
+        translate,
+        mathShort,
+        mathLong,
+        one,
+        two,
+        three,
+        rest,
       ]
         .map(
           key =>
@@ -90,136 +92,126 @@ namespace Search {
           ONE,
           TWO,
           THREE,
+          REST,
         );
       const keys = Object
         .keys(
           engine,
         );
-      const keyUnaliased = alias[
-        query
-          .key
+      const parsedKey = query
+        .key;
+      const dealias = alias[
+        parsedKey
       ]
         ?? null;
-      const keyMatch = keys
+      const key = keys
         .includes(
-          query
-            .key,
+          parsedKey,
         )
-        ? query
-          .key
-        : keyUnaliased === null
+        ? parsedKey
+        : dealias === null
           ? null
           : !keys
             .includes(
-              keyUnaliased,
+              dealias,
             )
             ? null
-            : keyUnaliased
+            : dealias
               .length < 1
               ? null
-              : keyUnaliased as stringful;
-
-      if (
-        keyMatch === null
-      )
-        query
-          .fallback(
-            REST,
-          );
-      else
-        query
-          .dealias(
-            keyMatch,
-          );
-
-      const match = engine[
-        query
-          .key
+              : dealias as stringful;
+      const config = engine[
+        key
       ]
         ?? null;
 
       if (
-        match === null
+        config === null
       )
         throw new ReferenceError(
           `Engine config missing for key`,
-          { cause: { key: query.key } },
+          { cause: { key } },
         );
-
-      const resolved: IEngine = Array.isArray(
-          match,
-        )
-        || typeof match === "string"
-          ? new (
-            this
-              .Engine<typeof UrlEngine>(
-              "UrlEngine",
-            )
-          )(
-            match,
-            TAG,
+      else {
+        const resolver: IEngine = Array.isArray(
+            config,
           )
-          : "url" in match
+          || typeof config === "string"
             ? new (
               this
                 .Engine<typeof UrlEngine>(
                 "UrlEngine",
               )
             )(
-              match
-                .url,
+              config,
               TAG,
-              match
-                .browser,
-              match
-                .separator,
-              match
-                .encodeComponent,
             )
-            : "shortcut" in match
+            : "url" in config
               ? new (
                 this
-                  .Engine<typeof ShortcutEngine>(
-                  "ShortcutEngine",
+                  .Engine<typeof UrlEngine>(
+                  "UrlEngine",
                 )
               )(
-                match
-                  .shortcut,
-                match
-                  .output,
-                match
-                  .write,
+                config
+                  .url,
+                TAG,
+                config
+                  .browser,
+                config
+                  .separator,
+                config
+                  .encodeComponent,
               )
-              : "find" in match
+              : "shortcut" in config
                 ? new (
                   this
-                    .Engine<typeof FindEngine>(
-                    "FindEngine",
+                    .Engine<typeof ShortcutEngine>(
+                    "ShortcutEngine",
                   )
                 )(
-                  match
-                    .find,
+                  config
+                    .shortcut,
+                  config
+                    .output,
+                  config
+                    .write,
                 )
-                : new (
-                  this
-                    .Engine<typeof InlineEngine>(
-                    "InlineEngine",
+                : "find" in config
+                  ? new (
+                    this
+                      .Engine<typeof FindEngine>(
+                      "FindEngine",
+                    )
+                  )(
+                    config
+                      .find,
                   )
-                )(
-                  match
-                    .inline,
-                );
+                  : new (
+                    this
+                      .Engine<typeof InlineEngine>(
+                      "InlineEngine",
+                    )
+                  )(
+                    config
+                      .inline,
+                  );
 
-      this
-        .write(
-          query
-            .clean,
-        );
+        query
+          .lock(
+            key,
+          );
+        this
+          .write(
+            query
+              .toString(),
+          );
 
-      return resolved
-        .parseQueryToAction(
-          query,
-        );
+        return resolver
+          .resolve(
+            query,
+          );
+      }
     }
 
     private Engine<T>(

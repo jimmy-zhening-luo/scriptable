@@ -3,26 +3,41 @@ abstract class IEngine {
     protected readonly app: string,
   ) {}
 
-  public parseQueryToAction(
+  public resolve(
     query: Query,
   ) {
     try {
-      return {
-        app: this
-          .app,
-        action: this
-          .transform(
-            query,
-          ),
-        ...this
-          .options(
-            query,
-          ),
-      };
+      if (
+        !query
+          .locked
+      )
+        throw new SyntaxError(
+          `query unlocked`,
+          { cause: { query: query.toString() } },
+        );
+      else {
+        const {
+          app,
+          postfix,
+        } = this;
+
+        return {
+          app,
+          postfix,
+          action: this
+            .transform(
+              query,
+            ),
+          ...this
+            .options(
+              query,
+            ),
+        };
+      }
     }
     catch (e) {
       throw new EvalError(
-        `Engine: parseQueryToAction`,
+        `Engine: resolve`,
         { cause: e },
       );
     }

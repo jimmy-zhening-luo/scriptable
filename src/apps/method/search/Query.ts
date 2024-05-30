@@ -1,6 +1,7 @@
 class Query {
   public readonly terms: stringful[];
   protected _key: stringful;
+  protected _locked: boolean = false;
   private readonly NUMERIC = [
     "0",
     "1",
@@ -55,6 +56,7 @@ class Query {
     ONE: stringful,
     TWO: stringful,
     THREE: stringful,
+    private readonly REST: stringful,
   ) {
     try {
       const [
@@ -113,6 +115,63 @@ class Query {
     }
   }
 
+  public get locked() {
+    try {
+      return this
+        ._locked;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: locked`,
+        { cause: e },
+      );
+    }
+  }
+
+  public get postfix() {
+    try {
+      return Query
+        .toUpper(
+          this
+            .key[
+              0
+            ],
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: postfix`,
+        { cause: e },
+      );
+    }
+  }
+
+  public get string() {
+    try {
+      const string = [
+        this
+          .key,
+        this
+          .natural,
+      ] as const;
+
+      return string
+        .join(
+          " ",
+        ) as Join<
+          typeof string
+        ,
+        " "
+      >;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: string`,
+        { cause: e },
+      );
+    }
+  }
+
   public get natural() {
     try {
       return this
@@ -124,32 +183,6 @@ class Query {
     catch (e) {
       throw new EvalError(
         `Query: natural`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get clean() {
-    try {
-      const clean = [
-        this
-          .key,
-        this
-          .natural,
-      ] as const;
-
-      return clean
-        .join(
-          " ",
-        ) as Join<
-          typeof clean
-        ,
-        " "
-      >;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: clean`,
         { cause: e },
       );
     }
@@ -202,6 +235,7 @@ class Query {
       else
         throw new SyntaxError(
           `no tokens in query`,
+          { cause: { query } },
         );
     }
     catch (e) {
@@ -445,6 +479,21 @@ class Query {
     }
   }
 
+  private static toUpper(
+    stringful: stringful,
+  ) {
+    try {
+      return stringful
+        .toUpperCase() as stringful;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Query: toUpper`,
+        { cause: e },
+      );
+    }
+  }
+
   private static toLower(
     stringful: stringful,
   ) {
@@ -460,37 +509,48 @@ class Query {
     }
   }
 
-  public dealias(
-    dealias: stringful,
+  public lock(
+    key: Null<
+      stringful
+    >,
   ) {
     try {
+      if (
+        key !== null
+      )
+        this
+          ._key = key;
+      else {
+        this
+          .terms
+          .unshift(
+            this
+              .key,
+          );
+        this
+          _key = this
+          .REST;
+      }
+
       this
-        ._key = dealias;
+        ._locked = true;
     }
     catch (e) {
       throw new EvalError(
-        `Query: dealias`,
+        `Query: lock`,
         { cause: e },
       );
     }
   }
 
-  public fallback(
-    REST: stringful,
-  ) {
+  public toString() {
     try {
-      this
-        .terms
-        .unshift(
-          this
-            .key,
-        );
-      this
-        ._key = REST;
+      return this
+        .string;
     }
     catch (e) {
       throw new EvalError(
-        `Query: fallback`,
+        `Query: toString`,
         { cause: e },
       );
     }
