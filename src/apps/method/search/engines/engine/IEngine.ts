@@ -8,22 +8,12 @@ abstract class IEngine {
   ) {
     try {
       if (
-        !query
+        query
           .locked
       )
-        throw new SyntaxError(
-          `query unlocked`,
-          { cause: { query: query.toString() } },
-        );
-      else {
-        const { app } = this;
-        const { postfix } = query;
-
         return {
-          app,
-          postfix,
-          action: this
-            .transform(
+          ...this
+            .required(
               query,
             ),
           ...this
@@ -31,11 +21,15 @@ abstract class IEngine {
               query,
             ),
         };
-      }
+      else
+        throw new SyntaxError(
+          `query unlocked`,
+          { cause: { query: String(query) } },
+        );
     }
     catch (e) {
       throw new EvalError(
-        `Engine: resolve`,
+        `IEngine: resolve`,
         { cause: e },
       );
     }
@@ -52,13 +46,49 @@ abstract class IEngine {
     }
     catch (e) {
       throw new EvalError(
-        `Engine: transform`,
+        `IEngine: transform`,
         { cause: e },
       );
     }
   }
 
-  protected abstract options(query: Query): Omit<SearchOutput, "app" | "action">;
+  private required(
+    query: Query,
+  ) {
+    try {
+      const { app } = this;
+      const { postfix } = query;
+
+      return {
+        app,
+        postfix,
+        action: this
+          .transform(
+            query,
+          ),
+      };
+    }
+    catch (e) {
+      throw new EvalError(
+        `IEngine: required`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected abstract options(
+    query: Query,
+  ): Omit<
+    SearchOutput
+    ,
+    Keys<
+      ReturnType<
+        IEngine[
+          "required"
+        ]
+      >
+    >
+  >;
 }
 
 module.exports = IEngine;
