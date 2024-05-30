@@ -40,7 +40,7 @@ namespace Search {
         },
       } = app;
       const {
-        engine,
+        engines,
         alias,
       } = user;
       const [
@@ -98,14 +98,14 @@ namespace Search {
 
       query
         .lock(
-          keyToken in engine
+          keyToken in engines
             ? keyToken
             : keyToken in alias
               ? (
                   alias[
                     keyToken
                   ] as string
-                ) in engine
+                ) in engines
                 ? alias[
                     keyToken
                   ] as stringful
@@ -114,71 +114,71 @@ namespace Search {
         );
 
       const { key } = query;
-      const config = engine[
+      const setting = engines[
         key
       ]
         ?? null;
 
       if (
-        config === null
+        setting === null
       )
         throw new ReferenceError(
-          `Engine config missing for key`,
+          `Engine setting missing for key`,
           { cause: { key } },
         );
       else {
-        const resolver: IEngine = Array.isArray(
-            config,
+        const engine: IEngine = Array.isArray(
+            setting,
           )
-          || typeof config === "string"
+          || typeof setting === "string"
             ? new (
               this
                 .Engine<typeof UrlEngine>(
                 "UrlEngine",
               )
             )(
-              config,
+              setting,
               TAG,
             )
-            : "url" in config
+            : "url" in setting
               ? new (
                 this
                   .Engine<typeof UrlEngine>(
                   "UrlEngine",
                 )
               )(
-                config
+                setting
                   .url,
                 TAG,
-                config
+                setting
                   .browser,
-                config
+                setting
                   .separator,
-                config
+                setting
                   .encodeComponent,
               )
-              : "shortcut" in config
+              : "shortcut" in setting
                 ? new (
                   this
                     .Engine<typeof ShortcutEngine>(
                     "ShortcutEngine",
                   )
                 )(
-                  config
+                  setting
                     .shortcut,
-                  config
+                  setting
                     .output,
-                  config
+                  setting
                     .write,
                 )
-                : "find" in config
+                : "find" in setting
                   ? new (
                     this
                       .Engine<typeof FindEngine>(
                       "FindEngine",
                     )
                   )(
-                    config
+                    setting
                       .find,
                   )
                   : new (
@@ -187,7 +187,7 @@ namespace Search {
                       "InlineEngine",
                     )
                   )(
-                    config
+                    setting
                       .inline,
                   );
 
@@ -198,7 +198,7 @@ namespace Search {
             ),
           );
 
-        return resolver
+        return engine
           .resolve(
             query,
           );
