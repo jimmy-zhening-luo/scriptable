@@ -119,11 +119,7 @@ class Query {
         .terms
         .join(
           " ",
-        ) as Join<
-          stringful[]
-          ,
-          " "
-        >;
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -147,9 +143,9 @@ class Query {
           " ",
         ) as Join<
           typeof clean
-          ,
-          " "
-        >;
+        ,
+        " "
+      >;
     }
     catch (e) {
       throw new EvalError(
@@ -244,7 +240,7 @@ class Query {
                 .length,
               TRANSLATE
                 .length + LANG_TAG
-                  .length,
+                .length,
             )
             ? [
                 TRANSLATE,
@@ -259,7 +255,7 @@ class Query {
               ]
             : TRANSLATE
               .length > t0
-                .length
+              .length
               ? [
                   TRANSLATE,
                   [
@@ -272,25 +268,25 @@ class Query {
                     .join(
                       "",
                     ) as Join<
-                      Dyad<
-                        stringful
-                      >
-                      ,
-                      ""
-                    >,
+                    Dyad<
+                      stringful
+                    >
+                    ,
+                    ""
+                  >,
                   ...TRANSLATE
                     .length + LANG_TAG
-                      .length < String(
-                        tokens
-                          .shift(),
-                        )
-                          .length
+                    .length < String(
+                    tokens
+                      .shift(),
+                  )
+                    .length
                     ? [
                         t0
                           .slice(
                             TRANSLATE
                               .length + LANG_TAG
-                                .length,
+                              .length,
                           ) as stringful,
                       ]
                     : [],
@@ -328,12 +324,12 @@ class Query {
           .startsWith(
             ".",
           )
-            ? T0
-              .slice(
-                0,
-                -1,
-              ) as stringful
-            : null;
+        ? T0
+          .slice(
+            0,
+            -1,
+          ) as stringful
+        : null;
 
       if (
         T0_Dedot !== null
