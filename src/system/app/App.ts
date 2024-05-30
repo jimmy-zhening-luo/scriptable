@@ -207,24 +207,31 @@ abstract class App<
         typeof this
           ._inputString === "undefined"
       ) {
-        const input = this
-          .input ?? "";
+        const { input } = this;
+        const truthyInput = this
+          .truthy(
+            input,
+          )
+          ? input
+          : "";
 
         if (
-          typeof input !== "string"
+          typeof truthyInput === "string"
         )
+          this
+            ._inputString = truthyInput;
+        else
           throw new TypeError(
             `non-string input`,
             {
               cause: {
                 input,
+                truthyInput,
                 type: typeof input,
+                isArray: Array.isArray(input),
               },
             },
           );
-        else
-          this
-            ._inputString = input;
       }
 
       return this
