@@ -498,7 +498,7 @@ class Query {
         .terms
         .unshift(
           this
-            .key;
+            .key,
         );
       this
         ._key = REST;
