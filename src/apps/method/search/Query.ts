@@ -115,12 +115,16 @@ class Query {
 
   public get natural() {
     try {
-      return Query
+      const [terms] = this;
+
+      return terms
         .join(
-          this
-            .terms,
           " ",
-        );
+        ) as Join<
+          typeof terms
+          ,
+          " "
+        >;
     }
     catch (e) {
       throw new EvalError(
@@ -139,11 +143,14 @@ class Query {
           .natural,
       ] as const;
 
-      return Query
+      return clean
         .join(
-          clean,
           " ",
-        );
+        ) as Join<
+          typeof clean
+          ,
+          " "
+        >;
     }
     catch (e) {
       throw new EvalError(
@@ -256,19 +263,22 @@ class Query {
                 .length
               ? [
                   TRANSLATE,
-                  Query
+                  [
+                    LANG_TAG,
+                    t0[
+                      TRANSLATE
+                        .length
+                    ],
+                  ]
                     .join(
-                      [
-                        LANG_TAG,
-                        t0[
-                          TRANSLATE
-                            .length
-                        ],
-                      ] as Dyad<
-                        stringful
-                      >,
                       "",
-                    ),
+                    ) as Join<
+                      Dyad<
+                        stringful
+                      >
+                      ,
+                      ""
+                    >,
                   ...TRANSLATE
                     .length + LANG_TAG
                       .length < String(
@@ -435,26 +445,6 @@ class Query {
     catch (e) {
       throw new EvalError(
         `Query: mathefy`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static join(
-    stringfuls: Arrayful<
-      stringful
-    >,
-    separator: string = "",
-  ) {
-    try {
-      return stringfuls
-        .join(
-          separator,
-        ) as stringful;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: join`,
         { cause: e },
       );
     }
