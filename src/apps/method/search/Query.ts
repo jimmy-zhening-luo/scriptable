@@ -529,7 +529,7 @@ class Query {
           );
         this
           ._key = this
-          .REST;
+            .REST;
       }
 
       this
