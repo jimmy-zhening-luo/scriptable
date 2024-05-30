@@ -16,10 +16,8 @@ abstract class IEngine {
           { cause: { query: query.toString() } },
         );
       else {
-        const {
-          app,
-          postfix,
-        } = this;
+        const { app } = this;
+        const { postfix } = query;
 
         return {
           app,
