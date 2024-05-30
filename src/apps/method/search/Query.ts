@@ -528,7 +528,7 @@ class Query {
               .key,
           );
         this
-          _key = this
+          ._key = this
           .REST;
       }
 

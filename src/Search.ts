@@ -107,6 +107,9 @@ namespace Search {
             : dealias !== null
               ? dealias in engines
                 ? dealias
+                  .length > 0
+                  ? dealias as stringful
+                  : null
                 : null
               : null,
         );
