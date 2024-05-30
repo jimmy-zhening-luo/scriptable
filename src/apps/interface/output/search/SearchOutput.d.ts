@@ -13,7 +13,8 @@ declare type SearchOutput =
     true
   >
   & Flag<
-    "output"
+    | "output"
+    | "write"
   >
   & PartialRecord<
     "browser"
