@@ -171,7 +171,7 @@ abstract class App<
         const { input } = this;
 
         if (
-          App
+          this
             .truthy(
               input,
             )
@@ -208,7 +208,7 @@ abstract class App<
           ._inputString === "undefined"
       ) {
         const { input } = this;
-        const truthyInput = App
+        const truthyInput = this
           .truthy(
             input,
           )
@@ -370,25 +370,6 @@ abstract class App<
     }
   }
 
-  protected static truthy(
-    value: I,
-  ): value is NonNullable<
-    I
-  > {
-    try {
-      return !this
-        .falsy(
-          value,
-        );
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: truthy`,
-        { cause: e },
-      );
-    }
-  }
-
   protected static falsy(
     value: unknown,
   ): value is
@@ -492,6 +473,25 @@ abstract class App<
               { cause: e },
             ),
           ),
+      );
+    }
+  }
+
+  protected truthy(
+    value: I,
+  ): value is NonNullable<
+    I
+  > {
+    try {
+      return !App
+        .falsy(
+          value,
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: truthy`,
+        { cause: e },
       );
     }
   }
