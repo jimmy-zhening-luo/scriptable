@@ -135,6 +135,9 @@ class UrlEngine extends b_IEngine {
       return {
         browser,
         natural,
+        ...browser === "api"
+          ? { write: true }
+          : {},
       };
     }
     catch (e) {
