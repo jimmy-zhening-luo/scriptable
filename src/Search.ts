@@ -75,14 +75,13 @@ namespace Search {
         ,
         9
       >;
-      const input = this
-        .input
-        ?? "";
       const query = new this
         .Query(
-          input
+          this
+            .inputString
             .length > 0
-            ? input
+            ? this
+              .inputString
             : this
               .read(),
           CHAT,
@@ -94,32 +93,27 @@ namespace Search {
           THREE,
           REST,
         );
-      const keys = Object
-        .keys(
-          engine,
-        );
-      const parsedKey = query
+      const keyToken = query
         .key;
-      const dealias = alias[
-        parsedKey
-      ]
-        ?? null;
-      const key = keys
-        .includes(
-          parsedKey,
-        )
-        ? parsedKey
-        : dealias === null
-          ? null
-          : !keys
-            .includes(
-              dealias,
-            )
-            ? null
-            : dealias
-              .length < 1
-              ? null
-              : dealias as stringful;
+
+      query
+        .lock(
+          keyToken in engine
+            ? keyToken
+            : keyToken in alias
+              ? (
+                  alias[
+                    keyToken
+                  ] as string
+                ) in engine
+                ? alias[
+                    keyToken
+                  ] as stringful
+                : null
+              : null,
+        );
+
+      const { key } = query;
       const config = engine[
         key
       ]
@@ -197,14 +191,11 @@ namespace Search {
                       .inline,
                   );
 
-        query
-          .lock(
-            key,
-          );
         this
           .write(
-            query
-              .toString(),
+            String(
+              query,
+            ),
           );
 
         return resolver
