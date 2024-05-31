@@ -3,12 +3,12 @@ abstract class IFilepath<
 > {
   protected readonly _nodes: Root extends true
     ? Arrayful<
-      ToString<
+      Strung<
         FileNode
       >
     >
     : Array<
-      ToString<
+      Strung<
         FileNode
       >
     >;
@@ -299,9 +299,9 @@ abstract class IFilepath<
     }
   }
 
-  protected abstract check(nodes: Array<ToString<FileNode>>): IFilepath<Root>["_nodes"];
+  protected abstract check(nodes: Array<Strung<FileNode>>): IFilepath<Root>["_nodes"];
 
-  protected abstract poppable(nodes: Array<ToString<FileNode>>): nodes is Arrayful<ToString<FileNode>>;
+  protected abstract poppable(nodes: Array<Strung<FileNode>>): nodes is Arrayful<Strung<FileNode>>;
 }
 
 module.exports = IFilepath;

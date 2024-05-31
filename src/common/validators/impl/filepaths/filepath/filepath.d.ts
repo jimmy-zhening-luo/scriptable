@@ -5,12 +5,12 @@ declare type filepath<
   ,
   Root extends true
     ? Arrayful<
-      ToString<
+      Strung<
         FileNode
       >
     >
     : Array<
-      ToString<
+      Strung<
         FileNode
       >
     >

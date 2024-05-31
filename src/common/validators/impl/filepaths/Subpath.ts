@@ -7,7 +7,7 @@ class Subpath extends s_Filepath<
 > {
   protected check(
     nodes: Array<
-      ToString<
+      Strung<
         FileNode
       >
     >,
@@ -25,12 +25,12 @@ class Subpath extends s_Filepath<
 
   protected poppable(
     nodes: Array<
-      ToString<
+      Strung<
         FileNode
       >
     >,
   ): nodes is Arrayful<
-    ToString<
+    Strung<
       FileNode
     >
   > {

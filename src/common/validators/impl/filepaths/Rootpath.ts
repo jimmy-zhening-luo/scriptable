@@ -7,7 +7,7 @@ class Rootpath extends r_Filepath<
 > {
   protected check(
     nodes: Array<
-      ToString<
+      Strung<
         FileNode
       >
     >,
@@ -28,7 +28,7 @@ class Rootpath extends r_Filepath<
         );
       else
         return nodes as Arrayful<
-          ToString<
+          Strung<
             FileNode
           >
         >;
@@ -43,12 +43,12 @@ class Rootpath extends r_Filepath<
 
   protected poppable(
     nodes: Array<
-      ToString<
+      Strung<
         FileNode
       >
     >,
   ): nodes is Arrayful<
-    ToString<
+    Strung<
       FileNode
     >
   > {
