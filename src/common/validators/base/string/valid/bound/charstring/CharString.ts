@@ -3,14 +3,11 @@ class CharString<
   Validator extends string,
 > {
   public readonly charset: CharSet;
-  public readonly string: validstring<
+  public readonly string: Valid<
     String
     ,
-    `CharString:${
-      literalful<
-        Validator
-      >
-    }`
+    Validator,
+    `String`
   >;
 
   constructor(

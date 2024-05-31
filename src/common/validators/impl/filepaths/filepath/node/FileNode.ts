@@ -1,9 +1,9 @@
-const fp_ValidString = importModule(
-  `./common/validators/base/string/valid/ValidString`,
-) as typeof ValidString;
+const f_CleanString = importModule(
+  `./common/validators/base/string/valid/CleanString`,
+) as typeof CleanString;
 
-class FileNode extends fp_ValidString<
-  "FileNode"
+class FileNode extends f_CleanString<
+  "f"
 > {
   constructor(
     node: string,

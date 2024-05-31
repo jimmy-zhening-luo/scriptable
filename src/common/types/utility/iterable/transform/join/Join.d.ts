@@ -53,5 +53,6 @@ declare type Join<
         ? Flat<
           Iterable
         >
-        : stringful
-;
+        : stringful;
+
+type JTest = IsArray<never[]>;

@@ -3,9 +3,9 @@ declare type IsArray<
 > = Flat<
   Arr
 > extends never
-  ? Arr extends unknown[]
+  ? Arr extends []
     ? true
-    : Arr extends readonly unknown[]
+    : Arr extends readonly []
       ? true
       : false
   : true;

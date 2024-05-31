@@ -2,16 +2,14 @@ const v_BoundString = importModule(
   `bound/BoundString`,
 ) as typeof BoundString;
 
-class ValidString<
+class CleanString<
   Validator extends string,
 > extends v_BoundString<
     stringful
     ,
-    `Valid:${
-      literalful<
-        Validator
-      >
-    }`
+    literalful<Validator> extends never
+      ? never
+      : `${Validator}:Clean`
   > {
   constructor(
     string: string,
@@ -21,13 +19,13 @@ class ValidString<
     min: posint = 1 as posint,
     max: posinfinint = Infinity as posinfinint,
     negate: boolean = false,
-    cleanOptions: Parameters<typeof ValidString.clean>[1] = {},
+    cleanOptions: Parameters<typeof CleanString.clean>[1] = {},
   ) {
     try {
       super(
         min,
         max,
-        ValidString
+        CleanString
           .clean(
             string,
             cleanOptions,
@@ -38,7 +36,7 @@ class ValidString<
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: ctor`,
+        `CleanString: ctor`,
         { cause: e },
       );
     }
@@ -87,7 +85,7 @@ class ValidString<
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: clean`,
+        `CleanString: clean`,
         { cause: e },
       );
     }
@@ -147,11 +145,11 @@ class ValidString<
     }
     catch (e) {
       throw new EvalError(
-        `ValidString: trimEdge`,
+        `CleanString: trimEdge`,
         { cause: e },
       );
     }
   }
 }
 
-module.exports = ValidString;
+module.exports = CleanString;

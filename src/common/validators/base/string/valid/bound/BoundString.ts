@@ -8,11 +8,9 @@ class BoundString<
 > extends f_CharString<
     String
     ,
-    `Bound:${
-      literalful<
-        Validator
-      >
-    }`
+    literalful<Validator> extends never
+      ? never
+      : `${Validator}:Bound`
   > {
   constructor(
     min: posint,
