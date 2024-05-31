@@ -5,5 +5,3 @@ declare type IsTuple<
 > extends never
   ? false
   : true;
-
-declare type bog = IsTuple<Tuple<string, 0 | 3>>;

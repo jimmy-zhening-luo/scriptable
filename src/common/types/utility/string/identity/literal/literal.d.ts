@@ -10,23 +10,18 @@ declare type literals<
 
 declare type literalful<
   String,
-> = String extends String
-  ?
-  literal<
-    String
-  > extends ""
+> = [String] extends [string]
+  ? string extends String
     ? never
-    : literal<
-      String
-    >
+    : "" extends String
+      ? never
+      : String
   : never;
 
 declare type literal<
   String,
-> = String extends string
+> = [String] extends [string]
   ? string extends String
     ? never
     : String
   : never;
-
-  type litTest = literalful<"" | number>;

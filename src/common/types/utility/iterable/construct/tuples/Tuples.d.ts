@@ -14,5 +14,3 @@ declare type Heptad<Inner> =
   Tuple<Inner, 7>;
 declare type Octad<Inner> =
   Tuple<Inner, 8>;
-
-declare type ArrayIsTuple = TupleLength<Tuple<string, number>>;

@@ -1,3 +1,10 @@
+type Boundary = Record<
+  | "min"
+  | "max"
+  ,
+  number
+>;
+
 declare type Limit<
   Key extends string,
   OptionalKey = false,
@@ -7,11 +14,4 @@ declare type Limit<
   Key
   ,
   OptionalKey
->;
-
-type Boundary = Record<
-  | "min"
-  | "max"
-  ,
-  number
 >;

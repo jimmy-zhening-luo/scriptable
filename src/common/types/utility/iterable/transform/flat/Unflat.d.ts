@@ -12,5 +12,3 @@ declare type UnflatArray<
     Inner
   >
 >;
-
-type UTest = Unflat<number | string>;

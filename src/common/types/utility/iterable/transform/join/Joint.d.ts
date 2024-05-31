@@ -11,5 +11,3 @@ declare type Joint<
   >
   & { [separator]: Separator }
   : never;
-
-declare type UJoin = Joint<ArrayMin<stringful, 0> | ArrayMin<stringful, 1>, "/">;
