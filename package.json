@@ -25,7 +25,7 @@
     "pack": "shx mkdir packed && shx cp -r built/js/* packed",
     "pretest": "npm run pack",
     "test": "exit 1",
-    "dev": "npm run test"
+    "dev": "npm test"
   },
   "devDependencies": {
     "@jimbojet/lint": "~8.0.19",
