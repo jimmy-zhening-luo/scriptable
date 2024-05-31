@@ -1,5 +1,5 @@
 const w_IFile = importModule(
-  "file/IFile",
+  `file/IFile`,
 ) as typeof IFile;
 
 class WriteFile extends w_IFile {}

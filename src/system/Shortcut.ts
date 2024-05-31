@@ -1,5 +1,5 @@
 const sh_App = importModule(
-  "app/App",
+  `app/App`,
 ) as typeof App;
 
 abstract class Shortcut<

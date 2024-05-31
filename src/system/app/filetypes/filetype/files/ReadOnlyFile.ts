@@ -1,5 +1,5 @@
 const r_IFile = importModule(
-  "file/IFile",
+  `file/IFile`,
 ) as typeof IFile;
 
 class ReadOnlyFile extends r_IFile {
