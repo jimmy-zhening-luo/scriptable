@@ -1,14 +1,16 @@
 declare type Unflat<
-  I,
+  Inner,
 > =
-  | I
-  | I[]
+  | Inner
+  | Inner[]
 ;
 
 declare type UnflatArray<
-  I,
+  Inner,
 > = Array<
   Unflat<
-    I
+    Inner
   >
 >;
+
+type UTest = Unflat<number | string>;

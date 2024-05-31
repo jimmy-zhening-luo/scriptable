@@ -3,14 +3,14 @@ const f_CharString = importModule(
 ) as typeof CharString;
 
 class BoundString<
-  T extends stringful,
-  V extends string,
+  String extends stringful,
+  Validator extends string,
 > extends f_CharString<
-    T
+    String
     ,
     `Bound:${
       literalful<
-        V
+        Validator
       >
     }`
   > {

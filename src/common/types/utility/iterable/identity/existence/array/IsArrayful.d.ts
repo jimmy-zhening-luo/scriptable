@@ -1,11 +1,11 @@
 declare type IsArrayful<
-  A,
+  Arr,
 > = IsArray<
-  A
+  Arr
 > extends false
   ? false
   : 0 extends ArrayMinLength<
-    A
+    Arr
   >
     ? false
     : true;

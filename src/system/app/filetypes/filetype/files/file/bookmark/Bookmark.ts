@@ -1,6 +1,8 @@
 class Bookmark {
   public readonly alias: Alias;
-  public readonly path: rootpath;
+  public readonly path: Stringify<
+    Rootpath
+  >;
   protected readonly __proto: literalful<
     "Bookmark"
   > = "Bookmark";
@@ -34,7 +36,7 @@ class Bookmark {
             .iCloud()
             .bookmarkedPath(
               bookmark,
-            ) as rootpath;
+            ) as Stringify<Rootpath>;
       }
     }
     catch (e) {

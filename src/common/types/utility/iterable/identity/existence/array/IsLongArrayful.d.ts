@@ -1,11 +1,11 @@
 declare type IsLongArrayful<
-  A,
+  Arr,
 > = IsArrayful<
-  A
+  Arr
 > extends false
   ? false
   : 1 extends ArrayMinLength<
-    A
+    Arr
   >
     ? false
     : true;

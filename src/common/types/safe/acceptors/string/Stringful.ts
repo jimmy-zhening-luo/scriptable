@@ -3,21 +3,21 @@ const s_Primitiveful = importModule(
 ) as typeof Primitiveful;
 
 function Stringful<
-  S extends string,
+  Prior extends string,
 >(
-  string: S,
+  string: Prior,
   context?: string,
 ):
-  & S
+  & Prior
   & stringful {
   return s_Primitiveful<
-    S,
+    Prior,
     "stringful",
-    & S
+    & Prior
     & stringful
   >(
     (string): string is
-    & S
+    & Prior
     & stringful =>
       string
         .length > 0,

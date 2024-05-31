@@ -1,19 +1,19 @@
 declare type IProperty<
-  V,
-  K extends string,
-  Optional extends
-  | K
-  | boolean
-  ,
-> = string extends K
+  Value,
+  Key extends string,
+  OptionalKey,
+> = string extends Key
   ? never
-  : Unrequire<
-    Record<
-      K
+  : OptionalKey extends
+  | Key
+  | boolean
+    ? Unrequire<
+      Record<
+        Key
+        ,
+        Value
+      >
       ,
-      V
+      OptionalKey
     >
-    ,
-    Optional
-  >
-;
+    : never;

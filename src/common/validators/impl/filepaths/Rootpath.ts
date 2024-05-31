@@ -3,11 +3,11 @@ const r_Filepath = importModule(
 ) as typeof IFilepath;
 
 class Rootpath extends r_Filepath<
-  true
+  1
 > {
   protected check(
     nodes: Array<
-      Strung<
+      Stringify<
         FileNode
       >
     >,
@@ -15,8 +15,14 @@ class Rootpath extends r_Filepath<
     try {
       if (
         nodes
-          .length < 1
+          .length > 0
       )
+        return nodes as Arrayful<
+          Stringify<
+            FileNode
+          >
+        >;
+      else
         throw new RangeError(
           `root path constructed with 0 nodes`,
           {
@@ -26,12 +32,6 @@ class Rootpath extends r_Filepath<
             },
           },
         );
-      else
-        return nodes as Arrayful<
-          Strung<
-            FileNode
-          >
-        >;
     }
     catch (e) {
       throw new EvalError(
@@ -43,14 +43,15 @@ class Rootpath extends r_Filepath<
 
   protected poppable(
     nodes: Array<
-      Strung<
+      Stringify<
         FileNode
       >
     >,
-  ): nodes is Arrayful<
-    Strung<
+  ): nodes is ArrayMin<
+    Stringify<
       FileNode
-    >
+    >,
+    2
   > {
     try {
       return nodes

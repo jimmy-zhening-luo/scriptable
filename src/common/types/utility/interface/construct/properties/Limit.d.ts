@@ -1,15 +1,12 @@
 declare type Limit<
-  K extends string,
-  Optional extends
-  | K
-  | boolean = false
-  ,
+  Key extends string,
+  OptionalKey = false,
 > = IProperty<
   Boundary
   ,
-  K
+  Key
   ,
-  Optional
+  OptionalKey
 >;
 
 type Boundary = Record<

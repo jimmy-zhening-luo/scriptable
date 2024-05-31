@@ -1,10 +1,10 @@
 declare type TupleLength<
-  A,
-> = IsArray<
-  A
+  Tuple,
+> = IsIterable<
+  Tuple
 > extends false
   ? never
-  : [A] extends [
+  : [Tuple] extends [
       Record<
         "length"
         ,

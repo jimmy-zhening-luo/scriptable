@@ -1,18 +1,18 @@
 declare type Acceptor<
-  T,
-  A extends string,
-  ST extends
-  & T
+  Type,
+  Condition,
+  SafeType extends
+  & Type
   & Safe<
-    T
+    Type
     ,
-    A
+    Condition
   >
   ,
 > = (
-  t: T
+  value: Type
 )=>
-  t is
-  & T
-  & ST
+  value is
+  & Type
+  & SafeType
 ;

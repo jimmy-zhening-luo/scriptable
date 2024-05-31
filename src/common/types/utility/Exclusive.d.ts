@@ -1,10 +1,12 @@
 declare type Exclusive<
   Set,
   Predicate,
-> = Exclude<
-  Set
-  ,
-  Predicate
-> extends never
-  ? true
-  : false;
+> = [Set] extends [never]
+  ? false
+  : Exclude<
+    Set
+    ,
+    Predicate
+  > extends never
+    ? true
+    : false;

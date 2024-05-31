@@ -1,8 +1,8 @@
-const iSplitter = importModule(
+const _ISplitter = importModule(
   `splitter/ISplitter`,
 ) as typeof ISplitter;
 
-class Splitter extends iSplitter<
+class Splitter extends _ISplitter<
   string
 > {
   protected filter(

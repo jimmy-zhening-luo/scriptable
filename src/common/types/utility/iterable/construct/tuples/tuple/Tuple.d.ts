@@ -1,22 +1,22 @@
 declare type Tuple<
-  I,
+  Inner,
   Length extends number,
-  Head extends I[] = [],
+  Head extends Inner[] = [],
 > = Length extends Length
   ? number extends Length
-    ? never
+    ? Inner[]
     : Head[
       "length"
     ] extends Length
       ? Head
       : Tuple<
-        I
+        Inner
         ,
         Length
         ,
         [
           ...Head,
-          I,
+          Inner,
         ]
       >
   : never;

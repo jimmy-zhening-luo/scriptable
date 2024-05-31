@@ -1,13 +1,10 @@
 declare type Flag<
-  K extends string,
-  Optional extends
-  | K
-  | boolean = true
-  ,
+  Key extends string,
+  OptionalKey = true,
 > = IProperty<
   boolean
   ,
-  K
+  Key
   ,
-  Optional
+  OptionalKey
 >;

@@ -9,10 +9,8 @@ abstract class Shortcut<
 > extends sh_App<
     "Shortcut"
     ,
-    Null<
-      NonNullable<
-        I
-      >
+    Nullable<
+      I
     >
     ,
     Null<

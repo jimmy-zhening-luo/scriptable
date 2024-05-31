@@ -1,15 +1,15 @@
 abstract class ISplitter<
-  S extends string,
+  Inner extends string,
 > {
-  public readonly segments: S[];
+  public readonly segments: Inner[];
 
   constructor(
     unmerged:
       | string
       | string[],
     public readonly separator = "",
-    splitOptions: Parameters<ISplitter<S>["splitAggregate"]>[1] = {},
-    joinOptions: Parameters<ISplitter<S>["splitAggregate"]>[2] = {},
+    splitOptions: Parameters<ISplitter<Inner>["splitAggregate"]>[1] = {},
+    joinOptions: Parameters<ISplitter<Inner>["splitAggregate"]>[2] = {},
   ) {
     try {
       this.segments = this
@@ -62,8 +62,8 @@ abstract class ISplitter<
     input:
       | string
       | string[],
-    splitOptions: Parameters<ISplitter<S>["split"]>[1] = {},
-    aggregateOptions: Parameters<ISplitter<S>["aggregate"]>[1] = {},
+    splitOptions: Parameters<ISplitter<Inner>["split"]>[1] = {},
+    aggregateOptions: Parameters<ISplitter<Inner>["aggregate"]>[1] = {},
   ) {
     try {
       return this
@@ -85,7 +85,7 @@ abstract class ISplitter<
   }
 
   private aggregate(
-    split: S[],
+    split: Inner[],
     {
       limit = Infinity,
       mergeTo = "right",
@@ -120,7 +120,7 @@ abstract class ISplitter<
                 .join(
                   this
                     .separator,
-                ) as S,
+                ) as Inner,
               ...split
                 .slice(
                   limitful - 1,
@@ -139,7 +139,7 @@ abstract class ISplitter<
                 .join(
                   this
                     .separator,
-                ) as S,
+                ) as Inner,
             ];
   }
 
@@ -193,7 +193,7 @@ abstract class ISplitter<
     }
   }
 
-  protected abstract filter(segments: string[]): S[];
+  protected abstract filter(segments: string[]): Inner[];
 }
 
 module.exports = ISplitter;

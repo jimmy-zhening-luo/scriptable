@@ -3,13 +3,13 @@ const v_BoundString = importModule(
 ) as typeof BoundString;
 
 class ValidString<
-  V extends string,
+  Validator extends string,
 > extends v_BoundString<
     stringful
     ,
     `Valid:${
       literalful<
-        V
+        Validator
       >
     }`
   > {

@@ -1,6 +1,5 @@
-declare const bookmarked: unique symbol;
-
+declare const bookmark: unique symbol;
 declare type Alias =
   & stringful
-  & { [bookmarked]: true }
+  & { [bookmark]: true }
 ;

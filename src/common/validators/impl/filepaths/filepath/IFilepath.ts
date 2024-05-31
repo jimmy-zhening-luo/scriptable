@@ -1,29 +1,26 @@
 abstract class IFilepath<
-  Root extends boolean,
+  MinLength extends number,
 > {
-  protected readonly _nodes: Root extends true
-    ? Arrayful<
-      Strung<
-        FileNode
-      >
-    >
-    : Array<
-      Strung<
-        FileNode
-      >
-    >;
+  protected readonly _nodes: ArrayMin<Stringify<FileNode>, MinLength>;
 
   constructor(
-    ...subpaths: Parameters<IFilepath<Root>["compose"]>
+    ...subpaths: Parameters<
+      IFilepath<
+        MinLength
+      >[
+        "compose"
+      ]
+    >
   ) {
     try {
-      this._nodes = this
-        .check(
-          this
-            .compose(
-              ...subpaths,
-            ),
-        );
+      this
+        ._nodes = this
+          .check(
+            this
+              .compose(
+                ...subpaths,
+              ),
+          );
     }
     catch (e) {
       throw new EvalError(
@@ -33,31 +30,12 @@ abstract class IFilepath<
     }
   }
 
-  public get nodes() {
-    try {
-      return [
-        ...this
-          ._nodes,
-      ] as IFilepath<
-        Root
-      >[
-        "_nodes"
-      ];
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: nodes`,
-        { cause: e },
-      );
-    }
-  }
-
   public get parent() {
     try {
-      const parent: this = new (
+      const parent = new (
         this
           .constructor as new (
-          ...args: ConstructorParameters<typeof IFilepath>
+          ...args: ConstructorParameters<typeof IFilepath<MinLength>>
         )=>
         this
       )(
@@ -105,7 +83,7 @@ abstract class IFilepath<
     }
   }
 
-  private get FilepathNode() {
+  private get FileNode() {
     try {
       return importModule(
         "node/FilepathNode",
@@ -119,7 +97,154 @@ abstract class IFilepath<
     }
   }
 
-  public pop() {
+  public append(
+    ...subpaths: Parameters<
+      IFilepath<
+        MinLength
+      >[
+        "compose"
+      ]
+    >
+  ) {
+    try {
+      return new (
+        this
+          .constructor as new (
+          ...args: ConstructorParameters<typeof IFilepath<MinLength>>
+        )=>
+        this
+      )(
+        this,
+        ...subpaths,
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `IFilepath: append`,
+        { cause: e },
+      );
+    }
+  }
+
+  public prepend(
+    root: Stringify<Rootpath>,
+  ) {
+    try {
+      if (
+        this
+          .isEmpty
+      )
+        return root;
+      else
+        return [
+          root,
+          this.toString(),
+        ]
+          .join(
+            "/",
+          ) as Stringify<Rootpath>;
+    }
+    catch (e) {
+      throw new EvalError(
+        `IFilepath: prepend`,
+        { cause: e },
+      );
+    }
+  }
+
+  public cd(
+    ...relPaths: Parameters<IFilepath<MinLength>["compose"]>
+  ) {
+    try {
+      const rel = this
+        .compose(
+          ...relPaths,
+        );
+
+      for (const node of rel)
+        if (node === "..")
+          this
+            .pop();
+        else
+          this
+            ._nodes
+            .push(
+              node,
+            );
+
+      return this;
+    }
+    catch (e) {
+      throw new EvalError(
+        `IFilepath: cd`,
+        { cause: e },
+      );
+    }
+  }
+
+  public toString() {
+    try {
+      const { _nodes } = this;
+
+      return _nodes
+        .join(
+          "/",
+        ) as Joint<typeof _nodes, "/">;
+    }
+    catch (e) {
+      throw new EvalError(
+        `IFilepath: toString`,
+        { cause: e },
+      );
+    }
+  }
+
+  private compose(
+    ...subpaths: Array<
+      | string
+      | string[]
+      | IFilepath<
+        MinLength
+      >
+    >
+  ) {
+    try {
+      return subpaths
+        .map(
+          subpath =>
+            typeof subpath !== "string"
+            && !Array.isArray(
+              subpath,
+            )
+              ? subpath
+                ._nodes
+              : new this
+                .Splitterful(
+                  subpath,
+                  "/",
+                  { trimSegment: true },
+                )
+                .segments
+                .map(
+                  node =>
+                    new this
+                      .FileNode(
+                        node,
+                      )
+                      .string,
+                ),
+        )
+        .flat();
+    }
+    catch (e) {
+      throw new EvalError(
+        `IFilepath: compose`,
+        { cause: e },
+      );
+    }
+  }
+
+  private pop() {
     try {
       const nodeQ = [
         ...this
@@ -160,148 +285,9 @@ abstract class IFilepath<
     }
   }
 
-  public append(
-    ...subpaths: Parameters<IFilepath<Root>["compose"]>
-  ) {
-    try {
-      return new (
-        this
-          .constructor as new (
-          ...args: ConstructorParameters<typeof IFilepath>
-        )=>
-        this
-      )(
-        this,
-        ...subpaths,
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: append`,
-        { cause: e },
-      );
-    }
-  }
+  protected abstract check(nodes: Array<Stringify<FileNode>>): IFilepath<MinLength>["_nodes"];
 
-  public prepend(
-    root: rootpath,
-  ) {
-    try {
-      return this.isEmpty
-        ? root
-        : `${
-          root
-        }/${
-          this
-            .toString()
-        }` as rootpath;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: prepend`,
-        { cause: e },
-      );
-    }
-  }
-
-  public cd(
-    ...relPaths: Parameters<IFilepath<Root>["compose"]>
-  ) {
-    try {
-      const rel = this
-        .compose(
-          ...relPaths,
-        );
-
-      for (const node of rel)
-        if (node === "..")
-          this
-            .pop();
-        else
-          this
-            ._nodes
-            .push(
-              node,
-            );
-
-      return this;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: cd`,
-        { cause: e },
-      );
-    }
-  }
-
-  public toString() {
-    try {
-      return [
-        ...this
-          ._nodes,
-      ]
-        .join(
-          "/",
-        ) as filepath<
-        Root
-      >;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: toString`,
-        { cause: e },
-      );
-    }
-  }
-
-  private compose(
-    ...subpaths: Array<
-      | string
-      | string[]
-      | IFilepath<
-        boolean
-      >
-    >
-  ) {
-    try {
-      return subpaths
-        .map(
-          subpath =>
-            typeof subpath !== "string"
-            && !Array.isArray(
-              subpath,
-            )
-              ? subpath
-                ._nodes
-              : new this
-                .Splitterful(
-                  subpath,
-                  "/",
-                  { trimSegment: true },
-                )
-                .segments
-                .map(
-                  node =>
-                    new this
-                      .FilepathNode(
-                        node,
-                      )
-                      .string,
-                ),
-        )
-        .flat();
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: compose`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected abstract check(nodes: Array<Strung<FileNode>>): IFilepath<Root>["_nodes"];
-
-  protected abstract poppable(nodes: Array<Strung<FileNode>>): nodes is Arrayful<Strung<FileNode>>;
+  protected abstract poppable(nodes: Array<Stringify<FileNode>>): nodes is Arrayful<Stringify<FileNode>>;
 }
 
 module.exports = IFilepath;

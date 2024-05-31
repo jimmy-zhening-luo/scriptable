@@ -1,14 +1,14 @@
 class CharString<
-  T extends string,
-  V extends string,
+  String extends string,
+  Validator extends string,
 > {
   public readonly charset: CharSet;
   public readonly string: validstring<
-    T
+    String
     ,
     `CharString:${
       literalful<
-        V
+        Validator
       >
     }`
   >;
@@ -71,7 +71,7 @@ class CharString<
       if (
         this
           .charset
-          .allows<CharString<T, V>["string"]>(
+          .allows<CharString<String, Validator>["string"]>(
           string,
         )
       )

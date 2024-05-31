@@ -1,11 +1,11 @@
 declare type IsTupleful<
-  A,
+  Tuple,
 > = IsTuple<
-  A
+  Tuple
 > extends false
   ? false
   : 0 extends TupleLength<
-    A
+    Tuple
   >
     ? false
     : true;

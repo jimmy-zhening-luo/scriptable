@@ -1,5 +1,5 @@
 declare type Keys<
-  O,
+  Record,
 > = literals<
-  keyof O
+  keyof Record
 >;

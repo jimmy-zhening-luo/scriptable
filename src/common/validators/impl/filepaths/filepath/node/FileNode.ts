@@ -22,7 +22,7 @@ class FileNode extends fp_ValidString<
     }
     catch (e) {
       throw new EvalError(
-        `FilepathNode: ctor`,
+        `FileNode: ctor`,
         { cause: e },
       );
     }

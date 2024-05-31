@@ -1,25 +1,27 @@
 declare type ArrayMin<
-  I,
-  L extends number,
-  Head extends I[] = [],
-> = L extends L
-  ? number extends L
-    ? never
-    : Head[
-      "length"
-    ] extends L
-      ? [
-          ...Head,
-          ...I[],
-        ]
-      : ArrayMin<
-        I
-        ,
-        L
-        ,
-        [
-          ...Head,
-          I,
-        ]
-      >
+  Inner,
+  Length extends number,
+  Head extends Inner[] = [],
+> = Length extends Length
+  ? number extends Length
+    ? Inner[]
+    : 0 extends Length
+      ? Inner[]
+      : Head[
+        "length"
+      ] extends Length
+        ? [
+            ...Head,
+            ...Inner[],
+          ]
+        : ArrayMin<
+          Inner
+          ,
+          Length
+          ,
+          [
+            ...Head,
+            Inner,
+          ]
+        >
   : never;

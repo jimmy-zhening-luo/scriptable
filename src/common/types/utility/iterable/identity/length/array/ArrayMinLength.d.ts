@@ -1,12 +1,12 @@
 declare type ArrayMinLength<
-  A,
+  Arr,
   Head extends unknown[] = [],
-> = IsArray<
-  A
+> = IsIterable<
+  Arr
 > extends false
   ? never
-  : A extends [
-    infer I,
+  : Arr extends [
+    infer Inner,
     ...infer Rest,
   ]
     ? ArrayMinLength<
@@ -14,11 +14,11 @@ declare type ArrayMinLength<
       ,
       [
         ...Head,
-        I,
+        Inner,
       ]
     >
-    : A extends readonly [
-      infer I,
+    : Arr extends readonly [
+      infer Inner,
       ...infer Rest,
     ]
       ? ArrayMinLength<
@@ -26,7 +26,7 @@ declare type ArrayMinLength<
         ,
         [
           ...Head,
-          I,
+          Inner,
         ]
       >
       : Head[

@@ -1,15 +1,15 @@
 declare type Null<
-  O,
+  Type,
 > =
   | null
-  | O
+  | Type
 ;
 
 declare type Nullable<
-  O,
+  Type,
 > =
   Null<
     NonNullable<
-      O
+      Type
     >
   >;

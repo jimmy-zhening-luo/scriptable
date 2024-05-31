@@ -1,26 +1,26 @@
 function Primitiveful<
-  P extends primitive,
-  A extends string,
-  SP extends
-  & P
+  Primitive extends primitive,
+  Condition,
+  SafePrimitive extends
+  & Primitive
   & Safe<
-    P
+    Primitive
     ,
-    A
+    Condition
   >
   ,
 >(
   acceptor: Acceptor<
-    P,
-    A,
-    SP
+    Primitive,
+    Condition,
+    SafePrimitive
   >,
-  primitive: P,
+  primitive: Primitive,
   rejection: string,
   context?: string,
 ):
-  & P
-  & SP {
+  & Primitive
+  & SafePrimitive {
   if (
     acceptor(
       primitive,

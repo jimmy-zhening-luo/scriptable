@@ -114,7 +114,9 @@ abstract class Filetype<
 
   public read(
     ...error: Parameters<
-      File["read"]
+      File[
+        "read"
+      ]
     >
   ) {
     try {

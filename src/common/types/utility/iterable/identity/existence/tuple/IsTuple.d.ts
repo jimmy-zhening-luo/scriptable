@@ -1,7 +1,9 @@
 declare type IsTuple<
-  A,
+  Tuple,
 > = TupleLength<
-  A
+  Tuple
 > extends never
   ? false
   : true;
+
+declare type bog = IsTuple<Tuple<string, 0 | 3>>;

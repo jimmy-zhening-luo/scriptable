@@ -1,40 +1,57 @@
 declare type Join<
-  A,
+  Iterable,
   Separator extends string = string,
 > = Joinable<
-  A
+  Iterable
 > extends false
   ? never
   : IsArrayful<
-    A
+    Iterable
   > extends false
     ? string
     : Extract<
       Flat<
-        A
+        Iterable
       >
       ,
       | stringful
-      | number
-      | boolean
     > extends never
-      ? literalful<
+      ? Extract<
         Flat<
-          A
+          Iterable
         >
+        ,
+        | number
+        | boolean
       > extends never
-        ? IsLongTupleful<
-          A
-        > extends false
-          ? string
-          : literalful<
-            Separator
-          > extends never
-            ? Separator extends stringful
-              ? stringful
-              :
-                | string
-                | stringful
-            : stringful
+        ? literalful<
+          Flat<
+            Iterable
+          >
+        > extends never
+          ? IsLongTupleful<
+            Iterable
+          > extends false
+            ? string
+            : literalful<
+              Separator
+            > extends never
+              ? Separator extends stringful
+                ? stringful
+                :
+                  | string
+                  | stringful
+              : stringful
+          : stringful
         : stringful
-      : stringful;
+      : Exclude<
+        Flat<
+          Iterable
+        >
+        , stringful
+      > extends never
+        ? Flat<
+          Iterable
+        >
+        : stringful
+;

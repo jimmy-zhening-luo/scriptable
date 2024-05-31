@@ -39,10 +39,10 @@ class CharSet {
   }
 
   public allows<
-    V extends string,
+    Valid extends string,
   >(
     string: string,
-  ): string is V {
+  ): string is Valid {
     try {
       const { negate } = this;
 

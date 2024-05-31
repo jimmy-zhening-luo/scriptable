@@ -1,8 +1,8 @@
 declare type validstring<
   T extends string,
-  V extends string,
-> = Validated<
+  Validator extends string,
+> = Valid<
   T
   ,
-  V
+  Validator
 >;

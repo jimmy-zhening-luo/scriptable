@@ -3,11 +3,11 @@ const s_Filepath = importModule(
 ) as typeof IFilepath;
 
 class Subpath extends s_Filepath<
-  false
+  0
 > {
   protected check(
     nodes: Array<
-      Strung<
+      Stringify<
         FileNode
       >
     >,
@@ -25,14 +25,15 @@ class Subpath extends s_Filepath<
 
   protected poppable(
     nodes: Array<
-      Strung<
+      Stringify<
         FileNode
       >
     >,
-  ): nodes is Arrayful<
-    Strung<
+  ): nodes is ArrayMin<
+    Stringify<
       FileNode
-    >
+    >,
+    1
   > {
     try {
       return nodes

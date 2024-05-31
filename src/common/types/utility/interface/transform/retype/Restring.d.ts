@@ -1,3 +1,3 @@
-declare type Restring<O> = {
-  [K in keyof O]: string;
+declare type Restring<Record> = {
+  [Key in keyof Record]: string;
 };

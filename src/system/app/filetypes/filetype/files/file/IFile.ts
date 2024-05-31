@@ -4,7 +4,9 @@ abstract class IFile {
   > = "IFile";
   protected readonly manager = FileManager
     .iCloud();
-  private readonly _root: rootpath;
+  private readonly _root: Stringify<
+    Rootpath
+  >;
   private _subpath: Subpath;
 
   constructor(
@@ -15,8 +17,8 @@ abstract class IFile {
         file: IFile;
         rootOnly: boolean;
       }
-      | ConstructorParameters<typeof IFilepath>[0],
-    ...subpaths: ConstructorParameters<typeof IFilepath>
+      | ConstructorParameters<typeof IFilepath<1>>[0],
+    ...subpaths: ConstructorParameters<typeof IFilepath<0>>
   ) {
     try {
       this
@@ -56,7 +58,7 @@ abstract class IFile {
     }
   }
 
-  public get path(): rootpath {
+  public get path(): Stringify<Rootpath> {
     try {
       return this
         ._subpath
@@ -73,7 +75,7 @@ abstract class IFile {
     }
   }
 
-  public get subpath(): subpath {
+  public get subpath(): Stringify<Subpath> {
     try {
       return this
         ._subpath
@@ -317,7 +319,7 @@ abstract class IFile {
   }
 
   public set subpath(
-    subpath: ConstructorParameters<typeof IFilepath>[1],
+    subpath: ConstructorParameters<typeof IFilepath<0>>[1],
   ) {
     try {
       this
@@ -351,7 +353,7 @@ abstract class IFile {
   }
 
   public append(
-    ...filepaths: Parameters<IFilepath<false>["append"]>
+    ...filepaths: Parameters<IFilepath<0>["append"]>
   ) {
     try {
       return new (
@@ -376,7 +378,7 @@ abstract class IFile {
   }
 
   public cd(
-    ...relativeFilepath: Parameters<IFilepath<false>["cd"]>
+    ...relativeFilepath: Parameters<IFilepath<0>["cd"]>
   ) {
     try {
       this

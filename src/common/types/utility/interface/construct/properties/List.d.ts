@@ -1,13 +1,10 @@
 declare type List<
-  K extends string,
-  Optional extends
-  | K
-  | boolean = false
-  ,
+  Key extends string,
+  OptionalKey = false,
 > = IProperty<
   string[]
   ,
-  K
+  Key
   ,
-  Optional
+  OptionalKey
 >;

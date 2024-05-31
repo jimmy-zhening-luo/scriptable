@@ -1,5 +1,5 @@
 declare type Joinable<
-  A,
-> = IsArray<
-  A
+  Iterable,
+> = IsIterable<
+  Iterable
 >;

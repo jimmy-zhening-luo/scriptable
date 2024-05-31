@@ -1,11 +1,11 @@
 declare type IsArray<
-  A,
+  Arr,
 > = Flat<
-  A
+  Arr
 > extends never
-  ? A extends unknown[]
+  ? Arr extends unknown[]
     ? true
-    : A extends readonly unknown[]
+    : Arr extends readonly unknown[]
       ? true
       : false
   : true;

@@ -1,14 +1,8 @@
-declare const acceptor: unique symbol;
-type Checked<
-  A extends string,
-> = { [acceptor]: literalful<A> };
-
+declare const safe: unique symbol;
 declare type Safe<
-  T,
-  A extends string,
+  Type,
+  Condition,
 > =
-  & T
-  & Checked<
-    A
-  >
+  & Type
+  & { [safe]: Condition }
 ;

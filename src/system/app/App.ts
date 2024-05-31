@@ -585,9 +585,7 @@ abstract class App<
       ]
       : never
     ,
-  ): NonUndefined<
-      O
-    > {
+  ): O {
     try {
       if (
         app instanceof App
@@ -878,7 +876,7 @@ abstract class App<
     }
   }
 
-  protected abstract runtime(): NonUndefined<O>;
+  protected abstract runtime(): O;
   protected abstract setOutput(runtimeOutput: ReturnType<App<C, I, O, S>["runtime"]>): ReturnType<App<C, I, O, S>["runtime"]>;
   private _name?: stringful;
   private _input?: I;

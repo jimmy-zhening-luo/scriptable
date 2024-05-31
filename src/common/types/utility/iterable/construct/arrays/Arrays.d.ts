@@ -1,7 +1,7 @@
 declare type Arrayful<
-  I,
+  Inner,
 > = ArrayMin<
-  I
+  Inner
   ,
   1
 >;
