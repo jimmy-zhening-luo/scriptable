@@ -21,7 +21,6 @@
     "lint:config": "npm run lint:config:js",
     "lint:src": "npm run lint:src:ts",
     "lint:config:js": "npm run eslint -- *.config.js",
-    "lint:config:ts": "npm run eslint -- *.config.ts",
     "lint:src:ts": "npm run eslint -- src/**/*.ts",
     "prebuild": "npm run lint",
     "build": "tsc",
