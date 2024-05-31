@@ -3,9 +3,15 @@ abstract class IFilepath<
 > {
   protected readonly _nodes: Root extends true
     ? Arrayful<
-      filenode
+      ToString<
+        FileNode
+      >
     >
-    : filenode[];
+    : Array<
+      ToString<
+        FileNode
+      >
+    >;
 
   constructor(
     ...subpaths: Parameters<IFilepath<Root>["compose"]>
@@ -103,7 +109,7 @@ abstract class IFilepath<
     try {
       return importModule(
         "node/FilepathNode",
-      ) as typeof FilepathNode;
+      ) as typeof FileNode;
     }
     catch (e) {
       throw new ReferenceError(
@@ -293,9 +299,9 @@ abstract class IFilepath<
     }
   }
 
-  protected abstract check(nodes: filenode[]): IFilepath<Root>["_nodes"];
+  protected abstract check(nodes: Array<ToString<FileNode>>): IFilepath<Root>["_nodes"];
 
-  protected abstract poppable(nodes: filenode[]): nodes is Arrayful<filenode>;
+  protected abstract poppable(nodes: Array<ToString<FileNode>>): nodes is Arrayful<ToString<FileNode>>;
 }
 
 module.exports = IFilepath;

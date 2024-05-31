@@ -6,7 +6,11 @@ class Subpath extends s_Filepath<
   false
 > {
   protected check(
-    nodes: filenode[],
+    nodes: Array<
+      ToString<
+        FileNode
+      >
+    >,
   ) {
     try {
       return nodes;
@@ -20,9 +24,15 @@ class Subpath extends s_Filepath<
   }
 
   protected poppable(
-    nodes: filenode[],
+    nodes: Array<
+      ToString<
+        FileNode
+      >
+    >,
   ): nodes is Arrayful<
-    filenode
+    ToString<
+      FileNode
+    >
   > {
     try {
       return nodes
