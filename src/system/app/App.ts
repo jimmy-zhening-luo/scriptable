@@ -4,7 +4,7 @@ abstract class App<
   O,
   S extends ISetting,
 > {
-  public readonly __proto: literalful<
+  protected readonly __proto: literalful<
     "App"
   > = "App";
   private readonly t0: number = Date

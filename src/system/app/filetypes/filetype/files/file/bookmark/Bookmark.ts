@@ -1,5 +1,5 @@
 class Bookmark {
-  public readonly __proto: literalful<"Bookmark"> = "Bookmark";
+  protected readonly __proto: literalful<"Bookmark"> = "Bookmark";
   public readonly alias: Alias;
   public readonly path: rootpath;
 
