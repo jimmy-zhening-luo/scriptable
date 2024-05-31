@@ -1,5 +1,5 @@
 const v_BoundString = importModule(
-  "bound/BoundString",
+  `bound/BoundString`,
 ) as typeof BoundString;
 
 class ValidString<

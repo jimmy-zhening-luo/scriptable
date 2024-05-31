@@ -1,5 +1,5 @@
 const f_CharString = importModule(
-  "charstring/CharString",
+  `charstring/CharString`,
 ) as typeof CharString;
 
 class BoundString<

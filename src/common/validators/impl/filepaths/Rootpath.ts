@@ -1,12 +1,16 @@
 const r_Filepath = importModule(
-  "filepath/IFilepath",
+  `filepath/IFilepath`,
 ) as typeof IFilepath;
 
 class Rootpath extends r_Filepath<
   true
 > {
   protected check(
-    nodes: filenode[],
+    nodes: Array<
+      Strung<
+        FileNode
+      >
+    >,
   ) {
     try {
       if (
@@ -24,7 +28,9 @@ class Rootpath extends r_Filepath<
         );
       else
         return nodes as Arrayful<
-          filenode
+          Strung<
+            FileNode
+          >
         >;
     }
     catch (e) {
@@ -36,9 +42,15 @@ class Rootpath extends r_Filepath<
   }
 
   protected poppable(
-    nodes: filenode[],
+    nodes: Array<
+      Strung<
+        FileNode
+      >
+    >,
   ): nodes is Arrayful<
-    filenode
+    Strung<
+      FileNode
+    >
   > {
     try {
       return nodes

@@ -1,5 +1,5 @@
 const drop_ILinkPathProcessor = importModule(
-  "processor/ILinkPathProcessor",
+  `processor/ILinkPathProcessor`,
 ) as typeof ILinkPathProcessor;
 
 class DropboxPathProcessor extends drop_ILinkPathProcessor<

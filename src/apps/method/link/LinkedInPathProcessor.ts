@@ -1,5 +1,5 @@
 const lnkd_ILinkPathProcessor = importModule(
-  "processor/ILinkPathProcessor",
+  `processor/ILinkPathProcessor`,
 ) as typeof ILinkPathProcessor;
 
 class LinkedInPathProcessor extends lnkd_ILinkPathProcessor<

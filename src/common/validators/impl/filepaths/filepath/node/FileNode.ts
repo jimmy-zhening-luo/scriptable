@@ -1,9 +1,9 @@
 const fp_ValidString = importModule(
-  "./common/validators/base/string/valid/ValidString",
+  `./common/validators/base/string/valid/ValidString`,
 ) as typeof ValidString;
 
-class FilepathNode extends fp_ValidString<
-  "FilepathNode"
+class FileNode extends fp_ValidString<
+  "FileNode"
 > {
   constructor(
     node: string,
@@ -29,4 +29,4 @@ class FilepathNode extends fp_ValidString<
   }
 }
 
-module.exports = FilepathNode;
+module.exports = FileNode;

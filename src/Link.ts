@@ -4,7 +4,7 @@
 "use strict";
 
 namespace Link {
-  const shortcut = importModule("system/Shortcut") as typeof Shortcut;
+  const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
 
   export class Link extends shortcut<
     Field<

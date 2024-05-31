@@ -1,5 +1,7 @@
 abstract class IFile {
-  public readonly __proto: literalful<"IFile"> = "IFile";
+  protected readonly __proto: literalful<
+    "IFile"
+  > = "IFile";
   protected readonly manager = FileManager
     .iCloud();
   private readonly _root: rootpath;

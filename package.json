@@ -1,6 +1,6 @@
 {
   "name": "scriptable-wild",
-  "version": "7.0.0-dev.80",
+  "version": "7.0.0-dev.91",
   "description": "Building block classes and scripts to do complex automation on iOS.",
   "type": "module",
   "private": false,
@@ -16,21 +16,21 @@
   },
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "scripts": {
-    "clean:packed": "shx rm -rf packed",
     "lint": "eslint --cache --cache-strategy content -c eslint.config.js *.config.js src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
     "prebuild": "npm run lint:fix",
     "build": "tsc",
+    "clean:packed": "shx rm -rf packed",
     "prepack": "npm run build && npm run clean:packed",
     "pack": "shx mkdir packed && shx cp -r built/js/* packed",
     "pretest": "npm run pack",
     "test": "exit 1",
-    "dev": "npm run test"
+    "dev": "npm test"
   },
   "devDependencies": {
-    "@jimbojet/lint": "~8.0.18",
+    "@jimbojet/lint": "~8.0.19",
     "@stylistic/eslint-plugin": "~2.1.0",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.12.13",
     "@types/scriptable-ios": "^1.7.7",
     "@typescript-eslint/eslint-plugin": "~7.11.0",
     "@typescript-eslint/parser": "~7.11.0",

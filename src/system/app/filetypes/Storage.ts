@@ -1,5 +1,5 @@
 const st_Filetype = importModule(
-  "filetype/Filetype",
+  `filetype/Filetype`,
 ) as typeof Filetype;
 
 class Storage<

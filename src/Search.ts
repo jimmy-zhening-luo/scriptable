@@ -4,7 +4,7 @@
 "use strict";
 
 namespace Search {
-  const shortcut = importModule("system/Shortcut") as typeof Shortcut;
+  const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
 
   export class Search extends shortcut<
     string

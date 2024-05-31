@@ -1,5 +1,5 @@
 const uc_ValidString = importModule(
-  "./common/validators/base/string/valid/ValidString",
+  `./common/validators/base/string/valid/ValidString`,
 ) as typeof ValidString;
 
 abstract class IUrlComponent<

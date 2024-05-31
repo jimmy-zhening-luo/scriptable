@@ -4,8 +4,16 @@ declare type filepath<
   stringful
   ,
   Root extends true
-    ? Arrayful<filenode>
-    : filenode[]
+    ? Arrayful<
+      Strung<
+        FileNode
+      >
+    >
+    : Array<
+      Strung<
+        FileNode
+      >
+    >
 >;
 
 declare type rootpath = filepath<

@@ -1,5 +1,5 @@
 const k_Filetype = importModule(
-  "filetype/Filetype",
+  `filetype/Filetype`,
 ) as typeof Filetype;
 
 class Key<

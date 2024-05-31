@@ -1,5 +1,5 @@
 const a_IEngine = importModule(
-  "engine/IEngine",
+  `engine/IEngine`,
 ) as typeof IEngine;
 
 class InlineEngine extends a_IEngine {
