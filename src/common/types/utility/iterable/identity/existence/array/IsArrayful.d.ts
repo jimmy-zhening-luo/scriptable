@@ -4,7 +4,7 @@ declare type IsArrayful<
   Arr
 > extends false
   ? false
-  : 0 extends ArrayMinLength<
+  : 0 extends ArrayLength<
     Arr
   >
     ? false

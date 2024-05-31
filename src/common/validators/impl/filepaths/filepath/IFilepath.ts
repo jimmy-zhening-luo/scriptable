@@ -1,12 +1,16 @@
 abstract class IFilepath<
-  MinLength extends number,
+  Length,
 > {
-  protected readonly _nodes: ArrayMin<Stringify<FileNode>, MinLength>;
+  protected readonly _nodes: Nodes<
+    FileNode
+    ,
+    Length
+  >;
 
   constructor(
     ...subpaths: Parameters<
       IFilepath<
-        MinLength
+        Length
       >[
         "compose"
       ]
@@ -35,7 +39,7 @@ abstract class IFilepath<
       const parent = new (
         this
           .constructor as new (
-          ...args: ConstructorParameters<typeof IFilepath<MinLength>>
+          ...args: ConstructorParameters<typeof IFilepath<Length>>
         )=>
         this
       )(
@@ -100,7 +104,7 @@ abstract class IFilepath<
   public append(
     ...subpaths: Parameters<
       IFilepath<
-        MinLength
+        Length
       >[
         "compose"
       ]
@@ -110,7 +114,7 @@ abstract class IFilepath<
       return new (
         this
           .constructor as new (
-          ...args: ConstructorParameters<typeof IFilepath<MinLength>>
+          ...args: ConstructorParameters<typeof IFilepath<Length>>
         )=>
         this
       )(
@@ -127,7 +131,11 @@ abstract class IFilepath<
   }
 
   public prepend(
-    root: Stringify<Rootpath>,
+    root: Stringify<
+      IFilepath<
+        1
+      >
+    >,
   ) {
     try {
       if (
@@ -135,14 +143,21 @@ abstract class IFilepath<
           .isEmpty
       )
         return root;
-      else
-        return [
+      else {
+        const rootThis = [
           root,
-          this.toString(),
-        ]
+          this
+            .toString() as Stringify<IFilepath<0>> as Stringify<IFilepath<1>>,
+        ] as const;
+
+        return rootThis
           .join(
             "/",
-          ) as Stringify<Rootpath>;
+          ) as Joint<
+          typeof rootThis
+          , "/"
+        >;
+      }
     }
     catch (e) {
       throw new EvalError(
@@ -153,7 +168,7 @@ abstract class IFilepath<
   }
 
   public cd(
-    ...relPaths: Parameters<IFilepath<MinLength>["compose"]>
+    ...relPaths: Parameters<IFilepath<Length>["compose"]>
   ) {
     try {
       const rel = this
@@ -189,7 +204,11 @@ abstract class IFilepath<
       return _nodes
         .join(
           "/",
-        ) as Joint<typeof _nodes, "/">;
+        ) as Joint<
+        typeof _nodes
+        ,
+        "/"
+      >;
     }
     catch (e) {
       throw new EvalError(
@@ -204,7 +223,7 @@ abstract class IFilepath<
       | string
       | string[]
       | IFilepath<
-        MinLength
+        Length
       >
     >
   ) {
@@ -285,9 +304,9 @@ abstract class IFilepath<
     }
   }
 
-  protected abstract check(nodes: Array<Stringify<FileNode>>): IFilepath<MinLength>["_nodes"];
+  protected abstract check(nodes: Nodes<FileNode>): IFilepath<Length>["_nodes"];
 
-  protected abstract poppable(nodes: Array<Stringify<FileNode>>): nodes is Arrayful<Stringify<FileNode>>;
+  protected abstract poppable(nodes: Nodes<FileNode>): nodes is Nodes<FileNode, 1>;
 }
 
 module.exports = IFilepath;

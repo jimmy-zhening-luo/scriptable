@@ -4,7 +4,7 @@ declare type IsLongArrayful<
   Arr
 > extends false
   ? false
-  : 1 extends ArrayMinLength<
+  : 1 extends ArrayLength<
     Arr
   >
     ? false

@@ -6,10 +6,8 @@ class Subpath extends s_Filepath<
   0
 > {
   protected check(
-    nodes: Array<
-      Stringify<
-        FileNode
-      >
+    nodes: Nodes<
+      FileNode
     >,
   ) {
     try {
@@ -24,15 +22,12 @@ class Subpath extends s_Filepath<
   }
 
   protected poppable(
-    nodes: Array<
-      Stringify<
-        FileNode
-      >
-    >,
-  ): nodes is ArrayMin<
-    Stringify<
+    nodes: Nodes<
       FileNode
     >,
+  ): nodes is Nodes<
+    FileNode
+    ,
     1
   > {
     try {

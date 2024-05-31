@@ -58,7 +58,9 @@ abstract class IFile {
     }
   }
 
-  public get path(): Stringify<Rootpath> {
+  public get path(): Stringify<
+    Rootpath
+  > {
     try {
       return this
         ._subpath
@@ -75,7 +77,9 @@ abstract class IFile {
     }
   }
 
-  public get subpath(): Stringify<Subpath> {
+  public get subpath(): Stringify<
+    Subpath
+  > {
     try {
       return this
         ._subpath
@@ -173,7 +177,8 @@ abstract class IFile {
   public get root(): this {
     try {
       return new (
-        this.constructor as new (
+        this
+          .constructor as new (
           ...args: ConstructorParameters<typeof IFile>
         )=> this
       )(
@@ -194,7 +199,8 @@ abstract class IFile {
   public get parent(): this {
     try {
       return new (
-        this.constructor as new (
+        this
+          .constructor as new (
           ...args: ConstructorParameters<typeof IFile>
         )=> this
       )(
@@ -357,7 +363,8 @@ abstract class IFile {
   ) {
     try {
       return new (
-        this.constructor as new (
+        this
+          .constructor as new (
           ...args: ConstructorParameters<typeof IFile>
         )=> this
       )(

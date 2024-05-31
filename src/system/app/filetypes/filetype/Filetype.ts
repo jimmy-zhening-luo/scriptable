@@ -153,9 +153,13 @@ abstract class Filetype<
 
   public data<D>(
     ...error: Parameters<
-      File["read"]
+      File[
+        "read"
+      ]
     >
-  ): Null<D> {
+  ): Null<
+      D
+    > {
     try {
       const string = this
         .file

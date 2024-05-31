@@ -36,7 +36,9 @@ class Bookmark {
             .iCloud()
             .bookmarkedPath(
               bookmark,
-            ) as Stringify<Rootpath>;
+            ) as Stringify<
+            Rootpath
+          >;
       }
     }
     catch (e) {

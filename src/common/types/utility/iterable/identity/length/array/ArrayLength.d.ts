@@ -1,4 +1,4 @@
-declare type ArrayMinLength<
+declare type ArrayLength<
   Arr,
   Head extends unknown[] = [],
 > = IsIterable<
@@ -9,7 +9,7 @@ declare type ArrayMinLength<
     infer Inner,
     ...infer Rest,
   ]
-    ? ArrayMinLength<
+    ? ArrayLength<
       Rest
       ,
       [
@@ -21,7 +21,7 @@ declare type ArrayMinLength<
       infer Inner,
       ...infer Rest,
     ]
-      ? ArrayMinLength<
+      ? ArrayLength<
         Rest
         ,
         [

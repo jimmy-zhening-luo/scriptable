@@ -1,6 +1,6 @@
 declare type Arrayful<
   Inner,
-> = ArrayMin<
+> = ArrayN<
   Inner
   ,
   1

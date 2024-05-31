@@ -149,7 +149,9 @@ namespace Filelink {
                       ...typeof preAppRoot === "undefined"
                         ? []
                         : [preAppRoot],
-                      apps[containerNode] as unknown as string,
+                      apps[
+                        containerNode
+                      ] as unknown as string,
                       postContainerRoot,
                     ]
                       .map(
@@ -232,7 +234,7 @@ namespace Filelink {
             },
           );
         else
-          return path as ArrayMin<
+          return path as ArrayN<
             stringful
             ,
             2

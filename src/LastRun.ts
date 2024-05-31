@@ -20,7 +20,7 @@ namespace LastRun {
           ";",
         ) as [
         string,
-          string?,
+        string?,
       ];
       const [id] = input;
       const m = Number(

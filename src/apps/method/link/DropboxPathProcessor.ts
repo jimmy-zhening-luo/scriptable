@@ -33,7 +33,7 @@ class DropboxPathProcessor extends drop_ILinkPathProcessor<
             SCL,
             FI,
             fileId,
-          ] = split as ArrayMin<
+          ] = split as ArrayN<
             string
             ,
             4

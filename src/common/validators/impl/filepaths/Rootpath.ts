@@ -6,10 +6,8 @@ class Rootpath extends r_Filepath<
   1
 > {
   protected check(
-    nodes: Array<
-      Stringify<
-        FileNode
-      >
+    nodes: Nodes<
+      FileNode
     >,
   ) {
     try {
@@ -17,10 +15,9 @@ class Rootpath extends r_Filepath<
         nodes
           .length > 0
       )
-        return nodes as Arrayful<
-          Stringify<
-            FileNode
-          >
+        return nodes as Nodes<
+          FileNode,
+          1
         >;
       else
         throw new RangeError(
@@ -42,15 +39,12 @@ class Rootpath extends r_Filepath<
   }
 
   protected poppable(
-    nodes: Array<
-      Stringify<
-        FileNode
-      >
-    >,
-  ): nodes is ArrayMin<
-    Stringify<
+    nodes: Nodes<
       FileNode
     >,
+  ): nodes is Nodes<
+    FileNode
+    ,
     2
   > {
     try {
