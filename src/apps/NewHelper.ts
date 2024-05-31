@@ -4,7 +4,7 @@
 "use strict";
 
 namespace NewHelper {
-  const helper = importModule("system/Helper") as typeof Helper;
+  const helper = importModule(`system/Helper`) as typeof Helper;
 
   export class NewHelper extends helper<
     void,

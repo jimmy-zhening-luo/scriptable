@@ -1,5 +1,5 @@
 const s_IEngine = importModule(
-  "engine/IEngine",
+  `engine/IEngine`,
 ) as typeof IEngine;
 
 class ShortcutEngine extends s_IEngine {

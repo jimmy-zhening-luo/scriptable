@@ -1,5 +1,5 @@
 const amzn_ILinkPathProcessor = importModule(
-  "processor/ILinkPathProcessor",
+  `processor/ILinkPathProcessor`,
 ) as typeof ILinkPathProcessor;
 
 class AmazonPathProcessor extends amzn_ILinkPathProcessor<
