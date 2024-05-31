@@ -82,7 +82,7 @@ class CharString<
           {
             cause: {
               string,
-              charset: this.charset.toString(),
+              charset: String(this.charset),
               negate: this.charset.negate,
             },
           },
