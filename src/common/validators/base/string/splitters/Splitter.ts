@@ -1,5 +1,5 @@
 const iSplitter = importModule(
-  "splitter/ISplitter",
+  `splitter/ISplitter`,
 ) as typeof ISplitter;
 
 class Splitter extends iSplitter<

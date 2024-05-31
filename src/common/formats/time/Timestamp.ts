@@ -1,5 +1,5 @@
 const s_IMoment = importModule(
-  "moment/IMoment",
+  `moment/IMoment`,
 ) as typeof IMoment;
 
 class Timestamp extends s_IMoment {

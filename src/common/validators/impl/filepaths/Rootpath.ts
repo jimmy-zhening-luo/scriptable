@@ -1,5 +1,5 @@
 const r_Filepath = importModule(
-  "filepath/IFilepath",
+  `filepath/IFilepath`,
 ) as typeof IFilepath;
 
 class Rootpath extends r_Filepath<

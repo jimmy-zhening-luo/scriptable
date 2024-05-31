@@ -1,5 +1,5 @@
 const pint_Primitiveful = importModule(
-  "./common/types/safe/acceptors/Primitiveful",
+  `./common/types/safe/acceptors/Primitiveful`,
 ) as typeof Primitiveful;
 
 function PosInt(
