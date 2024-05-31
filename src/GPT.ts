@@ -278,15 +278,18 @@ namespace GPT {
             opts
               .model
           ],
-          max_tokens: opts
-            .token
-            .toString(),
-          temperature: opts
-            .temperature
-            .toString(),
-          top_p: opts
-            .p
-            .toString(),
+          max_tokens: String(
+            opts
+              .token,
+          ),
+          temperature: String(
+            opts
+              .temperature,
+          ),
+          top_p: String(
+            opts
+              .p,
+          ),
         },
       };
     }
