@@ -32,7 +32,3 @@ declare type ArrayMinLength<
       : Head[
         "length"
       ];
-
-declare type TestArrayMinLength1 = ArrayMinLength<
-  "abc"
->;
