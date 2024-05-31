@@ -16,19 +16,19 @@
   },
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "scripts": {
-    "eslint": "eslint --fix --cache --cache-strategy content -c eslint.config.js",
+    "es": "eslint --fix --cache --cache-strategy content -c eslint.config.js",
     "lint": "npm run lint:config && npm run lint:src",
     "lint:config": "npm run lint:config:js",
     "lint:src": "npm run lint:src:ts",
-    "lint:config:js": "npm run eslint -- *.config.js",
-    "lint:src:ts": "npm run eslint -- src/**/*.ts",
+    "lint:config:js": "npm run es -- *.config.js",
+    "lint:src:ts": "npm run es -- src/**/*.ts",
     "prebuild": "npm run lint",
     "build": "tsc",
     "clean:packed": "shx rm -rf packed",
     "prepack": "npm run clean:packed && npm run build",
     "pack": "shx mkdir packed && shx cp -r built/js/* packed",
     "pretest": "npm run pack",
-    "test": "exit 1",
+    "test": "exit 0",
     "dev": "npm test"
   },
   "devDependencies": {
