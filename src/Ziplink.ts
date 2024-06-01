@@ -1,12 +1,12 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: light-gray; icon-glyph: cut;
+// icon-color: light-gray; icon-glyph: sign-in-alt;
 "use strict";
 
-namespace Shorten {
+namespace Ziplink {
   const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
 
-  export class Shorten extends shortcut<
+  export class Ziplink extends shortcut<
     string
     ,
     string
@@ -54,5 +54,5 @@ namespace Shorten {
   }
 }
 
-new Shorten.Shorten()
+new Ziplink.Ziplink()
   .run();
