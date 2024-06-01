@@ -807,8 +807,8 @@ abstract class App<
       )
         return cached;
       else {
-        const newStorage: Storage<Class> = new this
-          .Storage(
+        const newStorage = new this
+          .Storage<Class>(
             this
               ._class,
             this
@@ -848,8 +848,8 @@ abstract class App<
       )
         return cached;
       else {
-        const newKey: Key<Class> = new this
-          .Key(
+        const newKey = new this
+          .Key<Class>(
             this
               ._class,
             this
