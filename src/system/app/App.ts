@@ -809,13 +809,13 @@ abstract class App<
       else {
         const newStorage = new this
           .Storage<Class>(
-            this
-              ._class,
-            this
-              .name,
-            extension,
-            filename,
-          );
+          this
+            ._class,
+          this
+            .name,
+          extension,
+          filename,
+        );
 
         this
           ._storage[
@@ -850,15 +850,15 @@ abstract class App<
       else {
         const newKey = new this
           .Key<Class>(
-            this
-              ._class,
-            this
-              .name,
-            this
-              .stringful(
-                handle,
-              ),
-          );
+          this
+            ._class,
+          this
+            .name,
+          this
+            .stringful(
+              handle,
+            ),
+        );
 
         this
           ._keys[
