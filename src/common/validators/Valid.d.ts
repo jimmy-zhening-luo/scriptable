@@ -3,10 +3,15 @@ declare type Valid<
   Type,
   Prior extends string,
   Validator extends string,
-> = literalful<Prior> extends never
+> = literalful<
+  Prior
+> extends never
   ? never
-  : literalful<Validator> extends never
+  : literalful<
+    Validator
+  > extends never
     ? never
     :
       & Type
-      & { [valid]: `${Prior}:${Validator}` };
+      & { [valid]: `${Prior}:${Validator}` }
+;
