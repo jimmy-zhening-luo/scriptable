@@ -618,7 +618,7 @@ abstract class App<
   }
 
   protected read(
-    extE?:
+    extensionE?:
       | boolean
       | string,
     filenameE?:
@@ -627,23 +627,23 @@ abstract class App<
     E?: boolean,
   ) {
     try {
-      return typeof extE === "undefined"
+      return typeof extensionE === "undefined"
         ? this
           .storage()
           .read()
-        : typeof extE === "boolean"
+        : typeof extensionE === "boolean"
           ? this
             .storage()
-            .read(extE)
+            .read(extensionE)
           : typeof filenameE === "boolean"
             ? this
               .storage(
-                extE,
+                extensionE,
               )
               .read(filenameE)
             : this
               .storage(
-                extE,
+                extensionE,
                 filenameE,
               )
               .read(E);
@@ -657,13 +657,13 @@ abstract class App<
   }
 
   protected readful(
-    ext?: string,
+    extension?: string,
     filename?: string,
   ) {
     try {
       return this
         .storage(
-          ext,
+          extension,
           filename,
         )
         .readful();
@@ -676,36 +676,36 @@ abstract class App<
     }
   }
 
-  protected data<D>(
-    extE?:
+  protected data<Data>(
+    extensionE?:
       | boolean
       | string,
     filenameE?:
       | boolean
       | string,
     E?: boolean,
-  ): Null<D> {
+  ): Null<Data> {
     try {
-      return typeof extE === "undefined"
+      return typeof extensionE === "undefined"
         ? this
           .storage()
-          .data<D>()
-        : typeof extE === "boolean"
+          .data<Data>()
+        : typeof extensionE === "boolean"
           ? this
             .storage()
-            .data<D>(extE)
+            .data<Data>(extensionE)
           : typeof filenameE === "boolean"
             ? this
               .storage(
-                extE,
+                extensionE,
               )
-              .data<D>(filenameE)
+              .data<Data>(filenameE)
             : this
               .storage(
-                extE,
+                extensionE,
                 filenameE,
               )
-              .data<D>(E);
+              .data<Data>(E);
     }
     catch (e) {
       throw new EvalError(
@@ -717,7 +717,7 @@ abstract class App<
 
   protected write(
     data: unknown,
-    ext?: string,
+    extension?: string,
     filename?: string,
     overwrite?:
       | "line"
@@ -728,7 +728,7 @@ abstract class App<
     try {
       this
         .storage(
-          ext,
+          extension,
           filename,
         )
         .write(
@@ -783,14 +783,14 @@ abstract class App<
   }
 
   protected storage(
-    ext?: string,
+    extension?: string,
     filename?: string,
   ) {
     try {
       const cacheId = [
         filename
         ?? "",
-        ext
+        extension
         ?? "",
       ]
         .join(
@@ -813,7 +813,7 @@ abstract class App<
               ._class,
             this
               .name,
-            ext,
+            extension,
             filename,
           );
 
