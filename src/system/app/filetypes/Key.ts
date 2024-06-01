@@ -3,15 +3,15 @@ const k_Filetype = importModule(
 ) as typeof Filetype;
 
 class Key<
-  C extends string,
+  Class extends string,
 > extends k_Filetype<
     "Key"
     ,
-    C
+    Class
   > {
   constructor(
     category: literalful<
-      C
+      Class
     >,
     app: stringful,
     handle: stringful,

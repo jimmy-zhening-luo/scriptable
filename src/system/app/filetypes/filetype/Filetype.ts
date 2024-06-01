@@ -1,16 +1,16 @@
 abstract class Filetype<
-  T extends string,
-  C extends string,
+  Type extends string,
+  Class extends string,
   File extends IFile = ReadOnlyFile,
 > {
   protected readonly file: File;
 
   constructor(
     filetype: literalful<
-      T
+      Type
     >,
     category: literalful<
-      C
+      Class
     >,
     FileCtor: new(...args: ConstructorParameters<typeof IFile>)=> IFile & File,
     ext: string,
@@ -151,14 +151,14 @@ abstract class Filetype<
     }
   }
 
-  public data<D>(
+  public data<Data>(
     ...error: Parameters<
       File[
         "read"
       ]
     >
   ): Null<
-      D
+      Data
     > {
     try {
       const string = this
@@ -173,7 +173,7 @@ abstract class Filetype<
         ? JSON
           .parse(
             string,
-          ) as D
+          ) as Data
         : null;
     }
     catch (e) {
@@ -200,7 +200,7 @@ abstract class Filetype<
 
   private root(
     subtype: literalful<
-      T
+      Type
     >,
   ) {
     try {

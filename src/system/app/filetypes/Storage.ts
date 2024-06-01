@@ -3,17 +3,17 @@ const st_Filetype = importModule(
 ) as typeof Filetype;
 
 class Storage<
-  C extends string,
+  Class extends string,
 > extends st_Filetype<
     "Storage"
     ,
-    C
+    Class
     ,
     WriteFile
   > {
   constructor(
     category: literalful<
-      C
+      Class
     >,
     app: stringful,
     ext = "txt",

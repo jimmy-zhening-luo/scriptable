@@ -3,16 +3,16 @@ const se_Filetype = importModule(
 ) as typeof Filetype;
 
 class Setting<
-  C extends string,
-  S extends ISetting,
+  Class extends string,
+  Schema extends ISetting,
 > extends se_Filetype<
     "Setting"
     ,
-    C
+    Class
   > {
   constructor(
     category: literalful<
-      C
+      Class
     >,
     app: stringful,
   ) {
@@ -34,7 +34,7 @@ class Setting<
     }
   }
 
-  public get parsed(): S {
+  public get parsed(): Schema {
     try {
       if (
         this
@@ -50,7 +50,7 @@ class Setting<
           parsedJson !== undefined
         )
           this
-            ._cachedSetting = parsedJson as S;
+            ._cachedSetting = parsedJson as Schema;
         else
           throw new TypeError(
             `Setting file parsed to valid JSON, but has invalid schema`,
@@ -76,7 +76,7 @@ class Setting<
     }
   }
 
-  public get app(): S["app"] {
+  public get app(): Schema["app"] {
     try {
       if (
         this
@@ -105,7 +105,7 @@ class Setting<
     }
   }
 
-  public get user(): S["user"] {
+  public get user(): Schema["user"] {
     try {
       if (
         this
@@ -148,7 +148,7 @@ class Setting<
     );
   }
 
-  private _cachedSetting?: S;
+  private _cachedSetting?: Schema;
 }
 
 module.exports = Setting;
