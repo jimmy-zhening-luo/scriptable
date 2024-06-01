@@ -168,16 +168,26 @@ abstract class IFilepath<
   }
 
   public cd(
-    ...relPaths: Parameters<IFilepath<Length>["compose"]>
+    ...relativePaths: Parameters<
+      IFilepath<
+        Length
+      >[
+        "compose"
+      ]
+    >
   ) {
     try {
-      const rel = this
+      const relativePath = this
         .compose(
-          ...relPaths,
+          ...relativePaths,
         );
 
-      for (const node of rel)
-        if (node === "..")
+      for (
+        const node of relativePath
+      )
+        if (
+          node === ".."
+        )
           this
             .pop();
         else
