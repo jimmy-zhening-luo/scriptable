@@ -99,25 +99,25 @@ class ErrorHandler {
     messages: string[],
   ) {
     try {
-      const n = new Notification();
+      const note = new Notification();
 
-      n
+      note
         .title = messages
           .shift()
           ?? "";
-      n
+      note
         .body = messages
           .join(
             "\n",
           );
-      n
+      note
         .sound = "failure";
-      n
+      note
         .schedule()
         .catch(
           (n_e: unknown) => {
             throw new Error(
-              `Unhandled: Scriptable failed to schedule notification`,
+              `Unhandled: Scriptable failed to show notification`,
               { cause: n_e },
             );
           },
