@@ -1,17 +1,17 @@
 declare const valid: unique symbol;
 declare type Valid<
   Type,
-  Prior extends string,
   Validator extends string,
+  Prior extends string,
 > = literalful<
-  Prior
+  Validator
 > extends never
   ? never
   : literalful<
-    Validator
+    Prior
   > extends never
     ? never
     :
       & Type
-      & { [valid]: `${Prior}:${Validator}` }
+      & { [valid]: `${Validator}:${Prior}` }
 ;
