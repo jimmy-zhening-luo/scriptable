@@ -3,21 +3,21 @@ const sh_App = importModule(
 ) as typeof App;
 
 abstract class Shortcut<
-  I = never,
-  O = never,
-  S extends ISetting = never,
+  Input = never,
+  Output = never,
+  Schema extends ISetting = never,
 > extends sh_App<
     "Shortcut"
     ,
     Nullable<
-      I
+      Input
     >
     ,
     Null<
-      O
+      Output
     >
     ,
-    S
+    Schema
   > {
   constructor(
     debug?: boolean,
@@ -37,7 +37,7 @@ abstract class Shortcut<
         const shortcutInput = args
           .shortcutParameter as Null<
             | undefined
-            | I
+            | Input
         >;
         const definedShortcutInput = shortcutInput
           ?? null;
@@ -60,9 +60,9 @@ abstract class Shortcut<
   protected setOutput(
     runtimeOutput: ReturnType<
       Shortcut<
-        I
+        Input
         ,
-        O
+        Output
       >[
         "run"
       ]
@@ -84,7 +84,7 @@ abstract class Shortcut<
     }
   }
 
-  private _getInput?: Shortcut<I>["input"];
+  private _getInput?: Shortcut<Input>["input"];
 }
 
 module.exports = Shortcut;

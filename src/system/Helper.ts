@@ -3,21 +3,21 @@ const hp_App = importModule(
 ) as typeof App;
 
 abstract class Helper<
-  I = void,
-  O = void,
-  S extends ISetting = never,
+  Input = void,
+  Output = void,
+  Schema extends ISetting = never,
 > extends hp_App<
     "Helper"
     ,
-    I
+    Input
     ,
-    O
+    Output
     ,
-    S
+    Schema
   > {
   constructor(
     private readonly argument: Helper<
-      I
+      Input
     >[
       "input"
     ],
@@ -45,9 +45,9 @@ abstract class Helper<
   protected setOutput(
     runtimeOutput: ReturnType<
       Helper<
-        I
+        Input
         ,
-        O
+        Output
       >[
         "run"
       ]

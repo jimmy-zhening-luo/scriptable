@@ -1,8 +1,8 @@
 abstract class App<
   Class extends string,
-  I,
-  O,
-  S extends ISetting,
+  Input,
+  Output,
+  Schema extends ISetting,
 > {
   protected readonly __proto: literalful<
     "App"
@@ -334,7 +334,7 @@ abstract class App<
       )
         this
           .__setting = new this
-            .Setting<Class, S>(
+            .Setting<Class, Schema>(
             this
               ._class,
             this
@@ -352,7 +352,7 @@ abstract class App<
     }
   }
 
-  protected abstract get getInput(): I;
+  protected abstract get getInput(): Input;
 
   public static [Symbol.hasInstance](instance: unknown) {
     try {
@@ -475,9 +475,9 @@ abstract class App<
   }
 
   protected truthy(
-    value: I,
+    value: Input,
   ): value is NonNullable<
-    I
+    Input
   > {
     try {
       return !App
@@ -549,43 +549,43 @@ abstract class App<
     }
   }
 
-  protected synthetic<A, O>(
+  protected synthetic<A, Output>(
     app: A extends App<
       infer Class
       ,
-      infer I
+      infer Input
       ,
-      O
+      Output
       ,
-      infer S
+      infer Schema
     >
       ? App<
         Class,
-        I,
-        O,
-        S
+        Input,
+        Output,
+        Schema
       >
       : never,
     input: A extends App<
       infer Class
       ,
-      infer I
+      infer Input
       ,
-      O
+      Output
       ,
-      infer S
+      infer Schema
     >
       ? App<
         Class,
-        I,
-        O,
-        S
+        Input,
+        Output,
+        Schema
       >[
         "input"
       ]
       : never
     ,
-  ): O {
+  ): Output {
     try {
       if (
         app instanceof App
@@ -876,14 +876,14 @@ abstract class App<
     }
   }
 
-  protected abstract runtime(): O;
-  protected abstract setOutput(runtimeOutput: ReturnType<App<Class, I, O, S>["runtime"]>): ReturnType<App<Class, I, O, S>["runtime"]>;
+  protected abstract runtime(): Output;
+  protected abstract setOutput(runtimeOutput: ReturnType<App<Class, Input, Output, Schema>["runtime"]>): ReturnType<App<Class, Input, Output, Schema>["runtime"]>;
   private _name?: stringful;
-  private _input?: I;
-  private _inputful?: NonNullable<I>;
+  private _input?: Input;
+  private _inputful?: NonNullable<Input>;
   private _inputString?: string;
   private _inputStringful?: stringful;
-  private __setting?: Setting<Class, S>;
+  private __setting?: Setting<Class, Schema>;
 }
 
 module.exports = App;
