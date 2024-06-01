@@ -12,12 +12,13 @@ abstract class ISplitter<
     joinOptions: Parameters<ISplitter<Inner>["splitAggregate"]>[2] = {},
   ) {
     try {
-      this.segments = this
-        .splitAggregate(
-          unmerged,
-          splitOptions,
-          joinOptions,
-        );
+      this
+        .segments = this
+          .splitAggregate(
+            unmerged,
+            splitOptions,
+            joinOptions,
+          );
     }
     catch (e) {
       throw new EvalError(
