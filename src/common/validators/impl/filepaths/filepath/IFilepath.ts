@@ -90,12 +90,12 @@ abstract class IFilepath<
   private get FileNode() {
     try {
       return importModule(
-        "node/FilepathNode",
+        "node/FileNode",
       ) as typeof FileNode;
     }
     catch (e) {
       throw new ReferenceError(
-        `IFilepath: import FilepathNode`,
+        `IFilepath: import FileNode`,
         { cause: e },
       );
     }
