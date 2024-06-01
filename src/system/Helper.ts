@@ -43,7 +43,7 @@ abstract class Helper<
   }
 
   protected setOutput(
-    runtimeOutput: ReturnType<
+    runtime: ReturnType<
       Helper<
         Input
         ,
@@ -54,7 +54,7 @@ abstract class Helper<
     >,
   ) {
     try {
-      return runtimeOutput;
+      return runtime;
     }
     catch (e) {
       throw new EvalError(

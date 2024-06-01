@@ -879,7 +879,7 @@ abstract class App<
   }
 
   protected abstract runtime(): Output;
-  protected abstract setOutput(runtimeOutput: ReturnType<App<Class, Input, Output, Schema>["runtime"]>): ReturnType<App<Class, Input, Output, Schema>["runtime"]>;
+  protected abstract setOutput(runtime: ReturnType<App<Class, Input, Output, Schema>["runtime"]>): ReturnType<App<Class, Input, Output, Schema>["runtime"]>;
   private _name?: stringful;
   private _input?: Input;
   private _inputful?: NonNullable<Input>;

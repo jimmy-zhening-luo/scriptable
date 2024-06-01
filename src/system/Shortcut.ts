@@ -58,7 +58,7 @@ abstract class Shortcut<
   }
 
   protected setOutput(
-    runtimeOutput: ReturnType<
+    runtime: ReturnType<
       Shortcut<
         Input
         ,
@@ -71,10 +71,10 @@ abstract class Shortcut<
     try {
       Script
         .setShortcutOutput(
-          runtimeOutput,
+          runtime,
         );
 
-      return runtimeOutput;
+      return runtime;
     }
     catch (e) {
       throw new EvalError(
