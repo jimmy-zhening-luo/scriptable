@@ -31,8 +31,7 @@ abstract class IMoment {
 
       return datetime
         .join(
-          this
-            .separator,
+          separator,
         ) as Join<
         typeof datetime,
         typeof separator
@@ -52,10 +51,13 @@ abstract class IMoment {
         formatDate,
         moment,
       } = this;
-      const date = moment
-        .toLocaleDateString(
-          "en-US",
-          formatDate,
+      const date = this
+        .afterDate(
+          moment
+            .toLocaleDateString(
+              "en-US",
+              formatDate,
+            ),
         );
 
       if (
@@ -66,7 +68,6 @@ abstract class IMoment {
       else
         throw new RangeError(
           `date is empty`,
-          { cause: { formatDate: this.formatDate } },
         );
     }
     catch (e) {
@@ -94,7 +95,7 @@ abstract class IMoment {
           separator,
         ) as Join<
         typeof localOffset,
-        typeof separator,
+        typeof separator
       >;
     }
     catch (e) {
@@ -111,10 +112,13 @@ abstract class IMoment {
         formatLocal,
         moment,
       } = this;
-      const local = moment
-        .toLocaleTimeString(
-          "en-US",
-          formatLocal,
+      const local = this
+        .afterLocal(
+          moment
+            .toLocaleTimeString(
+              "en-US",
+              formatLocal,
+            ),
         );
 
       if (
@@ -125,7 +129,6 @@ abstract class IMoment {
       else
         throw new RangeError(
           `local time is empty`,
-          { cause: { formatLocal: this.formatLocal } },
         );
     }
     catch (e) {
@@ -138,11 +141,11 @@ abstract class IMoment {
 
   public get offset() {
     try {
-      return (
-        this
-          .moment
-          .getTimezoneOffset() / -60
-      )
+      const { moment } = this;
+      const offset = moment
+        .getTimezoneOffset() / -60;
+
+      return offset
         .toLocaleString(
           "en-US",
           {
