@@ -1,5 +1,5 @@
 abstract class App<
-  C extends string,
+  Class extends string,
   I,
   O,
   S extends ISetting,
@@ -13,20 +13,20 @@ abstract class App<
     string
     ,
     Storage<
-      C
+      Class
     >
   > = {};
   private readonly _keys: Record<
     string
     ,
     Key<
-      C
+      Class
     >
   > = {};
 
   constructor(
     private readonly _class: literalful<
-      C
+      Class
     >,
     protected debug = false,
   ) {}
@@ -334,7 +334,7 @@ abstract class App<
       )
         this
           .__setting = new this
-            .Setting<C, S>(
+            .Setting<Class, S>(
             this
               ._class,
             this
@@ -551,7 +551,7 @@ abstract class App<
 
   protected synthetic<A, O>(
     app: A extends App<
-      infer C
+      infer Class
       ,
       infer I
       ,
@@ -560,14 +560,14 @@ abstract class App<
       infer S
     >
       ? App<
-        C,
+        Class,
         I,
         O,
         S
       >
       : never,
     input: A extends App<
-      infer C
+      infer Class
       ,
       infer I
       ,
@@ -576,7 +576,7 @@ abstract class App<
       infer S
     >
       ? App<
-        C,
+        Class,
         I,
         O,
         S
@@ -807,7 +807,7 @@ abstract class App<
       )
         return cached;
       else {
-        const newStorage: Storage<C> = new this
+        const newStorage: Storage<Class> = new this
           .Storage(
             this
               ._class,
@@ -848,7 +848,7 @@ abstract class App<
       )
         return cached;
       else {
-        const newKey: Key<C> = new this
+        const newKey: Key<Class> = new this
           .Key(
             this
               ._class,
@@ -877,13 +877,13 @@ abstract class App<
   }
 
   protected abstract runtime(): O;
-  protected abstract setOutput(runtimeOutput: ReturnType<App<C, I, O, S>["runtime"]>): ReturnType<App<C, I, O, S>["runtime"]>;
+  protected abstract setOutput(runtimeOutput: ReturnType<App<Class, I, O, S>["runtime"]>): ReturnType<App<Class, I, O, S>["runtime"]>;
   private _name?: stringful;
   private _input?: I;
   private _inputful?: NonNullable<I>;
   private _inputString?: string;
   private _inputStringful?: stringful;
-  private __setting?: Setting<C, S>;
+  private __setting?: Setting<Class, S>;
 }
 
 module.exports = App;
