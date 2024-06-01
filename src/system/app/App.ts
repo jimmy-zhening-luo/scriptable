@@ -426,17 +426,17 @@ abstract class App<
           const { epoch0 } = this;
           const elapsed = epoch - epoch0;
           const log = `${
-              datetime
-            } :: ${
-              elapsed
-            } ms : ${
-              epoch
-            }`;
+            datetime
+          } :: ${
+            elapsed
+          } ms : ${
+            epoch
+          }`;
           const extension = "md";
           const filename = `_log${
-              this
-                .name
-            }`;
+            this
+              .name
+          }`;
 
           this
             .write(
