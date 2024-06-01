@@ -33,8 +33,7 @@ abstract class IMoment {
         .join(
           separator,
         ) as Join<
-        typeof datetime,
-        typeof separator
+        typeof datetime
       >;
     }
     catch (e) {
