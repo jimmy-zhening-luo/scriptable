@@ -18,7 +18,7 @@ abstract class IMoment {
     }
   }
 
-  public get full() {
+  public get datetime() {
     try {
       const datetime = [
         this
@@ -35,7 +35,7 @@ abstract class IMoment {
     }
     catch (e) {
       throw new EvalError(
-        `IMoment: full`,
+        `IMoment: datetime`,
         { cause: e },
       );
     }
@@ -153,7 +153,7 @@ abstract class IMoment {
   public toString() {
     try {
       return this
-        .full;
+        .datetime;
     }
     catch (e) {
       throw new EvalError(

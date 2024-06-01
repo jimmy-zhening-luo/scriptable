@@ -7,7 +7,7 @@ abstract class App<
   protected readonly __proto: literalful<
     "App"
   > = "App";
-  private readonly t0: number = Date
+  private readonly epoch0 = Date
     .now();
   private readonly _storage: Record<
     string
@@ -417,30 +417,32 @@ abstract class App<
           this
             .debug
         ) {
-          const t1 = Date
-            .now();
+          const timestamp = new this
+            .Timestamp();
+          const {
+            datetime,
+            epoch,
+          } = timestamp;
+          const { epoch0 } = this;
+          const elapsed = epoch - epoch0;
+          const log = `${
+              datetime
+            } :: ${
+              elapsed
+            } ms : ${
+              epoch
+            }`;
+          const extension = "md";
+          const filename = `_log${
+              this
+                .name
+            }`;
 
           this
             .write(
-              `${
-                new this
-                  .Timestamp()
-                  .full
-              } :: ${
-                t1 - this
-                  .t0
-              } ms : ${
-                t1
-              }`,
-              "md",
-              [
-                "_runtime",
-                this
-                  .name,
-              ]
-                .join(
-                  "-",
-                ),
+              log,
+              extension,
+              filename,
               "line",
             );
         }
