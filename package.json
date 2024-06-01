@@ -28,8 +28,7 @@
     "prepack": "npm run clean:packed && npm run build",
     "pack": "shx mkdir packed && shx cp -r built/js/* packed",
     "pretest": "npm run pack",
-    "test": "exit 0",
-    "dev": "npm test"
+    "test": "exit 0"
   },
   "devDependencies": {
     "@jimbojet/lint": "~9.0.0",
