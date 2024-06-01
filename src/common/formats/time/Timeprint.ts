@@ -15,7 +15,19 @@ class Timeprint extends p_IMoment {
     }
   }
 
-  protected get dateOptions() {
+  protected get separator() {
+    try {
+      return " " as stringful;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Timeprint: separator`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected get formatDate() {
     try {
       return {
         weekday: "long",
@@ -26,19 +38,47 @@ class Timeprint extends p_IMoment {
     }
     catch (e) {
       throw new EvalError(
-        `Timeprint: dateOptions`,
+        `Timeprint: formatDate`,
         { cause: e },
       );
     }
   }
 
-  protected get localTimeOptions() {
+  protected get formatLocal() {
     try {
       return { timeStyle: "short" };
     }
     catch (e) {
       throw new EvalError(
-        `Timeprint: localTimeOptions`,
+        `Timeprint: formatLocal`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected afterDate(
+    date: string,
+  ) {
+    try {
+      return date;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Timeprint: afterDate`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected afterLocal(
+    local: string,
+  ) {
+    try {
+      return local;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Timeprint: afterLocal`,
         { cause: e },
       );
     }

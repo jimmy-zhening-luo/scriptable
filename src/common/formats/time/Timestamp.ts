@@ -3,7 +3,19 @@ const s_IMoment = importModule(
 ) as typeof IMoment;
 
 class Timestamp extends s_IMoment {
-  protected get dateOptions() {
+  protected get separator() {
+    try {
+      return "";
+    }
+    catch (e) {
+      throw new EvalError(
+        `Timestamp: separator`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected get formatDate() {
     try {
       return {
         month: "2-digit",
@@ -13,13 +25,13 @@ class Timestamp extends s_IMoment {
     }
     catch (e) {
       throw new EvalError(
-        `Timestamp: dateOptions`,
+        `Timestamp: formatDate`,
         { cause: e },
       );
     }
   }
 
-  protected get localTimeOptions() {
+  protected get formatLocal() {
     try {
       return {
         hour12: false,
@@ -30,7 +42,47 @@ class Timestamp extends s_IMoment {
     }
     catch (e) {
       throw new EvalError(
-        `Timestamp: localTimeOptions`,
+        `Timestamp: formatLocal`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected afterDate(
+    date: string,
+  ) {
+    try {
+      return date
+        .split(
+          "/",
+        )
+        .join(
+          "",
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `Timestamp: afterDate`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected afterLocal(
+    local: string,
+  ) {
+    try {
+      return local
+        .split(
+          ":",
+        )
+        .join(
+          "",
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `Timestamp: afterLocal`,
         { cause: e },
       );
     }
