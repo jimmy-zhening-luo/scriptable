@@ -2,7 +2,7 @@
   "name": "scriptable-wild",
   "version": "7.0.0-dev.121",
   "description": "Building block classes and scripts to do complex automation on iOS.",
-  "keywords": [],
+  "keywords": [ ],
   "type": "module",
   "private": false,
   "main": "",
@@ -32,7 +32,7 @@
     "test": "exit 0"
   },
   "devDependencies": {
-    "@jimbojet/lint": "~10.1.2",
+    "@jimbojet/lint": "~10.1.4",
     "@types/node": "^20.13.0",
     "@types/scriptable-ios": "^1.7.7",
     "eslint": "~8.57.0",
