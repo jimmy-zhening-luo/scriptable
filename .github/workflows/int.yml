@@ -1,24 +1,30 @@
 name: Publish Azure (int/push)
+
 on:
   push:
     branches:
       - int
+
 jobs:
   publish-int:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     environment:
       name: int
       url: https://${{ vars.AZ_ACCOUNT }}.blob.core.windows.net/${{ vars.AZ_CONTAINER }}/${{ vars.PACKAGE }}.zip
     name: Publish (int)
     steps:
-      - name: Checkout Source
+      - name: Checkout
         id: checkout
         uses: actions/checkout@v4
-      - name: Install Node
-        id: node
-        uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          submodules: true
+          lfs: false
+      - name: Install Node v20
+        id: node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - name: Install Dependencies
         id: ci
         run: npm ci
@@ -29,8 +35,8 @@ jobs:
         id: zip
         run: |
           zip -r ${{ vars.PACKAGE }}.zip ${{ vars.PACKAGE }}
-      - name: Azure - Publish Distro
-        id: pub
+      - name: Publish to Azure
+        id: publish
         uses: Azure/cli@v1
         with:
           inlineScript: |
