@@ -53,7 +53,7 @@ abstract class App<
     }
     catch (e) {
       throw new ReferenceError(
-        `App: import Stringful`,
+        `App: import Timestamp`,
         { cause: e },
       );
     }
