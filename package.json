@@ -31,7 +31,7 @@
     "test": "exit 0"
   },
   "devDependencies": {
-    "@jimbojet/lint": "~10.1.0",
+    "@jimbojet/lint": "~10.1.1",
     "@types/node": "^20.13.0",
     "@types/scriptable-ios": "^1.7.7",
     "eslint": "~8.57.0",
