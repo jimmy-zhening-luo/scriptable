@@ -1,4 +1,4 @@
-name: Publish Azure (int/push)
+name: Azure Publish (int)
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     environment:
       name: int
       url: https://${{ vars.AZ_ACCOUNT }}.blob.core.windows.net/${{ vars.AZ_CONTAINER }}/${{ vars.PACKAGE }}.zip
-    name: Publish (int)
+    name: Build/Publish (int)
     steps:
       - name: Checkout
         id: checkout

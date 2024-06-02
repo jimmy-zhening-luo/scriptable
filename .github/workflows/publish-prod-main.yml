@@ -1,4 +1,4 @@
-name: Publish Azure (PROD/main/push)
+name: Azure Publish (PROD/main)
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     environment:
       name: publish.prod
       url: https://${{ vars.AZ_ACCOUNT }}.blob.core.windows.net/${{ vars.AZ_CONTAINER }}/${{ vars.PACKAGE }}.zip
-    name: Publish (PROD/main)
+    name: Build/Publish (PROD/main)
     steps:
       - name: Checkout
         id: checkout
