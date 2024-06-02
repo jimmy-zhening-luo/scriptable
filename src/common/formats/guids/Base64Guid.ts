@@ -212,7 +212,9 @@ function Base64Guid() {
         ),
     );
 
-    return encodedGuid;
+    return encodedGuid as Guid<
+      "base64"
+    >;
   }
   catch (e) {
     throw new EvalError(

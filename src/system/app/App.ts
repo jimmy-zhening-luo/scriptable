@@ -34,7 +34,7 @@ abstract class App<
   protected get base64guid() {
     try {
       return importModule(
-        "./common/formats/guid/Base64Guid",
+        "./common/formats/guids/Base64Guid",
       ) as typeof Base64Guid;
     }
     catch (e) {
