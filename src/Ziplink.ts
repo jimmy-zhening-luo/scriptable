@@ -15,40 +15,41 @@ namespace Ziplink {
       const url = this
         .inputStringful
         .trim();
-      const map = this
+      const storage = this
         .data<FieldTable>("json")
         ?? {};
-      const entries = Object
+      const ziplinks = Object
         .entries(
-          map,
+          storage,
         );
-      const i = entries
+      const ziplink = ziplinks
         .find(
-          pair =>
-            pair[
-              1
-            ] === url,
+          ([, u]) =>
+            u === url,
         )
         ?? null;
 
-      if (i !== null)
-        return i[
-          0
-        ];
+      if (
+        ziplink !== null
+      ) {
+        const [id] = ziplink;
+
+        return id;
+      }
       else {
-        const short = this
+        const id = this
           .base64guid();
 
+        storage[
+          id
+        ] = url;
         this
           .write(
-            {
-              ...map,
-              [short]: url,
-            },
+            storage,
             "json",
           );
 
-        return short;
+        return id;
       }
     }
   }
