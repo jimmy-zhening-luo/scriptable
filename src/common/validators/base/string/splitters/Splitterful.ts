@@ -6,13 +6,13 @@ class Splitterful extends f_ISplitter<
   stringful
 > {
   protected filter(
-    segments: string[],
+    nodes: string[],
   ) {
     try {
-      return segments
+      return nodes
         .filter(
-          (segment): segment is stringful =>
-            segment
+          (node): node is stringful =>
+            node
               .length > 0,
         );
     }

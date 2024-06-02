@@ -1,23 +1,28 @@
 abstract class ISplitter<
-  Inner extends string,
+  Node extends string,
 > {
-  public readonly segments: Inner[];
+  public readonly nodes: readonly Node[];
 
   constructor(
     unmerged:
       | string
       | string[],
     public readonly separator = "",
-    splitOptions: Parameters<ISplitter<Inner>["splitAggregate"]>[1] = {},
-    joinOptions: Parameters<ISplitter<Inner>["splitAggregate"]>[2] = {},
+    split: Parameters<
+      ISplitter<
+        Node
+      >[
+        "split"
+      ]>[
+      1
+    ] = {},
   ) {
     try {
       this
-        .segments = this
-          .splitAggregate(
+        .nodes = this
+          .split(
             unmerged,
-            splitOptions,
-            joinOptions,
+            split,
           );
     }
     catch (e) {
@@ -31,7 +36,7 @@ abstract class ISplitter<
   public get length() {
     try {
       return this
-        .segments
+        .nodes
         .length;
     }
     catch (e) {
@@ -44,12 +49,13 @@ abstract class ISplitter<
 
   public toString() {
     try {
-      return this
-        .segments
-        .join(
-          this
-            .separator,
-        );
+      return `[${
+        this
+          .nodes
+          .join(
+            ", ",
+          )
+      }]`;
     }
     catch (e) {
       throw new EvalError(
@@ -59,105 +65,20 @@ abstract class ISplitter<
     }
   }
 
-  private splitAggregate(
-    input:
-      | string
-      | string[],
-    splitOptions: Parameters<ISplitter<Inner>["split"]>[1] = {},
-    aggregateOptions: Parameters<ISplitter<Inner>["aggregate"]>[1] = {},
-  ) {
-    try {
-      return this
-        .aggregate(
-          this
-            .split(
-              input,
-              splitOptions,
-            ),
-          aggregateOptions,
-        );
-    }
-    catch (e) {
-      throw new EvalError(
-        `Splitter: _mergeSplit`,
-        { cause: e },
-      );
-    }
-  }
-
-  private aggregate(
-    split: Inner[],
-    {
-      limit = Infinity,
-      mergeTo = "right",
-    }: {
-      limit?: number;
-      mergeTo?:
-        | "left"
-        | "right"
-      ;
-    },
-  ) {
-    const limitful =
-      limit < 0
-      || !Number
-        .isInteger(
-          limit,
-        )
-        ? Infinity
-        : limit;
-
-    return split.length < 1
-      ? []
-      : split.length <= limitful
-        ? split
-        : mergeTo === "left"
-          ? [
-              split
-                .slice(
-                  0,
-                  limitful - 1,
-                )
-                .join(
-                  this
-                    .separator,
-                ) as Inner,
-              ...split
-                .slice(
-                  limitful - 1,
-                ),
-            ]
-          : [
-              ...split
-                .slice(
-                  0,
-                  limitful - 1,
-                ),
-              split
-                .slice(
-                  limitful - 1,
-                )
-                .join(
-                  this
-                    .separator,
-                ) as Inner,
-            ];
-  }
-
   private split(
     input:
       | string
       | string[],
     {
       trim = true,
-      trimSegment = false,
+      trimNode = false,
     }: {
       trim?: boolean;
-      trimSegment?: boolean;
+      trimNode?: boolean;
     },
   ) {
     try {
-      const trimmed: string = [input]
+      const trimmed = [input]
         .flat()
         .join(
           this
@@ -167,24 +88,27 @@ abstract class ISplitter<
             ? "trim"
             : "toString"
         ]();
-
-      return trimmed === ""
+      const nodes = trimmed
+        .length < 1
         ? []
-        : this
-          .filter(
-            trimmed
-              .split(
-                this
-                  .separator,
-              )
-              .map(
-                segment =>
-                  trimSegment
-                    ? segment
-                      .trim()
-                    : segment,
-              ),
+        : trimmed
+          .split(
+            this
+              .separator,
           );
+      const trimmedNodes = trimNode
+        ? nodes
+          .map(
+            node =>
+              node
+                .trim(),
+          )
+        : nodes;
+
+      return this
+        .filter(
+          trimmedNodes,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -194,7 +118,7 @@ abstract class ISplitter<
     }
   }
 
-  protected abstract filter(segments: string[]): Inner[];
+  protected abstract filter(nodes: string[]): Node[];
 }
 
 module.exports = ISplitter;

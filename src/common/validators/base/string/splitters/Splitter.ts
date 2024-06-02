@@ -6,10 +6,10 @@ class Splitter extends _ISplitter<
   string
 > {
   protected filter(
-    segments: string[],
+    nodes: string[],
   ) {
     try {
-      return segments;
+      return nodes;
     }
     catch (e) {
       throw new EvalError(
