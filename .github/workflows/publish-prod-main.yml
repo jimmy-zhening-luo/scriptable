@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  publish-PROD-main:
+  publish-prod-main:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     environment:
@@ -23,8 +23,7 @@ jobs:
       - name: Install Node v20
         id: node
         uses: actions/setup-node@v4
-        with:
-          node-version: 20
+        with: { node-version: 20 }
       - name: Install Dependencies
         id: ci
         run: npm ci
