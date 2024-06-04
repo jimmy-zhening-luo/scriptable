@@ -12,9 +12,7 @@
   },
   "author": "Jimmy Zhening Luo",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jimmy-zhening-luo/scriptable-wild/issues"
-  },
+  "bugs": { "url": "https://github.com/jimmy-zhening-luo/scriptable-wild/issues" },
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "scripts": {
     "es": "eslint --fix --cache --cache-strategy content -c eslint.config.js",
