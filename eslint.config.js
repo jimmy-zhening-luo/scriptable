@@ -12,7 +12,6 @@ export default [
       json: ["package.json"],
       jsonc: ["tsconfig.json"],
       yml: [".github/workflows/*.yml"],
-      md: ["README.md"],
     },
     { overrideTs: { "@typescript-eslint/explicit-module-boundary-types": "off" } },
   )
