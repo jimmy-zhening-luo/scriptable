@@ -1,6 +1,6 @@
 {
   "name": "scriptable-wild",
-  "version": "7.0.0-dev.123",
+  "version": "7.0.0-dev.124",
   "description": "Building block classes and scripts to do complex automation on iOS.",
   "keywords": [],
   "type": "module",
@@ -12,7 +12,9 @@
   },
   "author": "Jimmy Zhening Luo",
   "license": "MIT",
-  "bugs": { "url": "https://github.com/jimmy-zhening-luo/scriptable-wild/issues" },
+  "bugs": {
+    "url": "https://github.com/jimmy-zhening-luo/scriptable-wild/issues"
+  },
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
   "scripts": {
     "es": "eslint --fix --cache --cache-strategy content -c eslint.config.js",
