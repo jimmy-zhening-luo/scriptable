@@ -204,7 +204,7 @@ namespace Link {
       try {
         return importModule(
           `apps/method/link/${
-            processor
+            host
           }`,
         ) as ILinkPathProcessor<
           Host
