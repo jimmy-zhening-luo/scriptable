@@ -36,7 +36,7 @@ jobs:
           zip -r ${{ vars.PACKAGE }}.zip ${{ vars.PACKAGE }}
       - name: Publish to Azure
         id: publish
-        uses: Azure/cli@v1
+        uses: Azure/cli@v2
         with:
           inlineScript: |
             az storage blob upload -c ${{ vars.AZ_CONTAINER }} -f ${{ vars.PACKAGE }}.zip -n ${{ vars.PACKAGE }}.zip --overwrite true --account-name ${{ vars.AZ_ACCOUNT }} --sas-token '${{ secrets.AZ_CONTAINER_SAS_TOKEN }}'
