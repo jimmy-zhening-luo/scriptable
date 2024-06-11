@@ -1,11 +1,11 @@
 abstract class ILinkPathProcessor<
-  H extends string,
+  Host extends string,
 > {
   public readonly processed: string;
 
   constructor(
     protected readonly host: literalful<
-      H
+      Host
     >,
     path: string,
   ) {
