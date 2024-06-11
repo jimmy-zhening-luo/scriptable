@@ -199,8 +199,8 @@ namespace Link {
     >(
       host: Host,
     ): ILinkPathProcessor<
-      Host
-    > {
+        Host
+      > {
       try {
         return importModule(
           `apps/method/link/${
