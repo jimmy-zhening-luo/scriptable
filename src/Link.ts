@@ -198,7 +198,10 @@ namespace Link {
       Host extends string,
     >(
       host: Host,
-    ): ILinkPathProcessor<
+    ): new (
+        host: Host,
+        path: string
+      )=> ILinkPathProcessor<
         Host
       > {
       try {
@@ -206,7 +209,10 @@ namespace Link {
           `apps/method/link/${
             host
           }`,
-        ) as ILinkPathProcessor<
+        ) as new (
+          host: Host,
+          path: string
+        )=> ILinkPathProcessor<
           Host
         >;
       }
