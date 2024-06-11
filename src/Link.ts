@@ -107,34 +107,12 @@ namespace Link {
 
       if (
         Host === "amazon.com"
+        || Host === "linkedin.com"
+        || Host === "dropbox.com"
       )
         Path = new (
-          this.Processor<typeof AmazonPathProcessor>(
-            "AmazonPathProcessor",
-          )
-        )(
-          Host,
-          Path,
-        )
-          .processed;
-      else if (
-        Host === "linkedin.com"
-      )
-        Path = new (
-          this.Processor<typeof LinkedInPathProcessor>(
-            "LinkedInPathProcessor",
-          )
-        )(
-          Host,
-          Path,
-        )
-          .processed;
-      else if (
-        Host === "dropbox.com"
-      )
-        Path = new (
-          this.Processor<typeof DropboxPathProcessor>(
-            "DropboxPathProcessor",
+          this.Processor(
+            Host,
           )
         )(
           Host,
@@ -216,15 +194,21 @@ namespace Link {
       }
     }
 
-    private Processor<P>(
-      processor: string,
-    ): P {
+    private Processor<
+      Host extends string,
+    >(
+      host: Host,
+    ): ILinkPathProcessor<
+      Host
+    > {
       try {
         return importModule(
           `apps/method/link/${
             processor
           }`,
-        ) as P;
+        ) as ILinkPathProcessor<
+          Host
+        >;
       }
       catch (e) {
         throw new EvalError(
