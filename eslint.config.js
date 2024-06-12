@@ -4,12 +4,7 @@ export default [
   ...new Lint(
     {
       js: ["*.config.js"],
-      ts: [
-        // "*.config.ts",
-        "src/**/*.ts",
-      ],
-      svelte: ["src/**/*.svelte"],
-      html: ["src/**/*.html"],
+      ts: ["src/**/*.ts"],
       jsonc: ["tsconfig.json"],
       json: ["package.json"],
       yml: [".github/workflows/*.yml"],
