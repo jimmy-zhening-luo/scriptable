@@ -11,10 +11,27 @@ class ShortcutEngine extends s_IEngine {
     shortcut: string,
     output = false,
     write = false,
+    postfix?: string,
   ) {
     try {
       super(
         "shortcut",
+        postfix
+        ?? shortcut
+          .toLowerCase()
+          .replaceAll(
+            ".",
+            "",
+          )
+          .replaceAll(
+            "_",
+            "",
+          )
+          .trim()
+          .replaceAll(
+            " ",
+            "",
+          ),
       );
 
       if (

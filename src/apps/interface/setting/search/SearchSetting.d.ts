@@ -20,13 +20,19 @@ declare type SearchSetting = {
       | string
       | string[]
       | UrlEngineSetting
-      | ISearchEngineSetting<"inline">
-      | ISearchEngineSetting<"find">
+      | ISearchEngineSetting<
+        "inline"
+      >
+      | ISearchEngineSetting<
+        "find"
+      >
       | ISearchEngineSetting<
         "shortcut"
         ,
         | "output"
         | "write"
+        ,
+        | "postfix"
       >
     >;
   };

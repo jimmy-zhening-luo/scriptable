@@ -19,10 +19,12 @@ class UrlEngine extends b_IEngine {
     browser = "",
     separator = "+",
     encodeComponent = false,
+    postfix?: string,
   ) {
     try {
       super(
         "safari",
+        postfix,
       );
       this
         .TAG = TAG;

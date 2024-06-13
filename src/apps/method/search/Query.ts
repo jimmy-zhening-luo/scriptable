@@ -130,13 +130,8 @@ class Query {
 
   public get postfix() {
     try {
-      return Query
-        .toUpper(
-          this
-            .key[
-              0
-            ],
-        );
+      return this
+        .key;
     }
     catch (e) {
       throw new EvalError(

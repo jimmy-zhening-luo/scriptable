@@ -1,6 +1,7 @@
 abstract class IEngine {
   constructor(
     protected readonly app: string,
+    protected readonly postfix: Null<string> = null,
   ) {}
 
   public resolve(
@@ -57,11 +58,13 @@ abstract class IEngine {
   ) {
     try {
       const { app } = this;
-      const { postfix } = query;
 
       return {
         app,
-        postfix,
+        postfix: this
+          .postfix
+          ?? query
+            .postfix,
         action: this
           .transform(
             query,

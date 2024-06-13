@@ -157,6 +157,8 @@ namespace Search {
                 .separator,
               setting
                 .encodeComponent,
+              setting
+                .postfix,
             )
             : "shortcut" in setting
               ? new (
@@ -171,6 +173,8 @@ namespace Search {
                   .output,
                 setting
                   .write,
+                setting
+                  .postfix,
               )
               : "find" in setting
                 ? new (

@@ -4,6 +4,8 @@ declare type UrlEngineSetting =
     ,
     | "encodeComponent"
     ,
+    | "postfix"
+    ,
     true
   >
   & PartialRecord<
