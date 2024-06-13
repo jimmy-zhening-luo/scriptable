@@ -177,14 +177,14 @@ namespace Search {
                   .postfix,
               )
               : new (
-                  this
-                    .Engine<typeof FindEngine>(
-                    "FindEngine",
-                  )
-                )(
-                  setting
-                    .find,
-                );
+                this
+                  .Engine<typeof FindEngine>(
+                  "FindEngine",
+                )
+              )(
+                setting
+                  .find,
+              );
 
         this
           .write(
