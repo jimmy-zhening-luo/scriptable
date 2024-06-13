@@ -1,5 +1,5 @@
 const f_IEngine = importModule(
-  `system/Shortcut`,
+  `engine/IEngine`,
 ) as typeof IEngine;
 
 class FindEngine extends f_IEngine {
