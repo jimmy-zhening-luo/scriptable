@@ -210,9 +210,7 @@ abstract class Filetype<
       )
         return new this
           .Bookmark(
-            `#${
-              subtype
-            }`,
+            subtype,
           );
       else
         throw new SyntaxError(
