@@ -176,8 +176,7 @@ namespace Search {
                 setting
                   .postfix,
               )
-              : "find" in setting
-                ? new (
+              : new (
                   this
                     .Engine<typeof FindEngine>(
                     "FindEngine",
@@ -185,15 +184,6 @@ namespace Search {
                 )(
                   setting
                     .find,
-                )
-                : new (
-                  this
-                    .Engine<typeof InlineEngine>(
-                    "InlineEngine",
-                  )
-                )(
-                  setting
-                    .inline,
                 );
 
         this

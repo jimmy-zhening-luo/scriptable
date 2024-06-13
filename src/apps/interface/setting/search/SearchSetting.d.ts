@@ -21,9 +21,6 @@ declare type SearchSetting = {
       | string[]
       | UrlEngineSetting
       | ISearchEngineSetting<
-        "inline"
-      >
-      | ISearchEngineSetting<
         "find"
       >
       | ISearchEngineSetting<
