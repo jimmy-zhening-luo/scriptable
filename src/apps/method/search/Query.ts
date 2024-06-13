@@ -474,21 +474,6 @@ class Query {
     }
   }
 
-  private static toUpper(
-    stringful: stringful,
-  ) {
-    try {
-      return stringful
-        .toUpperCase() as stringful;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: toUpper`,
-        { cause: e },
-      );
-    }
-  }
-
   private static toLower(
     stringful: stringful,
   ) {
