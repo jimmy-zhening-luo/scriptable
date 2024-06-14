@@ -8,7 +8,9 @@ class BoundString<
 > extends f_CharString<
     String
     ,
-    literalful<Validator> extends never
+    literalful<
+      Validator
+    > extends never
       ? never
       : `${Validator}:Bound`
   > {

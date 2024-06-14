@@ -7,7 +7,9 @@ class CleanString<
 > extends v_BoundString<
     stringful
     ,
-    literalful<Validator> extends never
+    literalful<
+      Validator
+    > extends never
       ? never
       : `${Validator}:Clean`
   > {
