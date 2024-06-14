@@ -4,25 +4,13 @@ abstract class ISplitter<
   public readonly nodes: readonly Node[];
 
   constructor(
-    unmerged:
-      | string
-      | string[],
-    public readonly separator = "",
-    split: Parameters<
-      ISplitter<
-        Node
-      >[
-        "split"
-      ]>[
-      1
-    ] = {},
+    ...split: Parameters<ISplitter<Node>["split"]>
   ) {
     try {
       this
         .nodes = this
           .split(
-            unmerged,
-            split,
+            ...split,
           );
     }
     catch (e) {
@@ -66,23 +54,18 @@ abstract class ISplitter<
   }
 
   private split(
-    input:
+    string:
       | string
       | string[],
-    {
-      trim = true,
-      trimNode = false,
-    }: {
-      trim?: boolean;
-      trimNode?: boolean;
-    },
+    separator = "",
+    trimNode = false,
+    trim = true,
   ) {
     try {
-      const trimmed = [input]
+      const trimmed = [string]
         .flat()
         .join(
-          this
-            .separator,
+          separator,
         )[
           trim
             ? "trim"
@@ -93,8 +76,7 @@ abstract class ISplitter<
         ? []
         : trimmed
           .split(
-            this
-              .separator,
+            separator,
           );
       const trimmedNodes = trimNode
         ? nodes

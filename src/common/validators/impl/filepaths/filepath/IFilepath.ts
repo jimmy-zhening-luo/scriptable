@@ -251,7 +251,7 @@ abstract class IFilepath<
                 .Splitterful(
                   subpath,
                   "/",
-                  { trimNode: true },
+                  true,
                 )
                 .nodes
                 .map(
