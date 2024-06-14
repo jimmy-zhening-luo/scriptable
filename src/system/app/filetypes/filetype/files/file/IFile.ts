@@ -196,7 +196,7 @@ abstract class IFile {
     }
   }
 
-  public get parent(): this {
+  public get parent() {
     try {
       return new (
         this
