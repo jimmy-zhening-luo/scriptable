@@ -4,7 +4,13 @@ abstract class ISplitter<
   public readonly nodes: readonly Node[];
 
   constructor(
-    ...split: Parameters<ISplitter<Node>["split"]>
+    ...split: Parameters<
+      ISplitter<
+        Node
+      >[
+        "split"
+      ]
+    >
   ) {
     try {
       this
