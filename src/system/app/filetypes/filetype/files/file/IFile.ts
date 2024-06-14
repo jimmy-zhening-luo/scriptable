@@ -359,7 +359,13 @@ abstract class IFile {
   }
 
   public append(
-    ...filepaths: Parameters<IFilepath<0>["append"]>
+    ...filepaths: Parameters<
+      IFilepath<
+        0
+      >[
+        "append"
+      ]
+    >
   ) {
     try {
       return new (
@@ -385,7 +391,13 @@ abstract class IFile {
   }
 
   public cd(
-    ...relativeFilepath: Parameters<IFilepath<0>["cd"]>
+    ...relativeFilepath: Parameters<
+      IFilepath<
+        0
+      >[
+        "cd"
+      ]
+    >
   ) {
     try {
       this
