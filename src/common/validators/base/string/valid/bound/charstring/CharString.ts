@@ -68,7 +68,7 @@ class CharString<
       if (
         this
           .charset
-          .allows<CharString<String, Validator>["string"]>(
+          .allows<Stringify<CharString<String, Validator>>>(
           string,
         )
       )
