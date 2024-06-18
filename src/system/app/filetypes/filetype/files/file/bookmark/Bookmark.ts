@@ -33,7 +33,7 @@ class Bookmark {
             );
         this
           .path = FileManager
-            .iCloud()
+            .local()
             .bookmarkedPath(
               bookmark,
             ) as Stringify<
@@ -76,7 +76,7 @@ class Bookmark {
 
       if (
         FileManager
-          .iCloud()
+          .local()
           .bookmarkExists(
             alias,
           )

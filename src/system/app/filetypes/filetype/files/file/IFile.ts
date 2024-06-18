@@ -3,7 +3,7 @@ abstract class IFile {
     "IFile"
   > = "IFile";
   protected readonly manager = FileManager
-    .iCloud();
+    .local();
   private readonly _root: Stringify<
     Rootpath
   >;
