@@ -1,6 +1,6 @@
 # scriptable-wild
 
-[![Azure Publish (PROD/main)](https://github.com/jimmy-zhening-luo/scriptable-wild/actions/workflows/publish-prod-main.yml/badge.svg)](https://github.com/jimmy-zhening-luo/scriptable-wild/actions/workflows/publish-prod-main.yml)
+[![Azure Publish (PROD.main)](https://github.com/jimmy-zhening-luo/scriptable-wild/actions/workflows/PROD.main.yml/badge.svg)](https://github.com/jimmy-zhening-luo/scriptable-wild/actions/workflows/PROD.main.yml)
 
 ## What is Scriptable?
 
