@@ -106,7 +106,7 @@ abstract class ISplitter<
     }
   }
 
-  protected abstract filter(nodes: readonly string[]): Node[];
+  protected abstract filter(nodes: readonly string[]): readonly Node[];
 }
 
 module.exports = ISplitter;
