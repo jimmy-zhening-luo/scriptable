@@ -1,21 +1,26 @@
 {
-  "name": "scriptable-wild",
+  "name": "@jimbojet/scriptable",
   "version": "7.0.0-dev.171",
-  "description": "Building block classes and scripts to do complex automation on iOS.",
-  "keywords": [],
+  "description": "A compelling use of Scriptable is using JavaScript to control custom iOS actions (see iOS Shortcuts), device-side and home automation, and on-screen Widgets. This project extends the Scriptable ecosystem by providing system classes like File, Url, Repository, Config, Data — making all the above safer and easier to do.",
+  "keywords": [
+    "ios",
+    "shortcuts",
+    "scriptable",
+    "typescript",
+  ],
   "type": "module",
-  "private": false,
+  "private": true,
   "main": "",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jimmy-zhening-luo/scriptable-wild.git"
+    "url": "git+https://github.com/jimmy-zhening-luo/scriptable.git"
   },
   "author": "Jimmy Zhening Luo",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jimmy-zhening-luo/scriptable-wild/issues"
+    "url": "https://github.com/jimmy-zhening-luo/scriptable/issues"
   },
-  "homepage": "https://github.com/jimmy-zhening-luo/scriptable-wild#readme",
+  "homepage": "https://github.com/jimmy-zhening-luo/scriptable#readme",
   "scripts": {
     "es": "eslint --fix --cache --cache-strategy content -c eslint.config.js",
     "lint": "npm run lint:cfg && npm run lint:src && npm run lint:ci",
