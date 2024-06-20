@@ -17,7 +17,7 @@ class ErrorHandler {
               .cause as ErrorLike,
           );
 
-      const queue: ErrorLike[] = [...stack]
+      const queue: readonly ErrorLike[] = [...stack]
         .reverse();
       const hoist = queue
         .findIndex(
@@ -27,7 +27,7 @@ class ErrorHandler {
             typeof e === "object"
             && "message" in e,
         );
-      const hoistedQueue: ErrorLike[] = hoist === -1
+      const hoistedQueue: readonly ErrorLike[] = hoist === -1
         ? queue
         : [
             queue[
@@ -76,7 +76,7 @@ class ErrorHandler {
   }
 
   private log(
-    messages: string[],
+    messages: readonly string[],
   ) {
     try {
       console
@@ -96,17 +96,18 @@ class ErrorHandler {
   }
 
   private notify(
-    messages: string[],
+    messages: readonly string[],
   ) {
     try {
       const note = new Notification();
+      const lines = [...messages];
 
       note
-        .title = messages
+        .title = lines
           .shift()
           ?? "";
       note
-        .body = messages
+        .body = lines
           .join(
             "\n",
           );

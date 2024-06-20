@@ -58,8 +58,8 @@ class CleanString<
       trim?: boolean;
       trimLeadingExcept?: boolean;
       trimTrailingExcept?: boolean;
-      trimLeading?: string[];
-      trimTrailing?: string[];
+      trimLeading?: readonly string[];
+      trimTrailing?: readonly string[];
     },
   ) {
     try {
@@ -98,7 +98,7 @@ class CleanString<
     edge:
       | "leading"
       | "trailing",
-    wordsToTrim: string[],
+    wordsToTrim: readonly string[],
     trimExcept: boolean,
   ) {
     try {

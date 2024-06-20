@@ -6,7 +6,7 @@ class Splitter extends _ISplitter<
   string
 > {
   protected filter(
-    nodes: string[],
+    nodes: readonly string[],
   ) {
     try {
       return nodes;

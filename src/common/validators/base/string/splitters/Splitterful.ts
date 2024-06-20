@@ -6,7 +6,7 @@ class Splitterful extends f_ISplitter<
   stringful
 > {
   protected filter(
-    nodes: string[],
+    nodes: readonly string[],
   ) {
     try {
       return nodes
