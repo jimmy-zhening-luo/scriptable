@@ -6,7 +6,7 @@
     "ios",
     "shortcuts",
     "scriptable",
-    "typescript",
+    "typescript"
   ],
   "type": "module",
   "private": true,
