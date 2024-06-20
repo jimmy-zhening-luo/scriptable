@@ -81,17 +81,14 @@ namespace Things {
             > =
               !isTagged
                 ? {}
-                : {
-                    when: "today",
-                    ...lastTag === null
-                    || lastTag.length === 0
-                      ? {}
-                      : {
-                          list: lists[
-                            lastTag
-                          ] ?? "",
-                        },
-                  };
+                : ...lastTag === null
+                  || lastTag.length < 1
+                  ? { when: "today" }
+                  : {
+                      list: lists[
+                        lastTag
+                      ] ?? "",
+                    };
 
             return {
               title: encodeURI(
