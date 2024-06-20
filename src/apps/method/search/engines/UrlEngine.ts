@@ -14,7 +14,7 @@ class UrlEngine extends b_IEngine {
   constructor(
     urls:
       | string
-      | string[],
+      | readonly string[],
     TAG: stringful,
     browser = "",
     separator = "+",
