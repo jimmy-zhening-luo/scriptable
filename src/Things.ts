@@ -93,13 +93,6 @@ namespace Things {
                         },
                   };
 
-            if (
-              "list" in flags
-              && flags.list.length > 0
-            )
-              flags
-                .when = "someday";
-
             return {
               title: encodeURI(
                 lines
