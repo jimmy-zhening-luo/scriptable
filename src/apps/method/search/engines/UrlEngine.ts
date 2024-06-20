@@ -37,7 +37,7 @@ class UrlEngine extends b_IEngine {
       this
         .plus = "+";
       this
-        .plusEncoded = "%20";
+        .plusEncoded = "%2B";
 
       const stringfulUrls = [urls]
         .flat()
