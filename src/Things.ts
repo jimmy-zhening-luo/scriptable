@@ -9,7 +9,7 @@ namespace Things {
   export class Things extends shortcut<
     string
     ,
-    ThingsItem[]
+    readonly ThingsItem[]
     ,
     ThingsSetting
   > {
