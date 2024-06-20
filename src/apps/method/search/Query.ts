@@ -45,7 +45,7 @@ class Query {
     "#",
     "$",
     "°",
-  ] as const;
+  ];
 
   constructor(
     query: string,
@@ -389,7 +389,7 @@ class Query {
     TRANSLATE: stringful,
     MATH_SHORT: stringful,
     MATH_LONG: stringful,
-    NUMERIC: Query["numeric"],
+    NUMERIC: readonly string[],
   ) {
     try {
       const M = [
