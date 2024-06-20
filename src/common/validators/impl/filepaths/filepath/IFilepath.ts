@@ -231,7 +231,8 @@ abstract class IFilepath<
   private compose(
     ...subpaths: Array<
       | Unflat<
-        string
+        string,
+        true
       >
       | IFilepath<
         Length

@@ -19,6 +19,8 @@ declare type SearchSetting = {
     engines: Table<
       | Unflat<
         string
+        ,
+        true
       >
       | UrlEngineSetting
       | ISearchEngineSetting<
