@@ -389,7 +389,7 @@ class Query {
     TRANSLATE: stringful,
     MATH_SHORT: stringful,
     MATH_LONG: stringful,
-    NUMERIC: typeof Query["numeric"],
+    NUMERIC: Query["numeric"],
   ) {
     try {
       const M = [
