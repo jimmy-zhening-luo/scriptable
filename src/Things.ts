@@ -82,7 +82,7 @@ namespace Things {
               !isTagged
                 ? {}
                 : lastTag === null
-                  || lastTag.length < 1
+                || lastTag.length < 1
                   ? { when: "today" }
                   : {
                       list: lists[
