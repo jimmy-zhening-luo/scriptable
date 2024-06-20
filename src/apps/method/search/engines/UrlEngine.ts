@@ -12,9 +12,9 @@ class UrlEngine extends b_IEngine {
   private readonly plusEncoded: string;
 
   constructor(
-    urls:
-      | string
-      | readonly string[],
+    urls: Unflat<
+      string
+    >,
     TAG: stringful,
     browser = "",
     separator = "+",

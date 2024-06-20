@@ -60,9 +60,9 @@ abstract class ISplitter<
   }
 
   private split(
-    string:
-      | string
-      | string[],
+    string: Unflat<
+      string
+    >,
     separator = "",
     trimNode = false,
     trim = true,

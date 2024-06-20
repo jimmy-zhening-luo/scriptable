@@ -38,9 +38,9 @@ abstract class IEngine {
 
   protected transform(
     query: Query,
-  ):
-    | string
-    | string[] {
+  ): Unflat<
+    string
+  > {
     try {
       return query
         .natural;

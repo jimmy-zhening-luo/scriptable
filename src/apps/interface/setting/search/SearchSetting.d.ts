@@ -17,8 +17,9 @@ declare type SearchSetting = {
   user: {
     alias: FieldTable;
     engines: Table<
-      | string
-      | string[]
+      | Unflat<
+        string
+      >
       | UrlEngineSetting
       | ISearchEngineSetting<
         "find"
