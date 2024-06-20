@@ -3,7 +3,7 @@ const b_IEngine = importModule(
 ) as typeof IEngine;
 
 class UrlEngine extends b_IEngine {
-  protected readonly urls: stringful[];
+  protected readonly urls: readonly stringful[];
   protected readonly TAG: stringful;
   protected readonly browser: string;
   protected readonly separator: string;
