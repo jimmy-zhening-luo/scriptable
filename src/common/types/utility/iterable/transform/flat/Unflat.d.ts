@@ -5,8 +5,8 @@ declare type Unflat<
   | Inner
   | (
     Mutable extends true
-    ? Inner[]
-    : readonly Inner[]
+      ? Inner[]
+      : readonly Inner[]
   )
 ;
 
