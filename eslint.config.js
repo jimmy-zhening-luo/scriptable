@@ -8,6 +8,7 @@ export default [
       jsonc: ["tsconfig.json"],
       json: ["package.json"],
       yml: [".github/workflows/*.yml"],
+      jest: ["src/**/*.spec.ts"],
     },
     { overrideTs: { "@typescript-eslint/explicit-module-boundary-types": "off" } },
   )

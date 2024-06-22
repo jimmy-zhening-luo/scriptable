@@ -42,6 +42,7 @@
     "types": [
       "node",
       "scriptable-ios",
+      "jest",
     ], /* Specify type package names to be included without being referenced in a source file. */
     // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
     // "moduleSuffixes": [],                             /* List of file name suffixes to search when resolving a module. */
@@ -109,7 +110,6 @@
     "allowUnusedLabels": false, /* Disable error reporting for unused labels. */
     "allowUnreachableCode": false, /* Disable error reporting for unreachable code. */
     /* Completeness */
-    "skipDefaultLibCheck": true, /* Skip type checking .d.ts files that are included with TypeScript. */
-    "skipLibCheck": false, /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true, /* Skip type checking all .d.ts files. */
   },
 }
