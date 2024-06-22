@@ -135,8 +135,8 @@ namespace Search {
           ? new (
             this
               .Engine<typeof UrlEngine>(
-              "UrlEngine",
-            )
+                "UrlEngine",
+              )
           )(
             setting,
             TAG,
@@ -145,8 +145,8 @@ namespace Search {
             ? new (
               this
                 .Engine<typeof UrlEngine>(
-                "UrlEngine",
-              )
+                  "UrlEngine",
+                )
             )(
               setting
                 .url,
@@ -164,8 +164,8 @@ namespace Search {
               ? new (
                 this
                   .Engine<typeof ShortcutEngine>(
-                  "ShortcutEngine",
-                )
+                    "ShortcutEngine",
+                  )
               )(
                 setting
                   .shortcut,
@@ -179,8 +179,8 @@ namespace Search {
               : new (
                 this
                   .Engine<typeof FindEngine>(
-                  "FindEngine",
-                )
+                    "FindEngine",
+                  )
               )(
                 setting
                   .find,
