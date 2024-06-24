@@ -6,8 +6,7 @@ declare type StringChain<
   Nodes
 > extends never
   ? Nodes extends [
-    infer Head
-    ,
+    infer Head,
     ...infer Tail,
   ]
     ? literalful<
