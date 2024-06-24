@@ -6,13 +6,3 @@ declare type Valid<
   & Type
   & { [valid]: StringChain<Validator> }
 ;
-
-declare type ValidTest = Valid<
-  string
-  ,
-  [
-    "stringful",
-    "length",
-    "god",
-  ]
->;
