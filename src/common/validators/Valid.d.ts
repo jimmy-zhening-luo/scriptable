@@ -4,5 +4,7 @@ declare type Valid<
   Validator extends string[],
 > =
   & Type
-  & { [valid]: StringChain<Validator> }
+  & { [valid]: StringChain<
+    Validator
+  >; }
 ;
