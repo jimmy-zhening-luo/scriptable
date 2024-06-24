@@ -24,7 +24,7 @@
   "peerDependencies": {},
   "dependencies": {},
   "devDependencies": {
-    "@jimbojet/lint": "~10.10.1",
+    "@jimbojet/lint": "~11.0.0",
     "@types/node": "^20.14.8",
     "@types/scriptable-ios": "^1.7.7",
     "eslint": "~8.57.0",

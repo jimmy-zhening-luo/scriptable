@@ -10,7 +10,6 @@ export default [
       yml: [".github/workflows/*.yml"],
       jest: ["src/**/*.spec.ts"],
     },
-    { overrideTs: { "@typescript-eslint/explicit-module-boundary-types": "off" } },
   )
     .configs,
 ];
