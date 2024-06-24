@@ -4,15 +4,14 @@ const f_CharString = importModule(
 
 class BoundString<
   String extends stringful,
-  Validator extends string,
+  Validator extends string[],
 > extends f_CharString<
     String
     ,
-    literalful<
-      Validator
-    > extends never
-      ? never
-      : `${Validator}:Bound`
+    [
+      ...Validator,
+      `Bound`,
+    ]
   > {
   constructor(
     min: posint,

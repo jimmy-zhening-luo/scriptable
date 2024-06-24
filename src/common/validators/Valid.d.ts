@@ -1,17 +1,18 @@
 declare const valid: unique symbol;
 declare type Valid<
   Type,
-  Validator extends string,
-  Prior extends string,
-> = literalful<
-  Validator
-> extends never
-  ? never
-  : literalful<
-    Prior
-  > extends never
-    ? never
-    :
-      & Type
-      & { [valid]: `${Validator}:${Prior}` }
+  Validator extends string[],
+> =
+  & Type
+  & { [valid]: StringChain<Validator> }
 ;
+
+declare type ValidTest = Valid<
+  string
+  ,
+  [
+    "stringful",
+    "length",
+    "god",
+  ]
+>;

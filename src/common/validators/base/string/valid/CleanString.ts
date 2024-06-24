@@ -3,15 +3,14 @@ const v_BoundString = importModule(
 ) as typeof BoundString;
 
 class CleanString<
-  Validator extends string,
+  Validator extends string[],
 > extends v_BoundString<
     stringful
     ,
-    literalful<
-      Validator
-    > extends never
-      ? never
-      : `${Validator}:Clean`
+    [
+      ...Validator,
+      `Clean`,
+    ]
   > {
   constructor(
     string: string,

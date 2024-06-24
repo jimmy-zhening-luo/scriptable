@@ -3,7 +3,9 @@ const f_CleanString = importModule(
 ) as typeof CleanString;
 
 class FileNode extends f_CleanString<
-  "FileNode"
+  [
+    `FileNode`,
+  ]
 > {
   constructor(
     node: string,
