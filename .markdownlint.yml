@@ -1,0 +1,9 @@
+# .markdownlint.yml
+# v1.0.0
+
+MD013: false
+MD033:
+  allowed_elements:
+    - br
+    - details
+    - summary

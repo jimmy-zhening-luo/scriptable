@@ -7,7 +7,10 @@ export default [
       ts: ["src/**/*.ts"],
       jsonc: ["tsconfig.json"],
       json: ["package.json"],
-      yml: [".github/workflows/*.yml"],
+      yml: [
+        ".markdownlint.yml",
+        ".github/workflows/*.yml",
+      ],
       jest: ["src/**/*.spec.ts"],
     },
   )
