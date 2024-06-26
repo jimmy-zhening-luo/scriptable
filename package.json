@@ -21,10 +21,10 @@
     "url": "https://github.com/jimmy-zhening-luo/scriptable/issues"
   },
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable#readme",
-  "peerDependencies": {},
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
-    "@jimbojet/lint": "~11.2.1",
+    "@jimbojet/lint": "~11.4.0",
     "@types/node": "^20.14.8",
     "@types/scriptable-ios": "^1.7.7",
     "eslint": "~8.57.0",
