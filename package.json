@@ -24,7 +24,7 @@
   "dependencies": {
   },
   "devDependencies": {
-    "@jimbojet/lint": "~11.4.0",
+    "@jimbojet/lint": "~11.5.1",
     "@types/node": "^20.14.9",
     "@types/scriptable-ios": "^1.7.7",
     "eslint": "~8.57.0",
