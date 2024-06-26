@@ -8,19 +8,28 @@
     "scriptable",
     "typescript"
   ],
+  "license": "MIT",
   "type": "module",
   "private": true,
-  "main": "",
+  "config": {
+    "PACKAGE_JSON_VERSION": "1.0.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jimmy-zhening-luo/scriptable.git"
   },
-  "author": "Jimmy Zhening Luo",
-  "license": "MIT",
+  "homepage": "https://github.com/jimmy-zhening-luo/scriptable#readme",
   "bugs": {
     "url": "https://github.com/jimmy-zhening-luo/scriptable/issues"
   },
-  "homepage": "https://github.com/jimmy-zhening-luo/scriptable#readme",
+  "author": {
+    "name": "Jimmy Zhening Luo",
+    "email": "1450044+jimmy-zhening-luo@users.noreply.github.com",
+    "url": "https://jimm.my"
+  },
+  "peerDependencies": {},
+  "peerDependenciesMeta": {},
+  "optionalDependencies": {},
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^20.14.9",
