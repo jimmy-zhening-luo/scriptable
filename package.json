@@ -23,10 +23,10 @@
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable#readme",
   "dependencies": {},
   "devDependencies": {
-    "@jimbojet/lint": "~11.6.0",
     "@types/node": "^20.14.9",
     "@types/scriptable-ios": "^1.7.7",
     "eslint": "~8.57.0",
+    "linted": "~12.0.0",
     "shx": "^0.3.4",
     "typescript": "^5.5.2"
   },
