@@ -36,7 +36,6 @@
     "@types/scriptable-ios": "^1.7.7",
     "eslint": "~8.57.0",
     "linted": "~12.1.1",
-    "shx": "^0.3.4",
     "typescript": "^5.5.2"
   },
   "scripts": {
@@ -47,9 +46,9 @@
     "lint:ci": "npm run es -- .github/workflows/*.yml",
     "prebuild": "npm run lint",
     "build": "tsc",
-    "clean:packed": "shx rm -rf packed",
+    "clean:packed": "(rm -rf packed) || (rmdir /s /q packed) || (exit 0)",
     "prepack": "npm run clean:packed && npm run build",
-    "pack": "shx mkdir packed && shx cp -r built/js/* packed",
+    "pack": "(mkdir packed) && ((cp -r built/js/* packed) || (xcopy /e /k /h /i \"./built/js\" \"packed\"))",
     "pretest": "npm run pack",
     "test": "exit 0"
   }
