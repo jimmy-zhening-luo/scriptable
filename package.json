@@ -12,7 +12,7 @@
   "type": "module",
   "private": true,
   "config": {
-    "PACKAGE_JSON_VERSION": "1.1.0"
+    "PACKAGE_JSON_VERSION": "1.2.0"
   },
   "repository": {
     "type": "git",
@@ -42,7 +42,7 @@
   "scripts": {
     "es": "eslint --fix --cache --cache-strategy content -c eslint.config.js",
     "lint": "npm run lint:cfg && npm run lint:src && npm run lint:ci",
-    "lint:cfg": "npm run es -- package.json tsconfig.json eslint.config.js .markdownlint.yml",
+    "lint:cfg": "npm run es -- package.json tsconfig.json eslint.config.js",
     "lint:src": "npm run es -- src/**/*.ts",
     "lint:ci": "npm run es -- .github/workflows/*.yml",
     "prebuild": "npm run lint",
