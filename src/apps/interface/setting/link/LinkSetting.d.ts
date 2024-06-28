@@ -2,21 +2,22 @@ declare type LinkSetting = {
   user: {
     host:
       & List<
-        "keepWww"
+        "www"
       >
       & Record<
-        "swapHost"
+        "swap"
         ,
         FieldTable
       >
     ;
     query: Record<
-      "keepQueryParam"
+      | "include"
+      | "exclude"
       ,
       ListTable
     >;
     fragment: List<
-      "omitFragment"
+      "trim"
     >;
   };
 };

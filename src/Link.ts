@@ -23,123 +23,165 @@ namespace Link {
     protected runtime() {
       const {
         host: {
-          keepWww,
-          swapHost,
+          www,
+          swap,
         },
-        query: { keepQueryParam },
-        fragment: { omitFragment },
+        query: {
+          include,
+          exclude,
+        },
+        fragment: { trim },
       } = this
         .user;
       const {
-        scheme,
-        host,
-        port,
-        path,
-        query,
-        fragment,
+        _scheme,
+        _host,
+        _port,
+        _path,
+        _query,
+        _fragment,
       } = this
         .inputful;
-      const lowerScheme = scheme
-        .toLowerCase();
-      const Scheme = [
-        "http",
-        "https",
-      ]
-        .includes(
-          lowerScheme,
+      const hostNoWww = _host
+        .startsWith(
+          "www.",
         )
-        ? ""
-        : lowerScheme;
-      const trimmedHost =
-        host
-          .startsWith(
-            "www.",
+        && !www
+          .includes(
+            _host,
           )
-          && !keepWww
-            .includes(
+        ? _host
+          .slice(
+            4,
+          )
+        : _host;
+      const host = swap[
+        hostNoWww
+      ]
+      ?? hostNoWww;
+      const [
+        inclusions,
+        exclusions,
+      ] = [
+        include[
+          host
+        ]
+        ?? [],
+        exclude[
+          host
+        ]
+        ?? [],
+      ];
+      const url = {
+        scheme: [
+          "http",
+          "https",
+        ]
+          .includes(
+            _scheme
+              .toLowerCase(),
+          )
+          ? ""
+          : _scheme
+            .toLowerCase(),
+        host,
+        port: _port,
+        path: [
+          "amazon.com",
+          "dropbox.com",
+          "linkedin.com",
+        ]
+          .includes(
+            host,
+          )
+          ? new (
+            this.Processor(
               host,
             )
-          ? host
-            .slice(
-              4,
-            )
-          : host;
-      const Host = swapHost[
-        trimmedHost
-      ]
-      ?? trimmedHost;
-      const Port = port;
-      const keepParam = keepQueryParam[
-        Host
-      ]
-      ?? null;
-      const Query = keepParam === null
-        ? ""
-        : keepParam
-          .length < 1
-          ? query
-          : query
-            .split(
-              "&",
-            )
-            .filter(
-              param =>
-                keepParam
-                  .includes(
-                    param
-                      .split(
-                        "=",
-                      )
-                      .shift()
-                      ?? "",
-                  ),
-            )
-            .join(
-              "&",
-            );
-      const Fragment = omitFragment
-        .includes(
-          Host,
-        )
-        ? ""
-        : fragment;
-      let Path: string = path;
-
-      if (
-        Host === "amazon.com"
-        || Host === "linkedin.com"
-        || Host === "dropbox.com"
-      )
-        Path = new (
-          this.Processor(
-            Host,
+          )(
+            host,
+            _path,
           )
-        )(
-          Host,
-          Path,
-        )
-          .processed;
+            .processed
+          : _path,
+        query: host in include
+          ? inclusions
+            .length > 0
+            ? _query
+              .split(
+                "&",
+              )
+              .filter(
+                param =>
+                  inclusions
+                    .includes(
+                      param
+                        .split(
+                          "=",
+                        )
+                        .shift()
+                        ?? "",
+                    ),
+              )
+              .join(
+                "&",
+              )
+            : ""
+          : host in exclude
+            ? _query
+              .split(
+                "&",
+              )
+              .filter(
+                param =>
+                  !exclusions
+                    .includes(
+                      param
+                        .split(
+                          "=",
+                        )
+                        .shift()
+                        ?? "",
+                    ),
+              )
+              .join(
+                "&",
+              )
+            : _query,
+        fragment: trim
+          .includes(
+            host,
+          )
+          ? ""
+          : _fragment,
+      };
 
       return this
         .buildURL(
-          Scheme,
-          Host,
-          Port,
-          Path,
-          Query,
-          Fragment,
+          url,
         );
     }
 
     private buildURL(
-      scheme: string,
-      host: string,
-      port: string,
-      path: string,
-      query: string,
-      fragment: string,
+      url: Field<
+        | "scheme"
+        | "host"
+        | "port"
+        | "path"
+        | "query"
+        | "fragment"
+      >,
     ) {
       try {
+        const {
+          scheme,
+          host,
+          port,
+          path,
+          query,
+          fragment,
+        } = url;
+
         return [
           [
             [
@@ -206,7 +248,7 @@ namespace Link {
       > {
       try {
         return importModule(
-          `apps/method/link/${
+          `apps/method/link/processors/${
             host
           }`,
         ) as new (
