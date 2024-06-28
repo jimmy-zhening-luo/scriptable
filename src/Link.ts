@@ -8,12 +8,12 @@ namespace Link {
 
   export class Link extends shortcut<
     Field<
-      | "scheme"
-      | "host"
-      | "port"
-      | "path"
-      | "query"
-      | "fragment"
+      | "_scheme"
+      | "_host"
+      | "_port"
+      | "_path"
+      | "_query"
+      | "_fragment"
     >
     ,
     string
