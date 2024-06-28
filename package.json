@@ -12,7 +12,7 @@
   "type": "module",
   "private": true,
   "config": {
-    "PACKAGE_JSON_VERSION": "1.3.0"
+    "PACKAGE_JSON_VERSION": "20.0.0"
   },
   "repository": {
     "type": "git",
@@ -39,11 +39,11 @@
     "typescript": "^5.5.2"
   },
   "scripts": {
-    "es": "eslint --fix --cache --cache-strategy content -c eslint.config.js",
-    "lint": "(npm run lint:cfg) && (npm run lint:src) && (npm run lint:ci)",
-    "lint:cfg": "npm run es -- package.json tsconfig.json eslint.config.js",
-    "lint:src": "npm run es -- src/**/*.ts",
-    "lint:ci": "npm run es -- .github/workflows/*.yml",
+    "e": "eslint -c eslint.config.js --cache --fix",
+    "lint": "(npm run lint:cfg) && (npm run lint:src) && (npm run --if-present lint:ci) && (npm run --if-present lint:svelte)",
+    "lint:cfg": "npm run e -- package.json tsconfig.json eslint.config.js",
+    "lint:src": "npm run e -- src/**/*.ts",
+    "lint:ci": "npm run e -- .github/workflows/*.yml",
     "prebuild": "npm run lint",
     "build": "tsc",
     "clean:packed": "(rm -rf packed) || (rmdir /s /q packed) || (exit 0)",
