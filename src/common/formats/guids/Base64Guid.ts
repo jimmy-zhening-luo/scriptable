@@ -30,7 +30,7 @@ function Base64Guid() {
       encodedGuid
         .length === 8
     )
-      return encodedGuid as Guid<"base64">; // unsafe
+      return encodedGuid as Guid<64>; // unsafe
     else
       throw new TypeError(
         `Unexpected: invalid base64-encoded guid (length !== 8)`,

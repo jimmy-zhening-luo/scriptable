@@ -1,6 +1,6 @@
 declare const Guid: unique symbol;
 declare type Guid<
-  Radix extends string,
+  Radix extends number,
 > =
   & stringful
-  & { [Guid]: Radix };
+  & { [Guid]: `base${Radix}` };
