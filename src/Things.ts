@@ -61,7 +61,7 @@ namespace Things {
                 : lastTaggedLine
                   .lastIndexOf(
                     tag,
-                  ) as posint;
+                  ) as Positive<fint>;
             const lastTag =
               lastTaggedLine === null
               || iLastTag === null

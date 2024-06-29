@@ -34,7 +34,7 @@ abstract class App<
   protected get base64guid() {
     try {
       return importModule(
-        "./common/formats/guids/Base64Guid",
+        "./common/format/guids/Base64Guid",
       ) as typeof Base64Guid;
     }
     catch (e) {
@@ -48,7 +48,7 @@ abstract class App<
   protected get Timestamp() {
     try {
       return importModule(
-        "./common/formats/time/Timestamp",
+        "./common/format/time/Timestamp",
       ) as typeof Timestamp;
     }
     catch (e) {
@@ -62,7 +62,7 @@ abstract class App<
   protected get Timeprint() {
     try {
       return importModule(
-        "./common/formats/time/Timeprint",
+        "./common/format/time/Timeprint",
       ) as typeof Timeprint;
     }
     catch (e) {

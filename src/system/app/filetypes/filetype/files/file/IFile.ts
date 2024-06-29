@@ -299,7 +299,7 @@ abstract class IFile {
   private get Rootpath() {
     try {
       return importModule(
-        "./common/validators/impl/filepaths/Rootpath",
+        "./common/validator/impl/filepaths/Rootpath",
       ) as typeof Rootpath;
     }
     catch (e) {
@@ -313,7 +313,7 @@ abstract class IFile {
   private get Subpath() {
     try {
       return importModule(
-        "./common/validators/impl/filepaths/Subpath",
+        "./common/validator/impl/filepaths/Subpath",
       ) as typeof Subpath;
     }
     catch (e) {
