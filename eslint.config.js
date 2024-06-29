@@ -1,9 +1,8 @@
-// eslint.config.js
-// v13.1.0
 import linted from "linted";
 
 export default new linted(
   {
+    _VERSION: "13.2.0",
     js: ["*.config.js"],
     ts: [
       "src/**/*.ts",
