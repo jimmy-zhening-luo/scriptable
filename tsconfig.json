@@ -1,6 +1,7 @@
 {
+  "display": "@jimbojet/tsc",
+  "_version": "5.5.4-scriptable.0",
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_version": "5.5.3-scriptable.0",
   "include": [
     "src/**/*.ts",
   ],
