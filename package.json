@@ -34,6 +34,8 @@
   "optionalDependencies": {},
   "dependencies": {},
   "devDependencies": {
+    "@types/node": "^20.14.9",
+    "@types/scriptable-ios": "^1.7.7",
     "eslint": "~8.57.0",
     "linted": "~13.0.3",
     "typescript": "^5.5.2"
