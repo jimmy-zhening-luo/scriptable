@@ -1,8 +1,8 @@
 import linted from "linted";
 
-export default new linted(
+export default linted(
   {
-    _VERSION: "13.2.0",
+    _VERSION: "13.3.0",
     js: ["*.config.js"],
     ts: [
       "src/**/*.ts",
