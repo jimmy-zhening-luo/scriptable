@@ -12,7 +12,7 @@
   "type": "module",
   "private": true,
   "config": {
-    "PACKAGE_JSON_VERSION": "20.2.0-scriptable.0"
+    "PACKAGE_JSON_VERSION": "20.4.0-scriptable.0"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,7 @@
     "@types/node": "^20.14.9",
     "@types/scriptable-ios": "^1.7.7",
     "eslint": "~8.57.0",
-    "linted": "~13.0.6",
+    "linted": "~13.0.12",
     "typescript": "^5.5.2"
   },
   "jest": {
@@ -55,8 +55,8 @@
     "prebuild": "(npm run --if-present check) && (npm run lint)",
     "build": "tsc",
     "pretest": "npm run build",
-    "test": "(npm run test:jest) || (exit 0)",
-    "test:jest": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" NODE_NO_WARNINGS=1 jest --",
+    "test": "npm run test:jest",
+    "test:jest": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" NODE_NO_WARNINGS=1 jest --passWithNoTests --",
     "prepack": "(npm run prepack:clean) && (npm run test)",
     "prepack:clean": "(rm -rf packed) || (rmdir /s /q packed) || (exit 0)",
     "pack": "(mkdir packed) && ((cp -r built/js/* packed) || (xcopy /e /k /h /i \"./built/js\" \"packed\"))"
