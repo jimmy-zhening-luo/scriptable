@@ -12,7 +12,7 @@
   "type": "module",
   "private": true,
   "config": {
-    "PACKAGE_JSON_VERSION": "20.1.0-scriptable.1"
+    "PACKAGE_JSON_VERSION": "20.2.0-scriptable.0"
   },
   "repository": {
     "type": "git",
@@ -52,7 +52,7 @@
     "lint:cfg": "npm run e -- package.json tsconfig.json eslint.config.js",
     "lint:src": "npm run e -- src/**/*.ts",
     "lint:ci": "npm run e -- .github/workflows/*.yml",
-    "prebuild": "npm run lint",
+    "prebuild": "(npm run --if-present check) && (npm run lint)",
     "build": "tsc",
     "pretest": "npm run build",
     "test": "(npm run test:jest) || (exit 0)",
