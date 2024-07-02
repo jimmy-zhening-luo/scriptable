@@ -1,14 +1,11 @@
-import type CharString from "./charstring/CharString.js";
-import type CharSet from "./charstring/charset/CharSet.js";
-
-const charString = importModule(
+const f_CharString = importModule(
   `charstring/CharString`,
 ) as typeof CharString;
 
-export default class BoundString<
+class BoundString<
   String extends stringful,
   Validator extends string[],
-> extends charString<
+> extends f_CharString<
     String
     ,
     [
@@ -68,4 +65,5 @@ export default class BoundString<
     }
   }
 }
+
 module.exports = BoundString;

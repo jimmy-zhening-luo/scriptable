@@ -1,10 +1,8 @@
-import type ILinkPathProcessor from "./processor/ILinkPathProcessor.js";
-
-const iLinkPathProcessor = importModule(
+const redd_ILinkPathProcessor = importModule(
   `processor/ILinkPathProcessor`,
 ) as typeof ILinkPathProcessor;
 
-export default class RedditPathProcessor extends iLinkPathProcessor<
+class RedditPathProcessor extends redd_ILinkPathProcessor<
   "reddit.com"
 > {
   protected process(
@@ -43,4 +41,5 @@ export default class RedditPathProcessor extends iLinkPathProcessor<
     }
   }
 }
+
 module.exports = RedditPathProcessor;

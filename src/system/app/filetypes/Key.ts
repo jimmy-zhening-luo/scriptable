@@ -1,12 +1,10 @@
-import type Filetype from "./filetype/Filetype.js";
-
-const fileType = importModule(
+const k_Filetype = importModule(
   `filetype/Filetype`,
 ) as typeof Filetype;
 
-export default class Key<
+class Key<
   Class extends string,
-> extends fileType<
+> extends k_Filetype<
     "Key"
     ,
     Class
@@ -261,4 +259,5 @@ export default class Key<
     );
   }
 }
+
 module.exports = Key;

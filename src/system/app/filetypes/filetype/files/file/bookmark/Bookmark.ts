@@ -1,6 +1,4 @@
-import type Rootpath from "../../../../../../../common/validator/impl/filepaths/Rootpath.js";
-
-export default class Bookmark {
+class Bookmark {
   public readonly alias: Alias;
   public readonly path: Stringify<
     Rootpath
@@ -136,4 +134,5 @@ export default class Bookmark {
     }
   }
 }
+
 module.exports = Bookmark;

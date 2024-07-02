@@ -1,9 +1,4 @@
-import type Bookmark from "./bookmark/Bookmark.js";
-import type IFilepath from "../../../../../../common/validator/impl/filepaths/filepath/IFilepath.js";
-import type Rootpath from "../../../../../../common/validator/impl/filepaths/Rootpath.js";
-import type Subpath from "../../../../../../common/validator/impl/filepaths/Subpath.js";
-
-export default abstract class IFile {
+abstract class IFile {
   protected readonly __proto: literalful<
     "IFile"
   > = "IFile";
@@ -650,4 +645,5 @@ export default abstract class IFile {
     }
   }
 }
+
 module.exports = IFile;

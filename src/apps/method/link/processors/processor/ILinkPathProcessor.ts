@@ -1,4 +1,4 @@
-export default abstract class ILinkPathProcessor<
+abstract class ILinkPathProcessor<
   Host extends string,
 > {
   public readonly processed: string;
@@ -26,4 +26,5 @@ export default abstract class ILinkPathProcessor<
 
   protected abstract process(path: string): string;
 }
+
 module.exports = ILinkPathProcessor;

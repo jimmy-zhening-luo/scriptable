@@ -1,4 +1,4 @@
-export default abstract class ISplitter<
+abstract class ISplitter<
   Node extends string,
 > {
   public readonly nodes: readonly Node[];
@@ -108,4 +108,5 @@ export default abstract class ISplitter<
 
   protected abstract filter(nodes: readonly string[]): readonly Node[];
 }
+
 module.exports = ISplitter;

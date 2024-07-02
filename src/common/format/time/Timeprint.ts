@@ -1,10 +1,8 @@
-import type IMoment from "./moment/IMoment.js";
-
-const iMoment = importModule(
+const p_IMoment = importModule(
   `moment/IMoment`,
 ) as typeof IMoment;
 
-export default class Timeprint extends iMoment {
+class Timeprint extends p_IMoment {
   public override get offset() {
     try {
       return "";
@@ -86,4 +84,5 @@ export default class Timeprint extends iMoment {
     }
   }
 }
+
 module.exports = Timeprint;

@@ -1,11 +1,8 @@
-import type IFilepath from "./filepath/IFilepath.js";
-import type FileNode from "./filepath/node/FileNode.js";
-
-const iFilepath = importModule(
+const s_Filepath = importModule(
   `filepath/IFilepath`,
 ) as typeof IFilepath;
 
-export default class Subpath extends iFilepath<
+class Subpath extends s_Filepath<
   0
 > {
   protected check(
@@ -45,4 +42,5 @@ export default class Subpath extends iFilepath<
     }
   }
 }
+
 module.exports = Subpath;

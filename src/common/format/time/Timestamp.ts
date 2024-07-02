@@ -1,10 +1,8 @@
-import type IMoment from "./moment/IMoment.js";
-
-const iMoment = importModule(
+const s_IMoment = importModule(
   `moment/IMoment`,
 ) as typeof IMoment;
 
-export default class Timestamp extends iMoment {
+class Timestamp extends s_IMoment {
   protected get separator() {
     try {
       return "";
@@ -90,4 +88,5 @@ export default class Timestamp extends iMoment {
     }
   }
 }
+
 module.exports = Timestamp;

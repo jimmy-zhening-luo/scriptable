@@ -1,10 +1,8 @@
-import type ILinkPathProcessor from "./processor/ILinkPathProcessor.js";
-
-const iLinkPathProcessor = importModule(
+const drop_ILinkPathProcessor = importModule(
   `processor/ILinkPathProcessor`,
 ) as typeof ILinkPathProcessor;
 
-export default class DropboxPathProcessor extends iLinkPathProcessor<
+class DropboxPathProcessor extends drop_ILinkPathProcessor<
   "dropbox.com"
 > {
   protected process(
@@ -61,4 +59,5 @@ export default class DropboxPathProcessor extends iLinkPathProcessor<
     }
   }
 }
+
 module.exports = DropboxPathProcessor;

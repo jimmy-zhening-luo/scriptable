@@ -1,6 +1,4 @@
-import type CharSet from "./charset/CharSet.js";
-
-export default class CharString<
+class CharString<
   String extends string,
   Validator extends string[],
 > {
@@ -97,4 +95,5 @@ export default class CharString<
     }
   }
 }
+
 module.exports = CharString;

@@ -1,10 +1,8 @@
-import type IFile from "./file/IFile.js";
-
-const iFile = importModule(
+const r_IFile = importModule(
   `file/IFile`,
 ) as typeof IFile;
 
-export default class ReadOnlyFile extends iFile {
+class ReadOnlyFile extends r_IFile {
   public override delete(): never {
     throw new ReferenceError(
       `ReadOnlyFile: delete: Forbidden: Cannot delete readonly files/folders`,
@@ -19,4 +17,5 @@ export default class ReadOnlyFile extends iFile {
     );
   }
 }
+
 module.exports = ReadOnlyFile;

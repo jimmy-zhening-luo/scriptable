@@ -1,12 +1,10 @@
-import type BoundString from "./bound/BoundString.js";
-
-const boundString = importModule(
+const v_BoundString = importModule(
   `bound/BoundString`,
 ) as typeof BoundString;
 
-export default class CleanString<
+class CleanString<
   Validator extends string[],
-> extends boundString<
+> extends v_BoundString<
     stringful
     ,
     [
@@ -154,4 +152,5 @@ export default class CleanString<
     }
   }
 }
+
 module.exports = CleanString;

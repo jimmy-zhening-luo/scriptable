@@ -1,11 +1,8 @@
-import type IEngine from "./engine/IEngine.js";
-import type Query from "../Query.js";
-
-const iEngine = importModule(
+const b_IEngine = importModule(
   `engine/IEngine`,
 ) as typeof IEngine;
 
-export default class UrlEngine extends iEngine {
+class UrlEngine extends b_IEngine {
   protected readonly urls: readonly stringful[];
   protected readonly TAG: stringful;
   protected readonly browser: string;
@@ -153,4 +150,5 @@ export default class UrlEngine extends iEngine {
     }
   }
 }
+
 module.exports = UrlEngine;

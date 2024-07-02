@@ -1,7 +1,4 @@
-import type FileNode from "./node/FileNode.js";
-import type Splitterful from "../../../base/string/splitters/Splitterful.js";
-
-export default abstract class IFilepath<
+abstract class IFilepath<
   Length,
 > {
   protected readonly _nodes: Nodes<
@@ -323,4 +320,5 @@ export default abstract class IFilepath<
 
   protected abstract poppable(nodes: Nodes<FileNode>): nodes is Nodes<FileNode, 1>;
 }
+
 module.exports = IFilepath;

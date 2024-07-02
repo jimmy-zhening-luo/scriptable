@@ -1,10 +1,8 @@
-import type IEngine from "./engine/IEngine.js";
-
-const iEngine = importModule(
+const f_IEngine = importModule(
   `engine/IEngine`,
 ) as typeof IEngine;
 
-export default class FindEngine extends iEngine {
+class FindEngine extends f_IEngine {
   protected readonly find: string;
 
   constructor(
@@ -48,4 +46,5 @@ export default class FindEngine extends iEngine {
     }
   }
 }
+
 module.exports = FindEngine;

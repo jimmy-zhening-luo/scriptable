@@ -1,4 +1,4 @@
-export default abstract class IMoment {
+abstract class IMoment {
   constructor(
     public readonly moment = new Date(),
   ) {}
@@ -182,4 +182,5 @@ export default abstract class IMoment {
   protected abstract afterDate(date: string): string;
   protected abstract afterLocal(local: string): string;
 }
+
 module.exports = IMoment;

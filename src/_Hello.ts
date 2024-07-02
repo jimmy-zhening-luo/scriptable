@@ -3,63 +3,63 @@
 // icon-color: yellow; icon-glyph: circle;
 "use strict";
 
-import type Shortcut from "./system/Shortcut.js";
+namespace _Hello {
+  const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
 
-const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
+  export class _Hello extends shortcut<
+    never
+    ,
+    string
+    ,
+    { app?: { space?: string } }
+  > {
+    protected runtime() {
+      this
+        .debug = true;
 
-export default class _Hello extends shortcut<
-  never
-  ,
-  string
-  ,
-  { app?: { space?: string } }
-> {
-  protected runtime() {
-    this
-      .debug = true;
+      const FILENAME_WORLDTIME = "worldtime";
+      const HELLO = this
+        .readful();
+      const worldtime = this
+        .read(
+          "txt",
+          FILENAME_WORLDTIME,
+        );
+      const SPACE = this
+        .stringful(
+          this
+            .app
+            ?.space ?? "",
+          "space",
+        );
+      const notification = `${
+        HELLO
+      }${
+        SPACE
+      }${
+        worldtime
+      }`;
 
-    const FILENAME_WORLDTIME = "worldtime";
-    const HELLO = this
-      .readful();
-    const worldtime = this
-      .read(
-        "txt",
-        FILENAME_WORLDTIME,
-      );
-    const SPACE = this
-      .stringful(
-        this
-          .app
-          ?.space ?? "",
-        "space",
-      );
-    const notification = `${
-      HELLO
-    }${
-      SPACE
-    }${
-      worldtime
-    }`;
+      this
+        .write(
+          `World!\n(Previous: ${
+            new Date()
+              .toISOString()
+          })`,
+          "txt",
+          FILENAME_WORLDTIME,
+        );
+      console
+        .warn(
+          notification,
+        );
 
-    this
-      .write(
-        `World!\n(Previous: ${
-          new Date()
-            .toISOString()
-        })`,
-        "txt",
-        FILENAME_WORLDTIME,
-      );
-    console
-      .warn(
-        notification,
-      );
-
-    return notification;
+      return notification;
+    }
   }
 }
 
-new _Hello(
+new _Hello._Hello(
   true,
 )
   .run();
