@@ -17,13 +17,13 @@ class DropboxPathProcessor extends drop_ILinkPathProcessor<
       )
         return path;
       else {
-        const split = path
+        const nodes = path
           .split(
             "/",
           );
 
         if (
-          split
+          nodes
             .length < 4
         )
           return path;
@@ -33,7 +33,7 @@ class DropboxPathProcessor extends drop_ILinkPathProcessor<
             SCL,
             FI,
             fileId,
-          ] = split as ArrayN<
+          ] = nodes as ArrayN<
             string
             ,
             4
