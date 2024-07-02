@@ -23,7 +23,7 @@ export function MenuObj() {
     inverted.map(
       ([button], i) =>
         [
-          `${i}`,
+          String(i),
           button,
         ],
     ),
