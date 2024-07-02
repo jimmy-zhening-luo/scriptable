@@ -21,9 +21,7 @@ export function MenuObj() {
     n > range
       .max
   )
-    throw new RangeError(
-      `too many choices`,
-    );
+    return { buttons: choices };
   else {
     const pad = "\n"
       .repeat(

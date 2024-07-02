@@ -2,7 +2,7 @@ export function Menu() {
   "use strict";
 
   const range = {
-    max: 12,
+    max: 9,
     fold: 6,
   };
   const choices = args
@@ -21,9 +21,7 @@ export function Menu() {
     n > range
       .max
   )
-    throw new RangeError(
-      `too many choices`,
-    );
+    return { buttons: choices };
   else {
     const pad = "\n"
       .repeat(
