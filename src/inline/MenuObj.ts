@@ -1,6 +1,6 @@
-"use strict";
-
 export function MenuObj() {
+  "use strict";
+
   const range = {
     max: 12,
     fold: 6,
