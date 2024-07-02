@@ -91,6 +91,7 @@ namespace Link {
           "amazon.com",
           "dropbox.com",
           "linkedin.com",
+          "reddit.com",
         ]
           .includes(
             host,
