@@ -10,12 +10,17 @@ declare type LinkSetting = {
         FieldTable
       >
     ;
-    query: Record<
-      | "include"
-      | "exclude"
-      ,
-      ListTable
-    >;
+    query:
+      & List<
+        "omit"
+      >
+      & Record<
+        | "include"
+        | "exclude"
+        ,
+        ListTable
+      >
+    ;
     fragment: List<
       "trim"
     >;
