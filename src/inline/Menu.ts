@@ -20,7 +20,7 @@ export function Menu() {
     up,
     down,
   ] = [
-    n > fold
+    n > FOLD
       ? ""
       : pad,
     pad,
