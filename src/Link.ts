@@ -3,277 +3,278 @@
 // icon-color: light-gray; icon-glyph: link;
 "use strict";
 
-namespace Link {
-  const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
+import type Shortcut from "./system/Shortcut.js";
+import type ILinkPathProcessor from "./apps/method/link/processors/processor/ILinkPathProcessor.js";
 
-  export class Link extends shortcut<
-    Field<
-      | "_scheme"
-      | "_host"
-      | "_port"
-      | "_path"
-      | "_query"
-      | "_fragment"
-    >
-    ,
-    string
-    ,
-    LinkSetting
-  > {
-    protected runtime() {
-      const {
-        host: {
-          www,
-          swap,
-        },
-        query: {
-          omit,
-          include,
-          exclude,
-        },
-        fragment: { trim },
-      } = this
-        .user;
-      const {
-        _scheme,
-        _host,
-        _port,
-        _path,
-        _query,
-        _fragment,
-      } = this
-        .inputful;
-      const hostNoWww = _host
-        .startsWith(
-          "www.",
+const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
+
+export default class Link extends shortcut<
+  Field<
+    | "_scheme"
+    | "_host"
+    | "_port"
+    | "_path"
+    | "_query"
+    | "_fragment"
+  >
+  ,
+  string
+  ,
+  LinkSetting
+> {
+  protected runtime() {
+    const {
+      host: {
+        www,
+        swap,
+      },
+      query: {
+        omit,
+        include,
+        exclude,
+      },
+      fragment: { trim },
+    } = this
+      .user;
+    const {
+      _scheme,
+      _host,
+      _port,
+      _path,
+      _query,
+      _fragment,
+    } = this
+      .inputful;
+    const hostNoWww = _host
+      .startsWith(
+        "www.",
+      )
+      && !www
+        .includes(
+          _host,
         )
-        && !www
-          .includes(
-            _host,
-          )
-        ? _host
-          .slice(
-            4,
-          )
-        : _host;
-      const host = swap[
-        hostNoWww
+      ? _host
+        .slice(
+          4,
+        )
+      : _host;
+    const host = swap[
+      hostNoWww
+    ]
+    ?? hostNoWww;
+    const [
+      inclusions,
+      exclusions,
+    ] = [
+      include[
+        host
       ]
-      ?? hostNoWww;
-      const [
-        inclusions,
-        exclusions,
-      ] = [
-        include[
-          host
-        ]
-        ?? [],
-        exclude[
-          host
-        ]
-        ?? [],
-      ];
-      const url = {
-        scheme: [
-          "http",
-          "https",
-        ]
-          .includes(
-            _scheme
-              .toLowerCase(),
-          )
-          ? ""
-          : _scheme
+      ?? [],
+      exclude[
+        host
+      ]
+      ?? [],
+    ];
+    const url = {
+      scheme: [
+        "http",
+        "https",
+      ]
+        .includes(
+          _scheme
             .toLowerCase(),
-        host,
-        port: _port,
-        path: [
-          "amazon.com",
-          "dropbox.com",
-          "linkedin.com",
-          "reddit.com",
-        ]
-          .includes(
-            host,
-          )
-          ? new (
-            this.Processor(
-              host,
-            )
-          )(
-            host,
-            _path,
-          )
-            .processed
-          : _path,
-        query: omit
-          .includes(
-            host,
-          )
-          ? ""
-          : host in include
-            ? inclusions
-              .length < 1
-              ? ""
-              : _query
-                .split(
-                  "&",
-                )
-                .filter(
-                  param =>
-                    inclusions
-                      .includes(
-                        param
-                          .split(
-                            "=",
-                          )
-                          .shift()
-                          ?? "",
-                      ),
-                )
-                .join(
-                  "&",
-                )
-            : host in exclude
-              ? _query
-                .split(
-                  "&",
-                )
-                .filter(
-                  param =>
-                    !exclusions
-                      .includes(
-                        param
-                          .split(
-                            "=",
-                          )
-                          .shift()
-                          ?? "",
-                      ),
-                )
-                .join(
-                  "&",
-                )
-              : _query,
-        fragment: trim
-          .includes(
-            host,
-          )
-          ? ""
-          : _fragment,
-      };
-
-      return this
-        .buildURL(
-          url,
-        );
-    }
-
-    private buildURL(
-      url: Field<
-        | "scheme"
-        | "host"
-        | "port"
-        | "path"
-        | "query"
-        | "fragment"
-      >,
-    ) {
-      try {
-        const {
-          scheme,
+        )
+        ? ""
+        : _scheme
+          .toLowerCase(),
+      host,
+      port: _port,
+      path: [
+        "amazon.com",
+        "dropbox.com",
+        "linkedin.com",
+        "reddit.com",
+      ]
+        .includes(
           host,
-          port,
-          path,
-          query,
-          fragment,
-        } = url;
+        )
+        ? new (
+          this.Processor(
+            host,
+          )
+        )(
+          host,
+          _path,
+        )
+          .processed
+        : _path,
+      query: omit
+        .includes(
+          host,
+        )
+        ? ""
+        : host in include
+          ? inclusions
+            .length < 1
+            ? ""
+            : _query
+              .split(
+                "&",
+              )
+              .filter(
+                param =>
+                  inclusions
+                    .includes(
+                      param
+                        .split(
+                          "=",
+                        )
+                        .shift()
+                        ?? "",
+                    ),
+              )
+              .join(
+                "&",
+              )
+          : host in exclude
+            ? _query
+              .split(
+                "&",
+              )
+              .filter(
+                param =>
+                  !exclusions
+                    .includes(
+                      param
+                        .split(
+                          "=",
+                        )
+                        .shift()
+                        ?? "",
+                    ),
+              )
+              .join(
+                "&",
+              )
+            : _query,
+      fragment: trim
+        .includes(
+          host,
+        )
+        ? ""
+        : _fragment,
+    };
 
-        return [
+    return this
+      .buildURL(
+        url,
+      );
+  }
+
+  private buildURL(
+    url: Field<
+      | "scheme"
+      | "host"
+      | "port"
+      | "path"
+      | "query"
+      | "fragment"
+    >,
+  ) {
+    try {
+      const {
+        scheme,
+        host,
+        port,
+        path,
+        query,
+        fragment,
+      } = url;
+
+      return [
+        [
           [
             [
               [
-                [
-                  ...scheme
-                    .length > 0
-                    ? [scheme]
-                    : [],
-                  host,
-                ]
-                  .join(
-                    "://",
-                  ),
-                ...port
+                ...scheme
                   .length > 0
-                  ? [port]
+                  ? [scheme]
                   : [],
+                host,
               ]
                 .join(
-                  ":",
+                  "://",
                 ),
-              ...path !== "/"
-                ? [path]
+              ...port
+                .length > 0
+                ? [port]
                 : [],
             ]
               .join(
-                "",
+                ":",
               ),
-            ...query
-              .length > 0
-              ? [query]
+            ...path !== "/"
+              ? [path]
               : [],
           ]
             .join(
-              "?",
+              "",
             ),
-          ...fragment
+          ...query
             .length > 0
-            ? [fragment]
+            ? [query]
             : [],
         ]
           .join(
-            "#",
-          );
-      }
-      catch (e) {
-        throw new EvalError(
-          `Link: buildURL`,
-          { cause: e },
+            "?",
+          ),
+        ...fragment
+          .length > 0
+          ? [fragment]
+          : [],
+      ]
+        .join(
+          "#",
         );
-      }
     }
+    catch (e) {
+      throw new EvalError(
+        `Link: buildURL`,
+        { cause: e },
+      );
+    }
+  }
 
-    private Processor<
-      Host extends string,
-    >(
+  private Processor<
+    Host extends string,
+  >(
+    host: Host,
+  ): new (
       host: Host,
-    ): new (
+      path: string
+    )=> ILinkPathProcessor<
+      Host
+    > {
+    try {
+      return importModule(
+        `apps/method/link/processors/${
+          host
+        }`,
+      ) as new (
         host: Host,
         path: string
       )=> ILinkPathProcessor<
         Host
-      > {
-      try {
-        return importModule(
-          `apps/method/link/processors/${
-            host
-          }`,
-        ) as new (
-          host: Host,
-          path: string
-        )=> ILinkPathProcessor<
-          Host
-        >;
-      }
-      catch (e) {
-        throw new EvalError(
-          `Link: import <P>Processor`,
-          { cause: e },
-        );
-      }
+      >;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Link: import <P>Processor`,
+        { cause: e },
+      );
     }
   }
 }
 
-new Link.Link()
+new Link()
   .run();

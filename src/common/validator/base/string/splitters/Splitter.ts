@@ -1,8 +1,10 @@
-const _ISplitter = importModule(
+import type ISplitter from "./splitter/ISplitter.js";
+
+const iSplitter = importModule(
   `splitter/ISplitter`,
 ) as typeof ISplitter;
 
-class Splitter extends _ISplitter<
+export default class Splitter extends iSplitter<
   string
 > {
   protected filter(
@@ -19,5 +21,4 @@ class Splitter extends _ISplitter<
     }
   }
 }
-
 module.exports = Splitter;

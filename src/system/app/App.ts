@@ -1,4 +1,12 @@
-abstract class App<
+import type Storage from "./filetypes/Storage.js";
+import type Key from "./filetypes/Key.js";
+import type Setting from "./filetypes/Setting.js";
+import type Base64Guid from "../../common/format/guids/Base64Guid.js";
+import type Timestamp from "../../common/format/time/Timestamp.js";
+import type Timeprint from "../../common/format/time/Timeprint.js";
+import type ErrorHandler from "./private/error/ErrorHandler.js";
+
+export default abstract class App<
   Class extends string,
   Input,
   Output,
@@ -887,5 +895,4 @@ abstract class App<
   private _inputStringful?: stringful;
   private __setting?: Setting<Class, Schema>;
 }
-
 module.exports = App;

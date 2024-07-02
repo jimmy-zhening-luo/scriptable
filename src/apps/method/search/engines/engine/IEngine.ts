@@ -1,4 +1,6 @@
-abstract class IEngine {
+import type Query from "../../Query.js";
+
+export default abstract class IEngine {
   constructor(
     protected readonly app: string,
     protected readonly postfix: Null<string> = null,
@@ -93,5 +95,4 @@ abstract class IEngine {
     >
   >;
 }
-
 module.exports = IEngine;

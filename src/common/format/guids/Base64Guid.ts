@@ -1,4 +1,4 @@
-function Base64Guid() {
+export default function Base64Guid() {
   function guidchars(
     guid: string,
   ) {
@@ -168,5 +168,4 @@ function Base64Guid() {
     );
   }
 }
-
 module.exports = Base64Guid;

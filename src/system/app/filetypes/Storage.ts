@@ -1,10 +1,13 @@
-const st_Filetype = importModule(
+import type Filetype from "./filetype/Filetype.js";
+import type WriteFile from "./filetype/files/WriteFile.js";
+
+const fileType = importModule(
   `filetype/Filetype`,
 ) as typeof Filetype;
 
-class Storage<
+export default class Storage<
   Class extends string,
-> extends st_Filetype<
+> extends fileType<
     "Storage"
     ,
     Class
@@ -125,5 +128,4 @@ class Storage<
     }
   }
 }
-
 module.exports = Storage;

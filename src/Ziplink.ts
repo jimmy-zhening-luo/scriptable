@@ -3,57 +3,57 @@
 // icon-color: light-gray; icon-glyph: sign-in-alt;
 "use strict";
 
-namespace Ziplink {
-  const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
+import type Shortcut from "./system/Shortcut.js";
 
-  export class Ziplink extends shortcut<
-    string
-    ,
-    string
-  > {
-    protected runtime() {
-      const url = this
-        .inputStringful
-        .trim();
-      const storage = this
-        .data<FieldTable>("json")
-        ?? {};
-      const ziplinks = Object
-        .entries(
+const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
+
+export default class Ziplink extends shortcut<
+  string
+  ,
+  string
+> {
+  protected runtime() {
+    const url = this
+      .inputStringful
+      .trim();
+    const storage = this
+      .data<FieldTable>("json")
+      ?? {};
+    const ziplinks = Object
+      .entries(
+        storage,
+      );
+    const ziplink = ziplinks
+      .find(
+        ([, u]) =>
+          u === url,
+      )
+      ?? null;
+
+    if (
+      ziplink !== null
+    ) {
+      const [id] = ziplink;
+
+      return id;
+    }
+    else {
+      const id = this
+        .base64guid();
+
+      storage[
+        id
+      ] = url;
+      this
+        .write(
           storage,
+          "json",
         );
-      const ziplink = ziplinks
-        .find(
-          ([, u]) =>
-            u === url,
-        )
-        ?? null;
 
-      if (
-        ziplink !== null
-      ) {
-        const [id] = ziplink;
-
-        return id;
-      }
-      else {
-        const id = this
-          .base64guid();
-
-        storage[
-          id
-        ] = url;
-        this
-          .write(
-            storage,
-            "json",
-          );
-
-        return id;
-      }
+      return id;
     }
   }
 }
 
-new Ziplink.Ziplink()
+new Ziplink()
   .run();

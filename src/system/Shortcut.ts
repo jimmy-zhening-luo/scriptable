@@ -1,12 +1,14 @@
-const sh_App = importModule(
+import type App from "./app/App.js";
+
+const app = importModule(
   `app/App`,
 ) as typeof App;
 
-abstract class Shortcut<
+export default abstract class Shortcut<
   Input = never,
   Output = never,
   Schema extends ISetting = never,
-> extends sh_App<
+> extends app<
     "Shortcut"
     ,
     Nullable<
@@ -86,5 +88,4 @@ abstract class Shortcut<
 
   private _getInput?: Shortcut<Input>["input"];
 }
-
 module.exports = Shortcut;

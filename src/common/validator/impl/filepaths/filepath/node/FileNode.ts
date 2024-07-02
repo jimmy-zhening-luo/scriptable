@@ -1,8 +1,10 @@
-const f_CleanString = importModule(
+import type CleanString from "../../../../base/string/valid/CleanString.js";
+
+const cleanString = importModule(
   `./common/validator/base/string/valid/CleanString`,
 ) as typeof CleanString;
 
-class FileNode extends f_CleanString<
+export default class FileNode extends cleanString<
   [
     `FileNode`,
   ]
@@ -30,5 +32,4 @@ class FileNode extends f_CleanString<
     }
   }
 }
-
 module.exports = FileNode;

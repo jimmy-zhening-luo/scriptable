@@ -1,7 +1,8 @@
-const w_IFile = importModule(
+import type IFile from "./file/IFile.js";
+
+const iFile = importModule(
   `file/IFile`,
 ) as typeof IFile;
 
-class WriteFile extends w_IFile {}
-
+export default class WriteFile extends iFile {}
 module.exports = WriteFile;

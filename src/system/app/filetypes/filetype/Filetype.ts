@@ -1,4 +1,9 @@
-abstract class Filetype<
+import type Bookmark from "./files/file/bookmark/Bookmark.js";
+import type IFile from "./files/file/IFile.js";
+import type ReadOnlyFile from "./files/ReadOnlyFile.js";
+import type WriteFile from "./files/WriteFile.js";
+
+export default abstract class Filetype<
   Type extends string,
   Class extends string,
   File extends IFile = ReadOnlyFile,
@@ -229,5 +234,4 @@ abstract class Filetype<
 
   public abstract delete(...args: Parameters<File["delete"]>): ReturnType<File["delete"]>;
 }
-
 module.exports = Filetype;

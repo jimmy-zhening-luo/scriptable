@@ -1,4 +1,4 @@
-class ErrorHandler {
+export default class ErrorHandler {
   public handle(
     e: Error,
   ) {
@@ -213,5 +213,4 @@ class ErrorHandler {
     }
   }
 }
-
 module.exports = ErrorHandler;

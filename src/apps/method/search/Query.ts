@@ -1,4 +1,4 @@
-class Query {
+export default class Query {
   public readonly terms: stringful[];
   protected _key: stringful;
   protected _locked: boolean = false;
@@ -536,5 +536,4 @@ class Query {
     }
   }
 }
-
 module.exports = Query;

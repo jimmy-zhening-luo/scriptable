@@ -3,57 +3,57 @@
 // icon-color: light-gray; icon-glyph: clock;
 "use strict";
 
-namespace LastRun {
-  const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
+import type Shortcut from "./system/Shortcut.js";
 
-  export class LastRun extends shortcut<
-    string
-    ,
-    boolean
-  > {
-    protected runtime() {
-      const now = Date
-        .now();
-      const input = this
-        .inputStringful
-        .split(
-          ";",
-        ) as [
-        string,
+const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
+
+export default class LastRun extends shortcut<
+  string
+  ,
+  boolean
+> {
+  protected runtime() {
+    const now = Date
+      .now();
+    const input = this
+      .inputStringful
+      .split(
+        ";",
+      ) as [
+      string,
         string?,
-      ];
-      const [id] = input;
-      const m = Number(
-        input[
-          1
-        ]
-        ?? 2,
-      );
-      const table = this
-        .data<FieldTable>("json")
-        ?? {};
-      const savedRun = table[
-        id
-      ] ?? null;
+    ];
+    const [id] = input;
+    const m = Number(
+      input[
+        1
+      ]
+      ?? 2,
+    );
+    const table = this
+      .data<FieldTable>("json")
+      ?? {};
+    const savedRun = table[
+      id
+    ] ?? null;
 
-      table[
-        id
-      ] = String(
-        now,
+    table[
+      id
+    ] = String(
+      now,
+    );
+    this
+      .write(
+        table,
+        "json",
       );
-      this
-        .write(
-          table,
-          "json",
-        );
 
-      return savedRun === null
-        || now - Number(
-          savedRun,
-        ) > 60000 * m;
-    }
+    return savedRun === null
+      || now - Number(
+        savedRun,
+      ) > 60000 * m;
   }
 }
 
-new LastRun.LastRun()
+new LastRun()
   .run();

@@ -1,12 +1,14 @@
-const hp_App = importModule(
+import type App from "./app/App.js";
+
+const app = importModule(
   `app/App`,
 ) as typeof App;
 
-abstract class Helper<
+export default abstract class Helper<
   Input = void,
   Output = void,
   Schema extends ISetting = never,
-> extends hp_App<
+> extends app<
     "Helper"
     ,
     Input
@@ -64,5 +66,4 @@ abstract class Helper<
     }
   }
 }
-
 module.exports = Helper;

@@ -1,8 +1,10 @@
-const amzn_ILinkPathProcessor = importModule(
+import type ILinkPathProcessor from "./processor/ILinkPathProcessor.js";
+
+const iLinkPathProcessor = importModule(
   `processor/ILinkPathProcessor`,
 ) as typeof ILinkPathProcessor;
 
-class AmazonPathProcessor extends amzn_ILinkPathProcessor<
+export default class AmazonPathProcessor extends iLinkPathProcessor<
   "amazon.com"
 > {
   protected process(
@@ -42,5 +44,4 @@ class AmazonPathProcessor extends amzn_ILinkPathProcessor<
     }
   }
 }
-
 module.exports = AmazonPathProcessor;

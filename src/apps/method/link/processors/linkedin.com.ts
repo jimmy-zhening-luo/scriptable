@@ -1,8 +1,10 @@
-const lnkd_ILinkPathProcessor = importModule(
+import type ILinkPathProcessor from "./processor/ILinkPathProcessor.js";
+
+const iLinkPathProcessor = importModule(
   `processor/ILinkPathProcessor`,
 ) as typeof ILinkPathProcessor;
 
-class LinkedInPathProcessor extends lnkd_ILinkPathProcessor<
+export default class LinkedInPathProcessor extends iLinkPathProcessor<
   "linkedin.com"
 > {
   protected process(
@@ -27,5 +29,4 @@ class LinkedInPathProcessor extends lnkd_ILinkPathProcessor<
     }
   }
 }
-
 module.exports = LinkedInPathProcessor;

@@ -1,8 +1,10 @@
-const s_IEngine = importModule(
+import type IEngine from "./engine/IEngine.js";
+
+const iEngine = importModule(
   `engine/IEngine`,
 ) as typeof IEngine;
 
-class ShortcutEngine extends s_IEngine {
+export default class ShortcutEngine extends iEngine {
   protected readonly shortcut: string;
   protected readonly output: boolean;
   protected readonly write: boolean;
@@ -80,5 +82,4 @@ class ShortcutEngine extends s_IEngine {
     }
   }
 }
-
 module.exports = ShortcutEngine;

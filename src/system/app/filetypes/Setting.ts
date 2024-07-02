@@ -1,11 +1,13 @@
-const se_Filetype = importModule(
+import type Filetype from "./filetype/Filetype.js";
+
+const fileType = importModule(
   `filetype/Filetype`,
 ) as typeof Filetype;
 
-class Setting<
+export default class Setting<
   Class extends string,
   Schema extends ISetting,
-> extends se_Filetype<
+> extends fileType<
     "Setting"
     ,
     Class
@@ -150,5 +152,4 @@ class Setting<
 
   private _cachedSetting?: Schema;
 }
-
 module.exports = Setting;

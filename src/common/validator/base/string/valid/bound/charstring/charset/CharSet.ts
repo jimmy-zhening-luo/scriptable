@@ -1,4 +1,4 @@
-class CharSet {
+export default class CharSet {
   public readonly chars: readonly char[];
   public readonly negate: boolean = false;
 
@@ -84,5 +84,4 @@ class CharSet {
     }
   }
 }
-
 module.exports = CharSet;
