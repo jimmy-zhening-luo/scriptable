@@ -1,81 +1,43 @@
 export function MenuObj() {
   "use strict";
 
-  const range = {
-    max: 12,
-    fold: 6,
+  const choices = args.shortcutParameter as readonly string[];
+  const { length } = choices;
+  const padSize = Math.max(
+    1,
+    6 - length,
+  );
+  const pad = "\n".repeat(padSize);
+  const up = length > 6
+    ? ""
+    : pad;
+  const down = pad;
+  const inverted = choices.map(
+    choice =>
+      [
+        `${up}${choice}${down}`,
+        choice,
+      ],
+  );
+  const buttons = Object.fromEntries(
+    inverted.map(
+      ([button], i) =>
+        [
+          `${i}`,
+          button,
+        ],
+    ),
+  );
+
+  return {
+    buttons,
+    inverse: Object.fromEntries(
+      inverted,
+    ) as Record<
+      string
+      ,
+      string
+    >,
+    runner: `__M${length}`,
   };
-  const choices = args
-    .shortcutParameter as Unflat<
-    string
-  >;
-  const n = choices
-    .length;
-
-  if (
-    typeof choices === "string"
-    || n < 2
-  )
-    return { choice: choices };
-  else if (
-    n > range
-      .max
-  )
-    return { buttons: choices };
-  else {
-    const pad = "\n"
-      .repeat(
-        Math
-          .max(
-            1,
-            6 - n,
-          ),
-      );
-    const [
-      up,
-      down,
-    ] = [
-      n > range
-        .fold
-        ? ""
-        : pad,
-      pad,
-    ];
-    const inverted = choices
-      .map(
-        choice =>
-          [
-            `${up}${choice}${down}`,
-            choice,
-          ],
-      );
-    const indexed = inverted
-      .map(
-        ([button], i) =>
-          [
-            String(i),
-            button,
-          ],
-      );
-
-    return {
-      buttons: Object
-        .fromEntries(
-          indexed,
-        ) as Record<
-        string
-        ,
-        string
-      >,
-      invert: Object
-        .fromEntries(
-          inverted,
-        ) as Record<
-        string
-        ,
-        string
-      >,
-      runner: `__M${n}`,
-    };
-  }
 }
