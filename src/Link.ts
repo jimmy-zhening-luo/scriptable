@@ -27,6 +27,7 @@ namespace Link {
           swap,
         },
         query: {
+          omit,
           include,
           exclude,
         },
@@ -104,50 +105,55 @@ namespace Link {
           )
             .processed
           : _path,
-        query: host in include
-          ? inclusions
-            .length > 0
-            ? _query
-              .split(
-                "&",
-              )
-              .filter(
-                param =>
-                  inclusions
-                    .includes(
-                      param
-                        .split(
-                          "=",
-                        )
-                        .shift()
-                        ?? "",
-                    ),
-              )
-              .join(
-                "&",
-              )
-            : ""
-          : host in exclude
-            ? _query
-              .split(
-                "&",
-              )
-              .filter(
-                param =>
-                  !exclusions
-                    .includes(
-                      param
-                        .split(
-                          "=",
-                        )
-                        .shift()
-                        ?? "",
-                    ),
-              )
-              .join(
-                "&",
-              )
-            : _query,
+        query: omit
+          .includes(
+            host
+          )
+          ? ""
+          : host in include
+            ? inclusions
+              .length < 1
+              ? ""
+              : _query
+                .split(
+                  "&",
+                )
+                .filter(
+                  param =>
+                    inclusions
+                      .includes(
+                        param
+                          .split(
+                            "=",
+                          )
+                          .shift()
+                          ?? "",
+                      ),
+                )
+                .join(
+                  "&",
+                )
+            : host in exclude
+              ? _query
+                .split(
+                  "&",
+                )
+                .filter(
+                  param =>
+                    !exclusions
+                      .includes(
+                        param
+                          .split(
+                            "=",
+                          )
+                          .shift()
+                          ?? "",
+                      ),
+                )
+                .join(
+                  "&",
+                )
+              : _query,
         fragment: trim
           .includes(
             host,
