@@ -17,7 +17,7 @@ class RedditPathProcessor extends redd_ILinkPathProcessor<
       return nodes
         .length < 6
         ? path
-        : nodes[3] as string !== "comments"
+        : (nodes[3] ?? "") !== "comments"
           ? path
           : nodes
             .slice(
@@ -25,7 +25,7 @@ class RedditPathProcessor extends redd_ILinkPathProcessor<
               nodes
                 .length < 7
                 ? 5
-                : nodes[5] as string !== "comment"
+                : (nodes[5] ?? "") !== "comment"
                   ? Infinity
                   : 7,
             )
