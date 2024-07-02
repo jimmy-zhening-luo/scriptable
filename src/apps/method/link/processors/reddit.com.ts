@@ -18,20 +18,20 @@ class RedditPathProcessor extends redd_ILinkPathProcessor<
         .length < 6
         ? path
         : (nodes[3] ?? "") !== "comments"
-          ? path
-          : nodes
-            .slice(
-              0,
-              nodes
-                .length < 7
-                ? 5
-                : (nodes[5] ?? "") !== "comment"
-                  ? Infinity
-                  : 7,
-            )
-            .join(
-              "/",
-            );
+            ? path
+            : nodes
+              .slice(
+                0,
+                nodes
+                  .length < 7
+                  ? 5
+                  : (nodes[5] ?? "") !== "comment"
+                      ? Infinity
+                      : 7,
+              )
+              .join(
+                "/",
+              );
     }
     catch (e) {
       throw new EvalError(
