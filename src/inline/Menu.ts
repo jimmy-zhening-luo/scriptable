@@ -1,11 +1,9 @@
 export function Menu() {
   "use strict";
 
-  const FOLD = 6;
+  const FOLD = 6 as const;
   const choices = args
-    .shortcutParameter as Unflat<
-    string
-  >;
+    .shortcutParameter as readonly string[];
   const n = choices
     .length;
   const pad = "\n"
