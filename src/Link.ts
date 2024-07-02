@@ -107,7 +107,7 @@ namespace Link {
           : _path,
         query: omit
           .includes(
-            host
+            host,
           )
           ? ""
           : host in include
