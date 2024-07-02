@@ -1,7 +1,7 @@
 export function Menu() {
   "use strict";
 
-  const FOLD = 6 as const;
+  const FOLD = 6;
   const choices = args
     .shortcutParameter as readonly string[];
   const n = choices
