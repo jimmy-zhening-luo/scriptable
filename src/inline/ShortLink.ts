@@ -5,17 +5,17 @@ export function MenuObj() {
     .shortcutParameter as string;
   const [
     Scheme,
-    ...rest,
+    ...rest
   ] = inputUrl
     .split(
       ":",
     ) as Arrayful<
-      string
-    >;
+    string
+  >;
   const scheme = Scheme
     .toLowerCase() === "http"
     ? "https"
-    : Schene
+    : Scheme
       .toLowerCase();
   const url = [
     scheme,
@@ -24,6 +24,7 @@ export function MenuObj() {
     .join(
       ":",
     );
+
   if (
     url
       .length > 0
