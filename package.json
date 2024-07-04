@@ -12,7 +12,7 @@
   "type": "module",
   "private": true,
   "config": {
-    "PACKAGE_JSON_VERSION": "20.6.0"
+    "PACKAGE_JSON_VERSION": "20.8.0"
   },
   "repository": {
     "type": "git",
@@ -48,16 +48,16 @@
   },
   "scripts": {
     "eslint": "eslint --cache --fix",
-    "lint": "(npm run lint:configs) && (npm run lint:source)",
+    "lint:source": "npm run eslint -- src/**/*.{js,ts,html}",
     "lint:configs": "npm run eslint -- {*,.github/workflows/*}.{json,jsonc,js,ts,yml}",
-    "lint:source": "npm run eslint -- src/**/*.{js,ts,svelte,html}",
-    "prebuild": "(npm run --if-present prebuild:svelte) && (npm run lint)",
-    "build": "tsc",
+    "lint": "(npm run --if-present lint:svelte) && (npm run lint:source) && (npm run lint:configs)",
+    "prebuild": "npm run lint",
+    "build": "(vite build) || (tsc)",
     "pretest": "npm run build",
     "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" NODE_NO_WARNINGS=1 jest --passWithNoTests --",
     "prepublishOnly": "npm test",
     "prestart": "npm test",
-    "start": "node .",
+    "start": "(vite preview) || (node .)",
     "preaction": "npm test",
     "action": "((mkdir packed)   ||   (((rm -rf packed) || (rmdir /s /q packed))  &&  (mkdir packed)))    &&    ((cp -r built/js/* packed)   ||   (xcopy /e /k /h /i \"./built/js\" \"packed\"))"
   }
