@@ -3,9 +3,16 @@ declare type ThingsItem =
     | "title"
     | "notes"
     | "triage"
+    | "list"
+    ,
+    | "list"
+  >
+  & List<
+    "tags"
+    ,
+    true
   >
   & {
-    list?: string;
     when?:
       | "today"
       | "someday"
