@@ -12,7 +12,7 @@
   "type": "module",
   "private": true,
   "config": {
-    "PACKAGE_JSON_VERSION": "20.4.0-scriptable.0"
+    "PACKAGE_JSON_VERSION": "20.5.0"
   },
   "repository": {
     "type": "git",
@@ -47,18 +47,20 @@
     ]
   },
   "scripts": {
-    "e": "eslint -c eslint.config.js --cache --fix",
-    "lint": "(npm run lint:cfg) && (npm run lint:src) && (npm run --if-present lint:ci) && (npm run --if-present lint:svelte)",
-    "lint:cfg": "npm run e -- package.json tsconfig.json eslint.config.js",
-    "lint:src": "npm run e -- src/**/*.ts",
-    "lint:ci": "npm run e -- .github/workflows/*.yml",
-    "prebuild": "(npm run --if-present check) && (npm run lint)",
+    "eslint": "eslint --cache --fix",
+    "lint": "(npm run lint:configs) && (npm run lint:source)",
+    "lint:configs": "npm run eslint -- {*,.github/workflows/*}.{json,jsonc,js,ts,yml}",
+    "lint:source": "npm run eslint -- src/**/*.{js,ts,svelte,html}",
+    "prebuild": "(npm run --if-present prebuild:svelte) && (npm run lint)",
     "build": "tsc",
+    "githubAction": "npm run test",
+    "prepublishOnly": "npm test",
+    "prestart": "npm test",
+    "start": "node .",
     "pretest": "npm run build",
-    "test": "npm run test:jest",
-    "test:jest": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" NODE_NO_WARNINGS=1 jest --passWithNoTests --",
-    "prepack": "(npm run prepack:clean) && (npm run test)",
+    "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" NODE_NO_WARNINGS=1 jest --passWithNoTests --",
     "prepack:clean": "(rm -rf packed) || (rmdir /s /q packed) || (exit 0)",
+    "prepack": "(npm run prepack:clean) && (npm run test)",
     "pack": "(mkdir packed) && ((cp -r built/js/* packed) || (xcopy /e /k /h /i \"./built/js\" \"packed\"))"
   }
 }
