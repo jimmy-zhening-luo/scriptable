@@ -29,8 +29,8 @@ namespace Things {
           .item
           .length < 1
           || delim
-              .line
-              .length < 1
+            .line
+            .length < 1
             || tag
               .length < 1
       )
@@ -40,7 +40,7 @@ namespace Things {
       else if (
         delim
           .item === delim
-            .line
+          .line
       )
         throw new SyntaxError(
           `setting: identical delim for 'item' and 'line'`,
@@ -102,31 +102,31 @@ namespace Things {
                 list,
               ] = tagent === null
                 ? [
-                  "",
-                  "",
-                ]
+                    "",
+                    "",
+                  ]
                 : tagent
                   .length < 1
                   || tagent === delim
                     .line
-                  || !(tagent in lists)
-                  || (
-                    lists[
-                      tagent
-                    ]
-                    ?? ""
-                  )
-                    .length < 1
+                    || !(tagent in lists)
+                    || (
+                      lists[
+                        tagent
+                      ]
+                      ?? ""
+                    )
+                      .length < 1
                   ? [
-                    "today",
-                    "",
-                  ]
+                      "today",
+                      "",
+                    ]
                   : [
-                    "",
-                    lists[
-                      tagent
-                    ] as unknown as string,
-                  ];
+                      "",
+                      lists[
+                        tagent
+                      ] as unknown as string,
+                    ];
               const lines = item
                 .split(
                   delim
