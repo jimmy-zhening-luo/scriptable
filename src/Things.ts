@@ -19,94 +19,138 @@ namespace Things {
       const {
         app: {
           tag,
-          delims,
+          delim,
         },
-        user: {
-          triage,
-          lists,
-        },
+        user: { lists },
       } = this;
 
-      return input
-        .split(
-          delims
-            .item,
-        )
-        .reverse()
-        .map(
-          item =>
-            item
-              .trim(),
-        )
-        .map(
-          (item): ThingsItem => {
-            const lines = item
-              .split(
-                delims
-                  .line,
-              );
-            const lastTaggedLine = [...lines]
-              .reverse()
-              .find(
-                line =>
-                  line
-                    .includes(
-                      tag,
-                    ),
-              ) ?? null;
-            const isTagged = lastTaggedLine !== null;
-            const iLastTag =
-              lastTaggedLine === null
-                ? null
-                : lastTaggedLine
-                  .lastIndexOf(
-                    tag,
-                  ) as Positive<fint>;
-            const lastTag =
-              lastTaggedLine === null
-              || iLastTag === null
-                ? null
-                : lastTaggedLine.length === iLastTag + 1
-                  ? null
-                  : (
-                      lastTaggedLine[
-                        iLastTag + 1
-                      ] ?? ""
-                    )
-                      .toLowerCase();
-            const flags: Pick<
-              ThingsItem,
-              | "when"
-              | "list"
-            > =
-              !isTagged
-                ? {}
-                : lastTag === null
-                || lastTag.length < 1
-                  ? { when: "today" }
-                  : {
-                      list: lists[
-                        lastTag
-                      ] ?? "",
-                    };
-
-            return {
-              title: encodeURI(
-                lines
-                  .shift() ?? "",
-              ),
-              notes: encodeURI(
-                lines
-                  .join(
-                    delims
-                      .line,
-                  ),
-              ),
-              triage,
-              ...flags,
-            };
-          },
+      if (
+        delim
+          .item
+          .length < 1
+          || delim
+              .line
+              .length < 1
+            || tag
+              .length < 1
+      )
+        throw new TypeError(
+          `setting: empty tag or delim`,
         );
+      else if (
+        delim
+          .item === delim
+            .line
+      )
+        throw new SyntaxError(
+          `setting: identical delim for 'item' and 'line'`,
+        );
+      else if (
+        tag === delim
+          .line
+      )
+        throw new SyntaxError(
+          `setting: tag is identical to delim 'line'`,
+        );
+      else {
+        const items = input
+          .split(
+            delim
+              .item,
+          )
+          .reverse()
+          .map(
+            item =>
+              item
+                .trim()
+                .split(
+                  delim
+                    .line,
+                )
+                .map(
+                  line =>
+                    line
+                      .trim(),
+                )
+                .filter(
+                  line =>
+                    line
+                      .length > 0,
+                )
+                .join(
+                  delim
+                    .line,
+                ),
+          );
+
+        return items
+          .map(
+            (item): ThingsItem => {
+              const tagIndex = item
+                .lastIndexOf(
+                  tag,
+                );
+              const tagent = tagIndex < 0
+                ? null
+                : item
+                  .slice(
+                    tagIndex,
+                    tagIndex + 1,
+                  );
+              const [
+                when,
+                list,
+              ] = tagent === null
+                ? [
+                  "",
+                  "",
+                ]
+                : tagent
+                  .length < 1
+                  || tagent === delim
+                    .line
+                  || !(tagent in lists)
+                  || (
+                    lists[
+                      tagent
+                    ]
+                    ?? ""
+                  )
+                    .length < 1
+                  ? [
+                    "today",
+                    "",
+                  ]
+                  : [
+                    "",
+                    lists[
+                      tagent
+                    ] as unknown as string,
+                  ];
+              const lines = item
+                .split(
+                  delim
+                    .line,
+                );
+
+              return {
+                title: encodeURI(
+                  lines
+                    .shift() ?? "",
+                ),
+                notes: encodeURI(
+                  lines
+                    .join(
+                      delim
+                        .line,
+                    ),
+                ),
+                when,
+                list,
+              };
+            },
+          );
+      }
     }
   }
 }
