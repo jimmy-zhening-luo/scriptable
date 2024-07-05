@@ -10,37 +10,28 @@ class ShortcutEngine extends s_IEngine {
     output = "",
   ) {
     try {
-      if (
-        shortcut
-          .length < 1
-      )
-        throw new SyntaxError(
-          `no shortcut engine name provided`,
-        );
-      else {
-        super(
-          "shortcut",
-          output !== "write"
-            ? output
-            : shortcut
-              .toLowerCase()
-              .replaceAll(
-                ".",
-                "",
-              )
-              .replaceAll(
-                "_",
-                "",
-              )
-              .trim()
-              .replaceAll(
-                " ",
-                "",
-              ),
-        );
-        this
-          .shortcut = shortcut;
-      }
+      super(
+        "shortcut",
+        output !== "write"
+          ? output
+          : shortcut
+            .toLowerCase()
+            .replaceAll(
+              ".",
+              "",
+            )
+            .replaceAll(
+              "_",
+              "",
+            )
+            .trim()
+            .replaceAll(
+              " ",
+              "",
+            ),
+      );
+      this
+        .shortcut = shortcut;
     }
     catch (e) {
       throw new EvalError(
