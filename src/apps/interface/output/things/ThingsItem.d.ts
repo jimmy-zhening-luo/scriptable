@@ -1,14 +1,6 @@
-declare type ThingsItem =
-  & Field<
-    | "title"
-    | "notes"
-    | "list"
-  >
-  & {
-    when:
-      | ""
-      | "today"
-      | "someday"
-    ;
-  }
-;
+declare type ThingsItem = Field<
+  | "title"
+  | "notes"
+  | "when"
+  | "list"
+>;
