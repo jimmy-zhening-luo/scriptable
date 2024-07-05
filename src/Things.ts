@@ -94,8 +94,8 @@ namespace Things {
                 ? null
                 : item
                   .slice(
-                    tagIndex,
                     tagIndex + 1,
+                    tagIndex + 2,
                   );
               const [
                 when,
