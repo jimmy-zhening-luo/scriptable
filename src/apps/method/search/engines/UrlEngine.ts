@@ -19,12 +19,14 @@ class UrlEngine extends b_IEngine {
     browser = "",
     separator = "+",
     encodeComponent = false,
-    postfix?: string,
+    output?: string,
   ) {
     try {
       super(
-        "safari",
-        postfix,
+        "browser",
+        browser === "api"
+          ? output
+          : "",
       );
       this
         .TAG = TAG;
@@ -137,9 +139,6 @@ class UrlEngine extends b_IEngine {
       return {
         browser,
         natural,
-        ...browser === "api"
-          ? { write: true }
-          : {},
       };
     }
     catch (e) {

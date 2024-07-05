@@ -17,23 +17,37 @@ declare type SearchSetting = {
   user: {
     alias: FieldTable;
     engines: Table<
-      | Unflat<
-        string
-        ,
-        true
-      >
-      | UrlEngineSetting
       | ISearchEngineSetting<
         "find"
       >
       | ISearchEngineSetting<
         "shortcut"
         ,
-        | "output"
-        | "write"
-        ,
-        | "postfix"
+        true
       >
+      | ISearchEngineSetting<
+        "url"
+        ,
+        true
+        ,
+        "encodeComponent"
+        ,
+        never
+        ,
+        true
+        ,
+        {
+          browser?:
+            | "api"
+            | "force"
+          ;
+          separator?:
+            | "%20"
+          ;
+        }
+      >
+      | string[]
+      | string
     >;
   };
 };

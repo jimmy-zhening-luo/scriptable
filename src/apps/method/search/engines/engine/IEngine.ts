@@ -1,7 +1,7 @@
 abstract class IEngine {
   constructor(
     protected readonly app: string,
-    protected readonly postfix: Null<string> = null,
+    protected readonly output = "",
   ) {}
 
   public resolve(
@@ -38,9 +38,7 @@ abstract class IEngine {
 
   protected transform(
     query: Query,
-  ): Unflat<
-      string
-    > {
+  ): Unflat<string> {
     try {
       return query
         .natural;
@@ -57,14 +55,14 @@ abstract class IEngine {
     query: Query,
   ) {
     try {
-      const { app } = this;
+      const {
+        app,
+        output,
+      } = this;
 
       return {
         app,
-        postfix: this
-          .postfix
-          ?? query
-            .postfix,
+        output,
         action: this
           .transform(
             query,

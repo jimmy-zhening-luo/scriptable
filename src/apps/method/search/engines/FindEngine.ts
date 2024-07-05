@@ -11,6 +11,7 @@ class FindEngine extends f_IEngine {
     try {
       super(
         "find",
+        "",
       );
 
       if (

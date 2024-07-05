@@ -4,51 +4,43 @@ const s_IEngine = importModule(
 
 class ShortcutEngine extends s_IEngine {
   protected readonly shortcut: string;
-  protected readonly output: boolean;
-  protected readonly write: boolean;
 
   constructor(
     shortcut: string,
-    output = false,
-    write = false,
-    postfix?: string,
+    output = "",
   ) {
     try {
-      super(
-        "shortcut",
-        postfix
-        ?? shortcut
-          .toLowerCase()
-          .replaceAll(
-            ".",
-            "",
-          )
-          .replaceAll(
-            "_",
-            "",
-          )
-          .trim()
-          .replaceAll(
-            " ",
-            "",
-          ),
-      );
-
       if (
         shortcut
-          .length > 0
-      ) {
+          .length < 1
+      )
+        throw new SyntaxError(
+          `no shortcut engine name provided`,
+        );
+      else {
+        super(
+          "shortcut",
+          output !== "write"
+            ? output
+            : shortcut
+              .toLowerCase()
+              .replaceAll(
+                ".",
+                "",
+              )
+              .replaceAll(
+                "_",
+                "",
+              )
+              .trim()
+              .replaceAll(
+                " ",
+                "",
+              ),
+        );
         this
           .shortcut = shortcut;
-        this
-          .output = output;
-        this
-          .write = write;
       }
-      else
-        throw new SyntaxError(
-          `'shortcut' field empty`,
-        );
     }
     catch (e) {
       throw new EvalError(
@@ -60,17 +52,9 @@ class ShortcutEngine extends s_IEngine {
 
   protected options() {
     try {
-      const {
-        shortcut,
-        output,
-        write,
-      } = this;
+      const { shortcut } = this;
 
-      return {
-        shortcut,
-        output,
-        write,
-      };
+      return { shortcut };
     }
     catch (e) {
       throw new EvalError(

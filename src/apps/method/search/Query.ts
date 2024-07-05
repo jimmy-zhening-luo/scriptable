@@ -128,19 +128,6 @@ class Query {
     }
   }
 
-  public get postfix() {
-    try {
-      return this
-        .key;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: postfix`,
-        { cause: e },
-      );
-    }
-  }
-
   public get string() {
     try {
       const string = [

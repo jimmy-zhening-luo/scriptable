@@ -1,25 +1,20 @@
 declare type SearchOutput =
-  & Listish<
-    "action"
-  >
+  & Listish<"action">
   & Field<
     | "app"
-    | "postfix"
+    | "output"
   >
   & Field<
-    | "natural"
-    | "shortcut"
-    | "find"
+    | "shortcut" // Shortcut
+    | "find" // Find
     ,
     true
   >
-  & Flag<
-    | "output"
-    | "write"
-  >
-  & PartialRecord<
-    "browser"
-    ,
-    UrlEngine["browser"]
-  >
+  & { // URL
+    natural?: string;
+    browser?:
+      | "api"
+      | "force"
+    ;
+  }
 ;

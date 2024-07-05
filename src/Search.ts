@@ -128,7 +128,7 @@ namespace Search {
           { cause: { key } },
         );
       else {
-        const engine: IEngine = Array.isArray(
+        const engine = Array.isArray(
           setting,
         )
         || typeof setting === "string"
@@ -158,7 +158,7 @@ namespace Search {
               setting
                 .encodeComponent,
               setting
-                .postfix,
+                .output,
             )
             : "shortcut" in setting
               ? new (
@@ -171,10 +171,6 @@ namespace Search {
                   .shortcut,
                 setting
                   .output,
-                setting
-                  .write,
-                setting
-                  .postfix,
               )
               : new (
                 this
