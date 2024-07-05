@@ -12,9 +12,6 @@ declare type SearchOutput =
   >
   & { // URL
     natural?: string;
-    browser?:
-      | "api"
-      | "force"
-    ;
+    browser?: string;
   }
 ;

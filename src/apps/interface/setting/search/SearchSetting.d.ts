@@ -34,17 +34,20 @@ declare type SearchSetting = {
         ,
         never
         ,
-        true
+        & PartialRecord<
+          "browser"
+          ,
+          | "api"
+          | "force"
+        >
+        &
+        PartialRecord<
+          "separator"
+          ,
+          "%20"
+        >
         ,
-        {
-          browser?:
-            | "api"
-            | "force"
-          ;
-          separator?:
-            | "%20"
-          ;
-        }
+        true
       >
       | string[]
       | string

@@ -18,23 +18,21 @@ declare type ISearchEngineSetting<
     ,
     MultipleActions extends true
       ?
-        | string[]
-        | string
+      | string[]
+      | string
       : string
   >
   & (
     Output extends true
       ? {
-        output?:
-          | ""
-          | "write" // any postfix
-        ;
-      }
+          output?:
+            | ""
+            | "write" // any postfix
+          ;
+        }
       : {}
   )
-  & Flag<
-    Flags
-  >
+  & Flag<Flags>
   & Field<
     Fields
     ,
