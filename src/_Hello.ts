@@ -11,7 +11,7 @@ namespace _Hello {
     ,
     string
     ,
-    { app?: { space?: string } }
+    { space?: string }
   > {
     protected runtime() {
       this
@@ -29,8 +29,7 @@ namespace _Hello {
         .stringful(
           this
             .setting
-            .app
-            ?.space ?? "",
+            .space ?? "",
           "space",
         );
       const notification = `${

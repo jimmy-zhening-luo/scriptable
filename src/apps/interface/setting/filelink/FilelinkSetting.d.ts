@@ -1,14 +1,14 @@
-declare type FilelinkSetting = {
-  app: Field<
+declare type FilelinkSetting =
+  & Field<
     | "scheme"
     | "commonRoot"
-  >;
-  user: Record<
+  >
+  & Record<
     "providers"
     ,
     Table<
       | FileProvider<false>
       | FileProvider<true>
     >
-  >;
-};
+  >
+;

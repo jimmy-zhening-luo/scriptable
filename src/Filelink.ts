@@ -15,6 +15,19 @@ namespace Filelink {
   > {
     protected runtime() {
       const {
+        scheme,
+        commonRoot,
+        providers,
+      } = this
+        .setting;
+      const SCHEME_ROOT = [
+        scheme,
+        commonRoot,
+      ]
+        .join(
+          "://",
+        );
+      const {
         nodes,
         ext,
         type,
@@ -25,22 +38,6 @@ namespace Filelink {
           nodes,
         );
       const [rootNode] = path;
-      const {
-        scheme,
-        commonRoot,
-      } = this
-        .setting
-        .app;
-      const SCHEME_ROOT = [
-        scheme,
-        commonRoot,
-      ]
-        .join(
-          "://",
-        );
-      const { providers } = this
-        .setting
-        .user;
       const provider = providers[
         rootNode
       ]
@@ -54,7 +51,10 @@ namespace Filelink {
           {
             cause: {
               rootNode,
-              providers: Object.keys(providers),
+              providers: Object
+                .keys(
+                  providers,
+                ),
             },
           },
         );

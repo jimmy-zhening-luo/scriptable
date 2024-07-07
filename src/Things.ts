@@ -14,14 +14,10 @@ namespace Things {
     ThingsSetting
   > {
     protected runtime() {
-      const input = this
-        .inputStringful;
       const {
-        app: {
-          tag,
-          delim,
-        },
-        user: { lists },
+        tag,
+        delim,
+        lists,
       } = this
         .setting;
 
@@ -54,6 +50,8 @@ namespace Things {
           `setting: tag is identical to delim 'line'`,
         );
       else {
+        const input = this
+          .inputStringful;
         const items = input
           .split(
             delim
