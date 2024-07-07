@@ -4,34 +4,29 @@ export function MenuObj() {
   const inputUrl = args
     .shortcutParameter as string;
   const [
-    Scheme,
+    __scheme,
     ...rest
   ] = inputUrl
-    .split(
-      ":",
-    ) as Arrayful<
+    .split(":") as Arrayful<
     string
   >;
-  const scheme = Scheme
-    .toLowerCase() === "http"
+  const _scheme = __scheme
+    .toLowerCase();
+  const scheme = _scheme === "http"
     ? "https"
-    : Scheme
-      .toLowerCase();
+    : _scheme;
   const url = [
     scheme,
     ...rest,
   ]
-    .join(
-      ":",
-    );
+    .join(":");
 
-  if (
-    url
-      .length > 0
-  )
+  if (url.length > 0)
     return {
       url,
-      web: scheme === "https",
+      ...scheme === "https"
+        ? { web: true }
+        : {},
     };
   else
     throw new TypeError(
