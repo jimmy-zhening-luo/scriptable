@@ -22,7 +22,8 @@ namespace Things {
           delim,
         },
         user: { lists },
-      } = this;
+      } = this
+        .setting;
 
       if (
         delim

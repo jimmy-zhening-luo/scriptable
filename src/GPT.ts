@@ -17,7 +17,8 @@ namespace GPT {
       const {
         app,
         user,
-      } = this;
+      } = this
+        .setting;
       const {
         api,
         models,

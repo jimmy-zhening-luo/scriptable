@@ -23,7 +23,8 @@ namespace Search {
       const {
         app,
         user,
-      } = this;
+      } = this
+        .setting;
       const {
         tag,
         key: {
