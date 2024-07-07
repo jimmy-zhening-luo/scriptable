@@ -1,184 +1,108 @@
-#########################################
-#####          .gitignore           #####
-#########################################
-
-
-#####################
-####   v5.0.0    ####
-#####################
-
-
-####################################
-####           PROJECT          ####
-####################################
-
-
-## BEGIN project-specific files to .gitignore ##
-
-
-
-
-##   END project-specific files to .gitignore ##
-
-
-
-
-
-
-####################################
-####           COMMON           ####
-####################################
+##########################################
+########                          ########
+########        .gitignore        ########
+########                          ########
+########          v6.0.0          ########
+########                          ########
+##########################################
 
 
 #######################
-###  FOLDER (ROOT)  ###
+####               ####
+####    Project    ####
+####               ####
 #######################
 
 
-## Intention: ignore distro folders in root
 
+
+######################
+####              ####
+####    Common    ####
+####              ####
+######################
+
+############################
+###   Directory (root)   ###
+############################
+
+## Build
 /dist/
-
 /build/
-/builds/
 /built/
-
 /bundle/
-/bundles/
-/bundled/
-
-/pkg/
-/pkgs/
 /pack/
-/packs/
 /packed/
 /package/
-/packages/
 /packaged/
 
-
-
-## Intention: ignore local I/O dirs in root
-
+## Runtime
+/in/
 /input/
-/inputs/
+/out/
 /output/
-/outputs/
 
 
+##########################
+###   Directory (**)   ###
+##########################
 
-## Intention: ignore generic local dirs in root
-
-/.local/
-/local/
-
-
-
-## Intention: SVELTE: ignore sveltekit helper files generated in root during dev and build
-
-/.svelte-kit/
-
-
-
-
-
-################
-###  FOLDER  ###
-################
-
-
-## Intention: NODE: ignore locally installed Node packages in any directory
-
+## Dependency
 node_modules/
 
+## Build Artifact
+.svelte-kit/
 
-
-## Intention: VSCODE: ignore IDE settings anywhere
-
+## IDE
 .vscode/
 
-
-
-## Intention: iOS: ignore iOS filesystem detritus anywhere
-
+## Filesystem (iOS)
 .Trash/
 
 
+#######################
+###   File (root)   ###
+#######################
 
+## Example
+## /*.foo
 
 
 #####################
-###  FILE (ROOT)  ###
+###   File (**)   ###
 #####################
 
-
-## Intention:
-
-# Syntax: /<file_glob_pattern_goes_here>
-# Example: /*.blob
-
-
-
-
-
-################
-###   FILE   ###
-################
-
-
-## Intention: ignore app secrets in .secret files anywhere (regardless, storing secrets in plain-text is bad practice)
-
-*.secret
-*.secrets
-
-
-
-## Intention: ignore .log files anywhere
-
-*.log
-*.logs
-
-
-
-## Intention: ignore loose I/O artifacts anywhere
-
-*.input
-*.inputs
-*.output
-*.outputs
-
-
-
-## Intention: ignore non-example .env files anywhere
-
+## Runtime
 *.env
 *.env.*
 !.env.*example
 
+## Dependency
+.yarn-integrity
 
+## Build
+*.tgz
 
-## Intention: ESLINT: ignore eslint caches anywhere
-
-*.eslintcache
-
-
-
-## Intention: iOS: ignore iOS filesystem detritus anywhere
-
-*.icloud
-
-
-
-## Intention: TS: ignore TypeScript build artifacts anywhere in the project, including if they accidentally sneak into the root or a source directory
-
+## Build Artifact
 *.tsbuildinfo
-
-
-
-## Intention: SVELTE: ignore sveltekit, svelte, and vite build artifacts anywhere in the project
-
 *.DS_Store
 *.vercel
 *.output
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+## Cache
+*.eslintcache
+*.npm
+
+## Log
+log
+logs
+*.log
+*.logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+## Filesystem (iOS)
+*.icloud
