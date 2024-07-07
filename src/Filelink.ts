@@ -29,6 +29,7 @@ namespace Filelink {
         scheme,
         commonRoot,
       } = this
+        .setting
         .app;
       const SCHEME_ROOT = [
         scheme,
@@ -38,6 +39,7 @@ namespace Filelink {
           "://",
         );
       const { providers } = this
+        .setting
         .user;
       const provider = providers[
         rootNode

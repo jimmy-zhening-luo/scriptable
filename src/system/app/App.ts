@@ -113,34 +113,6 @@ abstract class App<
     }
   }
 
-  protected get app() {
-    try {
-      return this
-        ._setting
-        .app;
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: app (setting.app)`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected get user() {
-    try {
-      return this
-        ._setting
-        .user;
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: user (setting.user)`,
-        { cause: e },
-      );
-    }
-  }
-
   protected get input() {
     try {
       if (

@@ -33,6 +33,7 @@ namespace Link {
         },
         fragment: { trim },
       } = this
+        .setting
         .user;
       const {
         _scheme,

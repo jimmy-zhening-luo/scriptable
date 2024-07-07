@@ -28,6 +28,7 @@ namespace _Hello {
       const SPACE = this
         .stringful(
           this
+            .setting
             .app
             ?.space ?? "",
           "space",
