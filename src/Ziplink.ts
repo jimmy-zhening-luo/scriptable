@@ -49,7 +49,7 @@ namespace Ziplink {
             "json",
           );
 
-        return id;
+        return `shortcuts://run-shortcut?name=I&input=${id}`;
       }
     }
   }

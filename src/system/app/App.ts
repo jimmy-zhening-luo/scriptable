@@ -2,7 +2,7 @@ abstract class App<
   Class extends string,
   Input,
   Output,
-  Schema extends ISetting,
+  Schema,
 > {
   protected readonly __proto: literalful<
     "App"
@@ -103,11 +103,11 @@ abstract class App<
     try {
       return this
         ._setting
-        .parsed;
+        .parse;
     }
     catch (e) {
       throw new EvalError(
-        `App: setting (setting.parsed)`,
+        `App: setting (setting.parse)`,
         { cause: e },
       );
     }
@@ -228,7 +228,9 @@ abstract class App<
                 input,
                 truthyInput,
                 type: typeof input,
-                isArray: Array.isArray(input),
+                isArray: Array.isArray(
+                  input,
+                ),
               },
             },
           );
@@ -562,9 +564,12 @@ abstract class App<
       infer Schema
     >
       ? App<
-        Class,
-        Input,
-        Output,
+        Class
+        ,
+        Input
+        ,
+        Output
+        ,
         Schema
       >
       : never,
@@ -578,9 +583,12 @@ abstract class App<
       infer Schema
     >
       ? App<
-        Class,
-        Input,
-        Output,
+        Class
+        ,
+        Input
+        ,
+        Output
+        ,
         Schema
       >[
         "input"
@@ -798,16 +806,16 @@ abstract class App<
         .join(
           ":",
         );
-      const cached = this
+      const cache = this
         ._storage[
           cacheId
         ]
         ?? null;
 
       if (
-        cached !== null
+        cache !== null
       )
-        return cached;
+        return cache;
       else {
         const newStorage = new this
           .Storage<Class>(
@@ -839,16 +847,16 @@ abstract class App<
     handle: string,
   ) {
     try {
-      const cached = this
+      const cache = this
         ._keys[
           handle
         ]
         ?? null;
 
       if (
-        cached !== null
+        cache !== null
       )
-        return cached;
+        return cache;
       else {
         const newKey = new this
           .Key<Class>(

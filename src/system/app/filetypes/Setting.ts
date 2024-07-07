@@ -4,7 +4,7 @@ const se_Filetype = importModule(
 
 class Setting<
   Class extends string,
-  Schema extends ISetting,
+  Schema,
 > extends se_Filetype<
     "Setting"
     ,
@@ -34,101 +34,49 @@ class Setting<
     }
   }
 
-  public get parsed(): Schema {
+  public get parse(): Schema {
     try {
       if (
-        this
-          ._cachedSetting === undefined
+        typeof this
+          ._cache === "undefined"
       ) {
-        const parsedJson: unknown = JSON
+        const setting: unknown = JSON
           .parse(
             this
               .readful(),
           );
 
         if (
-          parsedJson !== undefined
+          typeof setting === "object"
+          && setting !== null
+          && Object
+            .keys(
+              setting,
+            )
+            .length > 0
         )
           this
-            ._cachedSetting = parsedJson as Schema;
+            ._cache = setting as Schema;
         else
           throw new TypeError(
-            `Setting file parsed to valid JSON, but has invalid schema`,
+            `Setting file does not match schema`,
             {
               cause: {
-                path: this.file.path,
-                raw: this.read(),
-                parsedString: String(parsedJson),
-                parsedJson,
+                file: this
+                  .subpath,
+                content: this
+                  .read(),
               },
             },
           );
       }
 
       return this
-        ._cachedSetting;
+        ._cache;
     }
     catch (e) {
       throw new EvalError(
-        `Setting: parsed`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get app(): Schema["app"] {
-    try {
-      if (
-        this
-          .parsed
-          .app === undefined
-      )
-        throw new TypeError(
-          `No app setting found`,
-          {
-            cause: {
-              subpath: this.subpath,
-              parsed: this.parsed,
-            },
-          },
-        );
-      else
-        return this
-          .parsed
-          .app;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Setting: app`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get user(): Schema["user"] {
-    try {
-      if (
-        this
-          .parsed
-          .user === undefined
-      )
-        throw new TypeError(
-          `No user setting found`,
-          {
-            cause: {
-              subpath: this.subpath,
-              parsed: this.parsed,
-            },
-          },
-        );
-      else
-        return this
-          .parsed
-          .user;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Setting: user`,
+        `Setting: parse`,
         { cause: e },
       );
     }
@@ -137,18 +85,18 @@ class Setting<
   public write(): never {
     throw new ReferenceError(
       `Setting: write: Forbidden: Setting files are readonly`,
-      { cause: { subpath: this.subpath } },
+      { cause: { file: this.subpath } },
     );
   }
 
   public delete(): never {
     throw new ReferenceError(
       `Setting: delete: Forbidden: Setting files are readonly`,
-      { cause: { subpath: this.subpath } },
+      { cause: { file: this.subpath } },
     );
   }
 
-  private _cachedSetting?: Schema;
+  private _cache?: Schema;
 }
 
 module.exports = Setting;

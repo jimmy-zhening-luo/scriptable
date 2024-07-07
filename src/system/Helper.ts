@@ -5,7 +5,7 @@ const hp_App = importModule(
 abstract class Helper<
   Input = void,
   Output = void,
-  Schema extends ISetting = never,
+  Schema = never,
 > extends hp_App<
     "Helper"
     ,

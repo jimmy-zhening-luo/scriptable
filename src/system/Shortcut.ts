@@ -5,7 +5,7 @@ const sh_App = importModule(
 abstract class Shortcut<
   Input = never,
   Output = never,
-  Schema extends ISetting = never,
+  Schema = never,
 > extends sh_App<
     "Shortcut"
     ,
