@@ -103,11 +103,11 @@ abstract class App<
     try {
       return this
         ._setting
-        .parsed;
+        .parse;
     }
     catch (e) {
       throw new EvalError(
-        `App: setting (setting.parsed)`,
+        `App: setting (setting.parse)`,
         { cause: e },
       );
     }
