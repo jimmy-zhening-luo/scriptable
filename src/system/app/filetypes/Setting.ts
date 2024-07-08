@@ -89,13 +89,6 @@ class Setting<
     );
   }
 
-  public delete(): never {
-    throw new ReferenceError(
-      `Setting: delete: Forbidden: Setting files are readonly`,
-      { cause: { file: this.subpath } },
-    );
-  }
-
   private _cache?: Schema;
 }
 

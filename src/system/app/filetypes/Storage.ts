@@ -110,20 +110,6 @@ class Storage<
       );
     }
   }
-
-  public async delete() {
-    try {
-      await this
-        .file
-        .delete();
-    }
-    catch (e) {
-      throw new EvalError(
-        `Storage: delete`,
-        { cause: e },
-      );
-    }
-  }
 }
 
 module.exports = Storage;

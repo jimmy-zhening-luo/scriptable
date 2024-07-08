@@ -222,6 +222,7 @@ class File {
         )
           throw new ReferenceError(
             `file does not exist`,
+            { cause: { path: this.path } },
           );
         else
           return "";
@@ -235,10 +236,7 @@ class File {
     }
     catch (e) {
       throw new EvalError(
-        `File: read: ${
-          this
-            .path
-        }`,
+        `File: read`,
         { cause: e },
       );
     }
@@ -261,15 +259,17 @@ class File {
       else
         throw new TypeError(
           `file empty`,
-          { cause: { errorLabel } },
+          {
+            cause: {
+              errorLabel,
+              path: this.path,
+            },
+          },
         );
     }
     catch (e) {
       throw new EvalError(
-        `File: readful: ${
-          this
-            .path
-        }`,
+        `File: readful`,
         { cause: e },
       );
     }
@@ -351,72 +351,6 @@ class File {
     catch (e) {
       throw new EvalError(
         `File: write: ${
-          this
-            .path
-        }`,
-        { cause: e },
-      );
-    }
-  }
-
-  public async delete(
-    force = false,
-  ) {
-    try {
-      if (
-        this
-          .exists
-      )
-        if (
-          force
-        )
-          this
-            .manager
-            .remove(
-              this
-                .path,
-            );
-        else {
-          const alert = new Alert();
-
-          alert
-            .message = `Permanently delete?\n${
-              this
-                .path
-            }`;
-          alert
-            .addDestructiveAction(
-              "DELETE",
-            );
-          alert
-            .addCancelAction(
-              "Cancel",
-            );
-          await alert
-            .present()
-            .then(
-              userChoice => {
-                userChoice === 0
-                  ? this
-                    .manager
-                    .remove(
-                      this
-                        .path,
-                    )
-                  : console
-                    .warn(
-                      `Canceled by user, did NOT delete:\n${
-                        this
-                          .path
-                      }`,
-                    );
-              },
-            );
-        }
-    }
-    catch (e) {
-      throw new EvalError(
-        `File: delete: ${
           this
             .path
         }`,

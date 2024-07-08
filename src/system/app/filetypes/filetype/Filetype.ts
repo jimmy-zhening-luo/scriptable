@@ -194,8 +194,6 @@ abstract class Filetype<
   }
 
   public abstract write(...args: Parameters<F["write"]>): ReturnType<F["write"]>;
-
-  public abstract delete(...args: Parameters<F["delete"]>): ReturnType<F["delete"]>;
 }
 
 module.exports = Filetype;

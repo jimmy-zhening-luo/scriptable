@@ -251,13 +251,6 @@ class Key<
       { cause: { handle: this.fullname } },
     );
   }
-
-  public delete(): never {
-    throw new ReferenceError(
-      `Key: delete: Forbidden: Local key files are readonly`,
-      { cause: { handle: this.fullname } },
-    );
-  }
 }
 
 module.exports = Key;
