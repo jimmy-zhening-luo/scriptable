@@ -8,10 +8,7 @@ class File {
     root:
       | File
       | Bookmark
-      | {
-        file: File;
-        rootOnly: boolean;
-      },
+      | { graft: File },
     ...subpaths: ConstructorParameters<typeof Subpath>
   ) {
     try {
@@ -21,11 +18,8 @@ class File {
           ? root
             .path
           : root
-            .file[
-              root.rootOnly
-                ? "_root"
-                : "path"
-            ];
+            .graft
+            ._root;
       this
         ._subpath = new this
           .Subpath(
@@ -131,10 +125,7 @@ class File {
           ...args: ConstructorParameters<typeof File>
         )=> this
       )(
-        {
-          file: this,
-          rootOnly: true,
-        },
+        { graft: this },
       );
     }
     catch (e) {
