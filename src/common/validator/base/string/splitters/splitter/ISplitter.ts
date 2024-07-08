@@ -27,49 +27,18 @@ abstract class ISplitter<
     }
   }
 
-  public get length() {
-    try {
-      return this
-        .nodes
-        .length;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Splitter: length`,
-        { cause: e },
-      );
-    }
-  }
-
-  public toString() {
-    try {
-      return `[${
-        this
-          .nodes
-          .join(
-            ", ",
-          )
-      }]`;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Splitter: toString`,
-        { cause: e },
-      );
-    }
-  }
-
   private split(
-    string: Unflat<
-      string
-    >,
+    string: Unflat<string>,
     separator = "",
     trimNode = false,
     trim = true,
   ) {
     try {
-      const trimmed = [string]
-        .flat()
+      const clean = (
+        typeof string === "string"
+          ? [string]
+          : string
+      )
         .join(
           separator,
         )[
@@ -77,10 +46,9 @@ abstract class ISplitter<
             ? "trim"
             : "toString"
         ]();
-      const nodes = trimmed
-        .length < 1
+      const nodes = clean.length < 1
         ? []
-        : trimmed
+        : clean
           .split(
             separator,
           );

@@ -8,15 +8,7 @@ class Splitter extends _ISplitter<
   protected filter(
     nodes: readonly string[],
   ) {
-    try {
-      return nodes;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Splitter: filter`,
-        { cause: e },
-      );
-    }
+    return nodes;
   }
 }
 
