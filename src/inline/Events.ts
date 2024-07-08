@@ -1,53 +1,69 @@
-const events = args.shortcutParameter;
-const SEPARATOR = "    ";
-const LABEL = {
-  duration: [
+export function Events() {
+  const events = args.shortcutParameter as Event[];
+  const DURATION = [
     "‎   ‎ I",
     "‎  I I",
     "I I I",
-  ],
-  weekday: {
-    Su: 'S     ',
-    Mo: 'M    ',
-    Tu: 'T     ',
-    We: 'W    ',
-    Fr: 'F     ',
-    Th: 'Th   ',
-    Sa: 'Sa   ',
-  },
-};
-const labels = Object
-  .fromEntries(
-    events
-      .map(
-        event => {
-          const {
-            title,
-            dur,
-            d,
-            w,
-            h,
-            c,
-          } = event;
-          const label = [
-            LABEL.duration[Math.ceil(dur / 3600) - 1]
+  ];
+  const WEEKDAY = {
+    Su: "S     ",
+    Mo: "M    ",
+    Tu: "T     ",
+    We: "W    ",
+    Fr: "F     ",
+    Th: "Th   ",
+    Sa: "Sa   ",
+  };
+  const labels = Object.fromEntries(
+    events.map(
+      ({
+        title,
+        dur,
+        d,
+        w,
+        h,
+        c,
+      }) =>
+        [
+          [
+            DURATION[
+              Math.ceil(
+                dur / 3600,
+              ) - 1
+            ]
             ?? "≥4",
-            LABEL.weekday[w],
+            WEEKDAY[w],
             d,
             h,
-            ...title === 'Therapy'
+            ...title === "Therapy"
               ? []
               : `[${title}]`,
           ]
             .join(
-              SEPARATOR,
-            );
-
-          return [
-            label,
-            c,
-          ];
-    }),
+              "    ",
+            ),
+          c,
+        ],
+    ),
   );
 
-return labels;
+  return labels;
+}
+
+type Event = {
+  title: string;
+  dur: number;
+  d: string;
+  w: Weekday;
+  h: string;
+  c: string;
+};
+type Weekday =
+  | "Su"
+  | "Mo"
+  | "Tu"
+  | "We"
+  | "Th"
+  | "Fr"
+  | "Sa"
+;
