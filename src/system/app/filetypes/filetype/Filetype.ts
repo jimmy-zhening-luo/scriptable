@@ -8,7 +8,7 @@ abstract class Filetype<
   constructor(
     filetype: literalful<Type>,
     category: literalful<Class>,
-    FileCtor: new(...args: ConstructorParameters<typeof File>)=> F & File,
+    FileCtor: new(...path: ConstructorParameters<typeof File>)=> F & File,
     ext: string,
     subpath: string,
     filename?: string,
