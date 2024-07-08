@@ -1,6 +1,5 @@
 class File {
-  private readonly manager = FileManager
-    .local();
+  private readonly manager = FileManager.local();
   private readonly _root: Stringify<Rootpath>;
   private readonly _subpath: Subpath;
 
@@ -12,19 +11,14 @@ class File {
     ...subpaths: ConstructorParameters<typeof Subpath>
   ) {
     try {
-      this
-        ._root = "root" in root
-        || "alias" in root
-          ? root
-            .path
-          : root
-            .graft
-            ._root;
-      this
-        ._subpath = new this
-          .Subpath(
-            ...subpaths,
-          );
+      this._root = "root" in root || "alias" in root
+        ? root.path
+        : root
+          .graft
+          ._root;
+      this._subpath = new this.Subpath(
+        ...subpaths,
+      );
     }
     catch (e) {
       throw new EvalError(
@@ -39,8 +33,7 @@ class File {
       return this
         ._subpath
         .prepend(
-          this
-            ._root,
+          this._root,
         );
     }
     catch (e) {
@@ -68,13 +61,10 @@ class File {
   public get exists() {
     try {
       return (
-        this
-          .manager
-          .fileExists(
-            this
-              .path,
-          )
-          || this.isDirectory
+        this.manager.fileExists(
+          this.path,
+        )
+        || this.isDirectory
       );
     }
     catch (e) {
@@ -87,12 +77,9 @@ class File {
 
   public get isDirectory() {
     try {
-      return this
-        .manager
-        .isDirectory(
-          this
-            .path,
-        );
+      return this.manager.isDirectory(
+        this.path,
+      );
     }
     catch (e) {
       throw new EvalError(
@@ -120,9 +107,8 @@ class File {
   public get root(): this {
     try {
       return new (
-        this
-          .constructor as new (
-          ...args: ConstructorParameters<typeof File>
+        this.constructor as new (
+          ...path: ConstructorParameters<typeof File>
         )=> this
       )(
         { graft: this },
@@ -139,9 +125,8 @@ class File {
   public get parent() {
     try {
       return new (
-        this
-          .constructor as new (
-          ...args: ConstructorParameters<typeof File>
+        this.constructor as new (
+          ...path: ConstructorParameters<typeof File>
         )=> this
       )(
         this
@@ -174,16 +159,11 @@ class File {
   }
 
   public read(
-    error = false,
+    stringful = false,
   ) {
     try {
-      if (
-        !this
-          .isFile
-      )
-        if (
-          error
-        )
+      if (!this.isFile)
+        if (stringful)
           throw new ReferenceError(
             `file does not exist`,
             { cause: { path: this.path } },
@@ -191,12 +171,9 @@ class File {
         else
           return "";
       else
-        return this
-          .manager
-          .readString(
-            this
-              .path,
-          );
+        return this.manager.readString(
+          this.path,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -207,7 +184,7 @@ class File {
   }
 
   public readful(
-    errorLabel: string = "",
+    error: string = "",
   ): stringful {
     try {
       const read = this
@@ -215,17 +192,14 @@ class File {
           true,
         );
 
-      if (
-        read
-          .length > 0
-      )
+      if (read.length > 0)
         return read as stringful;
       else
         throw new TypeError(
-          `file empty`,
+          `empty file`,
           {
             cause: {
-              errorLabel,
+              error,
               path: this.path,
             },
           },
@@ -248,68 +222,48 @@ class File {
     ,
   ) {
     try {
-      if (
-        this
-          .isDirectory
-      )
+      if (this.isDirectory)
         throw new ReferenceError(
           `path is folder`,
         );
       else
-        if (
-          this
-            .isFile
-        )
-          if (
-            overwrite === false
-          )
+        if (this.isFile)
+          if (overwrite === false)
             throw new TypeError(
               `file exists & overwrite false`,
             );
           else
-            this
-              .manager
-              .writeString(
-                this
-                  .path,
-                overwrite === "append"
+            this.manager.writeString(
+              this.path,
+              overwrite === "append"
+                ? `${
+                  this
+                    .read()
+                }${
+                  string
+                }`
+                : overwrite === "line"
                   ? `${
+                    string
+                  }\n${
                     this
                       .read()
-                  }${
-                    string
                   }`
-                  : overwrite === "line"
-                    ? `${
-                      string
-                    }\n${
-                      this
-                        .read()
-                    }`
-                    : string,
-              );
-        else {
-          if (
-            !this
-              .parent
-              .isDirectory
-          )
-            this
-              .manager
-              .createDirectory(
-                this
-                  .parent
-                  .path,
-                true,
-              );
-
-          this
-            .manager
-            .writeString(
-              this
-                .path,
-              string,
+                  : string,
             );
+        else {
+          if (!this.parent.isDirectory)
+            this.manager.createDirectory(
+              this
+                .parent
+                .path,
+              true,
+            );
+
+          this.manager.writeString(
+            this.path,
+            string,
+          );
         }
     }
     catch (e) {

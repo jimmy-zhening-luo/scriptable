@@ -7,8 +7,7 @@ class Bookmark {
     bookmark: string,
   ) {
     try {
-      const alias = bookmark
-        .trim();
+      const alias = bookmark.trim();
 
       if (alias.length < 1)
         throw new SyntaxError(
@@ -26,14 +25,12 @@ class Bookmark {
           { cause: { alias } },
         );
       else {
-        this
-          .alias = alias as Alias;
-        this
-          .path = FileManager
-            .local()
-            .bookmarkedPath(
-              bookmark,
-            ) as Stringify<Rootpath>;
+        this.alias = alias as Alias;
+        this.path = FileManager
+          .local()
+          .bookmarkedPath(
+            bookmark,
+          ) as Stringify<Rootpath>;
       }
     }
     catch (e) {

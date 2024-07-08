@@ -109,11 +109,7 @@ abstract class Filetype<
   }
 
   public read(
-    ...error: Parameters<
-      F[
-        "read"
-      ]
-    >
+    ...error: Parameters<F["read"]>
   ) {
     try {
       return this

@@ -6,9 +6,7 @@ class Subpath extends s_Filepath<
   0
 > {
   protected check(
-    nodes: Nodes<
-      FileNode
-    >,
+    nodes: Nodes<FileNode>,
   ) {
     try {
       return nodes;

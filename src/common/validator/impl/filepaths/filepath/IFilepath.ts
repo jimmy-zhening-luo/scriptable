@@ -9,14 +9,8 @@ abstract class IFilepath<
 
   constructor(
     ...subpaths: (
-      Unflat<
-        string
-        ,
-        true
-      >
-      | IFilepath<
-        Length
-      >
+      | string
+      | IFilepath<Length>
     )[]
   ) {
     try {
@@ -41,10 +35,9 @@ abstract class IFilepath<
                       .nodes
                       .map(
                         node =>
-                          new this
-                            .FileNode(
-                              node,
-                            )
+                          new this.FileNode(
+                            node,
+                          )
                             .string,
                       ),
               )
@@ -62,17 +55,15 @@ abstract class IFilepath<
   public get parent() {
     try {
       const parent = new (
-        this
-          .constructor as new (
-          ...args: ConstructorParameters<typeof IFilepath<Length>>
+        this.constructor as new (
+          ...path: ConstructorParameters<typeof IFilepath<Length>>
         )=>
         this
       )(
         this,
       );
 
-      parent
-        .pop();
+      parent.pop();
 
       return parent;
     }
@@ -130,10 +121,7 @@ abstract class IFilepath<
     root: Stringify<IFilepath<1>>,
   ) {
     try {
-      if (
-        this
-          .isEmpty
-      )
+      if (this.isEmpty)
         return root;
       else {
         const rootThis = [
@@ -144,10 +132,7 @@ abstract class IFilepath<
         return rootThis
           .join(
             "/",
-          ) as Joint<
-          typeof rootThis
-          , "/"
-        >;
+          ) as Joint<typeof rootThis, "/">;
       }
     }
     catch (e) {
@@ -165,11 +150,7 @@ abstract class IFilepath<
       return _nodes
         .join(
           "/",
-        ) as Joint<
-        typeof _nodes
-        ,
-        "/"
-      >;
+        ) as Joint<typeof _nodes, "/">;
     }
     catch (e) {
       throw new EvalError(
@@ -181,25 +162,15 @@ abstract class IFilepath<
 
   private pop() {
     try {
-      const nodeQ = [
-        ...this
-          ._nodes,
-      ]
+      const nodeQ = [...this._nodes]
         .reverse();
 
-      if (
-        this
-          .poppable(
-            nodeQ,
-          )
-      ) {
+      if (this.poppable(nodeQ)) {
         this
           ._nodes
           .pop();
 
-        return nodeQ[
-          0
-        ];
+        return nodeQ[0];
       }
       else
         throw new RangeError(
@@ -207,7 +178,9 @@ abstract class IFilepath<
           {
             cause: {
               nodes: this._nodes,
-              length: this._nodes.length,
+              length: this
+                ._nodes
+                .length,
             },
           },
         );

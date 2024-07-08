@@ -471,7 +471,7 @@ abstract class App<
 
   protected stringful(
     string: string,
-    errorLabel: string = "",
+    error: string = "",
   ) {
     try {
       if (
@@ -482,7 +482,7 @@ abstract class App<
       else
         throw new TypeError(
           `empty string`,
-          { cause: { errorLabel } },
+          { cause: { error } },
         );
     }
     catch (e) {
