@@ -16,9 +16,7 @@ class File {
         : root
           .graft
           ._root;
-      this._subpath = new this.Subpath(
-        ...subpaths,
-      );
+      this._subpath = new this.Subpath(...subpaths);
     }
     catch (e) {
       throw new EvalError(
@@ -32,9 +30,7 @@ class File {
     try {
       return this
         ._subpath
-        .prepend(
-          this._root,
-        );
+        .prepend(this._root);
     }
     catch (e) {
       throw new EvalError(
@@ -58,28 +54,9 @@ class File {
     }
   }
 
-  public get exists() {
-    try {
-      return (
-        this.manager.fileExists(
-          this.path,
-        )
-        || this.isDirectory
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `File: exists`,
-        { cause: e },
-      );
-    }
-  }
-
   public get isDirectory() {
     try {
-      return this.manager.isDirectory(
-        this.path,
-      );
+      return this.manager.isDirectory(this.path);
     }
     catch (e) {
       throw new EvalError(
@@ -91,10 +68,7 @@ class File {
 
   public get isFile() {
     try {
-      return (
-        this.exists
-        && !this.isDirectory
-      );
+      return this.manager.fileExists(this.path);
     }
     catch (e) {
       throw new EvalError(
@@ -200,7 +174,7 @@ class File {
           {
             cause: {
               error,
-              path: this.path,
+              path: String(this),
             },
           },
         );
@@ -275,6 +249,10 @@ class File {
         { cause: e },
       );
     }
+  }
+
+  public toString() {
+    return this.path;
   }
 }
 

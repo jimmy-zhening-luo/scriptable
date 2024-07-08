@@ -1,40 +1,26 @@
 class ErrorHandler {
   public handle(
-    e: Error,
+    top: Error,
   ) {
     try {
-      const stack: ErrorLike[] = [e];
+      const queue: ErrorLike[] = [top];
 
       for (
-        let ei: ErrorLike = e;
-        "cause" in ei;
-        ei = ei
-          .cause as ErrorLike
+        let i: ErrorLike = top;
+        typeof i === "object" && "cause" in i;
+        i = i.cause as ErrorLike
       )
-        stack
-          .push(
-            ei
-              .cause as ErrorLike,
-          );
+        queue.unshift(i.cause as ErrorLike);
 
-      const queue: readonly ErrorLike[] = [...stack]
-        .reverse();
       const hoist = queue
         .findIndex(
-          (e): e is ErrorLike<
-            true
-          > =>
-            typeof e === "object"
-            && "message" in e,
+          (error): error is ErrorLike<true> =>
+            typeof error === "object" && "message" in error,
         );
       const hoistedQueue: readonly ErrorLike[] = hoist === -1
         ? queue
         : [
-            queue[
-              hoist
-            ] as ErrorLike<
-              true
-            >,
+            queue[hoist] as ErrorLike<true>,
             ...queue
               .slice(
                 0,
@@ -47,11 +33,8 @@ class ErrorHandler {
           ];
       const messages = hoistedQueue
         .map(
-          e =>
-            this
-              .print(
-                e,
-              ),
+          error =>
+            this.print(error),
         );
 
       this
@@ -102,24 +85,17 @@ class ErrorHandler {
       const note = new Notification();
       const lines = [...messages];
 
-      note
-        .title = lines
-          .shift()
-          ?? "";
-      note
-        .body = lines
-          .join(
-            "\n",
-          );
-      note
-        .sound = "failure";
+      note.title = lines.shift() ?? "";
+      note.body = lines
+        .join("\n");
+      note.sound = "failure";
       note
         .schedule()
         .catch(
-          (n_e: unknown) => {
+          (e: unknown) => {
             throw new Error(
               `Scriptable notification failed`,
-              { cause: n_e },
+              { cause: e },
             );
           },
         );
@@ -133,17 +109,12 @@ class ErrorHandler {
   }
 
   private print(
-    e: ErrorLike,
+    error: ErrorLike,
   ) {
     try {
-      return typeof e === "object"
-        && "message" in e
-        ? e
-          .message
-        : this
-          .quotelessStringify(
-            e,
-          );
+      return typeof error === "object" && "message" in error
+        ? error.message
+        : this.quotelessStringify(error);
     }
     catch (e) {
       throw new EvalError(
@@ -154,56 +125,35 @@ class ErrorHandler {
   }
 
   private quotelessStringify(
-    v: unknown,
+    error: unknown,
   ): string {
     try {
       return Array.isArray(
-        v,
+        error,
       )
         ? `[${
-          v
+          error
             .map(
               (vi: unknown) =>
-                this
-                  .quotelessStringify(
-                    vi,
-                  ),
+                this.quotelessStringify(vi),
             )
-            .join(
-              ", ",
-            )
+            .join(", ")
         }]`
-        : typeof v === "object"
-        && v !== null
+        : typeof error === "object" && error !== null
           ? Object
-            .keys(
-              v,
-            )
+            .keys(error)
             .map(
               k =>
                 `${
                   k
                 }: ${
-                  this
-                    .quotelessStringify(
-                      (
-                        v as Record<
-                          string
-                          ,
-                          unknown
-                        >
-                      )[
-                        k
-                      ],
-                    )
+                  this.quotelessStringify(
+                    (error as FieldTable)[k],
+                  )
                 }`,
             )
-            .join(
-              ", ",
-            )
-          : String(
-            v,
-          );
+            .join(", ")
+          : String(error);
     }
     catch (e) {
       throw new EvalError(

@@ -1,9 +1,10 @@
 declare type ErrorLike<
-  RealError extends boolean = false,
-> = RealError extends true
+  Confirmed extends boolean = false,
+> = Confirmed extends true
   ? Error
   :
-    | string[]
+    | primitive
+    | primitive[]
     | Error
-    | { cause?: Error }
+    | { cause?: ErrorLike }
 ;
