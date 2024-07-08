@@ -17,28 +17,28 @@ abstract class IFile {
   ) {
     try {
       this
-        ._root =
-        root instanceof IFile
-        || root instanceof this
-          .Bookmark
-          ? root
-            .path
-          : typeof root === "object"
-          && "file" in root
-          && "rootOnly" in root
+        ._root = typeof root === "object"
+          ? "alias" in root
+          || "root" in root
             ? root
-              .rootOnly
+              .path
+            : "file" in root
               ? root
-                .file
-                ._root
-              : root
-                .file
-                .path
-            : new this
-              .Rootpath(
-                root,
-              )
-              .toString();
+                .file[
+                  root.rootOnly
+                    ? "_root"
+                    : "path"
+                ]
+              : new this
+                .Rootpath(
+                  root,
+                )
+                .toString()
+          : new this
+            .Rootpath(
+              root,
+            )
+            .toString();
       this
         ._subpath = new this
           .Subpath(
@@ -269,20 +269,6 @@ abstract class IFile {
     catch (e) {
       throw new EvalError(
         `IFile: descendants`,
-        { cause: e },
-      );
-    }
-  }
-
-  private get Bookmark() {
-    try {
-      return importModule(
-        "bookmark/Bookmark",
-      ) as typeof Bookmark;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `IFile: import Bookmark`,
         { cause: e },
       );
     }

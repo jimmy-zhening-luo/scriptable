@@ -146,8 +146,7 @@ abstract class IFilepath<
       else {
         const rootThis = [
           root,
-          this
-            .toString() as Stringify<IFilepath<0>> as Stringify<IFilepath<1>>,
+          String(this) as Stringify<IFilepath<1>>,
         ] as const;
 
         return rootThis
