@@ -59,19 +59,6 @@ class Bookmark {
       );
     }
   }
-
-  public toString() {
-    try {
-      return this
-        .path;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Bookmark: toString`,
-        { cause: e },
-      );
-    }
-  }
 }
 
 module.exports = Bookmark;
