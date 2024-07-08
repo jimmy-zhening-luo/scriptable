@@ -1,12 +1,7 @@
 abstract class IFile {
-  protected readonly __proto: literalful<
-    "IFile"
-  > = "IFile";
-  protected readonly manager = FileManager
-    .local();
-  private readonly _root: Stringify<
-    Rootpath
-  >;
+  protected readonly __proto = "IFile";
+  private readonly manager = FileManager.local();
+  private readonly _root: Stringify<Rootpath>;
   private _subpath: Subpath;
 
   constructor(
@@ -221,13 +216,10 @@ abstract class IFile {
 
   public get ls() {
     try {
-      return this
-        .isDirectory
-        ? this
-          .manager
+      return this.isDirectory
+        ? this.manager
           .listContents(
-            this
-              .path,
+            this.path,
           )
         : [];
     }

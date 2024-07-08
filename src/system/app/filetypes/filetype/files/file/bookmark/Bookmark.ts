@@ -5,8 +5,8 @@ class Bookmark {
 
   constructor(
     bookmark:
-      | string
       | Bookmark
+      | string
     ,
   ) {
     try {
