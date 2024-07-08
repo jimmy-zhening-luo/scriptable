@@ -10,11 +10,7 @@ class Rootpath extends r_Filepath<
   ) {
     try {
       if (nodes.length > 0)
-        return nodes as Nodes<
-          FileNode
-          ,
-          1
-        >;
+        return nodes as Nodes<FileNode, 1>;
       else
         throw new RangeError(
           `root path constructed with 0 nodes`,

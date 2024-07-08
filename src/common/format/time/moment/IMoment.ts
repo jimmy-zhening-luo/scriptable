@@ -32,9 +32,7 @@ abstract class IMoment {
       return datetime
         .join(
           separator,
-        ) as Join<
-        typeof datetime
-      >;
+        ) as Join<typeof datetime>;
     }
     catch (e) {
       throw new EvalError(
@@ -59,10 +57,7 @@ abstract class IMoment {
             ),
         );
 
-      if (
-        date
-          .length > 0
-      )
+      if (date.length > 0)
         return date as stringful;
       else
         throw new RangeError(
@@ -120,10 +115,7 @@ abstract class IMoment {
             ),
         );
 
-      if (
-        local
-          .length > 0
-      )
+      if (local.length > 0)
         return local as stringful;
       else
         throw new RangeError(

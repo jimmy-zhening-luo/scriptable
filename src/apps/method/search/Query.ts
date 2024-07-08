@@ -207,10 +207,7 @@ class Query {
           ),
       ];
 
-      if (
-        tokens
-          .length > 0
-      )
+      if (tokens.length > 0)
         return tokens as Arrayful<
           stringful
         >;
@@ -347,9 +344,7 @@ class Query {
           ) as stringful
         : null;
 
-      if (
-        T0_Dedot !== null
-      ) {
+      if (T0_Dedot !== null) {
         tokens
           .shift();
         tokens
@@ -411,15 +406,11 @@ class Query {
         )
         ?? null;
 
-      if (
-        longest === null
-      ) {
+      if (longest === null) {
         if (
           NUMERIC
             .includes(
-              t0[
-                0
-              ],
+              t0[0],
             )
         )
           tokens
@@ -436,10 +427,7 @@ class Query {
           )
           ?? "";
 
-        if (
-          operand_0
-            .length > 0
-        )
+        if (operand_0.length > 0)
           tokens
             .unshift(
               operand_0 as stringful,
@@ -482,11 +470,8 @@ class Query {
     >,
   ) {
     try {
-      if (
-        key !== null
-      )
-        this
-          ._key = key;
+      if (key !== null)
+        this._key = key;
       else {
         this
           .terms

@@ -22,10 +22,7 @@ class DropboxPathProcessor extends drop_ILinkPathProcessor<
             "/",
           );
 
-        if (
-          nodes
-            .length < 4
-        )
+        if (nodes.length < 4)
           return path;
         else {
           const [

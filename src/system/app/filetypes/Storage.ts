@@ -51,15 +51,11 @@ class Storage<
       const buffer = data
         ?? null;
 
-      if (
-        buffer === null
-      )
+      if (buffer === null)
         throw new TypeError(
           `null data`,
         );
-      else if (
-        typeof buffer === "object"
-      )
+      else if (typeof buffer === "object")
         if (
           Array.isArray(
             buffer,
@@ -86,10 +82,9 @@ class Storage<
           this
             .file
             .write(
-              JSON
-                .stringify(
-                  buffer,
-                ),
+              JSON.stringify(
+                buffer,
+              ),
               overwrite !== false,
             );
 

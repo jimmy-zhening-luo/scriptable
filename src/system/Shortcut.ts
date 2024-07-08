@@ -30,10 +30,7 @@ abstract class Shortcut<
 
   protected get getInput() {
     try {
-      if (
-        typeof this
-          ._getInput === "undefined"
-      ) {
+      if (typeof this._getInput === "undefined") {
         const shortcutInput = args
           .shortcutParameter as Null<
             | undefined

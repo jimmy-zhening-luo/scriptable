@@ -43,9 +43,7 @@ namespace Filelink {
       ]
       ?? null;
 
-      if (
-        provider === null
-      )
+      if (provider === null)
         throw new ReferenceError(
           `Provider not found`,
           {
@@ -85,10 +83,7 @@ namespace Filelink {
                 ),
         );
 
-        if (
-          !provider
-            .hasContainers
-        )
+        if (!provider.hasContainers)
           return [
             head,
             ...remainingPath
@@ -114,10 +109,7 @@ namespace Filelink {
             },
           } = provider;
 
-          if (
-            remainingPath
-              .length < 1
-          )
+          if (remainingPath.length < 1)
             throw new ReferenceError(
               `Path points to container root within a provider`,
               { cause: { remainingPath } },
@@ -166,9 +158,7 @@ namespace Filelink {
             )
             ?? null;
 
-            if (
-              containerEncoded === null
-            )
+            if (containerEncoded === null)
               throw new ReferenceError(
                 `Provider has no such container`,
                 {
@@ -214,15 +204,11 @@ namespace Filelink {
           );
         const { length } = path;
 
-        if (
-          length < 1
-        )
+        if (length < 1)
           throw new SyntaxError(
             `Input path empty`,
           );
-        else if (
-          length < 2
-        )
+        else if (length < 2)
           throw new RangeError(
             `Path points to provider root`,
             {

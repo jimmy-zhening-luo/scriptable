@@ -75,10 +75,7 @@ abstract class App<
 
   protected get name() {
     try {
-      if (
-        typeof this
-          ._name === "undefined"
-      )
+      if (typeof this._name === "undefined")
         this
           ._name = this
             .stringful(
@@ -115,10 +112,7 @@ abstract class App<
 
   protected get input() {
     try {
-      if (
-        typeof this
-          ._input === "undefined"
-      )
+      if (typeof this._input === "undefined")
         this
           ._input = this
             .getInput;
@@ -136,10 +130,7 @@ abstract class App<
 
   protected get inputful() {
     try {
-      if (
-        typeof this
-          ._inputful === "undefined"
-      ) {
+      if (typeof this._inputful === "undefined") {
         const { input } = this;
 
         if (
@@ -175,10 +166,7 @@ abstract class App<
 
   protected get inputString() {
     try {
-      if (
-        typeof this
-          ._inputString === "undefined"
-      ) {
+      if (typeof this._inputString === "undefined") {
         const { input } = this;
         const truthyInput = this
           .truthy(
@@ -187,11 +175,8 @@ abstract class App<
           ? input
           : "";
 
-        if (
-          typeof truthyInput === "string"
-        )
-          this
-            ._inputString = truthyInput;
+        if (typeof truthyInput === "string")
+          this._inputString = truthyInput;
         else
           throw new TypeError(
             `non-string input`,
@@ -219,10 +204,7 @@ abstract class App<
 
   protected get inputStringful() {
     try {
-      if (
-        typeof this
-          ._inputStringful === "undefined"
-      )
+      if (typeof this._inputStringful === "undefined")
         this
           ._inputStringful = this
             .stringful(
@@ -300,10 +282,7 @@ abstract class App<
 
   private get _setting() {
     try {
-      if (
-        typeof this
-          .__setting === "undefined"
-      )
+      if (typeof this.__setting === "undefined")
         this
           .__setting = new this
             .Setting<Class, Schema>(
@@ -385,10 +364,7 @@ abstract class App<
         const output = this
           .runtime();
 
-        if (
-          this
-            .debug
-        ) {
+        if (this.debug) {
           const timestamp = new this
             .Timestamp();
           const {
@@ -472,10 +448,7 @@ abstract class App<
     error: string = "",
   ) {
     try {
-      if (
-        string
-          .length > 0
-      )
+      if (string.length > 0)
         return string as stringful;
       else
         throw new TypeError(
@@ -499,8 +472,7 @@ abstract class App<
         array
           .every(
             (node): node is stringful =>
-              node
-                .length > 0,
+              node.length > 0,
           )
       )
         return array;
@@ -518,80 +490,6 @@ abstract class App<
     catch (e) {
       throw new EvalError(
         `App: stringfulArray`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected synthetic<A, Output>(
-    app: A extends App<
-      infer Class
-      ,
-      infer Input
-      ,
-      Output
-      ,
-      infer Schema
-    >
-      ? App<
-        Class
-        ,
-        Input
-        ,
-        Output
-        ,
-        Schema
-      >
-      : never,
-    input: A extends App<
-      infer Class
-      ,
-      infer Input
-      ,
-      Output
-      ,
-      infer Schema
-    >
-      ? App<
-        Class
-        ,
-        Input
-        ,
-        Output
-        ,
-        Schema
-      >[
-        "input"
-      ]
-      : never
-    ,
-  ): Output {
-    try {
-      if (
-        app instanceof App
-      ) {
-        const appShallowCopy = app;
-
-        appShallowCopy
-          ._input = input;
-
-        return appShallowCopy
-          .run();
-      }
-      else
-        throw new TypeError(
-          `invalid app`,
-          {
-            cause: {
-              input,
-              appType: typeof app,
-            },
-          },
-        );
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: synthetic`,
         { cause: e },
       );
     }
@@ -782,25 +680,17 @@ abstract class App<
         ]
         ?? null;
 
-      if (
-        cache !== null
-      )
+      if (cache !== null)
         return cache;
       else {
-        const newStorage = new this
-          .Storage<Class>(
-            this
-              ._class,
-            this
-              .name,
-            extension,
-            filename,
-          );
+        const newStorage = new this.Storage<Class>(
+          this._class,
+          this.name,
+          extension,
+          filename,
+        );
 
-        this
-          ._storage[
-            cacheId
-          ] = newStorage;
+        this._storage[cacheId] = newStorage;
 
         return newStorage;
       }
@@ -823,27 +713,19 @@ abstract class App<
         ]
         ?? null;
 
-      if (
-        cache !== null
-      )
+      if (cache !== null)
         return cache;
       else {
-        const newKey = new this
-          .Key<Class>(
-            this
-              ._class,
-            this
-              .name,
-            this
-              .stringful(
-                handle,
-              ),
-          );
+        const newKey = new this.Key<Class>(
+          this._class,
+          this.name,
+          this
+            .stringful(
+              handle,
+            ),
+        );
 
-        this
-          ._keys[
-            handle
-          ] = newKey;
+        this._keys[handle] = newKey;
 
         return newKey;
       }

@@ -8,10 +8,7 @@ abstract class IEngine {
     query: Query,
   ) {
     try {
-      if (
-        query
-          .locked
-      )
+      if (query.locked)
         return {
           ...this
             .required(

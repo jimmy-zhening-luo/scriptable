@@ -160,7 +160,12 @@ abstract class IFilepath<
       const nodeQ = [...this._nodes]
         .reverse();
 
-      if (this.poppable(nodeQ)) {
+      if (
+        this
+          .poppable(
+            nodeQ,
+          )
+      ) {
         this
           ._nodes
           .pop();

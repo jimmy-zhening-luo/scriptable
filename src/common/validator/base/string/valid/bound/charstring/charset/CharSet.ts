@@ -10,16 +10,14 @@ class CharSet {
   ) {
     try {
       if (typeof negate === "boolean")
-        this
-          .negate = negate;
+        this.negate = negate;
       else if (typeof negate !== "undefined")
         charsets
           .unshift(
             negate,
           );
 
-      this
-        .chars = [...charsets];
+      this.chars = [...charsets];
     }
     catch (e) {
       throw new EvalError(

@@ -20,9 +20,7 @@ class BoundString<
     ...charset: ConstructorParameters<typeof CharSet>
   ) {
     try {
-      if (
-        min > max
-      )
+      if (min > max)
         throw new RangeError(
           `min > max`,
           {

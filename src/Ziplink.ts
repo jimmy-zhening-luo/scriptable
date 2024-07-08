@@ -29,9 +29,7 @@ namespace Ziplink {
         )
         ?? null;
 
-      if (
-        ziplink !== null
-      ) {
+      if (ziplink !== null) {
         const [id] = ziplink;
 
         return id;

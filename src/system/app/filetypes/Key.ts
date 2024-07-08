@@ -60,9 +60,7 @@ class Key<
             fullname,
           )
       )
-        if (
-          !fallbackLocal
-        )
+        if (!fallbackLocal)
           throw new ReferenceError(
             `key does not exist in Keychain, and fallbackLocal is 'false'`,
             {
@@ -83,10 +81,7 @@ class Key<
             fullname,
           );
 
-        if (
-          key
-            .length < 1
-        )
+        if (key.length < 1)
           throw new ReferenceError(
             `Unexpected: key exists in Keychain but is empty`,
             {

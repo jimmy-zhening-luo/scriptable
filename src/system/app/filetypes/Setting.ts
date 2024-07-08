@@ -36,15 +36,11 @@ class Setting<
 
   public get parse(): Schema {
     try {
-      if (
-        typeof this
-          ._cache === "undefined"
-      ) {
-        const setting: unknown = JSON
-          .parse(
-            this
-              .readful(),
-          );
+      if (typeof this._cache === "undefined") {
+        const setting: unknown = JSON.parse(
+          this
+            .readful(),
+        );
 
         if (
           typeof setting === "object"
@@ -55,8 +51,7 @@ class Setting<
             )
             .length > 0
         )
-          this
-            ._cache = setting as Schema;
+          this._cache = setting as Schema;
         else
           throw new TypeError(
             `Setting file does not match schema`,

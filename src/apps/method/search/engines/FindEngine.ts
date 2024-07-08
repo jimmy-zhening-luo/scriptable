@@ -14,10 +14,7 @@ class FindEngine extends f_IEngine {
         "",
       );
 
-      if (
-        find
-          .length > 0
-      )
+      if (find.length > 0)
         this
           .find = find;
       else

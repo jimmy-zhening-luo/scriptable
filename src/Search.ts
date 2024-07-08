@@ -121,9 +121,7 @@ namespace Search {
       ]
       ?? null;
 
-      if (
-        setting === null
-      )
+      if (setting === null)
         throw new ReferenceError(
           `Engine setting missing for key`,
           { cause: { key } },

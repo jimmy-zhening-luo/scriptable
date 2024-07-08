@@ -49,10 +49,7 @@ class UrlEngine extends b_IEngine {
               .length > 0,
         );
 
-      if (
-        stringfulUrls
-          .length > 0
-      )
+      if (stringfulUrls.length > 0)
         this
           .urls = stringfulUrls;
       else

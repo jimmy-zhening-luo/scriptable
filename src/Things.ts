@@ -22,30 +22,18 @@ namespace Things {
         .setting;
 
       if (
-        delim
-          .item
-          .length < 1
-          || delim
-            .line
-            .length < 1
-            || tag
-              .length < 1
+        tag.length < 1
+        || delim.line.length < 1
+        || delim.item.length < 1
       )
         throw new TypeError(
           `setting: empty tag or delim`,
         );
-      else if (
-        delim
-          .item === delim
-          .line
-      )
+      else if (delim.line === delim.item)
         throw new SyntaxError(
           `setting: identical delim for 'item' and 'line'`,
         );
-      else if (
-        tag === delim
-          .line
-      )
+      else if (delim.line === tag)
         throw new SyntaxError(
           `setting: tag is identical to delim 'line'`,
         );
