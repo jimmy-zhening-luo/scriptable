@@ -246,10 +246,17 @@ class Key<
   }
 
   public write(): never {
-    throw new ReferenceError(
-      `Key: write: Forbidden: Local key files are readonly`,
-      { cause: { handle: this.fullname } },
-    );
+    try {
+      this
+        .file
+        .write();
+    }
+    catch (e) {
+      throw new EvalError(
+        `Key: write`,
+        { cause: e },
+      );
+    }
   }
 }
 

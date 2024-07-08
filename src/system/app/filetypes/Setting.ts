@@ -83,10 +83,17 @@ class Setting<
   }
 
   public write(): never {
-    throw new ReferenceError(
-      `Setting: write: Forbidden: Setting files are readonly`,
-      { cause: { file: this.subpath } },
-    );
+    try {
+      this
+        .file
+        .write();
+    }
+    catch (e) {
+      throw new EvalError(
+        `Setting: write`,
+        { cause: e },
+      );
+    }
   }
 
   private _cache?: Schema;
