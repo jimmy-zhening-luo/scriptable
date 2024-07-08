@@ -12,7 +12,7 @@ class File {
         file: File;
         rootOnly: boolean;
       },
-    ...subpaths: ConstructorParameters<typeof IFilepath<0>>
+    ...subpaths: ConstructorParameters<typeof Subpath>
   ) {
     try {
       this
