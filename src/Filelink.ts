@@ -51,10 +51,7 @@ namespace Filelink {
           {
             cause: {
               rootNode,
-              providers: Object
-                .keys(
-                  providers,
-                ),
+              providers: Object.keys(providers),
             },
           },
         );

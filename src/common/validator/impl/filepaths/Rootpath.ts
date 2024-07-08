@@ -9,10 +9,7 @@ class Rootpath extends r_Filepath<
     nodes: Nodes<FileNode>,
   ) {
     try {
-      if (
-        nodes
-          .length > 0
-      )
+      if (nodes.length > 0)
         return nodes as Nodes<
           FileNode
           ,
@@ -24,8 +21,7 @@ class Rootpath extends r_Filepath<
           {
             cause: {
               nodes,
-              length: nodes
-                .length,
+              length: nodes.length,
             },
           },
         );

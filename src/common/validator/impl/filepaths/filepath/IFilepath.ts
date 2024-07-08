@@ -173,9 +173,7 @@ abstract class IFilepath<
           {
             cause: {
               nodes: this._nodes,
-              length: this
-                ._nodes
-                .length,
+              length: this._nodes.length,
             },
           },
         );

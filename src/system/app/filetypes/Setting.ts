@@ -62,10 +62,8 @@ class Setting<
             `Setting file does not match schema`,
             {
               cause: {
-                file: this
-                  .subpath,
-                content: this
-                  .read(),
+                file: this.subpath,
+                content: this.read(),
               },
             },
           );

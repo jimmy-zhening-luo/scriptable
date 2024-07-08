@@ -43,8 +43,7 @@ class BoundString<
           {
             cause: {
               string,
-              length: string
-                .length,
+              length: string.length,
               min,
               max,
             },

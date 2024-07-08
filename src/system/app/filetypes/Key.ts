@@ -233,15 +233,25 @@ class Key<
 
   public override read(): never {
     throw new ReferenceError(
-      `Key: read: Forbidden: directly reading key from local file disallowed; use 'load(true)' instead`,
-      { cause: { handle: this.fullname } },
+      `Key: read`,
+      {
+        cause: {
+          forbidden: "use load(true) instead",
+          handle: this.fullname,
+        },
+      },
     );
   }
 
   public override readful(): never {
     throw new ReferenceError(
-      `Key: readful: Forbidden: directly reading key from local file disallowed; use 'load(true)' instead`,
-      { cause: { handle: this.fullname } },
+      `Key: readful`,
+      {
+        cause: {
+          forbidden: "use load(true) instead",
+          handle: this.fullname,
+        },
+      },
     );
   }
 

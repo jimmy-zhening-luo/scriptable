@@ -200,9 +200,7 @@ abstract class App<
                 input,
                 truthyInput,
                 type: typeof input,
-                isArray: Array.isArray(
-                  input,
-                ),
+                isArray: Array.isArray(input),
               },
             },
           );
