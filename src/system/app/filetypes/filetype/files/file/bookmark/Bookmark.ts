@@ -1,11 +1,7 @@
 class Bookmark {
   public readonly alias: Alias;
-  public readonly path: Stringify<
-    Rootpath
-  >;
-  protected readonly __proto: literalful<
-    "Bookmark"
-  > = "Bookmark";
+  public readonly path: Stringify<Rootpath>;
+  protected readonly __proto = "Bookmark";
 
   constructor(
     bookmark:
@@ -14,31 +10,43 @@ class Bookmark {
     ,
   ) {
     try {
-      if (
-        typeof bookmark !== "string"
-      )
-        (
-          {
-            alias: this
-              .alias,
-            path: this
-              .path,
-          } = bookmark
-        );
+      if (typeof bookmark !== "string") {
+        this
+          .alias = bookmark
+            .alias;
+        this
+          .path = bookmark
+            .path;
+      }
       else {
-        this
-          .alias = Bookmark
-            .toAlias(
-              bookmark,
-            );
-        this
-          .path = FileManager
+        const alias = bookmark
+          .trim();
+
+        if (alias.length < 1)
+          throw new SyntaxError(
+            `empty alias`,
+          );
+        else if (
+          !FileManager
             .local()
-            .bookmarkedPath(
-              bookmark,
-            ) as Stringify<
-            Rootpath
-          >;
+            .bookmarkExists(
+              alias as stringful,
+            )
+        )
+          throw new ReferenceError(
+            `no bookmark matching alias`,
+            { cause: { alias } },
+          );
+        else {
+          this
+            .alias = alias as Alias;
+          this
+            .path = FileManager
+              .local()
+              .bookmarkedPath(
+                bookmark,
+              ) as Stringify<Rootpath>;
+        }
       }
     }
     catch (e) {
@@ -60,62 +68,6 @@ class Bookmark {
     catch (e) {
       throw new EvalError(
         `Bookmark: [Symbol.hasInstance]`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static toAlias(
-    string: string,
-  ) {
-    try {
-      const alias = Bookmark
-        .stringful(
-          string,
-        );
-
-      if (
-        FileManager
-          .local()
-          .bookmarkExists(
-            alias,
-          )
-      )
-        return alias as Alias;
-      else
-        throw new ReferenceError(
-          `no Scriptable bookmark with alias`,
-          { cause: { alias } },
-        );
-    }
-    catch (e) {
-      throw new EvalError(
-        `Bookmark: toAlias`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static stringful(
-    string: string,
-  ) {
-    try {
-      const trimmed = string
-        .trim();
-
-      if (
-        trimmed
-          .length > 0
-      )
-        return trimmed as stringful;
-      else
-        throw new SyntaxError(
-          `trimmed alias is empty string`,
-        );
-    }
-    catch (e) {
-      throw new EvalError(
-        `Bookmark: stringful`,
         { cause: e },
       );
     }
