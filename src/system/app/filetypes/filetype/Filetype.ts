@@ -55,7 +55,7 @@ abstract class Filetype<
   protected static get ReadonlyFile() {
     try {
       return importModule(
-        "file/_ReadonlyFile",
+        "file/ReadonlyFile",
       ) as typeof ReadonlyFile;
     }
     catch (e) {
