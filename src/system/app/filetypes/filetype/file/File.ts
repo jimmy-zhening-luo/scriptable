@@ -140,7 +140,7 @@ class File {
         if (stringful)
           throw new ReferenceError(
             `file does not exist`,
-            { cause: { path: this.path } },
+            { cause: String(this) },
           );
         else
           return "";
@@ -199,12 +199,14 @@ class File {
       if (this.isDirectory)
         throw new ReferenceError(
           `path is folder`,
+          { cause: String(this) },
         );
       else
         if (this.isFile)
           if (overwrite === false)
             throw new TypeError(
               `file exists & overwrite false`,
+              { cause: String(this) },
             );
           else
             this.manager.writeString(
@@ -242,10 +244,7 @@ class File {
     }
     catch (e) {
       throw new EvalError(
-        `File: write: ${
-          this
-            .path
-        }`,
+        `File: write`,
         { cause: e },
       );
     }
