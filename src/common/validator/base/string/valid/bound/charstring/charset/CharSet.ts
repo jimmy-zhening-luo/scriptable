@@ -13,9 +13,7 @@ class CharSet {
     >
   ) {
     try {
-      if (
-        typeof negate === "boolean"
-      )
+      if (typeof negate === "boolean")
         this
           .negate = negate;
       else if (
