@@ -8,22 +8,47 @@ abstract class IFilepath<
   >;
 
   constructor(
-    ...subpaths: Parameters<
-      IFilepath<
+    ...subpaths: (
+      Unflat<
+        string
+        ,
+        true
+      >
+      | IFilepath<
         Length
-      >[
-        "compose"
-      ]
-    >
+      >
+    )[]
   ) {
     try {
       this
         ._nodes = this
           .check(
-            this
-              .compose(
-                ...subpaths,
-              ),
+            subpaths
+              .map(
+                subpath =>
+                  typeof subpath !== "string"
+                  && !Array.isArray(
+                    subpath,
+                  )
+                    ? subpath
+                      ._nodes
+                    : new this
+                      .Splitterful(
+                        subpath,
+                        "/",
+                        true,
+                      )
+                      .nodes
+                      .map(
+                        node =>
+                          new this
+                            .FileNode(
+                              node,
+                            )
+                            .string,
+                      ),
+              )
+              .flat(),
           );
     }
     catch (e) {
@@ -101,41 +126,8 @@ abstract class IFilepath<
     }
   }
 
-  public append(
-    ...subpaths: Parameters<
-      IFilepath<
-        Length
-      >[
-        "compose"
-      ]
-    >
-  ) {
-    try {
-      return new (
-        this
-          .constructor as new (
-          ...args: ConstructorParameters<typeof IFilepath<Length>>
-        )=>
-        this
-      )(
-        this,
-        ...subpaths,
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: append`,
-        { cause: e },
-      );
-    }
-  }
-
   public prepend(
-    root: Stringify<
-      IFilepath<
-        1
-      >
-    >,
+    root: Stringify<IFilepath<1>>,
   ) {
     try {
       if (
@@ -166,46 +158,6 @@ abstract class IFilepath<
     }
   }
 
-  public cd(
-    ...relativePaths: Parameters<
-      IFilepath<
-        Length
-      >[
-        "compose"
-      ]
-    >
-  ) {
-    try {
-      const relativePath = this
-        .compose(
-          ...relativePaths,
-        );
-
-      for (
-        const node of relativePath
-      )
-        if (
-          node === ".."
-        )
-          this
-            .pop();
-        else
-          this
-            ._nodes
-            .push(
-              node,
-            );
-
-      return this;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: cd`,
-        { cause: e },
-      );
-    }
-  }
-
   public toString() {
     try {
       const { _nodes } = this;
@@ -222,54 +174,6 @@ abstract class IFilepath<
     catch (e) {
       throw new EvalError(
         `IFilepath: toString`,
-        { cause: e },
-      );
-    }
-  }
-
-  private compose(
-    ...subpaths: (
-      Unflat<
-        string
-        ,
-        true
-      >
-      | IFilepath<
-        Length
-      >
-    )[]
-  ) {
-    try {
-      return subpaths
-        .map(
-          subpath =>
-            typeof subpath !== "string"
-            && !Array.isArray(
-              subpath,
-            )
-              ? subpath
-                ._nodes
-              : new this
-                .Splitterful(
-                  subpath,
-                  "/",
-                  true,
-                )
-                .nodes
-                .map(
-                  node =>
-                    new this
-                      .FileNode(
-                        node,
-                      )
-                      .string,
-                ),
-        )
-        .flat();
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: compose`,
         { cause: e },
       );
     }

@@ -21,7 +21,7 @@ class Key<
         "Key",
         category,
         Key
-          .ReadOnlyFile,
+          .ReadonlyFile,
         "txt",
         app,
         handle,

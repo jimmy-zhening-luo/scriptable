@@ -1,18 +1,14 @@
 abstract class Filetype<
   Type extends string,
   Class extends string,
-  File extends IFile = ReadOnlyFile,
+  F extends File = ReadonlyFile,
 > {
-  protected readonly file: File;
+  protected readonly file: F;
 
   constructor(
-    filetype: literalful<
-      Type
-    >,
-    category: literalful<
-      Class
-    >,
-    FileCtor: new(...args: ConstructorParameters<typeof IFile>)=> IFile & File,
+    filetype: literalful<Type>,
+    category: literalful<Class>,
+    FileCtor: new(...args: ConstructorParameters<typeof File>)=> F & File,
     ext: string,
     subpath: string,
     filename?: string,
@@ -56,29 +52,29 @@ abstract class Filetype<
     }
   }
 
-  protected static get ReadOnlyFile() {
+  protected static get ReadonlyFile() {
     try {
       return importModule(
-        "files/ReadOnlyFile",
-      ) as typeof ReadOnlyFile;
+        "file/_ReadonlyFile",
+      ) as typeof ReadonlyFile;
     }
     catch (e) {
       throw new ReferenceError(
-        `Filetype: import ReadOnlyFile`,
+        `Filetype: import ReadonlyFile`,
         { cause: e },
       );
     }
   }
 
-  protected static get WriteFile() {
+  protected static get File() {
     try {
       return importModule(
-        "files/WriteFile",
-      ) as typeof WriteFile;
+        "file/File",
+      ) as typeof File;
     }
     catch (e) {
       throw new ReferenceError(
-        `Filetype: import WriteFile`,
+        `Filetype: import File`,
         { cause: e },
       );
     }
@@ -101,7 +97,7 @@ abstract class Filetype<
   private get Bookmark() {
     try {
       return importModule(
-        "files/file/bookmark/Bookmark",
+        "bookmark/Bookmark",
       ) as typeof Bookmark;
     }
     catch (e) {
@@ -114,7 +110,7 @@ abstract class Filetype<
 
   public read(
     ...error: Parameters<
-      File[
+      F[
         "read"
       ]
     >
@@ -152,14 +148,8 @@ abstract class Filetype<
   }
 
   public data<Data>(
-    ...error: Parameters<
-      File[
-        "read"
-      ]
-    >
-  ): Null<
-      Data
-    > {
+    ...error: Parameters<F["read"]>
+  ): Null<Data> {
     try {
       const string = this
         .file
@@ -184,37 +174,15 @@ abstract class Filetype<
     }
   }
 
-  public toString() {
-    try {
-      return this
-        .file
-        .toString();
-    }
-    catch (e) {
-      throw new EvalError(
-        `Filetype: toString`,
-        { cause: e },
-      );
-    }
-  }
-
   private root(
     subtype: literalful<
       Type
     >,
   ) {
     try {
-      if (
-        subtype
-          .length > 0
-      )
-        return new this
-          .Bookmark(
-            subtype,
-          );
-      else
-        throw new SyntaxError(
-          `Unnamed Filetype`,
+      return new this
+        .Bookmark(
+          subtype,
         );
     }
     catch (e) {
@@ -225,9 +193,9 @@ abstract class Filetype<
     }
   }
 
-  public abstract write(...args: Parameters<File["write"]>): ReturnType<File["write"]>;
+  public abstract write(...args: Parameters<F["write"]>): ReturnType<F["write"]>;
 
-  public abstract delete(...args: Parameters<File["delete"]>): ReturnType<File["delete"]>;
+  public abstract delete(...args: Parameters<F["delete"]>): ReturnType<F["delete"]>;
 }
 
 module.exports = Filetype;

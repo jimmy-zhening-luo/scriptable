@@ -14,9 +14,7 @@ class CleanString<
   > {
   constructor(
     string: string,
-    chars: UnflatArray<
-      char
-    >,
+    chars: char[],
     min: Positive<fint> = 1 as Positive<fint>,
     max: Positive<int> = Infinity as Positive<int>,
     negate: boolean = false,

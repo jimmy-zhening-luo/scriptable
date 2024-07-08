@@ -21,7 +21,7 @@ class Setting<
         "Setting",
         category,
         Setting
-          .ReadOnlyFile,
+          .ReadonlyFile,
         "json",
         app,
       );

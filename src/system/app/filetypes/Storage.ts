@@ -9,7 +9,7 @@ class Storage<
     ,
     Class
     ,
-    WriteFile
+    File
   > {
   constructor(
     category: literalful<
@@ -24,7 +24,7 @@ class Storage<
         "Storage",
         category,
         Storage
-          .WriteFile,
+          .File,
         ext,
         app,
         filename

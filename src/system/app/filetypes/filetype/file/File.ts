@@ -1,15 +1,15 @@
-abstract class IFile {
-  protected readonly __proto = "IFile";
-  private readonly manager = FileManager.local();
+class File {
+  private readonly manager = FileManager
+    .local();
   private readonly _root: Stringify<Rootpath>;
-  private _subpath: Subpath;
+  private readonly _subpath: Subpath;
 
   constructor(
     root:
-      | IFile
+      | File
       | Bookmark
       | {
-        file: IFile;
+        file: File;
         rootOnly: boolean;
       }
       | ConstructorParameters<typeof IFilepath<1>>[0],
@@ -47,15 +47,13 @@ abstract class IFile {
     }
     catch (e) {
       throw new EvalError(
-        `IFile: ctor`,
+        `File: ctor`,
         { cause: e },
       );
     }
   }
 
-  public get path(): Stringify<
-    Rootpath
-  > {
+  public get path(): Stringify<Rootpath> {
     try {
       return this
         ._subpath
@@ -66,15 +64,13 @@ abstract class IFile {
     }
     catch (e) {
       throw new EvalError(
-        `IFile: path`,
+        `File: path`,
         { cause: e },
       );
     }
   }
 
-  public get subpath(): Stringify<
-    Subpath
-  > {
+  public get subpath(): Stringify<Subpath> {
     try {
       return this
         ._subpath
@@ -82,7 +78,7 @@ abstract class IFile {
     }
     catch (e) {
       throw new EvalError(
-        `IFile: subpath`,
+        `File: subpath`,
         { cause: e },
       );
     }
@@ -90,30 +86,19 @@ abstract class IFile {
 
   public get exists() {
     try {
-      return this.isFile
-        || this.isDirectory;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFile: exists`,
-        { cause: e },
+      return (
+        this
+          .manager
+          .fileExists(
+            this
+              .path,
+          )
+          || this.isDirectory
       );
     }
-  }
-
-  public get isFile() {
-    try {
-      return this
-        .manager
-        .fileExists(
-          this
-            .path,
-        )
-        && !this.isDirectory;
-    }
     catch (e) {
       throw new EvalError(
-        `IFile: isFile`,
+        `File: exists`,
         { cause: e },
       );
     }
@@ -130,40 +115,22 @@ abstract class IFile {
     }
     catch (e) {
       throw new EvalError(
-        `IFile: isDirectory`,
+        `File: isDirectory`,
         { cause: e },
       );
     }
   }
 
-  public get isRoot() {
-    try {
-      return this
-        ._subpath
-        .isEmpty;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFile: isRoot`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get isLeaf() {
+  public get isFile() {
     try {
       return (
-        !this.exists
-        || this.isFile
-        || this.isDirectory
-        && this
-          .ls
-          .length === 0
+        this.exists
+        && !this.isDirectory
       );
     }
     catch (e) {
       throw new EvalError(
-        `IFile: isLeaf`,
+        `File: isFile`,
         { cause: e },
       );
     }
@@ -174,7 +141,7 @@ abstract class IFile {
       return new (
         this
           .constructor as new (
-          ...args: ConstructorParameters<typeof IFile>
+          ...args: ConstructorParameters<typeof File>
         )=> this
       )(
         {
@@ -185,7 +152,7 @@ abstract class IFile {
     }
     catch (e) {
       throw new EvalError(
-        `IFile: root`,
+        `File: root`,
         { cause: e },
       );
     }
@@ -196,7 +163,7 @@ abstract class IFile {
       return new (
         this
           .constructor as new (
-          ...args: ConstructorParameters<typeof IFile>
+          ...args: ConstructorParameters<typeof File>
         )=> this
       )(
         this
@@ -208,67 +175,7 @@ abstract class IFile {
     }
     catch (e) {
       throw new EvalError(
-        `IFile: parent`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get ls() {
-    try {
-      return this.isDirectory
-        ? this.manager
-          .listContents(
-            this.path,
-          )
-        : [];
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFile: ls`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get descendants(): this[] {
-    try {
-      return this
-        .isFile
-        ? [this]
-        : this
-          .isLeaf
-          ? []
-          : this
-            .ls
-            .map(
-              filename =>
-                this
-                  .append(
-                    filename,
-                  ),
-            )
-            .filter(
-              child =>
-                !this
-                  .path
-                  .startsWith(
-                    child
-                      .path,
-                  ),
-            )
-            .map(
-              file =>
-                file
-                  .descendants,
-            )
-            .flat(
-              1,
-            );
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFile: descendants`,
+        `File: parent`,
         { cause: e },
       );
     }
@@ -282,7 +189,7 @@ abstract class IFile {
     }
     catch (e) {
       throw new ReferenceError(
-        `IFile: import Rootpath`,
+        `File: import Rootpath`,
         { cause: e },
       );
     }
@@ -296,99 +203,7 @@ abstract class IFile {
     }
     catch (e) {
       throw new ReferenceError(
-        `IFile: import Subpath`,
-        { cause: e },
-      );
-    }
-  }
-
-  public set subpath(
-    subpath: ConstructorParameters<typeof IFilepath<0>>[1],
-  ) {
-    try {
-      this
-        ._subpath = new this
-          .Subpath(
-            subpath,
-          );
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFile: subpath`,
-        { cause: e },
-      );
-    }
-  }
-
-  public static [Symbol.hasInstance](instance: unknown) {
-    try {
-      return (
-        instance !== null
-        && typeof instance === "object"
-        && (instance as { __proto: string }).__proto === "IFile"
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFile: [Symbol.hasInstance]`,
-        { cause: e },
-      );
-    }
-  }
-
-  public append(
-    ...filepaths: Parameters<
-      IFilepath<
-        0
-      >[
-        "append"
-      ]
-    >
-  ) {
-    try {
-      return new (
-        this
-          .constructor as new (
-          ...args: ConstructorParameters<typeof IFile>
-        )=> this
-      )(
-        this,
-        this
-          ._subpath
-          .append(
-            ...filepaths,
-          ),
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFile: append`,
-        { cause: e },
-      );
-    }
-  }
-
-  public cd(
-    ...relativeFilepath: Parameters<
-      IFilepath<
-        0
-      >[
-        "cd"
-      ]
-    >
-  ) {
-    try {
-      this
-        ._subpath
-        .cd(
-          ...relativeFilepath,
-        );
-
-      return this;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFile: cd`,
+        `File: import Subpath`,
         { cause: e },
       );
     }
@@ -420,7 +235,7 @@ abstract class IFile {
     }
     catch (e) {
       throw new EvalError(
-        `IFile: read: ${
+        `File: read: ${
           this
             .path
         }`,
@@ -451,7 +266,7 @@ abstract class IFile {
     }
     catch (e) {
       throw new EvalError(
-        `IFile: readful: ${
+        `File: readful: ${
           this
             .path
         }`,
@@ -535,7 +350,7 @@ abstract class IFile {
     }
     catch (e) {
       throw new EvalError(
-        `IFile: write: ${
+        `File: write: ${
           this
             .path
         }`,
@@ -601,7 +416,7 @@ abstract class IFile {
     }
     catch (e) {
       throw new EvalError(
-        `IFile: delete: ${
+        `File: delete: ${
           this
             .path
         }`,
@@ -609,19 +424,6 @@ abstract class IFile {
       );
     }
   }
-
-  public toString() {
-    try {
-      return this
-        .path;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFile: toString`,
-        { cause: e },
-      );
-    }
-  }
 }
 
-module.exports = IFile;
+module.exports = File;

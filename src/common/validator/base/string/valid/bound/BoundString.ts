@@ -35,17 +35,16 @@ class BoundString<
           },
         );
       else if (
-        min > string
-          .length
-          || max < string
-            .length
+        string.length < min
+        || string.length > max
       )
         throw new RangeError(
           `string length out-of-bounds`,
           {
             cause: {
               string,
-              length: string.length,
+              length: string
+                .length,
               min,
               max,
             },

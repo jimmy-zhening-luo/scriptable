@@ -6,9 +6,7 @@ class Rootpath extends r_Filepath<
   1
 > {
   protected check(
-    nodes: Nodes<
-      FileNode
-    >,
+    nodes: Nodes<FileNode>,
   ) {
     try {
       if (
@@ -16,7 +14,8 @@ class Rootpath extends r_Filepath<
           .length > 0
       )
         return nodes as Nodes<
-          FileNode,
+          FileNode
+          ,
           1
         >;
       else
@@ -25,7 +24,8 @@ class Rootpath extends r_Filepath<
           {
             cause: {
               nodes,
-              length: nodes.length,
+              length: nodes
+                .length,
             },
           },
         );

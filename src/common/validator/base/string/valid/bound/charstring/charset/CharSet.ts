@@ -5,28 +5,21 @@ class CharSet {
   constructor(
     negate?:
       | boolean
-      | Unflat<
-        char
-      >,
-    ...charsets: UnflatArray<
-      char
-    >
+      | char,
+    ...charsets: char[]
   ) {
     try {
       if (typeof negate === "boolean")
         this
           .negate = negate;
-      else if (
-        typeof negate !== "undefined"
-      )
+      else if (typeof negate !== "undefined")
         charsets
           .unshift(
             negate,
           );
 
       this
-        .chars = charsets
-          .flat();
+        .chars = [...charsets];
     }
     catch (e) {
       throw new EvalError(
@@ -36,23 +29,22 @@ class CharSet {
     }
   }
 
-  public allows<
-    Valid extends string,
-  >(
+  public allows<Valid extends string>(
     string: string,
   ): string is Valid {
     try {
-      const { negate } = this;
+      const {
+        negate,
+        chars,
+      } = this;
 
-      return string
-        .length < 1
-        || [...string]
+      return string.length < 1
+        || chars
           .every(
             char =>
-              negate !== this
-                .chars
+              negate !== string
                 .includes(
-                  char as char,
+                  char,
                 ),
           );
     }

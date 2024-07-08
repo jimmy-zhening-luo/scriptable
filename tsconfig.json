@@ -19,8 +19,14 @@
     "target": "ES6" /* @OVERRIDE */, /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "lib": [
       /* @OVERRIDE */
-      "ES2022.Error",
+      "ES2015",
+      "ES2016.Array.Include",
+      "ES2019.Array",
+      "ES2017.Object",
+      "ES2019.Object",
+      "ES2020.Number",
       "ES2021.String",
+      "ES2022.Error",
     ],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     // "jsx": "preserve",                                /* Specify what JSX code is generated. */
     // "experimentalDecorators": true,                   /* Enable experimental support for legacy experimental decorators. */
@@ -45,9 +51,7 @@
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
     "types": [
-      "node",
       "scriptable-ios",
-      "jest",
     ], /* Specify type package names to be included without being referenced in a source file. */
     // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
     // "moduleSuffixes": [],                             /* List of file name suffixes to search when resolving a module. */
