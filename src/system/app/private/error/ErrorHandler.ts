@@ -118,7 +118,7 @@ class ErrorHandler {
         .catch(
           (n_e: unknown) => {
             throw new Error(
-              `Unhandled: Scriptable failed to show notification`,
+              `Scriptable notification failed`,
               { cause: n_e },
             );
           },

@@ -1,13 +1,9 @@
 declare type ErrorLike<
-  E extends boolean = false,
-> = E extends true
+  RealError extends boolean = false,
+> = RealError extends true
   ? Error
   :
     | string[]
     | Error
-    | PartialRecord<
-      "cause"
-      ,
-      Error
-    >
+    | { cause?: Error }
 ;
