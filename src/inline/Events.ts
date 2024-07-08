@@ -50,14 +50,16 @@ export function Events() {
   return labels;
 }
 
-type Event = {
-  title: string;
-  dur: number;
-  d: string;
-  w: Weekday;
-  h: string;
-  c: string;
-};
+type Event =
+  & Field<
+    | "title"
+    | "d"
+    | "h"
+    | "c"
+  >
+  & Scalar<"dur">
+  & { w: Weekday }
+;
 type Weekday =
   | "Su"
   | "Mo"

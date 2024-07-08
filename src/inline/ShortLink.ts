@@ -7,9 +7,7 @@ export function MenuObj() {
     __scheme,
     ...rest
   ] = inputUrl
-    .split(":") as Arrayful<
-    string
-  >;
+    .split(":") as Arrayful<string>;
   const _scheme = __scheme
     .toLowerCase();
   const scheme = _scheme === "http"

@@ -28,11 +28,7 @@ export function Menu() {
     buttons,
     inverse: Object.fromEntries(
       inverted,
-    ) as Record<
-      string
-      ,
-      string
-    >,
+    ) as FieldTable,
     runner: `__M${length}`,
   };
 }
