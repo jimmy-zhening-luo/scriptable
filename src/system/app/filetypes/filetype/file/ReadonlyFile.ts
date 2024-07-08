@@ -9,8 +9,7 @@ class ReadonlyFile extends _File {
       {
         cause: {
           readonly: true,
-          path: this
-            .path,
+          path: this.path,
         },
       },
     );
