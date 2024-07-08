@@ -21,17 +21,12 @@ abstract class IFilepath<
               .map(
                 subpath =>
                   typeof subpath !== "string"
-                  && !Array.isArray(
-                    subpath,
-                  )
-                    ? subpath
-                      ._nodes
-                    : new this
-                      .Splitterful(
-                        subpath,
-                        "/",
-                        true,
-                      )
+                    ? subpath._nodes
+                    : new this.Splitterful(
+                      subpath,
+                      "/",
+                      true,
+                    )
                       .nodes
                       .map(
                         node =>
