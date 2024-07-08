@@ -1,6 +1,6 @@
 declare type Flat<
   Iterable,
-> = [Iterable] extends [Array<infer Inner>]
+> = [Iterable] extends [(infer Inner)[]]
   ? Inner
   : [Iterable] extends [readonly (infer Inner)[]]
       ? Inner

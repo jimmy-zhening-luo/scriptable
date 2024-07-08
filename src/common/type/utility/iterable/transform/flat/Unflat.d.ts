@@ -13,10 +13,8 @@ declare type Unflat<
 declare type UnflatArray<
   Inner,
   Mutable extends boolean = false,
-> = Array<
-  Unflat<
-    Inner
-    ,
-    Mutable
-  >
->;
+> = Unflat<
+  Inner
+  ,
+  Mutable
+>[];

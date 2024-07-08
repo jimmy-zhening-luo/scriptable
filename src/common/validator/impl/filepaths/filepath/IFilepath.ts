@@ -229,8 +229,8 @@ abstract class IFilepath<
   }
 
   private compose(
-    ...subpaths: Array<
-      | Unflat<
+    ...subpaths: (
+      Unflat<
         string
         ,
         true
@@ -238,7 +238,7 @@ abstract class IFilepath<
       | IFilepath<
         Length
       >
-    >
+    )[]
   ) {
     try {
       return subpaths
