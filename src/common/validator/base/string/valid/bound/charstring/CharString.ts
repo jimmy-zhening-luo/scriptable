@@ -14,13 +14,15 @@ class CharString<
 
   constructor(
     string: string,
-    ...charset: ConstructorParameters<typeof CharSet>
+    chars: char[],
+    negate: boolean,
   ) {
     try {
       this
         .charset = new this
           .CharSet(
-            ...charset,
+            negate,
+            chars
           );
       this
         .string = this

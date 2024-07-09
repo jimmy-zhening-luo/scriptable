@@ -14,10 +14,11 @@ class BoundString<
     ]
   > {
   constructor(
-    min: Positive<fint>,
-    max: Positive<int>,
     string: string,
-    ...charset: ConstructorParameters<typeof CharSet>
+    chars: char[],
+    negate: Positive<int>,
+    max: Positive<int>,
+    min: Positive<fint>,
   ) {
     try {
       if (min > max)
@@ -50,7 +51,8 @@ class BoundString<
       else
         super(
           string,
-          ...charset,
+          chars,
+          negate,
         );
     }
     catch (e) {

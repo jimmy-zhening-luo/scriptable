@@ -1,23 +1,14 @@
 class CharSet {
-  public readonly chars: readonly char[];
   public readonly negate: boolean = false;
+  public readonly chars: readonly char[];
 
   constructor(
-    negate?:
-      | boolean
-      | char,
-    ...charsets: char[]
+    negate: boolean,
+    ...chars: char[]
   ) {
     try {
-      if (typeof negate === "boolean")
-        this.negate = negate;
-      else if (typeof negate !== "undefined")
-        charsets
-          .unshift(
-            negate,
-          );
-
-      this.chars = [...charsets];
+      this.negate = negate;
+      this.chars = [...chars];
     }
     catch (e) {
       throw new EvalError(

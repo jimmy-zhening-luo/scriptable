@@ -14,7 +14,7 @@ class CleanString<
   > {
   constructor(
     string: string,
-    charset: char[],
+    chars: char[],
     negate: boolean = false,
     max: Positive<int> = Infinity as Positive<int>,
     min: Positive<fint> = 1 as Positive<fint>,
@@ -22,15 +22,15 @@ class CleanString<
   ) {
     try {
       super(
-        min,
-        max,
         CleanString
           .clean(
             string,
             cleanOptions,
           ),
+        chars,
         negate,
-        ...charset,
+        max,
+        min,
       );
     }
     catch (e) {
