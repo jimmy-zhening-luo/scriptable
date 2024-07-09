@@ -25,7 +25,7 @@ class UrlEngine extends b_IEngine {
       super(
         "browser",
         browser === "api"
-          ? (output ?? true)
+          ? output ?? true
           : false,
       );
       this.TAG = TAG;

@@ -52,10 +52,10 @@ abstract class IEngine {
         ...output === false
           ? {}
           : {
-            output: output === true
-              ? "_"
-              : output,
-          },
+              output: output === true
+                ? "_"
+                : output,
+            },
       };
     }
     catch (e) {

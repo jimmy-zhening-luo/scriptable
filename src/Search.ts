@@ -104,7 +104,7 @@ namespace Search {
         );
       else {
         const engine = Array.isArray(setting)
-        || typeof setting === "string"
+          || typeof setting === "string"
           ? new (
             this.Engine<typeof UrlEngine>("UrlEngine")
           )(

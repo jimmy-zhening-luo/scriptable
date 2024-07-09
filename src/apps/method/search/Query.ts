@@ -161,7 +161,7 @@ class Query {
       else
         throw new SyntaxError(
           `no tokens in query`,
-          { cause: `${query}` },
+          { cause: String(query) },
         );
     }
     catch (e) {
@@ -184,9 +184,9 @@ class Query {
         ? [TRANSLATE]
         : t0.startsWith(TRANSLATE)
           ? LANG_TAG === t0.slice(
-              TRANSLATE.length,
-              TRANSLATE.length + LANG_TAG.length,
-            )
+            TRANSLATE.length,
+            TRANSLATE.length + LANG_TAG.length,
+          )
             ? [
                 TRANSLATE,
                 String(tokens.shift())
@@ -227,7 +227,10 @@ class Query {
     try {
       const [T0] = tokens;
       const T0_Dedot = T0.endsWith(".") && !T0.startsWith(".")
-        ? T0.slice(0, -1) as stringful
+        ? T0.slice(
+          0,
+          -1,
+        ) as stringful
         : null;
 
       if (T0_Dedot !== null) {

@@ -13,8 +13,8 @@ declare type SearchOutput =
     true
   >
   & Field< // Url
-    | "natural"
-    | "browser"
+  | "natural"
+  | "browser"
     ,
     true
   >
