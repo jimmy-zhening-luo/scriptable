@@ -1,7 +1,9 @@
 abstract class IEngine {
   constructor(
     protected readonly app: string,
-    protected readonly output: Null<string> = null,
+    protected readonly output:
+      | string
+      | boolean = false,
   ) {}
 
   public resolve(query: Query) {
@@ -47,9 +49,13 @@ abstract class IEngine {
       return {
         app,
         action: this.transform(query),
-        ...output === null
+        ...output === false
           ? {}
-          : { output },
+          : {
+            output: output === true
+              ? "_"
+              : output,
+          },
       };
     }
     catch (e) {

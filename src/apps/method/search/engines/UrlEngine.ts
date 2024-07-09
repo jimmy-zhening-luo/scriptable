@@ -17,14 +17,16 @@ class UrlEngine extends b_IEngine {
     browser = "",
     separator = "+",
     encodeComponent = false,
-    output?: string,
+    output?:
+      | string
+      | boolean,
   ) {
     try {
       super(
         "browser",
         browser === "api"
-          ? (output ?? "_")
-          : null,
+          ? (output ?? true)
+          : false,
       );
       this.TAG = TAG;
       this.browser = browser;

@@ -7,7 +7,9 @@ class ShortcutEngine extends s_IEngine {
 
   constructor(
     shortcut: string,
-    output?: string,
+    output?:
+      | string
+      | boolean,
   ) {
     try {
       super(
