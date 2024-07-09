@@ -6,12 +6,7 @@ class ReadonlyFile extends _File {
   public override write(): never {
     throw new ReferenceError(
       `ReadonlyFile: write`,
-      {
-        cause: {
-          readonly: true,
-          path: this.path,
-        },
-      },
+      { cause: this.path },
     );
   }
 }

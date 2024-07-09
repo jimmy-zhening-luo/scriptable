@@ -1,10 +1,8 @@
 declare const valid: unique symbol;
 declare type Valid<
   Type,
-  Validator extends string[],
+  Stamps extends string[],
 > =
   & Type
-  & { [valid]: StringChain<
-    Validator
-  >; }
+  & { [valid]: StringChain<Stamps> }
 ;

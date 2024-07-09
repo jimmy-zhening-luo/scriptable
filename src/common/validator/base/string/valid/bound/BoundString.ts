@@ -1,58 +1,37 @@
-const f_CharString = importModule(
+const _CharString = importModule(
   `charstring/CharString`,
 ) as typeof CharString;
 
 class BoundString<
   String extends stringful,
-  Validator extends string[],
-> extends f_CharString<
-    String
-    ,
-    [
-      ...Validator,
-      `Bound`,
-    ]
+  Stamps extends string[],
+> extends _CharString<
+    String,
+    [...Stamps, `Bound`]
   > {
   constructor(
     string: string,
-    chars: char[],
-    negate: Positive<int>,
-    max: Positive<int>,
+    charset: char[],
+    filter: Filter,
     min: Positive<fint>,
+    max: Positive<int>,
   ) {
     try {
       if (min > max)
         throw new RangeError(
           `min > max`,
-          {
-            cause: {
-              string,
-              length: string.length,
-              min,
-              max,
-            },
-          },
+          { cause: string },
         );
-      else if (
-        string.length < min
-        || string.length > max
-      )
-        throw new RangeError(
-          `string length out-of-bounds`,
-          {
-            cause: {
-              string,
-              length: string.length,
-              min,
-              max,
-            },
-          },
+      else if (string.length < min || string.length > max)
+        throw new TypeError(
+          `string length invalid`,
+          { cause: string },
         );
       else
         super(
           string,
-          chars,
-          negate,
+          charset,
+          filter,
         );
     }
     catch (e) {

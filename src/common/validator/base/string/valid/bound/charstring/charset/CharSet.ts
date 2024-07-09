@@ -1,14 +1,14 @@
 class CharSet {
-  public readonly negate: boolean = false;
-  public readonly chars: readonly char[];
+  public readonly filter;
+  public readonly charset;
 
   constructor(
-    negate: boolean,
-    ...chars: char[]
+    filter: Filter,
+    ...charset: char[]
   ) {
     try {
-      this.negate = negate;
-      this.chars = [...chars];
+      this.filter = filter;
+      this.charset = [...charset] as const;
     }
     catch (e) {
       throw new EvalError(
@@ -18,24 +18,11 @@ class CharSet {
     }
   }
 
-  public allows<Valid extends string>(
-    string: string,
-  ): string is Valid {
+  public allows<Valid extends string>(string: string): string is Valid {
     try {
-      const {
-        negate,
-        chars,
-      } = this;
+      const { filter } = this;
 
-      return string.length < 1
-        || chars
-          .every(
-            char =>
-              negate !== string
-                .includes(
-                  char,
-                ),
-          );
+      return string.length < 1 || this[filter](string);
     }
     catch (e) {
       throw new EvalError(
@@ -45,19 +32,40 @@ class CharSet {
     }
   }
 
-  public toString() {
+  protected include(string: string) {
     try {
-      return `[${
-        this
-          .chars
-          .join(
-            ", ",
-          )
-      }]`;
+      const charstring = [...string] as char[];
+      const { charset: chars } = this;
+
+      return charstring.every(
+        char =>
+          chars.includes(
+            char,
+          ),
+      );
     }
     catch (e) {
       throw new EvalError(
-        `CharSet: toString`,
+        `CharSet: include`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected exclude(string: string) {
+    try {
+      const { charset: chars } = this;
+
+      return chars.every(
+        char =>
+          !string.includes(
+            char,
+          ),
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `CharSet: include`,
         { cause: e },
       );
     }
