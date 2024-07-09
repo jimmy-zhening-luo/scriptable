@@ -41,7 +41,7 @@
   const labels = records.map(
     ([label]) => label,
   );
-  const dates = Object.fromEntries(records);
+  const dates = Object.fromEntries(records) as FieldTable;
 
   return {
     labels,
