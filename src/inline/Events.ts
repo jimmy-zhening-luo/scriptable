@@ -1,4 +1,4 @@
-export function Events() {
+(() => {
   const events = args.shortcutParameter as Event[];
   const DURATION = [
     "‎   ‎ I",
@@ -48,7 +48,7 @@ export function Events() {
   );
 
   return labels;
-}
+})();
 
 type Event =
   & Field<
