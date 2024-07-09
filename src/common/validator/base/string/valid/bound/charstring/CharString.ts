@@ -4,31 +4,25 @@ class CharString<
 > {
   public readonly charset: CharSet;
   public readonly string: Valid<
-    String
-    ,
-    [
-      ...Validator,
-      `String`,
-    ]
+    String,
+    [...Validator, `String`]
   >;
 
   constructor(
     string: string,
-    chars: char[],
-    negate: boolean,
+    charset: char[],
+    filter: Filter,
   ) {
     try {
-      this
-        .charset = new this
-          .CharSet(
-            negate,
-            chars
-          );
-      this
-        .string = this
-          .validate(
-            string,
-          );
+      this.charset = new this
+        .CharSet(
+          filter,
+          ...charset,
+        );
+      this.string = this
+        .validate(
+          string,
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -53,16 +47,7 @@ class CharString<
   }
 
   public toString() {
-    try {
-      return this
-        .string;
-    }
-    catch (e) {
-      throw new EvalError(
-        `CharString: toString`,
-        { cause: e },
-      );
-    }
+    return this.string;
   }
 
   private validate(
@@ -80,13 +65,7 @@ class CharString<
       else
         throw new TypeError(
           `string has invalid chars`,
-          {
-            cause: {
-              string,
-              charset: String(this.charset),
-              negate: this.charset.negate,
-            },
-          },
+          { cause: string },
         );
     }
     catch (e) {

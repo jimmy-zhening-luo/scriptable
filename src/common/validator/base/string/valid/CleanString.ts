@@ -5,19 +5,21 @@ const v_BoundString = importModule(
 class CleanString<
   Validator extends string[],
 > extends v_BoundString<
-    stringful
-    ,
-    [
-      ...Validator,
-      `Clean`,
-    ]
+    stringful,
+    [...Validator, `Clean`]
   > {
   constructor(
     string: string,
-    chars: char[],
-    negate: boolean = false,
-    max: Positive<int> = Infinity as Positive<int>,
-    min: Positive<fint> = 1 as Positive<fint>,
+    charset: char[],
+    {
+      filter = "exclude",
+      min = 1 as Positive<fint>,
+      max = Infinity as Positive<int>,
+    }: {
+      filter?: Filter;
+      min?: Positive<fint>;
+      max?: Positive<int>;
+    } = {},
     cleanOptions: Parameters<typeof CleanString.clean>[1] = {},
   ) {
     try {
@@ -27,10 +29,10 @@ class CleanString<
             string,
             cleanOptions,
           ),
-        chars,
-        negate,
-        max,
+        charset,
+        filter,
         min,
+        max,
       );
     }
     catch (e) {

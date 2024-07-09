@@ -6,19 +6,15 @@ class BoundString<
   String extends stringful,
   Validator extends string[],
 > extends f_CharString<
-    String
-    ,
-    [
-      ...Validator,
-      `Bound`,
-    ]
+    String,
+    [...Validator, `Bound`]
   > {
   constructor(
     string: string,
-    chars: char[],
-    negate: Positive<int>,
-    max: Positive<int>,
+    charset: char[],
+    filter: Filter,
     min: Positive<fint>,
+    max: Positive<int>,
   ) {
     try {
       if (min > max)
@@ -51,8 +47,8 @@ class BoundString<
       else
         super(
           string,
-          chars,
-          negate,
+          charset,
+          filter,
         );
     }
     catch (e) {
