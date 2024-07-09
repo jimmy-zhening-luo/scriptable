@@ -1,13 +1,11 @@
-const v_BoundString = importModule(
+const _BoundString = importModule(
   `bound/BoundString`,
 ) as typeof BoundString;
 
-class CleanString<
-  Validator extends string[],
-> extends v_BoundString<
-    stringful,
-    [...Validator, `Clean`]
-  > {
+class CleanString<Stamp extends string> extends _BoundString<
+  stringful,
+  [Stamp, `Clean`]
+> {
   constructor(
     string: string,
     charset: char[],

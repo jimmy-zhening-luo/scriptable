@@ -1,11 +1,11 @@
 class CharString<
   String extends string,
-  Validator extends string[],
+  Stamps extends string[],
 > {
   public readonly charset: CharSet;
   public readonly string: Valid<
     String,
-    [...Validator, `String`]
+    [...Stamps, `String`]
   >;
 
   constructor(
@@ -53,7 +53,7 @@ class CharString<
       if (
         this
           .charset
-          .allows<Stringify<CharString<String, Validator>>>(
+          .allows<Stringify<CharString<String, Stamps>>>(
             string,
           )
       )
