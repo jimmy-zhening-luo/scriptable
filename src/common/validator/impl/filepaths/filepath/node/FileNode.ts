@@ -15,9 +15,8 @@ class FileNode extends f_CleanString<
           ":" as char,
           "/" as char,
         ],
-        1 as Positive<fint>,
-        255 as Positive<int>,
         true,
+        255 as Positive<int>,
       );
     }
     catch (e) {

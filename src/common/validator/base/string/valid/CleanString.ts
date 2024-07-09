@@ -14,10 +14,10 @@ class CleanString<
   > {
   constructor(
     string: string,
-    chars: char[],
-    min: Positive<fint> = 1 as Positive<fint>,
-    max: Positive<int> = Infinity as Positive<int>,
+    charset: char[],
     negate: boolean = false,
+    max: Positive<int> = Infinity as Positive<int>,
+    min: Positive<fint> = 1 as Positive<fint>,
     cleanOptions: Parameters<typeof CleanString.clean>[1] = {},
   ) {
     try {
@@ -30,7 +30,7 @@ class CleanString<
             cleanOptions,
           ),
         negate,
-        ...chars,
+        ...charset,
       );
     }
     catch (e) {
