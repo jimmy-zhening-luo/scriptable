@@ -49,7 +49,7 @@ abstract class IEngine {
         action: this.transform(query),
         ...output === null
           ? {}
-          : ...{ output },
+          : { output },
       };
     }
     catch (e) {
