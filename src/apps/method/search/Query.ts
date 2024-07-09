@@ -189,7 +189,7 @@ class Query {
             )
             ? [
                 TRANSLATE,
-                String(tokens.shift()))
+                String(tokens.shift())
                   .slice(TRANSLATE.length) as stringful,
               ]
             : TRANSLATE.length > t0.length
