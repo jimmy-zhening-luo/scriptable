@@ -36,10 +36,9 @@
           .join("    "),
         c,
       ],
-  );
-
-  const labels = records.map(
-    ([label]) => label,
+  );  const labels = records.map(
+    ([label]) =>
+      label,
   );
   const dates = Object.fromEntries(records) as FieldTable;
 
