@@ -1,7 +1,6 @@
 class Bookmark {
   public readonly alias: Alias;
   public readonly path: Stringify<Rootpath>;
-  protected readonly __proto = "Bookmark";
 
   constructor(
     bookmark: string,
