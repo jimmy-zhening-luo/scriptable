@@ -46,10 +46,6 @@ class CharString<
     }
   }
 
-  public toString() {
-    return this.string;
-  }
-
   private validate(
     string: string,
   ) {

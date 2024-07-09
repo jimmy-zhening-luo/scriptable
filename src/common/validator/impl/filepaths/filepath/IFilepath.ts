@@ -1,9 +1,6 @@
-abstract class IFilepath<
-  Length,
-> {
+abstract class IFilepath<Length> {
   protected readonly _nodes: Nodes<
-    FileNode
-    ,
+    FileNode,
     Length
   >;
 
@@ -14,30 +11,25 @@ abstract class IFilepath<
     )[]
   ) {
     try {
-      this
-        ._nodes = this
-          .check(
-            subpaths
-              .map(
-                subpath =>
-                  typeof subpath !== "string"
-                    ? subpath._nodes
-                    : new this.Splitterful(
-                      subpath,
-                      "/",
-                      true,
-                    )
-                      .nodes
-                      .map(
-                        node =>
-                          new this.FileNode(
-                            node,
-                          )
-                            .string,
-                      ),
-              )
-              .flat(),
-          );
+      this._nodes = this.check(
+        subpaths
+          .map(
+            subpath =>
+              typeof subpath !== "string"
+                ? subpath._nodes
+                : new this.Splitterful(
+                  subpath,
+                  "/",
+                  true,
+                )
+                  .nodes
+                  .map(
+                    node =>
+                      new this.FileNode(node).string,
+                  ),
+          )
+          .flat(),
+      );
     }
     catch (e) {
       throw new EvalError(

@@ -2,9 +2,7 @@ const f_CleanString = importModule(
   `./common/validator/base/string/valid/CleanString`,
 ) as typeof CleanString;
 
-class FileNode extends f_CleanString<
-  [`FileNode`]
-> {
+class FileNode extends f_CleanString<[`FileNode`]> {
   constructor(
     node: string,
   ) {
