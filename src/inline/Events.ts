@@ -14,40 +14,39 @@
     Th: "Th   ",
     Sa: "Sa   ",
   };
-  const labels = Object.fromEntries(
-    events.map(
-      ({
-        title,
-        dur,
-        d,
-        w,
-        h,
-        c,
-      }) =>
+  const records = events.map(
+    ({
+      title,
+      dur,
+      d,
+      w,
+      h,
+      c,
+    }) =>
+      [
         [
-          [
-            DURATION[
-              Math.ceil(
-                dur / 3600,
-              ) - 1
-            ]
-            ?? "≥4",
-            WEEKDAY[w],
-            d,
-            h,
-            ...title === "Therapy"
-              ? []
-              : `[${title}]`,
-          ]
-            .join(
-              "    ",
-            ),
-          c,
-        ],
-    ),
+          DURATION[Math.ceil(dur / 3600) - 1] ?? "≥4",
+          WEEKDAY[w],
+          d,
+          h,
+          ...title === "Therapy"
+            ? []
+            : `[${title}]`,
+        ]
+          .join("    "),
+        c,
+      ],
   );
 
-  return labels;
+  const labels = records.map(
+    ([label]) => label,
+  );
+  const dates = Object.fromEntries(records);
+
+  return {
+    labels,
+    dates,
+  };
 })();
 
 type Event =
