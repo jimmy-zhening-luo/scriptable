@@ -4,39 +4,29 @@ declare type ISearchEngineSetting<
   Flags extends string = never,
   Fields extends string = never,
   Custom extends Record<
-    string
-    ,
+    string,
     | string[]
     | string
     | boolean
-  > = {}
-  ,
-  MultipleActions extends boolean = false,
+  > = {},
+  MultiAction extends boolean = false,
 > =
   & Record<
-    ActionType
-    ,
-    MultipleActions extends true
-      ?
-      | string[]
-      | string
+    ActionType,
+    MultiAction extends true
+      ? Unflat<string, true>
       : string
   >
+  & Flag<Flags>
+  & Field<Fields, true>
+  & Custom
   & (
     Output extends true
-      ? {
-          output?:
-            | ""
-            | "write" // any postfix
-          ;
-        }
+      ? PartialRecord<
+        "output",
+        | boolean
+        | string
+      >
       : {}
   )
-  & Flag<Flags>
-  & Field<
-    Fields
-    ,
-    true
-  >
-  & Custom
 ;

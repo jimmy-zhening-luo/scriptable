@@ -3,6 +3,8 @@ declare type SearchOutput =
   & Field<
     | "app"
     | "output"
+    ,
+    | "output"
   >
   & Field<
     | "shortcut" // Shortcut
@@ -10,8 +12,10 @@ declare type SearchOutput =
     ,
     true
   >
-  & { // URL
-    natural?: string;
-    browser?: string;
-  }
+  & Field< // Url
+    | "natural"
+    | "browser"
+    ,
+    true
+  >
 ;

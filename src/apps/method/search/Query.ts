@@ -13,38 +13,30 @@ class Query {
     "7",
     "8",
     "9",
+    ".",
+    "!",
+    ",",
+    ":",
     "(",
     ")",
     "[",
     "]",
     "{",
     "}",
-    ".",
-    ",",
-    ":",
-    ";",
-    "-",
-    "_",
+    "<",
+    ">",
+    "=",
     "+",
+    "-",
     "*",
     "/",
-    "\\",
     "^",
     "%",
     "~",
-    "=",
-    "<",
-    ">",
     "|",
     "&",
-    "`",
-    "'",
-    "\"",
-    "?",
-    "!",
     "#",
     "$",
-    "°",
   ];
 
   constructor(
@@ -62,29 +54,24 @@ class Query {
       const [
         key,
         ...terms
-      ] = Query
-        .mathefy(
-          Query
-            .dedot(
-              Query
-                .transliterate(
-                  Query
-                    .tokenize(
-                      query,
-                      ONE,
-                      TWO,
-                      THREE,
-                    ),
-                  TRANSLATE,
-                ),
+      ] = Query.mathefy(
+        Query.dedot(
+          Query.transliterate(
+            Query.tokenize(
+              query,
+              ONE,
+              TWO,
+              THREE,
             ),
-          CHAT,
-          TRANSLATE,
-          MATH_SHORT,
-          MATH_LONG,
-          this
-            .NUMERIC,
-        );
+            TRANSLATE,
+          ),
+        ),
+        CHAT,
+        TRANSLATE,
+        MATH_SHORT,
+        MATH_LONG,
+        this.NUMERIC,
+      );
 
       this
         .terms = terms;
@@ -103,46 +90,22 @@ class Query {
   }
 
   public get key() {
-    try {
-      return this
-        ._key;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: key`,
-        { cause: e },
-      );
-    }
+    return this._key;
   }
 
   public get locked() {
-    try {
-      return this
-        ._locked;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: locked`,
-        { cause: e },
-      );
-    }
+    return this._locked;
   }
 
   public get string() {
     try {
       const string = [
-        this
-          .key,
-        this
-          .natural,
+        this.key,
+        this.natural,
       ] as const;
 
-      return string
-        .join(
-          " ",
-        ) as Join<
-          typeof string
-        ,
+      return string.join(" ") as Join<
+        typeof string,
         " "
       >;
     }
@@ -158,9 +121,7 @@ class Query {
     try {
       return this
         .terms
-        .join(
-          " ",
-        );
+        .join(" ");
     }
     catch (e) {
       throw new EvalError(
@@ -177,18 +138,9 @@ class Query {
     THREE: stringful,
   ) {
     try {
-      const preprocessed = query
-        .startsWith(
-          " ",
-        )
-        ? query
-          .startsWith(
-            "  ",
-          )
-          ? query
-            .startsWith(
-              "   ",
-            )
+      const preprocessed = query.startsWith(" ")
+        ? query.startsWith("  ")
+          ? query.startsWith("   ")
             ? [THREE]
             : [TWO]
           : [ONE]
@@ -197,24 +149,19 @@ class Query {
         ...preprocessed,
         ...query
           .trim()
-          .split(
-            " ",
-          )
+          .split(" ")
           .filter(
             (token): token is stringful =>
-              token
-                .length > 0,
+              token.length > 0,
           ),
       ];
 
       if (tokens.length > 0)
-        return tokens as Arrayful<
-          stringful
-        >;
+        return tokens as Arrayful<stringful>;
       else
         throw new SyntaxError(
           `no tokens in query`,
-          { cause: { query } },
+          { cause: `${query}` },
         );
     }
     catch (e) {
@@ -226,91 +173,45 @@ class Query {
   }
 
   private static transliterate(
-    tokens: Arrayful<
-      stringful
-    >,
+    tokens: Arrayful<stringful>,
     TRANSLATE: stringful,
   ) {
     try {
       const LANG_TAG = "@" as stringful;
       const [T0] = tokens;
-      const t0 = Query
-        .toLower(
-          T0,
-        );
-      const pre = t0
-        .startsWith(
-          LANG_TAG,
-        )
+      const t0 = Query.toLower(T0);
+      const pre = t0.startsWith(LANG_TAG)
         ? [TRANSLATE]
-        : t0
-          .startsWith(
-            TRANSLATE,
-          )
-          ? LANG_TAG === t0
-            .slice(
-              TRANSLATE
-                .length,
-              TRANSLATE
-                .length + LANG_TAG
-                .length,
+        : t0.startsWith(TRANSLATE)
+          ? LANG_TAG === t0.slice(
+              TRANSLATE.length,
+              TRANSLATE.length + LANG_TAG.length,
             )
             ? [
                 TRANSLATE,
-                String(
-                  tokens
-                    .shift(),
-                )
-                  .slice(
-                    TRANSLATE
-                      .length,
-                  ) as stringful,
+                String(tokens.shift()))
+                  .slice(TRANSLATE.length) as stringful,
               ]
-            : TRANSLATE
-              .length > t0
-              .length
+            : TRANSLATE.length > t0.length
               ? [
                   TRANSLATE,
                   [
                     LANG_TAG,
-                    t0[
-                      TRANSLATE
-                        .length
-                    ],
+                    t0[TRANSLATE.length],
                   ]
-                    .join(
-                      "",
-                    ) as Join<
-                    Dyad<
-                      stringful
-                    >
-                    ,
-                    ""
-                  >,
-                  ...TRANSLATE
-                    .length + LANG_TAG
-                    .length < String(
-                    tokens
-                      .shift(),
-                  )
-                    .length
+                    .join("") as Join<Dyad<stringful>>,
+                  ...TRANSLATE.length + LANG_TAG.length < String(tokens.shift()).length
                     ? [
-                        t0
-                          .slice(
-                            TRANSLATE
-                              .length + LANG_TAG
-                              .length,
-                          ) as stringful,
+                        t0.slice(
+                          TRANSLATE.length + LANG_TAG.length,
+                        ) as stringful,
                       ]
                     : [],
                 ]
               : []
           : [];
 
-      tokens
-        .unshift(
-          ...pre,
-        );
+      tokens.unshift(...pre);
 
       return tokens;
     }
@@ -322,35 +223,16 @@ class Query {
     }
   }
 
-  private static dedot(
-    tokens: Arrayful<
-      stringful
-    >,
-  ) {
+  private static dedot(tokens: Arrayful<stringful>) {
     try {
       const [T0] = tokens;
-      const T0_Dedot = T0
-        .endsWith(
-          ".",
-        )
-        && !T0
-          .startsWith(
-            ".",
-          )
-        ? T0
-          .slice(
-            0,
-            -1,
-          ) as stringful
+      const T0_Dedot = T0.endsWith(".") && !T0.startsWith(".")
+        ? T0.slice(0, -1) as stringful
         : null;
 
       if (T0_Dedot !== null) {
-        tokens
-          .shift();
-        tokens
-          .unshift(
-            T0_Dedot,
-          );
+        tokens.shift();
+        tokens.unshift(T0_Dedot);
       }
 
       return tokens;
@@ -364,9 +246,7 @@ class Query {
   }
 
   private static mathefy(
-    tokens: Arrayful<
-      stringful
-    >,
+    tokens: Arrayful<stringful>,
     CHAT: stringful,
     TRANSLATE: stringful,
     MATH_SHORT: stringful,
@@ -381,17 +261,12 @@ class Query {
         MATH_LONG,
       ] as const;
       const [T0] = tokens;
-      const t0 = Query
-        .toLower(
-          T0,
-        );
-      const t0_len = t0
-        .length;
+      const t0 = Query.toLower(T0);
+      const t0_len = t0.length;
       const longest = [...M]
         .filter(
           mk =>
-            t0_len >= mk
-              .length,
+            t0_len >= mk.length,
         )
         .sort(
           (a, b) =>
@@ -399,44 +274,24 @@ class Query {
         )
         .find(
           mk =>
-            t0
-              .startsWith(
-                mk,
-              ),
+            t0.startsWith(mk),
         )
         ?? null;
 
       if (longest === null) {
-        if (
-          NUMERIC
-            .includes(
-              t0[0],
-            )
-        )
-          tokens
-            .unshift(
-              MATH_SHORT,
-            );
+        if (NUMERIC.includes(t0[0]))
+          tokens.unshift(MATH_SHORT);
       }
       else {
         const operand_0 = tokens
           .shift()
-          ?.slice(
-            longest
-              .length,
-          )
+          ?.slice(longest.length)
           ?? "";
 
         if (operand_0.length > 0)
-          tokens
-            .unshift(
-              operand_0 as stringful,
-            );
+          tokens.unshift(operand_0 as stringful);
 
-        tokens
-          .unshift(
-            longest,
-          );
+        tokens.unshift(longest);
       }
 
       return tokens;
@@ -449,12 +304,9 @@ class Query {
     }
   }
 
-  private static toLower(
-    stringful: stringful,
-  ) {
+  private static toLower(stringful: stringful) {
     try {
-      return stringful
-        .toLowerCase() as stringful;
+      return stringful.toLowerCase() as stringful;
     }
     catch (e) {
       throw new EvalError(
@@ -464,28 +316,18 @@ class Query {
     }
   }
 
-  public lock(
-    key: Null<
-      stringful
-    >,
-  ) {
+  public lock(key: Null<stringful>) {
     try {
       if (key !== null)
         this._key = key;
       else {
         this
           .terms
-          .unshift(
-            this
-              .key,
-          );
-        this
-          ._key = this
-            .REST;
+          .unshift(this.key);
+        this._key = this.REST;
       }
 
-      this
-        ._locked = true;
+      this._locked = true;
     }
     catch (e) {
       throw new EvalError(
@@ -496,16 +338,7 @@ class Query {
   }
 
   public toString() {
-    try {
-      return this
-        .string;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: toString`,
-        { cause: e },
-      );
-    }
+    return this.string;
   }
 }
 

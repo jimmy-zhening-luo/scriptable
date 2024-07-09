@@ -1,12 +1,11 @@
 declare const separator: unique symbol;
 declare type Joint<
-  A,
+  Strings,
   Separator extends string = string,
-> = A extends A
+> = Strings extends Strings
   ?
   & Join<
-    A
-    ,
+    Strings,
     Separator
   >
   & { [separator]: Separator }

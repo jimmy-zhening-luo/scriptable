@@ -1,28 +1,20 @@
 abstract class IEngine {
   constructor(
     protected readonly app: string,
-    protected readonly output = "",
+    protected readonly output: Null<string> = null,
   ) {}
 
-  public resolve(
-    query: Query,
-  ) {
+  public resolve(query: Query) {
     try {
       if (query.locked)
         return {
-          ...this
-            .required(
-              query,
-            ),
-          ...this
-            .options(
-              query,
-            ),
+          ...this.required(query),
+          ...this.options(query),
         };
       else
         throw new SyntaxError(
-          `query unlocked`,
-          { cause: { query: String(query) } },
+          `Cannot resolve unlocked query`,
+          { cause: `[${String(query)}]` },
         );
     }
     catch (e) {
@@ -33,12 +25,9 @@ abstract class IEngine {
     }
   }
 
-  protected transform(
-    query: Query,
-  ): Unflat<string> {
+  protected transform(query: Query): Unflat<string> {
     try {
-      return query
-        .natural;
+      return query.natural;
     }
     catch (e) {
       throw new EvalError(
@@ -48,9 +37,7 @@ abstract class IEngine {
     }
   }
 
-  private required(
-    query: Query,
-  ) {
+  private required(query: Query) {
     try {
       const {
         app,
@@ -59,11 +46,10 @@ abstract class IEngine {
 
       return {
         app,
-        output,
-        action: this
-          .transform(
-            query,
-          ),
+        action: this.transform(query),
+        ...output === null
+          ? {}
+          : ...{ output },
       };
     }
     catch (e) {
@@ -74,18 +60,9 @@ abstract class IEngine {
     }
   }
 
-  protected abstract options(
-    query: Query,
-  ): Omit<
-    SearchOutput
-    ,
-    Keys<
-      ReturnType<
-        IEngine[
-          "required"
-        ]
-      >
-    >
+  protected abstract options(query: Query): Omit<
+    SearchOutput,
+    keyof ReturnType<IEngine["required"]>
   >;
 }
 

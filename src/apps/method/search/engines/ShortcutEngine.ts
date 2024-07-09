@@ -7,31 +7,14 @@ class ShortcutEngine extends s_IEngine {
 
   constructor(
     shortcut: string,
-    output = "",
+    output?: string,
   ) {
     try {
       super(
         "shortcut",
-        output !== "write"
-          ? output
-          : shortcut
-            .toLowerCase()
-            .replaceAll(
-              ".",
-              "",
-            )
-            .replaceAll(
-              "_",
-              "",
-            )
-            .trim()
-            .replaceAll(
-              " ",
-              "",
-            ),
+        output,
       );
-      this
-        .shortcut = shortcut;
+      this.shortcut = shortcut;
     }
     catch (e) {
       throw new EvalError(

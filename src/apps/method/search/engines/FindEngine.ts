@@ -5,21 +5,15 @@ const f_IEngine = importModule(
 class FindEngine extends f_IEngine {
   protected readonly find: string;
 
-  constructor(
-    find: string,
-  ) {
+  constructor(find: string) {
     try {
-      super(
-        "find",
-        "",
-      );
+      super("find");
 
       if (find.length > 0)
-        this
-          .find = find;
+        this.find = find;
       else
-        throw new SyntaxError(
-          `'find' field empty`,
+        throw new ReferenceError(
+          `no 'find' engine selected`,
         );
     }
     catch (e) {

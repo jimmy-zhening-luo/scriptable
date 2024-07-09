@@ -7,10 +7,8 @@ namespace Search {
   const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
 
   export class Search extends shortcut<
-    string
-    ,
-    SearchOutput
-    ,
+    string,
+    SearchOutput,
     SearchSetting
   > {
     private get Query() {
@@ -23,8 +21,7 @@ namespace Search {
       const {
         app,
         user,
-      } = this
-        .setting;
+      } = this.setting;
       const {
         tag,
         key: {
@@ -67,137 +64,82 @@ namespace Search {
       ]
         .map(
           key =>
-            this
-              .stringful(
-                key,
-              ),
-        ) as Tuple<
-        stringful
-        ,
-        9
-      >;
-      const query = new this
-        .Query(
-          this
-            .inputString
-            .length > 0
-            ? this
-              .inputString
-            : this
-              .read(),
-          CHAT,
-          TRANSLATE,
-          MATH_SHORT,
-          MATH_LONG,
-          ONE,
-          TWO,
-          THREE,
-          REST,
-        );
-      const keyToken = query
-        .key;
-      const dealias = alias[
-        keyToken
-      ]
-      ?? null;
+            this.stringful(key),
+        ) as Tuple<stringful, 9>;
+      const query = new this.Query(
+        this.inputString.length > 0
+          ? this.inputString
+          : this.read(),
+        CHAT,
+        TRANSLATE,
+        MATH_SHORT,
+        MATH_LONG,
+        ONE,
+        TWO,
+        THREE,
+        REST,
+      );
+      const keyToken = query.key;
+      const dealias = alias[keyToken] ?? null;
 
-      query
-        .lock(
-          keyToken in engines
-            ? keyToken
-            : dealias !== null
-              ? dealias in engines
-                ? dealias
-                  .length > 0
-                  ? dealias as stringful
-                  : null
+      query.lock(
+        keyToken in engines
+          ? keyToken
+          : dealias !== null
+            ? dealias in engines
+              ? dealias.length > 0
+                ? dealias as stringful
                 : null
-              : null,
-        );
+              : null
+            : null,
+      );
 
       const { key } = query;
-      const setting = engines[
-        key
-      ]
-      ?? null;
+      const setting = engines[key] ?? null;
 
       if (setting === null)
         throw new ReferenceError(
           `Engine setting missing for key`,
-          { cause: { key } },
+          { cause: key },
         );
       else {
-        const engine = Array.isArray(
-          setting,
-        )
+        const engine = Array.isArray(setting)
         || typeof setting === "string"
           ? new (
-            this
-              .Engine<typeof UrlEngine>(
-                "UrlEngine",
-              )
+            this.Engine<typeof UrlEngine>("UrlEngine")
           )(
             setting,
             TAG,
           )
           : "url" in setting
             ? new (
-              this
-                .Engine<typeof UrlEngine>(
-                  "UrlEngine",
-                )
+              this.Engine<typeof UrlEngine>("UrlEngine")
             )(
-              setting
-                .url,
+              setting.url,
               TAG,
-              setting
-                .browser,
-              setting
-                .separator,
-              setting
-                .encodeComponent,
-              setting
-                .output,
+              setting.browser,
+              setting.separator,
+              setting.encodeComponent,
+              setting.output,
             )
             : "shortcut" in setting
               ? new (
-                this
-                  .Engine<typeof ShortcutEngine>(
-                    "ShortcutEngine",
-                  )
+                this.Engine<typeof ShortcutEngine>("ShortcutEngine")
               )(
-                setting
-                  .shortcut,
-                setting
-                  .output,
+                setting.shortcut,
+                setting.output,
               )
               : new (
-                this
-                  .Engine<typeof FindEngine>(
-                    "FindEngine",
-                  )
-              )(
-                setting
-                  .find,
-              );
+                this.Engine<typeof FindEngine>("FindEngine")
+              )(setting.find);
 
-        this
-          .write(
-            String(
-              query,
-            ),
-          );
+        this.write(String(query));
 
-        return engine
-          .resolve(
-            query,
-          );
+        return engine.resolve(query);
       }
     }
 
-    private Engine<T>(
-      flavor: string,
-    ): T {
+    private Engine<T>(flavor: string): T {
       try {
         return importModule(
           `apps/method/search/engines/${
