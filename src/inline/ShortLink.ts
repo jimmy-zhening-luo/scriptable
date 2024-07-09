@@ -1,4 +1,4 @@
-export function MenuObj() {
+(() => {
   "use strict";
 
   const inputUrl = args
@@ -30,4 +30,4 @@ export function MenuObj() {
     throw new TypeError(
       `No URL in input`,
     );
-}
+})();

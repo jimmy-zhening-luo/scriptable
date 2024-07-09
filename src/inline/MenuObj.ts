@@ -1,4 +1,4 @@
-export function MenuObj() {
+(() => {
   "use strict";
 
   const choices = args.shortcutParameter as readonly string[];
@@ -36,4 +36,4 @@ export function MenuObj() {
     ) as FieldTable,
     runner: `__M${length}`,
   };
-}
+})();
