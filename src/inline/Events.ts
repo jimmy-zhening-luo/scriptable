@@ -1,4 +1,8 @@
+"use strict";
+
 (() => {
+  "use strict";
+
   const events = args.shortcutParameter as Event[];
   const DURATION = [
     "‎   ‎ I",
@@ -36,7 +40,8 @@
           .join("    "),
         c,
       ],
-  );  const labels = records.map(
+  );
+  const labels = records.map(
     ([label]) =>
       label,
   );
