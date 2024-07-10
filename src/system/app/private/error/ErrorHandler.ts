@@ -1,7 +1,5 @@
 class ErrorHandler {
-  public handle(
-    top: Error,
-  ) {
+  public handle(top: Error) {
     try {
       const queue: ErrorLike[] = [top];
 
@@ -12,24 +10,19 @@ class ErrorHandler {
       )
         queue.unshift(i.cause as ErrorLike);
 
-      const hoist = queue
-        .findIndex(
-          (error): error is ErrorLike<true> =>
-            typeof error === "object" && "message" in error,
-        );
+      const hoist = queue.findIndex(
+        (error): error is ErrorLike<true> =>
+          typeof error === "object" && "message" in error,
+      );
       const hoistedQueue: readonly ErrorLike[] = hoist === -1
         ? queue
         : [
             queue[hoist] as ErrorLike<true>,
-            ...queue
-              .slice(
-                0,
-                hoist,
-              ),
-            ...queue
-              .slice(
-                hoist + 1,
-              ),
+            ...queue.slice(
+              0,
+              hoist,
+            ),
+            ...queue.slice(hoist + 1),
           ];
       const messages = hoistedQueue
         .map(
@@ -37,18 +30,10 @@ class ErrorHandler {
             this.print(error),
         );
 
-      this
-        .log(
-          messages,
-        );
-      this
-        .notify(
-          messages,
-        );
+      this.log(messages);
+      this.notify(messages);
 
-      return messages
-        .shift()
-        ?? "";
+      return messages.shift() ?? "";
     }
     catch (e) {
       throw new EvalError(
@@ -58,17 +43,9 @@ class ErrorHandler {
     }
   }
 
-  private log(
-    messages: readonly string[],
-  ) {
+  private log(messages: readonly string[]) {
     try {
-      console
-        .error(
-          messages
-            .join(
-              "\n",
-            ),
-        );
+      console.error(messages.join("\n"));
     }
     catch (e) {
       throw new EvalError(
@@ -78,16 +55,13 @@ class ErrorHandler {
     }
   }
 
-  private notify(
-    messages: readonly string[],
-  ) {
+  private notify(messages: readonly string[]) {
     try {
       const note = new Notification();
       const lines = [...messages];
 
       note.title = lines.shift() ?? "";
-      note.body = lines
-        .join("\n");
+      note.body = lines.join("\n");
       note.sound = "failure";
       note
         .schedule()
@@ -108,9 +82,7 @@ class ErrorHandler {
     }
   }
 
-  private print(
-    error: ErrorLike,
-  ) {
+  private print(error: ErrorLike) {
     try {
       return typeof error === "object" && "message" in error
         ? error.message
@@ -124,13 +96,9 @@ class ErrorHandler {
     }
   }
 
-  private quotelessStringify(
-    error: unknown,
-  ): string {
+  private quotelessStringify(error: unknown): string {
     try {
-      return Array.isArray(
-        error,
-      )
+      return Array.isArray(error)
         ? `[${
           error
             .map(
@@ -144,13 +112,7 @@ class ErrorHandler {
             .keys(error)
             .map(
               k =>
-                `${
-                  k
-                }: ${
-                  this.quotelessStringify(
-                    (error as FieldTable)[k],
-                  )
-                }`,
+                `${k}: ${this.quotelessStringify((error as FieldTable)[k])}`,
             )
             .join(", ")
           : String(error);
