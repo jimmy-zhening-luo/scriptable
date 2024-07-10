@@ -84,12 +84,8 @@ namespace Search {
       query.lock(
         keyToken in engines
           ? keyToken
-          : dealias !== null
-            ? dealias in engines
-              ? dealias.length > 0
-                ? dealias as stringful
-                : null
-              : null
+          : dealias !== null && dealias in engines && dealias.length > 0
+            ? dealias as stringful
             : null,
       );
 
