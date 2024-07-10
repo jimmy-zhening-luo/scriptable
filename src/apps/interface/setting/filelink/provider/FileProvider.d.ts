@@ -8,14 +8,12 @@ declare type FileProvider<
     C extends false
       ?
         & Record<
-          "hasContainers"
-          ,
+          "hasContainers",
           false
         >
       :
         & Record<
-          "hasContainers"
-          ,
+          "hasContainers",
           true
         >
         & FileContainerManifest

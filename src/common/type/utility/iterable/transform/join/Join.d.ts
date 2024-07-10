@@ -12,15 +12,13 @@ declare type Join<
     : Extract<
       Flat<
         Iterable
-      >
-      ,
+      >,
       | stringful
     > extends never
       ? Extract<
         Flat<
           Iterable
-        >
-        ,
+        >,
         | number
         | boolean
       > extends never
@@ -47,8 +45,7 @@ declare type Join<
       : Exclude<
         Flat<
           Iterable
-        >
-        , stringful
+        >, stringful
       > extends never
         ? Flat<
           Iterable

@@ -2,8 +2,7 @@ declare type literals<
   Strings,
 > = literalful<
   Extract<
-    Strings
-    ,
+    Strings,
     string
   >
 >;

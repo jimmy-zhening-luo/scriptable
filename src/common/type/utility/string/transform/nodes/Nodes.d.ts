@@ -4,7 +4,6 @@ declare type Nodes<
 > = ArrayN<
   Stringify<
     Stringlike
-  >
-  ,
+  >,
   MinLength
 >;

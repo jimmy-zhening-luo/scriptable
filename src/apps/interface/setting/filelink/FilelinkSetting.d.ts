@@ -4,8 +4,7 @@ declare type FilelinkSetting =
     | "commonRoot"
   >
   & Record<
-    "providers"
-    ,
+    "providers",
     Table<
       | FileProvider<false>
       | FileProvider<true>

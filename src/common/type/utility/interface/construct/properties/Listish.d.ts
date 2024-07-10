@@ -4,9 +4,7 @@ declare type Listish<
 > = IProperty<
   Unflat<
     string
-  >
-  ,
-  Key
-  ,
+  >,
+  Key,
   OptionalKey
 >;

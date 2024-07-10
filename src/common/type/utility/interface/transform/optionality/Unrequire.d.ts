@@ -9,11 +9,9 @@ declare type Unrequire<
     : Record
   :
     & Omit<
-      Record
-      ,
+      Record,
       Extract<
-        OptionalKey
-        ,
+        OptionalKey,
         Keys<
           Record
         >
@@ -22,11 +20,9 @@ declare type Unrequire<
     & Pick<
       Partial<
         Record
-      >
-      ,
+      >,
       Extract<
-        OptionalKey
-        ,
+        OptionalKey,
         Keys<
           Record
         >

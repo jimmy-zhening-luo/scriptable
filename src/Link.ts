@@ -14,10 +14,8 @@ namespace Link {
       | "_path"
       | "_query"
       | "_fragment"
-    >
-    ,
-    string
-    ,
+    >,
+    string,
     LinkSetting
   > {
     protected runtime() {

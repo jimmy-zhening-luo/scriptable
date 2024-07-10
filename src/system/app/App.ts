@@ -10,18 +10,14 @@ abstract class App<
   private readonly epoch0 = Date
     .now();
   private readonly _storage: Record<
-    string
-    ,
+    string,
     Storage<
       Class
     >
   > = {};
   private readonly _keys: Record<
-    string
-    ,
-    Key<
-      Class
-    >
+    string,
+    Key<Class>
   > = {};
 
   constructor(

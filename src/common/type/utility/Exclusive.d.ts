@@ -4,8 +4,7 @@ declare type Exclusive<
 > = Set extends never
   ? false
   : Exclude<
-    Set
-    ,
+    Set,
     Predicate
   > extends never
     ? true

@@ -1,8 +1,7 @@
 declare type GptPreset =
   & GptPlugins
   & Unrequire<
-    GptPromptful
-    ,
+    GptPromptful,
     | "user"
   >
 ;

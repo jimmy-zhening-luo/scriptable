@@ -7,10 +7,8 @@ namespace Things {
   const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
 
   export class Things extends shortcut<
-    string
-    ,
-    readonly ThingsItem[]
-    ,
+    string,
+    readonly ThingsItem[],
     ThingsSetting
   > {
     protected runtime() {

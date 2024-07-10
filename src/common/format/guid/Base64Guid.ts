@@ -69,8 +69,7 @@ function Base64Guid() {
         .replaceAll(
           "-",
           "",
-        )
-      ,
+        ),
     );
 
     for (

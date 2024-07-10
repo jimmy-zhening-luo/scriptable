@@ -1,7 +1,6 @@
 declare type stringful =
   & Safe<
-    string
-    ,
+    string,
     "stringful"
   >
   & {

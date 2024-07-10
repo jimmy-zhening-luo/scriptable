@@ -28,15 +28,13 @@ declare type SearchSetting = {
         "encodeComponent",
         never,
         & PartialRecord<
-          "browser"
-          ,
+          "browser",
           | "api"
           | "force"
         >
         &
         PartialRecord<
-          "separator"
-          ,
+          "separator",
           "%20"
         >
         ,

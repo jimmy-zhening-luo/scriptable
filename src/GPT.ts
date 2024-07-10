@@ -7,10 +7,8 @@ namespace GPT {
   const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
 
   export class GPT extends shortcut<
-    GptInput
-    ,
-    GptOutput
-    ,
+    GptInput,
+    GptOutput,
     GptSetting
   > {
     protected runtime() {

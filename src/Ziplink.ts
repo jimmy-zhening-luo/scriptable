@@ -7,8 +7,7 @@ namespace Ziplink {
   const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
 
   export class Ziplink extends shortcut<
-    string
-    ,
+    string,
     string
   > {
     protected runtime() {

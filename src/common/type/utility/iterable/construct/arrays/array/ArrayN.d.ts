@@ -17,10 +17,8 @@ declare type ArrayN<
               ...Inner[],
             ]
           : ArrayN<
-            Inner
-            ,
-            Length
-            ,
+            Inner,
+            Length,
             [
               ...Head,
               Inner,

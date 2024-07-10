@@ -5,8 +5,7 @@ const k_Filetype = importModule(
 class Key<
   Class extends string,
 > extends k_Filetype<
-    "Key"
-    ,
+    "Key",
     Class
   > {
   constructor(

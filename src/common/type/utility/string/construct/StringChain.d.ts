@@ -18,10 +18,8 @@ declare type StringChain<
         : Reverse extends true
           ? `${
               StringChain<
-                Tail
-                ,
-                Separator
-                ,
+                Tail,
+                Separator,
                 true
               >
             }${
@@ -35,8 +33,7 @@ declare type StringChain<
               Separator
             }${
               StringChain<
-                Tail
-                ,
+                Tail,
                 Separator
               >
             }`

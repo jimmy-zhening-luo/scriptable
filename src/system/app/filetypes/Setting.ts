@@ -6,8 +6,7 @@ class Setting<
   Class extends string,
   Schema,
 > extends se_Filetype<
-    "Setting"
-    ,
+    "Setting",
     Class
   > {
   constructor(

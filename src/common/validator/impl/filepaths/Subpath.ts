@@ -23,11 +23,7 @@ class Subpath extends s_Filepath<
     nodes: Nodes<
       FileNode
     >,
-  ): nodes is Nodes<
-    FileNode
-    ,
-    1
-  > {
+  ): nodes is Nodes<FileNode, 1> {
     try {
       return nodes
         .length > 0;

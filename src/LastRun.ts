@@ -7,8 +7,7 @@ namespace LastRun {
   const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
 
   export class LastRun extends shortcut<
-    string
-    ,
+    string,
     boolean
   > {
     protected runtime() {

@@ -1,7 +1,6 @@
 declare type Table<
   Value = unknown,
 > = Record<
-  string
-  ,
+  string,
   Value
 >;

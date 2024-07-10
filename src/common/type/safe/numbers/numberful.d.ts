@@ -1,5 +1,4 @@
 declare type numberful = Safe<
-  number
-  ,
+  number,
   "numberful"
 >;

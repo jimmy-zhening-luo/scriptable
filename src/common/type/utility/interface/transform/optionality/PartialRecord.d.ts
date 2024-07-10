@@ -2,14 +2,11 @@ declare type PartialRecord<
   Key extends
   | string
   | number
-  | symbol
-  ,
-  Value
-  ,
+  | symbol,
+  Value,
 > = Partial<
   Record<
-    Key
-    ,
+    Key,
     Value
   >
 >;

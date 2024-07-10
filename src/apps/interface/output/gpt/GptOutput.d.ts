@@ -6,16 +6,14 @@ declare type GptOutput =
     "api"
   >
   & Record<
-    "header"
-    ,
+    "header",
     Field<
       | "auth"
       | "org"
     >
   >
   & Record<
-    "body"
-    ,
+    "body",
     & Field<
       | "model"
       | "max_tokens"
@@ -23,8 +21,7 @@ declare type GptOutput =
       | "top_p"
     >
     & Record<
-      "messages"
-      ,
+      "messages",
       GptMessage[]
     >
   >

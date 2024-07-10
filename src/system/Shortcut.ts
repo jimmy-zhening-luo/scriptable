@@ -7,16 +7,13 @@ abstract class Shortcut<
   Output = never,
   Schema = never,
 > extends sh_App<
-    "Shortcut"
-    ,
+    "Shortcut",
     Nullable<
       Input
-    >
-    ,
+    >,
     Null<
       Output
-    >
-    ,
+    >,
     Schema
   > {
   constructor(
@@ -57,8 +54,7 @@ abstract class Shortcut<
   protected setOutput(
     runtime: ReturnType<
       Shortcut<
-        Input
-        ,
+        Input,
         Output
       >[
         "run"

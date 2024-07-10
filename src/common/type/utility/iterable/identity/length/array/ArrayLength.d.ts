@@ -10,8 +10,7 @@ declare type ArrayLength<
     ...infer Rest,
   ]
     ? ArrayLength<
-      Rest
-      ,
+      Rest,
       [
         ...Head,
         Inner,
@@ -22,8 +21,7 @@ declare type ArrayLength<
       ...infer Rest,
     ]
       ? ArrayLength<
-        Rest
-        ,
+        Rest,
         [
           ...Head,
           Inner,

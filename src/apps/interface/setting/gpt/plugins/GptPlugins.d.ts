@@ -1,5 +1,4 @@
 declare type GptPlugins = PartialRecord<
-  "plugins"
-  ,
+  "plugins",
   FieldTable
 >;

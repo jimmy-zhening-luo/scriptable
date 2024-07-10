@@ -9,11 +9,9 @@ declare type IProperty<
   | boolean
     ? Unrequire<
       Record<
-        Key
-        ,
+        Key,
         Value
-      >
-      ,
+      >,
       OptionalKey
     >
     : never;

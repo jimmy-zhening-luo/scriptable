@@ -6,8 +6,7 @@ declare type GptSetting = {
         | "version"
       >
       & Record<
-        | "action"
-        ,
+        "action",
         | Field<
           | GptModel
         >

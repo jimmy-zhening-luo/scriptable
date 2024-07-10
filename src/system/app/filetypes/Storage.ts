@@ -5,10 +5,8 @@ const st_Filetype = importModule(
 class Storage<
   Class extends string,
 > extends st_Filetype<
-    "Storage"
-    ,
-    Class
-    ,
+    "Storage",
+    Class,
     File
   > {
   constructor(

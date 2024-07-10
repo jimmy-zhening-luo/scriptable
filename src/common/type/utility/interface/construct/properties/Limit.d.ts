@@ -9,9 +9,7 @@ declare type Limit<
   Key extends string,
   OptionalKey = false,
 > = IProperty<
-  Boundary
-  ,
-  Key
-  ,
+  Boundary,
+  Key,
   OptionalKey
 >;

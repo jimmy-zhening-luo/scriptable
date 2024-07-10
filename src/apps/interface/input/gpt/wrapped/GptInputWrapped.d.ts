@@ -1,7 +1,6 @@
 declare type GptInputWrapped =
   & Record<
-    "prompt"
-    ,
+    "prompt",
     GptInputUnwrapped
   >
   & GptPlugins

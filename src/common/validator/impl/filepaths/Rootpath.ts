@@ -34,11 +34,7 @@ class Rootpath extends r_Filepath<
     nodes: Nodes<
       FileNode
     >,
-  ): nodes is Nodes<
-    FileNode
-    ,
-    2
-  > {
+  ): nodes is Nodes<FileNode, 2> {
     try {
       return nodes
         .length > 1;

@@ -30,11 +30,7 @@ class DropboxPathProcessor extends drop_ILinkPathProcessor<
             SCL,
             FI,
             fileId,
-          ] = nodes as ArrayN<
-            string
-            ,
-            4
-          >;
+          ] = nodes as ArrayN<string, 4>;
 
           return [
             BLANK,

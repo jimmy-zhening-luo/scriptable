@@ -7,12 +7,9 @@ abstract class Helper<
   Output = void,
   Schema = never,
 > extends hp_App<
-    "Helper"
-    ,
-    Input
-    ,
-    Output
-    ,
+    "Helper",
+    Input,
+    Output,
     Schema
   > {
   constructor(
@@ -45,8 +42,7 @@ abstract class Helper<
   protected setOutput(
     runtime: ReturnType<
       Helper<
-        Input
-        ,
+        Input,
         Output
       >[
         "run"

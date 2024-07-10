@@ -6,8 +6,7 @@ declare type TupleLength<
   ? never
   : [Tuple] extends [
       Record<
-        "length"
-        ,
+        "length",
         infer N
       >,
     ]

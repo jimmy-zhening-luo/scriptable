@@ -4,8 +4,7 @@ declare type LinkSetting = {
       "www"
     >
     & Record<
-      "swap"
-      ,
+      "swap",
       FieldTable
     >
   ;

@@ -1,7 +1,6 @@
 declare type Arrayful<
   Inner,
 > = ArrayN<
-  Inner
-  ,
+  Inner,
   1
 >;
