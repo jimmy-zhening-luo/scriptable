@@ -39,10 +39,10 @@ namespace Link {
         _query,
         _fragment,
       } = this.inputful;
-      const hostNoWww = _host.startsWith("www.") && !www.includes(_host)
+      const __host = _host.startsWith("www.") && !www.includes(_host)
         ? _host.slice(4)
         : _host;
-      const host = swap[hostNoWww] ?? hostNoWww;
+      const host = swap[__host] ?? __host;
       const [
         inclusions,
         exclusions,
