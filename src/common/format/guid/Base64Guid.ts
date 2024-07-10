@@ -1,12 +1,10 @@
 function Base64Guid() {
-  function guidchars(
-    guid: string,
-  ) {
+  function guidchars(guid: string) {
     if (guid.length === 32)
       return [...guid] as Tuple<hexchar, 32>;
     else
       throw new TypeError(
-        `Unexpected: invalid guid (length !== 32)`,
+        `Invalid guid (length !== 32)`,
         {
           cause: {
             guid,
@@ -16,14 +14,12 @@ function Base64Guid() {
       );
   }
 
-  function base64guid(
-    encodedGuid: string,
-  ) {
+  function base64guid(encodedGuid: string) {
     if (encodedGuid.length === 8)
       return encodedGuid as guid<64>; // unsafe
     else
       throw new TypeError(
-        `Unexpected: invalid base64-encoded guid (length !== 8)`,
+        `Invalid base64-encoded guid (length !== 8)`,
         {
           cause: {
             encodedGuid,
@@ -77,15 +73,9 @@ function Base64Guid() {
       i < 32;
       i = (i + 1) as base32
     )
-      buffer[
-        Math.floor(
-          i / 4,
-        ) as octal
-      ]
+      buffer[Math.floor(i / 4) as octal]
         .push(
-          hexcharToHex[
-            guid[i]
-          ],
+          hexcharToHex[guid[i]],
         );
 
     const chars = buffer
@@ -104,8 +94,7 @@ function Base64Guid() {
       )
       .filter(
         (word): word is base64 =>
-          word >= 0
-          && word < 64,
+          word >= 0 && word < 64,
       )
       .map(
         word =>
@@ -131,9 +120,7 @@ function Base64Guid() {
       );
 
     return base64guid(
-      String.fromCharCode(
-        ...chars,
-      ),
+      String.fromCharCode(...chars),
     );
   }
   catch (e) {

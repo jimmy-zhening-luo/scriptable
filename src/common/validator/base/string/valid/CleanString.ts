@@ -2,10 +2,7 @@ const _BoundString = importModule(
   `bound/BoundString`,
 ) as typeof BoundString;
 
-class CleanString<Stamp extends string> extends _BoundString<
-  stringful,
-  [Stamp, `Clean`]
-> {
+class CleanString<Stamp extends string> extends _BoundString<stringful, [Stamp, `Clean`]> {
   constructor(
     string: string,
     charset: char[],
@@ -22,11 +19,10 @@ class CleanString<Stamp extends string> extends _BoundString<
   ) {
     try {
       super(
-        CleanString
-          .clean(
-            string,
-            cleanOptions,
-          ),
+        CleanString.clean(
+          string,
+          cleanOptions,
+        ),
         charset,
         filter,
         min,
@@ -60,27 +56,25 @@ class CleanString<Stamp extends string> extends _BoundString<
     },
   ) {
     try {
-      return this
-        .trimEdge(
-          this
-            .trimEdge(
-              string[
-                toLower
-                  ? "toLowerCase"
-                  : "toString"
-              ]()[
-                trim
-                  ? "trim"
-                  : "toString"
-              ](),
-              "leading",
-              trimLeading,
-              trimLeadingExcept,
-            ),
-          "trailing",
-          trimTrailing,
-          trimTrailingExcept,
-        );
+      return this.trimEdge(
+        this.trimEdge(
+          string[
+            toLower
+              ? "toLowerCase"
+              : "toString"
+          ]()[
+            trim
+              ? "trim"
+              : "toString"
+          ](),
+          "leading",
+          trimLeading,
+          trimLeadingExcept,
+        ),
+        "trailing",
+        trimTrailing,
+        trimTrailingExcept,
+      );
     }
     catch (e) {
       throw new EvalError(
@@ -107,25 +101,17 @@ class CleanString<Stamp extends string> extends _BoundString<
       wordsToTrim
         .filter(
           (word): word is stringful =>
-            word
-              .length > 0,
+            word.length > 0,
         )
         .forEach(
           word => {
-            while (
-              trimExcept !== trimmed[
-                lookFn
-              ](
-                word,
-              )
-            )
+            while (trimExcept !== trimmed[lookFn](word))
               trimmed = lookFn === "startsWith"
                 ? trimmed
                   .slice(
                     trimExcept
                       ? 1
-                      : word
-                        .length,
+                      : word.length,
                   )
                 : trimmed
                   .slice(
@@ -133,8 +119,7 @@ class CleanString<Stamp extends string> extends _BoundString<
                     0 - (
                       trimExcept
                         ? 1
-                        : word
-                          .length
+                        : word.length
                     ),
                   );
           },

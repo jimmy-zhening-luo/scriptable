@@ -1,6 +1,5 @@
 declare type FileContainerManifest = {
-  containers: {
-    folders: string[];
-    apps: FieldTable;
-  };
+  containers:
+    & List<"folders">
+    & Record<"apps", FieldTable>;
 };

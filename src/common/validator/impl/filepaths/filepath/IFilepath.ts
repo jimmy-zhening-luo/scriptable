@@ -1,12 +1,7 @@
 abstract class IFilepath<Length> {
   protected readonly _nodes: Nodes<FileNode, Length>;
 
-  constructor(
-    ...subpaths: (
-      | string
-      | IFilepath<Length>
-    )[]
-  ) {
+  constructor(...subpaths: (IFilepath<Length> | string)[]) {
     try {
       this._nodes = this.check(
         subpaths
@@ -41,11 +36,8 @@ abstract class IFilepath<Length> {
       const parent = new (
         this.constructor as new (
           ...path: ConstructorParameters<typeof IFilepath<Length>>
-        )=>
-        this
-      )(
-        this,
-      );
+        )=> this
+      )(this);
 
       parent.pop();
 
@@ -61,9 +53,7 @@ abstract class IFilepath<Length> {
 
   public get isEmpty() {
     try {
-      return this
-        ._nodes
-        .length < 1;
+      return this._nodes.length < 1;
     }
     catch (e) {
       throw new EvalError(
@@ -101,9 +91,7 @@ abstract class IFilepath<Length> {
     }
   }
 
-  public prepend(
-    root: Stringify<IFilepath<1>>,
-  ) {
+  public prepend(root: Stringify<IFilepath<1>>) {
     try {
       if (this.isEmpty)
         return root;
@@ -113,10 +101,7 @@ abstract class IFilepath<Length> {
           String(this) as Stringify<IFilepath<1>>,
         ] as const;
 
-        return rootThis
-          .join(
-            "/",
-          ) as Joint<typeof rootThis, "/">;
+        return rootThis.join("/") as Joint<typeof rootThis, "/">;
       }
     }
     catch (e) {
@@ -131,10 +116,7 @@ abstract class IFilepath<Length> {
     try {
       const { _nodes } = this;
 
-      return _nodes
-        .join(
-          "/",
-        ) as Joint<typeof _nodes, "/">;
+      return _nodes.join("/") as Joint<typeof _nodes, "/">;
     }
     catch (e) {
       throw new EvalError(
@@ -146,30 +128,17 @@ abstract class IFilepath<Length> {
 
   private pop() {
     try {
-      const nodeQ = [...this._nodes]
-        .reverse();
+      const nodeQ = [...this._nodes].reverse();
 
-      if (
-        this
-          .poppable(
-            nodeQ,
-          )
-      ) {
-        this
-          ._nodes
-          .pop();
+      if (this.poppable(nodeQ)) {
+        this._nodes.pop();
 
         return nodeQ[0];
       }
       else
         throw new RangeError(
           `filepath unpoppable`,
-          {
-            cause: {
-              nodes: this._nodes,
-              length: this._nodes.length,
-            },
-          },
+          { cause: { nodes: this._nodes } },
         );
     }
     catch (e) {

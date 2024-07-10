@@ -1,3 +1,1 @@
-declare type FieldTable = Table<
-  string
->;
+declare type FieldTable = Table<string>;

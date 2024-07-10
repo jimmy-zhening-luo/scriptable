@@ -28,9 +28,7 @@
 
   return {
     buttons,
-    inverse: Object.fromEntries(
-      inverted,
-    ) as FieldTable,
+    inverse: Object.fromEntries(inverted) as FieldTable,
     runner: `__M${length}`,
   };
 })();

@@ -1,3 +1,1 @@
-declare type ListTable = Table<
-  string[]
->;
+declare type ListTable = Table<string[]>;

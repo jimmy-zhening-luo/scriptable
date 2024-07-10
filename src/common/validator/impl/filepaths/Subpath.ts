@@ -2,12 +2,8 @@ const s_Filepath = importModule(
   `filepath/IFilepath`,
 ) as typeof IFilepath;
 
-class Subpath extends s_Filepath<
-  0
-> {
-  protected check(
-    nodes: Nodes<FileNode>,
-  ) {
+class Subpath extends s_Filepath<0> {
+  protected check(nodes: Nodes<FileNode>) {
     try {
       return nodes;
     }
@@ -19,12 +15,9 @@ class Subpath extends s_Filepath<
     }
   }
 
-  protected poppable(
-    nodes: Nodes<FileNode>,
-  ): nodes is Nodes<FileNode, 1> {
+  protected poppable(nodes: Nodes<FileNode>): nodes is Nodes<FileNode, 1> {
     try {
-      return nodes
-        .length > 0;
+      return nodes.length > 0;
     }
     catch (e) {
       throw new EvalError(

@@ -73,13 +73,8 @@ class Query {
         this.NUMERIC,
       );
 
-      this
-        .terms = terms;
-      this
-        ._key = Query
-          .toLower(
-            key,
-          );
+      this.terms = terms;
+      this._key = Query.toLower(key);
     }
     catch (e) {
       throw new EvalError(
@@ -104,10 +99,7 @@ class Query {
         this.natural,
       ] as const;
 
-      return string.join(" ") as Join<
-        typeof string,
-        " "
-      >;
+      return string.join(" ") as Join<typeof string, " ">;
     }
     catch (e) {
       throw new EvalError(
@@ -119,9 +111,7 @@ class Query {
 
   public get natural() {
     try {
-      return this
-        .terms
-        .join(" ");
+      return this.terms.join(" ");
     }
     catch (e) {
       throw new EvalError(
@@ -198,14 +188,9 @@ class Query {
                   [
                     LANG_TAG,
                     t0[TRANSLATE.length],
-                  ]
-                    .join("") as Join<Dyad<stringful>>,
+                  ].join("") as Join<Dyad<stringful>>,
                   ...TRANSLATE.length + LANG_TAG.length < String(tokens.shift()).length
-                    ? [
-                        t0.slice(
-                          TRANSLATE.length + LANG_TAG.length,
-                        ) as stringful,
-                      ]
+                    ? [t0.slice(TRANSLATE.length + LANG_TAG.length) as stringful]
                     : [],
                 ]
               : []
@@ -278,8 +263,7 @@ class Query {
         .find(
           mk =>
             t0.startsWith(mk),
-        )
-        ?? null;
+        ) ?? null;
 
       if (longest === null) {
         if (NUMERIC.includes(t0[0]))
@@ -288,8 +272,7 @@ class Query {
       else {
         const operand_0 = tokens
           .shift()
-          ?.slice(longest.length)
-          ?? "";
+          ?.slice(longest.length) ?? "";
 
         if (operand_0.length > 0)
           tokens.unshift(operand_0 as stringful);
@@ -324,9 +307,7 @@ class Query {
       if (key !== null)
         this._key = key;
       else {
-        this
-          .terms
-          .unshift(this.key);
+        this.terms.unshift(this.key);
         this._key = this.REST;
       }
 

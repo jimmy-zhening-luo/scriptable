@@ -1,3 +1,1 @@
-declare type finite = Finite<
-  numberful
->;
+declare type finite = Finite<numberful>;

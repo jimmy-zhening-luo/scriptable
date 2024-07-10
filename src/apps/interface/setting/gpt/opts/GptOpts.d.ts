@@ -1,16 +1,5 @@
 declare type GptOpts =
-  & Field<
-    Keys<
-      GptSetting["app"]["tags"]
-    >
-  >
-  & Scalar<
-    Keys<
-      GptSetting["app"]["limit"]
-    >
-  >
-  & Record<
-    "model",
-    GptModel
-  >
+  & Field<keyof GptSetting["app"]["tags"]>
+  & Scalar<keyof GptSetting["app"]["limit"]>
+  & Record<"model", GptModel>
 ;

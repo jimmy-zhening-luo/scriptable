@@ -30,8 +30,7 @@ namespace Link {
           exclude,
         },
         fragment: { trim },
-      } = this
-        .setting;
+      } = this.setting;
       const {
         _scheme,
         _host,
@@ -39,50 +38,25 @@ namespace Link {
         _path,
         _query,
         _fragment,
-      } = this
-        .inputful;
-      const hostNoWww = _host
-        .startsWith(
-          "www.",
-        )
-        && !www
-          .includes(
-            _host,
-          )
-        ? _host
-          .slice(
-            4,
-          )
+      } = this.inputful;
+      const hostNoWww = _host.startsWith("www.") && !www.includes(_host)
+        ? _host.slice(4)
         : _host;
-      const host = swap[
-        hostNoWww
-      ]
-      ?? hostNoWww;
+      const host = swap[hostNoWww] ?? hostNoWww;
       const [
         inclusions,
         exclusions,
       ] = [
-        include[
-          host
-        ]
-        ?? [],
-        exclude[
-          host
-        ]
-        ?? [],
+        include[host] ?? [],
+        exclude[host] ?? [],
       ];
       const url = {
         scheme: [
           "http",
           "https",
-        ]
-          .includes(
-            _scheme
-              .toLowerCase(),
-          )
+        ].includes(_scheme.toLowerCase())
           ? ""
-          : _scheme
-            .toLowerCase(),
+          : _scheme.toLowerCase(),
         host,
         port: _port,
         path: [
@@ -90,81 +64,49 @@ namespace Link {
           "dropbox.com",
           "linkedin.com",
           "reddit.com",
-        ]
-          .includes(
-            host,
-          )
+        ].includes(host)
           ? new (
-            this.Processor(
-              host,
-            )
+            this.Processor(host)
           )(
             host,
             _path,
-          )
-            .processed
+          ).processed
           : _path,
-        query: omit
-          .includes(
-            host,
-          )
+        query: omit.includes(host)
           ? ""
           : host in include
-            ? inclusions
-              .length < 1
+            ? inclusions.length < 1
               ? ""
               : _query
-                .split(
-                  "&",
-                )
+                .split("&")
                 .filter(
                   param =>
-                    inclusions
-                      .includes(
-                        param
-                          .split(
-                            "=",
-                          )
-                          .shift()
-                          ?? "",
-                      ),
+                    inclusions.includes(
+                      param
+                        .split("=")
+                        .shift() ?? "",
+                    ),
                 )
-                .join(
-                  "&",
-                )
+                .join("&")
             : host in exclude
               ? _query
-                .split(
-                  "&",
-                )
+                .split("&")
                 .filter(
                   param =>
-                    !exclusions
-                      .includes(
-                        param
-                          .split(
-                            "=",
-                          )
-                          .shift()
-                          ?? "",
-                      ),
+                    !exclusions.includes(
+                      param
+                        .split("=")
+                        .shift() ?? "",
+                    ),
                 )
-                .join(
-                  "&",
-                )
+                .join("&")
               : _query,
-        fragment: trim
-          .includes(
-            host,
-          )
+        fragment: trim.includes(host)
           ? ""
           : _fragment,
       };
 
-      return this
-        .buildURL(
-          url,
-        );
+      return this.buildURL(url);
     }
 
     private buildURL(
@@ -192,46 +134,27 @@ namespace Link {
             [
               [
                 [
-                  ...scheme
-                    .length > 0
+                  ...scheme.length > 0
                     ? [scheme]
                     : [],
                   host,
-                ]
-                  .join(
-                    "://",
-                  ),
-                ...port
-                  .length > 0
+                ].join("://"),
+                ...port.length > 0
                   ? [port]
                   : [],
-              ]
-                .join(
-                  ":",
-                ),
+              ].join(":"),
               ...path !== "/"
                 ? [path]
                 : [],
-            ]
-              .join(
-                "",
-              ),
-            ...query
-              .length > 0
+            ].join(""),
+            ...query.length > 0
               ? [query]
               : [],
-          ]
-            .join(
-              "?",
-            ),
-          ...fragment
-            .length > 0
+          ].join("?"),
+          ...fragment.length > 0
             ? [fragment]
             : [],
-        ]
-          .join(
-            "#",
-          );
+        ].join("#");
       }
       catch (e) {
         throw new EvalError(
@@ -241,27 +164,17 @@ namespace Link {
       }
     }
 
-    private Processor<
-      Host extends string,
-    >(
+    private Processor<Host extends string>(host: Host): new (
       host: Host,
-    ): new (
-        host: Host,
-        path: string
-      )=> ILinkPathProcessor<
-        Host
-      > {
+      path: string
+    )=> ILinkPathProcessor<Host> {
       try {
         return importModule(
-          `apps/method/link/processors/${
-            host
-          }`,
+          `apps/method/link/processors/${host}`,
         ) as new (
           host: Host,
           path: string
-        )=> ILinkPathProcessor<
-          Host
-        >;
+        )=> ILinkPathProcessor<Host>;
       }
       catch (e) {
         throw new EvalError(

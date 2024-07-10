@@ -16,125 +16,75 @@ namespace Things {
         tag,
         delim,
         lists,
-      } = this
-        .setting;
+      } = this.setting;
 
       if (
         tag.length < 1
         || delim.line.length < 1
         || delim.item.length < 1
       )
-        throw new TypeError(
-          `setting: empty tag or delim`,
-        );
+        throw new TypeError(`setting: empty tag or delim`);
       else if (delim.line === delim.item)
-        throw new SyntaxError(
-          `setting: identical delim for 'item' and 'line'`,
-        );
+        throw new SyntaxError(`setting: identical delim for 'item' and 'line'`);
       else if (delim.line === tag)
-        throw new SyntaxError(
-          `setting: tag is identical to delim 'line'`,
-        );
+        throw new SyntaxError(`setting: tag is identical to delim 'line'`);
       else {
-        const input = this
-          .inputStringful;
+        const input = this.inputStringful;
         const items = input
-          .split(
-            delim
-              .item,
-          )
+          .split(delim.item)
           .reverse()
           .map(
             item =>
               item
                 .trim()
-                .split(
-                  delim
-                    .line,
-                )
+                .split(delim.line)
                 .map(
                   line =>
-                    line
-                      .trim(),
+                    line.trim(),
                 )
                 .filter(
                   line =>
-                    line
-                      .length > 0,
+                    line.length > 0,
                 )
-                .join(
-                  delim
-                    .line,
-                ),
+                .join(delim.line),
           );
 
-        return items
-          .map(
-            (item): ThingsItem => {
-              const tagIndex = item
-                .lastIndexOf(
-                  tag,
-                );
-              const tagent = tagIndex < 0
-                ? null
-                : item
-                  .slice(
-                    tagIndex + 1,
-                    tagIndex + 2,
-                  );
-              const [
-                when,
-                list,
-              ] = tagent === null
+        return items.map(
+          (item): ThingsItem => {
+            const tagIndex = item.lastIndexOf(tag);
+            const tagent = tagIndex < 0
+              ? null
+              : item.slice(
+                tagIndex + 1,
+                tagIndex + 2,
+              );
+            const [
+              when,
+              list,
+            ] = tagent === null
+              ? [
+                  "",
+                  "",
+                ]
+              : tagent.length < 1 || tagent === delim.line || !(tagent in lists) || (lists[tagent] ?? "").length < 1
                 ? [
-                    "",
+                    "today",
                     "",
                   ]
-                : tagent
-                  .length < 1
-                  || tagent === delim
-                    .line
-                    || !(tagent in lists)
-                    || (
-                      lists[
-                        tagent
-                      ]
-                      ?? ""
-                    )
-                      .length < 1
-                  ? [
-                      "today",
-                      "",
-                    ]
-                  : [
-                      "",
-                      lists[
-                        tagent
-                      ] as unknown as string,
-                    ];
-              const lines = item
-                .split(
-                  delim
-                    .line,
-                );
+                : [
+                    "",
+                    lists[tagent] as unknown as string,
+                  ];
+            const lines = item.split(delim.line);
 
-              return {
-                title: encodeURI(
-                  lines
-                    .shift() ?? "",
-                ),
-                notes: encodeURI(
-                  lines
-                    .join(
-                      delim
-                        .line,
-                    ),
-                ),
-                when,
-                list,
-              };
-            },
-          );
+            return {
+              title: encodeURI(lines.shift() ?? ""),
+              notes: encodeURI(lines.join(delim.line)),
+              when,
+              list,
+            };
+          },
+        );
       }
     }
   }

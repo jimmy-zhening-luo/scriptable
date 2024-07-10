@@ -3,21 +3,9 @@ abstract class ISplitter<
 > {
   public readonly nodes: readonly Node[];
 
-  constructor(
-    ...split: Parameters<
-      ISplitter<
-        Node
-      >[
-        "split"
-      ]
-    >
-  ) {
+  constructor(...split: Parameters<ISplitter<Node>["split"]>) {
     try {
-      this
-        .nodes = this
-          .split(
-            ...split,
-          );
+      this.nodes = this.split(...split);
     }
     catch (e) {
       throw new EvalError(
@@ -39,32 +27,22 @@ abstract class ISplitter<
           ? [string]
           : string
       )
-        .join(
-          separator,
-        )[
+        .join(separator)[
           trim
             ? "trim"
             : "toString"
         ]();
-      const nodes = clean.length < 1
+      const split = clean.length < 1
         ? []
-        : clean
-          .split(
-            separator,
-          );
-      const trimmedNodes = trimNode
-        ? nodes
-          .map(
-            node =>
-              node
-                .trim(),
-          )
-        : nodes;
+        : clean.split(separator);
+      const nodes = trimNode
+        ? split.map(
+          node =>
+            node.trim(),
+        )
+        : split;
 
-      return this
-        .filter(
-          trimmedNodes,
-        );
+      return this.filter(nodes);
     }
     catch (e) {
       throw new EvalError(

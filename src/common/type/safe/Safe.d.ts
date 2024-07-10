@@ -1,8 +1,8 @@
 declare const p: unique symbol;
 declare type Safe<
-  Primitive extends primitive,
+  P extends primitive,
   Condition,
 > =
-  & Primitive
+  & P
   & { [p]: Condition }
 ;

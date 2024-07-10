@@ -1,20 +1,12 @@
-abstract class ILinkPathProcessor<
-  Host extends string,
-> {
+abstract class ILinkPathProcessor<Host extends string> {
   public readonly processed: string;
 
   constructor(
-    protected readonly host: literalful<
-      Host
-    >,
+    protected readonly host: literalful<Host>,
     path: string,
   ) {
     try {
-      this
-        .processed = this
-          .process(
-            path,
-          );
+      this.processed = this.process(path);
     }
     catch (e) {
       throw new EvalError(

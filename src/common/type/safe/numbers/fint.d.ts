@@ -1,3 +1,1 @@
-declare type fint = Finite<
-  int
->;
+declare type fint = Finite<int>;

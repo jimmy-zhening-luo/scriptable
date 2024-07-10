@@ -1,5 +1,1 @@
-declare type IsIterable<
-  Iterable,
-> = IsArray<
-  Iterable
->;
+declare type IsIterable<Iterable> = IsArray<Iterable>;

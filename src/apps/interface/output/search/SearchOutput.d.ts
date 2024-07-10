@@ -7,14 +7,14 @@ declare type SearchOutput =
     | "output"
   >
   & Field<
-    | "shortcut" // Shortcut
-    | "find" // Find
+    | "shortcut"
+    | "find"
     ,
     true
   >
-  & Field< // Url
-  | "natural"
-  | "browser"
+  & Field<
+    | "natural"
+    | "browser"
     ,
     true
   >

@@ -3,29 +3,15 @@ declare type Unrequire<
   OptionalKey,
 > = OptionalKey extends boolean
   ? OptionalKey extends true
-    ? Partial<
-      Record
-    >
+    ? Partial<Record>
     : Record
   :
     & Omit<
       Record,
-      Extract<
-        OptionalKey,
-        Keys<
-          Record
-        >
-      >
+      Extract<OptionalKey, Keys<Record>>
     >
     & Pick<
-      Partial<
-        Record
-      >,
-      Extract<
-        OptionalKey,
-        Keys<
-          Record
-        >
-      >
+      Partial<Record>,
+      Extract<OptionalKey, Keys<Record>>
     >
 ;

@@ -6,18 +6,9 @@ abstract class Helper<
   Input = void,
   Output = void,
   Schema = never,
-> extends hp_App<
-    "Helper",
-    Input,
-    Output,
-    Schema
-  > {
+> extends hp_App<"Helper", Input, Output, Schema> {
   constructor(
-    private readonly argument: Helper<
-      Input
-    >[
-      "input"
-    ],
+    private readonly argument: Helper<Input>["input"],
     debug?: boolean,
   ) {
     super(
@@ -28,8 +19,7 @@ abstract class Helper<
 
   protected get getInput() {
     try {
-      return this
-        .argument;
+      return this.argument;
     }
     catch (e) {
       throw new EvalError(
@@ -39,25 +29,8 @@ abstract class Helper<
     }
   }
 
-  protected setOutput(
-    runtime: ReturnType<
-      Helper<
-        Input,
-        Output
-      >[
-        "run"
-      ]
-    >,
-  ) {
-    try {
-      return runtime;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Helper: setOutput`,
-        { cause: e },
-      );
-    }
+  protected setOutput(runtime: ReturnType<Helper<Input, Output>["run"]>) {
+    return runtime;
   }
 }
 

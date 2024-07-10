@@ -12,9 +12,7 @@ class FindEngine extends f_IEngine {
       if (find.length > 0)
         this.find = find;
       else
-        throw new ReferenceError(
-          `no 'find' engine selected`,
-        );
+        throw new ReferenceError(`no 'find' engine selected`);
     }
     catch (e) {
       throw new EvalError(

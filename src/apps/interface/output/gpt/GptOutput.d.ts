@@ -1,10 +1,5 @@
 declare type GptOutput =
-  & Flag<
-    "noLog"
-  >
-  & Field<
-    "api"
-  >
+  & Field<"api">
   & Record<
     "header",
     Field<
@@ -20,9 +15,6 @@ declare type GptOutput =
       | "temperature"
       | "top_p"
     >
-    & Record<
-      "messages",
-      GptMessage[]
-    >
+    & Record<"messages", GptMessage[]>
   >
 ;

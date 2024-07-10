@@ -1,3 +1,1 @@
-declare type Arrayful<
-  Inner,
-> = ArrayN<Inner, 1>;
+declare type Arrayful<Inner> = ArrayN<Inner, 1>;

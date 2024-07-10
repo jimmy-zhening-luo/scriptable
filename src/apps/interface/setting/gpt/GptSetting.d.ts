@@ -5,16 +5,9 @@ declare type GptSetting = {
         | "host"
         | "version"
       >
-      & Record<
-        "action",
-        | Field<
-          | GptModel
-        >
-      >
+      & Record<"action", Field<GptModel>>
     ;
-    models: Field<
-      | GptModel
-    >;
+    models: Field<GptModel>;
     limit: Limit<
       | "token"
       | "temperature"
@@ -32,8 +25,6 @@ declare type GptSetting = {
       | "org"
     >;
     defaults: GptOpts;
-    presets: Table<
-      | GptPreset
-    >;
+    presets: Table<GptPreset>;
   };
 };

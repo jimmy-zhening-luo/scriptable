@@ -2,31 +2,21 @@ const st_Filetype = importModule(
   `filetype/Filetype`,
 ) as typeof Filetype;
 
-class Storage<
-  Class extends string,
-> extends st_Filetype<
-    "Storage",
-    Class,
-    File
-  > {
+class Storage<Class extends string> extends st_Filetype<"Storage", Class, File> {
   constructor(
-    category: literalful<
-      Class
-    >,
+    category: literalful<Class>,
     app: stringful,
-    ext = "txt",
+    ext = `txt`,
     filename?: string,
   ) {
     try {
       super(
         "Storage",
         category,
-        Storage
-          .File,
+        Storage.File,
         ext,
         app,
-        filename
-        ?? app,
+        filename ?? app,
       );
     }
     catch (e) {
@@ -42,59 +32,40 @@ class Storage<
     overwrite:
       | "line"
       | "append"
-      | boolean = true
-    ,
+      | boolean = true,
   ) {
     try {
-      const buffer = data
-        ?? null;
+      const buffer = data ?? null;
 
       if (buffer === null)
-        throw new TypeError(
-          `null data`,
-        );
+        throw new TypeError(`null data`);
       else if (typeof buffer === "object")
         if (
-          Array.isArray(
-            buffer,
+          Array.isArray(buffer)
+          && buffer.every(
+            element =>
+              typeof element === "string",
           )
-          && buffer
-            .every(
-              element =>
-                typeof element === "string",
-            )
         )
-          this
-            .file
-            .write(
-              buffer
-                .reverse()
-                .join(
-                  "\n",
-                ),
-              overwrite === false
-                ? false
-                : "line",
-            );
+          this.file.write(
+            buffer
+              .reverse()
+              .join("\n"),
+            overwrite === false
+              ? false
+              : "line",
+          );
         else
-          this
-            .file
-            .write(
-              JSON.stringify(
-                buffer,
-              ),
-              overwrite !== false,
-            );
+          this.file.write(
+            JSON.stringify(buffer),
+            overwrite !== false,
+          );
 
       else
-        this
-          .file
-          .write(
-            String(
-              buffer,
-            ),
-            overwrite,
-          );
+        this.file.write(
+          String(buffer),
+          overwrite,
+        );
     }
     catch (e) {
       throw new EvalError(

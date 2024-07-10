@@ -1,3 +1,1 @@
-declare type int = Integer<
-  numberful
->;
+declare type int = Integer<numberful>;

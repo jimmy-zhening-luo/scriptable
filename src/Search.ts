@@ -61,11 +61,10 @@ namespace Search {
         two,
         three,
         rest,
-      ]
-        .map(
-          key =>
-            this.stringful(key),
-        ) as Tuple<stringful, 9>;
+      ].map(
+        key =>
+          this.stringful(key),
+      ) as Tuple<stringful, 9>;
       const query = new this.Query(
         this.inputString.length > 0
           ? this.inputString
@@ -103,8 +102,7 @@ namespace Search {
           { cause: key },
         );
       else {
-        const engine = Array.isArray(setting)
-          || typeof setting === "string"
+        const engine = Array.isArray(setting) || typeof setting === "string"
           ? new (
             this.Engine<typeof UrlEngine>("UrlEngine")
           )(
@@ -142,9 +140,7 @@ namespace Search {
     private Engine<T>(flavor: string): T {
       try {
         return importModule(
-          `apps/method/search/engines/${
-            flavor
-          }`,
+          `apps/method/search/engines/${flavor}`,
         ) as T;
       }
       catch (e) {

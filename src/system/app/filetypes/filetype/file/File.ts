@@ -13,9 +13,7 @@ class File {
     try {
       this._root = "root" in root || "alias" in root
         ? root.path
-        : root
-          .graft
-          ._root;
+        : root.graft._root;
       this._subpath = new this.Subpath(...subpaths);
     }
     catch (e) {
@@ -28,9 +26,7 @@ class File {
 
   public get path(): Stringify<Rootpath> {
     try {
-      return this
-        ._subpath
-        .prepend(this._root);
+      return this._subpath.prepend(this._root);
     }
     catch (e) {
       throw new EvalError(
@@ -42,9 +38,7 @@ class File {
 
   public get subpath(): Stringify<Subpath> {
     try {
-      return this
-        ._subpath
-        .toString();
+      return this._subpath.toString();
     }
     catch (e) {
       throw new EvalError(
@@ -82,11 +76,8 @@ class File {
     try {
       return new (
         this.constructor as new (
-          ...path: ConstructorParameters<typeof File>
-        )=> this
-      )(
-        { graft: this },
-      );
+          ...path: ConstructorParameters<typeof File>)=> this
+      )({ graft: this });
     }
     catch (e) {
       throw new EvalError(
@@ -100,14 +91,10 @@ class File {
     try {
       return new (
         this.constructor as new (
-          ...path: ConstructorParameters<typeof File>
-        )=> this
+          ...path: ConstructorParameters<typeof File>)=> this
       )(
-        this
-          .root,
-        this
-          ._subpath
-          .parent,
+        this.root,
+        this._subpath.parent,
       );
     }
     catch (e) {
@@ -132,56 +119,39 @@ class File {
     }
   }
 
-  public read(
-    stringful = false,
-  ) {
+  public read(stringful = false) {
     try {
       if (!this.isFile)
         if (stringful)
-          throw new ReferenceError(
-            `file does not exist`,
-            { cause: String(this) },
-          );
+          throw new ReferenceError(`file does not exist`);
         else
           return "";
       else
-        return this.manager.readString(
-          this.path,
-        );
+        return this.manager.readString(this.path);
     }
     catch (e) {
       throw new EvalError(
-        `File: read`,
+        `File: read (${String(this)})`,
         { cause: e },
       );
     }
   }
 
-  public readful(
-    error: string = "",
-  ): stringful {
+  public readful(error: string = ""): stringful {
     try {
-      const read = this
-        .read(
-          true,
-        );
+      const read = this.read(true);
 
       if (read.length > 0)
         return read as stringful;
       else
         throw new TypeError(
           `empty file`,
-          {
-            cause: {
-              error,
-              path: String(this),
-            },
-          },
+          { cause: { error } },
         );
     }
     catch (e) {
       throw new EvalError(
-        `File: readful`,
+        `File: readful (${String(this)})`,
         { cause: e },
       );
     }
@@ -192,47 +162,34 @@ class File {
     overwrite:
       | "line"
       | "append"
-      | boolean = false
-    ,
+      | boolean = false,
   ) {
     try {
       if (this.isDirectory)
-        throw new ReferenceError(
-          `path is folder`,
-          { cause: String(this) },
-        );
+        throw new ReferenceError(`path is folder`);
       else
         if (this.isFile)
           if (overwrite === false)
-            throw new TypeError(
-              `file exists & overwrite false`,
-              { cause: String(this) },
-            );
+            throw new TypeError(`file exists & overwrite false`);
           else
             this.manager.writeString(
               this.path,
               overwrite === "append"
-                ? `${
-                  this
-                    .read()
-                }${
-                  string
-                }`
+                ? [
+                    this.read(),
+                    string,
+                  ].join("")
                 : overwrite === "line"
-                  ? `${
-                    string
-                  }\n${
-                    this
-                      .read()
-                  }`
+                  ? [
+                      string,
+                      this.read(),
+                    ].join("\n")
                   : string,
             );
         else {
           if (!this.parent.isDirectory)
             this.manager.createDirectory(
-              this
-                .parent
-                .path,
+              this.parent.path,
               true,
             );
 
@@ -244,7 +201,7 @@ class File {
     }
     catch (e) {
       throw new EvalError(
-        `File: write`,
+        `File: write (${String(this)})`,
         { cause: e },
       );
     }

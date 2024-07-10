@@ -1,17 +1,10 @@
 declare type LinkSetting = {
   host:
-    & List<
-      "www"
-    >
-    & Record<
-      "swap",
-      FieldTable
-    >
+    & List<"www">
+    & Record<"swap", FieldTable>
   ;
   query:
-    & List<
-      "omit"
-    >
+    & List<"omit">
     & Record<
       | "include"
       | "exclude"
@@ -19,7 +12,5 @@ declare type LinkSetting = {
       ListTable
     >
   ;
-  fragment: List<
-    "trim"
-  >;
+  fragment: List<"trim">;
 };

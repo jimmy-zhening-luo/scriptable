@@ -1,5 +1,1 @@
-declare type Joinable<
-  Iterable,
-> = IsIterable<
-  Iterable
->;
+declare type Joinable<Iterable> = IsIterable<Iterable>;

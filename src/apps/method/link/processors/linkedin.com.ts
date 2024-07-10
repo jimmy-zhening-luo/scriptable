@@ -2,21 +2,11 @@ const lnkd_ILinkPathProcessor = importModule(
   `processor/ILinkPathProcessor`,
 ) as typeof ILinkPathProcessor;
 
-class LinkedInPathProcessor extends lnkd_ILinkPathProcessor<
-  "linkedin.com"
-> {
-  protected process(
-    path: string,
-  ) {
+class LinkedInPathProcessor extends lnkd_ILinkPathProcessor<"linkedin.com"> {
+  protected process(path: string) {
     try {
-      return path
-        .startsWith(
-          "/mwlite/",
-        )
-        ? path
-          .slice(
-            7,
-          )
+      return path.startsWith("/mwlite/")
+        ? path.slice(7)
         : path;
     }
     catch (e) {

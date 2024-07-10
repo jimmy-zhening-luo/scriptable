@@ -9,12 +9,5 @@ declare type Tuple<
       ? Inner[]
       : Head["length"] extends Length
         ? Head
-        : Tuple<
-          Inner,
-          Length,
-          [
-            ...Head,
-            Inner,
-          ]
-        >
+        : Tuple<Inner, Length, [...Head, Inner]>
     : never;

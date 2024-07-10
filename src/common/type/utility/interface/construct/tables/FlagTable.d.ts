@@ -1,3 +1,1 @@
-declare type FlagTable = Table<
-  boolean
->;
+declare type FlagTable = Table<boolean>;

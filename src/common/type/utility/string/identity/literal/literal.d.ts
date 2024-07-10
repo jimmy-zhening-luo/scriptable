@@ -1,15 +1,11 @@
-declare type literals<
-  Strings,
-> = literalful<
+declare type literals<Strings> = literalful<
   Extract<
     Strings,
     string
   >
 >;
 
-declare type literalful<
-  String,
-> = [String] extends [string]
+declare type literalful<String> = [String] extends [string]
   ? string extends String
     ? never
     : "" extends String
@@ -17,9 +13,7 @@ declare type literalful<
       : String
   : never;
 
-declare type literal<
-  String,
-> = [String] extends [string]
+declare type literal<String> = [String] extends [string]
   ? string extends String
     ? never
     : String

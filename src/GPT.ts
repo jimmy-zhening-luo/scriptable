@@ -15,8 +15,7 @@ namespace GPT {
       const {
         app,
         user,
-      } = this
-        .setting;
+      } = this.setting;
       const {
         api,
         models,
@@ -35,161 +34,71 @@ namespace GPT {
           p,
         },
       } = user;
-      const input = this
-        .inputful;
-      const wrap =
-        typeof input !== "string"
-        && "prompt" in input
-          ? input
-          : { prompt: input };
+      const input = this.inputful;
+      const wrap = typeof input !== "string" && "prompt" in input
+        ? input
+        : { prompt: input };
       const opts = {
-        model:
-          "model" in wrap
-          && String(
-            wrap
-              .model,
-          ) in models
-            ? wrap
-              .model
-            : model,
-        token:
-          "token" in wrap
-          && wrap
-            .token >= limit
-            .token
-            .min
-            && wrap
-              .token <= limit
-              .token
-              .max
-            ? wrap
-              .token
-            : token,
-        temperature:
-          "temperature" in wrap
-          && wrap
-            .temperature >= limit
-            .temperature
-            .min
-            && wrap
-              .temperature <= limit
-              .temperature
-              .max
-            ? wrap
-              .temperature
-            : temperature,
-        p:
-          "p" in wrap
-          && wrap
-            .p >= limit
-            .p
-            .min
-            && wrap
-              .p <= limit
-              .p
-              .max
-            ? wrap
-              .p
-            : p,
-        preset:
-          "preset" in wrap
-          && wrap
-            .preset in presets
-            ? wrap
-              .preset
-            : preset,
-        location:
-          wrap
-            .location
-            ?? location,
-        date:
-          wrap
-            .date
-            ?? new this
-              .Timeprint()
-              .date,
-        noLog:
-          wrap
-            .noLog
-            ?? false,
+        model: "model" in wrap && String(wrap.model) in models
+          ? wrap.model
+          : model,
+        token: "token" in wrap && wrap.token >= limit.token.min && wrap.token <= limit.token.max
+          ? wrap.token
+          : token,
+        temperature: "temperature" in wrap && wrap.temperature >= limit.temperature.min && wrap.temperature <= limit.temperature.max
+          ? wrap.temperature
+          : temperature,
+        p: "p" in wrap && wrap.p >= limit.p.min && wrap.p <= limit.p.max
+          ? wrap.p
+          : p,
+        preset: "preset" in wrap && wrap.preset in presets
+          ? wrap.preset
+          : preset,
+        location: wrap.location ?? location,
+        date: wrap.date ?? new this.Timeprint().date,
       };
-      const presetConfig = presets[
-        opts
-          .preset
-      ]
-      ?? null;
+      const presetConfig = presets[opts.preset] ?? null;
       const [
         presetPlugins,
         plugins,
-      ] =
-        presetConfig === null
-        || !(
-          "plugins" in presetConfig
-        )
-          ? [
-              {},
-              {},
-            ]
-          : [
-              presetConfig
-                .plugins,
-              wrap
-                .plugins
-                ?? {},
-            ];
-      const plugs = Object
-        .keys(
-          presetPlugins,
-        );
-      const promptTemplate = typeof wrap
-        .prompt !== "string"
-        ? wrap
-          .prompt
+      ] = presetConfig === null || !("plugins" in presetConfig)
+        ? [
+            {},
+            {},
+          ]
+        : [
+            presetConfig.plugins,
+            wrap.plugins ?? {},
+          ];
+      const plugs = Object.keys(presetPlugins);
+      const promptTemplate = typeof wrap.prompt !== "string"
+        ? wrap.prompt
         : presetConfig === null
-          ? {
-              user: wrap
-                .prompt,
-            }
+          ? { user: wrap.prompt }
           : {
-              system: presetConfig
-                .system,
-              user:
-                  "user" in presetConfig
-                  && presetConfig
-                    .user
-                    .includes(
-                      tags
-                        .preset,
-                    )
-                    ? presetConfig
-                      .user
-                      .replace(
-                        tags
-                          .preset,
-                        wrap
-                          .prompt,
-                      )
-                    : wrap
-                      .prompt,
+              system: presetConfig.system,
+              user: "user" in presetConfig && presetConfig.user.includes(tags.preset)
+                ? presetConfig.user.replace(
+                  tags.preset,
+                  wrap.prompt,
+                )
+                : wrap.prompt,
             };
       const messagesTemplate = "system" in promptTemplate
         ? [
             [
               "system",
-              promptTemplate
-                .system,
+              promptTemplate.system,
             ],
             [
               "user",
-              promptTemplate
-                .user,
+              promptTemplate.user,
             ],
           ] as const
         : [
             [
               "user",
-              promptTemplate
-                .user,
+              promptTemplate.user,
             ],
           ] as const;
       const messagesFilled = messagesTemplate
@@ -200,38 +109,24 @@ namespace GPT {
           ]) =>
             [
               role,
-              plugs
-                .reduce(
-                  (
-                    tagged,
-                    plug,
-                  ) =>
-                    tagged
-                      .replaceAll(
-                        `{{${
-                          plug
-                        }}}`,
-                        plugins[
-                          plug
-                        ]
-                        ?? presetPlugins[
-                          plug
-                        ]
-                        ?? "",
-                      ),
-                  prompt,
+              plugs.reduce(
+                (
+                  tagged,
+                  plug,
+                ) =>
+                  tagged.replaceAll(
+                    `{{${plug}}}`,
+                    plugins[plug] ?? presetPlugins[plug] ?? "",
+                  ),
+                prompt,
+              )
+                .replaceAll(
+                  tags.location,
+                  opts.location,
                 )
                 .replaceAll(
-                  tags
-                    .location,
-                  opts
-                    .location,
-                )
-                .replaceAll(
-                  tags
-                    .date,
-                  opts
-                    .date,
+                  tags.date,
+                  opts.date,
                 ),
             ] as const,
         );
@@ -249,46 +144,21 @@ namespace GPT {
         );
 
       return {
-        noLog: opts
-          .noLog,
         api: [
-          api
-            .host,
-          api
-            .version,
-          api
-            .action[
-              opts
-                .model
-            ],
-        ]
-          .join(
-            "/",
-          ),
+          api.host,
+          api.version,
+          api.action[opts.model],
+        ].join("/"),
         header: {
-          auth: id
-            .token,
-          org: id
-            .org,
+          auth: id.token,
+          org: id.org,
         },
         body: {
           messages,
-          model: models[
-            opts
-              .model
-          ],
-          max_tokens: String(
-            opts
-              .token,
-          ),
-          temperature: String(
-            opts
-              .temperature,
-          ),
-          top_p: String(
-            opts
-              .p,
-          ),
+          model: models[opts.model],
+          max_tokens: String(opts.token),
+          temperature: String(opts.temperature),
+          top_p: String(opts.p),
         },
       };
     }

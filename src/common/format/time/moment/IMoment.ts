@@ -1,4 +1,8 @@
 abstract class IMoment {
+  protected abstract separator: string;
+  protected abstract formatDate: Table;
+  protected abstract formatLocal: Table;
+
   constructor(
     public readonly moment = new Date(),
   ) {}
@@ -29,10 +33,7 @@ abstract class IMoment {
         time,
       ] as const;
 
-      return datetime
-        .join(
-          separator,
-        ) as Join<typeof datetime>;
+      return datetime.join(separator) as Join<typeof datetime>;
     }
     catch (e) {
       throw new EvalError(
@@ -48,21 +49,17 @@ abstract class IMoment {
         formatDate,
         moment,
       } = this;
-      const date = this
-        .afterDate(
-          moment
-            .toLocaleDateString(
-              "en-US",
-              formatDate,
-            ),
-        );
+      const date = this.afterDate(
+        moment.toLocaleDateString(
+          `en-US`,
+          formatDate,
+        ),
+      );
 
       if (date.length > 0)
         return date as stringful;
       else
-        throw new RangeError(
-          `date is empty`,
-        );
+        throw new RangeError(`date is empty`);
     }
     catch (e) {
       throw new EvalError(
@@ -74,7 +71,7 @@ abstract class IMoment {
 
   public get time() {
     try {
-      const separator = "";
+      const SEPARATOR = "";
       const {
         local,
         offset,
@@ -84,12 +81,9 @@ abstract class IMoment {
         offset,
       ] as const;
 
-      return localOffset
-        .join(
-          separator,
-        ) as Join<
+      return localOffset.join(SEPARATOR) as Join<
         typeof localOffset,
-        typeof separator
+        typeof SEPARATOR
       >;
     }
     catch (e) {
@@ -106,21 +100,17 @@ abstract class IMoment {
         formatLocal,
         moment,
       } = this;
-      const local = this
-        .afterLocal(
-          moment
-            .toLocaleTimeString(
-              "en-US",
-              formatLocal,
-            ),
-        );
+      const local = this.afterLocal(
+        moment.toLocaleTimeString(
+          `en-US`,
+          formatLocal,
+        ),
+      );
 
       if (local.length > 0)
         return local as stringful;
       else
-        throw new RangeError(
-          `local time is empty`,
-        );
+        throw new RangeError(`local time is empty`);
     }
     catch (e) {
       throw new EvalError(
@@ -133,18 +123,16 @@ abstract class IMoment {
   public get offset() {
     try {
       const { moment } = this;
-      const offset = moment
-        .getTimezoneOffset() / -60;
+      const offset = moment.getTimezoneOffset() / -60;
 
-      return offset
-        .toLocaleString(
-          "en-US",
-          {
-            signDisplay: "always",
-            minimumIntegerDigits: 2,
-            maximumFractionDigits: 1,
-          },
-        );
+      return offset.toLocaleString(
+        "en-US",
+        {
+          signDisplay: "always",
+          minimumIntegerDigits: 2,
+          maximumFractionDigits: 1,
+        },
+      );
     }
     catch (e) {
       throw new EvalError(
@@ -154,21 +142,8 @@ abstract class IMoment {
     }
   }
 
-  protected abstract get separator(): string;
-  protected abstract get formatDate(): Table;
-  protected abstract get formatLocal(): Table;
-
   public toString() {
-    try {
-      return this
-        .datetime;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IMoment: toString`,
-        { cause: e },
-      );
-    }
+    return this.datetime;
   }
 
   protected abstract afterDate(date: string): string;

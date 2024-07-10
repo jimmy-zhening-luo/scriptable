@@ -8,8 +8,8 @@ class UrlEngine extends b_IEngine {
   protected readonly browser: string;
   protected readonly separator: string;
   protected readonly encodeComponent: boolean;
-  private readonly plus: string;
-  private readonly plusEncoded: string;
+  private readonly PLUS: string;
+  private readonly PLUS_ENCODED: string;
 
   constructor(
     urls: Unflat<string>,
@@ -32,8 +32,8 @@ class UrlEngine extends b_IEngine {
       this.browser = browser;
       this.separator = separator;
       this.encodeComponent = encodeComponent;
-      this.plus = "+";
-      this.plusEncoded = "%2B";
+      this.PLUS = "+";
+      this.PLUS_ENCODED = "%2B";
 
       const urlfuls = [urls]
         .flat()
@@ -45,9 +45,7 @@ class UrlEngine extends b_IEngine {
       if (urlfuls.length > 0)
         this.urls = urlfuls;
       else
-        throw new SyntaxError(
-          `URL engine has no URLs`,
-        );
+        throw new SyntaxError(`URL engine has no URLs`);
     }
     catch (e) {
       throw new EvalError(
@@ -63,37 +61,33 @@ class UrlEngine extends b_IEngine {
         TAG,
         separator,
         encodeComponent,
-        plus,
-        plusEncoded,
+        PLUS,
+        PLUS_ENCODED,
       } = this;
       const encoder = encodeComponent
-        ? function (operand: string): string {
+        ? function (operand: string) {
           return encodeURI(operand);
         }
 
-        : function (operand: string): string {
+        : function (operand: string) {
           return encodeURIComponent(operand);
         };
-      const encodedQuery = query
-        .terms
-        .map(
-          term =>
-            term
-              .split(plus)
-              .map(encoder)
-              .join(plusEncoded),
-        )
+      const encodedQuery = query.terms.map(
+        term =>
+          term
+            .split(PLUS)
+            .map(encoder)
+            .join(PLUS_ENCODED),
+      )
         .join(separator);
 
-      return this
-        .urls
-        .map(
-          url =>
-            url.replace(
-              TAG,
-              encodedQuery,
-            ),
-        );
+      return this.urls.map(
+        url =>
+          url.replace(
+            TAG,
+            encodedQuery,
+          ),
+      );
     }
     catch (e) {
       throw new EvalError(

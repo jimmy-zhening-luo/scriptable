@@ -1,4 +1,1 @@
-declare type GptPlugins = PartialRecord<
-  "plugins",
-  FieldTable
->;
+declare type GptPlugins = PartialRecord<"plugins", FieldTable>;

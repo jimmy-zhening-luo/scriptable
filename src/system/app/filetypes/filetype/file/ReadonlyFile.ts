@@ -5,8 +5,8 @@ const _File = importModule(
 class ReadonlyFile extends _File {
   public override write(): never {
     throw new ReferenceError(
-      `ReadonlyFile: write`,
-      { cause: this.path },
+      `Forbidden: ReadonlyFile: write`,
+      { cause: String(this) },
     );
   }
 }

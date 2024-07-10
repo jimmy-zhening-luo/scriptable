@@ -4,14 +4,6 @@ declare type IProperty<
   OptionalKey,
 > = string extends Key
   ? never
-  : OptionalKey extends
-  | Key
-  | boolean
-    ? Unrequire<
-      Record<
-        Key,
-        Value
-      >,
-      OptionalKey
-    >
+  : OptionalKey extends Key | boolean
+    ? Unrequire<Record<Key, Value>, OptionalKey>
     : never;

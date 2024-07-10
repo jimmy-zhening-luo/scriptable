@@ -3,15 +3,12 @@
 (() => {
   "use strict";
 
-  const inputUrl = args
-    .shortcutParameter as string;
+  const inputUrl = args.shortcutParameter as string;
   const [
     __scheme,
     ...rest
-  ] = inputUrl
-    .split(":") as Arrayful<string>;
-  const _scheme = __scheme
-    .toLowerCase();
+  ] = inputUrl.split(":") as Arrayful<string>;
+  const _scheme = __scheme.toLowerCase();
   const scheme = _scheme === "http"
     ? "https"
     : _scheme;
@@ -29,7 +26,5 @@
         : {},
     };
   else
-    throw new TypeError(
-      `No URL in input`,
-    );
+    throw new TypeError(`No URL in input`);
 })();

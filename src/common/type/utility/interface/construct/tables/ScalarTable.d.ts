@@ -1,3 +1,1 @@
-declare type ScalarTable = Table<
-  number
->;
+declare type ScalarTable = Table<number>;

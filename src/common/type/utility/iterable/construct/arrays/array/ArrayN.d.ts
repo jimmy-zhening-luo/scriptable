@@ -9,19 +9,7 @@ declare type ArrayN<
       ? Inner[]
       : 0 extends Length
         ? Inner[]
-        : Head[
-          "length"
-        ] extends Length
-          ? [
-              ...Head,
-              ...Inner[],
-            ]
-          : ArrayN<
-            Inner,
-            Length,
-            [
-              ...Head,
-              Inner,
-            ]
-          >
+        : Head["length"] extends Length
+          ? [...Head, ...Inner[]]
+          : ArrayN<Inner, Length, [...Head, Inner]>
     : never;

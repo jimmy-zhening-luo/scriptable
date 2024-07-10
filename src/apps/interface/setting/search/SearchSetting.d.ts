@@ -17,11 +17,9 @@ declare type SearchSetting = {
   user: {
     alias: FieldTable;
     engines: Table<
+      | Unflat<string, true>
       | ISearchEngineSetting<"find">
-      | ISearchEngineSetting<
-        "shortcut",
-        true
-      >
+      | ISearchEngineSetting<"shortcut", true>
       | ISearchEngineSetting<
         "url",
         true,
@@ -32,15 +30,10 @@ declare type SearchSetting = {
           | "api"
           | "force"
         >
-        &
-        PartialRecord<
-          "separator",
-          "%20"
-        >
+        & PartialRecord<"separator", "%20">
         ,
         true
       >
-      | Unflat<string, true>
     >;
   };
 };

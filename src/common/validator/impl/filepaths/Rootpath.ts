@@ -2,24 +2,15 @@ const r_Filepath = importModule(
   `filepath/IFilepath`,
 ) as typeof IFilepath;
 
-class Rootpath extends r_Filepath<
-  1
-> {
-  protected check(
-    nodes: Nodes<FileNode>,
-  ) {
+class Rootpath extends r_Filepath<1> {
+  protected check(nodes: Nodes<FileNode>) {
     try {
       if (nodes.length > 0)
         return nodes as Nodes<FileNode, 1>;
       else
         throw new RangeError(
           `root path constructed with 0 nodes`,
-          {
-            cause: {
-              nodes,
-              length: nodes.length,
-            },
-          },
+          { cause: { nodes } },
         );
     }
     catch (e) {

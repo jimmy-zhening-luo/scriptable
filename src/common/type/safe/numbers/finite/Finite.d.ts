@@ -1,7 +1,5 @@
 declare const finite: unique symbol;
-declare type Finite<
-  Number extends number,
-> =
-  & Number
+declare type Finite<N extends number> =
+  & N
   & { [finite]: true }
 ;

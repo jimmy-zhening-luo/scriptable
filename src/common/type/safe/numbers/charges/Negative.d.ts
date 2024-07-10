@@ -1,8 +1,4 @@
 declare type Positive<
-  Number extends number,
+  N extends number,
   NonZero extends boolean = false,
-> = Charge<
-  Number,
-  "-",
-  NonZero
->;
+> = Charge<N, "-", NonZero>;

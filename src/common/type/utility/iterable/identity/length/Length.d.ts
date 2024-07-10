@@ -1,3 +1,1 @@
-declare type Length<
-  Length extends number,
-> = { length: Length };
+declare type Length<L extends number> = { length: L };

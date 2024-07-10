@@ -18,15 +18,9 @@ class BoundString<
   ) {
     try {
       if (min > max)
-        throw new RangeError(
-          `min > max`,
-          { cause: string },
-        );
+        throw new RangeError(`min > max`);
       else if (string.length < min || string.length > max)
-        throw new TypeError(
-          `string length invalid`,
-          { cause: string },
-        );
+        throw new TypeError(`string length invalid`);
       else
         super(
           string,
@@ -36,7 +30,7 @@ class BoundString<
     }
     catch (e) {
       throw new EvalError(
-        `BoundString: ctor`,
+        `BoundString: ctor ('${string}')`,
         { cause: e },
       );
     }

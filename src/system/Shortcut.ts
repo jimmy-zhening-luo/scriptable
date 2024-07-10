@@ -6,19 +6,8 @@ abstract class Shortcut<
   Input = never,
   Output = never,
   Schema = never,
-> extends sh_App<
-    "Shortcut",
-    Nullable<
-      Input
-    >,
-    Null<
-      Output
-    >,
-    Schema
-  > {
-  constructor(
-    debug?: boolean,
-  ) {
+> extends sh_App<"Shortcut", Nullable<Input>, Null<Output>, Schema> {
+  constructor(debug?: boolean) {
     super(
       "Shortcut",
       debug,
@@ -28,20 +17,13 @@ abstract class Shortcut<
   protected get getInput() {
     try {
       if (typeof this._getInput === "undefined") {
-        const shortcutInput = args
-          .shortcutParameter as Null<
-            | undefined
-            | Input
-        >;
-        const definedShortcutInput = shortcutInput
-          ?? null;
+        const shortcutInput = args.shortcutParameter as Null<undefined | Input>;
+        const definedShortcutInput = shortcutInput ?? null;
 
-        this
-          ._getInput = definedShortcutInput;
+        this._getInput = definedShortcutInput;
       }
 
-      return this
-        ._getInput;
+      return this._getInput;
     }
     catch (e) {
       throw new EvalError(
@@ -51,21 +33,9 @@ abstract class Shortcut<
     }
   }
 
-  protected setOutput(
-    runtime: ReturnType<
-      Shortcut<
-        Input,
-        Output
-      >[
-        "run"
-      ]
-    >,
-  ) {
+  protected setOutput(runtime: ReturnType<Shortcut<Input, Output>["run"]>) {
     try {
-      Script
-        .setShortcutOutput(
-          runtime,
-        );
+      Script.setShortcutOutput(runtime);
 
       return runtime;
     }

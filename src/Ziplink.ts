@@ -11,22 +11,13 @@ namespace Ziplink {
     string
   > {
     protected runtime() {
-      const url = this
-        .inputStringful
-        .trim();
-      const storage = this
-        .data<FieldTable>("json")
-        ?? {};
-      const ziplinks = Object
-        .entries(
-          storage,
-        );
-      const ziplink = ziplinks
-        .find(
-          ([, u]) =>
-            u === url,
-        )
-        ?? null;
+      const url = this.inputStringful.trim();
+      const storage = this.data<FieldTable>("json") ?? {};
+      const ziplinks = Object.entries(storage);
+      const ziplink = ziplinks.find(
+        ([, u]) =>
+          u === url,
+      ) ?? null;
 
       if (ziplink !== null) {
         const [id] = ziplink;
@@ -34,17 +25,13 @@ namespace Ziplink {
         return id;
       }
       else {
-        const id = this
-          .base64guid();
+        const id = this.base64guid();
 
-        storage[
-          id
-        ] = url;
-        this
-          .write(
-            storage,
-            "json",
-          );
+        storage[id] = url;
+        this.write(
+          storage,
+          "json",
+        );
 
         return `shortcuts://run-shortcut?name=I&input=${id}`;
       }

@@ -9,55 +9,37 @@ namespace _Hello {
   export class _Hello extends shortcut<
     never,
     string,
-    { space?: string }
+    Field<"space", true>
   > {
     protected runtime() {
-      this
-        .debug = true;
+      this.debug = true;
 
       const FILENAME_WORLDTIME = "worldtime";
-      const HELLO = this
-        .readful();
-      const worldtime = this
-        .read(
-          "txt",
-          FILENAME_WORLDTIME,
-        );
-      const SPACE = this
-        .stringful(
-          this
-            .setting
-            .space ?? "",
-          "space",
-        );
-      const notification = `${
-        HELLO
-      }${
-        SPACE
-      }${
-        worldtime
-      }`;
+      const HELLO = this.readful();
+      const worldtime = this.read(
+        "txt",
+        FILENAME_WORLDTIME,
+      );
+      const SPACE = this.stringful(
+        this.setting.space ?? "",
+        "space",
+      );
+      const notification = `${HELLO}${SPACE}${worldtime}`;
 
-      this
-        .write(
-          `World!\n(Previous: ${
-            new Date()
-              .toISOString()
-          })`,
-          "txt",
-          FILENAME_WORLDTIME,
-        );
-      console
-        .warn(
-          notification,
-        );
+      this.write(
+        `World!\n(Previous: ${
+          new Date()
+            .toISOString()
+        })`,
+        "txt",
+        FILENAME_WORLDTIME,
+      );
+      console.warn(notification);
 
       return notification;
     }
   }
 }
 
-new _Hello._Hello(
-  true,
-)
+new _Hello._Hello(true)
   .run();

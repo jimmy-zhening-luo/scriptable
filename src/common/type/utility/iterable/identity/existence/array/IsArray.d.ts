@@ -1,8 +1,4 @@
-declare type IsArray<
-  Arr,
-> = Flat<
-  Arr
-> extends never
+declare type IsArray<Arr> = Flat<Arr> extends never
   ? Arr extends []
     ? true
     : Arr extends readonly []

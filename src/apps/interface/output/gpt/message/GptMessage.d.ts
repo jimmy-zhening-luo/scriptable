@@ -1,4 +1,4 @@
-declare type GptMessage = {
-  role: GptRole;
-  content: string;
-};
+declare type GptMessage =
+  & Record<"role", GptRole>
+  & Field<"content">
+;

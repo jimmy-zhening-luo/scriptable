@@ -2,16 +2,9 @@ const k_Filetype = importModule(
   `filetype/Filetype`,
 ) as typeof Filetype;
 
-class Key<
-  Class extends string,
-> extends k_Filetype<
-    "Key",
-    Class
-  > {
+class Key<Class extends string> extends k_Filetype<"Key", Class> {
   constructor(
-    category: literalful<
-      Class
-    >,
+    category: literalful<Class>,
     app: stringful,
     handle: stringful,
   ) {
@@ -19,9 +12,8 @@ class Key<
       super(
         "Key",
         category,
-        Key
-          .ReadonlyFile,
-        "txt",
+        Key.ReadonlyFile,
+        `txt`,
         app,
         handle,
       );
@@ -36,8 +28,7 @@ class Key<
 
   private get fullname() {
     try {
-      return this
-        .subpath;
+      return this.subpath;
     }
     catch (e) {
       throw new EvalError(
@@ -47,18 +38,11 @@ class Key<
     }
   }
 
-  public load(
-    fallbackLocal = false,
-  ) {
+  public load(fallbackLocal = false) {
     try {
       const { fullname } = this;
 
-      if (
-        !Keychain
-          .contains(
-            fullname,
-          )
-      )
+      if (!Keychain.contains(fullname))
         if (!fallbackLocal)
           throw new ReferenceError(
             `key does not exist in Keychain, and fallbackLocal is 'false'`,
@@ -72,13 +56,9 @@ class Key<
             },
           );
         else
-          return super
-            .readful();
+          return super.readful();
       else {
-        const key = Keychain
-          .get(
-            fullname,
-          );
+        const key = Keychain.get(fullname);
 
         if (key.length < 1)
           throw new ReferenceError(
@@ -105,19 +85,11 @@ class Key<
     }
   }
 
-  public add(
-    roll = false,
-  ) {
+  public add(roll = false) {
     try {
       const { fullname } = this;
 
-      if (
-        Keychain
-          .contains(
-            fullname,
-          )
-          && !roll
-      )
+      if (Keychain.contains(fullname) && !roll)
         throw new ReferenceError(
           `cannot overwrite existing key with roll set to 'false'`,
           {
@@ -131,21 +103,14 @@ class Key<
           },
         );
       else {
-        const local = super
-          .readful();
+        const local = super.readful();
 
-        Keychain
-          .set(
-            fullname,
-            local,
-          );
+        Keychain.set(
+          fullname,
+          local,
+        );
 
-        if (
-          local !== Keychain
-            .get(
-              fullname,
-            )
-        )
+        if (local !== Keychain.get(fullname))
           throw new EvalError(
             `attempted to initialize key in Keychain, but Keychain value after setting does not match the intended value`,
             {
@@ -170,10 +135,7 @@ class Key<
 
   public roll() {
     try {
-      this
-        .add(
-          true,
-        );
+      this.add(true);
     }
     catch (e) {
       throw new EvalError(
@@ -187,23 +149,10 @@ class Key<
     try {
       const { fullname } = this;
 
-      if (
-        Keychain
-          .contains(
-            fullname,
-          )
-      ) {
-        Keychain
-          .remove(
-            fullname,
-          );
+      if (Keychain.contains(fullname)) {
+        Keychain.remove(fullname);
 
-        if (
-          Keychain
-            .contains(
-              fullname,
-            )
-        )
+        if (Keychain.contains(fullname))
           throw new EvalError(
             `removed key from Keychain, but key is still in Keychain`,
             {
@@ -227,33 +176,21 @@ class Key<
 
   public override read(): never {
     throw new ReferenceError(
-      `Key: read`,
-      {
-        cause: {
-          forbidden: "use load(true) instead",
-          handle: this.fullname,
-        },
-      },
+      `Forbidden: Key: read`,
+      { cause: this.fullname },
     );
   }
 
   public override readful(): never {
     throw new ReferenceError(
-      `Key: readful`,
-      {
-        cause: {
-          forbidden: "use load(true) instead",
-          handle: this.fullname,
-        },
-      },
+      `Forbidden: Key: readful`,
+      { cause: `use load(true) instead` },
     );
   }
 
   public write(): never {
     try {
-      this
-        .file
-        .write();
+      this.file.write();
     }
     catch (e) {
       throw new EvalError(

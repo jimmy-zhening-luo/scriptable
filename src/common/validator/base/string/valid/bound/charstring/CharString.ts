@@ -3,10 +3,7 @@ class CharString<
   Stamps extends string[],
 > {
   public readonly charset: CharSet;
-  public readonly string: Valid<
-    String,
-    [...Stamps, `String`]
-  >;
+  public readonly string: Valid<String, [...Stamps, `String`]>;
 
   constructor(
     string: string,
@@ -14,15 +11,11 @@ class CharString<
     filter: Filter,
   ) {
     try {
-      this.charset = new this
-        .CharSet(
-          filter,
-          ...charset,
-        );
-      this.string = this
-        .validate(
-          string,
-        );
+      this.charset = new this.CharSet(
+        filter,
+        ...charset,
+      );
+      this.string = this.validate(string);
     }
     catch (e) {
       throw new EvalError(
@@ -46,17 +39,9 @@ class CharString<
     }
   }
 
-  private validate(
-    string: string,
-  ) {
+  private validate(string: string) {
     try {
-      if (
-        this
-          .charset
-          .allows<Stringify<CharString<String, Stamps>>>(
-            string,
-          )
-      )
+      if (this.charset.allows<Stringify<CharString<String, Stamps>>>(string))
         return string;
       else
         throw new TypeError(

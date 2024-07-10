@@ -1,13 +1,5 @@
 declare type GptInputWrapped =
-  & Record<
-    "prompt",
-    GptInputUnwrapped
-  >
+  & Record<"prompt", GptInputUnwrapped>
   & GptPlugins
-  & Partial<
-    GptOpts
-  >
-  & Flag<
-    "noLog"
-  >
+  & Partial<GptOpts>
 ;

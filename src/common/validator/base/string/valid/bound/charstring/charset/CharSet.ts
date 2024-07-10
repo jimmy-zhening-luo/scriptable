@@ -39,9 +39,7 @@ class CharSet {
 
       return charstring.every(
         char =>
-          chars.includes(
-            char,
-          ),
+          chars.includes(char),
       );
     }
     catch (e) {
@@ -58,9 +56,7 @@ class CharSet {
 
       return chars.every(
         char =>
-          !string.includes(
-            char,
-          ),
+          !string.includes(char),
       );
     }
     catch (e) {

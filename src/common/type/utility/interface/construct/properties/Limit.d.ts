@@ -8,8 +8,4 @@ type Boundary = Record<
 declare type Limit<
   Key extends string,
   OptionalKey = false,
-> = IProperty<
-  Boundary,
-  Key,
-  OptionalKey
->;
+> = IProperty<Boundary, Key, OptionalKey>;

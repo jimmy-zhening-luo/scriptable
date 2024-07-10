@@ -5,23 +5,17 @@ const se_Filetype = importModule(
 class Setting<
   Class extends string,
   Schema,
-> extends se_Filetype<
-    "Setting",
-    Class
-  > {
+> extends se_Filetype<"Setting", Class> {
   constructor(
-    category: literalful<
-      Class
-    >,
+    category: literalful<Class>,
     app: stringful,
   ) {
     try {
       super(
         "Setting",
         category,
-        Setting
-          .ReadonlyFile,
-        "json",
+        Setting.ReadonlyFile,
+        `json`,
         app,
       );
     }
@@ -36,19 +30,12 @@ class Setting<
   public get parse(): Schema {
     try {
       if (typeof this._cache === "undefined") {
-        const setting: unknown = JSON.parse(
-          this
-            .readful(),
-        );
+        const setting: unknown = JSON.parse(this.readful());
 
         if (
           typeof setting === "object"
           && setting !== null
-          && Object
-            .keys(
-              setting,
-            )
-            .length > 0
+          && Object.keys(setting).length > 0
         )
           this._cache = setting as Schema;
         else
@@ -63,8 +50,7 @@ class Setting<
           );
       }
 
-      return this
-        ._cache;
+      return this._cache;
     }
     catch (e) {
       throw new EvalError(
@@ -76,9 +62,7 @@ class Setting<
 
   public write(): never {
     try {
-      this
-        .file
-        .write();
+      this.file.write();
     }
     catch (e) {
       throw new EvalError(

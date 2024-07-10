@@ -14,14 +14,11 @@ abstract class IEngine {
           ...this.options(query),
         };
       else
-        throw new SyntaxError(
-          `Cannot resolve unlocked query`,
-          { cause: `[${String(query)}]` },
-        );
+        throw new SyntaxError(`Cannot resolve unlocked query`);
     }
     catch (e) {
       throw new EvalError(
-        `IEngine: resolve`,
+        `IEngine: resolve [${String(query)}]`,
         { cause: e },
       );
     }
@@ -33,7 +30,7 @@ abstract class IEngine {
     }
     catch (e) {
       throw new EvalError(
-        `IEngine: transform`,
+        `IEngine: transform [${String(query)}]`,
         { cause: e },
       );
     }
@@ -60,16 +57,13 @@ abstract class IEngine {
     }
     catch (e) {
       throw new EvalError(
-        `IEngine: required`,
+        `IEngine: required [${String(query)}]`,
         { cause: e },
       );
     }
   }
 
-  protected abstract options(query: Query): Omit<
-    SearchOutput,
-    keyof ReturnType<IEngine["required"]>
-  >;
+  protected abstract options(query: Query): Omit<SearchOutput, keyof ReturnType<IEngine["required"]>>;
 }
 
 module.exports = IEngine;

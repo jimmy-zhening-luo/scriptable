@@ -4,26 +4,12 @@ abstract class App<
   Output,
   Schema,
 > {
-  protected readonly __proto: literalful<
-    "App"
-  > = "App";
-  private readonly epoch0 = Date
-    .now();
-  private readonly _storage: Record<
-    string,
-    Storage<
-      Class
-    >
-  > = {};
-  private readonly _keys: Record<
-    string,
-    Key<Class>
-  > = {};
+  private readonly epoch0 = Date.now();
+  private readonly _storage: Record<string, Storage<Class>> = {};
+  private readonly _keys: Record<string, Key<Class>> = {};
 
   constructor(
-    private readonly _class: literalful<
-      Class
-    >,
+    private readonly _class: literalful<Class>,
     protected debug = false,
   ) {}
 
@@ -72,17 +58,12 @@ abstract class App<
   protected get name() {
     try {
       if (typeof this._name === "undefined")
-        this
-          ._name = this
-            .stringful(
-              this
-                .constructor
-                .name,
-              `nameless app instance`,
-            );
+        this._name = this.stringful(
+          this.constructor.name,
+          `nameless app instance`,
+        );
 
-      return this
-        ._name;
+      return this._name;
     }
     catch (e) {
       throw new EvalError(
@@ -94,9 +75,7 @@ abstract class App<
 
   protected get setting() {
     try {
-      return this
-        ._setting
-        .parse;
+      return this._setting.parse;
     }
     catch (e) {
       throw new EvalError(
@@ -109,12 +88,9 @@ abstract class App<
   protected get input() {
     try {
       if (typeof this._input === "undefined")
-        this
-          ._input = this
-            .getInput;
+        this._input = this.getInput;
 
-      return this
-        ._input;
+      return this._input;
     }
     catch (e) {
       throw new EvalError(
@@ -129,14 +105,8 @@ abstract class App<
       if (typeof this._inputful === "undefined") {
         const { input } = this;
 
-        if (
-          this
-            .truthy(
-              input,
-            )
-        )
-          this
-            ._inputful = input;
+        if (this.truthy(input))
+          this._inputful = input;
         else
           throw new TypeError(
             `null input`,
@@ -149,8 +119,7 @@ abstract class App<
           );
       }
 
-      return this
-        ._inputful;
+      return this._inputful;
     }
     catch (e) {
       throw new EvalError(
@@ -164,10 +133,7 @@ abstract class App<
     try {
       if (typeof this._inputString === "undefined") {
         const { input } = this;
-        const truthyInput = this
-          .truthy(
-            input,
-          )
+        const truthyInput = this.truthy(input)
           ? input
           : "";
 
@@ -187,8 +153,7 @@ abstract class App<
           );
       }
 
-      return this
-        ._inputString;
+      return this._inputString;
     }
     catch (e) {
       throw new EvalError(
@@ -201,16 +166,12 @@ abstract class App<
   protected get inputStringful() {
     try {
       if (typeof this._inputStringful === "undefined")
-        this
-          ._inputStringful = this
-            .stringful(
-              this
-                .inputString,
-              `input string empty`,
-            );
+        this._inputStringful = this.stringful(
+          this.inputString,
+          `input string empty`,
+        );
 
-      return this
-        ._inputStringful;
+      return this._inputStringful;
     }
     catch (e) {
       throw new EvalError(
@@ -279,17 +240,12 @@ abstract class App<
   private get _setting() {
     try {
       if (typeof this.__setting === "undefined")
-        this
-          .__setting = new this
-            .Setting<Class, Schema>(
-              this
-                ._class,
-              this
-                .name,
-            );
+        this.__setting = new this.Setting<Class, Schema>(
+          this._class,
+          this.name,
+        );
 
-      return this
-        .__setting;
+      return this.__setting;
     }
     catch (e) {
       throw new EvalError(
@@ -301,48 +257,17 @@ abstract class App<
 
   protected abstract get getInput(): Input;
 
-  public static [Symbol.hasInstance](instance: unknown) {
+  protected static falsy(value: unknown): value is Null<undefined> {
     try {
-      return (
-        instance !== null
-        && typeof instance === "object"
-        && (instance as { __proto: string }).__proto === "App"
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: [Symbol.hasInstance]`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected static falsy(
-    value: unknown,
-  ): value is
-  | undefined
-  | null {
-    try {
-      const v = value
-        ?? false;
-      const bv = Boolean(
-        v,
-      );
+      const v = value ?? false;
+      const bv = Boolean(v);
 
       return !bv
         || (
           typeof v === "string"
-            ? Number(
-              v,
-            ) === 0
-            : Array.isArray(
-              v,
-            )
-              ? v
-                .join(
-                  "",
-                )
-                .length < 1
+            ? Number(v) === 0
+            : Array.isArray(v)
+              ? v.join("").length < 1
               : false
         );
     }
@@ -357,51 +282,33 @@ abstract class App<
   public run() {
     try {
       try {
-        const output = this
-          .runtime();
+        const output = this.runtime();
 
         if (this.debug) {
-          const timestamp = new this
-            .Timestamp();
+          const timestamp = new this.Timestamp();
           const {
             datetime,
             epoch,
           } = timestamp;
           const { epoch0 } = this;
           const elapsed = epoch - epoch0;
-          const log = `${
-            datetime
-          } :: ${
-            elapsed
-          } ms : ${
-            epoch
-          }`;
+          const log = `${datetime} :: ${elapsed} ms : ${epoch}`;
           const extension = "md";
-          const filename = `_log${
-            this
-              .name
-          }`;
+          const filename = `_log${this.name}`;
 
-          this
-            .write(
-              log,
-              extension,
-              filename,
-              "line",
-            );
+          this.write(
+            log,
+            extension,
+            filename,
+            "line",
+          );
         }
 
-        return this
-          .setOutput(
-            output,
-          );
+        return this.setOutput(output);
       }
       catch (e) {
         throw new Error(
-          `${
-            this
-              .name
-          }: runtime`,
+          `${this.name}: runtime`,
           { cause: e },
         );
       }
@@ -420,16 +327,9 @@ abstract class App<
     }
   }
 
-  protected truthy(
-    value: Input,
-  ): value is NonNullable<
-    Input
-  > {
+  protected truthy(value: Input): value is NonNullable<Input> {
     try {
-      return !App
-        .falsy(
-          value,
-        );
+      return !App.falsy(value);
     }
     catch (e) {
       throw new EvalError(
@@ -460,16 +360,13 @@ abstract class App<
     }
   }
 
-  protected stringfulArray(
-    array: string[],
-  ) {
+  protected stringfulArray(array: string[]) {
     try {
       if (
-        array
-          .every(
-            (node): node is stringful =>
-              node.length > 0,
-          )
+        array.every(
+          (node): node is stringful =>
+            node.length > 0,
+        )
       )
         return array;
       else
@@ -511,9 +408,7 @@ abstract class App<
             .read(extensionE)
           : typeof filenameE === "boolean"
             ? this
-              .storage(
-                extensionE,
-              )
+              .storage(extensionE)
               .read(filenameE)
             : this
               .storage(
@@ -570,9 +465,7 @@ abstract class App<
             .data<Data>(extensionE)
           : typeof filenameE === "boolean"
             ? this
-              .storage(
-                extensionE,
-              )
+              .storage(extensionE)
               .data<Data>(filenameE)
             : this
               .storage(
@@ -596,8 +489,7 @@ abstract class App<
     overwrite?:
       | "line"
       | "append"
-      | boolean
-    ,
+      | boolean,
   ) {
     try {
       this
@@ -620,14 +512,10 @@ abstract class App<
     }
   }
 
-  protected load(
-    handle: string,
-  ) {
+  protected load(handle: string) {
     try {
       return this
-        .key(
-          handle,
-        )
+        .key(handle)
         .load();
     }
     catch (e) {
@@ -638,14 +526,10 @@ abstract class App<
     }
   }
 
-  protected roll(
-    handle: string,
-  ) {
+  protected roll(handle: string) {
     try {
       this
-        .key(
-          handle,
-        )
+        .key(handle)
         .roll();
     }
     catch (e) {
@@ -662,19 +546,10 @@ abstract class App<
   ) {
     try {
       const cacheId = [
-        filename
-        ?? "",
-        extension
-        ?? "",
-      ]
-        .join(
-          ":",
-        );
-      const cache = this
-        ._storage[
-          cacheId
-        ]
-        ?? null;
+        filename ?? "",
+        extension ?? "",
+      ].join(":");
+      const cache = this._storage[cacheId] ?? null;
 
       if (cache !== null)
         return cache;
@@ -699,15 +574,9 @@ abstract class App<
     }
   }
 
-  protected key(
-    handle: string,
-  ) {
+  protected key(handle: string) {
     try {
-      const cache = this
-        ._keys[
-          handle
-        ]
-        ?? null;
+      const cache = this._keys[handle] ?? null;
 
       if (cache !== null)
         return cache;
@@ -715,10 +584,7 @@ abstract class App<
         const newKey = new this.Key<Class>(
           this._class,
           this.name,
-          this
-            .stringful(
-              handle,
-            ),
+          this.stringful(handle),
         );
 
         this._keys[handle] = newKey;

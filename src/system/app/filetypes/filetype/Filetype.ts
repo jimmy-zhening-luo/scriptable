@@ -16,32 +16,22 @@ abstract class Filetype<
     try {
       this
         .file = new FileCtor(
-          this
-            .root(
-              filetype,
-            ),
+          this.root(filetype),
           category,
           ...typeof filename === "undefined"
             ? [
                 [
                   subpath,
                   ext,
-                ]
-                  .join(
-                    ".",
-                  ),
+                ].join("."),
               ]
             : [
                 subpath,
                 [
                   filename,
                   ext,
-                ]
-                  .join(
-                    ".",
-                  ),
+                ].join("."),
               ],
-
         );
     }
     catch (e) {
@@ -82,9 +72,7 @@ abstract class Filetype<
 
   public get subpath() {
     try {
-      return this
-        .file
-        .subpath;
+      return this.file.subpath;
     }
     catch (e) {
       throw new EvalError(
@@ -108,15 +96,9 @@ abstract class Filetype<
     }
   }
 
-  public read(
-    ...error: Parameters<F["read"]>
-  ) {
+  public read(...error: Parameters<F["read"]>) {
     try {
-      return this
-        .file
-        .read(
-          ...error,
-        );
+      return this.file.read(...error);
     }
     catch (e) {
       throw new EvalError(
@@ -128,12 +110,7 @@ abstract class Filetype<
 
   public readful() {
     try {
-      return this
-        .file
-        .readful(
-          this
-            .subpath,
-        );
+      return this.file.readful(this.subpath);
     }
     catch (e) {
       throw new EvalError(
@@ -143,23 +120,15 @@ abstract class Filetype<
     }
   }
 
-  public data<Data>(
-    ...error: Parameters<F["read"]>
-  ): Null<Data> {
+  public data<Data>(...error: Parameters<F["read"]>): Null<Data> {
     try {
       const string = this
         .file
-        .read(
-          ...error,
-        )
+        .read(...error)
         .trim();
 
-      return string
-        .length > 0
-        ? JSON
-          .parse(
-            string,
-          ) as Data
+      return string.length > 0
+        ? JSON.parse(string) as Data
         : null;
     }
     catch (e) {
@@ -170,16 +139,9 @@ abstract class Filetype<
     }
   }
 
-  private root(
-    subtype: literalful<
-      Type
-    >,
-  ) {
+  private root(subtype: literalful<Type>) {
     try {
-      return new this
-        .Bookmark(
-          subtype,
-        );
+      return new this.Bookmark(subtype);
     }
     catch (e) {
       throw new EvalError(
