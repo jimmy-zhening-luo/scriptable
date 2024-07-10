@@ -18,15 +18,7 @@ abstract class Helper<
   }
 
   protected get getInput() {
-    try {
-      return this.argument;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Helper: input`,
-        { cause: e },
-      );
-    }
+    return this.argument;
   }
 
   protected setOutput(runtime: ReturnType<Helper<Input, Output>["run"]>) {
