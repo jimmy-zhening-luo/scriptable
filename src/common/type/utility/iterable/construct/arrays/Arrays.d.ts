@@ -1,6 +1,3 @@
 declare type Arrayful<
   Inner,
-> = ArrayN<
-  Inner,
-  1
->;
+> = ArrayN<Inner, 1>;

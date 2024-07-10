@@ -1,7 +1,5 @@
 declare type IsTuple<
   Tuple,
-> = TupleLength<
-  Tuple
-> extends never
+> = TupleLength<Tuple> extends never
   ? false
   : true;

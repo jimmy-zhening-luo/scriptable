@@ -5,35 +5,21 @@ declare type Join<
   Iterable
 > extends false
   ? never
-  : IsArrayful<
-    Iterable
-  > extends false
+  : IsArrayful<Iterable> extends false
     ? string
     : Extract<
-      Flat<
-        Iterable
-      >,
-      | stringful
+      Flat<Iterable>,
+      stringful
     > extends never
       ? Extract<
-        Flat<
-          Iterable
-        >,
+        Flat<Iterable>,
         | number
         | boolean
       > extends never
-        ? literalful<
-          Flat<
-            Iterable
-          >
-        > extends never
-          ? IsLongTupleful<
-            Iterable
-          > extends false
+        ? literalful<Flat<Iterable>> extends never
+          ? IsLongTupleful<Iterable> extends false
             ? string
-            : literalful<
-              Separator
-            > extends never
+            : literalful<Separator> extends never
               ? Separator extends stringful
                 ? stringful
                 :
@@ -43,11 +29,8 @@ declare type Join<
           : stringful
         : stringful
       : Exclude<
-        Flat<
-          Iterable
-        >, stringful
+        Flat<Iterable>,
+        stringful
       > extends never
-        ? Flat<
-          Iterable
-        >
+        ? Flat<Iterable>
         : stringful;

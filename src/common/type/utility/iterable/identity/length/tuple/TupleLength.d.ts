@@ -4,12 +4,7 @@ declare type TupleLength<
   Tuple
 > extends false
   ? never
-  : [Tuple] extends [
-      Record<
-        "length",
-        infer N
-      >,
-    ]
+  : [Tuple] extends [Record<"length", infer N>]
       ? N extends number
         ? number extends N
           ? never

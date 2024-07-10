@@ -1,8 +1,5 @@
 abstract class IFilepath<Length> {
-  protected readonly _nodes: Nodes<
-    FileNode,
-    Length
-  >;
+  protected readonly _nodes: Nodes<FileNode, Length>;
 
   constructor(
     ...subpaths: (

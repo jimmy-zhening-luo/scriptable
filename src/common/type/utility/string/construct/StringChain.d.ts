@@ -2,16 +2,12 @@ declare type StringChain<
   Nodes,
   Separator extends string = "/",
   Reverse extends boolean = false,
-> = literalful<
-  Nodes
-> extends never
+> = literalful<Nodes> extends never
   ? Nodes extends [
     infer Head,
     ...infer Tail,
   ]
-    ? literalful<
-      Head
-    > extends never
+    ? literalful<Head> extends never
       ? never
       : Tail extends []
         ? Head

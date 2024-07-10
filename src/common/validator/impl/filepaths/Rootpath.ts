@@ -30,11 +30,7 @@ class Rootpath extends r_Filepath<
     }
   }
 
-  protected poppable(
-    nodes: Nodes<
-      FileNode
-    >,
-  ): nodes is Nodes<FileNode, 2> {
+  protected poppable(nodes: Nodes<FileNode>): nodes is Nodes<FileNode, 2> {
     try {
       return nodes
         .length > 1;

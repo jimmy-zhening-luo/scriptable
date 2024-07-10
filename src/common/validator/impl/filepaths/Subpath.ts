@@ -20,9 +20,7 @@ class Subpath extends s_Filepath<
   }
 
   protected poppable(
-    nodes: Nodes<
-      FileNode
-    >,
+    nodes: Nodes<FileNode>,
   ): nodes is Nodes<FileNode, 1> {
     try {
       return nodes

@@ -7,9 +7,7 @@ declare type Tuple<
   : Length extends Length
     ? number extends Length
       ? Inner[]
-      : Head[
-        "length"
-      ] extends Length
+      : Head["length"] extends Length
         ? Head
         : Tuple<
           Inner,
