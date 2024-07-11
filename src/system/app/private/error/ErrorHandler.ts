@@ -14,16 +14,16 @@ class ErrorHandler {
         (error): error is ErrorLike<true> =>
           typeof error === "object" && "message" in error,
       );
-      const hoistedQueue: readonly ErrorLike[] = hoist === -1
-        ? queue
-        : [
+      const hoistedQueue: readonly ErrorLike[] = hoist > -1
+        ? [
             queue[hoist] as ErrorLike<true>,
             ...queue.slice(
               0,
               hoist,
             ),
             ...queue.slice(hoist + 1),
-          ];
+          ]
+        : queue;
       const messages = hoistedQueue
         .map(
           error =>
