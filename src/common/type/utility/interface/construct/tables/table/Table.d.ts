@@ -1,1 +1,1 @@
-declare type Table<Value = unknown> = Record<string, Value>;
+declare type Table<V = unknown> = Record<string, V>;

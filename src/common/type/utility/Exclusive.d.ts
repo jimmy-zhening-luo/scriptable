@@ -1,5 +1,5 @@
-declare type Exclusive<Set, Predicate> = Set extends never
+declare type Exclusive<A, B> = A extends never
   ? false
-  : Exclude<Set, Predicate> extends never
+  : Exclude<A, B> extends never
     ? true
     : false;

@@ -1,7 +1,5 @@
 declare type IsArray<Arr> = Flat<Arr> extends never
-  ? Arr extends []
+  ? Arr extends readonly []
     ? true
-    : Arr extends readonly []
-      ? true
-      : false
+    : false
   : true;

@@ -1,5 +1,5 @@
-declare type FileContainerManifest = {
-  containers:
-    & List<"folders">
-    & Record<"apps", FieldTable>;
-};
+declare type FileContainerManifest = Record<
+  "containers",
+  & List<"folders">
+  & Record<"apps", FieldTable>
+>;

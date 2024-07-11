@@ -1,4 +1,4 @@
 declare type Listish<
-  Key extends string,
-  OptionalKey = false,
-> = IProperty<Unflat<string>, Key, OptionalKey>;
+  K extends string,
+  Optional = false,
+> = IProperty<Unflat<string>, K, Optional>;

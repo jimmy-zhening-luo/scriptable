@@ -1,4 +1,4 @@
 declare type Scalar<
-  Key extends string,
-  OptionalKey = false,
-> = IProperty<number, Key, OptionalKey>;
+  K extends string,
+  Optional = false,
+> = IProperty<number, K, Optional>;

@@ -1,4 +1,1 @@
-declare type GptInput =
-  | GptInputUnwrapped
-  | GptInputWrapped
-;
+declare type GptInput = GptInputWrapped | GptInputUnwrapped;

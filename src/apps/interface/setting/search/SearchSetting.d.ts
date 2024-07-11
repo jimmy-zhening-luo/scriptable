@@ -17,7 +17,7 @@ declare type SearchSetting = {
   user: {
     alias: FieldTable;
     engines: Table<
-      | Unflat<string, true>
+      | Unflat<string, false>
       | ISearchEngineSetting<"find">
       | ISearchEngineSetting<"shortcut", true>
       | ISearchEngineSetting<

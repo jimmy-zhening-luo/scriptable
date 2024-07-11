@@ -141,7 +141,7 @@ namespace Filelink {
       }
     }
 
-    private validPath(nodes: Unflat< string>) {
+    private validPath(nodes: Unflat<string>) {
       try {
         const path = this.stringfulArray([nodes].flat());
         const { length } = path;

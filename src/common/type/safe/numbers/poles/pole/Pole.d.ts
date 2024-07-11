@@ -1,6 +1,6 @@
 declare const pole: unique symbol;
 declare const min: unique symbol;
-declare type Charge<
+declare type Pole<
   N extends number,
   P extends
   | "-"

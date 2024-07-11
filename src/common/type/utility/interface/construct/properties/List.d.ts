@@ -1,4 +1,4 @@
 declare type List<
-  Key extends string,
-  OptionalKey = false,
-> = IProperty<string[], Key, OptionalKey>;
+  K extends string,
+  Optional = false,
+> = IProperty<string[], K, Optional>;

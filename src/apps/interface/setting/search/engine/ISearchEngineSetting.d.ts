@@ -13,9 +13,7 @@ declare type ISearchEngineSetting<
 > =
   & Record<
     ActionType,
-    MultiAction extends true
-      ? Unflat<string, true>
-      : string
+    MultiAction extends false ? string : Unflat<string, false>
   >
   & Flag<Flags>
   & Field<Fields, true>
@@ -24,8 +22,7 @@ declare type ISearchEngineSetting<
     Output extends true
       ? PartialRecord<
         "output",
-        | boolean
-        | string
+        string | boolean
       >
       : {}
   )

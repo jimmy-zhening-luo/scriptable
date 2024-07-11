@@ -1,20 +1,15 @@
-declare type literals<Strings> = literalful<
-  Extract<
-    Strings,
-    string
-  >
->;
+declare type literals<S> = literalful<Extract<S, string>>;
 
-declare type literalful<String> = [String] extends [string]
-  ? string extends String
+declare type literalful<S> = [S] extends [string]
+  ? string extends S
     ? never
-    : "" extends String
+    : "" extends S
       ? never
-      : String
+      : S
   : never;
 
-declare type literal<String> = [String] extends [string]
-  ? string extends String
+declare type literal<S> = [S] extends [string]
+  ? string extends S
     ? never
-    : String
+    : S
   : never;

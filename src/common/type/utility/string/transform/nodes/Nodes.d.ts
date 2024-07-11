@@ -1,4 +1,1 @@
-declare type Nodes<
-  Stringlike,
-  MinLength = 0,
-> = ArrayN<Stringify<Stringlike>, MinLength>;
+declare type Nodes<O, L = 0> = ArrayN<Stringify<O>, L>;

@@ -1,23 +1,18 @@
-declare type Join<
-  Iterable,
-  Separator extends string = string,
-> = Joinable<
-  Iterable
-> extends false
+declare type Join<A, Separator extends string = string> = Joinable<A> extends false
   ? never
-  : IsArrayful<Iterable> extends false
+  : IsArrayful<A> extends false
     ? string
     : Extract<
-      Flat<Iterable>,
+      Flat<A>,
       stringful
     > extends never
       ? Extract<
-        Flat<Iterable>,
+        Flat<A>,
         | number
         | boolean
       > extends never
-        ? literalful<Flat<Iterable>> extends never
-          ? IsLongTupleful<Iterable> extends false
+        ? literalful<Flat<A>> extends never
+          ? IsLongTupleful<A> extends false
             ? string
             : literalful<Separator> extends never
               ? Separator extends stringful
@@ -29,8 +24,8 @@ declare type Join<
           : stringful
         : stringful
       : Exclude<
-        Flat<Iterable>,
+        Flat<A>,
         stringful
       > extends never
-        ? Flat<Iterable>
+        ? Flat<A>
         : stringful;

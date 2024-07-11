@@ -6,6 +6,6 @@ type Boundary = Record<
 >;
 
 declare type Limit<
-  Key extends string,
-  OptionalKey = false,
-> = IProperty<Boundary, Key, OptionalKey>;
+  K extends string,
+  Optional = false,
+> = IProperty<Boundary, K, Optional>;

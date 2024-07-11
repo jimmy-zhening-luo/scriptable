@@ -1,5 +1,3 @@
-declare type Null<Type> = null | Type;
+declare type Null<T> = null | T;
 
-declare type Nullable<Type> = Null<
-  NonNullable<Type>
->;
+declare type Nullable<T> = Null<NonNullable<T>>;

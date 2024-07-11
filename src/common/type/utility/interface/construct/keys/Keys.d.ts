@@ -1,1 +1,1 @@
-declare type Keys<Record> = literals<keyof Record>;
+declare type Keys<R> = literals<keyof R>;

@@ -1,6 +1,3 @@
-declare type FlatAll<
-  Iterable,
-  Predicate,
-> = Exclusive<Flat<Iterable>, Predicate> extends false
+declare type FlatAll<A, T> = Exclusive<Flat<A>, T> extends false
   ? never
-  : Flat<Iterable>;
+  : Flat<A>;

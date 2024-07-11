@@ -1,16 +1,4 @@
-declare type Unflat<
-  Inner,
-  Mutable extends boolean = false,
-> =
-  | Inner
-  | (
-    Mutable extends true
-      ? Inner[]
-      : readonly Inner[]
-  )
+declare type Unflat<In, Readonly extends boolean = true> =
+  | In
+  | (Readonly extends true ? readonly In[] : In[])
 ;
-
-declare type UnflatArray<
-  Inner,
-  Mutable extends boolean = false,
-> = Unflat<Inner, Mutable>[];

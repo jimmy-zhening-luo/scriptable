@@ -1,7 +1,7 @@
-abstract class IFilepath<Length> {
-  protected readonly _nodes: Nodes<FileNode, Length>;
+abstract class IFilepath<L> {
+  protected readonly _nodes: Nodes<FileNode, L>;
 
-  constructor(...subpaths: (IFilepath<Length> | string)[]) {
+  constructor(...subpaths: (IFilepath<L> | string)[]) {
     try {
       this._nodes = this.check(
         subpaths
@@ -35,7 +35,7 @@ abstract class IFilepath<Length> {
     try {
       const parent = new (
         this.constructor as new (
-          ...path: ConstructorParameters<typeof IFilepath<Length>>
+          ...path: ConstructorParameters<typeof IFilepath<L>>
         )=> this
       )(this);
 
@@ -149,7 +149,7 @@ abstract class IFilepath<Length> {
     }
   }
 
-  protected abstract check(nodes: Nodes<FileNode>): IFilepath<Length>["_nodes"];
+  protected abstract check(nodes: Nodes<FileNode>): IFilepath<L>["_nodes"];
 
   protected abstract poppable(nodes: Nodes<FileNode>): nodes is Nodes<FileNode, 1>;
 }
