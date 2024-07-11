@@ -1,18 +1,11 @@
 declare const pole: unique symbol;
-declare const nonzero: unique symbol;
+declare const min: unique symbol;
 declare type Charge<
   N extends number,
-  Pole extends
+  P extends
   | "-"
   | "+"
   ,
-  NonZero extends boolean = false,
-> =
-  & N
-  & { [pole]: Pole }
-  & (
-    NonZero extends true
-      ? { [nonzero]: true }
-      : {}
-  )
+  Zero extends boolean,
+> = N & { [pole]: P } & { [min]: Zero extends true ? 0 : P extends "+" ? 1 : -1 }
 ;
