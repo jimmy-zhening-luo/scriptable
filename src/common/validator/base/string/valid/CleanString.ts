@@ -2,7 +2,10 @@ const boundString = importModule(
   `bound/BoundString`,
 ) as typeof BoundString;
 
-class CleanString<Validator extends string> extends boundString<stringful, [Validator, `Clean`]> {
+class CleanString<Validator extends string> extends boundString<
+  stringful,
+  [Validator, `Clean`]
+> {
   constructor(
     string: string,
     charset: char[],

@@ -2,7 +2,10 @@ const charString = importModule(
   `charstring/CharString`,
 ) as typeof CharString;
 
-class BoundString<S extends stringful, Validators extends string[]> extends charString<S, [...Validators, `Bound`]> {
+class BoundString<S extends stringful, Validators extends string[]> extends charString<
+  S,
+  [...Validators, `Bound`]
+> {
   constructor(
     string: string,
     charset: char[],
