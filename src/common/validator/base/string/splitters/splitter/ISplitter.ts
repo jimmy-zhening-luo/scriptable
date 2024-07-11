@@ -3,19 +3,7 @@ abstract class ISplitter<
 > {
   public readonly nodes: readonly Node[];
 
-  constructor(...split: Parameters<ISplitter<Node>["split"]>) {
-    try {
-      this.nodes = this.split(...split);
-    }
-    catch (e) {
-      throw new EvalError(
-        `Splitter: ctor`,
-        { cause: e },
-      );
-    }
-  }
-
-  private split(
+  constructor(
     string: Unflat<string>,
     separator = "",
     trimNode = false,
@@ -42,11 +30,11 @@ abstract class ISplitter<
         )
         : split;
 
-      return this.filter(nodes);
+      this.nodes = this.filter(nodes);
     }
     catch (e) {
       throw new EvalError(
-        `Splitter: __split`,
+        `Splitter: ctor`,
         { cause: e },
       );
     }
