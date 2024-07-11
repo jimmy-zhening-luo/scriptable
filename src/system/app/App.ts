@@ -137,12 +137,8 @@ abstract class App<
           ? input
           : "";
 
-        const allowed = [
-          "string",
-          "number",
-        ] as const;
-        if (allowed.includes(typeof input))
-          this._inputString = truthyInput;
+        if (typeof truthy === "string" || typeof truthy === "number")
+          this._inputString = `${truthy}`;
         else
           throw new TypeError(
             `non-string input`,
