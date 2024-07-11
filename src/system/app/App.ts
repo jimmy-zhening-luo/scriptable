@@ -138,7 +138,7 @@ abstract class App<
           : "";
 
         if (typeof truthy === "string" || typeof truthy === "number")
-          this._inputString = `${truthy}`;
+          this._inputString = String(truthy);
         else
           throw new TypeError(
             `non-string input`,
