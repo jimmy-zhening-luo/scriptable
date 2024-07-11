@@ -1,8 +1,8 @@
-const _BoundString = importModule(
+const boundString = importModule(
   `bound/BoundString`,
 ) as typeof BoundString;
 
-class CleanString<Stamp extends string> extends _BoundString<stringful, [Stamp, `Clean`]> {
+class CleanString<Validator extends string> extends boundString<stringful, [Validator, `Clean`]> {
   constructor(
     string: string,
     charset: char[],
@@ -51,8 +51,8 @@ class CleanString<Stamp extends string> extends _BoundString<stringful, [Stamp, 
       trim?: boolean;
       trimLeadingExcept?: boolean;
       trimTrailingExcept?: boolean;
-      trimLeading?: readonly string[];
-      trimTrailing?: readonly string[];
+      trimLeading?: readonly stringful[];
+      trimTrailing?: readonly stringful[];
     },
   ) {
     try {
@@ -89,7 +89,7 @@ class CleanString<Stamp extends string> extends _BoundString<stringful, [Stamp, 
     edge:
       | "leading"
       | "trailing",
-    wordsToTrim: readonly string[],
+    wordsToTrim: readonly stringful[],
     trimExcept: boolean,
   ) {
     try {
@@ -97,31 +97,29 @@ class CleanString<Stamp extends string> extends _BoundString<stringful, [Stamp, 
       const lookFn = edge === "leading"
         ? "startsWith"
         : "endsWith";
+      const slicer = edge === "leading"
+        ? trimExcept
+          ? () =>
+              [1]
+          : (word: string) =>
+              [word.length]
+        : trimExcept
+          ? () =>
+              [
+                0,
+                -1,
+              ]
+          : (word: string) =>
+              [
+                0,
+                0 - word.length,
+              ];
 
       wordsToTrim
-        .filter(
-          (word): word is stringful =>
-            word.length > 0,
-        )
         .forEach(
           word => {
             while (trimExcept !== trimmed[lookFn](word))
-              trimmed = lookFn === "startsWith"
-                ? trimmed
-                  .slice(
-                    trimExcept
-                      ? 1
-                      : word.length,
-                  )
-                : trimmed
-                  .slice(
-                    0,
-                    0 - (
-                      trimExcept
-                        ? 1
-                        : word.length
-                    ),
-                  );
+              trimmed = trimmed.slice(...slicer(word));
           },
         );
 

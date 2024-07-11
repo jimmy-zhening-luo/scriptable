@@ -1,14 +1,8 @@
-const _CharString = importModule(
+const charString = importModule(
   `charstring/CharString`,
 ) as typeof CharString;
 
-class BoundString<
-  String extends stringful,
-  Stamps extends string[],
-> extends _CharString<
-    String,
-    [...Stamps, `Bound`]
-  > {
+class BoundString<S extends stringful, Validators extends string[]> extends charString<S, [...Validators, `Bound`]> {
   constructor(
     string: string,
     charset: char[],
