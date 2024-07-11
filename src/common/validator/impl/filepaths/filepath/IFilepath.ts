@@ -9,8 +9,9 @@ abstract class IFilepath<L> {
             subpath =>
               typeof subpath !== "string"
                 ? subpath._nodes
-                : new this.Splitterful(
+                : new this.Splitter<true>(
                   subpath,
+                  true,
                   "/",
                   true,
                 )
@@ -63,15 +64,15 @@ abstract class IFilepath<L> {
     }
   }
 
-  private get Splitterful() {
+  private get Splitter() {
     try {
       return importModule(
-        "./common/validator/base/string/splitters/Splitterful",
-      ) as typeof Splitterful;
+        "./common/validator/base/string/splitter/Splitter",
+      ) as typeof Splitter;
     }
     catch (e) {
       throw new ReferenceError(
-        `IFilepath: import Splitterful`,
+        `IFilepath: import Splitter`,
         { cause: e },
       );
     }
