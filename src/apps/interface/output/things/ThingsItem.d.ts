@@ -3,4 +3,7 @@ declare type ThingsItem = Field<
   | "notes"
   | "when"
   | "list"
+  ,
+  | "when"
+  | "list"
 >;

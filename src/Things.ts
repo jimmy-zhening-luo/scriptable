@@ -63,16 +63,16 @@ namespace Things {
               list,
             ] = tagent === null
               ? [
-                  "",
-                  "",
+                  null,
+                  null,
                 ]
-              : tagent.length < 1 || tagent === delim.line || !(tagent in lists) || (lists[tagent] ?? "").length < 1
+              : tagent.length < 1 || tagent === delim.line || !(tagent in lists) || (lists[tagent] ?? null).length < 1
                 ? [
                     "today",
-                    "",
+                    null,
                   ]
                 : [
-                    "",
+                    null,
                     lists[tagent] as unknown as string,
                   ];
             const lines = item.split(delim.line);
@@ -80,8 +80,12 @@ namespace Things {
             return {
               title: encodeURI(lines.shift() ?? ""),
               notes: encodeURI(lines.join(delim.line)),
-              when,
-              list,
+              ...when === null
+                ? {}
+                : { when },
+              ...list === null
+                ? {}
+                : { list },
             };
           },
         );
