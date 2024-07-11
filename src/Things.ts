@@ -66,7 +66,7 @@ namespace Things {
                   null,
                   null,
                 ]
-              : tagent.length < 1 || tagent === delim.line || !(tagent in lists) || (lists[tagent] ?? null).length < 1
+              : tagent.length < 1 || tagent === delim.line || !(tagent in lists) || (lists[tagent] ?? "").length < 1
                 ? [
                     "today",
                     null,
