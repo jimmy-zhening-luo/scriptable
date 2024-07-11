@@ -2,16 +2,22 @@ const charString = importModule(
   `charstring/CharString`,
 ) as typeof CharString;
 
-class BoundString<S extends stringful, Validators extends string[]> extends charString<
-  S,
-  [...Validators, `Bound`]
+class ValidString<Validator extends string> extends charString<
+  stringful,
+  [Validator, `Valid`]
 > {
   constructor(
     string: string,
     charset: char[],
-    filter: Filter,
-    min: Positive<fint>,
-    max: Positive<int>,
+    {
+      filter = "exclude",
+      min = 1 as Positive<fint>,
+      max = Infinity as Positive<int>,
+    }: {
+      filter?: Filter;
+      min?: Positive<fint>;
+      max?: Positive<int>;
+    } = {},
   ) {
     try {
       if (min > max)
@@ -27,11 +33,11 @@ class BoundString<S extends stringful, Validators extends string[]> extends char
     }
     catch (e) {
       throw new EvalError(
-        `BoundString: ctor ('${string}')`,
+        `BoundString: ctor`,
         { cause: e },
       );
     }
   }
 }
 
-module.exports = BoundString;
+module.exports = ValidString;

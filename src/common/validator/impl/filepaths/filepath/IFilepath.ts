@@ -67,7 +67,7 @@ abstract class IFilepath<L> {
   private get Splitter() {
     try {
       return importModule(
-        "./common/validator/base/string/splitter/Splitter",
+        "./common/validator/base/string/Splitter",
       ) as typeof Splitter;
     }
     catch (e) {
