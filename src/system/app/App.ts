@@ -133,11 +133,15 @@ abstract class App<
     try {
       if (typeof this._inputString === "undefined") {
         const { input } = this;
-        const truthyInput = this.truthy(input)
+        const truthy = this.truthy(input)
           ? input
           : "";
 
-        if (typeof truthyInput === "string")
+        const allowed = [
+          "string",
+          "number",
+        ] as const;
+        if (allowed.includes(typeof input))
           this._inputString = truthyInput;
         else
           throw new TypeError(
@@ -145,7 +149,7 @@ abstract class App<
             {
               cause: {
                 input,
-                truthyInput,
+                truthy,
                 type: typeof input,
                 isArray: Array.isArray(input),
               },
