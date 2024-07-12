@@ -1,50 +1,69 @@
 function Base64Guid() {
-  function guidchars(guid: string) {
-    const hexcharToHex = {
-      0: 0,
-      1: 1,
-      2: 2,
-      3: 3,
-      4: 4,
-      5: 5,
-      6: 6,
-      7: 7,
-      8: 8,
-      9: 9,
-      A: 10,
-      B: 11,
-      C: 12,
-      D: 13,
-      E: 14,
-      F: 15,
-    } as const;
+  function hex(guid: string) {
+    try {
+      const normal = guid
+        .replace(
+          "-",
+          "",
+        )
+        .toUpperCase();
 
-    if (guid.length === 32) {
-      const hexes = [...guid] satisfies string[] as Tuple<hexchar, 32>;
+      if (normal.length !== 32)
+        throw new TypeError(`Wrong input guid length (!32)`);
+      else {
+        const hexvalue = {
+          0: 0,
+          1: 1,
+          2: 2,
+          3: 3,
+          4: 4,
+          5: 5,
+          6: 6,
+          7: 7,
+          8: 8,
+          9: 9,
+          A: 10,
+          B: 11,
+          C: 12,
+          D: 13,
+          E: 14,
+          F: 15,
+        } as const;
+        const hexchars = [...normal].filter(
+          (char): char is hexchar =>
+            char in hexvalue,
+        );
 
-      return hexes.map(
-        hexchar =>
-          hexcharToHex[hexchar],
-      ) satisfies hex[] as Tuple<hex, 32>;
+        if (hexchars.length !== 32)
+          throw new TypeError(`Illegal chars in input guid`);
+        else
+          return hexchars.map(
+            hexchar =>
+              hexvalue[hexchar],
+          ) as Tuple<hex, 32>;
+      }
     }
-    else
-      throw new TypeError(
-        `Input guid length !== 32`,
-        { cause: guid },
-      );
+    catch (e) {
+      throw new Error(
+        `hexguid(): ${guid}`,
+        { cause: e },
+      )
+    }
   }
 
-  function base64guid(encodedGuid: string) {
-    if (encodedGuid.length === 8)
-      return encodedGuid as guid<64>;
-    else
-      throw new TypeError(
-        `Generated base64 guid length !== 8`,
-        { cause: encodedGuid },
+  function base64guid(base64guid: string) {
+    if (base64guid.length !== 8)
+      throw new EvalError(
+        `Generated wrong base64guid length (!8)`,
+        { cause: base64guid },
       );
+    else
+      return base64guid as guid<64>;
   }
 
   try {
+    const guid = UUID.string();
+    const hexchars = hex(guid);
     const buffer: Octad<hex[]> = [
       [],
       [],
@@ -55,21 +74,11 @@ function Base64Guid() {
       [],
       [],
     ];
-    const guid = guidchars(
-      UUID
-        .string()
-        .replaceAll(
-          "-",
-          "",
-        ),
-    );
 
-    for (
-      let i: base32 = 0;
-      i < 32;
-      i = (i + 1) as base32
-    )
-      buffer[Math.floor(i / 4) as octal].push(guid[i]);
+    hexchars.forEach(
+      (hexchar, i) =>
+        buffer[Math.floor(i / 4) as octal].push(hexchar);
+    );
 
     const quads = buffer as Octad<Quad<hex>>;
     const chars = quads
@@ -108,7 +117,7 @@ function Base64Guid() {
     return base64guid(String.fromCharCode(...chars));
   }
   catch (e) {
-    throw new EvalError(
+    throw new Error(
       `Base64Guid`,
       { cause: e },
     );
