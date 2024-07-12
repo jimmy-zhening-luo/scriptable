@@ -5,7 +5,7 @@ abstract class IFilepath<L> {
     try {
       this._nodes = this.check(
         subpaths
-          .map(
+          .flatMap(
             subpath =>
               typeof subpath !== "string"
                 ? subpath._nodes
@@ -20,8 +20,7 @@ abstract class IFilepath<L> {
                     node =>
                       new this.FileNode(node).string,
                   ),
-          )
-          .flat(),
+          ),
       );
     }
     catch (e) {
