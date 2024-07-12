@@ -77,7 +77,7 @@ function Base64Guid() {
 
     hexchars.forEach(
       (hexchar, i) =>
-        buffer[Math.floor(i / 4) as octal].push(hexchar);
+        buffer[Math.floor(i / 4) as octal].push(hexchar),
     );
 
     const quads = buffer as Octad<Quad<hex>>;
