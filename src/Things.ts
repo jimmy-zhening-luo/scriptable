@@ -78,8 +78,8 @@ namespace Things {
             const lines = item.split(delim.line);
 
             return {
-              title: encodeURI(lines.shift() ?? ""),
-              notes: encodeURI(lines.join(delim.line)),
+              title: lines.shift() ?? "",
+              notes: lines.join(delim.line),
               ...when === null
                 ? {}
                 : { when },
