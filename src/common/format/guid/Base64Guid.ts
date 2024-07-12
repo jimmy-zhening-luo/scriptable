@@ -47,7 +47,7 @@ function Base64Guid() {
       throw new Error(
         `hexguid(): ${guid}`,
         { cause: e },
-      )
+      );
     }
   }
 
