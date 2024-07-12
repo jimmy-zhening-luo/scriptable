@@ -1,1 +1,1 @@
-declare type ListishTable = Table<Unflat<string>>;
+declare type ListishTable = Table<Unflat>;

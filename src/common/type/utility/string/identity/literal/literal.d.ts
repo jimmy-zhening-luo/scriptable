@@ -1,12 +1,8 @@
-declare type literals<S> = literalful<Extract<S, string>>;
-
-declare type literalful<S> = [S] extends [string]
-  ? string extends S
+declare type literalful<S> = literal<S> extends never
+  ? never
+  : "" extends S
     ? never
-    : "" extends S
-      ? never
-      : S
-  : never;
+    : S;
 
 declare type literal<S> = [S] extends [string]
   ? string extends S

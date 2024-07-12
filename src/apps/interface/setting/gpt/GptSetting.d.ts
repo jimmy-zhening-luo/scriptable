@@ -1,12 +1,6 @@
 declare type GptSetting = {
   app: {
-    api:
-      & Field<
-        | "host"
-        | "version"
-      >
-      & Record<"action", Field<GptModel>>
-    ;
+    api: { action: Field<GptModel> } & Field<"host" | "version">;
     models: Field<GptModel>;
     limit: Limit<
       | "token"

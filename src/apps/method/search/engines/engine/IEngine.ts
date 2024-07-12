@@ -24,7 +24,7 @@ abstract class IEngine {
     }
   }
 
-  protected transform(query: Query): Unflat<string> {
+  protected transform(query: Query): Unflat {
     try {
       return query.natural;
     }

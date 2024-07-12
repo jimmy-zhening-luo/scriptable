@@ -1,5 +1,7 @@
-declare type FileContainerManifest = Record<
+declare type FileContainerManifest = Recordful<
   "containers",
-  & List<"folders">
-  & Record<"apps", FieldTable>
+  {
+    folders: readonly string[];
+    apps: FieldTable;
+  }
 >;

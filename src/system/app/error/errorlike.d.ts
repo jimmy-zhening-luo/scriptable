@@ -1,4 +1,4 @@
-declare type ErrorLike<Confirmed extends boolean = false> = Confirmed extends true
+declare type ErrorLike<Real extends boolean = false> = Real extends true
   ? Error
   :
     | primitive

@@ -1,4 +1,4 @@
 declare type Field<
-  K extends string,
-  Optional = false,
-> = IProperty<string, K, Optional>;
+  K,
+  OK = never,
+> = Property<K, OK, string>;

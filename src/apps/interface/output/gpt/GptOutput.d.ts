@@ -1,20 +1,15 @@
-declare type GptOutput =
-  & Field<"api">
-  & Record<
-    "header",
-    Field<
-      | "auth"
-      | "org"
-    >
-  >
-  & Record<
-    "body",
+declare type GptOutput = {
+  api: string;
+  header: Field<
+    | "auth"
+    | "org"
+  >;
+  body:
+    & { messages: readonly GptMessage[] }
     & Field<
       | "model"
       | "max_tokens"
       | "temperature"
       | "top_p"
-    >
-    & Record<"messages", GptMessage[]>
-  >
-;
+    >;
+};

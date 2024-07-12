@@ -1,4 +1,4 @@
 declare type GptMessage =
-  & Record<"role", GptRole>
+  & Recordful<"role", GptRole>
   & Field<"content">
 ;

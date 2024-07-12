@@ -1,11 +1,11 @@
-type Boundary = Record<
+declare type Limit<
+  K,
+  OK = never,
+> = Property<K, OK, Boundary>;
+
+type Boundary = Recordful<
   | "min"
   | "max"
   ,
   number
 >;
-
-declare type Limit<
-  K extends string,
-  Optional = false,
-> = IProperty<Boundary, K, Optional>;

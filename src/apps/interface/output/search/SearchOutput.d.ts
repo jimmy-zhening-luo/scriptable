@@ -1,21 +1,10 @@
 declare type SearchOutput =
-  & Listish<"action">
+  & { action: Unflat }
   & Field<
-    | "app"
+    "app",
     | "output"
-    ,
-    | "output"
-  >
-  & Field<
     | "shortcut"
     | "find"
-    ,
-    true
-  >
-  & Field<
     | "natural"
     | "browser"
-    ,
-    true
-  >
-;
+  >;

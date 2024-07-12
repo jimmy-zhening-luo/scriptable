@@ -2,14 +2,13 @@ declare type FileProvider<C extends boolean> =
   & Field<"providerRoot">
   & (
     C extends false
-      ? Record<"hasContainers", false>
+      ? Recordful<"hasContainers", false>
       :
-        & Record<"hasContainers", true>
+        & Recordful<"hasContainers", true>
         & FileContainerManifest
         & Field<
           | "postContainerRoot"
           | "folderRoot"
-          | "preAppRoot"
           ,
           "preAppRoot"
         >

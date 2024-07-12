@@ -1,8 +1,8 @@
 class Splitter<Stringful extends boolean> {
-  public readonly _nodes: string[];
+  public readonly _nodes: readonly string[];
 
   constructor(
-    string: Unflat<string>,
+    string: Unflat,
     public readonly stringful: Stringful,
     separator = "",
     trimNode = false,

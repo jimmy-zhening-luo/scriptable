@@ -1,13 +1,7 @@
 declare type FilelinkSetting =
+  & { providers: Table<FileProvider<true> | FileProvider<false>> }
   & Field<
     | "scheme"
     | "commonRoot"
-  >
-  & Record<
-    "providers",
-    Table<
-      | FileProvider<false>
-      | FileProvider<true>
-    >
   >
 ;

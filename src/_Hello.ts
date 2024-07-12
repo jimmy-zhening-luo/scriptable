@@ -9,7 +9,7 @@ namespace _Hello {
   export class _Hello extends shortcut<
     never,
     string,
-    Field<"space", true>
+    Field<never, "space">
   > {
     protected runtime() {
       this.debug = true;

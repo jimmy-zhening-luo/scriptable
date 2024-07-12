@@ -16,11 +16,11 @@ declare type ISearchEngineSetting<
     MultiAction extends false ? string : Unflat<string, false>
   >
   & Flag<Flags>
-  & Field<Fields, true>
+  & Field<never, Fields>
   & Custom
   & (
     Output extends true
-      ? PartialRecord<
+      ? Particord<
         "output",
         string | boolean
       >
