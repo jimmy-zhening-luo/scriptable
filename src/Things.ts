@@ -86,7 +86,7 @@ namespace Things {
               ...list === null
                 ? {}
                 : { list },
-            };
+            } as unknown as ThingsItem;
           },
         );
       }
