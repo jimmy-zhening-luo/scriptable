@@ -1,14 +1,14 @@
 function Base64Guid() {
   function hex(guid: string) {
     try {
-      const normal = guid
+      const normalized = guid
         .replace(
           "-",
           "",
         )
         .toUpperCase();
 
-      if (normal.length !== 32)
+      if (normalized.length !== 32)
         throw new TypeError(`Wrong input guid length (!32)`);
       else {
         const hexvalue = {
@@ -29,7 +29,7 @@ function Base64Guid() {
           E: 14,
           F: 15,
         } as const;
-        const hexchars = [...normal].filter(
+        const hexchars = [...normalized].filter(
           (char): char is hexchar =>
             char in hexvalue,
         );
@@ -82,7 +82,7 @@ function Base64Guid() {
     );
 
     const quads = buffer as Octad<Quad<hex>>;
-    const chars = quads
+    const charcodes = quads
       .map(
         ([
           q0,
@@ -115,7 +115,7 @@ function Base64Guid() {
             : charRangeAlphaUpper,
       );
 
-    return base64guid(String.fromCharCode(...chars));
+    return base64guid(String.fromCharCode(...charcodes));
   }
   catch (e) {
     throw new Error(
