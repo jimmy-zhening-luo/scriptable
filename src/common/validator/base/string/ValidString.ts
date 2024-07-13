@@ -2,33 +2,35 @@ const charString = importModule(
   `charstring/CharString`,
 ) as typeof CharString;
 
-class ValidString<Validator extends string> extends charString<
+class ValidString<Check extends string> extends charString<
   stringful,
-  [Validator, `Valid`]
+  [Check, `Valid`]
 > {
   constructor(
     string: string,
-    charset: char[],
+    chars: char[],
     {
       filter = "exclude",
       min = 1 as Positive<fint>,
       max = Infinity as Positive<int>,
     }: {
-      filter?: Filter;
+      filter?: CharFilter;
       min?: Positive<fint>;
       max?: Positive<int>;
     } = {},
   ) {
     try {
+      const { length } = string;
+
       if (min > max)
         throw new RangeError(`min > max`);
-      else if (string.length < min || string.length > max)
+      else if (length < min || length > max)
         throw new TypeError(`string length invalid`);
       else
         super(
           string,
-          charset,
           filter,
+          chars,
         );
     }
     catch (e) {

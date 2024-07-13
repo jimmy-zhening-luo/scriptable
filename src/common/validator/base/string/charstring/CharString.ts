@@ -1,17 +1,13 @@
-class CharString<S extends string, Validators extends string[]> {
+class CharString<S extends string, Checks extends string[]> {
   public readonly charset: CharSet;
-  public readonly string: Valid<S, [...Validators, `String`]>;
+  public readonly string: Valid<S, [...Checks, `String`]>;
 
   constructor(
     string: string,
-    charset: char[],
-    filter: Filter,
+    ...charset: ConstructorParameters<typeof CharSet>
   ) {
     try {
-      this.charset = new this.CharSet(
-        filter,
-        ...charset,
-      );
+      this.charset = new CharString.CharSet(...charset);
       this.string = this.validate(string);
     }
     catch (e) {
@@ -22,7 +18,7 @@ class CharString<S extends string, Validators extends string[]> {
     }
   }
 
-  private get CharSet() {
+  private static get CharSet() {
     try {
       return importModule(
         "charset/CharSet",
@@ -38,7 +34,7 @@ class CharString<S extends string, Validators extends string[]> {
 
   private validate(string: string) {
     try {
-      if (this.charset.allows<Stringify<CharString<S, Validators>>>(string))
+      if (this.charset.allows<Stringify<CharString<S, Checks>>>(string))
         return string;
       else
         throw new TypeError(

@@ -1,4 +1,4 @@
-declare type Filter =
+declare type CharFilter =
   | "include"
   | "exclude"
 ;

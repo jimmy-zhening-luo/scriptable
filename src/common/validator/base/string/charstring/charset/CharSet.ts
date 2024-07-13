@@ -1,24 +1,10 @@
 class CharSet {
-  public readonly filter;
-  public readonly charset;
-
   constructor(
-    filter: Filter,
-    ...charset: char[]
-  ) {
-    try {
-      this.filter = filter;
-      this.charset = [...charset] as const;
-    }
-    catch (e) {
-      throw new EvalError(
-        `CharSet: ctor`,
-        { cause: e },
-      );
-    }
-  }
+    public readonly filter: CharFilter,
+    public readonly chars: readonly char[],
+  ) {}
 
-  public allows<Valid extends string>(string: string): string is Valid {
+  public allows<VS extends string>(string: string): string is VS {
     try {
       const { filter } = this;
 
@@ -34,12 +20,11 @@ class CharSet {
 
   protected include(string: string) {
     try {
-      const charstring = [...string] as char[];
-      const { charset: chars } = this;
+      const { chars } = this;
 
-      return charstring.every(
-        char =>
-          chars.includes(char),
+      return ([...string] as char[]).every(
+        stringchar =>
+          chars.includes(stringchar),
       );
     }
     catch (e) {
@@ -52,7 +37,7 @@ class CharSet {
 
   protected exclude(string: string) {
     try {
-      const { charset: chars } = this;
+      const { chars } = this;
 
       return chars.every(
         char =>
