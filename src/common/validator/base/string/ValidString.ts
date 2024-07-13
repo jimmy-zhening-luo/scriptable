@@ -2,7 +2,7 @@ const charString = importModule(
   `charstring/CharString`,
 ) as typeof CharString;
 
-class ValidString<Check extends string> extends charString<
+class ValidString<Check> extends charString<
   stringful,
   [Check, `Valid`]
 > {
