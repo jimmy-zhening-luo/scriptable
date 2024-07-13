@@ -1,4 +1,4 @@
 declare type Positive<
   N extends number,
-  Zero extends boolean = true,
+  Zero = true,
 > = Pole<N, "-", Zero>;

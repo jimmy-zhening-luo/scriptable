@@ -6,7 +6,7 @@ declare type Pole<
   | "-"
   | "+"
   ,
-  Zero extends boolean,
+  Zero,
 > =
   & N
   & {

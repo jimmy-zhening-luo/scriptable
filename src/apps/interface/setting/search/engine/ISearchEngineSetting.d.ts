@@ -1,6 +1,6 @@
 declare type ISearchEngineSetting<
   ActionType extends string,
-  Output extends boolean = false,
+  Output = false,
   Flags extends string = never,
   Fields extends string = never,
   Custom extends Record<
@@ -9,7 +9,7 @@ declare type ISearchEngineSetting<
     | string
     | boolean
   > = {},
-  MultiAction extends boolean = false,
+  MultiAction = false,
 > =
   & Record<
     ActionType,

@@ -1,4 +1,4 @@
-declare type FileProvider<C extends boolean> =
+declare type FileProvider<C> =
   & Field<"providerRoot">
   & (
     C extends false
