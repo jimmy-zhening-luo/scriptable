@@ -1,13 +1,13 @@
 declare type Tuple<
-  In,
+  I,
   L extends number,
-  Head extends In[] = [],
-> = [In] extends [never]
+  Head extends I[] = [],
+> = [I] extends [never]
   ? never
   : L extends L
     ? number extends L
-      ? In[]
+      ? I[]
       : Head["length"] extends L
         ? Head
-        : Tuple<In, L, [...Head, In]>
+        : Tuple<I, L, [...Head, I]>
     : never;

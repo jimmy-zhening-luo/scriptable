@@ -1,15 +1,15 @@
 declare type ArrayN<
-  In,
+  I,
   L,
-  Head extends In[] = [],
-> = [In] extends [never]
+  Head extends I[] = [],
+> = [I] extends [never]
   ? never
   : L extends number
     ? number extends L
-      ? In[]
+      ? I[]
       : 0 extends L
-        ? In[]
+        ? I[]
         : Head["length"] extends L
-          ? [...Head, ...In[]]
-          : ArrayN<In, L, [...Head, In]>
+          ? [...Head, ...I[]]
+          : ArrayN<I, L, [...Head, I]>
     : never;

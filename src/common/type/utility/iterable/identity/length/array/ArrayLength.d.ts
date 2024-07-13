@@ -1,8 +1,8 @@
 declare type ArrayLength<
-  Arr,
+  A,
   Head extends unknown[] = [],
-> = IsIterable<Arr> extends false
+> = IsIterable<A> extends false
   ? never
-  : Arr extends readonly [infer In, ...infer Rest]
-    ? ArrayLength<Rest, [...Head, In]>
+  : A extends readonly [infer H, ...infer T]
+    ? ArrayLength<T, [...Head, H]>
     : Head["length"];
