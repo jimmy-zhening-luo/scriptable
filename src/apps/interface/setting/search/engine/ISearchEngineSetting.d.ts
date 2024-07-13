@@ -19,11 +19,11 @@ declare type ISearchEngineSetting<
   & Field<never, Fields>
   & Custom
   & (
-    Output extends true
-      ? Particord<
+    Output extends false
+      ? {}
+      : Particord<
         "output",
         string | boolean
       >
-      : {}
   )
 ;

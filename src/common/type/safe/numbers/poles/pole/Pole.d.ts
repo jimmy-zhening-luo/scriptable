@@ -7,5 +7,12 @@ declare type Pole<
   | "+"
   ,
   Zero extends boolean,
-> = N & { [pole]: P } & { [min]: Zero extends true ? 0 : P extends "+" ? 1 : -1 }
+> =
+  & N
+  & {
+    [pole]: P;
+    [min]: Zero extends false
+      ? P extends "+" ? 1 : -1
+      : 0;
+  }
 ;

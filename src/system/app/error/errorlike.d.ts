@@ -1,8 +1,7 @@
-declare type ErrorLike<Real extends boolean = false> = Real extends true
-  ? Error
-  :
-    | primitive
-    | primitive[]
-    | Error
-    | { cause?: ErrorLike }
+declare type ErrorLike<Real = false> = Real extends false
+  ?
+  | Error
+  | { cause?: ErrorLike }
+  | Unflat<primitive>
+  : Error
 ;
