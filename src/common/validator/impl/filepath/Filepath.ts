@@ -37,11 +37,15 @@ class Filepath<L extends number = 0> {
 
   public get parent() {
     try {
+      const { min } = this;
       const parent = new (
         this.constructor as new (
           ...path: ConstructorParameters<typeof Filepath<L>>
         )=> this
-      )(this);
+      )(
+        min,
+        this,
+      );
 
       parent.pop();
 

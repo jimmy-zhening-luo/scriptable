@@ -14,7 +14,10 @@ class File {
       this._root = "root" in root || "alias" in root
         ? root.path
         : root.graft._root;
-      this._subpath = new this.Filepath(...subpaths);
+      this._subpath = new this.Filepath(
+        0,
+        ...subpaths,
+      );
     }
     catch (e) {
       throw new EvalError(
