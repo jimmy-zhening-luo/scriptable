@@ -13,13 +13,16 @@ class Filepath<L extends number = 0> {
             subpath =>
               typeof subpath !== "string"
                 ? subpath.nodes
-                : new this.Splitter<true>(
-                  subpath,
-                  true,
-                  "/",
-                  true,
-                )
-                  .nodes
+                : subpath
+                  .split("/")
+                  .map(
+                    node =>
+                      node.trim(),
+                  )
+                  .filter(
+                    (node): node is stringful =>
+                      node.length > 0,
+                  )
                   .map(
                     node =>
                       new this.FileNode(node).string,
@@ -54,20 +57,6 @@ class Filepath<L extends number = 0> {
     catch (e) {
       throw new EvalError(
         `Filepath: parent`,
-        { cause: e },
-      );
-    }
-  }
-
-  private get Splitter() {
-    try {
-      return importModule(
-        "./common/validator/base/string/Splitter",
-      ) as typeof Splitter;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Filepath: import Splitter`,
         { cause: e },
       );
     }
