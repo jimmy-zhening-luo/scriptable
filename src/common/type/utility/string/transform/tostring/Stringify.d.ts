@@ -3,9 +3,9 @@ declare type Stringify<O> = O extends O
     ? S extends string
       ? S
       : never
-    : O extends Record<"toString", infer Fun>
-      ? Fun extends ()=> string
-        ? ReturnType<Fun>
+    : O extends Record<"toString", infer Fn>
+      ? Fn extends ()=> string
+        ? ReturnType<Fn>
         : never
       : never
   : never;
