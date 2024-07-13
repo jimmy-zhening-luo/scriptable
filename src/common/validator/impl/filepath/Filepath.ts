@@ -3,7 +3,7 @@ class Filepath<L extends number = 0> {
 
   constructor(
     public readonly min: L,
-    ...subpaths: (Filepath<number> | string)[]
+    ...subpaths: (Filepath<L> | string)[]
   ) {
     try {
       this.nodes = this.check(
@@ -38,10 +38,10 @@ class Filepath<L extends number = 0> {
   public get parent() {
     try {
       const { min } = this;
-      const parent = new (
+      const parent: this = new (
         this.constructor as new (
           ...args: ConstructorParameters<typeof Filepath<L>>
-        )=> Filepath<L>
+        )=> this
       )(
         min,
         this,

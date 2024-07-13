@@ -8,13 +8,13 @@ class File {
       | File
       | Bookmark
       | { graft: File },
-    ...subpaths: ConstructorParameters<typeof Filepath>
+    ...subpaths: ConstructorParameters<typeof Filepath<0>>[1][]
   ) {
     try {
       this._root = "root" in root || "alias" in root
         ? root.path
         : root.graft._root;
-      this._subpath = new this.Filepath(
+      this._subpath = new this.Subpath(
         0,
         ...subpaths,
       );
@@ -39,7 +39,7 @@ class File {
     }
   }
 
-  public get subpath(): Stringify<Filepath<0>> {
+  public get subpath(): Stringify<Filepath> {
     try {
       return this._subpath.toString();
     }
@@ -108,15 +108,15 @@ class File {
     }
   }
 
-  private get Filepath() {
+  private get Subpath() {
     try {
       return importModule(
         "./common/validator/impl/filepath/Filepath",
-      ) as typeof Filepath;
+      ) as typeof Filepath<0>;
     }
     catch (e) {
       throw new ReferenceError(
-        `File: import Filepath<0>`,
+        `File: import Filepath<0> as Subpath`,
         { cause: e },
       );
     }
