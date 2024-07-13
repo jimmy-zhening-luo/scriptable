@@ -40,8 +40,8 @@ class Filepath<L extends number = 0> {
       const { min } = this;
       const parent = new (
         this.constructor as new (
-          ...path: ConstructorParameters<typeof Filepath<L>>
-        )=> this
+          ...args: ConstructorParameters<typeof Filepath<L>>
+        )=> Filepath<L>
       )(
         min,
         this,
