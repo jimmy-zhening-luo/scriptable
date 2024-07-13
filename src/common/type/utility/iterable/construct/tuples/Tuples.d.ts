@@ -6,3 +6,5 @@ declare type Pentad<In> = Tuple<In, 5>;
 declare type Hexad<In> = Tuple<In, 6>;
 declare type Heptad<In> = Tuple<In, 7>;
 declare type Octad<In> = Tuple<In, 8>;
+declare type Nonad<In> = Tuple<In, 9>;
+declare type Decad<In> = Tuple<In, 10>;
