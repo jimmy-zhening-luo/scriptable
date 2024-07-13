@@ -1,14 +1,18 @@
-abstract class IFilepath<L> {
-  protected readonly _nodes: Nodes<FileNode, L>;
+class Filepath<L extends number = 0> {
+  protected readonly nodes: Nodes<FileNode, L>;
 
-  constructor(...subpaths: (IFilepath<L> | string)[]) {
+  constructor(
+    public readonly min: L,
+    ...subpaths: (Filepath<number> | string)[]
+  ) {
     try {
-      this._nodes = this.check(
+      this.nodes = this.check(
+        min,
         subpaths
           .flatMap(
             subpath =>
               typeof subpath !== "string"
-                ? subpath._nodes
+                ? subpath.nodes
                 : new this.Splitter<true>(
                   subpath,
                   true,
@@ -25,7 +29,7 @@ abstract class IFilepath<L> {
     }
     catch (e) {
       throw new EvalError(
-        `IFilepath: ctor`,
+        `Filepath: ctor`,
         { cause: e },
       );
     }
@@ -35,7 +39,7 @@ abstract class IFilepath<L> {
     try {
       const parent = new (
         this.constructor as new (
-          ...path: ConstructorParameters<typeof IFilepath<L>>
+          ...path: ConstructorParameters<typeof Filepath<L>>
         )=> this
       )(this);
 
@@ -45,19 +49,7 @@ abstract class IFilepath<L> {
     }
     catch (e) {
       throw new EvalError(
-        `IFilepath: parent`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get isEmpty() {
-    try {
-      return this._nodes.length < 1;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IFilepath: isEmpty`,
+        `Filepath: parent`,
         { cause: e },
       );
     }
@@ -71,7 +63,7 @@ abstract class IFilepath<L> {
     }
     catch (e) {
       throw new ReferenceError(
-        `IFilepath: import Splitter`,
+        `Filepath: import Splitter`,
         { cause: e },
       );
     }
@@ -85,28 +77,28 @@ abstract class IFilepath<L> {
     }
     catch (e) {
       throw new ReferenceError(
-        `IFilepath: import FileNode`,
+        `Filepath: import FileNode`,
         { cause: e },
       );
     }
   }
 
-  public prepend(root: Stringify<IFilepath<1>>) {
+  public prepend(root: Stringify<Filepath<1>>) {
     try {
-      if (this.isEmpty)
-        return root;
-      else {
+      if (this.nodes.length > 0) {
         const rootThis = [
           root,
-          String(this) as Stringify<IFilepath<1>>,
+          String(this) as Stringify<Filepath<1>>,
         ] as const;
 
         return rootThis.join("/") as Joint<typeof rootThis, "/">;
       }
+      else
+        return root;
     }
     catch (e) {
       throw new EvalError(
-        `IFilepath: prepend`,
+        `Filepath: prepend`,
         { cause: e },
       );
     }
@@ -114,13 +106,13 @@ abstract class IFilepath<L> {
 
   public toString() {
     try {
-      const { _nodes } = this;
+      const { nodes } = this;
 
-      return _nodes.join("/") as Joint<typeof _nodes, "/">;
+      return nodes.join("/") as Joint<typeof nodes, "/">;
     }
     catch (e) {
       throw new EvalError(
-        `IFilepath: toString`,
+        `Filepath: toString`,
         { cause: e },
       );
     }
@@ -128,30 +120,60 @@ abstract class IFilepath<L> {
 
   private pop() {
     try {
-      const nodeQ = [...this._nodes].reverse();
+      const { min } = this;
+      const { length } = this.nodes;
+      const popped = this.nodes.pop() ?? null;
 
-      if (this.poppable(nodeQ)) {
-        this._nodes.pop();
-
-        return nodeQ[0];
-      }
-      else
+      if (popped === null)
+        throw new RangeError(`Filepath is already empty`);
+      else if (this.nodes.length < min)
         throw new RangeError(
-          `filepath unpoppable`,
-          { cause: { nodes: this._nodes } },
+          `Filepath would be too short after pop`,
+          {
+            cause: {
+              min,
+              before: length,
+              after: this.nodes.length,
+              nodes: this.nodes,
+            },
+          },
         );
+      else
+        return popped;
     }
     catch (e) {
       throw new EvalError(
-        `IFilepath: pop`,
+        `Filepath: pop`,
         { cause: e },
       );
     }
   }
 
-  protected abstract check(nodes: Nodes<FileNode>): IFilepath<L>["_nodes"];
-
-  protected abstract poppable(nodes: Nodes<FileNode>): nodes is Nodes<FileNode, 1>;
+  private check(
+    min: L,
+    nodes: Nodes<FileNode>,
+  ) {
+    try {
+      if (nodes.length < min)
+        throw new RangeError(
+          `Filepath too short`,
+          {
+            cause: {
+              min,
+              nodes,
+            },
+          },
+        );
+      else
+        return nodes as Nodes<FileNode, L>;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Filepath: check`,
+        { cause: e },
+      );
+    }
+  }
 }
 
-module.exports = IFilepath;
+module.exports = Filepath;

@@ -1,20 +1,20 @@
 class File {
   private readonly manager = FileManager.local();
-  private readonly _root: Stringify<Rootpath>;
-  private readonly _subpath: Subpath;
+  private readonly _root: Stringify<Filepath<1>>;
+  private readonly _subpath: Filepath;
 
   constructor(
     root:
       | File
       | Bookmark
       | { graft: File },
-    ...subpaths: ConstructorParameters<typeof Subpath>
+    ...subpaths: ConstructorParameters<typeof Filepath>
   ) {
     try {
       this._root = "root" in root || "alias" in root
         ? root.path
         : root.graft._root;
-      this._subpath = new this.Subpath(...subpaths);
+      this._subpath = new this.Filepath(...subpaths);
     }
     catch (e) {
       throw new EvalError(
@@ -24,7 +24,7 @@ class File {
     }
   }
 
-  public get path(): Stringify<Rootpath> {
+  public get path(): Stringify<Filepath<1>> {
     try {
       return this._subpath.prepend(this._root);
     }
@@ -36,7 +36,7 @@ class File {
     }
   }
 
-  public get subpath(): Stringify<Subpath> {
+  public get subpath(): Stringify<Filepath<0>> {
     try {
       return this._subpath.toString();
     }
@@ -105,15 +105,15 @@ class File {
     }
   }
 
-  private get Subpath() {
+  private get Filepath() {
     try {
       return importModule(
-        "./common/validator/impl/filepaths/Subpath",
-      ) as typeof Subpath;
+        "./common/validator/impl/filepath/Filepath",
+      ) as typeof Filepath;
     }
     catch (e) {
       throw new ReferenceError(
-        `File: import Subpath`,
+        `File: import Filepath<0>`,
         { cause: e },
       );
     }

@@ -1,6 +1,6 @@
 class Bookmark {
   public readonly alias: Alias;
-  public readonly path: Stringify<Rootpath>;
+  public readonly path: Stringify<Filepath<1>>;
 
   constructor(bookmark: string) {
     try {
@@ -21,7 +21,7 @@ class Bookmark {
         this.alias = alias as Alias;
         this.path = FileManager
           .local()
-          .bookmarkedPath(bookmark) as Stringify<Rootpath>;
+          .bookmarkedPath(bookmark) as Stringify<Filepath<1>>;
       }
     }
     catch (e) {
