@@ -1,15 +1,15 @@
 declare type Chain<
   A,
-  Separator extends string = "/",
-  Reverse extends boolean = false,
-> = literalful<A> extends never
-  ? A extends readonly [infer H, ...infer T]
-    ? literalful<H> extends never
-      ? never
-      : T extends readonly []
-        ? H
-        : Reverse extends true
-          ? `${Chain<T, Separator, true>}${Separator}${H}`
-          : `${H}${Separator}${Chain<T, Separator>}`
-    : never
-  : A;
+  Sep = "/",
+  Rev = false,
+> = literalful<Sep> extends never
+  ? never
+  : Sep extends Sep
+    ? A extends readonly [infer H, ...infer T]
+      ? T extends readonly []
+        ? literalful<H>
+        : Rev extends false
+          ? `${literalful<H>}${Sep}${Chain<T, Sep>}`
+          : `${Chain<T, Sep, true>}${Sep}${literalful<H>}`
+      : literalful<A>
+    : never;
