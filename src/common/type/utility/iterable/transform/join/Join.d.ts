@@ -1,4 +1,4 @@
-declare type Join<A, Separator extends string = string> = Joinable<A> extends false
+declare type Join<A, Sp = string> = Joinable<A> extends false
   ? never
   : IsArrayful<A> extends false
     ? string
@@ -14,8 +14,8 @@ declare type Join<A, Separator extends string = string> = Joinable<A> extends fa
         ? literalful<Flat<A>> extends never
           ? IsLongTupleful<A> extends false
             ? string
-            : literalful<Separator> extends never
-              ? Separator extends stringful
+            : literalful<Sp> extends never
+              ? Sp extends stringful
                 ? stringful
                 :
                   | string

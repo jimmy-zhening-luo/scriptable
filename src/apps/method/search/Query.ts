@@ -188,7 +188,7 @@ class Query {
                   [
                     LANG_TAG,
                     t0[TRANSLATE.length],
-                  ].join("") as Join<Dyad<stringful>>,
+                  ].join("") as Join<Tuple<stringful>>,
                   ...TRANSLATE.length + LANG_TAG.length < String(tokens.shift()).length
                     ? [t0.slice(TRANSLATE.length + LANG_TAG.length) as stringful]
                     : [],

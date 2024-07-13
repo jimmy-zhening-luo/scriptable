@@ -84,7 +84,7 @@ class Filepath<L extends number = 0> {
           String(this) as Stringify<Filepath<1>>,
         ] as const;
 
-        return rootThis.join("/") as Joint<typeof rootThis, "/">;
+        return rootThis.join("/") as Join<typeof rootThis, "/">;
       }
       else
         return root;
@@ -101,7 +101,7 @@ class Filepath<L extends number = 0> {
     try {
       const { nodes } = this;
 
-      return nodes.join("/") as Joint<typeof nodes, "/">;
+      return nodes.join("/") as Join<typeof nodes, "/">;
     }
     catch (e) {
       throw new EvalError(

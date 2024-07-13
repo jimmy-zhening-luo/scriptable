@@ -1,7 +1,8 @@
+// TODO: Hide accumulator
 declare type ArrayN<
   I,
   L,
-  Head extends I[] = [],
+  H extends I[] = [],
 > = [I] extends [never]
   ? never
   : L extends number
@@ -9,7 +10,7 @@ declare type ArrayN<
       ? I[]
       : 0 extends L
         ? I[]
-        : Head["length"] extends L
-          ? [...Head, ...I[]]
-          : ArrayN<I, L, [...Head, I]>
+        : H["length"] extends L
+          ? [...H, ...I[]]
+          : ArrayN<I, L, [...H, I]>
     : never;

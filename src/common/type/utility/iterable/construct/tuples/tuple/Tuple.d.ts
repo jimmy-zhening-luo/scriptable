@@ -1,13 +1,13 @@
+// TODO: constrain to positive integer
 declare type Tuple<
   I,
-  L extends number,
-  Head extends I[] = [],
+  L = 2,
 > = [I] extends [never]
   ? never
-  : L extends L
-    ? number extends L
-      ? I[]
-      : Head["length"] extends L
-        ? Head
-        : Tuple<I, L, [...Head, I]>
-    : never;
+  : Numbered<L> extends never
+    ? never
+    : TupleBuilder<I, L, []>;
+
+type TupleBuilder<I, L, H> = H["length"] extends L
+  ? H
+  : TupleBuilder<I, L, [...H, I]>;
