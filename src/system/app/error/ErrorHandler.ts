@@ -30,7 +30,7 @@ class ErrorHandler {
             this.print(error),
         );
 
-      this.log(messages);
+      console.error(messages.join("\n"));
       this.notify(messages);
 
       return messages.shift() ?? "";
@@ -43,27 +43,15 @@ class ErrorHandler {
     }
   }
 
-  private log(messages: readonly string[]) {
-    try {
-      console.error(messages.join("\n"));
-    }
-    catch (e) {
-      throw new EvalError(
-        `ErrorHandler: log`,
-        { cause: e },
-      );
-    }
-  }
-
   private notify(messages: readonly string[]) {
     try {
-      const note = new Notification();
+      const notif = new Notification();
       const lines = [...messages];
 
-      note.title = lines.shift() ?? "";
-      note.body = lines.join("\n");
-      note.sound = "failure";
-      note
+      notif.title = lines.shift() ?? "";
+      notif.body = lines.join("\n");
+      notif.sound = "failure";
+      notif
         .schedule()
         .catch(
           (e: unknown) => {
