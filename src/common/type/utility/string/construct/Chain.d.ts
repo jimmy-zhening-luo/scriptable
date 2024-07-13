@@ -1,15 +1,15 @@
 declare type Chain<
   A,
-  Sep = "/",
+  Sp = "/",
   Rev = false,
-> = literalful<Sep> extends never
+> = literalful<Sp> extends never
   ? never
-  : Sep extends Sep
+  : Sp extends Sp
     ? A extends readonly [infer H, ...infer T]
       ? T extends readonly []
         ? literalful<H>
         : Rev extends false
-          ? `${literalful<H>}${Sep}${Chain<T, Sep>}`
-          : `${Chain<T, Sep, true>}${Sep}${literalful<H>}`
+          ? `${literalful<H>}${Sp}${Chain<T, Sp>}`
+          : `${Chain<T, Sp, true>}${Sp}${literalful<H>}`
       : literalful<A>
     : never;
