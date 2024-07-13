@@ -1,8 +1,8 @@
-const k_Filetype = importModule(
+const kFiletype = importModule(
   `filetype/Filetype`,
 ) as typeof Filetype;
 
-class Key<Class extends string> extends k_Filetype<"Key", Class> {
+class Key<Class extends string> extends kFiletype<"Key", Class> {
   constructor(
     category: literalful<Class>,
     app: stringful,

@@ -1,4 +1,4 @@
-abstract class IEngine {
+abstract class SearchEngine {
   constructor(
     protected readonly app: string,
     protected readonly output:
@@ -18,7 +18,7 @@ abstract class IEngine {
     }
     catch (e) {
       throw new EvalError(
-        `IEngine: resolve [${String(query)}]`,
+        `SearchEngine: resolve [${String(query)}]`,
         { cause: e },
       );
     }
@@ -30,7 +30,7 @@ abstract class IEngine {
     }
     catch (e) {
       throw new EvalError(
-        `IEngine: transform [${String(query)}]`,
+        `SearchEngine: transform [${String(query)}]`,
         { cause: e },
       );
     }
@@ -57,13 +57,13 @@ abstract class IEngine {
     }
     catch (e) {
       throw new EvalError(
-        `IEngine: required [${String(query)}]`,
+        `SearchEngine: required [${String(query)}]`,
         { cause: e },
       );
     }
   }
 
-  protected abstract options(query: Query): Omit<SearchOutput, keyof ReturnType<IEngine["required"]>>;
+  protected abstract options(query: Query): Omit<SearchOutput, keyof ReturnType<SearchEngine["required"]>>;
 }
 
-module.exports = IEngine;
+module.exports = SearchEngine;

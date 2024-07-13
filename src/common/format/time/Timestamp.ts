@@ -1,8 +1,8 @@
-const s_IMoment = importModule(
-  `moment/IMoment`,
-) as typeof IMoment;
+const sMoment = importModule(
+  `moment/Moment`,
+) as typeof Moment;
 
-class Timestamp extends s_IMoment {
+class Timestamp extends sMoment {
   protected separator = "";
   protected formatDate = {
     month: "2-digit",

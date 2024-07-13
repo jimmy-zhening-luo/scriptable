@@ -1,8 +1,8 @@
-const amzn_ILinkPathProcessor = importModule(
-  `processor/ILinkPathProcessor`,
-) as typeof ILinkPathProcessor;
+const amzn_LinkPathProcessor = importModule(
+  `processor/LinkPathProcessor`,
+) as typeof LinkPathProcessor;
 
-class AmazonPathProcessor extends amzn_ILinkPathProcessor<"amazon.com"> {
+class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
   protected process(path: string) {
     try {
       return path.includes("/dp/")

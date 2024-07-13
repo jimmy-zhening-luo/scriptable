@@ -25,7 +25,7 @@ class Filepath<L extends number = 0> {
                   )
                   .map(
                     node =>
-                      new this.FileNode(node).string,
+                      new Filepath.FileNode(node).string,
                   ),
           ),
       );
@@ -33,6 +33,20 @@ class Filepath<L extends number = 0> {
     catch (e) {
       throw new EvalError(
         `Filepath: ctor`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static get FileNode() {
+    try {
+      return importModule(
+        "node/FileNode",
+      ) as typeof FileNode;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `Filepath: import FileNode`,
         { cause: e },
       );
     }
@@ -57,20 +71,6 @@ class Filepath<L extends number = 0> {
     catch (e) {
       throw new EvalError(
         `Filepath: parent`,
-        { cause: e },
-      );
-    }
-  }
-
-  private get FileNode() {
-    try {
-      return importModule(
-        "node/FileNode",
-      ) as typeof FileNode;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Filepath: import FileNode`,
         { cause: e },
       );
     }

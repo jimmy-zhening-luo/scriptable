@@ -18,9 +18,9 @@ declare type SearchSetting = {
     alias: FieldTable;
     engines: Table<
       | Unflat<string, false>
-      | ISearchEngineSetting<"find">
-      | ISearchEngineSetting<"shortcut", true>
-      | ISearchEngineSetting<
+      | SearchEngineSetting<"find">
+      | SearchEngineSetting<"shortcut", true>
+      | SearchEngineSetting<
         "url",
         true,
         "encodeComponent",

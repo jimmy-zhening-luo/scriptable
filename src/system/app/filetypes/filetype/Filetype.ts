@@ -42,20 +42,6 @@ abstract class Filetype<
     }
   }
 
-  protected static get ReadonlyFile() {
-    try {
-      return importModule(
-        "file/ReadonlyFile",
-      ) as typeof ReadonlyFile;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Filetype: import ReadonlyFile`,
-        { cause: e },
-      );
-    }
-  }
-
   protected static get File() {
     try {
       return importModule(
@@ -70,19 +56,21 @@ abstract class Filetype<
     }
   }
 
-  public get subpath() {
+  protected static get ReadonlyFile() {
     try {
-      return this.file.subpath;
+      return importModule(
+        "file/ReadonlyFile",
+      ) as typeof ReadonlyFile;
     }
     catch (e) {
-      throw new EvalError(
-        `Filetype: subpath`,
+      throw new ReferenceError(
+        `Filetype: import ReadonlyFile`,
         { cause: e },
       );
     }
   }
 
-  private get Bookmark() {
+  private static get Bookmark() {
     try {
       return importModule(
         "bookmark/Bookmark",
@@ -91,6 +79,18 @@ abstract class Filetype<
     catch (e) {
       throw new ReferenceError(
         `Filetype: import Bookmark`,
+        { cause: e },
+      );
+    }
+  }
+
+  public get subpath() {
+    try {
+      return this.file.subpath;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Filetype: subpath`,
         { cause: e },
       );
     }
@@ -141,7 +141,7 @@ abstract class Filetype<
 
   private root(subtype: literalful<Type>) {
     try {
-      return new this.Bookmark(subtype);
+      return new Filetype.Bookmark(subtype);
     }
     catch (e) {
       throw new EvalError(

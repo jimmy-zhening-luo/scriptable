@@ -14,7 +14,7 @@ class File {
       this._root = "root" in root || "alias" in root
         ? root.path
         : root.graft._root;
-      this._subpath = new this.Subpath(
+      this._subpath = new File.Subpath(
         0,
         ...subpaths,
       );
@@ -22,6 +22,20 @@ class File {
     catch (e) {
       throw new EvalError(
         `File: ctor`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static get Subpath() {
+    try {
+      return importModule(
+        "./common/validator/impl/filepath/Filepath",
+      ) as typeof Filepath<0>;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `File: import Filepath<0> as Subpath`,
         { cause: e },
       );
     }
@@ -103,20 +117,6 @@ class File {
     catch (e) {
       throw new EvalError(
         `File: parent`,
-        { cause: e },
-      );
-    }
-  }
-
-  private get Subpath() {
-    try {
-      return importModule(
-        "./common/validator/impl/filepath/Filepath",
-      ) as typeof Filepath<0>;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `File: import Filepath<0> as Subpath`,
         { cause: e },
       );
     }

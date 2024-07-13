@@ -55,7 +55,7 @@ namespace GPT {
           ? wrap.preset
           : preset,
         location: wrap.location ?? location,
-        date: wrap.date ?? new this.Timeprint().date,
+        date: wrap.date ?? new this.timeprint().date,
       };
       const presetConfig = presets[opts.preset] ?? null;
       const [

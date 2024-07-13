@@ -1,4 +1,4 @@
-abstract class IMoment {
+abstract class Moment {
   protected abstract separator: string;
   protected abstract formatDate: Table;
   protected abstract formatLocal: Table;
@@ -150,4 +150,4 @@ abstract class IMoment {
   protected abstract afterLocal(local: string): string;
 }
 
-module.exports = IMoment;
+module.exports = Moment;

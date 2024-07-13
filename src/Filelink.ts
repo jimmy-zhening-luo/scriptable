@@ -143,7 +143,7 @@ namespace Filelink {
 
     private validPath(nodes: Unflat) {
       try {
-        const path = this.stringfulArray([nodes].flat());
+        const path = this.stringfuls([nodes].flat());
         const { length } = path;
 
         if (length < 1)

@@ -167,14 +167,14 @@ namespace Link {
     private Processor<Host extends string>(host: Host): new (
       host: Host,
       path: string
-    )=> ILinkPathProcessor<Host> {
+    )=> LinkPathProcessor<Host> {
       try {
         return importModule(
           `apps/method/link/processors/${host}`,
         ) as new (
           host: Host,
           path: string
-        )=> ILinkPathProcessor<Host>;
+        )=> LinkPathProcessor<Host>;
       }
       catch (e) {
         throw new EvalError(

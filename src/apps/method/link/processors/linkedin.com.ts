@@ -1,6 +1,6 @@
 const lnkd_ILinkPathProcessor = importModule(
-  `processor/ILinkPathProcessor`,
-) as typeof ILinkPathProcessor;
+  `processor/LinkPathProcessor`,
+) as typeof LinkPathProcessor;
 
 class LinkedInPathProcessor extends lnkd_ILinkPathProcessor<"linkedin.com"> {
   protected process(path: string) {

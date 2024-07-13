@@ -1,4 +1,4 @@
-const sh_App = importModule(
+const app = importModule(
   `app/App`,
 ) as typeof App;
 
@@ -6,7 +6,7 @@ abstract class Shortcut<
   Input = never,
   Output = never,
   Schema = never,
-> extends sh_App<"Shortcut", Nullable<Input>, Null<Output>, Schema> {
+> extends app<"Shortcut", Nullable<Input>, Null<Output>, Schema> {
   constructor(debug?: boolean) {
     super(
       "Shortcut",

@@ -1,4 +1,4 @@
-declare type ISearchEngineSetting<
+declare type SearchEngineSetting<
   ActionType extends string,
   Output = false,
   Flags extends string = never,

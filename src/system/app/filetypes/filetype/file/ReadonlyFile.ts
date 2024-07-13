@@ -1,8 +1,8 @@
-const _File = importModule(
+const file = importModule(
   `File`,
 ) as typeof File;
 
-class ReadonlyFile extends _File {
+class ReadonlyFile extends file {
   public override write(): never {
     throw new ReferenceError(
       `Forbidden: ReadonlyFile: write`,

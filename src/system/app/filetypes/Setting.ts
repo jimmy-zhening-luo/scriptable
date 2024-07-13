@@ -1,11 +1,11 @@
-const se_Filetype = importModule(
+const cFiletype = importModule(
   `filetype/Filetype`,
 ) as typeof Filetype;
 
 class Setting<
   Class extends string,
   Schema,
-> extends se_Filetype<"Setting", Class> {
+> extends cFiletype<"Setting", Class> {
   constructor(
     category: literalful<Class>,
     app: stringful,

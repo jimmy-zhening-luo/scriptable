@@ -1,4 +1,4 @@
-abstract class ILinkPathProcessor<Host extends string> {
+abstract class LinkPathProcessor<Host extends string> {
   public readonly processed: string;
 
   constructor(
@@ -10,7 +10,7 @@ abstract class ILinkPathProcessor<Host extends string> {
     }
     catch (e) {
       throw new EvalError(
-        `ILinkPathProcessor: ctor`,
+        `LinkPathProcessor: ctor`,
         { cause: e },
       );
     }
@@ -19,4 +19,4 @@ abstract class ILinkPathProcessor<Host extends string> {
   protected abstract process(path: string): string;
 }
 
-module.exports = ILinkPathProcessor;
+module.exports = LinkPathProcessor;

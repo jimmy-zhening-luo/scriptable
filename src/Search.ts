@@ -94,20 +94,20 @@ namespace Search {
 
       if (setting === null)
         throw new ReferenceError(
-          `Engine setting missing for key`,
+          `SearchEngine setting missing for key`,
           { cause: key },
         );
       else {
         const engine = Array.isArray(setting) || typeof setting === "string"
           ? new (
-            this.Engine<typeof UrlEngine>("UrlEngine")
+            this.SearchEngine<typeof UrlEngine>("UrlEngine")
           )(
             setting,
             TAG,
           )
           : "url" in setting
             ? new (
-              this.Engine<typeof UrlEngine>("UrlEngine")
+              this.SearchEngine<typeof UrlEngine>("UrlEngine")
             )(
               setting.url,
               TAG,
@@ -118,13 +118,13 @@ namespace Search {
             )
             : "shortcut" in setting
               ? new (
-                this.Engine<typeof ShortcutEngine>("ShortcutEngine")
+                this.SearchEngine<typeof ShortcutEngine>("ShortcutEngine")
               )(
                 setting.shortcut,
                 setting.output,
               )
               : new (
-                this.Engine<typeof FindEngine>("FindEngine")
+                this.SearchEngine<typeof FindEngine>("FindEngine")
               )(setting.find);
 
         this.write(String(query));
@@ -133,15 +133,15 @@ namespace Search {
       }
     }
 
-    private Engine<T>(flavor: string): T {
+    private SearchEngine<T>(provider: string): T {
       try {
         return importModule(
-          `apps/method/search/engines/${flavor}`,
+          `apps/method/search/engines/${provider}`,
         ) as T;
       }
       catch (e) {
         throw new EvalError(
-          `Search: import <T>Engine`,
+          `Search: import <T>SearchEngine`,
           { cause: e },
         );
       }

@@ -27,7 +27,7 @@ abstract class App<
     }
   }
 
-  protected get Timestamp() {
+  protected get timestamp() {
     try {
       return importModule(
         "./common/format/time/Timestamp",
@@ -41,7 +41,7 @@ abstract class App<
     }
   }
 
-  protected get Timeprint() {
+  protected get timeprint() {
     try {
       return importModule(
         "./common/format/time/Timeprint",
@@ -223,20 +223,6 @@ abstract class App<
     }
   }
 
-  private get ErrorHandler() {
-    try {
-      return importModule(
-        "error/ErrorHandler",
-      ) as typeof ErrorHandler;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import ErrorHandler`,
-        { cause: e },
-      );
-    }
-  }
-
   private get _setting() {
     try {
       if (typeof this.__setting === "undefined")
@@ -285,7 +271,7 @@ abstract class App<
         const output = this.runtime();
 
         if (this.debug) {
-          const timestamp = new this.Timestamp();
+          const timestamp = new this.timestamp();
           const {
             datetime,
             epoch,
@@ -314,27 +300,18 @@ abstract class App<
       }
     }
     catch (e) {
+      const Handler = importModule(
+        "error/ErrorHandler",
+      ) as typeof ErrorHandler;
+
       throw new Error(
-        new this
-          .ErrorHandler()
+        new Handler()
           .handle(
             new Error(
               `run\n`,
               { cause: e },
             ),
           ),
-      );
-    }
-  }
-
-  protected truthy(value: Input): value is NonNullable<Input> {
-    try {
-      return !App.falsy(value);
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: truthy`,
-        { cause: e },
       );
     }
   }
@@ -348,7 +325,7 @@ abstract class App<
         return string as stringful;
       else
         throw new TypeError(
-          `empty string`,
+          `Empty string`,
           { cause: { error } },
         );
     }
@@ -360,7 +337,7 @@ abstract class App<
     }
   }
 
-  protected stringfulArray(array: string[]) {
+  protected stringfuls(array: string[]) {
     try {
       if (
         array.every(
@@ -371,13 +348,8 @@ abstract class App<
         return array;
       else
         throw new TypeError(
-          `string array has empty string`,
-          {
-            cause: {
-              array,
-              length: array.length,
-            },
-          },
+          `Array has empty strings`,
+          { cause: array },
         );
     }
     catch (e) {
@@ -595,6 +567,18 @@ abstract class App<
     catch (e) {
       throw new EvalError(
         `App: key`,
+        { cause: e },
+      );
+    }
+  }
+
+  private truthy(value: Input): value is NonNullable<Input> {
+    try {
+      return !App.falsy(value);
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: truthy`,
         { cause: e },
       );
     }

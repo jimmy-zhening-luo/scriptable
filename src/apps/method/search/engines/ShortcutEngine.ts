@@ -1,8 +1,8 @@
-const s_IEngine = importModule(
-  `engine/IEngine`,
-) as typeof IEngine;
+const sIEngine = importModule(
+  `engine/SearchEngine`,
+) as typeof SearchEngine;
 
-class ShortcutEngine extends s_IEngine {
+class ShortcutEngine extends sIEngine {
   protected readonly shortcut: string;
 
   constructor(

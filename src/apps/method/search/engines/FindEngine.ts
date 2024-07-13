@@ -1,8 +1,8 @@
-const f_IEngine = importModule(
-  `engine/IEngine`,
-) as typeof IEngine;
+const fIEngine = importModule(
+  `engine/SearchEngine`,
+) as typeof SearchEngine;
 
-class FindEngine extends f_IEngine {
+class FindEngine extends fIEngine {
   protected readonly find: string;
 
   constructor(find: string) {

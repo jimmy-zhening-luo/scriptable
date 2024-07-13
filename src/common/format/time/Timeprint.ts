@@ -1,8 +1,8 @@
-const p_IMoment = importModule(
-  `moment/IMoment`,
-) as typeof IMoment;
+const pMoment = importModule(
+  `moment/Moment`,
+) as typeof Moment;
 
-class Timeprint extends p_IMoment {
+class Timeprint extends pMoment {
   protected separator = " " as stringful;
   protected formatDate = {
     weekday: "long",
