@@ -29,15 +29,14 @@
   },
   "main": "",
   "types": "",
-  "peerDependencies": {},
   "peerDependenciesMeta": {},
-  "optionalDependencies": {},
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^20.14.10",
     "@types/scriptable-ios": "^1.7.7",
     "eslint": "~8.57.0",
     "linted": "~14.1.1",
+    "npm-run-all": "^4.1.5",
+    "run-script-os": "^1.1.6",
     "typescript": "^5.5.3"
   },
   "jest": {
