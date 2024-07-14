@@ -46,9 +46,9 @@
     ]
   },
   "scripts": {
-    "e": "eslint --cache --fix",
-    "lint:source": "npm run e src/**/*.{js,ts,html}",
-    "lint:configs": "npm run e {*,.github/workflows/*}.{json,jsonc,js,ts,yml}",
+    "eslint": "eslint --cache --fix",
+    "lint:source": "npm run eslint src/**/*.{js,ts,html}",
+    "lint:configs": "npm run eslint {*,.github/workflows/*}.{json,jsonc,js,ts,yml}",
     "lint": "(npm run --if-present lint:svelte) && (npm run lint:source) && (npm run lint:configs)",
     "prebuild": "npm run lint",
     "build": "(vite build) || (tsc)",
@@ -58,6 +58,6 @@
     "prestart": "npm test",
     "start": "(vite preview) || (node .)",
     "preaction": "npm test",
-    "action": "((mkdir packed)   ||   (((rm -rf packed) || (rmdir /s /q packed))  &&  (mkdir packed)))    &&    ((cp -r built/js/* packed)   ||   (xcopy /e /k /h /i \"./built/js\" \"packed\"))"
+    "action": "((mkdir packed)   ||   (((rm -rf packed) || (rmdir /s /q packed))  &&  (mkdir packed)))    &&    ((cp -r built/js/* packed)   ||   (xcopy /eslint /k /h /i \"./built/js\" \"packed\"))"
   }
 }
