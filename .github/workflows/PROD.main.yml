@@ -29,7 +29,7 @@ jobs:
         run: npm ci
       - name: Build/Pack Distro
         id: buildpack
-        run: npm run action
+        run: npm run deploy
       - name: Zip Distro
         id: zip
         run: |

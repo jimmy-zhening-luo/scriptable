@@ -12,7 +12,7 @@
   "type": "module",
   "private": true,
   "config": {
-    "PACKAGE_JSON_VERSION": "20.8.0"
+    "PACKAGE_JSON_VERSION": "20.9.0"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,6 @@
     "eslint": "~8.57.0",
     "linted": "~14.1.1",
     "npm-run-all": "^4.1.5",
-    "run-script-os": "^1.1.6",
     "typescript": "^5.5.3"
   },
   "jest": {
@@ -46,18 +45,23 @@
     ]
   },
   "scripts": {
-    "eslint": "eslint --cache --fix",
-    "lint:source": "npm run eslint src/**/*.{js,ts,html}",
-    "lint:configs": "npm run eslint {*,.github/workflows/*}.{json,jsonc,js,ts,yml}",
-    "lint": "(npm run --if-present lint:svelte) && (npm run lint:source) && (npm run lint:configs)",
-    "prebuild": "npm run lint",
-    "build": "(vite build) || (tsc)",
+    "build": "run-s \"build:{1}:*\" lint:built  --  ts",
+    "build:ts:compile": "tsc",
+    "build:svelte:sync": "svelte-kit sync",
+    "build:svelte:check": "svelte-check --tsconfig ./tsconfig.json",
+    "build:svelte:compile": "vite build",
+    "build:svelte:prelint": "npm run ln src/**/*.svelte",
+    "lint": "npm run build",
+    "lint:built": "run-s lint:built:*",
+    "lint:built:configs": "npm run ln {*,.github/workflows/*}.{json,jsonc,js,ts,yml}",
+    "lint:built:source": "npm run ln src/**/*.{js,ts,html}",
+    "ln": "eslint --cache --fix",
     "pretest": "npm run build",
-    "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" NODE_NO_WARNINGS=1 jest --passWithNoTests --",
-    "prepublishOnly": "npm test",
+    "test": "",
+    "start": "vite preview || node .",
     "prestart": "npm test",
-    "start": "(vite preview) || (node .)",
-    "preaction": "npm test",
-    "action": "((mkdir packed)   ||   (((rm -rf packed) || (rmdir /s /q packed))  &&  (mkdir packed)))    &&    ((cp -r built/js/* packed)   ||   (xcopy /eslint /k /h /i \"./built/js\" \"packed\"))"
+    "prepublishOnly": "npm test",
+    "predeploy": "npm test",
+    "deploy": "((mkdir packed)   ||   (((rm -rf packed) || (rmdir /s /q packed))  &&  (mkdir packed)))    &&    ((cp -r built/js/* packed)   ||   (xcopy /eslint /k /h /i \"./built/js\" \"packed\"))"
   }
 }
