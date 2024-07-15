@@ -1,12 +1,15 @@
-declare type True<B extends boolean> = [B] extends [true]
-  ? B
-  : never;
+declare type True<B extends boolean> = Primeval<B, boolean> extends never
+  ? never
+  : B extends true
+    ? B
+    : never;
 
 declare namespace True {
   export type T0 = True<true>;
 }
 
 declare namespace NotTrue {
+
   export type N0 = True<never>;
   export type N1 = True<false>;
   export type N1a = True<false | true>;
