@@ -1,12 +1,8 @@
-declare type Property<
-  K,
-  OK,
-  V,
-> = literalful<K> extends never
+declare type Property<K extends string, OK extends string, V> = literalful<K> extends never
   ? Particord<OK, V>
   : Recordful<K, V>
   & (
     literalful<OK> extends never
       ? {}
-      : Particordful<OK, V>
+      : Particord<OK, V>
   );

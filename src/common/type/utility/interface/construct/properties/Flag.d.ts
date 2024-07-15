@@ -1,4 +1,4 @@
 declare type Flag<
-  OK,
-  K = never,
+  OK extends string,
+  K extends string = never,
 > = Property<K, OK, boolean>;
