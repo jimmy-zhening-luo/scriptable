@@ -1,4 +1,4 @@
-declare type Positive<
+declare type Negative<
   N extends number,
   Zero = true,
 > = Pole<N, "-", Zero>;
