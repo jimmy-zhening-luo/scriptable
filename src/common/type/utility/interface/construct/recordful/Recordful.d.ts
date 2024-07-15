@@ -1,3 +1,3 @@
-declare type Recordful<K, V> = {} extends Record<literalful<K>, V>
+declare type Recordful<K extends string, V> = literalful<K> extends never
   ? never
-  : Record<literalful<K>, V>;
+  : Record<K, V>;
