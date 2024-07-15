@@ -40,7 +40,7 @@ function Base64Guid() {
           return hexchars.map(
             hexchar =>
               hexvalue[hexchar],
-          ) as Tuple<hex, 32>;
+          ) satisfies hex[] as unknown as Tuple<hex, 32>;
       }
     }
     catch (e) {
@@ -81,7 +81,7 @@ function Base64Guid() {
       },
     );
 
-    const quads = buffer as Octad<Quad<hex>>;
+    const quads = buffer satisfies Octad<hex[]> as unknown as Octad<Quad<hex>>;
     const charcodes = quads
       .map(
         ([

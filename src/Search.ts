@@ -64,7 +64,7 @@ namespace Search {
       ].map(
         key =>
           this.stringful(key),
-      ) as Tuple<stringful, 9>;
+      ) satisfies stringful[] as unknown as Tuple<stringful, 9>;
       const query = new this.Query(
         this.inputString.length > 0
           ? this.inputString

@@ -1,4 +1,4 @@
-declare type Unflat<I = string, RO = true> =
-  | I
-  | (RO extends false ? I[] : readonly I[])
+declare type Unflat<In = string, RO extends boolean = true> =
+  | In
+  | (True<RO> extends never ? In[] : readonly In[])
 ;
