@@ -1,6 +1,6 @@
 declare type Interface<R extends object> = [Exclude<R, object>] extends [never]
   ? [Extract<R, readonly unknown[]>] extends [never]
-      ? R extends Record<infer K, unknown>
+      ? Required<R> extends Record<infer K, unknown>
         ? Exclude<K, string> extends never
           ? literalful<K & string> extends never
             ? never
@@ -11,18 +11,15 @@ declare type Interface<R extends object> = [Exclude<R, object>] extends [never]
   : never;
 
 declare namespace InterfaceTest {
-  export type T0 = Interface<{ a: 1 }>;
+  export type T = Interface<{ a: 5 }>;
+  export type T0 = Interface<{
+    a: 1;
+    b?: 2;
+  }>;
   export type T1 = Interface<{
     a: 1;
     b: 2;
   }>;
-  export type T1b = Interface<
-    | {
-      a: 1;
-      b: 2;
-    }
-    | { c: 2 }
-  >;
   export type T2 = Interface<Record<"a", unknown>>;
   export type T3 = Interface<Record<"a" | "b", unknown>>;
 }
@@ -50,7 +47,18 @@ declare namespace NotInterface {
   export type N2c = Interface<(a: string)=> {}>;
   export type N5 = Interface<[] | { a: 1 }>;
   export type N5a = Interface<[30] | { a: 1 }>;
-  export type N26 = Interface<{} | []>;
+  export type N5b = Interface<{} | []>;
+  export type N5c = Interface<
+    | {
+      a: 1;
+      b: 2;
+    }
+    | {
+      a: 1;
+      b: 2;
+      c: 2;
+    }
+  >;
   export type N3 = Interface<stringful>;
   export type N3b = Interface<numberful>;
 
