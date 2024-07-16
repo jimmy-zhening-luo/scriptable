@@ -15,7 +15,7 @@ namespace Link {
       | "_query"
       | "_fragment"
     >,
-    string,
+    Field<"link", "postprocessor">,
     LinkSetting
   > {
     protected runtime() {
@@ -50,6 +50,22 @@ namespace Link {
         include[host] ?? [],
         exclude[host] ?? [],
       ];
+      const processor = [
+        "amazon.com",
+        "dropbox.com",
+        "linkedin.com",
+        "reddit.com",
+      ].includes(host)
+        ? new (
+          this.Processor(host)
+        )(
+          host,
+          _path,
+        )
+        : null;
+      const postprocessor = processor !== null && processor.postprocessor !== null
+        ? processor.postprocessor
+        : null;
       const url = {
         scheme: [
           "http",
@@ -59,19 +75,9 @@ namespace Link {
           : _scheme.toLowerCase(),
         host,
         port: _port,
-        path: [
-          "amazon.com",
-          "dropbox.com",
-          "linkedin.com",
-          "reddit.com",
-        ].includes(host)
-          ? new (
-            this.Processor(host)
-          )(
-            host,
-            _path,
-          ).processed
-          : _path,
+        path: processor === null
+          ? _path
+          : processor.processed,
         query: omit.includes(host)
           ? ""
           : host in include
@@ -106,7 +112,12 @@ namespace Link {
           : _fragment,
       };
 
-      return this.buildURL(url);
+      return {
+        link: this.buildURL(url),
+        ...postprocessor === null
+          ? {}
+          : { postprocessor },
+      };
     }
 
     private buildURL(
