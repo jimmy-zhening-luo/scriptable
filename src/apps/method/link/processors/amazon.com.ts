@@ -5,7 +5,7 @@ const amzn_LinkPathProcessor = importModule(
 class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
   protected process(path: string) {
     try {
-      return path.includes("/dp/")
+      const processed = path.includes("/dp/")
         ? [
             "/dp/",
             (
@@ -17,6 +17,11 @@ class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
               .shift() ?? "",
           ].join("")
         : path;
+
+      return {
+        processed,
+        postprocessor: "Fakespot",
+      }
     }
     catch (e) {
       throw new EvalError(

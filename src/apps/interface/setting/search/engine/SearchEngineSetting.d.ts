@@ -1,25 +1,20 @@
 declare type SearchEngineSetting<
   ActionType extends string,
-  Output = false,
+  Output extends boolean = false,
   Flags extends string = never,
   Fields extends string = never,
-  Custom extends Record<
-    string,
-    | string[]
-    | string
-    | boolean
-  > = {},
-  MultiAction = false,
+  Custom extends {} = {},
+  MultiAction extends boolean = false,
 > =
   & Record<
     ActionType,
-    MultiAction extends false ? string : Unflat<string, false>
+    (True<MultiAction> extends never ? string : Unflat<string, false>)
   >
-  & Flag<Flags>
-  & Field<never, Fields>
+  & (literalful<Flags> extends never ? {} : Flag<Flags>)
+  & (literalful<Fields> extends never ? {} : Field<never, Fields>)
   & Custom
   & (
-    Output extends false
+    True<Output> extends false
       ? {}
       : Particord<
         "output",

@@ -1,7 +1,5 @@
-declare type Separator<S> = [S] extends [never]
-  ? never
-  : [string] extends [S]
+declare type Separator<S extends string> = [string] extends [S]
+  ? string
+  : [""] extends [S]
       ? string
-      : [""] extends [S]
-          ? string
-          : literalful<S>;
+      : literalful<S>;

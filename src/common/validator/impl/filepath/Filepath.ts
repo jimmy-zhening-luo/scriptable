@@ -1,5 +1,5 @@
 class Filepath<L extends number = 0> {
-  protected readonly nodes: Nodes<FileNode, L>;
+  protected readonly nodes: PathN<FileNode, L>;
 
   constructor(
     public readonly min: L,
@@ -81,7 +81,7 @@ class Filepath<L extends number = 0> {
       if (this.nodes.length > 0) {
         const rootThis = [
           root,
-          String(this) as Stringify<Filepath<1>>,
+          String(this),
         ] as const;
 
         return rootThis.join("/") as Join<typeof rootThis, "/">;
@@ -144,7 +144,7 @@ class Filepath<L extends number = 0> {
 
   private check(
     min: L,
-    nodes: Nodes<FileNode>,
+    nodes: PathN<FileNode>,
   ) {
     try {
       if (nodes.length < min)
@@ -158,7 +158,7 @@ class Filepath<L extends number = 0> {
           },
         );
       else
-        return nodes as Nodes<FileNode, L>;
+        return nodes as PathN<FileNode, L>;
     }
     catch (e) {
       throw new EvalError(

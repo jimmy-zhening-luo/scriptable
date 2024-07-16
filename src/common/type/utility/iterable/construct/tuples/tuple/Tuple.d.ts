@@ -1,13 +1,12 @@
 // TODO: constrain to positive integer
-declare type Tuple<
-  I,
-  L = 2,
-> = [I] extends [never]
+declare type Tuple<I, L extends number = 2> = [I] extends [never]
   ? never
   : Numbered<L> extends never
     ? never
-    : TupleBuilder<I, L, []>;
+    : TupleBuilder<I, Numbered<L>, readonly []>;
 
-type TupleBuilder<I, L, H> = H["length"] extends L
-  ? H
-  : TupleBuilder<I, L, [...H, I]>;
+type TupleBuilder<I, L, H> = H extends readonly I[]
+  ? H["length"] extends L
+    ? H
+    : TupleBuilder<I, L, readonly [...H, I]>
+  : never;

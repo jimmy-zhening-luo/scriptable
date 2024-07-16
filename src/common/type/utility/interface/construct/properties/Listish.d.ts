@@ -1,4 +1,4 @@
 declare type Listish<
-  K,
-  OK = never,
+  K extends string,
+  OK extends string = never,
 > = Property<K, OK, Unflat>;

@@ -326,7 +326,7 @@ abstract class App<
       else
         throw new TypeError(
           `Empty string`,
-          { cause: { error } },
+          { cause: error },
         );
     }
     catch (e) {
@@ -572,13 +572,37 @@ abstract class App<
     }
   }
 
-  private truthy(value: Input): value is NonNullable<Input> {
+  protected truthy(value: Input): value is NonNullable<Input> {
     try {
       return !App.falsy(value);
     }
     catch (e) {
       throw new EvalError(
         `App: truthy`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected url(string: string) {
+    try {
+      const matcher = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u;
+      const _parts = string.match(matcher) ?? [];
+      const parts = (_parts[2] ?? null) !== null
+        ? _parts
+        : `https://${string}`.match(matcher) ?? [];
+
+      return {
+        scheme: parts[2] ?? "",
+        host: parts[4] ?? "",
+        path: parts[5] ?? "",
+        query: parts[7] ?? "",
+        fragment: parts[9] ?? "",
+      };
+    }
+    catch (e) {
+      throw new EvalError(
+        `App: url`,
         { cause: e },
       );
     }
