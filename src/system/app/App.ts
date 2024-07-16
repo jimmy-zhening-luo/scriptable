@@ -586,7 +586,7 @@ abstract class App<
 
   protected url(string: string) {
     try {
-      const matcher = /^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/;
+      const matcher = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u;
       const _parts = string.match(matcher) as unknown as Decad<Null<string>>;
       const parts = _parts[2] !== null
         ? _parts
