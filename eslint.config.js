@@ -2,5 +2,8 @@ import linted from "linted";
 
 export default linted(
   {},
-  { ts: { "prefer-named-capture-group": "off" } },
+  {
+    js: { "prefer-named-capture-group": "off" },
+    ts: { "prefer-named-capture-group": "off" },
+  },
 );
