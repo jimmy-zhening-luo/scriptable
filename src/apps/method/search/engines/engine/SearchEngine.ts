@@ -48,11 +48,9 @@ abstract class SearchEngine {
         action: this.transform(query),
         ...output === false
           ? {}
-          : {
-              output: output === true
-                ? "_"
-                : output,
-            },
+          : output === true || output.length < 1
+            ? { output: "_" }
+            : { output },
       };
     }
     catch (e) {
