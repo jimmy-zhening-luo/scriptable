@@ -590,7 +590,7 @@ abstract class App<
       const _parts = string.match(matcher) as unknown as Decad<Null<string>>;
       const parts = _parts[2] !== null
         ? _parts
-        : `https://${string}`.match(matcher);
+        : `https://${string}`.match(matcher) as unknown as Decad<Null<string>>;
 
       return {
         scheme: parts[2] ?? "",
