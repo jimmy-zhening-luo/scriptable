@@ -587,10 +587,10 @@ abstract class App<
   protected url(string: string) {
     try {
       const matcher = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u;
-      const _parts = string.match(matcher) as unknown as Decad<Null<string>>;
-      const parts = _parts[2] !== null
+      const _parts = string.match(matcher) ?? [];
+      const parts = (_parts[2] ?? null) !== null
         ? _parts
-        : `https://${string}`.match(matcher) as unknown as Decad<Null<string>>;
+        : `https://${string}`.match(matcher) ?? [];
 
       return {
         scheme: parts[2] ?? "",
