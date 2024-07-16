@@ -1,1 +1,1 @@
-declare type char = stringful & Lengthen<1>;
+declare type char = stringful & PropLength<1>;

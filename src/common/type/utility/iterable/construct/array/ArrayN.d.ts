@@ -1,7 +1,7 @@
 // TODO: constrain to positive integer
-declare type ArrayN<I, L extends number> = Length<L> extends 0
+declare type ArrayN<I, L extends number> = MinLength<L> extends 0
   ? I[]
-  : ArrayBuilder<I, Length<L>>;
+  : ArrayBuilder<I, MinLength<L>>;
 
 type ArrayBuilder<I, L extends number, H extends I[] = []> = H["length"] extends L
   ? [...H, ...I[]]

@@ -1,6 +1,6 @@
 declare type Arrayfuled<A extends readonly unknown[]> = 0 extends ArrayLength<A>
   ? never
-  : A;
+  : ArrayType<A>;
 
 declare namespace Arrayfuled {
   export type T0 = Arrayfuled<[1, 1]>;

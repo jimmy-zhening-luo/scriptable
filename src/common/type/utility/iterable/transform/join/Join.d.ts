@@ -10,7 +10,7 @@ declare type Join<A extends readonly unknown[], Sp extends string = string> = Ar
       | boolean
     > extends never
       ? literalful<Flat<A>> extends never
-        ? IsLongTupleful<A> extends false
+        ? TriadType<A> extends false
           ? string
           : literalful<Sp> extends never
             ? Sp extends stringful
