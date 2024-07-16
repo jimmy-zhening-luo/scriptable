@@ -1,16 +1,8 @@
-// TODO: Hide accumulator
-declare type ArrayN<
-  I,
-  L,
-  H extends I[] = [],
-> = [I] extends [never]
-  ? never
-  : L extends number
-    ? number extends L
-      ? I[]
-      : 0 extends L
-        ? I[]
-        : H["length"] extends L
-          ? [...H, ...I[]]
-          : ArrayN<I, L, [...H, I]>
-    : never;
+// TODO: constrain to positive integer
+declare type ArrayN<I, L extends number> = Length<L> extends 0
+  ? I[]
+  : ArrayBuilder<I, Length<L>>;
+
+type ArrayBuilder<I, L extends number, H extends I[] = []> = H["length"] extends L
+  ? [...H, ...I[]]
+  : ArrayBuilder<I, L, [...H, I]>;
