@@ -63,9 +63,7 @@ namespace Link {
           _path,
         )
         : null;
-      const postprocessor = processor !== null && processor.postprocessor !== null
-        ? processor.postprocessor
-        : null;
+      const postprocessor = processor?.postprocessor ?? null;
       const url = {
         scheme: [
           "http",
