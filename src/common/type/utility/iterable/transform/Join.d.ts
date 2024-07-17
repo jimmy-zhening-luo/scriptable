@@ -17,5 +17,3 @@ declare type Join<A extends readonly unknown[], D extends string = string> = Arr
               : stringful
             : stringful
       : never;
-
-type bingus = MonadType<Filepath<2>["nodes"]>;

@@ -49,7 +49,7 @@ declare namespace NotArrayType {
     length: 1;
   }>;
   export type N21 = ArrayType<symbol>;
-  export type N22 = ArrayType<Bookmark>;
+  export type N22 = ArrayType<object>;
   export type N23 = ArrayType<
     | []
     | object
