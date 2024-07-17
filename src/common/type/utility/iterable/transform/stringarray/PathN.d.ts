@@ -1,1 +1,3 @@
-declare type PathN<Class, L extends number = 0> = ArrayN<Stringify<Class>, L>;
+declare type PathN<C, N extends number = 0> = Stringify<C> extends never
+  ? never
+  : ArrayN<Stringify<C>, N>;

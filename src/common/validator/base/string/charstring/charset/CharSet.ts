@@ -4,7 +4,7 @@ class CharSet {
     public readonly chars: readonly char[],
   ) {}
 
-  public allows<VS extends string>(string: string): string is VS {
+  public allows<VS extends string>(string: string): string is ([VS] extends [string] ? VS : never) {
     try {
       const { filter } = this;
 

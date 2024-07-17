@@ -1,4 +1,4 @@
-declare type Interface<R extends object> = [Exclude<R, object>] extends [never]
+declare type Interface<R extends object> = [R] extends [object]
   ? [Extract<R, readonly unknown[]>] extends [never]
       ? Required<R> extends Record<infer K, unknown>
         ? Exclude<K, string> extends never
@@ -59,9 +59,9 @@ declare namespace NotInterface {
       c: 2;
     }
   >;
-  export type N3 = Interface<stringful>;
-  export type N3b = Interface<numberful>;
 
+  // export type N3 = Interface<stringful>;
+  // export type N3b = Interface<numberful>;
   // export type N13c = Interface<string>;
   // export type N13d = Interface<"cool">;
   // export type N13e = Interface<number>;

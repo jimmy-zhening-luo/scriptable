@@ -1,6 +1,6 @@
-class CharString<S extends string, Checks> {
+class CharString<S extends string, Checks extends readonly string[]> {
   public readonly charset: CharSet;
-  public readonly string: Valid<S, Checks extends unknown[] ? [...Checks, `String`] : never>;
+  public readonly string: Valid<S, [...Checks, `String`]>;
 
   constructor(
     string: string,

@@ -1,3 +1,3 @@
-declare type TriadType<T extends readonly unknown[]> = 2 extends ArrayLength<T>
+declare type TriadType<A extends readonly unknown[]> = 2 extends ArrayLength<A>
   ? never
-  : TrueTupleType<T>;
+  : DyadType<A>;

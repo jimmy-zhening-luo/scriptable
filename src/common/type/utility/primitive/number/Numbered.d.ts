@@ -33,5 +33,3 @@ declare namespace NumberedNever {
 //   export type N13 = Numbered<()=> 5>;
 //   export type N14 = Numbered<symbol>;
 }
-
-type jjj = Extract<numberful, number>;

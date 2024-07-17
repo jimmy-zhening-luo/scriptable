@@ -3,7 +3,7 @@ declare type Unrequire<R extends object, OK extends string> = Interface<R> exten
   : literalful<OK> extends never
     ? never
     : OK extends keyof R
-      ? Omit<R, OK> & Partial<Pick<R, OK>>
+      ? Omit<Interface<R>, literalful<OK>> & Partial<Pick<Interface<R>, literalful<OK>>>
       : never;
 
 declare namespace Unrequire {

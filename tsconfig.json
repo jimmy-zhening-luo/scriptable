@@ -25,6 +25,7 @@
       "ES2017.Object",
       "ES2019.Object",
       "ES2020.Number",
+      "ES2021.Promise",
       "ES2021.String",
       "ES2022.Error",
     ],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
