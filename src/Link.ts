@@ -7,15 +7,8 @@ namespace Link {
   const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
 
   export class Link extends shortcut<
-    Field<
-      | "_scheme"
-      | "_host"
-      | "_port"
-      | "_path"
-      | "_query"
-      | "_fragment"
-    >,
     string,
+    Field<"link", "postprocessor">,
     LinkSetting
   > {
     protected runtime() {
@@ -32,52 +25,54 @@ namespace Link {
         fragment: { trim },
       } = this.setting;
       const {
-        _scheme,
-        _host,
-        _port,
-        _path,
-        _query,
-        _fragment,
-      } = this.inputful;
-      const __host = _host.startsWith("www.") && !www.includes(_host)
-        ? _host.slice(4)
-        : _host;
-      const host = swap[__host] ?? __host;
+        scheme,
+        host,
+        path,
+        query,
+        fragment,
+      } = this.url(this.inputString);
+      const ___host = host.startsWith("www.") && !www.includes(host)
+        ? host.slice(4)
+        : host;
+      const HOST = swap[___host] ?? ___host;
       const [
         inclusions,
         exclusions,
       ] = [
-        include[host] ?? [],
-        exclude[host] ?? [],
+        include[HOST] ?? [],
+        exclude[HOST] ?? [],
       ];
+      const processor = [
+        "amazon.com",
+        "dropbox.com",
+        "linkedin.com",
+        "reddit.com",
+      ].includes(HOST)
+        ? new (
+          this.Processor(HOST)
+        )(
+          HOST,
+          path,
+        )
+        : null;
+      const postprocessor = processor?.postprocessor ?? null;
       const url = {
         scheme: [
           "http",
           "https",
-        ].includes(_scheme.toLowerCase())
+        ].includes(scheme.toLowerCase())
           ? ""
-          : _scheme.toLowerCase(),
-        host,
-        port: _port,
-        path: [
-          "amazon.com",
-          "dropbox.com",
-          "linkedin.com",
-          "reddit.com",
-        ].includes(host)
-          ? new (
-            this.Processor(host)
-          )(
-            host,
-            _path,
-          ).processed
-          : _path,
-        query: omit.includes(host)
+          : scheme.toLowerCase(),
+        host: HOST,
+        path: processor === null
+          ? path
+          : processor.processed,
+        query: omit.includes(HOST)
           ? ""
-          : host in include
+          : HOST in include
             ? inclusions.length < 1
               ? ""
-              : _query
+              : query
                 .split("&")
                 .filter(
                   param =>
@@ -88,8 +83,8 @@ namespace Link {
                     ),
                 )
                 .join("&")
-            : host in exclude
-              ? _query
+            : HOST in exclude
+              ? query
                 .split("&")
                 .filter(
                   param =>
@@ -100,20 +95,24 @@ namespace Link {
                     ),
                 )
                 .join("&")
-              : _query,
-        fragment: trim.includes(host)
+              : query,
+        fragment: trim.includes(HOST)
           ? ""
-          : _fragment,
+          : fragment,
       };
 
-      return this.buildURL(url);
+      return {
+        link: this.buildURL(url),
+        ...postprocessor === null
+          ? {}
+          : { postprocessor },
+      };
     }
 
     private buildURL(
       url: Field<
         | "scheme"
         | "host"
-        | "port"
         | "path"
         | "query"
         | "fragment"
@@ -123,7 +122,6 @@ namespace Link {
         const {
           scheme,
           host,
-          port,
           path,
           query,
           fragment,
@@ -133,16 +131,11 @@ namespace Link {
           [
             [
               [
-                [
-                  ...scheme.length > 0
-                    ? [scheme]
-                    : [],
-                  host,
-                ].join("://"),
-                ...port.length > 0
-                  ? [port]
+                ...scheme.length > 0
+                  ? [scheme]
                   : [],
-              ].join(":"),
+                host,
+              ].join("://"),
               ...path !== "/"
                 ? [path]
                 : [],
@@ -164,17 +157,17 @@ namespace Link {
       }
     }
 
-    private Processor<Host extends string>(host: Host): new (
-      host: Host,
+    private Processor<H extends string>(host: H): new (
+      host: H,
       path: string
-    )=> LinkPathProcessor<Host> {
+    )=> LinkPathProcessor<H> {
       try {
         return importModule(
           `apps/method/link/processors/${host}`,
         ) as new (
-          host: Host,
+          host: H,
           path: string
-        )=> LinkPathProcessor<Host>;
+        )=> LinkPathProcessor<H>;
       }
       catch (e) {
         throw new EvalError(
