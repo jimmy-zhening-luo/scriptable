@@ -1,9 +1,9 @@
-class Filepath<L extends number = 0> {
-  protected readonly nodes: PathN<FileNode, L>;
+class Filepath<N extends number> {
+  protected readonly nodes: PathN<FileNode, N>;
 
   constructor(
-    public readonly min: L,
-    ...subpaths: (Filepath<L> | string)[]
+    public readonly min: N,
+    ...subpaths: (Filepath<N> | string)[]
   ) {
     try {
       this.nodes = this.check(
@@ -20,7 +20,7 @@ class Filepath<L extends number = 0> {
                       node.trim(),
                   )
                   .filter(
-                    (node): node is stringful =>
+                    node =>
                       node.length > 0,
                   )
                   .map(
@@ -55,10 +55,10 @@ class Filepath<L extends number = 0> {
   public get parent() {
     try {
       const { min } = this;
-      const parent: this = new (
+      const parent: Filepath<N> = new (
         this.constructor as new (
-          ...args: ConstructorParameters<typeof Filepath<L>>
-        )=> this
+          ...args: ConstructorParameters<typeof Filepath<N>>
+        )=> Filepath<N>
       )(
         min,
         this,
@@ -143,7 +143,7 @@ class Filepath<L extends number = 0> {
   }
 
   private check(
-    min: L,
+    min: N,
     nodes: PathN<FileNode>,
   ) {
     try {
@@ -158,7 +158,7 @@ class Filepath<L extends number = 0> {
           },
         );
       else
-        return nodes as PathN<FileNode, L>;
+        return nodes as PathN<FileNode, N>;
     }
     catch (e) {
       throw new EvalError(

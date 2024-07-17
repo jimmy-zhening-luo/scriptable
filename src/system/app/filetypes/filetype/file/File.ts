@@ -1,7 +1,7 @@
 class File {
   private readonly manager = FileManager.local();
   private readonly _root: Stringify<Filepath<1>>;
-  private readonly _subpath: Filepath;
+  private readonly _subpath: Filepath<0>;
 
   constructor(
     root:
@@ -53,7 +53,7 @@ class File {
     }
   }
 
-  public get subpath(): Stringify<Filepath> {
+  public get subpath(): Stringify<Filepath<0>> {
     try {
       return this._subpath.toString();
     }
