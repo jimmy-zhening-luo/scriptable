@@ -318,7 +318,7 @@ abstract class App<
 
   protected stringful(
     string: string,
-    error: string = "",
+    error = "",
   ) {
     try {
       if (string.length > 0)

@@ -140,7 +140,7 @@ class File {
     }
   }
 
-  public readful(error: string = ""): stringful {
+  public readful(error = ""): stringful {
     try {
       const read = this.read(true);
 

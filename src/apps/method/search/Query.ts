@@ -1,7 +1,7 @@
 class Query {
   public readonly terms: stringful[];
   protected _key: stringful;
-  protected _locked: boolean = false;
+  protected _locked = false;
   private readonly NUMERIC = [
     "0",
     "1",
