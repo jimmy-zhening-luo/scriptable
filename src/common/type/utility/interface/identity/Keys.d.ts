@@ -32,7 +32,7 @@ declare namespace Keys {
     N2b: Keys<Record<stringful | "", 1>>;
     N2c: Keys<Record<number | "", 1>>;
     N2d: Keys<Record<number | "c", 1>>;
-    N2e: Keys<{}>;
+    N2e: Keys<object>;
     N2f: Keys<{
       a: 1;
       [min]: 1;
@@ -44,7 +44,7 @@ declare namespace Keys {
         a: 1;
         b: 1;
       }
-      | {}
+      | object
     >;
     N5: Keys<[1] | { a: 1 }>;
     N5a: Keys<

@@ -21,7 +21,7 @@ declare namespace Notliteralful {
 //   export type N5c = literalful<undefined>;
 //   export type N5d = literalful<void>;
 //   export type N5e = literalful<[]>;
-//   export type N5f = literalful<{}>;
+//   export type N5f = literalful<object>;
 //   export type N5g = literalful<()=> "a">;
 //   export type N5h = literalful<symbol>;
 //   export type N5i = literalful<"a" | 5>;

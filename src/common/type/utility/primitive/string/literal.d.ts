@@ -15,7 +15,7 @@ declare namespace Notliteral {
   // export type N2 = literal<null>;
   // export type N3 = literal<undefined>;
   // export type N4 = literal<void>;
-  // export type N5 = literal<{}>;
+  // export type N5 = literal<object>;
   // export type N6 = literal<()=> "a">;
   // export type N7 = literal<symbol>;
   // export type N8 = literal<"a" | 5>;

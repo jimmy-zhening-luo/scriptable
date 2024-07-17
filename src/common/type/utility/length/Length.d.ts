@@ -28,7 +28,7 @@ declare namespace NotLength {
   // export type N1a = Length<true>;
   // export type N1b = Length<[5, 5]>;
   // export type N1c = Length<()=> void>;
-  // export type N1d = Length<{}>;
+  // export type N1d = Length<object>;
   // export type N2 = Length<null | 1>;
   // export type N2a = Length<true | 1>;
   // export type N2b = Length<number | 1>; // 0

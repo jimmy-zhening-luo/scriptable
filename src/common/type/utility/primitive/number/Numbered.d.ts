@@ -27,7 +27,7 @@ declare namespace NumberedNever {
 //   export type N7 = Numbered<null>;
 //   export type N8 = Numbered<undefined>;
 //   export type N9 = Numbered<void>;
-//   export type N10 = Numbered<{}>;
+//   export type N10 = Numbered<object>;
 //   export type N11 = Numbered<[]>;
 //   export type N12 = Numbered<5 | true>;
 //   export type N13 = Numbered<()=> 5>;

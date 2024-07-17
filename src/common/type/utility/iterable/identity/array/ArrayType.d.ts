@@ -52,7 +52,7 @@ declare namespace NotArrayType {
   export type N22 = ArrayType<Bookmark>;
   export type N23 = ArrayType<
     | []
-    | {}
+    | object
   >;
   export type N24 = ArrayType<
     | []

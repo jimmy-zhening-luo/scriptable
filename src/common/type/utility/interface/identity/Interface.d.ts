@@ -26,7 +26,7 @@ declare namespace InterfaceTest {
 
 declare namespace NotInterface {
   export type N = Interface<never>;
-  export type N0 = Interface<{}>;
+  export type N0 = Interface<object>;
   export type N0a = Interface<Record<"a" | "b" | 5, unknown>>;
   export type N0b = Interface<Record<"a" | "b" | number, unknown>>;
   export type N0c = Interface<Record<string, unknown>>;
@@ -44,10 +44,10 @@ declare namespace NotInterface {
   export type N2 = Interface<()=> void>;
   export type N2a = Interface<(a: string)=> boolean>;
   export type N2b = Interface<(a: string)=> string[]>;
-  export type N2c = Interface<(a: string)=> {}>;
+  export type N2c = Interface<(a: string)=> object>;
   export type N5 = Interface<[] | { a: 1 }>;
   export type N5a = Interface<[30] | { a: 1 }>;
-  export type N5b = Interface<{} | []>;
+  export type N5b = Interface<object | []>;
   export type N5c = Interface<
     | {
       a: 1;

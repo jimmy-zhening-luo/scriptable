@@ -33,7 +33,7 @@ declare namespace NotPrimeval {
   // export type N2b = Primeval<boolean | true, boolean>;
   // export type N3 = Primeval<5, number | object>;
   // export type N3a = Primeval<symbol, symbol>;
-  // export type N3b = Primeval<{}, object>;
+  // export type N3b = Primeval<object, object>;
   // export type N3c = Primeval<[], readonly unknown[]>;
   // export type N3d = Primeval<()=> 5, Function>;
   // export type N3e = Primeval<5, unknown>;
