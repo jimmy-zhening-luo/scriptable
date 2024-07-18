@@ -4,7 +4,7 @@
 "use strict";
 
 namespace Search {
-  const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
+  const shortcut = importModule<typeof Shortcut>(`system/Shortcut`);
 
   export class Search extends shortcut<
     string,
@@ -12,9 +12,9 @@ namespace Search {
     SearchSetting
   > {
     private get Query() {
-      return importModule(
+      return importModule<typeof Query>(
         "apps/method/search/Query",
-      ) as typeof Query;
+      );
     }
 
     protected runtime() {
@@ -135,7 +135,7 @@ namespace Search {
 
     private SearchEngine<T>(provider: string): T {
       try {
-        return importModule(
+        return importModule<typeof SearchEngine>(
           `apps/method/search/engines/${provider}`,
         ) as T;
       }

@@ -4,7 +4,7 @@
 "use strict";
 
 namespace Link {
-  const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
+  const shortcut = importModule<typeof Shortcut>(`system/Shortcut`);
 
   export class Link extends shortcut<
     string,
@@ -162,12 +162,12 @@ namespace Link {
       path: string
     )=> LinkPathProcessor<H> {
       try {
-        return importModule(
+        return importModule<new (
+        host: H,
+        path: string
+        )=> LinkPathProcessor<H>>(
           `apps/method/link/processors/${host}`,
-        ) as new (
-          host: H,
-          path: string
-        )=> LinkPathProcessor<H>;
+          );
       }
       catch (e) {
         throw new EvalError(

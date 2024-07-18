@@ -1,6 +1,6 @@
-const drop_ILinkPathProcessor = importModule(
+const drop_ILinkPathProcessor = importModule<typeof LinkPathProcessor>(
   `processor/LinkPathProcessor`,
-) as typeof LinkPathProcessor;
+);
 
 class DropboxPathProcessor extends drop_ILinkPathProcessor<"dropbox.com"> {
   protected process(path: string) {

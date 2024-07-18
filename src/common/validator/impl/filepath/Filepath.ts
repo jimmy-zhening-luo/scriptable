@@ -40,9 +40,9 @@ class Filepath<N extends number> {
 
   private static get FileNode() {
     try {
-      return importModule(
+      return importModule<typeof FileNode>(
         "node/FileNode",
-      ) as typeof FileNode;
+      );
     }
     catch (e) {
       throw new ReferenceError(

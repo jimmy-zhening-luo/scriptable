@@ -4,7 +4,7 @@
 "use strict";
 
 namespace Ziplink {
-  const shortcut = importModule(`system/Shortcut`) as typeof Shortcut;
+  const shortcut = importModule<typeof Shortcut>(`system/Shortcut`);
 
   export class Ziplink extends shortcut<
     string,

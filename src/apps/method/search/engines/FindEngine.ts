@@ -1,6 +1,6 @@
-const fIEngine = importModule(
+const fIEngine = importModule<typeof SearchEngine>(
   `engine/SearchEngine`,
-) as typeof SearchEngine;
+);
 
 class FindEngine extends fIEngine {
   protected readonly find: string;

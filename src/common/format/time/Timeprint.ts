@@ -1,6 +1,6 @@
-const pMoment = importModule(
+const pMoment = importModule<typeof Moment>(
   `moment/Moment`,
-) as typeof Moment;
+);
 
 class Timeprint extends pMoment {
   protected separator = " " as stringful;

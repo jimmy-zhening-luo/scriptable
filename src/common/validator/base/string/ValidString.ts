@@ -1,6 +1,6 @@
-const charString = importModule(
+const charString = importModule<typeof CharString>(
   `charstring/CharString`,
-) as typeof CharString;
+);
 
 class ValidString<Check extends string> extends charString<
   stringful,

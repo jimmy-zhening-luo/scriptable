@@ -1,6 +1,6 @@
-const uIEngine = importModule(
+const uIEngine = importModule<typeof SearchEngine>(
   `engine/SearchEngine`,
-) as typeof SearchEngine;
+);
 
 class UrlEngine extends uIEngine {
   protected readonly urls: readonly stringful[];

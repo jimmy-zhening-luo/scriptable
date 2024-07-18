@@ -1,6 +1,6 @@
-const file = importModule(
+const file = importModule<typeof File>(
   `File`,
-) as typeof File;
+);
 
 class ReadonlyFile extends file {
   public override write(): never {

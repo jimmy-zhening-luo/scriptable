@@ -44,9 +44,9 @@ abstract class Filetype<
 
   protected static get File() {
     try {
-      return importModule(
+      return importModule<typeof File>(
         "file/File",
-      ) as typeof File;
+      );
     }
     catch (e) {
       throw new ReferenceError(
@@ -58,9 +58,9 @@ abstract class Filetype<
 
   protected static get ReadonlyFile() {
     try {
-      return importModule(
+      return importModule<typeof ReadonlyFile>(
         "file/ReadonlyFile",
-      ) as typeof ReadonlyFile;
+      );
     }
     catch (e) {
       throw new ReferenceError(
@@ -72,9 +72,9 @@ abstract class Filetype<
 
   private static get Bookmark() {
     try {
-      return importModule(
+      return importModule<typeof Bookmark>(
         "bookmark/Bookmark",
-      ) as typeof Bookmark;
+      );
     }
     catch (e) {
       throw new ReferenceError(

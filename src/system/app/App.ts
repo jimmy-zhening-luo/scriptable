@@ -15,9 +15,9 @@ abstract class App<
 
   protected get base64guid() {
     try {
-      return importModule(
+      return importModule<typeof Base64Guid>(
         "./common/format/guid/Base64Guid",
-      ) as typeof Base64Guid;
+      );
     }
     catch (e) {
       throw new ReferenceError(
@@ -29,9 +29,9 @@ abstract class App<
 
   protected get timestamp() {
     try {
-      return importModule(
+      return importModule<typeof Timestamp>(
         "./common/format/time/Timestamp",
-      ) as typeof Timestamp;
+      );
     }
     catch (e) {
       throw new ReferenceError(
@@ -43,9 +43,9 @@ abstract class App<
 
   protected get timeprint() {
     try {
-      return importModule(
+      return importModule<typeof Timeprint>(
         "./common/format/time/Timeprint",
-      ) as typeof Timeprint;
+      );
     }
     catch (e) {
       throw new ReferenceError(
@@ -183,9 +183,9 @@ abstract class App<
 
   private get Setting() {
     try {
-      return importModule(
+      return importModule<typeof Setting>(
         "filetypes/Setting",
-      ) as typeof Setting;
+      );
     }
     catch (e) {
       throw new ReferenceError(
@@ -197,9 +197,9 @@ abstract class App<
 
   private get Storage() {
     try {
-      return importModule(
+      return importModule<typeof Storage>(
         "filetypes/Storage",
-      ) as typeof Storage;
+      );
     }
     catch (e) {
       throw new ReferenceError(
@@ -211,9 +211,9 @@ abstract class App<
 
   private get Key() {
     try {
-      return importModule(
+      return importModule<typeof Key>(
         "filetypes/Key",
-      ) as typeof Key;
+      );
     }
     catch (e) {
       throw new ReferenceError(
@@ -300,9 +300,9 @@ abstract class App<
       }
     }
     catch (e) {
-      const Handler = importModule(
+      const Handler = importModule<typeof ErrorHandler>(
         "error/ErrorHandler",
-      ) as typeof ErrorHandler;
+      );
 
       throw new Error(
         new Handler()

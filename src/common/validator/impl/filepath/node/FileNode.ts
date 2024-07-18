@@ -1,6 +1,6 @@
-const fValidString = importModule(
+const fValidString = importModule<typeof ValidString>(
   `./common/validator/base/string/ValidString`,
-) as typeof ValidString;
+);
 
 class FileNode extends fValidString<"FileNode"> {
   constructor(node: string) {

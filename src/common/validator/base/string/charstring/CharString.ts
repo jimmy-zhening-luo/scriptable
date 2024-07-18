@@ -20,9 +20,9 @@ class CharString<S extends string, Checks extends readonly string[]> {
 
   private static get CharSet() {
     try {
-      return importModule(
+      return importModule<typeof CharSet>(
         "charset/CharSet",
-      ) as typeof CharSet;
+      );
     }
     catch (e) {
       throw new ReferenceError(

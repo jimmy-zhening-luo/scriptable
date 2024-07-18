@@ -1,6 +1,6 @@
-const sMoment = importModule(
+const sMoment = importModule<typeof Moment>(
   `moment/Moment`,
-) as typeof Moment;
+);
 
 class Timestamp extends sMoment {
   protected separator = "";

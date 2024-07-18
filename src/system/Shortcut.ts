@@ -1,6 +1,6 @@
-const app = importModule(
+const app = importModule<typeof App>(
   `app/App`,
-) as typeof App;
+);
 
 abstract class Shortcut<
   Input = never,

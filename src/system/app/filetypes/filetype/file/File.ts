@@ -29,9 +29,9 @@ class File {
 
   private static get Subpath() {
     try {
-      return importModule(
+      return importModule<typeof Filepath<0>>(
         "./common/validator/impl/filepath/Filepath",
-      ) as typeof Filepath<0>;
+      );
     }
     catch (e) {
       throw new ReferenceError(

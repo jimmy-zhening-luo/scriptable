@@ -1,6 +1,6 @@
-const cFiletype = importModule(
+const cFiletype = importModule<typeof Filetype>(
   `filetype/Filetype`,
-) as typeof Filetype;
+);
 
 class Setting<
   Class extends string,
