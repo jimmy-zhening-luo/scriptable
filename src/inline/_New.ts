@@ -3,5 +3,7 @@
 (() => {
   "use strict";
 
+  Date();
+
   return null;
 })();
