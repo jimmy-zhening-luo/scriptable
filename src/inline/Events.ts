@@ -41,6 +41,14 @@
         c,
       ],
   );
+
+  records.push(
+    [
+      "╋    New",
+      "NEW",
+    ],
+  )
+
   const labels = records.map(
     ([label]) =>
       label,
