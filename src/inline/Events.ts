@@ -47,7 +47,7 @@
       "╋    New",
       "NEW",
     ],
-  )
+  );
 
   const labels = records.map(
     ([label]) =>
