@@ -3,6 +3,5 @@
 // icon-color: deep-green; icon-glyph: leaf;
 "use strict";
 
-const foo = true;
-
-console.log(foo);
+void 0;
+console.log(null);
