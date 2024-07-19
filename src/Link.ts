@@ -39,8 +39,8 @@ namespace Link {
         inclusions,
         exclusions,
       ] = [
-        include[HOST] ?? [],
-        exclude[HOST] ?? [],
+        include[HOST]?.map(p => p.toLowerCase()) ?? [],
+        exclude[HOST]?.map(p => p.toLowerCase()) ?? [],
       ];
       const processor = [
         "amazon.com",
