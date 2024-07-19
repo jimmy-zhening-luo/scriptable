@@ -12,7 +12,6 @@ class UrlEngine extends uIEngine {
   private readonly PLUS: string;
   private readonly PLUS_ENCODED: string;
 
-
   constructor(
     urls: Unflat,
     TAG: stringful,
