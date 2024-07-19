@@ -111,8 +111,10 @@ class UrlEngine extends uIEngine {
 
       return {
         browser,
-        inprivate,
         natural,
+        ...inprivate
+          ? { inprivate }
+          : {},
       };
     }
     catch (e) {
