@@ -9,8 +9,9 @@ class UrlEngine extends uIEngine {
   protected readonly separator: string;
   protected readonly encodeComponent: boolean;
   protected readonly inprivate: boolean;
-  private readonly PLUS = "+";
-  private readonly PLUS_ENCODED = "%2B";
+  private readonly PLUS: string;
+  private readonly PLUS_ENCODED: string;
+
 
   constructor(
     urls: Unflat,
@@ -35,6 +36,8 @@ class UrlEngine extends uIEngine {
       this.separator = separator;
       this.encodeComponent = encodeComponent;
       this.inprivate = inprivate;
+      this.PLUS = "+";
+      this.PLUS_ENCODED = "%2B";
 
       const urlfuls = [urls]
         .flat()
