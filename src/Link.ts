@@ -78,6 +78,7 @@ namespace Link {
                   param =>
                     inclusions.includes(
                       param
+                        .toLowerCase()
                         .split("=")
                         .shift() ?? "",
                     ),
@@ -90,6 +91,7 @@ namespace Link {
                   param =>
                     !exclusions.includes(
                       param
+                        .toLowerCase()
                         .split("=")
                         .shift() ?? "",
                     ),
