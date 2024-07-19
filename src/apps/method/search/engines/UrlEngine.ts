@@ -8,8 +8,9 @@ class UrlEngine extends uIEngine {
   protected readonly browser: string;
   protected readonly separator: string;
   protected readonly encodeComponent: boolean;
-  private readonly PLUS: string;
-  private readonly PLUS_ENCODED: string;
+  protected readonly inprivate: boolean;
+  private readonly PLUS = "+";
+  private readonly PLUS_ENCODED = "%2B";
 
   constructor(
     urls: Unflat,
@@ -17,6 +18,7 @@ class UrlEngine extends uIEngine {
     browser = "",
     separator = "+",
     encodeComponent = false,
+    inprivate = false,
     output?:
       | string
       | boolean,
@@ -32,8 +34,7 @@ class UrlEngine extends uIEngine {
       this.browser = browser;
       this.separator = separator;
       this.encodeComponent = encodeComponent;
-      this.PLUS = "+";
-      this.PLUS_ENCODED = "%2B";
+      this.inprivate = inprivate;
 
       const urlfuls = [urls]
         .flat()
@@ -100,11 +101,15 @@ class UrlEngine extends uIEngine {
 
   protected options(query: Query) {
     try {
-      const { browser } = this;
+      const {
+        browser,
+        inprivate,
+      } = this;
       const { natural } = query;
 
       return {
         browser,
+        inprivate,
         natural,
       };
     }

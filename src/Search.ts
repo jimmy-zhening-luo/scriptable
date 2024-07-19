@@ -114,6 +114,7 @@ namespace Search {
               setting.browser,
               setting.separator,
               setting.encodeComponent,
+              setting.inprivate,
               setting.output,
             )
             : "shortcut" in setting
