@@ -7,4 +7,6 @@ declare type SearchOutput =
     | "find"
     | "natural"
     | "browser"
-  >;
+  >
+  & Flag<"inprivate">
+;

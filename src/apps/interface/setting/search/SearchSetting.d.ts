@@ -23,7 +23,9 @@ declare type SearchSetting = {
       | SearchEngineSetting<
         "url",
         true,
-        "encodeComponent",
+        | "encodeComponent"
+        | "inprivate"
+        ,
         never,
         & Particord<
           "browser",
