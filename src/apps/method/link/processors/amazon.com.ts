@@ -8,20 +8,14 @@ class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
       const processed = path.includes("/dp/")
         ? [
             "/dp/",
-            (
-              path
-                .split("/dp/")
-                .pop() ?? ""
-            )
+            (path.split("/dp/").pop() ?? "")
               .split("/")
               .shift() ?? "",
-          ].join("")
+          ]
+            .join("")
         : path;
 
-      return {
-        processed,
-        postprocessor: "Fakespot",
-      };
+      return { processed, postprocessor: "Fakespot" };
     }
     catch (e) {
       throw new EvalError(

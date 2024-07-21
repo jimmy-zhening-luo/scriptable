@@ -1,4 +1,4 @@
-declare type GptMessage =
-  & Recordful<"role", GptRole>
-  & Field<"content">
-;
+declare interface GptMessage {
+  role: GptRole;
+  content: string;
+}

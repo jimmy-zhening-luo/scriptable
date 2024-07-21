@@ -1,15 +1,15 @@
 "use strict";
 
 (() => {
-  "use strict";
+"use strict";
 
-  const events = args.shortcutParameter as Event[];
-  const DURATION = [
+const events = args.shortcutParameter as Event[],
+  DURATION = [
     "‎   ‎ I",
     "‎  I I",
     "I I I",
-  ];
-  const WEEKDAY = {
+  ],
+  WEEKDAY = {
     Su: "S     ",
     Mo: "M    ",
     Tu: "T     ",
@@ -17,8 +17,8 @@
     Fr: "F     ",
     Th: "Th   ",
     Sa: "Sa   ",
-  };
-  const records = events.map(
+  },
+  records = events.map(
     ({
       title,
       dur,
@@ -26,39 +26,24 @@
       w,
       h,
       c,
-    }) =>
+    }) => [
       [
-        [
-          DURATION[Math.ceil(dur / 3600) - 1] ?? "≥4",
-          WEEKDAY[w],
-          d,
-          h,
-          ...title === "Therapy"
-            ? []
-            : `[${title}]`,
-        ]
-          .join("    "),
-        c,
-      ],
-  );
-
-  records.push(
-    [
-      "╋    New",
-      "NEW",
+        DURATION[Math.ceil(dur / 3600) - 1] ?? "≥4",
+        WEEKDAY[w],
+        d,
+        h,
+        ...title === "Therapy" ? [] : `[${title}]`,
+      ].join("    "),
+      c,
     ],
   );
 
-  const labels = records.map(
-    ([label]) =>
-      label,
-  );
-  const dates = Object.fromEntries(records) as FieldTable;
+records.push(["╋    New", "NEW"]);
 
-  return {
-    labels,
-    dates,
-  };
+const labels = records.map(([label]) => label),
+  dates = Object.fromEntries(records) as FieldTable;
+
+return { labels, dates };
 })();
 
 type Event =

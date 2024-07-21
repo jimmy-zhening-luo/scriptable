@@ -11,13 +11,11 @@ namespace Ziplink {
     string
   > {
     protected runtime() {
-      const url = this.inputStringful.trim();
-      const storage = this.data<FieldTable>("json") ?? {};
-      const ziplinks = Object.entries(storage);
-      const ziplink = ziplinks.find(
-        ([, u]) =>
-          u === url,
-      ) ?? null;
+      const url = this.inputStringful.trim(),
+        storage = this.data<FieldTable>("json") ?? {},
+        ziplinks = Object.entries(storage),
+        ziplink = ziplinks.find(([, u]) => u === url)
+        ?? null;
 
       if (ziplink !== null) {
         const [id] = ziplink;
@@ -39,5 +37,4 @@ namespace Ziplink {
   }
 }
 
-new Ziplink.Ziplink()
-  .run();
+(new Ziplink.Ziplink).run();

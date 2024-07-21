@@ -1,4 +1,4 @@
-declare type SearchSetting = {
+declare interface SearchSetting {
   app: {
     tag: string;
     key: Field<
@@ -27,15 +27,13 @@ declare type SearchSetting = {
         | "inprivate"
         ,
         never,
-        & Particord<
-          "browser",
-          | "api"
-          | "force"
-        >
-        & Particord<"separator", "%20">
+        & {
+          browser?: "api" | "force";
+          separator?: "%20";
+        }
         ,
         true
       >
     >;
   };
-};
+}

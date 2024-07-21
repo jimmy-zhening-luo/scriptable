@@ -1,9 +1,9 @@
 "use strict";
 
 (() => {
-  "use strict";
+"use strict";
 
-  void 0;
+void 0;
 
-  return null;
+return null;
 })();

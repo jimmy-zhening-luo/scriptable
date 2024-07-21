@@ -1,7 +1,6 @@
-declare type FilelinkSetting =
-  & { providers: Table<FileProvider<true> | FileProvider<false>> }
-  & Field<
-    | "scheme"
-    | "commonRoot"
-  >
-;
+declare interface FilelinkSetting {
+  providers: Table<FileProvider<true> | FileProvider<false>>;
+  scheme: string;
+  commonRoot: string;
+
+}

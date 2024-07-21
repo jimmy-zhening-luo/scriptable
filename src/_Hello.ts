@@ -14,23 +14,20 @@ namespace _Hello {
     protected runtime() {
       this.debug = true;
 
-      const FILENAME_WORLDTIME = "worldtime";
-      const HELLO = this.readful();
-      const worldtime = this.read(
-        "txt",
-        FILENAME_WORLDTIME,
-      );
-      const SPACE = this.stringful(
-        this.setting.space ?? "",
-        "space",
-      );
-      const notification = `${HELLO}${SPACE}${worldtime}`;
+      const FILENAME_WORLDTIME = "worldtime",
+        HELLO = this.readful(),
+        worldtime = this.read(
+          "txt",
+          FILENAME_WORLDTIME,
+        ),
+        SPACE = this.stringful(
+          this.setting.space ?? "",
+          "space",
+        ),
+        notification = `${HELLO}${SPACE}${worldtime}`;
 
       this.write(
-        `World!\n(Previous: ${
-          new Date()
-            .toISOString()
-        })`,
+        `World!\n(Previous: ${(new Date).toISOString()})`,
         "txt",
         FILENAME_WORLDTIME,
       );
@@ -41,5 +38,4 @@ namespace _Hello {
   }
 }
 
-new _Hello._Hello(true)
-  .run();
+new _Hello._Hello(true).run();

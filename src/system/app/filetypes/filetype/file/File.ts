@@ -92,8 +92,7 @@ class File {
   public get root(): this {
     try {
       return new (
-        this.constructor as new (
-          ...path: ConstructorParameters<typeof File>)=> this
+        this.constructor as new (...path: ConstructorParameters<typeof File>)=> this
       )({ graft: this });
     }
     catch (e) {
@@ -107,8 +106,7 @@ class File {
   public get parent() {
     try {
       return new (
-        this.constructor as new (
-          ...path: ConstructorParameters<typeof File>)=> this
+        this.constructor as new (...path: ConstructorParameters<typeof File>)=> this
       )(
         this.root,
         this._subpath.parent,
@@ -178,15 +176,11 @@ class File {
             this.manager.writeString(
               this.path,
               overwrite === "append"
-                ? [
-                    this.read(),
-                    string,
-                  ].join("")
+                ? [this.read(), string]
+                    .join("")
                 : overwrite === "line"
-                  ? [
-                      string,
-                      this.read(),
-                    ].join("\n")
+                  ? [string, this.read()]
+                      .join("\n")
                   : string,
             );
         else {

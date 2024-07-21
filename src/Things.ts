@@ -29,63 +29,43 @@ namespace Things {
       else if (delim.line === tag)
         throw new SyntaxError(`setting: tag is identical to delim 'line'`);
       else {
-        const input = this.inputStringful;
-        const items = input
-          .split(delim.item)
-          .reverse()
-          .map(
-            item =>
-              item
+        const input = this.inputStringful,
+          items = input
+            .split(delim.item)
+            .reverse()
+            .map(
+              item => item
                 .trim()
                 .split(delim.line)
-                .map(
-                  line =>
-                    line.trim(),
-                )
-                .filter(
-                  line =>
-                    line.length > 0,
-                )
+                .map(line => line.trim())
+                .filter(line => line.length > 0)
                 .join(delim.line),
-          );
+            );
 
         return items.map(
           (item): ThingsItem => {
-            const tagIndex = item.lastIndexOf(tag);
-            const tagent = tagIndex < 0
-              ? null
-              : item.slice(
-                tagIndex + 1,
-                tagIndex + 2,
-              );
-            const [
-              when,
-              list,
-            ] = tagent === null
-              ? [
-                  null,
-                  null,
-                ]
-              : tagent.length < 1 || tagent === delim.line || !(tagent in lists) || (lists[tagent] ?? "").length < 1
-                ? [
-                    "today",
-                    null,
-                  ]
-                : [
-                    null,
-                    lists[tagent] as unknown as string,
-                  ];
-            const lines = item.split(delim.line);
+            const tagIndex = item.lastIndexOf(tag),
+              tagent = tagIndex < 0
+                ? null
+                : item.slice(
+                  tagIndex + 1,
+                  tagIndex + 2,
+                ),
+              [when, list] = tagent === null
+                ? [null, null]
+                : tagent.length < 1 || tagent === delim.line || !(tagent in lists) || (lists[tagent] ?? "").length < 1
+                  ? ["today", null]
+                  : [
+                      null,
+                      lists[tagent] as unknown as string,
+                    ],
+              lines = item.split(delim.line);
 
             return {
               title: lines.shift() ?? "",
               notes: lines.join(delim.line),
-              ...when === null
-                ? {}
-                : { when },
-              ...list === null
-                ? {}
-                : { list },
+              ...when === null ? {} : { when },
+              ...list === null ? {} : { list },
             };
           },
         );
@@ -94,5 +74,4 @@ namespace Things {
   }
 }
 
-new Things.Things()
-  .run();
+(new Things.Things).run();

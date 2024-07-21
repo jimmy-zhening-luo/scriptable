@@ -19,18 +19,10 @@ abstract class Filetype<
           this.root(filetype),
           category,
           ...typeof filename === "undefined"
-            ? [
-                [
-                  subpath,
-                  ext,
-                ].join("."),
-              ]
+            ? [[subpath, ext].join(".")]
             : [
                 subpath,
-                [
-                  filename,
-                  ext,
-                ].join("."),
+                [filename, ext].join("."),
               ],
         );
     }
@@ -127,9 +119,7 @@ abstract class Filetype<
         .read(...error)
         .trim();
 
-      return string.length > 0
-        ? JSON.parse(string) as Data
-        : null;
+      return string.length > 0 ? JSON.parse(string) as Data : null;
     }
     catch (e) {
       throw new EvalError(

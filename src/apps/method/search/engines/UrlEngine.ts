@@ -19,9 +19,7 @@ class UrlEngine extends uIEngine {
     separator = "+",
     encodeComponent = false,
     inprivate = false,
-    output?:
-      | string
-      | boolean,
+    output?: string | boolean,
   ) {
     try {
       super(
@@ -40,10 +38,7 @@ class UrlEngine extends uIEngine {
 
       const urlfuls = [urls]
         .flat()
-        .filter(
-          (url): url is stringful =>
-            url.length > 0,
-        );
+        .filter((url): url is stringful => url.length > 0);
 
       if (urlfuls.length > 0)
         this.urls = urlfuls;
@@ -61,37 +56,38 @@ class UrlEngine extends uIEngine {
   protected override transform(query: Query) {
     try {
       const {
-        TAG,
-        separator,
-        encodeComponent,
-        PLUS,
-        PLUS_ENCODED,
-      } = this;
-      const encoder = encodeComponent
-        ? function (operand: string) {
-          return encodeURI(operand);
-        }
+          TAG,
+          separator,
+          encodeComponent,
+          PLUS,
+          PLUS_ENCODED,
+        } = this,
+        encoder = encodeComponent
+          ? function (operand: string) {
+            return encodeURI(operand);
+          }
 
-        : function (operand: string) {
-          return encodeURIComponent(operand);
-        };
-      const encodedQuery = query.terms
-        .map(
-          term =>
-            term
+          : function (operand: string) {
+            return encodeURIComponent(operand);
+          },
+        encodedQuery = query
+          .terms
+          .map(
+            term => term
               .split(PLUS)
               .map(encoder)
               .join(PLUS_ENCODED),
-        )
-        .join(separator);
+          )
+          .join(separator);
 
-      return this.urls.map(
-        url =>
-          url.replace(
+      return this
+        .urls
+        .map(
+          url => url.replace(
             TAG,
             encodedQuery,
           ),
-      );
+        );
     }
     catch (e) {
       throw new EvalError(
@@ -103,18 +99,13 @@ class UrlEngine extends uIEngine {
 
   protected options(query: Query) {
     try {
-      const {
-        browser,
-        inprivate,
-      } = this;
-      const { natural } = query;
+      const { browser, inprivate } = this,
+        { natural } = query;
 
       return {
         browser,
         natural,
-        ...inprivate
-          ? { inprivate }
-          : {},
+        ...inprivate ? { inprivate } : {},
       };
     }
     catch (e) {

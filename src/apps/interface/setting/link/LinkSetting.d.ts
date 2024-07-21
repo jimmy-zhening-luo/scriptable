@@ -1,4 +1,4 @@
-declare type LinkSetting = {
+declare interface LinkSetting {
   host: {
     www: readonly string[];
     swap: FieldTable;
@@ -11,4 +11,4 @@ declare type LinkSetting = {
   fragment: {
     trim: readonly string[];
   };
-};
+}

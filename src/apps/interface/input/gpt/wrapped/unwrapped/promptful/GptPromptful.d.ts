@@ -1,4 +1,1 @@
-declare type GptPromptful = Field<
-  | "system"
-  | "user"
->;
+declare type GptPromptful = Field<"system" | "user">;

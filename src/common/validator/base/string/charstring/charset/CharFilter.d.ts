@@ -1,4 +1,1 @@
-declare type CharFilter =
-  | "include"
-  | "exclude"
-;
+declare type CharFilter = "include" | "exclude";

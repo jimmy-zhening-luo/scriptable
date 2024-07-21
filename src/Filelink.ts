@@ -13,71 +13,52 @@ namespace Filelink {
   > {
     protected runtime() {
       const {
-        scheme,
-        commonRoot,
-        providers,
-      } = this.setting;
-      const SCHEME_ROOT = [
-        scheme,
-        commonRoot,
-      ].join("://");
-      const {
-        nodes,
-        ext,
-        type,
-      } = this.inputful;
-      const path = this.validPath(nodes);
-      const [rootNode] = path;
-      const provider = providers[rootNode] ?? null;
+          scheme,
+          commonRoot,
+          providers,
+        } = this.setting,
+        SCHEME_ROOT = [scheme, commonRoot].join("://"),
+        {
+          nodes,
+          ext,
+          type,
+        } = this.inputful,
+        path = this.validPath(nodes),
+        [rootNode] = path,
+        provider = providers[rootNode] ?? null;
 
       if (provider === null)
         throw new ReferenceError(
           `Provider not found`,
-          {
-            cause: {
-              rootNode,
-              providers: Object.keys(providers),
-            },
-          },
+          { cause: { rootNode, providers: Object.keys(providers) } },
         );
       else {
         path.shift();
 
-        const { providerRoot } = provider;
-        const providerRootEncoded = encodeURI(providerRoot);
-        const head = [
-          SCHEME_ROOT,
-          providerRootEncoded,
-        ].join("/");
-        const leafNode = path.pop() as unknown as stringful;
-        const remainingPath = [...path];
-        const filenameEncoded = encodeURI(
-          type === "Folder"
-            ? leafNode
-            : [
-                leafNode,
-                ext,
-              ].join("."),
-        );
+        const { providerRoot } = provider,
+          providerRootEncoded = encodeURI(providerRoot),
+          head = [SCHEME_ROOT, providerRootEncoded].join("/"),
+          leafNode = path.pop() as unknown as stringful,
+          remainingPath = [...path],
+          filenameEncoded = encodeURI(
+            type === "Folder"
+              ? leafNode
+              : [leafNode, ext].join("."),
+          );
 
         if (!provider.hasContainers)
           return [
             head,
-            ...remainingPath.map(
-              node =>
-                encodeURI(node),
-            ),
+            ...remainingPath.map(node => encodeURI(node)),
             filenameEncoded,
-          ].join("/");
+          ]
+            .join("/");
         else {
           const {
             postContainerRoot,
             folderRoot,
             preAppRoot,
-            containers: {
-              folders,
-              apps,
-            },
+            containers: { folders, apps },
           } = provider;
 
           if (remainingPath.length < 1)
@@ -86,33 +67,22 @@ namespace Filelink {
               { cause: { remainingPath } },
             );
           else {
-            const containerNode = remainingPath.shift() as unknown as stringful;
-            const containerEncoded = (
-              folders.includes(containerNode)
-                ? [
-                    folderRoot,
-                    containerNode,
-                  ]
-                    .map(
-                      segment =>
-                        encodeURI(segment),
-                    )
-                    .join("/")
-                : containerNode in apps
-                  ? [
-                      ...typeof preAppRoot === "undefined"
-                        ? []
-                        : [preAppRoot],
-                      apps[containerNode] as unknown as string,
-                      postContainerRoot,
-                    ]
-                      .map(
-                        segment =>
-                          encodeURI(segment),
-                      )
+            const containerNode = remainingPath.shift() as unknown as stringful,
+              containerEncoded = (
+                folders.includes(containerNode)
+                  ? [folderRoot, containerNode]
+                      .map(segment => encodeURI(segment))
                       .join("/")
-                  : null
-            ) ?? null;
+                  : containerNode in apps
+                    ? [
+                        ...typeof preAppRoot === "undefined" ? [] : [preAppRoot],
+                        apps[containerNode] as unknown as string,
+                        postContainerRoot,
+                      ]
+                        .map(segment => encodeURI(segment))
+                        .join("/")
+                    : null
+              ) ?? null;
 
             if (containerEncoded === null)
               throw new ReferenceError(
@@ -130,12 +100,10 @@ namespace Filelink {
               return [
                 head,
                 containerEncoded,
-                ...remainingPath.map(
-                  node =>
-                    encodeURI(node),
-                ),
+                ...remainingPath.map(node => encodeURI(node)),
                 filenameEncoded,
-              ].join("/");
+              ]
+                .join("/");
           }
         }
       }
@@ -143,20 +111,15 @@ namespace Filelink {
 
     private validPath(nodes: Unflat) {
       try {
-        const path = this.stringfuls([nodes].flat());
-        const { length } = path;
+        const path = this.stringfuls([nodes].flat()),
+          { length } = path;
 
         if (length < 1)
           throw new SyntaxError(`Input path empty`);
         else if (length < 2)
           throw new RangeError(
             `Path points to provider root`,
-            {
-              cause: {
-                path,
-                length,
-              },
-            },
+            { cause: { path, length } },
           );
         else
           return path as ArrayN<stringful, 2>;
@@ -171,5 +134,4 @@ namespace Filelink {
   }
 }
 
-new Filelink.Filelink()
-  .run();
+(new Filelink.Filelink).run();

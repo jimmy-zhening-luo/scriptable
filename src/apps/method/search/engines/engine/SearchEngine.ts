@@ -1,9 +1,7 @@
 abstract class SearchEngine {
   constructor(
     protected readonly app: string,
-    protected readonly output:
-      | string
-      | boolean = false,
+    protected readonly output: string | boolean = false,
   ) {}
 
   public resolve(query: Query) {
@@ -38,10 +36,7 @@ abstract class SearchEngine {
 
   private required(query: Query) {
     try {
-      const {
-        app,
-        output,
-      } = this;
+      const { app, output } = this;
 
       return {
         app,

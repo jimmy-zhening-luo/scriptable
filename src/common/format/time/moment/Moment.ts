@@ -4,14 +4,12 @@ abstract class Moment {
   protected abstract formatLocal: Table;
 
   constructor(
-    public readonly moment = new Date(),
+    public readonly moment = new Date,
   ) {}
 
   public get epoch(): Positive<fint> {
     try {
-      return this
-        .moment
-        .getTime() as Positive<fint>;
+      return this.moment.getTime() as Positive<fint>;
     }
     catch (e) {
       throw new EvalError(
@@ -24,14 +22,11 @@ abstract class Moment {
   public get datetime() {
     try {
       const {
-        separator,
-        date,
-        time,
-      } = this;
-      const datetime = [
-        date,
-        time,
-      ] as const;
+          separator,
+          date,
+          time,
+        } = this,
+        datetime = [date, time] as const;
 
       return datetime.join(separator) as Join<typeof datetime>;
     }
@@ -45,16 +40,13 @@ abstract class Moment {
 
   public get date() {
     try {
-      const {
-        formatDate,
-        moment,
-      } = this;
-      const date = this.afterDate(
-        moment.toLocaleDateString(
-          `en-US`,
-          formatDate,
-        ),
-      );
+      const { formatDate, moment } = this,
+        date = this.afterDate(
+          moment.toLocaleDateString(
+            `en-US`,
+            formatDate,
+          ),
+        );
 
       if (date.length > 0)
         return date as stringful;
@@ -71,20 +63,11 @@ abstract class Moment {
 
   public get time() {
     try {
-      const SEPARATOR = "";
-      const {
-        local,
-        offset,
-      } = this;
-      const localOffset = [
-        local,
-        offset,
-      ] as const;
+      const SEPARATOR = "",
+        { local, offset } = this,
+        localOffset = [local, offset] as const;
 
-      return localOffset.join(SEPARATOR) as Join<
-        typeof localOffset,
-        typeof SEPARATOR
-      >;
+      return localOffset.join(SEPARATOR) as Join<typeof localOffset, typeof SEPARATOR>;
     }
     catch (e) {
       throw new EvalError(
@@ -96,16 +79,13 @@ abstract class Moment {
 
   public get local() {
     try {
-      const {
-        formatLocal,
-        moment,
-      } = this;
-      const local = this.afterLocal(
-        moment.toLocaleTimeString(
-          `en-US`,
-          formatLocal,
-        ),
-      );
+      const { formatLocal, moment } = this,
+        local = this.afterLocal(
+          moment.toLocaleTimeString(
+            `en-US`,
+            formatLocal,
+          ),
+        );
 
       if (local.length > 0)
         return local as stringful;
@@ -122,8 +102,8 @@ abstract class Moment {
 
   public get offset() {
     try {
-      const { moment } = this;
-      const offset = moment.getTimezoneOffset() / -60;
+      const { moment } = this,
+        offset = moment.getTimezoneOffset() / -60;
 
       return offset.toLocaleString(
         "en-US",

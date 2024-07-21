@@ -22,10 +22,8 @@ class CharSet {
     try {
       const { chars } = this;
 
-      return ([...string] as char[]).every(
-        stringchar =>
-          chars.includes(stringchar),
-      );
+      return ([...string] as char[])
+        .every(stringchar => chars.includes(stringchar));
     }
     catch (e) {
       throw new EvalError(
@@ -39,10 +37,8 @@ class CharSet {
     try {
       const { chars } = this;
 
-      return chars.every(
-        char =>
-          !string.includes(char),
-      );
+      return chars
+        .every(char => !string.includes(char));
     }
     catch (e) {
       throw new EvalError(

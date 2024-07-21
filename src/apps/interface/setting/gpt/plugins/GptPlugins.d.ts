@@ -1,1 +1,1 @@
-declare type GptPlugins = Particord<"plugins", FieldTable>;
+declare interface GptPlugins { plugins?: FieldTable }

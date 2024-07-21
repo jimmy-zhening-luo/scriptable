@@ -10,25 +10,20 @@ class ErrorHandler {
       )
         queue.unshift(i.cause as ErrorLike);
 
-      const hoist = queue.findIndex(
-        (error): error is ErrorLike<true> =>
-          typeof error === "object" && "message" in error,
-      );
-      const hoistedQueue: readonly ErrorLike[] = hoist > -1
-        ? [
-            queue[hoist] as ErrorLike<true>,
-            ...queue.slice(
-              0,
-              hoist,
-            ),
-            ...queue.slice(hoist + 1),
-          ]
-        : queue;
-      const messages = hoistedQueue
-        .map(
-          error =>
-            this.print(error),
-        );
+      const hoist = queue
+          .findIndex((error): error is ErrorLike<true> => typeof error === "object" && "message" in error),
+        hoistedQueue: readonly ErrorLike[] = hoist > -1
+          ? [
+              queue[hoist] as ErrorLike<true>,
+              ...queue.slice(
+                0,
+                hoist,
+              ),
+              ...queue.slice(hoist + 1),
+            ]
+          : queue,
+        messages = hoistedQueue
+          .map(error => this.print(error));
 
       console.error(messages.join("\n"));
       this.notify(messages);
@@ -45,8 +40,8 @@ class ErrorHandler {
 
   private notify(messages: readonly string[]) {
     try {
-      const notif = new Notification();
-      const lines = [...messages];
+      const notif = new Notification,
+        lines = [...messages];
 
       notif.title = lines.shift() ?? "";
       notif.body = lines.join("\n");
@@ -89,19 +84,13 @@ class ErrorHandler {
       return Array.isArray(error)
         ? `[${
           error
-            .map(
-              (vi: unknown) =>
-                this.quotelessStringify(vi),
-            )
+            .map((vi: unknown) => this.quotelessStringify(vi))
             .join(", ")
         }]`
         : typeof error === "object" && error !== null
           ? Object
             .keys(error)
-            .map(
-              k =>
-                `${k}: ${this.quotelessStringify((error as FieldTable)[k])}`,
-            )
+            .map(k => `${k}: ${this.quotelessStringify((error as FieldTable)[k])}`)
             .join(", ")
           : String(error);
     }

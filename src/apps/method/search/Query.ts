@@ -51,10 +51,7 @@ class Query {
     private readonly REST: stringful,
   ) {
     try {
-      const [
-        key,
-        ...terms
-      ] = Query.mathefy(
+      const [key, ...terms] = Query.mathefy(
         Query.dedot(
           Query.transliterate(
             Query.tokenize(
@@ -94,10 +91,7 @@ class Query {
 
   public get string() {
     try {
-      const string = [
-        this.key,
-        this.natural,
-      ] as const;
+      const string = [this.key, this.natural] as const;
 
       return string.join(" ") as Join<typeof string, " ">;
     }
@@ -129,22 +123,19 @@ class Query {
   ) {
     try {
       const preprocessed = query.startsWith(" ")
-        ? query.startsWith("  ")
-          ? query.startsWith("   ")
-            ? [THREE]
-            : [TWO]
-          : [ONE]
-        : [];
-      const tokens = [
-        ...preprocessed,
-        ...query
-          .trim()
-          .split(" ")
-          .filter(
-            (token): token is stringful =>
-              token.length > 0,
-          ),
-      ];
+          ? query.startsWith("  ")
+            ? query.startsWith("   ")
+              ? [THREE]
+              : [TWO]
+            : [ONE]
+          : [],
+        tokens = [
+          ...preprocessed,
+          ...query
+            .trim()
+            .split(" ")
+            .filter((token): token is stringful => token.length > 0),
+        ];
 
       if (tokens.length > 0)
         return tokens as Arrayful<stringful>;
@@ -167,34 +158,37 @@ class Query {
     TRANSLATE: stringful,
   ) {
     try {
-      const LANG_TAG = "@" as stringful;
-      const [T0] = tokens;
-      const t0 = Query.toLower(T0);
-      const pre = t0.startsWith(LANG_TAG)
-        ? [TRANSLATE]
-        : t0.startsWith(TRANSLATE)
-          ? LANG_TAG === t0.slice(
-            TRANSLATE.length,
-            TRANSLATE.length + LANG_TAG.length,
-          )
-            ? [
-                TRANSLATE,
-                String(tokens.shift())
-                  .slice(TRANSLATE.length) as stringful,
-              ]
-            : TRANSLATE.length > t0.length
+      const LANG_TAG = "@" as stringful,
+        [T0] = tokens,
+        t0 = Query.toLower(T0),
+        pre = t0.startsWith(LANG_TAG)
+          ? [TRANSLATE]
+          : t0.startsWith(TRANSLATE)
+            ? LANG_TAG === t0
+              .slice(
+                TRANSLATE.length,
+                TRANSLATE.length + LANG_TAG.length,
+              )
               ? [
                   TRANSLATE,
-                  [
-                    LANG_TAG,
-                    t0[TRANSLATE.length],
-                  ].join("") as Join<Tuple<stringful>>,
-                  ...TRANSLATE.length + LANG_TAG.length < String(tokens.shift()).length
-                    ? [t0.slice(TRANSLATE.length + LANG_TAG.length) as stringful]
-                    : [],
+                  tokens
+                    .shift()
+                    ?.slice(TRANSLATE.length) as stringful,
                 ]
-              : []
-          : [];
+              : TRANSLATE.length > t0.length
+                ? [
+                    TRANSLATE,
+                    [
+                      LANG_TAG,
+                      t0[TRANSLATE.length],
+                    ]
+                      .join("") as Join<Tuple<stringful>>,
+                    ...TRANSLATE.length + LANG_TAG.length < (tokens.shift()?.length ?? 0)
+                      ? [t0.slice(TRANSLATE.length + LANG_TAG.length) as stringful]
+                      : [],
+                  ]
+                : []
+            : [];
 
       tokens.unshift(...pre);
 
@@ -210,13 +204,13 @@ class Query {
 
   private static dedot(tokens: Arrayful<stringful>) {
     try {
-      const [T0] = tokens;
-      const T0_Dedot = T0.endsWith(".") && !T0.startsWith(".")
-        ? T0.slice(
-          0,
-          -1,
-        ) as stringful
-        : null;
+      const [T0] = tokens,
+        T0_Dedot = T0.endsWith(".") && !T0.startsWith(".")
+          ? T0.slice(
+            0,
+            -1,
+          ) as stringful
+          : null;
 
       if (T0_Dedot !== null) {
         tokens.shift();
@@ -243,27 +237,19 @@ class Query {
   ) {
     try {
       const M = [
-        MATH_SHORT,
-        CHAT,
-        TRANSLATE,
-        MATH_LONG,
-      ] as const;
-      const [T0] = tokens;
-      const t0 = Query.toLower(T0);
-      const t0_len = t0.length;
-      const longest = [...M]
-        .filter(
-          mk =>
-            t0_len >= mk.length,
-        )
-        .sort(
-          (a, b) =>
-            b.length - a.length,
-        )
-        .find(
-          mk =>
-            t0.startsWith(mk),
-        ) ?? null;
+          MATH_SHORT,
+          CHAT,
+          TRANSLATE,
+          MATH_LONG,
+        ] as const,
+        [T0] = tokens,
+        t0 = Query.toLower(T0),
+        t0_len = t0.length,
+        longest = [...M]
+          .filter(mk => t0_len >= mk.length)
+          .sort((a, b) => b.length - a.length)
+          .find(mk => t0.startsWith(mk))
+          ?? null;
 
       if (longest === null) {
         if (NUMERIC.includes(t0[0]))
@@ -272,7 +258,8 @@ class Query {
       else {
         const operand_0 = tokens
           .shift()
-          ?.slice(longest.length) ?? "";
+          ?.slice(longest.length)
+          ?? "";
 
         if (operand_0.length > 0)
           tokens.unshift(operand_0 as stringful);

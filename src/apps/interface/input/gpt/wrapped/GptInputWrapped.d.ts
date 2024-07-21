@@ -1,5 +1,5 @@
 declare type GptInputWrapped =
-  & Recordful<"prompt", GptInputUnwrapped>
+  & { prompt: GptInputUnwrapped }
   & GptPlugins
   & Partial<GptOpts>
 ;

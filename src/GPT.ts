@@ -12,112 +12,87 @@ namespace GPT {
     GptSetting
   > {
     protected runtime() {
-      const {
-        app,
-        user,
-      } = this.setting;
-      const {
-        api,
-        models,
-        limit,
-        tags,
-      } = app;
-      const {
-        id,
-        presets,
-        defaults: {
-          model,
-          preset,
-          location,
-          token,
-          temperature,
-          p,
+      const { app, user } = this.setting,
+        {
+          api,
+          models,
+          limit,
+          tags,
+        } = app,
+        {
+          id,
+          presets,
+          defaults: {
+            model,
+            preset,
+            location,
+            token,
+            temperature,
+            p,
+          },
+        } = user,
+        input = this.inputful,
+        wrap = typeof input !== "string" && "prompt" in input
+          ? input
+          : { prompt: input },
+        opts = {
+          model: "model" in wrap && String(wrap.model) in models
+            ? wrap.model
+            : model,
+          token: "token" in wrap && wrap.token >= limit.token.min && wrap.token <= limit.token.max
+            ? wrap.token
+            : token,
+          temperature: "temperature" in wrap && wrap.temperature >= limit.temperature.min && wrap.temperature <= limit.temperature.max
+            ? wrap.temperature
+            : temperature,
+          p: "p" in wrap && wrap.p >= limit.p.min && wrap.p <= limit.p.max
+            ? wrap.p
+            : p,
+          preset: "preset" in wrap && wrap.preset in presets
+            ? wrap.preset
+            : preset,
+          location: wrap.location ?? location,
+          date: wrap.date ?? (new this.timeprint).date,
         },
-      } = user;
-      const input = this.inputful;
-      const wrap = typeof input !== "string" && "prompt" in input
-        ? input
-        : { prompt: input };
-      const opts = {
-        model: "model" in wrap && String(wrap.model) in models
-          ? wrap.model
-          : model,
-        token: "token" in wrap && wrap.token >= limit.token.min && wrap.token <= limit.token.max
-          ? wrap.token
-          : token,
-        temperature: "temperature" in wrap && wrap.temperature >= limit.temperature.min && wrap.temperature <= limit.temperature.max
-          ? wrap.temperature
-          : temperature,
-        p: "p" in wrap && wrap.p >= limit.p.min && wrap.p <= limit.p.max
-          ? wrap.p
-          : p,
-        preset: "preset" in wrap && wrap.preset in presets
-          ? wrap.preset
-          : preset,
-        location: wrap.location ?? location,
-        date: wrap.date ?? new this.timeprint().date,
-      };
-      const presetConfig = presets[opts.preset] ?? null;
-      const [
-        presetPlugins,
-        plugins,
-      ] = presetConfig === null || !("plugins" in presetConfig)
-        ? [
-            {},
-            {},
-          ]
-        : [
-            presetConfig.plugins,
-            wrap.plugins ?? {},
-          ];
-      const plugs = Object.keys(presetPlugins);
-      const promptTemplate = typeof wrap.prompt !== "string"
-        ? wrap.prompt
-        : presetConfig === null
-          ? { user: wrap.prompt }
-          : {
-              system: presetConfig.system,
-              user: "user" in presetConfig && presetConfig.user.includes(tags.preset)
-                ? presetConfig.user.replace(
-                  tags.preset,
-                  wrap.prompt,
-                )
-                : wrap.prompt,
-            };
-      const messagesTemplate = "system" in promptTemplate
-        ? [
-            [
-              "system",
-              promptTemplate.system,
+        presetConfig = presets[opts.preset] ?? null,
+        [presetPlugins, plugins] = presetConfig === null || !("plugins" in presetConfig)
+          ? [{}, {}]
+          : [
+              presetConfig.plugins,
+              wrap.plugins ?? {},
             ],
-            [
-              "user",
-              promptTemplate.user,
-            ],
-          ] as const
-        : [
-            [
-              "user",
-              promptTemplate.user,
-            ],
-          ] as const;
-      const messagesFilled = messagesTemplate
-        .map(
-          ([
-            role,
-            prompt,
-          ]) =>
-            [
+        plugs = Object.keys(presetPlugins),
+        promptTemplate = typeof wrap.prompt !== "string"
+          ? wrap.prompt
+          : presetConfig === null
+            ? { user: wrap.prompt }
+            : {
+                system: presetConfig.system,
+                user: "user" in presetConfig && presetConfig.user.includes(tags.preset)
+                  ? presetConfig.user.replace(
+                    tags.preset,
+                    wrap.prompt,
+                  )
+                  : wrap.prompt,
+              },
+        messagesTemplate = "system" in promptTemplate
+          ? [
+              ["system", promptTemplate.system],
+              ["user", promptTemplate.user],
+            ] as const
+          : [["user", promptTemplate.user]] as const,
+        messagesFilled = messagesTemplate
+          .map(
+            ([role, prompt]) => [
               role,
               plugs.reduce(
                 (
                   tagged,
                   plug,
-                ) =>
-                  tagged.replaceAll(
-                    `{{${plug}}}`,
-                    plugins[plug] ?? presetPlugins[plug] ?? "",
-                  ),
+                ) => tagged.replaceAll(
+                  `{{${plug}}}`,
+                  plugins[plug] ?? presetPlugins[plug] ?? "",
+                ),
                 prompt,
               )
                 .replaceAll(
@@ -129,30 +104,18 @@ namespace GPT {
                   opts.date,
                 ),
             ] as const,
-        );
-      const messages = messagesFilled
-        .map(
-          ([
-            role,
-            content,
-          ]) => {
-            return {
-              role,
-              content,
-            };
-          },
-        );
+          ),
+        messages = messagesFilled
+          .map(([role, content]) => { return { role, content }; });
 
       return {
         api: [
           api.host,
           api.version,
           api.action[opts.model],
-        ].join("/"),
-        header: {
-          auth: id.token,
-          org: id.org,
-        },
+        ]
+          .join("/"),
+        header: { auth: id.token, org: id.org },
         body: {
           messages,
           model: models[opts.model],
@@ -165,5 +128,4 @@ namespace GPT {
   }
 }
 
-new GPT.GPT()
-  .run();
+(new GPT.GPT).run();

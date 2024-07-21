@@ -10,23 +10,13 @@ class Filepath<N extends number> {
         min,
         subpaths
           .flatMap(
-            subpath =>
-              typeof subpath !== "string"
-                ? subpath.nodes
-                : subpath
-                  .split("/")
-                  .map(
-                    node =>
-                      node.trim(),
-                  )
-                  .filter(
-                    node =>
-                      node.length > 0,
-                  )
-                  .map(
-                    node =>
-                      new Filepath.FileNode(node).string,
-                  ),
+            subpath => typeof subpath !== "string"
+              ? subpath.nodes
+              : subpath
+                .split("/")
+                .map(node => node.trim())
+                .filter(node => node.length > 0)
+                .map(node => new Filepath.FileNode(node).string),
           ),
       );
     }
@@ -54,15 +44,13 @@ class Filepath<N extends number> {
 
   public get parent() {
     try {
-      const { min } = this;
-      const parent: Filepath<N> = new (
-        this.constructor as new (
-          ...args: ConstructorParameters<typeof Filepath<N>>
-        )=> Filepath<N>
-      )(
-        min,
-        this,
-      );
+      const { min } = this,
+        parent: Filepath<N> = new (
+          this.constructor as new (...args: ConstructorParameters<typeof Filepath<N>>)=> Filepath<N>
+        )(
+          min,
+          this,
+        );
 
       parent.pop();
 
@@ -79,10 +67,7 @@ class Filepath<N extends number> {
   public prepend(root: Stringify<Filepath<1>>) {
     try {
       if (this.nodes.length > 0) {
-        const rootThis = [
-          root,
-          String(this),
-        ] as const;
+        const rootThis = [root, String(this)] as const;
 
         return rootThis.join("/") as Join<typeof rootThis, "/">;
       }
@@ -113,9 +98,9 @@ class Filepath<N extends number> {
 
   private pop() {
     try {
-      const { min } = this;
-      const { length } = this.nodes;
-      const popped = this.nodes.pop() ?? null;
+      const { min } = this,
+        { length } = this.nodes,
+        popped = this.nodes.pop() ?? null;
 
       if (popped === null)
         throw new RangeError(`Filepath is already empty`);
@@ -150,12 +135,7 @@ class Filepath<N extends number> {
       if (nodes.length < min)
         throw new RangeError(
           `Filepath too short`,
-          {
-            cause: {
-              min,
-              nodes,
-            },
-          },
+          { cause: { min, nodes } },
         );
       else
         return nodes as PathN<FileNode, N>;

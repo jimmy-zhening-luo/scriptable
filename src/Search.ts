@@ -18,68 +18,61 @@ namespace Search {
     }
 
     protected runtime() {
-      const {
-        app,
-        user,
-      } = this.setting;
-      const {
-        tag,
-        key: {
+      const { app, user } = this.setting,
+        {
+          tag,
+          key: {
+            chat,
+            translate,
+            mathShort,
+            mathLong,
+          },
+          fallback: {
+            one,
+            two,
+            three,
+            rest,
+          },
+        } = app,
+        { engines, alias } = user,
+        [
+          TAG,
+          CHAT,
+          TRANSLATE,
+          MATH_SHORT,
+          MATH_LONG,
+          ONE,
+          TWO,
+          THREE,
+          REST,
+        ] = [
+          tag,
           chat,
           translate,
           mathShort,
           mathLong,
-        },
-        fallback: {
           one,
           two,
           three,
           rest,
-        },
-      } = app;
-      const {
-        engines,
-        alias,
-      } = user;
-      const [
-        TAG,
-        CHAT,
-        TRANSLATE,
-        MATH_SHORT,
-        MATH_LONG,
-        ONE,
-        TWO,
-        THREE,
-        REST,
-      ] = [
-        tag,
-        chat,
-        translate,
-        mathShort,
-        mathLong,
-        one,
-        two,
-        three,
-        rest,
-      ].map(
-        key =>
-          this.stringful(key),
-      ) satisfies stringful[] as unknown as Tuple<stringful, 9>;
-      const query = new this.Query(
-        this.inputString.length > 0
-          ? this.inputString
-          : this.read(),
-        CHAT,
-        TRANSLATE,
-        MATH_SHORT,
-        MATH_LONG,
-        ONE,
-        TWO,
-        THREE,
-        REST,
-      );
-      const keyToken = query.key;
-      const dealias = alias[keyToken] ?? null;
+        ].map(
+          key => this.stringful(key),
+        ) satisfies stringful[] as unknown as Tuple<stringful, 9>,
+        query = new this.Query(
+          this.inputString.length > 0
+            ? this.inputString
+            : this.read(),
+          CHAT,
+          TRANSLATE,
+          MATH_SHORT,
+          MATH_LONG,
+          ONE,
+          TWO,
+          THREE,
+          REST,
+        ),
+        keyToken = query.key,
+        dealias = alias[keyToken] ?? null;
 
       query.lock(
         keyToken in engines
@@ -89,8 +82,8 @@ namespace Search {
             : null,
       );
 
-      const { key } = query;
-      const setting = engines[key] ?? null;
+      const { key } = query,
+        setting = engines[key] ?? null;
 
       if (setting === null)
         throw new ReferenceError(
@@ -99,16 +92,12 @@ namespace Search {
         );
       else {
         const engine = Array.isArray(setting) || typeof setting === "string"
-          ? new (
-            this.SearchEngine<typeof UrlEngine>("UrlEngine")
-          )(
+          ? new (this.SearchEngine<typeof UrlEngine>("UrlEngine"))(
             setting,
             TAG,
           )
           : "url" in setting
-            ? new (
-              this.SearchEngine<typeof UrlEngine>("UrlEngine")
-            )(
+            ? new (this.SearchEngine<typeof UrlEngine>("UrlEngine"))(
               setting.url,
               TAG,
               setting.browser,
@@ -118,15 +107,11 @@ namespace Search {
               setting.output,
             )
             : "shortcut" in setting
-              ? new (
-                this.SearchEngine<typeof ShortcutEngine>("ShortcutEngine")
-              )(
+              ? new (this.SearchEngine<typeof ShortcutEngine>("ShortcutEngine"))(
                 setting.shortcut,
                 setting.output,
               )
-              : new (
-                this.SearchEngine<typeof FindEngine>("FindEngine")
-              )(setting.find);
+              : new (this.SearchEngine<typeof FindEngine>("FindEngine"))(setting.find);
 
         this.write(String(query));
 
@@ -150,5 +135,4 @@ namespace Search {
   }
 }
 
-new Search.Search()
-  .run();
+(new Search.Search).run();

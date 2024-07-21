@@ -1,9 +1,6 @@
-declare type GptOutput = {
+declare interface GptOutput {
   api: string;
-  header: Field<
-    | "auth"
-    | "org"
-  >;
+  header: Field<"auth" | "org">;
   body:
     & { messages: readonly GptMessage[] }
     & Field<
@@ -12,4 +9,4 @@ declare type GptOutput = {
       | "temperature"
       | "top_p"
     >;
-};
+}

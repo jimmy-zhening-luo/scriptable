@@ -24,10 +24,7 @@ abstract class LinkPathProcessor<Host extends string> {
     }
   }
 
-  protected abstract process(path: string):
-    | string
-    | Field<"processed" | "postprocessor">
-  ;
+  protected abstract process(path: string): string | Field<"processed" | "postprocessor">;
 }
 
 module.exports = LinkPathProcessor;

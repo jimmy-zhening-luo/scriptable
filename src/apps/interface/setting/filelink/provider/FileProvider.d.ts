@@ -1,16 +1,16 @@
-declare type FileProvider<C> =
+declare type FileProvider<HasContainers> =
   & Field<"providerRoot">
   & (
-    C extends false
+    HasContainers extends false
       ? Recordful<"hasContainers", false>
       :
         & Recordful<"hasContainers", true>
-        & FileContainerManifest
         & Field<
           | "postContainerRoot"
           | "folderRoot"
           ,
           "preAppRoot"
         >
-  )
+        & FileContainerManifest
+      )
 ;

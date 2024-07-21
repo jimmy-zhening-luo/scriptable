@@ -13,103 +13,80 @@ namespace Link {
   > {
     protected runtime() {
       const {
-        host: {
-          www,
-          swap,
-        },
-        query: {
-          omit,
-          include,
-          exclude,
-        },
-        fragment: { trim },
-      } = this.setting;
-      const {
-        scheme,
-        host,
-        path,
-        query,
-        fragment,
-      } = this.url(this.inputString);
-      const ___host = host.startsWith("www.") && !www.includes(host)
-        ? host.slice(4)
-        : host;
-      const HOST = swap[___host] ?? ___host;
-      const [
-        inclusions,
-        exclusions,
-      ] = [
-        include[HOST]?.map(p =>
-          p.toLowerCase()) ?? [],
-        exclude[HOST]?.map(p =>
-          p.toLowerCase()) ?? [],
-      ];
-      const processor = [
-        "amazon.com",
-        "dropbox.com",
-        "linkedin.com",
-        "reddit.com",
-      ].includes(HOST)
-        ? new (
-          this.Processor(HOST)
-        )(
-          HOST,
+          host: { www, swap },
+          query: {
+            omit,
+            include,
+            exclude,
+          },
+          fragment: { trim },
+        } = this.setting,
+        {
+          scheme,
+          host,
           path,
-        )
-        : null;
-      const postprocessor = processor?.postprocessor ?? null;
-      const url = {
-        scheme: [
-          "http",
-          "https",
-        ].includes(scheme.toLowerCase())
-          ? ""
-          : scheme.toLowerCase(),
-        host: HOST,
-        path: processor === null
-          ? path
-          : processor.processed,
-        query: omit.includes(HOST)
-          ? ""
-          : HOST in include
-            ? inclusions.length < 1
-              ? ""
-              : query
-                .split("&")
-                .filter(
-                  param =>
-                    inclusions.includes(
+          query,
+          fragment,
+        } = this.url(this.inputString),
+        ___host = host.startsWith("www.") && !www.includes(host)
+          ? host.slice(4)
+          : host,
+        HOST = swap[___host] ?? ___host,
+        [inclusions, exclusions] = [
+          include[HOST]?.map(p => p.toLowerCase()) ?? [],
+          exclude[HOST]?.map(p => p.toLowerCase()) ?? [],
+        ],
+        processor = [
+          "amazon.com",
+          "dropbox.com",
+          "linkedin.com",
+          "reddit.com",
+        ].includes(HOST)
+          ? new (this.Processor(HOST))(
+            HOST,
+            path,
+          )
+          : null,
+        postprocessor = processor?.postprocessor ?? null,
+        url = {
+          scheme: ["http", "https"].includes(scheme.toLowerCase()) ? "" : scheme.toLowerCase(),
+          host: HOST,
+          path: processor === null ? path : processor.processed,
+          query: omit.includes(HOST)
+            ? ""
+            : HOST in include
+              ? inclusions.length < 1
+                ? ""
+                : query
+                  .split("&")
+                  .filter(
+                    param => inclusions.includes(
                       param
                         .toLowerCase()
                         .split("=")
                         .shift() ?? "",
                     ),
-                )
-                .join("&")
-            : HOST in exclude
-              ? query
-                .split("&")
-                .filter(
-                  param =>
-                    !exclusions.includes(
+                  )
+                  .join("&")
+              : HOST in exclude
+                ? query
+                  .split("&")
+                  .filter(
+                    param => !exclusions.includes(
                       param
                         .toLowerCase()
                         .split("=")
                         .shift() ?? "",
                     ),
-                )
-                .join("&")
-              : query,
-        fragment: trim.includes(HOST)
-          ? ""
-          : fragment,
-      };
+                  )
+                  .join("&")
+                : query,
+          fragment: trim.includes(HOST) ? "" : fragment,
+        };
 
       return {
         link: this.buildURL(url),
-        ...postprocessor === null
-          ? {}
-          : { postprocessor },
+        ...postprocessor === null ? {} : { postprocessor },
       };
     }
 
@@ -135,23 +112,19 @@ namespace Link {
           [
             [
               [
-                ...scheme.length > 0
-                  ? [scheme]
-                  : [],
+                ...scheme.length > 0 ? [scheme] : [],
                 host,
-              ].join("://"),
-              ...path !== "/"
-                ? [path]
-                : [],
-            ].join(""),
-            ...query.length > 0
-              ? [query]
-              : [],
-          ].join("?"),
-          ...fragment.length > 0
-            ? [fragment]
-            : [],
-        ].join("#");
+              ]
+                .join("://"),
+              ...path !== "/" ? [path] : [],
+            ]
+              .join(""),
+            ...query.length > 0 ? [query] : [],
+          ]
+            .join("?"),
+          ...fragment.length > 0 ? [fragment] : [],
+        ]
+          .join("#");
       }
       catch (e) {
         throw new EvalError(
@@ -166,12 +139,9 @@ namespace Link {
       path: string
     )=> LinkPathProcessor<H> {
       try {
-        return importModule<new (
-        host: H,
-        path: string
-        )=> LinkPathProcessor<H>>(
+        return importModule<new (host: H, path: string)=> LinkPathProcessor<H>>(
           `apps/method/link/processors/${host}`,
-          );
+        );
       }
       catch (e) {
         throw new EvalError(
@@ -183,5 +153,4 @@ namespace Link {
   }
 }
 
-new Link.Link()
-  .run();
+(new Link.Link).run();

@@ -42,18 +42,13 @@ class Storage<Class extends string> extends dFiletype<"Storage", Class, File> {
       else if (typeof buffer === "object")
         if (
           Array.isArray(buffer)
-          && buffer.every(
-            element =>
-              typeof element === "string",
-          )
+          && buffer.every(element => typeof element === "string")
         )
           this.file.write(
             buffer
               .reverse()
               .join("\n"),
-            overwrite === false
-              ? false
-              : "line",
+            overwrite === false ? false : "line",
           );
         else
           this.file.write(

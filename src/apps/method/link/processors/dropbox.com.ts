@@ -25,7 +25,8 @@ class DropboxPathProcessor extends drop_ILinkPathProcessor<"dropbox.com"> {
             SCL,
             FI,
             fileId,
-          ].join("/");
+          ]
+            .join("/");
         }
       }
     }

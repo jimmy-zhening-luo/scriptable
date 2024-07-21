@@ -12,35 +12,31 @@ function Base64Guid() {
         throw new TypeError(`Wrong input guid length (!32)`);
       else {
         const hexvalue = {
-          0: 0,
-          1: 1,
-          2: 2,
-          3: 3,
-          4: 4,
-          5: 5,
-          6: 6,
-          7: 7,
-          8: 8,
-          9: 9,
-          A: 10,
-          B: 11,
-          C: 12,
-          D: 13,
-          E: 14,
-          F: 15,
-        } as const;
-        const hexchars = [...normalized].filter(
-          (char): char is hexchar =>
-            char in hexvalue,
-        );
+            0: 0,
+            1: 1,
+            2: 2,
+            3: 3,
+            4: 4,
+            5: 5,
+            6: 6,
+            7: 7,
+            8: 8,
+            9: 9,
+            A: 10,
+            B: 11,
+            C: 12,
+            D: 13,
+            E: 14,
+            F: 15,
+          } as const,
+          hexchars = [...normalized]
+            .filter((char): char is hexchar => char in hexvalue);
 
         if (hexchars.length !== 32)
           throw new TypeError(`Illegal chars in input guid`);
         else
-          return hexchars.map(
-            hexchar =>
-              hexvalue[hexchar],
-          ) satisfies hex[] as unknown as Tuple<hex, 32>;
+          return hexchars
+            .map(hexchar => hexvalue[hexchar]) satisfies hex[] as unknown as Tuple<hex, 32>;
       }
     }
     catch (e) {
@@ -62,18 +58,18 @@ function Base64Guid() {
   }
 
   try {
-    const guid = UUID.string();
-    const hexchars = hex(guid);
-    const buffer: Octad<hex[]> = [
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-    ];
+    const guid = UUID.string(),
+      hexchars = hex(guid),
+      buffer: Octad<hex[]> = [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+      ];
 
     hexchars.forEach(
       (hexchar, i) => {
@@ -81,39 +77,32 @@ function Base64Guid() {
       },
     );
 
-    const quads = buffer satisfies Octad<hex[]> as unknown as Octad<Quad<hex>>;
-    const charcodes = quads
-      .map(
-        ([
-          q0,
-          q1,
-          q2,
-          q3,
-        ]) =>
-          q0 + q1 + q2 + q3 as base64,
-      )
-      .map(
-        word =>
-          word + 43,
-      )
-      .map(
-        charRangePlus =>
-          charRangePlus > 43
+    const quads = buffer satisfies Octad<hex[]> as unknown as Octad<Quad<hex>>,
+      charcodes = quads
+        .map(
+          ([
+            q0,
+            q1,
+            q2,
+            q3,
+          ]) => q0 + q1 + q2 + q3 as base64,
+        )
+        .map(word => word + 43)
+        .map(
+          charRangePlus => charRangePlus > 43
             ? charRangePlus + 3
             : charRangePlus,
-      )
-      .map(
-        charRangeSlashDigit =>
-          charRangeSlashDigit > 57
+        )
+        .map(
+          charRangeSlashDigit => charRangeSlashDigit > 57
             ? charRangeSlashDigit + 7
             : charRangeSlashDigit,
-      )
-      .map(
-        charRangeAlphaUpper =>
-          charRangeAlphaUpper > 90
+        )
+        .map(
+          charRangeAlphaUpper => charRangeAlphaUpper > 90
             ? charRangeAlphaUpper + 6
             : charRangeAlphaUpper,
-      );
+        );
 
     return base64guid(String.fromCharCode(...charcodes));
   }

@@ -1,6 +1,10 @@
-declare type GptSetting = {
+declare interface GptSetting {
   app: {
-    api: { action: Field<GptModel> } & Field<"host" | "version">;
+    api: {
+      host: string;
+      version: string;
+      action: Field<GptModel>;
+    };
     models: Field<GptModel>;
     limit: Limit<
       | "token"
@@ -14,11 +18,8 @@ declare type GptSetting = {
     >;
   };
   user: {
-    id: Field<
-      | "token"
-      | "org"
-    >;
+    id: Field<"token" | "org">;
     defaults: GptOpts;
     presets: Table<GptPreset>;
   };
-};
+}

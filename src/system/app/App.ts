@@ -111,10 +111,7 @@ abstract class App<
           throw new TypeError(
             `null input`,
             {
-              cause: {
-                input,
-                type: typeof input,
-              },
+              cause: { input, type: typeof input },
             },
           );
       }
@@ -132,10 +129,8 @@ abstract class App<
   protected get inputString() {
     try {
       if (typeof this._inputString === "undefined") {
-        const { input } = this;
-        const truthy = this.truthy(input)
-          ? input
-          : "";
+        const { input } = this,
+          truthy = this.truthy(input) ? input : "";
 
         if (typeof truthy === "string" || typeof truthy === "number")
           this._inputString = String(truthy);
@@ -245,8 +240,8 @@ abstract class App<
 
   protected static falsy(value: unknown): value is Null<undefined> {
     try {
-      const v = value ?? false;
-      const bv = Boolean(v);
+      const v = value ?? false,
+        bv = Boolean(v);
 
       return !bv
         || (
@@ -271,16 +266,13 @@ abstract class App<
         const output = this.runtime();
 
         if (this.debug) {
-          const timestamp = new this.timestamp();
-          const {
-            datetime,
-            epoch,
-          } = timestamp;
-          const { epoch0 } = this;
-          const elapsed = epoch - epoch0;
-          const log = `${datetime} :: ${elapsed} ms : ${epoch}`;
-          const extension = "md";
-          const filename = `_log${this.name}`;
+          const timestamp = new this.timestamp,
+            { datetime, epoch } = timestamp,
+            { epoch0 } = this,
+            elapsed = epoch - epoch0,
+            log = `${datetime} :: ${elapsed} ms : ${epoch}`,
+            extension = "md",
+            filename = `_log${this.name}`;
 
           this.write(
             log,
@@ -305,7 +297,7 @@ abstract class App<
       );
 
       throw new Error(
-        new Handler()
+        (new Handler)
           .handle(
             new Error(
               `run\n`,
@@ -339,12 +331,7 @@ abstract class App<
 
   protected stringfuls(array: string[]) {
     try {
-      if (
-        array.every(
-          (node): node is stringful =>
-            node.length > 0,
-        )
-      )
+      if (array.every((node): node is stringful => node.length > 0))
         return array;
       else
         throw new TypeError(
@@ -361,23 +348,15 @@ abstract class App<
   }
 
   protected read(
-    extensionE?:
-      | boolean
-      | string,
-    filenameE?:
-      | boolean
-      | string,
+    extensionE?: boolean | string,
+    filenameE?: boolean | string,
     E?: boolean,
   ) {
     try {
       return typeof extensionE === "undefined"
-        ? this
-          .storage()
-          .read()
+        ? this.storage().read()
         : typeof extensionE === "boolean"
-          ? this
-            .storage()
-            .read(extensionE)
+          ? this.storage().read(extensionE)
           : typeof filenameE === "boolean"
             ? this
               .storage(extensionE)
@@ -428,13 +407,9 @@ abstract class App<
   ): Null<Data> {
     try {
       return typeof extensionE === "undefined"
-        ? this
-          .storage()
-          .data<Data>()
+        ? this.storage().data<Data>()
         : typeof extensionE === "boolean"
-          ? this
-            .storage()
-            .data<Data>(extensionE)
+          ? this.storage().data<Data>(extensionE)
           : typeof filenameE === "boolean"
             ? this
               .storage(extensionE)
@@ -486,9 +461,7 @@ abstract class App<
 
   protected load(handle: string) {
     try {
-      return this
-        .key(handle)
-        .load();
+      return this.key(handle).load();
     }
     catch (e) {
       throw new EvalError(
@@ -500,9 +473,7 @@ abstract class App<
 
   protected roll(handle: string) {
     try {
-      this
-        .key(handle)
-        .roll();
+      this.key(handle).roll();
     }
     catch (e) {
       throw new EvalError(
@@ -517,11 +488,9 @@ abstract class App<
     filename?: string,
   ) {
     try {
-      const cacheId = [
-        filename ?? "",
-        extension ?? "",
-      ].join(":");
-      const cache = this._storage[cacheId] ?? null;
+      const cacheId = [filename ?? "", extension ?? ""]
+          .join(":"),
+        cache = this._storage[cacheId] ?? null;
 
       if (cache !== null)
         return cache;
@@ -586,11 +555,11 @@ abstract class App<
 
   protected url(string: string) {
     try {
-      const matcher = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u;
-      const _parts = matcher.exec(string) ?? [];
-      const parts = (_parts[2] ?? null) !== null
-        ? _parts
-        : matcher.exec(`https://${string}`) ?? [];
+      const matcher = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u,
+        _parts = matcher.exec(string) ?? [],
+        parts = (_parts[2] ?? null) !== null
+          ? _parts
+          : matcher.exec(`https://${string}`) ?? [];
 
       return {
         scheme: parts[2] ?? "",

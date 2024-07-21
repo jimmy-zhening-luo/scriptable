@@ -7,9 +7,7 @@ class ShortcutEngine extends sIEngine {
 
   constructor(
     shortcut: string,
-    output?:
-      | string
-      | boolean,
+    output?: string | boolean,
   ) {
     try {
       super(

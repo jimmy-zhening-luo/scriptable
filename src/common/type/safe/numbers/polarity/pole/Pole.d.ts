@@ -1,5 +1,5 @@
-declare const pole: unique symbol;
-declare const min: unique symbol;
+declare const pole: unique symbol,
+  min: unique symbol;
 declare type Pole<
   N extends number,
   P extends

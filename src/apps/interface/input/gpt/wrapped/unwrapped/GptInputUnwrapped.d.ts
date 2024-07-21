@@ -1,1 +1,1 @@
-declare type GptInputUnwrapped = GptPromptful | string;
+declare type GptInputUnwrapped = string | GptPromptful;
