@@ -9,9 +9,7 @@ class Bookmark {
       if (alias.length < 1)
         throw new SyntaxError(`empty alias`);
       else if (
-        !FileManager
-          .local()
-          .bookmarkExists(alias as stringful)
+        !FileManager.local().bookmarkExists(alias as stringful)
       )
         throw new ReferenceError(
           `no bookmark matching alias`,
@@ -19,9 +17,7 @@ class Bookmark {
         );
       else {
         this.alias = alias as Alias;
-        this.path = FileManager
-          .local()
-          .bookmarkedPath(bookmark);
+        this.path = FileManager.local().bookmarkedPath(bookmark);
       }
     }
     catch (e) {
