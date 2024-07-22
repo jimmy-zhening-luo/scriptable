@@ -17,7 +17,7 @@ class Bookmark {
         );
       else {
         this.alias = alias as Alias;
-        this.path = FileManager.local().bookmarkedPath(bookmark);
+        this.path = FileManager.local().bookmarkedPath(bookmark) as Stringify<Filepath<1>>;
       }
     }
     catch (e) {

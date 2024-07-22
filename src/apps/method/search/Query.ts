@@ -151,7 +151,7 @@ class Query {
               : TRANSLATE.length > t0.length
                 ? [
                     TRANSLATE,
-                    ([LANG_TAG, t0[TRANSLATE.length]] satisfies [stringful, string]).join("") as stringful,
+                    ([LANG_TAG, t0[TRANSLATE.length] as string] satisfies [stringful, string]).join("") as stringful,
                     ...TRANSLATE.length + LANG_TAG.length < (tokens.shift()?.length ?? 0)
                       ? [t0.slice(TRANSLATE.length + LANG_TAG.length) as stringful]
                       : [],

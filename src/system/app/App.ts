@@ -225,7 +225,7 @@ abstract class App<
           this._class,
           this.name,
         );
-  
+
       return this.__setting;
     }
     catch (e) {
@@ -420,7 +420,7 @@ abstract class App<
           data,
           overwrite,
         );
-  
+
       return this;
     }
     catch (e) {

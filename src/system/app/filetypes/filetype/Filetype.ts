@@ -7,7 +7,7 @@ abstract class Filetype<
 
   constructor(
     type: literalful<Type>,
-    class: literalful<Class>,
+    appClass: literalful<Class>,
     FileConstructor: new(...path: ConstructorParameters<typeof File>)=> F & File,
     ext: string,
     subpath: string,
@@ -16,7 +16,7 @@ abstract class Filetype<
     try {
       this.file = new FileConstructor(
         this.root(type),
-        class,
+        appClass,
         ...typeof filename === "undefined"
           ? [[subpath, ext].join(".")]
           : [
@@ -27,7 +27,7 @@ abstract class Filetype<
     }
     catch (e) {
       throw new Error(
-        `Filetype (${type}/${class})`,
+        `Filetype (${type}/${appClass})`,
         { cause: e },
       );
     }

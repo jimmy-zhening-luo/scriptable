@@ -24,9 +24,9 @@ abstract class Moment {
     try {
       const { moment, dateFormat } = this,
         date = moment.toLocaleDateString(
-            `en-US`,
-            dateFormat,
-          ),
+          `en-US`,
+          dateFormat,
+        ),
         postdate = this.postdate(date);
 
       if (postdate.length > 0)
@@ -39,7 +39,7 @@ abstract class Moment {
       else
         throw new SyntaxError(
           `Date formatter creates empty date`,
-          { cause: dateFormat }
+          { cause: dateFormat },
         );
     }
     catch (e) {
@@ -61,9 +61,9 @@ abstract class Moment {
     try {
       const { moment, timeFormat } = this,
         localtime = moment.toLocaleTimeString(
-            `en-US`,
-            timeFormat,
-          ),
+          `en-US`,
+          timeFormat,
+        ),
         postlocal = this.postlocal(localtime);
 
       if (postlocal.length > 0)
@@ -76,7 +76,7 @@ abstract class Moment {
       else
         throw new SyntaxError(
           `Time formatter creates empty localtime time`,
-          { cause: timeFormat }
+          { cause: timeFormat },
         );
     }
     catch (e) {

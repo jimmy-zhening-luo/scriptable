@@ -16,6 +16,7 @@ namespace Search {
         return importModule<typeof Query>(
           "apps/method/search/Query",
         );
+      }
       catch (e) {
         throw new ReferenceError(
           `Search: import Query`,
@@ -62,21 +63,21 @@ namespace Search {
           two,
           three,
           rest,
-        ]) satisfies stringful[] as unknown as Nonad<stringful>;
+        ]) satisfies stringful[] as unknown as Nonad<stringful>,
 
-      const query = new Search.Query(
-        this.inputString.length > 0
-          ? this.inputString
-          : this.read(),
-        CHAT,
-        TRANSLATE,
-        MATH_SHORT,
-        MATH_LONG,
-        ONE,
-        TWO,
-        THREE,
-        REST,
-      ),
+        query = new Search.Query(
+          this.inputString.length > 0
+            ? this.inputString
+            : this.read(),
+          CHAT,
+          TRANSLATE,
+          MATH_SHORT,
+          MATH_LONG,
+          ONE,
+          TWO,
+          THREE,
+          REST,
+        ),
         keyToken = query.key,
         dealias = alias[keyToken] ?? null;
 
