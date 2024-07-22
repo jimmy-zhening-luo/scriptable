@@ -12,7 +12,7 @@
   "type": "module",
   "private": true,
   "config": {
-    "PACKAGE_JSON_VERSION": "20.9.0"
+    "PACKAGE_JSON_VERSION": "20.10.0"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,13 @@
   },
   "main": "",
   "types": "",
+  "engines": {
+    "node": ">=20.15.0"
+  },
+  "peerDependencies": {},
   "peerDependenciesMeta": {},
+  "optionalDependencies": {},
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^20.14.10",
     "@types/scriptable-ios": "^1.7.7",
