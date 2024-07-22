@@ -12,8 +12,6 @@ namespace _Hello {
     Field<never, "space">
   > {
     protected runtime() {
-      this.debug = true;
-
       const FILENAME_WORLDTIME = "worldtime",
         HELLO = this.readful(),
         worldtime = this.read(
