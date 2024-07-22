@@ -20,8 +20,8 @@ class File {
       );
     }
     catch (e) {
-      throw new EvalError(
-        `File: ctor`,
+      throw new Error(
+        `File`,
         { cause: e },
       );
     }
@@ -42,27 +42,11 @@ class File {
   }
 
   public get path(): Stringify<Filepath<1>> {
-    try {
-      return this._subpath.prepend(this._root);
-    }
-    catch (e) {
-      throw new EvalError(
-        `File: path`,
-        { cause: e },
-      );
-    }
+    return this._subpath.prepend(this._root);
   }
 
   public get subpath(): Stringify<Filepath<0>> {
-    try {
-      return this._subpath.toString();
-    }
-    catch (e) {
-      throw new EvalError(
-        `File: subpath`,
-        { cause: e },
-      );
-    }
+    return this._subpath.toString();
   }
 
   public get isDirectory() {
@@ -70,7 +54,7 @@ class File {
       return this.manager.isDirectory(this.path);
     }
     catch (e) {
-      throw new EvalError(
+      throw new SyntaxError(
         `File: isDirectory`,
         { cause: e },
       );
@@ -82,7 +66,7 @@ class File {
       return this.manager.fileExists(this.path);
     }
     catch (e) {
-      throw new EvalError(
+      throw new SyntaxError(
         `File: isFile`,
         { cause: e },
       );
@@ -91,12 +75,10 @@ class File {
 
   public get root(): this {
     try {
-      return new (
-        this.constructor as new (...path: ConstructorParameters<typeof File>)=> this
-      )({ graft: this });
+      return new (this.constructor as new (...path: ConstructorParameters<typeof File>)=> this)({ graft: this });
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `File: root`,
         { cause: e },
       );
@@ -105,15 +87,13 @@ class File {
 
   public get parent() {
     try {
-      return new (
-        this.constructor as new (...path: ConstructorParameters<typeof File>)=> this
-      )(
+      return new (this.constructor as new (...path: ConstructorParameters<typeof File>)=> this)(
         this.root,
         this._subpath.parent,
       );
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `File: parent`,
         { cause: e },
       );
@@ -124,14 +104,14 @@ class File {
     try {
       if (!this.isFile)
         if (stringful)
-          throw new ReferenceError(`file does not exist`);
+          throw new ReferenceError(`Tried to read non-existent file`);
         else
           return "";
       else
         return this.manager.readString(this.path);
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `File: read (${String(this)})`,
         { cause: e },
       );
@@ -146,12 +126,12 @@ class File {
         return read as stringful;
       else
         throw new TypeError(
-          `empty file`,
+          `Read empty file, expected non-empty`,
           { cause: { error } },
         );
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `File: readful (${String(this)})`,
         { cause: e },
       );
@@ -167,11 +147,11 @@ class File {
   ) {
     try {
       if (this.isDirectory)
-        throw new ReferenceError(`path is folder`);
+        throw new ReferenceError(`Tried to write to folder`);
       else
         if (this.isFile)
           if (overwrite === false)
-            throw new TypeError(`file exists & overwrite false`);
+            throw new TypeError(`Tried to overwrite existing file with overwrite:false`);
           else
             this.manager.writeString(
               this.path,
@@ -197,7 +177,7 @@ class File {
         }
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `File: write (${String(this)})`,
         { cause: e },
       );

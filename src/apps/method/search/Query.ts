@@ -74,8 +74,8 @@ class Query {
       this._key = Query.toLower(key);
     }
     catch (e) {
-      throw new EvalError(
-        `Query: ctor`,
+      throw new Error(
+        `Query`,
         { cause: e },
       );
     }
@@ -89,30 +89,8 @@ class Query {
     return this._locked;
   }
 
-  public get string() {
-    try {
-      const string = [this.key, this.natural] as const;
-
-      return string.join(" ") as Join<typeof string, " ">;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: string`,
-        { cause: e },
-      );
-    }
-  }
-
   public get natural() {
-    try {
-      return this.terms.join(" ");
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: natural`,
-        { cause: e },
-      );
-    }
+    return this.terms.join(" ");
   }
 
   private static tokenize(
@@ -146,7 +124,7 @@ class Query {
         );
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Query: tokenize`,
         { cause: e },
       );
@@ -169,20 +147,11 @@ class Query {
                 TRANSLATE.length,
                 TRANSLATE.length + LANG_TAG.length,
               )
-              ? [
-                  TRANSLATE,
-                  tokens
-                    .shift()
-                    ?.slice(TRANSLATE.length) as stringful,
-                ]
+              ? [TRANSLATE, tokens.shift()?.slice(TRANSLATE.length) as stringful]
               : TRANSLATE.length > t0.length
                 ? [
                     TRANSLATE,
-                    [
-                      LANG_TAG,
-                      t0[TRANSLATE.length],
-                    ]
-                      .join("") as Join<Tuple<stringful>>,
+                    ([LANG_TAG, t0[TRANSLATE.length]] satisfies [stringful, string]).join("") as stringful,
                     ...TRANSLATE.length + LANG_TAG.length < (tokens.shift()?.length ?? 0)
                       ? [t0.slice(TRANSLATE.length + LANG_TAG.length) as stringful]
                       : [],
@@ -195,7 +164,7 @@ class Query {
       return tokens;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Query: transliterate`,
         { cause: e },
       );
@@ -220,7 +189,7 @@ class Query {
       return tokens;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Query: dedot`,
         { cause: e },
       );
@@ -270,7 +239,7 @@ class Query {
       return tokens;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Query: mathefy`,
         { cause: e },
       );
@@ -278,15 +247,7 @@ class Query {
   }
 
   private static toLower(stringful: stringful) {
-    try {
-      return stringful.toLowerCase() as stringful;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Query: toLower`,
-        { cause: e },
-      );
-    }
+    return stringful.toLowerCase() as stringful;
   }
 
   public lock(key: Null<stringful>) {
@@ -301,7 +262,7 @@ class Query {
       this._locked = true;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Query: lock`,
         { cause: e },
       );
@@ -309,7 +270,19 @@ class Query {
   }
 
   public toString() {
-    return this.string;
+    try {
+      const { key, natural } = this,
+        predicates = [key, natural] as const satisfies Tuple<string>,
+        separator = " " satisfies literalful<" ">;
+
+      return predicates.join(separator) as stringful;
+    }
+    catch (e) {
+      throw new TypeError(
+        `Query: toString`,
+        { cause: e },
+      );
+    }
   }
 }
 

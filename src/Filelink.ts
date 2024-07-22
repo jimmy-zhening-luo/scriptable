@@ -125,7 +125,7 @@ namespace Filelink {
           return path as ArrayN<stringful, 2>;
       }
       catch (e) {
-        throw new EvalError(
+        throw new Error(
           `Filelink: validPath`,
           { cause: e },
         );

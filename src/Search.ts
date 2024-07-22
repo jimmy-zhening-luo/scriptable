@@ -11,10 +11,17 @@ namespace Search {
     SearchOutput,
     SearchSetting
   > {
-    private get Query() {
-      return importModule<typeof Query>(
-        "apps/method/search/Query",
-      );
+    private static get Query() {
+      try {
+        return importModule<typeof Query>(
+          "apps/method/search/Query",
+        );
+      catch (e) {
+        throw new ReferenceError(
+          `Search: import Query`,
+          { cause: e },
+        );
+      }
     }
 
     protected runtime() {
@@ -45,7 +52,7 @@ namespace Search {
           TWO,
           THREE,
           REST,
-        ] = [
+        ] = this.stringfuls([
           tag,
           chat,
           translate,
@@ -55,22 +62,21 @@ namespace Search {
           two,
           three,
           rest,
-        ].map(
-          key => this.stringful(key),
-        ) satisfies stringful[] as unknown as Tuple<stringful, 9>,
-        query = new this.Query(
-          this.inputString.length > 0
-            ? this.inputString
-            : this.read(),
-          CHAT,
-          TRANSLATE,
-          MATH_SHORT,
-          MATH_LONG,
-          ONE,
-          TWO,
-          THREE,
-          REST,
-        ),
+        ]) satisfies stringful[] as unknown as Nonad<stringful>;
+
+      const query = new Search.Query(
+        this.inputString.length > 0
+          ? this.inputString
+          : this.read(),
+        CHAT,
+        TRANSLATE,
+        MATH_SHORT,
+        MATH_LONG,
+        ONE,
+        TWO,
+        THREE,
+        REST,
+      ),
         keyToken = query.key,
         dealias = alias[keyToken] ?? null;
 
@@ -87,7 +93,7 @@ namespace Search {
 
       if (setting === null)
         throw new ReferenceError(
-          `SearchEngine setting missing for key`,
+          `Search key has no engine setting`,
           { cause: key },
         );
       else {
@@ -126,7 +132,7 @@ namespace Search {
         ) as T;
       }
       catch (e) {
-        throw new EvalError(
+        throw new ReferenceError(
           `Search: import <T>SearchEngine`,
           { cause: e },
         );

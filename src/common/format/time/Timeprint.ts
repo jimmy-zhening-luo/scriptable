@@ -3,25 +3,25 @@ const pMoment = importModule<typeof Moment>(
 );
 
 class Timeprint extends pMoment {
-  protected separator = " " as stringful;
-  protected formatDate = {
+  protected separator = " ";
+  protected dateFormat = {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
   };
-  protected formatLocal = { timeStyle: "short" };
+  protected timeFormat = { timeStyle: "short" };
 
   public override get offset() {
     return String();
   }
 
-  protected afterDate(date: string) {
+  protected postdate(date: string) {
     return date;
   }
 
-  protected afterLocal(local: string) {
-    return local;
+  protected postlocal(localtime: string) {
+    return localtime;
   }
 }
 

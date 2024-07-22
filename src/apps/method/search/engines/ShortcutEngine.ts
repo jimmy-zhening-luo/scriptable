@@ -9,33 +9,21 @@ class ShortcutEngine extends sIEngine {
     shortcut: string,
     output?: string | boolean,
   ) {
-    try {
-      super(
-        "shortcut",
-        output,
-      );
+    super(
+      "shortcut",
+      output,
+    );
+
+    if (shortcut.length > 0)
       this.shortcut = shortcut;
-    }
-    catch (e) {
-      throw new EvalError(
-        `ShortcutEngine: ctor`,
-        { cause: e },
-      );
-    }
+    else
+      throw new ReferenceError(`'Run Shortcut' name is empty`);
   }
 
   protected options() {
-    try {
-      const { shortcut } = this;
+    const { shortcut } = this;
 
-      return { shortcut };
-    }
-    catch (e) {
-      throw new EvalError(
-        `ShortcutEngine: options`,
-        { cause: e },
-      );
-    }
+    return { shortcut };
   }
 }
 

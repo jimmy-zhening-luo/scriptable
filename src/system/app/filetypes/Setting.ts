@@ -10,21 +10,13 @@ class Setting<
     category: literalful<Class>,
     app: stringful,
   ) {
-    try {
-      super(
-        "Setting",
-        category,
-        Setting.ReadonlyFile,
-        `json`,
-        app,
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `Setting: ctor`,
-        { cause: e },
-      );
-    }
+    super(
+      "Setting",
+      category,
+      Setting.ReadonlyFile,
+      `json`,
+      app,
+    );
   }
 
   public get parse(): Schema {
@@ -53,7 +45,7 @@ class Setting<
       return this._cache;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Setting: parse`,
         { cause: e },
       );
@@ -61,15 +53,7 @@ class Setting<
   }
 
   public write(): never {
-    try {
-      this.file.write();
-    }
-    catch (e) {
-      throw new EvalError(
-        `Setting: write`,
-        { cause: e },
-      );
-    }
+    this.file.write();
   }
 
   private _cache?: Schema;

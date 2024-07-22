@@ -8,49 +8,33 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
     app: stringful,
     handle: stringful,
   ) {
-    try {
-      super(
-        "Key",
-        category,
-        Key.ReadonlyFile,
-        `txt`,
-        app,
-        handle,
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `Key: ctor`,
-        { cause: e },
-      );
-    }
+    super(
+      "Key",
+      category,
+      Key.ReadonlyFile,
+      `txt`,
+      app,
+      handle,
+    );
   }
 
   private get fullname() {
-    try {
-      return this.subpath;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Key: handle`,
-        { cause: e },
-      );
-    }
+    return this.subpath;
   }
 
-  public load(fallbackLocal = false) {
+  public load(fallback = false) {
     try {
       const { fullname } = this;
 
       if (!Keychain.contains(fullname))
-        if (!fallbackLocal)
+        if (!fallback)
           throw new ReferenceError(
-            `key does not exist in Keychain, and fallbackLocal is 'false'`,
+            `No such key in Keychain, fallback:false`,
             {
               cause: {
                 fullname,
                 inKeychain: Keychain.contains(fullname),
-                fallbackLocal,
+                fallback,
                 local: super.read(),
               },
             },
@@ -62,13 +46,13 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
 
         if (key.length < 1)
           throw new ReferenceError(
-            `Unexpected: key exists in Keychain but is empty`,
+            `Unexpected: Key exists in Keychain but is empty string`,
             {
               cause: {
                 fullname,
                 inKeychain: Keychain.contains(fullname),
                 key,
-                fallbackLocal,
+                fallback,
                 local: super.read(),
               },
             },
@@ -78,7 +62,7 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
       }
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Key: load`,
         { cause: e },
       );
@@ -91,7 +75,7 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
 
       if (Keychain.contains(fullname) && !roll)
         throw new ReferenceError(
-          `cannot overwrite existing key with roll set to 'false'`,
+          `Tried to overwrite existing key with roll:false`,
           {
             cause: {
               fullname,
@@ -111,8 +95,8 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
         );
 
         if (local !== Keychain.get(fullname))
-          throw new EvalError(
-            `attempted to initialize key in Keychain, but Keychain value after setting does not match the intended value`,
+          throw new ReferenceError(
+            `Created key in Keychain, but resulting key has wrong value`,
             {
               cause: {
                 fullname,
@@ -126,7 +110,7 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
       }
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Key: add`,
         { cause: e },
       );
@@ -134,15 +118,7 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
   }
 
   public roll() {
-    try {
-      this.add(true);
-    }
-    catch (e) {
-      throw new EvalError(
-        `Key: roll`,
-        { cause: e },
-      );
-    }
+    this.add(true);
   }
 
   public remove() {
@@ -153,8 +129,8 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
         Keychain.remove(fullname);
 
         if (Keychain.contains(fullname))
-          throw new EvalError(
-            `removed key from Keychain, but key is still in Keychain`,
+          throw new ReferenceError(
+            `Removed key is still in Keychain`,
             {
               cause: {
                 fullname,
@@ -167,7 +143,7 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
       }
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Key: remove`,
         { cause: e },
       );
@@ -176,28 +152,20 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
 
   public override read(): never {
     throw new ReferenceError(
-      `Forbidden: Key: read`,
-      { cause: this.fullname },
+      `Key: read forbidden`,
+      { cause: "Use load() instead" },
     );
   }
 
   public override readful(): never {
     throw new ReferenceError(
-      `Forbidden: Key: readful`,
-      { cause: `use load(true) instead` },
+      `Key: readful forbidden`,
+      { cause: `Use load(true) instead` },
     );
   }
 
   public write(): never {
-    try {
-      this.file.write();
-    }
-    catch (e) {
-      throw new EvalError(
-        `Key: write`,
-        { cause: e },
-      );
-    }
+    this.file.write();
   }
 }
 

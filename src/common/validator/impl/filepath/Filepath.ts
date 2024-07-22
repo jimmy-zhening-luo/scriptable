@@ -21,8 +21,8 @@ class Filepath<N extends number> {
       );
     }
     catch (e) {
-      throw new EvalError(
-        `Filepath: ctor`,
+      throw new Error(
+        `Filepath`,
         { cause: e },
       );
     }
@@ -57,7 +57,7 @@ class Filepath<N extends number> {
       return parent;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Filepath: parent`,
         { cause: e },
       );
@@ -67,15 +67,15 @@ class Filepath<N extends number> {
   public prepend(root: Stringify<Filepath<1>>) {
     try {
       if (this.nodes.length > 0) {
-        const rootThis = [root, String(this)] as const;
+        const rootThis = [root, String(this)] as const satisfies [stringful, string];
 
-        return rootThis.join("/") as Join<typeof rootThis, "/">;
+        return rootThis.join("/") as stringful;
       }
       else
         return root;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Filepath: prepend`,
         { cause: e },
       );
@@ -86,10 +86,10 @@ class Filepath<N extends number> {
     try {
       const { nodes } = this;
 
-      return nodes.join("/") as Join<typeof nodes, "/">;
+      return nodes.join("/") as N extends 0 ? string : stringful;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Filepath: toString`,
         { cause: e },
       );
@@ -120,7 +120,7 @@ class Filepath<N extends number> {
         return popped;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Filepath: pop`,
         { cause: e },
       );
@@ -141,7 +141,7 @@ class Filepath<N extends number> {
         return nodes as PathN<FileNode, N>;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Filepath: check`,
         { cause: e },
       );

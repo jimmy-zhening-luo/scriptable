@@ -34,8 +34,8 @@ class ValidString<Check extends string> extends charString<
         );
     }
     catch (e) {
-      throw new EvalError(
-        `BoundString: ctor`,
+      throw new Error(
+        `BoundString`,
         { cause: e },
       );
     }

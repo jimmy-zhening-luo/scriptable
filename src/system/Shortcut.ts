@@ -7,11 +7,8 @@ abstract class Shortcut<
   Output = never,
   Schema = never,
 > extends app<"Shortcut", Nullable<Input>, Null<Output>, Schema> {
-  constructor(debug?: boolean) {
-    super(
-      "Shortcut",
-      debug,
-    );
+  constructor() {
+    super("Shortcut");
   }
 
   protected get getInput() {
@@ -26,14 +23,14 @@ abstract class Shortcut<
       return this._getInput;
     }
     catch (e) {
-      throw new EvalError(
-        `Shortcut: setInput`,
+      throw new ReferenceError(
+        `Shortcut: getInput`,
         { cause: e },
       );
     }
   }
 
-  protected setOutput(runtime: ReturnType<Shortcut<Input, Output>["run"]>) {
+  protected output(runtime: ReturnType<Shortcut<Input, Output>["run"]>) {
     try {
       Script.setShortcutOutput(runtime);
 
@@ -41,7 +38,7 @@ abstract class Shortcut<
     }
     catch (e) {
       throw new EvalError(
-        `Shortcut: setOutput`,
+        `Shortcut: output`,
         { cause: e },
       );
     }

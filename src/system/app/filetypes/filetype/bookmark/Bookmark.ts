@@ -7,13 +7,13 @@ class Bookmark {
       const alias = bookmark.trim();
 
       if (alias.length < 1)
-        throw new SyntaxError(`empty alias`);
+        throw new SyntaxError(`Bookmark alias is empty`);
       else if (
         !FileManager.local().bookmarkExists(alias as stringful)
       )
         throw new ReferenceError(
-          `no bookmark matching alias`,
-          { cause: { alias } },
+          `Bookmark does not exist`,
+          { cause: alias },
         );
       else {
         this.alias = alias as Alias;
@@ -21,8 +21,8 @@ class Bookmark {
       }
     }
     catch (e) {
-      throw new EvalError(
-        `Bookmark: ctor`,
+      throw new Error(
+        `Bookmark`,
         { cause: e },
       );
     }

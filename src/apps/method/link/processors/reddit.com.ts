@@ -22,7 +22,7 @@ class RedditPathProcessor extends redd_ILinkPathProcessor<"reddit.com"> {
               .join("/");
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `RedditPathProcessor: process`,
         { cause: e },
       );

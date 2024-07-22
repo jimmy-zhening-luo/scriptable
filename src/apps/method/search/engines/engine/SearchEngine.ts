@@ -12,10 +12,10 @@ abstract class SearchEngine {
           ...this.options(query),
         };
       else
-        throw new SyntaxError(`Cannot resolve unlocked query`);
+        throw new SyntaxError(`Tried to resolve unlocked query`);
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `SearchEngine: resolve [${String(query)}]`,
         { cause: e },
       );
@@ -23,15 +23,7 @@ abstract class SearchEngine {
   }
 
   protected transform(query: Query): Unflat {
-    try {
-      return query.natural;
-    }
-    catch (e) {
-      throw new EvalError(
-        `SearchEngine: transform [${String(query)}]`,
-        { cause: e },
-      );
-    }
+    return query.natural;
   }
 
   private required(query: Query) {
@@ -49,7 +41,7 @@ abstract class SearchEngine {
       };
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `SearchEngine: required [${String(query)}]`,
         { cause: e },
       );

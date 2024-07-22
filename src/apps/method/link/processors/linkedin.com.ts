@@ -10,7 +10,7 @@ class LinkedInPathProcessor extends lnkd_ILinkPathProcessor<"linkedin.com"> {
         : path;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `LinkedInPathProcessor: process`,
         { cause: e },
       );

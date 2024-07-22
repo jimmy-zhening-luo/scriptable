@@ -17,8 +17,8 @@ abstract class LinkPathProcessor<Host extends string> {
       }
     }
     catch (e) {
-      throw new EvalError(
-        `LinkPathProcessor: ctor`,
+      throw new Error(
+        `LinkPathProcessor`,
         { cause: e },
       );
     }

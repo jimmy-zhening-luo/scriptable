@@ -11,7 +11,7 @@ class CharSet {
       return string.length < 1 || this[filter](string);
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `CharSet: allows`,
         { cause: e },
       );
@@ -26,7 +26,7 @@ class CharSet {
         .every(stringchar => chars.includes(stringchar));
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `CharSet: include`,
         { cause: e },
       );
@@ -41,8 +41,8 @@ class CharSet {
         .every(char => !string.includes(char));
     }
     catch (e) {
-      throw new EvalError(
-        `CharSet: include`,
+      throw new Error(
+        `CharSet: exclude`,
         { cause: e },
       );
     }

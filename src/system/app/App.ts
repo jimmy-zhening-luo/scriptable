@@ -4,14 +4,66 @@ abstract class App<
   Output,
   Schema,
 > {
-  private readonly epoch0 = Date.now();
   private readonly _storage: Record<string, Storage<Class>> = {};
   private readonly _keys: Record<string, Key<Class>> = {};
 
-  constructor(
-    private readonly _class: literalful<Class>,
-    protected debug = false,
-  ) {}
+  constructor(private readonly _class: literalful<Class>) {}
+
+  private static get Setting() {
+    try {
+      return importModule<typeof Setting>(
+        "filetypes/Setting",
+      );
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Setting`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static get Storage() {
+    try {
+      return importModule<typeof Storage>(
+        "filetypes/Storage",
+      );
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Storage`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static get Key() {
+    try {
+      return importModule<typeof Key>(
+        "filetypes/Key",
+      );
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import Key`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static get ErrorHandler() {
+    try {
+      return importModule<typeof ErrorHandler>(
+        "error/ErrorHandler",
+      );
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `App: import ErrorHandler`,
+        { cause: e },
+      );
+    }
+  }
 
   protected get base64guid() {
     try {
@@ -60,7 +112,7 @@ abstract class App<
       if (typeof this._name === "undefined")
         this._name = this.stringful(
           this.constructor.name,
-          `nameless app instance`,
+          `App instance has no name`,
         );
 
       return this._name;
@@ -74,15 +126,7 @@ abstract class App<
   }
 
   protected get setting() {
-    try {
-      return this._setting.parse;
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: setting (setting.parse)`,
-        { cause: e },
-      );
-    }
+    return this._setting.parse;
   }
 
   protected get input() {
@@ -93,7 +137,7 @@ abstract class App<
       return this._input;
     }
     catch (e) {
-      throw new EvalError(
+      throw new TypeError(
         `App: input`,
         { cause: e },
       );
@@ -109,17 +153,15 @@ abstract class App<
           this._inputful = input;
         else
           throw new TypeError(
-            `null input`,
-            {
-              cause: { input, type: typeof input },
-            },
+            `Null input when expecting inputful`,
+            { cause: { input, type: typeof input } },
           );
       }
 
       return this._inputful;
     }
     catch (e) {
-      throw new EvalError(
+      throw new TypeError(
         `App: inputful`,
         { cause: e },
       );
@@ -136,7 +178,7 @@ abstract class App<
           this._inputString = String(truthy);
         else
           throw new TypeError(
-            `non-string input`,
+            `Non-stringable input when expecting stringable`,
             {
               cause: {
                 input,
@@ -151,7 +193,7 @@ abstract class App<
       return this._inputString;
     }
     catch (e) {
-      throw new EvalError(
+      throw new TypeError(
         `App: inputString`,
         { cause: e },
       );
@@ -163,56 +205,14 @@ abstract class App<
       if (typeof this._inputStringful === "undefined")
         this._inputStringful = this.stringful(
           this.inputString,
-          `input string empty`,
+          `String input empty when expecting stringful`,
         );
 
       return this._inputStringful;
     }
     catch (e) {
-      throw new EvalError(
+      throw new TypeError(
         `App: inputStringful`,
-        { cause: e },
-      );
-    }
-  }
-
-  private get Setting() {
-    try {
-      return importModule<typeof Setting>(
-        "filetypes/Setting",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Setting`,
-        { cause: e },
-      );
-    }
-  }
-
-  private get Storage() {
-    try {
-      return importModule<typeof Storage>(
-        "filetypes/Storage",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Storage`,
-        { cause: e },
-      );
-    }
-  }
-
-  private get Key() {
-    try {
-      return importModule<typeof Key>(
-        "filetypes/Key",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Key`,
         { cause: e },
       );
     }
@@ -221,15 +221,15 @@ abstract class App<
   private get _setting() {
     try {
       if (typeof this.__setting === "undefined")
-        this.__setting = new this.Setting<Class, Schema>(
+        this.__setting = new App.Setting<Class, Schema>(
           this._class,
           this.name,
         );
-
+  
       return this.__setting;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `App: _setting`,
         { cause: e },
       );
@@ -253,7 +253,7 @@ abstract class App<
         );
     }
     catch (e) {
-      throw new EvalError(
+      throw new TypeError(
         `App: falsy`,
         { cause: e },
       );
@@ -262,45 +262,14 @@ abstract class App<
 
   public run() {
     try {
-      try {
-        const output = this.runtime();
-
-        if (this.debug) {
-          const timestamp = new this.timestamp,
-            { datetime, epoch } = timestamp,
-            { epoch0 } = this,
-            elapsed = epoch - epoch0,
-            log = `${datetime} :: ${elapsed} ms : ${epoch}`,
-            extension = "md",
-            filename = `_log${this.name}`;
-
-          this.write(
-            log,
-            extension,
-            filename,
-            "line",
-          );
-        }
-
-        return this.setOutput(output);
-      }
-      catch (e) {
-        throw new Error(
-          `${this.name}: runtime`,
-          { cause: e },
-        );
-      }
+      return this.output(this.runtime());
     }
     catch (e) {
-      const Handler = importModule<typeof ErrorHandler>(
-        "error/ErrorHandler",
-      );
-
       throw new Error(
-        (new Handler)
+        (new App.ErrorHandler)
           .handle(
             new Error(
-              `run\n`,
+              `${this.name}: runtime`,
               { cause: e },
             ),
           ),
@@ -317,31 +286,34 @@ abstract class App<
         return string as stringful;
       else
         throw new TypeError(
-          `Empty string`,
+          `Not stringful`,
           { cause: error },
         );
     }
     catch (e) {
-      throw new ReferenceError(
+      throw new TypeError(
         `App: stringful`,
         { cause: e },
       );
     }
   }
 
-  protected stringfuls(array: string[]) {
+  protected stringfuls(
+    array: string[],
+    error = "",
+  ) {
     try {
       if (array.every((node): node is stringful => node.length > 0))
         return array;
       else
         throw new TypeError(
-          `Array has empty strings`,
-          { cause: array },
+          `Not stringful array`,
+          { cause: { array, error } },
         );
     }
     catch (e) {
-      throw new EvalError(
-        `App: stringfulArray`,
+      throw new TypeError(
+        `App: stringfuls`,
         { cause: e },
       );
     }
@@ -369,7 +341,7 @@ abstract class App<
               .read(E);
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `App: read`,
         { cause: e },
       );
@@ -389,7 +361,7 @@ abstract class App<
         .readful();
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `App: readful`,
         { cause: e },
       );
@@ -422,7 +394,7 @@ abstract class App<
               .data<Data>(E);
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `App: data`,
         { cause: e },
       );
@@ -448,11 +420,11 @@ abstract class App<
           data,
           overwrite,
         );
-
+  
       return this;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `App: write`,
         { cause: e },
       );
@@ -464,7 +436,7 @@ abstract class App<
       return this.key(handle).load();
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `App: load`,
         { cause: e },
       );
@@ -476,8 +448,8 @@ abstract class App<
       this.key(handle).roll();
     }
     catch (e) {
-      throw new EvalError(
-        `App: roll`,
+      throw new Error(
+        `App: load`,
         { cause: e },
       );
     }
@@ -495,7 +467,7 @@ abstract class App<
       if (cache !== null)
         return cache;
       else {
-        const newStorage = new this.Storage<Class>(
+        const newStorage = new App.Storage<Class>(
           this._class,
           this.name,
           extension,
@@ -508,7 +480,7 @@ abstract class App<
       }
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `App: storage`,
         { cause: e },
       );
@@ -522,7 +494,7 @@ abstract class App<
       if (cache !== null)
         return cache;
       else {
-        const newKey = new this.Key<Class>(
+        const newKey = new App.Key<Class>(
           this._class,
           this.name,
           this.stringful(handle),
@@ -534,7 +506,7 @@ abstract class App<
       }
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `App: key`,
         { cause: e },
       );
@@ -542,15 +514,7 @@ abstract class App<
   }
 
   protected truthy(value: Input): value is NonNullable<Input> {
-    try {
-      return !App.falsy(value);
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: truthy`,
-        { cause: e },
-      );
-    }
+    return !App.falsy(value);
   }
 
   protected url(string: string) {
@@ -570,7 +534,7 @@ abstract class App<
       };
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `App: url`,
         { cause: e },
       );
@@ -578,7 +542,7 @@ abstract class App<
   }
 
   protected abstract runtime(): Output;
-  protected abstract setOutput(runtime: ReturnType<App<Class, Input, Output, Schema>["runtime"]>): ReturnType<App<Class, Input, Output, Schema>["runtime"]>;
+  protected abstract output(runtime: ReturnType<App<Class, Input, Output, Schema>["runtime"]>): ReturnType<App<Class, Input, Output, Schema>["runtime"]>;
   private _name?: stringful;
   private _input?: Input;
   private _inputful?: NonNullable<Input>;

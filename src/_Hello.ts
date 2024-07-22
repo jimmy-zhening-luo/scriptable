@@ -38,4 +38,4 @@ namespace _Hello {
   }
 }
 
-new _Hello._Hello(true).run();
+(new _Hello._Hello).run();

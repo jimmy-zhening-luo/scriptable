@@ -15,8 +15,8 @@ class FileNode extends fValidString<"FileNode"> {
       );
     }
     catch (e) {
-      throw new EvalError(
-        `FileNode: ctor`,
+      throw new Error(
+        `FileNode`,
         { cause: e },
       );
     }

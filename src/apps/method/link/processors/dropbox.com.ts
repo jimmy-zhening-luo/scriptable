@@ -31,7 +31,7 @@ class DropboxPathProcessor extends drop_ILinkPathProcessor<"dropbox.com"> {
       }
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `DropboxPathProcessor: process`,
         { cause: e },
       );

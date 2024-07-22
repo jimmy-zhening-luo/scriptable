@@ -9,22 +9,14 @@ class Storage<Class extends string> extends dFiletype<"Storage", Class, File> {
     ext = `txt`,
     filename?: string,
   ) {
-    try {
-      super(
-        "Storage",
-        category,
-        Storage.File,
-        ext,
-        app,
-        filename ?? app,
-      );
-    }
-    catch (e) {
-      throw new EvalError(
-        `Storage: ctor`,
-        { cause: e },
-      );
-    }
+    super(
+      "Storage",
+      category,
+      Storage.File,
+      ext,
+      app,
+      filename ?? app,
+    );
   }
 
   public write(
@@ -38,7 +30,7 @@ class Storage<Class extends string> extends dFiletype<"Storage", Class, File> {
       const buffer = data ?? null;
 
       if (buffer === null)
-        throw new TypeError(`null data`);
+        throw new TypeError(`Tried to undefined | null to storage`);
       else if (typeof buffer === "object")
         if (
           Array.isArray(buffer)
@@ -63,7 +55,7 @@ class Storage<Class extends string> extends dFiletype<"Storage", Class, File> {
         );
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Storage: write`,
         { cause: e },
       );

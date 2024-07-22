@@ -127,7 +127,7 @@ namespace Link {
           .join("#");
       }
       catch (e) {
-        throw new EvalError(
+        throw new Error(
           `Link: buildURL`,
           { cause: e },
         );
@@ -144,7 +144,7 @@ namespace Link {
         );
       }
       catch (e) {
-        throw new EvalError(
+        throw new Error(
           `Link: import <P>Processor`,
           { cause: e },
         );

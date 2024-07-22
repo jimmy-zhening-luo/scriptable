@@ -4,44 +4,28 @@ const sMoment = importModule<typeof Moment>(
 
 class Timestamp extends sMoment {
   protected separator = "";
-  protected formatDate = {
+  protected dateFormat = {
     month: "2-digit",
     day: "2-digit",
     year: "numeric",
   };
-  protected formatLocal = {
+  protected timeFormat = {
     hour12: false,
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
   };
 
-  protected afterDate(date: string) {
-    try {
-      return date
-        .split("/")
-        .join("");
-    }
-    catch (e) {
-      throw new EvalError(
-        `Timestamp: afterDate`,
-        { cause: e },
-      );
-    }
+  protected postdate(date: string) {
+    return date
+      .split("/")
+      .join("");
   }
 
-  protected afterLocal(local: string) {
-    try {
-      return local
-        .split(":")
-        .join("");
-    }
-    catch (e) {
-      throw new EvalError(
-        `Timestamp: afterLocal`,
-        { cause: e },
-      );
-    }
+  protected postlocal(localtime: string) {
+    return localtime
+      .split(":")
+      .join("");
   }
 }
 

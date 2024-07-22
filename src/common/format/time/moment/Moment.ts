@@ -1,100 +1,87 @@
 abstract class Moment {
   protected abstract separator: string;
-  protected abstract formatDate: Table;
-  protected abstract formatLocal: Table;
+  protected abstract dateFormat: Table;
+  protected abstract timeFormat: Table;
 
-  constructor(
-    public readonly moment = new Date,
-  ) {}
+  constructor(public readonly moment = new Date) {}
 
   public get epoch(): Positive<fint> {
-    try {
-      return this.moment.getTime() as Positive<fint>;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IMoment: epoch`,
-        { cause: e },
-      );
-    }
+    return this.moment.getTime() as Positive<fint>;
   }
 
   public get datetime() {
-    try {
-      const {
-          separator,
-          date,
-          time,
-        } = this,
-        datetime = [date, time] as const;
+    const {
+        date,
+        time,
+        separator,
+      } = this,
+      datetime = [date, time] as const satisfies Tuple<stringful>;
 
-      return datetime.join(separator) as Join<typeof datetime>;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IMoment: datetime`,
-        { cause: e },
-      );
-    }
+    return datetime.join(separator) as stringful;
   }
 
   public get date() {
     try {
-      const { formatDate, moment } = this,
-        date = this.afterDate(
-          moment.toLocaleDateString(
+      const { moment, dateFormat } = this,
+        date = moment.toLocaleDateString(
             `en-US`,
-            formatDate,
+            dateFormat,
           ),
-        );
+        postdate = this.postdate(date);
 
-      if (date.length > 0)
-        return date as stringful;
+      if (postdate.length > 0)
+        return postdate as stringful;
+      else if (date.length > 0)
+        throw new SyntaxError(
+          `Postprocessor empties formatted date`,
+          { cause: { date, postdate } },
+        );
       else
-        throw new RangeError(`date is empty`);
+        throw new SyntaxError(
+          `Date formatter creates empty date`,
+          { cause: dateFormat }
+        );
     }
     catch (e) {
-      throw new EvalError(
-        `IMoment: date`,
+      throw new SyntaxError(
+        `Moment: date`,
         { cause: e },
       );
     }
   }
 
   public get time() {
-    try {
-      const SEPARATOR = "",
-        { local, offset } = this,
-        localOffset = [local, offset] as const;
+    const { localtime, offset } = this,
+      localOffset = [localtime, offset] as const satisfies [stringful, string];
 
-      return localOffset.join(SEPARATOR) as Join<typeof localOffset, typeof SEPARATOR>;
-    }
-    catch (e) {
-      throw new EvalError(
-        `IMoment: time`,
-        { cause: e },
-      );
-    }
+    return localOffset.join("") as stringful;
   }
 
-  public get local() {
+  public get localtime() {
     try {
-      const { formatLocal, moment } = this,
-        local = this.afterLocal(
-          moment.toLocaleTimeString(
+      const { moment, timeFormat } = this,
+        localtime = moment.toLocaleTimeString(
             `en-US`,
-            formatLocal,
+            timeFormat,
           ),
-        );
+        postlocal = this.postlocal(localtime);
 
-      if (local.length > 0)
-        return local as stringful;
+      if (postlocal.length > 0)
+        return postlocal as stringful;
+      else if (localtime.length > 0)
+        throw new SyntaxError(
+          `Postprocessor empties formatted localtime time`,
+          { cause: { localtime, postlocal } },
+        );
       else
-        throw new RangeError(`local time is empty`);
+        throw new SyntaxError(
+          `Time formatter creates empty localtime time`,
+          { cause: timeFormat }
+        );
     }
     catch (e) {
-      throw new EvalError(
-        `IMoment: local`,
+      throw new SyntaxError(
+        `Moment: localtime`,
         { cause: e },
       );
     }
@@ -102,8 +89,7 @@ abstract class Moment {
 
   public get offset() {
     try {
-      const { moment } = this,
-        offset = moment.getTimezoneOffset() / -60;
+      const offset = this.moment.getTimezoneOffset() / -60;
 
       return offset.toLocaleString(
         "en-US",
@@ -115,8 +101,8 @@ abstract class Moment {
       );
     }
     catch (e) {
-      throw new EvalError(
-        `IMoment: offset`,
+      throw new SyntaxError(
+        `Moment: offset`,
         { cause: e },
       );
     }
@@ -126,8 +112,8 @@ abstract class Moment {
     return this.datetime;
   }
 
-  protected abstract afterDate(date: string): string;
-  protected abstract afterLocal(local: string): string;
+  protected abstract postdate(date: string): string;
+  protected abstract postlocal(localtime: string): string;
 }
 
 module.exports = Moment;

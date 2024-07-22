@@ -22,8 +22,7 @@ class ErrorHandler {
               ...queue.slice(hoist + 1),
             ]
           : queue,
-        messages = hoistedQueue
-          .map(error => this.print(error));
+        messages = hoistedQueue.map(error => this.print(error));
 
       console.error(messages.join("\n"));
       this.notify(messages);
@@ -31,7 +30,7 @@ class ErrorHandler {
       return messages.shift() ?? "";
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `ErrorHandler: handle`,
         { cause: e },
       );
@@ -72,7 +71,7 @@ class ErrorHandler {
         : this.quotelessStringify(error);
     }
     catch (e) {
-      throw new EvalError(
+      throw new SyntaxError(
         `ErrorHandler: print`,
         { cause: e },
       );
@@ -82,11 +81,7 @@ class ErrorHandler {
   private quotelessStringify(error: unknown): string {
     try {
       return Array.isArray(error)
-        ? `[${
-          error
-            .map((vi: unknown) => this.quotelessStringify(vi))
-            .join(", ")
-        }]`
+        ? `[${error.map((vi: unknown) => this.quotelessStringify(vi)).join(", ")}]`
         : typeof error === "object" && error !== null
           ? Object
             .keys(error)
@@ -95,7 +90,7 @@ class ErrorHandler {
           : String(error);
     }
     catch (e) {
-      throw new EvalError(
+      throw new SyntaxError(
         `ErrorHandler: quotelessStringify`,
         { cause: e },
       );

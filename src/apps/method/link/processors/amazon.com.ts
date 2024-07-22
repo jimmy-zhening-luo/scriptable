@@ -18,7 +18,7 @@ class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
       return { processed, postprocessor: "Fakespot" };
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `AmazonPathProcessor: process`,
         { cause: e },
       );

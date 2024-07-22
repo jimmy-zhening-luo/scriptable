@@ -21,36 +21,28 @@ class UrlEngine extends uIEngine {
     inprivate = false,
     output?: string | boolean,
   ) {
-    try {
-      super(
-        "browser",
-        browser === "api"
-          ? output ?? true
-          : false,
-      );
-      this.TAG = TAG;
-      this.browser = browser;
-      this.separator = separator;
-      this.encodeComponent = encodeComponent;
-      this.inprivate = inprivate;
-      this.PLUS = "+";
-      this.PLUS_ENCODED = "%2B";
+    super(
+      "browser",
+      browser === "api"
+        ? output ?? true
+        : false,
+    );
+    this.TAG = TAG;
+    this.browser = browser;
+    this.separator = separator;
+    this.encodeComponent = encodeComponent;
+    this.inprivate = inprivate;
+    this.PLUS = "+";
+    this.PLUS_ENCODED = "%2B";
 
-      const urlfuls = [urls]
-        .flat()
-        .filter((url): url is stringful => url.length > 0);
+    const urlfuls = [urls]
+      .flat()
+      .filter((url): url is stringful => url.length > 0);
 
-      if (urlfuls.length > 0)
-        this.urls = urlfuls;
-      else
-        throw new SyntaxError(`URL engine has no URLs`);
-    }
-    catch (e) {
-      throw new EvalError(
-        `BrowserEngine: ctor`,
-        { cause: e },
-      );
-    }
+    if (urlfuls.length > 0)
+      this.urls = urlfuls;
+    else
+      throw new SyntaxError(`URL engine has no search URLs`);
   }
 
   protected override transform(query: Query) {
@@ -90,7 +82,7 @@ class UrlEngine extends uIEngine {
         );
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `BrowserEngine: transform`,
         { cause: e },
       );
@@ -98,22 +90,14 @@ class UrlEngine extends uIEngine {
   }
 
   protected options(query: Query) {
-    try {
-      const { browser, inprivate } = this,
-        { natural } = query;
+    const { browser, inprivate } = this,
+      { natural } = query;
 
-      return {
-        browser,
-        natural,
-        ...inprivate ? { inprivate } : {},
-      };
-    }
-    catch (e) {
-      throw new EvalError(
-        `BrowserEngine: options`,
-        { cause: e },
-      );
-    }
+    return {
+      browser,
+      natural,
+      ...inprivate ? { inprivate } : {},
+    };
   }
 }
 

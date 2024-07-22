@@ -9,7 +9,7 @@ function Base64Guid() {
         .toUpperCase();
 
       if (normalized.length !== 32)
-        throw new TypeError(`Wrong input guid length (!32)`);
+        throw new SyntaxError(`Wrong input guid length (!32)`);
       else {
         const hexvalue = {
             0: 0,
@@ -33,14 +33,14 @@ function Base64Guid() {
             .filter((char): char is hexchar => char in hexvalue);
 
         if (hexchars.length !== 32)
-          throw new TypeError(`Illegal chars in input guid`);
+          throw new SyntaxError(`Illegal chars in input guid`);
         else
           return hexchars
             .map(hexchar => hexvalue[hexchar]) satisfies hex[] as unknown as Tuple<hex, 32>;
       }
     }
     catch (e) {
-      throw new Error(
+      throw new SyntaxError(
         `hexguid(): ${guid}`,
         { cause: e },
       );
@@ -49,7 +49,7 @@ function Base64Guid() {
 
   function base64guid(base64guid: string) {
     if (base64guid.length !== 8)
-      throw new EvalError(
+      throw new SyntaxError(
         `Generated wrong base64guid length (!8)`,
         { cause: base64guid },
       );

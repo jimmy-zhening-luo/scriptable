@@ -11,8 +11,8 @@ class CharString<S extends string, Checks extends readonly string[]> {
       this.string = this.validate(string);
     }
     catch (e) {
-      throw new EvalError(
-        `CharString: ctor: `,
+      throw new Error(
+        `CharString: `,
         { cause: e },
       );
     }
@@ -43,7 +43,7 @@ class CharString<S extends string, Checks extends readonly string[]> {
         );
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `CharString: validate`,
         { cause: e },
       );

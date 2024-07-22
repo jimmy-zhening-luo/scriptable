@@ -6,29 +6,28 @@ abstract class Filetype<
   protected readonly file: F;
 
   constructor(
-    filetype: literalful<Type>,
-    category: literalful<Class>,
-    FileCtor: new(...path: ConstructorParameters<typeof File>)=> F & File,
+    type: literalful<Type>,
+    class: literalful<Class>,
+    FileConstructor: new(...path: ConstructorParameters<typeof File>)=> F & File,
     ext: string,
     subpath: string,
     filename?: string,
   ) {
     try {
-      this
-        .file = new FileCtor(
-          this.root(filetype),
-          category,
-          ...typeof filename === "undefined"
-            ? [[subpath, ext].join(".")]
-            : [
-                subpath,
-                [filename, ext].join("."),
-              ],
-        );
+      this.file = new FileConstructor(
+        this.root(type),
+        class,
+        ...typeof filename === "undefined"
+          ? [[subpath, ext].join(".")]
+          : [
+              subpath,
+              [filename, ext].join("."),
+            ],
+      );
     }
     catch (e) {
-      throw new EvalError(
-        `Filetype: ctor`,
+      throw new Error(
+        `Filetype (${type}/${class})`,
         { cause: e },
       );
     }
@@ -77,39 +76,15 @@ abstract class Filetype<
   }
 
   public get subpath() {
-    try {
-      return this.file.subpath;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Filetype: subpath`,
-        { cause: e },
-      );
-    }
+    return this.file.subpath;
   }
 
   public read(...error: Parameters<F["read"]>) {
-    try {
-      return this.file.read(...error);
-    }
-    catch (e) {
-      throw new EvalError(
-        `Filetype: read`,
-        { cause: e },
-      );
-    }
+    return this.file.read(...error);
   }
 
   public readful() {
-    try {
-      return this.file.readful(this.subpath);
-    }
-    catch (e) {
-      throw new EvalError(
-        `Filetype: readful`,
-        { cause: e },
-      );
-    }
+    return this.file.readful(this.subpath);
   }
 
   public data<Data>(...error: Parameters<F["read"]>): Null<Data> {
@@ -122,7 +97,7 @@ abstract class Filetype<
       return string.length > 0 ? JSON.parse(string) as Data : null;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Filetype: data`,
         { cause: e },
       );
@@ -130,15 +105,7 @@ abstract class Filetype<
   }
 
   private root(subtype: literalful<Type>) {
-    try {
-      return new Filetype.Bookmark(subtype);
-    }
-    catch (e) {
-      throw new EvalError(
-        `Filetype: root`,
-        { cause: e },
-      );
-    }
+    return new Filetype.Bookmark(subtype);
   }
 
   public abstract write(...args: Parameters<F["write"]>): ReturnType<F["write"]>;
