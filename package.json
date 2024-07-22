@@ -56,6 +56,6 @@
     "prestart": "npm test",
     "prepublishOnly": "npm test",
     "predeploy": "npm test",
-    "deploy": "((mkdir packed)   ||   (((rm -rf packed) || (rmdir /s /q packed))  &&  (mkdir packed)))    &&    ((cp -r built/js/* packed)   ||   (xcopy /eslint /k /h /i \"./built/js\" \"packed\"))"
+    "deploy": "((mkdir packed)   ||   (((rm -rf packed) || (rmdir /s /q packed))  &&  (mkdir packed)))    &&    ((cp -r dist/js/* packed)   ||   (xcopy /e /k /h /i \"./dist/js\" \"packed\"))"
   }
 }
