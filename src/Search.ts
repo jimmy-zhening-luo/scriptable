@@ -27,59 +27,59 @@ namespace Search {
 
     protected runtime() {
       const { app, user } = this.setting,
-        {
-          tag,
-          key: {
-            chat,
-            translate,
-            mathShort,
-            mathLong,
-          },
-          fallback: {
-            one,
-            two,
-            three,
-            rest,
-          },
-        } = app,
-        { engines, alias } = user,
-        [
-          TAG,
-          CHAT,
-          TRANSLATE,
-          MATH_SHORT,
-          MATH_LONG,
-          ONE,
-          TWO,
-          THREE,
-          REST,
-        ] = this.stringfuls([
-          tag,
-          chat,
-          translate,
-          mathShort,
-          mathLong,
-          one,
-          two,
-          three,
-          rest,
-        ]) satisfies stringful[] as unknown as Nonad<stringful>,
+            {
+              tag,
+              key: {
+                chat,
+                translate,
+                mathShort,
+                mathLong,
+              },
+              fallback: {
+                one,
+                two,
+                three,
+                rest,
+              },
+            } = app,
+            { engines, alias } = user,
+            [
+              TAG,
+              CHAT,
+              TRANSLATE,
+              MATH_SHORT,
+              MATH_LONG,
+              ONE,
+              TWO,
+              THREE,
+              REST,
+            ] = this.stringfuls([
+              tag,
+              chat,
+              translate,
+              mathShort,
+              mathLong,
+              one,
+              two,
+              three,
+              rest,
+            ]) satisfies stringful[] as unknown as Nonad<stringful>,
 
-        query = new Search.Query(
-          this.inputString.length > 0
-            ? this.inputString
-            : this.read(),
-          CHAT,
-          TRANSLATE,
-          MATH_SHORT,
-          MATH_LONG,
-          ONE,
-          TWO,
-          THREE,
-          REST,
-        ),
-        keyToken = query.key,
-        dealias = alias[keyToken] ?? null;
+            query = new Search.Query(
+              this.inputString.length > 0
+                ? this.inputString
+                : this.read(),
+              CHAT,
+              TRANSLATE,
+              MATH_SHORT,
+              MATH_LONG,
+              ONE,
+              TWO,
+              THREE,
+              REST,
+            ),
+            keyToken = query.key,
+            dealias = alias[keyToken] ?? null;
 
       query.lock(
         keyToken in engines
@@ -90,7 +90,7 @@ namespace Search {
       );
 
       const { key } = query,
-        setting = engines[key] ?? null;
+            setting = engines[key] ?? null;
 
       if (setting === null)
         throw new ReferenceError(

@@ -11,11 +11,11 @@ abstract class Moment {
 
   public get datetime() {
     const {
-        date,
-        time,
-        separator,
-      } = this,
-      datetime = [date, time] as const satisfies Tuple<stringful>;
+      date,
+      time,
+      separator,
+    } = this,
+          datetime = [date, time] as const satisfies Tuple<stringful>;
 
     return datetime.join(separator) as stringful;
   }
@@ -23,11 +23,11 @@ abstract class Moment {
   public get date() {
     try {
       const { moment, dateFormat } = this,
-        date = moment.toLocaleDateString(
-          `en-US`,
-          dateFormat,
-        ),
-        postdate = this.postdate(date);
+            date = moment.toLocaleDateString(
+              `en-US`,
+              dateFormat,
+            ),
+            postdate = this.postdate(date);
 
       if (postdate.length > 0)
         return postdate as stringful;
@@ -52,7 +52,7 @@ abstract class Moment {
 
   public get time() {
     const { localtime, offset } = this,
-      localOffset = [localtime, offset] as const satisfies [stringful, string];
+          localOffset = [localtime, offset] as const satisfies [stringful, string];
 
     return localOffset.join("") as stringful;
   }
@@ -60,11 +60,11 @@ abstract class Moment {
   public get localtime() {
     try {
       const { moment, timeFormat } = this,
-        localtime = moment.toLocaleTimeString(
-          `en-US`,
-          timeFormat,
-        ),
-        postlocal = this.postlocal(localtime);
+            localtime = moment.toLocaleTimeString(
+              `en-US`,
+              timeFormat,
+            ),
+            postlocal = this.postlocal(localtime);
 
       if (postlocal.length > 0)
         return postlocal as stringful;

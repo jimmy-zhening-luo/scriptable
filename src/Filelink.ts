@@ -13,19 +13,19 @@ namespace Filelink {
   > {
     protected runtime() {
       const {
-          scheme,
-          commonRoot,
-          providers,
-        } = this.setting,
-        SCHEME_ROOT = [scheme, commonRoot].join("://"),
-        {
-          nodes,
-          ext,
-          type,
-        } = this.inputful,
-        path = this.validPath(nodes),
-        [rootNode] = path,
-        provider = providers[rootNode] ?? null;
+        scheme,
+        commonRoot,
+        providers,
+      } = this.setting,
+            SCHEME_ROOT = [scheme, commonRoot].join("://"),
+            {
+              nodes,
+              ext,
+              type,
+            } = this.inputful,
+            path = this.validPath(nodes),
+            [rootNode] = path,
+            provider = providers[rootNode] ?? null;
 
       if (provider === null)
         throw new ReferenceError(
@@ -36,15 +36,15 @@ namespace Filelink {
         path.shift();
 
         const { providerRoot } = provider,
-          providerRootEncoded = encodeURI(providerRoot),
-          head = [SCHEME_ROOT, providerRootEncoded].join("/"),
-          leafNode = path.pop() as unknown as stringful,
-          remainingPath = [...path],
-          filenameEncoded = encodeURI(
-            type === "Folder"
-              ? leafNode
-              : [leafNode, ext].join("."),
-          );
+              providerRootEncoded = encodeURI(providerRoot),
+              head = [SCHEME_ROOT, providerRootEncoded].join("/"),
+              leafNode = path.pop() as unknown as stringful,
+              remainingPath = [...path],
+              filenameEncoded = encodeURI(
+                type === "Folder"
+                  ? leafNode
+                  : [leafNode, ext].join("."),
+              );
 
         if (!provider.hasContainers)
           return [
@@ -68,21 +68,21 @@ namespace Filelink {
             );
           else {
             const containerNode = remainingPath.shift() as unknown as stringful,
-              containerEncoded = (
-                folders.includes(containerNode)
-                  ? [folderRoot, containerNode]
-                      .map(segment => encodeURI(segment))
-                      .join("/")
-                  : containerNode in apps
-                    ? [
-                        ...typeof preAppRoot === "undefined" ? [] : [preAppRoot],
-                        apps[containerNode] as unknown as string,
-                        postContainerRoot,
-                      ]
-                        .map(segment => encodeURI(segment))
-                        .join("/")
-                    : null
-              ) ?? null;
+                  containerEncoded = (
+                    folders.includes(containerNode)
+                      ? [folderRoot, containerNode]
+                          .map(segment => encodeURI(segment))
+                          .join("/")
+                      : containerNode in apps
+                        ? [
+                            ...typeof preAppRoot === "undefined" ? [] : [preAppRoot],
+                            apps[containerNode] as unknown as string,
+                            postContainerRoot,
+                          ]
+                            .map(segment => encodeURI(segment))
+                            .join("/")
+                        : null
+                  ) ?? null;
 
             if (containerEncoded === null)
               throw new ReferenceError(
@@ -112,7 +112,7 @@ namespace Filelink {
     private validPath(nodes: Unflat) {
       try {
         const path = this.stringfuls([nodes].flat()),
-          { length } = path;
+              { length } = path;
 
         if (length < 1)
           throw new SyntaxError(`Input path empty`);

@@ -172,7 +172,7 @@ abstract class App<
     try {
       if (typeof this._inputString === "undefined") {
         const { input } = this,
-          truthy = this.truthy(input) ? input : "";
+              truthy = this.truthy(input) ? input : "";
 
         if (typeof truthy === "string" || typeof truthy === "number")
           this._inputString = String(truthy);
@@ -241,7 +241,7 @@ abstract class App<
   protected static falsy(value: unknown): value is Null<undefined> {
     try {
       const v = value ?? false,
-        bv = Boolean(v);
+            bv = Boolean(v);
 
       return !bv
         || (
@@ -461,8 +461,8 @@ abstract class App<
   ) {
     try {
       const cacheId = [filename ?? "", extension ?? ""]
-          .join(":"),
-        cache = this._storage[cacheId] ?? null;
+        .join(":"),
+            cache = this._storage[cacheId] ?? null;
 
       if (cache !== null)
         return cache;
@@ -520,10 +520,10 @@ abstract class App<
   protected url(string: string) {
     try {
       const matcher = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u,
-        _parts = matcher.exec(string) ?? [],
-        parts = (_parts[2] ?? null) !== null
-          ? _parts
-          : matcher.exec(`https://${string}`) ?? [];
+            _parts = matcher.exec(string) ?? [],
+            parts = (_parts[2] ?? null) !== null
+              ? _parts
+              : matcher.exec(`https://${string}`) ?? [];
 
       return {
         scheme: parts[2] ?? "",
