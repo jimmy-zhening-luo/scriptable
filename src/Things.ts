@@ -27,12 +27,12 @@ namespace Things {
       if (validator.some(d => d.length < 0))
         throw new TypeError(
           `Delim empty or too short`,
-          { cause: delim },
+          { cause: delims },
         );
       else if (TAG === ITEM || TAG === LINE || ITEM === LINE)
         throw new SyntaxError(
-          `Conflicting delim`,
-          { cause: delim },
+          `Conflicting delims`,
+          { cause: delims },
         );
       else {
         const items = this
