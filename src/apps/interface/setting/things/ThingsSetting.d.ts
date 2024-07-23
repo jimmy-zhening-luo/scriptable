@@ -1,8 +1,8 @@
 declare interface ThingsSetting {
-  delim: Field<
+  delims: Field<
     | "TAG"
     | "ITEM"
     | "LINE"
   >;
-  list: FieldTable;
+  lists: FieldTable;
 }

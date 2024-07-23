@@ -17,7 +17,7 @@ namespace Things {
               TAG,
               LINE,
               ITEM,
-            } = delim,
+            } = delims,
             validator = [
               TAG,
               LINE,
@@ -65,11 +65,11 @@ namespace Things {
             const untaggedItem = tokens.join(""),
                   [when, list] = tag === null
                     ? [null, null]
-                    : tag.length < 1 || tag === LINE || !(tag in list) || (list[tag] ?? "").length < 1
+                    : tag.length < 1 || tag === LINE || !(tag in lists) || (lists[tag] ?? "").length < 1
                       ? ["today", null]
                       : [
                           null,
-                          list[tag] as unknown as string,
+                          lists[tag] as unknown as string,
                         ],
                   lines = untaggedItem.split(LINE);
 
