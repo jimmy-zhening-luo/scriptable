@@ -57,7 +57,7 @@ namespace Things {
                     : null;
 
             if (tag !== null) {
-              const last = tokens.pop();
+              const last = tokens.pop() ?? "";
 
               tokens.push(last.slice(1));
             }
