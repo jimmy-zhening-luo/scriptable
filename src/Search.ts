@@ -64,7 +64,6 @@ namespace Search {
         three,
         rest,
       ]) satisfies stringful[] as unknown as Nonad<stringful>,
-
       query = new Search.Query(
         this.inputString.length > 0
           ? this.inputString
