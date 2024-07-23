@@ -12,10 +12,10 @@ namespace Ziplink {
   > {
     protected runtime() {
       const url = this.inputStringful.trim(),
-            storage = this.data<FieldTable>("json") ?? {},
-            ziplinks = Object.entries(storage),
-            ziplink = ziplinks.find(([, u]) => u === url)
-            ?? null;
+      storage = this.data<FieldTable>("json") ?? {},
+      ziplinks = Object.entries(storage),
+      ziplink = ziplinks.find(([, u]) => u === url)
+      ?? null;
 
       if (ziplink !== null) {
         const [id] = ziplink;

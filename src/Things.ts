@@ -13,16 +13,16 @@ namespace Things {
   > {
     protected runtime() {
       const { lists, delims } = this.setting,
-            {
-              TAG,
-              LINE,
-              ITEM,
-            } = delims,
-            validator = [
-              TAG,
-              LINE,
-              ITEM,
-            ] as const;
+      {
+        TAG,
+        LINE,
+        ITEM,
+      } = delims,
+      validator = [
+        TAG,
+        LINE,
+        ITEM,
+      ] as const;
 
       if (validator.some(d => d.length < 0))
         throw new TypeError(
@@ -51,10 +51,10 @@ namespace Things {
         return items.map(
           (item): ThingsItem => {
             const tokens = item.split("::"),
-                  { length } = tokens,
-                  tag = length > 1
-                    ? (tokens[length - 1] ?? "")[0] ?? null
-                    : null;
+            { length } = tokens,
+            tag = length > 1
+              ? (tokens[length - 1] ?? "")[0] ?? null
+              : null;
 
             if (tag !== null) {
               const last = tokens.pop() ?? "";
@@ -63,15 +63,15 @@ namespace Things {
             }
 
             const untaggedItem = tokens.join(""),
-                  [when, list] = tag === null
-                    ? [null, null]
-                    : tag.length < 1 || tag === LINE || !(tag in lists) || (lists[tag] ?? "").length < 1
-                      ? ["today", null]
-                      : [
-                          null,
-                          lists[tag] as unknown as string,
-                        ],
-                  lines = untaggedItem.split(LINE);
+            [when, list] = tag === null
+              ? [null, null]
+              : tag.length < 1 || tag === LINE || !(tag in lists) || (lists[tag] ?? "").length < 1
+                ? ["today", null]
+                : [
+                    null,
+                    lists[tag] as unknown as string,
+                  ],
+            lines = untaggedItem.split(LINE);
 
             return {
               title: lines.shift() ?? "",

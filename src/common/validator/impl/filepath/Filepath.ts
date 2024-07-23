@@ -45,12 +45,12 @@ class Filepath<N extends number> {
   public get parent() {
     try {
       const { min } = this,
-            parent: Filepath<N> = new (
-              this.constructor as new (...args: ConstructorParameters<typeof Filepath<N>>)=> Filepath<N>
-            )(
-              min,
-              this,
-            );
+      parent: Filepath<N> = new (
+        this.constructor as new (...args: ConstructorParameters<typeof Filepath<N>>)=> Filepath<N>
+      )(
+        min,
+        this,
+      );
 
       parent.pop();
 
@@ -99,8 +99,8 @@ class Filepath<N extends number> {
   private pop() {
     try {
       const { min } = this,
-            { length } = this.nodes,
-            popped = this.nodes.pop() ?? null;
+      { length } = this.nodes,
+      popped = this.nodes.pop() ?? null;
 
       if (popped === null)
         throw new RangeError(`Filepath is already empty`);

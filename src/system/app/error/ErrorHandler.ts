@@ -12,17 +12,17 @@ class ErrorHandler {
 
       const hoist = queue
         .findIndex((error): error is ErrorLike<true> => typeof error === "object" && "message" in error),
-            hoistedQueue: readonly ErrorLike[] = hoist > -1
-              ? [
-                  queue[hoist] as ErrorLike<true>,
-                  ...queue.slice(
-                    0,
-                    hoist,
-                  ),
-                  ...queue.slice(hoist + 1),
-                ]
-              : queue,
-            messages = hoistedQueue.map(error => this.print(error));
+      hoistedQueue: readonly ErrorLike[] = hoist > -1
+        ? [
+            queue[hoist] as ErrorLike<true>,
+            ...queue.slice(
+              0,
+              hoist,
+            ),
+            ...queue.slice(hoist + 1),
+          ]
+        : queue,
+      messages = hoistedQueue.map(error => this.print(error));
 
       console.error(messages.join("\n"));
       this.notify(messages);
@@ -40,7 +40,7 @@ class ErrorHandler {
   private notify(messages: readonly string[]) {
     try {
       const notif = new Notification,
-            lines = [...messages];
+      lines = [...messages];
 
       notif.title = lines.shift() ?? "";
       notif.body = lines.join("\n");

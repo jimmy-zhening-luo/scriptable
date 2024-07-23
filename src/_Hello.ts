@@ -13,16 +13,16 @@ namespace _Hello {
   > {
     protected runtime() {
       const FILENAME_WORLDTIME = "worldtime",
-            HELLO = this.readful(),
-            worldtime = this.read(
-              "txt",
-              FILENAME_WORLDTIME,
-            ),
-            SPACE = this.stringful(
-              this.setting.space ?? "",
-              "space",
-            ),
-            notification = `${HELLO}${SPACE}${worldtime}`;
+      HELLO = this.readful(),
+      worldtime = this.read(
+        "txt",
+        FILENAME_WORLDTIME,
+      ),
+      SPACE = this.stringful(
+        this.setting.space ?? "",
+        "space",
+      ),
+      notification = `${HELLO}${SPACE}${worldtime}`;
 
       this.write(
         `World!\n(Previous: ${(new Date).toISOString()})`,

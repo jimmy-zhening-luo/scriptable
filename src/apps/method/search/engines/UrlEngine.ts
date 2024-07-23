@@ -54,23 +54,23 @@ class UrlEngine extends uIEngine {
         PLUS,
         PLUS_ENCODED,
       } = this,
-            encoder = encodeComponent
-              ? function (operand: string) {
-                return encodeURI(operand);
-              }
+      encoder = encodeComponent
+        ? function (operand: string) {
+          return encodeURI(operand);
+        }
 
-              : function (operand: string) {
-                return encodeURIComponent(operand);
-              },
-            encodedQuery = query
-              .terms
-              .map(
-                term => term
-                  .split(PLUS)
-                  .map(encoder)
-                  .join(PLUS_ENCODED),
-              )
-              .join(separator);
+        : function (operand: string) {
+          return encodeURIComponent(operand);
+        },
+      encodedQuery = query
+        .terms
+        .map(
+          term => term
+            .split(PLUS)
+            .map(encoder)
+            .join(PLUS_ENCODED),
+        )
+        .join(separator);
 
       return this
         .urls
@@ -91,7 +91,7 @@ class UrlEngine extends uIEngine {
 
   protected options(query: Query) {
     const { browser, inprivate } = this,
-          { natural } = query;
+    { natural } = query;
 
     return {
       browser,

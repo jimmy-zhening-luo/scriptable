@@ -15,7 +15,7 @@ abstract class Shortcut<
     try {
       if (typeof this._getInput === "undefined") {
         const shortcutInput = args.shortcutParameter as Null<undefined | Input>,
-              definedShortcutInput = shortcutInput ?? null;
+        definedShortcutInput = shortcutInput ?? null;
 
         this._getInput = definedShortcutInput;
       }
