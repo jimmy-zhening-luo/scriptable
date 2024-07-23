@@ -53,7 +53,7 @@ namespace Things {
             const tokens = item.split("::"),
             { length } = tokens,
             tag = length > 1
-              ? (tokens[length - 1] ?? "")[0] ?? null
+              ? (tokens[length - 1] ?? "")[0]?.toLowerCase() ?? null
               : null;
 
             if (tag !== null) {
