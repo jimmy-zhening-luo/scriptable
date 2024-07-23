@@ -12,7 +12,7 @@ namespace Things {
     ThingsSetting
   > {
     protected runtime() {
-      const { list, delim } = this.setting,
+      const { lists, delims } = this.setting,
             {
               TAG,
               LINE,
