@@ -12,58 +12,70 @@ namespace Things {
     ThingsSetting
   > {
     protected runtime() {
-      const {
-        tag,
-        delim,
-        lists,
-      } = this.setting;
+      const { list, delim } = this.setting,
+            {
+              TAG,
+              LINE,
+              ITEM,
+            } = delim,
+            validator = [
+              TAG,
+              LINE,
+              ITEM,
+            ] as const;
 
-      if (
-        tag.length < 1
-        || delim.line.length < 1
-        || delim.item.length < 1
-      )
-        throw new TypeError(`setting: empty tag or delim`);
-      else if (delim.line === delim.item)
-        throw new SyntaxError(`setting: identical delim for 'item' and 'line'`);
-      else if (delim.line === tag)
-        throw new SyntaxError(`setting: tag is identical to delim 'line'`);
+      if (validator.some(d => d.length < 0))
+        throw new TypeError(
+          `Delim empty or too short`,
+          { cause: delim },
+        );
+      else if (TAG === ITEM || TAG === LINE || ITEM === LINE)
+        throw new SyntaxError(
+          `Conflicting delim`,
+          { cause: delim },
+        );
       else {
-        const input = this.inputStringful,
-              items = input
-                .split(delim.item)
-                .reverse()
-                .map(
-                  item => item
-                    .trim()
-                    .split(delim.line)
-                    .map(line => line.trim())
-                    .filter(line => line.length > 0)
-                    .join(delim.line),
-                );
+        const items = this
+          .inputStringful
+          .split(ITEM)
+          .reverse()
+          .map(
+            item => item
+              .trim()
+              .split(LINE)
+              .map(line => line.trim())
+              .filter(line => line.length > 0)
+              .join(LINE),
+          );
 
         return items.map(
           (item): ThingsItem => {
-            const tagIndex = item.lastIndexOf(tag),
-                  tagent = tagIndex < 0
-                    ? null
-                    : item.slice(
-                      tagIndex + 1,
-                      tagIndex + 2,
-                    ),
-                  [when, list] = tagent === null
+            const tokens = item.split("::"),
+                  { length } = tokens,
+                  tag = length > 1
+                    ? (tokens[length - 1] ?? "")[0] ?? null
+                    : null;
+
+            if (tag !== null) {
+              const last = tokens.pop();
+
+              tokens.push(last.slice(1));
+            }
+
+            const untaggedItem = tokens.join(""),
+                  [when, list] = tag === null
                     ? [null, null]
-                    : tagent.length < 1 || tagent === delim.line || !(tagent in lists) || (lists[tagent] ?? "").length < 1
+                    : tag.length < 1 || tag === LINE || !(tag in list) || (list[tag] ?? "").length < 1
                       ? ["today", null]
                       : [
                           null,
-                          lists[tagent] as unknown as string,
+                          list[tag] as unknown as string,
                         ],
-                  lines = item.split(delim.line);
+                  lines = untaggedItem.split(LINE);
 
             return {
               title: lines.shift() ?? "",
-              notes: lines.join(delim.line),
+              notes: lines.join(LINE),
               ...when === null ? {} : { when },
               ...list === null ? {} : { list },
             };
