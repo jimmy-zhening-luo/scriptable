@@ -46,7 +46,8 @@ namespace Things {
               .map(line => line.trim())
               .filter(line => line.length > 0)
               .join(LINE),
-          );
+          )
+          .filter(item => item.length > 0);
 
         return items.map(
           (item): ThingsItem => {
@@ -71,7 +72,8 @@ namespace Things {
                     null,
                     lists[tag] as unknown as string,
                   ],
-            lines = untaggedItem.split(LINE);
+            lines = untaggedItem
+              .split(LINE);
 
             return {
               title: lines.shift() ?? "",
