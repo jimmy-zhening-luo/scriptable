@@ -9,30 +9,17 @@
     "typescript"
   ],
   "license": "MIT",
-  "type": "module",
   "private": true,
-  "config": {
-    "PACKAGE_JSON_VERSION": "20.10.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jimmy-zhening-luo/scriptable.git"
-  },
+  "repository": "github:jimmy-zhening-luo/scriptable",
   "homepage": "https://github.com/jimmy-zhening-luo/scriptable#readme",
-  "bugs": {
-    "url": "https://github.com/jimmy-zhening-luo/scriptable/issues"
-  },
-  "author": {
-    "name": "Jimmy Zhening Luo",
-    "email": "1450044+jimmy-zhening-luo@users.noreply.github.com",
-    "url": "https://jimm.my"
-  },
+  "bugs": "https://github.com/jimmy-zhening-luo/scriptable/issues",
+  "type": "module",
   "main": "",
   "types": "",
-  "engines": {
-    "node": ">=20.15.0"
-  },
+  "peerDependencies": {},
   "peerDependenciesMeta": {},
+  "optionalDependencies": {},
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^20.14.12",
     "@types/scriptable-ios": "^1.7.7",
@@ -40,6 +27,10 @@
     "linted": "~15.4.5",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=20.15.0",
+    "npm": ">=10.8.0"
   },
   "scripts": {
     "build": "run-s \"build:{1}:*\" lint:built  --  ts",
@@ -60,5 +51,9 @@
     "prepublishOnly": "npm test",
     "predeploy": "npm test",
     "deploy": "((mkdir packed)   ||   (((rm -rf packed) || (rmdir /s /q packed))  &&  (mkdir packed)))    &&    ((cp -r dist/js/* packed)   ||   (xcopy /e /k /h /i \"./dist/js\" \"packed\"))"
-  }
+  },
+  "config": {
+    "PACKAGE_JSON": "20.11.0"
+  },
+  "author": "Jimmy Zhening Luo <1450044+jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
 }
