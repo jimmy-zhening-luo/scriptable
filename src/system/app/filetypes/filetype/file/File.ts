@@ -1,19 +1,21 @@
 class File {
   private readonly manager = FileManager.local();
-  private readonly _root: Stringify<filepath<1>>;
-  private readonly _subpath: filepath<0>;
+  private readonly _root: rootpath.toString;
+  private readonly _subpath: subpath.instance;
 
   constructor(
     root:
       | File
-      | Bookmark
+      | { bookmark: string }
       | { graft: File },
-    ...subpaths: ConstructorParameters<typeof filepath<0>>[1][]
+    ...subpaths: ConstructorParameters<subpath>[1][]
   ) {
     try {
-      this._root = "root" in root || "alias" in root
+      this._root = "root" in root
         ? root.path
-        : root.graft._root;
+        : "bookmark" in root
+          ? new File.Bookmark(root.bookmark).path
+          : root.graft._root;
       this._subpath = new File.subpath(
         0,
         ...subpaths,
@@ -27,25 +29,39 @@ class File {
     }
   }
 
-  private static get subpath() {
+  private static get Bookmark() {
     try {
-      return importModule<typeof filepath<0>>(
-        "./common/validator/impl/filepath/filepath",
+      return importModule<typeof Bookmark>(
+        "bookmark/Bookmark",
       );
     }
     catch (e) {
       throw new ReferenceError(
-        `File: import filepath<0> as Subpath`,
+        `File: import Bookmark`,
         { cause: e },
       );
     }
   }
 
-  public get path(): Stringify<filepath<1>> {
+  private static get subpath() {
+    try {
+      return importModule<subpath>(
+        "./common/validator/impl/filepath/filepath",
+      );
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `File: import subpath as Subpath`,
+        { cause: e },
+      );
+    }
+  }
+
+  public get path(): rootpath.toString {
     return this._subpath.prepend(this._root);
   }
 
-  public get subpath(): Stringify<filepath<0>> {
+  public get subpath(): subpath.toString {
     return this._subpath.toString();
   }
 
@@ -118,7 +134,7 @@ class File {
     }
   }
 
-  public readful(error = ""): stringful {
+  public readful(error = "") {
     try {
       const read = this.read(true);
 

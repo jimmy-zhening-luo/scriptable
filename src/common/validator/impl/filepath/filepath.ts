@@ -31,12 +31,12 @@ class filepath<N extends number> {
   private static get filenode() {
     try {
       return importModule<typeof filenode>(
-        "node/filenode",
+        "node/FileNode",
       );
     }
     catch (e) {
       throw new ReferenceError(
-        `filepath: import filenode`,
+        `filepath: import FileNode`,
         { cause: e },
       );
     }
@@ -64,13 +64,10 @@ class filepath<N extends number> {
     }
   }
 
-  public prepend(root: Stringify<filepath<1>>) {
+  public prepend(root: rootpath.toString) {
     try {
-      if (this.nodes.length > 0) {
-        const rootThis = [root, String(this)] as const satisfies [stringful, string];
-
-        return rootThis.join("/") as stringful;
-      }
+      if (this.nodes.length > 0)
+        return [root satisfies stringful, String(this)].join("/") as rootpath.toString;
       else
         return root;
     }

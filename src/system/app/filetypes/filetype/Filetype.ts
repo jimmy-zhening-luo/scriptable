@@ -15,7 +15,7 @@ abstract class Filetype<
   ) {
     try {
       this.file = new FileConstructor(
-        this.root(type),
+        { bookmark: type },
         appClass,
         ...typeof filename === "undefined"
           ? [[subpath, ext].join(".")]
@@ -61,20 +61,6 @@ abstract class Filetype<
     }
   }
 
-  private static get Bookmark() {
-    try {
-      return importModule<typeof Bookmark>(
-        "bookmark/Bookmark",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Filetype: import Bookmark`,
-        { cause: e },
-      );
-    }
-  }
-
   public get subpath() {
     return this.file.subpath;
   }
@@ -102,10 +88,6 @@ abstract class Filetype<
         { cause: e },
       );
     }
-  }
-
-  private root(subtype: literalful<Type>) {
-    return new Filetype.Bookmark(subtype);
   }
 
   public abstract write(...args: Parameters<F["write"]>): ReturnType<F["write"]>;
