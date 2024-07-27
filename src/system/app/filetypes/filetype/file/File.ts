@@ -14,7 +14,7 @@ class File {
       this._root = "root" in root || "alias" in root
         ? root.path
         : root.graft._root;
-      this._subpath = new File.Subpath(
+      this._subpath = new File.subpath(
         0,
         ...subpaths,
       );
@@ -27,7 +27,7 @@ class File {
     }
   }
 
-  private static get Subpath() {
+  private static get subpath() {
     try {
       return importModule<typeof filepath<0>>(
         "./common/validator/impl/filepath/filepath",
