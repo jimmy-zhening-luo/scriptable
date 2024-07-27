@@ -1,7 +1,6 @@
 function guid64() {
   try {
-    const guid = UUID
-      .string()
+    const guid = UUID.string()
       .replace(
         "-",
         "",
@@ -25,8 +24,7 @@ function guid64() {
       E: 14,
       F: 15,
     } as const,
-    hexes = [...guid]
-      .map(c => CTOH[c as hexchar]) satisfies hex[] as unknown as Tuple<hex, 32>,
+    hexes = [...guid].map(c => CTOH[c as hexchar]) satisfies hex[] as unknown as Tuple<hex, 32>,
     buffer: Octad<hex[]> = [
       [],
       [],
@@ -38,11 +36,16 @@ function guid64() {
       [],
     ];
 
-    hexes.forEach((h, i) => { buffer[Math.floor(i / 4) as octal].push(h) });
+    hexes.forEach((h, i) => {
+      buffer[Math.floor(i / 4) as octal].push(h);
+    });
 
     const quads = buffer satisfies Octad<hex[]> as unknown as Octad<Quad<hex>>,
     chars = quads
-      .map(q => q.reduce((q, qi) => q + qi, 0))
+      .map(q => q.reduce(
+        (q: number, qi) => q + qi,
+        0,
+      ))
       .map(c => c + 43)
       .map(c => c > 43 ? c + 3 : c)
       .map(c => c > 57 ? c + 7 : c)
