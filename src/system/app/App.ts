@@ -73,7 +73,7 @@ abstract class App<
     }
     catch (e) {
       throw new ReferenceError(
-        `App: import Base64Guid`,
+        `App: import guid64`,
         { cause: e },
       );
     }

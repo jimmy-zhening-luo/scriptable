@@ -47,14 +47,14 @@ function guid64() {
     }
   }
 
-  function base64guid(base64guid: string) {
-    if (base64guid.length !== 8)
+  function guid64(guid64: string) {
+    if (guid64.length !== 8)
       throw new SyntaxError(
-        `Generated wrong base64guid length (!8)`,
-        { cause: base64guid },
+        `Generated wrong guid64 length (!8)`,
+        { cause: guid64 },
       );
     else
-      return base64guid as guid<64>;
+      return guid64 as guid<64>;
   }
 
   try {
@@ -104,11 +104,11 @@ function guid64() {
           : charRangeAlphaUpper,
       );
 
-    return base64guid(String.fromCharCode(...charcodes));
+    return guid64(String.fromCharCode(...charcodes));
   }
   catch (e) {
     throw new Error(
-      `Base64Guid`,
+      `guid64`,
       { cause: e },
     );
   }
