@@ -1,18 +1,21 @@
-class CharSet {
+class charset {
   constructor(
     public readonly filter: CharFilter,
     public readonly chars: readonly char[],
   ) {}
 
-  public allows<VS extends string>(string: string): string is ([VS] extends [string] ? VS : never) {
+  public of<VS extends stringful>(string: string) {
     try {
       const { filter } = this;
 
-      return string.length < 1 || this[filter](string);
+      if (string.length < 1 || this[filter](string))
+        return string as [VS] extends [stringful] ? VS : never;
+      else
+        throw new TypeError(`String has disallowed chars`);
     }
     catch (e) {
       throw new Error(
-        `CharSet: allows`,
+        `charset: allows`,
         { cause: e },
       );
     }
@@ -27,7 +30,7 @@ class CharSet {
     }
     catch (e) {
       throw new Error(
-        `CharSet: include`,
+        `charset: include`,
         { cause: e },
       );
     }
@@ -42,11 +45,11 @@ class CharSet {
     }
     catch (e) {
       throw new Error(
-        `CharSet: exclude`,
+        `charset: exclude`,
         { cause: e },
       );
     }
   }
 }
 
-module.exports = CharSet;
+module.exports = charset;

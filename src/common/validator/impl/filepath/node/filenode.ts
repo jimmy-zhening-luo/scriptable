@@ -1,8 +1,8 @@
-const fValidString = importModule<typeof ValidString>(
-  `./common/validator/base/string/ValidString`,
+const fcharstring = importModule<typeof charstring>(
+  `./common/validator/base/string/charstring`,
 );
 
-class FileNode extends fValidString<"FileNode"> {
+class filenode extends fcharstring<"filenode"> {
   constructor(node: string) {
     try {
       super(
@@ -16,11 +16,11 @@ class FileNode extends fValidString<"FileNode"> {
     }
     catch (e) {
       throw new Error(
-        `FileNode`,
+        `filenode`,
         { cause: e },
       );
     }
   }
 }
 
-module.exports = FileNode;
+module.exports = filenode;

@@ -1,9 +1,9 @@
-class Filepath<N extends number> {
-  protected readonly nodes: PathN<FileNode, N>;
+class filepath<N extends number> {
+  protected readonly nodes: PathN<filenode, N>;
 
   constructor(
     public readonly min: N,
-    ...subpaths: (Filepath<N> | string)[]
+    ...subpaths: (filepath<N> | string)[]
   ) {
     try {
       this.nodes = this.check(
@@ -16,27 +16,27 @@ class Filepath<N extends number> {
                 .split("/")
                 .map(node => node.trim())
                 .filter(node => node.length > 0)
-                .map(node => new Filepath.FileNode(node).string),
+                .map(node => new filepath.filenode(node).string),
           ),
       );
     }
     catch (e) {
       throw new Error(
-        `Filepath`,
+        `filepath`,
         { cause: e },
       );
     }
   }
 
-  private static get FileNode() {
+  private static get filenode() {
     try {
-      return importModule<typeof FileNode>(
-        "node/FileNode",
+      return importModule<typeof filenode>(
+        "node/filenode",
       );
     }
     catch (e) {
       throw new ReferenceError(
-        `Filepath: import FileNode`,
+        `filepath: import filenode`,
         { cause: e },
       );
     }
@@ -45,8 +45,8 @@ class Filepath<N extends number> {
   public get parent() {
     try {
       const { min } = this,
-      parent: Filepath<N> = new (
-        this.constructor as new (...args: ConstructorParameters<typeof Filepath<N>>)=> Filepath<N>
+      parent: filepath<N> = new (
+        this.constructor as new (...args: ConstructorParameters<typeof filepath<N>>)=> filepath<N>
       )(
         min,
         this,
@@ -58,13 +58,13 @@ class Filepath<N extends number> {
     }
     catch (e) {
       throw new Error(
-        `Filepath: parent`,
+        `filepath: parent`,
         { cause: e },
       );
     }
   }
 
-  public prepend(root: Stringify<Filepath<1>>) {
+  public prepend(root: Stringify<filepath<1>>) {
     try {
       if (this.nodes.length > 0) {
         const rootThis = [root, String(this)] as const satisfies [stringful, string];
@@ -76,7 +76,7 @@ class Filepath<N extends number> {
     }
     catch (e) {
       throw new Error(
-        `Filepath: prepend`,
+        `filepath: prepend`,
         { cause: e },
       );
     }
@@ -90,7 +90,7 @@ class Filepath<N extends number> {
     }
     catch (e) {
       throw new Error(
-        `Filepath: toString`,
+        `filepath: toString`,
         { cause: e },
       );
     }
@@ -103,10 +103,10 @@ class Filepath<N extends number> {
       popped = this.nodes.pop() ?? null;
 
       if (popped === null)
-        throw new RangeError(`Filepath is already empty`);
+        throw new RangeError(`filepath is already empty`);
       else if (this.nodes.length < min)
         throw new RangeError(
-          `Filepath would be too short after pop`,
+          `filepath would be too short after pop`,
           {
             cause: {
               min,
@@ -121,7 +121,7 @@ class Filepath<N extends number> {
     }
     catch (e) {
       throw new Error(
-        `Filepath: pop`,
+        `filepath: pop`,
         { cause: e },
       );
     }
@@ -129,24 +129,24 @@ class Filepath<N extends number> {
 
   private check(
     min: N,
-    nodes: PathN<FileNode>,
+    nodes: PathN<filenode>,
   ) {
     try {
       if (nodes.length < min)
         throw new RangeError(
-          `Filepath too short`,
+          `filepath too short`,
           { cause: { min, nodes } },
         );
       else
-        return nodes as PathN<FileNode, N>;
+        return nodes as PathN<filenode, N>;
     }
     catch (e) {
       throw new Error(
-        `Filepath: check`,
+        `filepath: check`,
         { cause: e },
       );
     }
   }
 }
 
-module.exports = Filepath;
+module.exports = filepath;
