@@ -31,12 +31,12 @@ class filepath<N extends number> {
   private static get filenode() {
     try {
       return importModule<typeof filenode>(
-        "node/FileNode",
+        "node/filenode",
       );
     }
     catch (e) {
       throw new ReferenceError(
-        `filepath: import FileNode`,
+        `filepath: import filenode`,
         { cause: e },
       );
     }
