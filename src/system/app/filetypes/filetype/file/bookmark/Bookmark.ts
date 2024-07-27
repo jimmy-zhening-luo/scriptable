@@ -8,7 +8,7 @@ class Bookmark {
 
       if (alias.length < 1)
         throw new TypeError(`Bookmark alias is empty`);
-      else if (!FileManager.local().bookmarkExists(alias as stringful))
+      else if (!FileManager.local().bookmarkExists(alias))
         throw new ReferenceError(`Bookmark not found`);
       else {
         this.alias = alias as alias;
