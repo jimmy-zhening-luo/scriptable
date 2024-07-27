@@ -7,9 +7,8 @@ function bookmark(bookmark: string) {
       throw new TypeError(`Bookmark alias is empty`);
     else if (!manager.bookmarkExists(alias))
       throw new ReferenceError(`Bookmark not found`);
-    else {
+    else
       return manager.bookmarkedPath(alias) as rootpath.toString;
-    }
   }
   catch (e) {
     throw new Error(
