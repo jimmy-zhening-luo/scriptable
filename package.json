@@ -1,7 +1,7 @@
 {
   "_schemaVersion": "20.13.0",
   "name": "@jimbojet/scriptable",
-  "version": "7.0.0-rc.142",
+  "version": "7.0.0-rc.143",
   "description": "A compelling use of Scriptable is using JavaScript to control custom iOS actions (see iOS Shortcuts), device-side and home automation, and on-screen Widgets. This project extends the Scriptable ecosystem by providing system classes like File, Url, Repository, Config, Data — making all the above safer and easier to do.",
   "keywords": [
     "ios",
