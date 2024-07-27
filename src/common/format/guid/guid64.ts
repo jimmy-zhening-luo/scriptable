@@ -1,65 +1,32 @@
 function guid64() {
-  function hex(guid: string) {
-    try {
-      const normalized = guid
-        .replace(
-          "-",
-          "",
-        )
-        .toUpperCase();
-
-      if (normalized.length !== 32)
-        throw new SyntaxError(`Wrong input guid length (!32)`);
-      else {
-        const hexvalue = {
-          0: 0,
-          1: 1,
-          2: 2,
-          3: 3,
-          4: 4,
-          5: 5,
-          6: 6,
-          7: 7,
-          8: 8,
-          9: 9,
-          A: 10,
-          B: 11,
-          C: 12,
-          D: 13,
-          E: 14,
-          F: 15,
-        } as const,
-        hexchars = [...normalized]
-          .filter((char): char is hexchar => char in hexvalue);
-
-        if (hexchars.length !== 32)
-          throw new SyntaxError(`Illegal chars in input guid`);
-        else
-          return hexchars
-            .map(hexchar => hexvalue[hexchar]) satisfies hex[] as unknown as Tuple<hex, 32>;
-      }
-    }
-    catch (e) {
-      throw new SyntaxError(
-        `hexguid(): ${guid}`,
-        { cause: e },
-      );
-    }
-  }
-
-  function guid64(guid64: string) {
-    if (guid64.length !== 8)
-      throw new SyntaxError(
-        `Generated wrong guid64 length (!8)`,
-        { cause: guid64 },
-      );
-    else
-      return guid64 as guid<64>;
-  }
-
   try {
-    const guid = UUID.string(),
-    hexchars = hex(guid),
+    const guid = UUID
+      .string()
+      .replace(
+        "-",
+        "",
+      )
+      .toUpperCase(),
+    CTOH = {
+      0: 0,
+      1: 1,
+      2: 2,
+      3: 3,
+      4: 4,
+      5: 5,
+      6: 6,
+      7: 7,
+      8: 8,
+      9: 9,
+      A: 10,
+      B: 11,
+      C: 12,
+      D: 13,
+      E: 14,
+      F: 15,
+    } as const,
+    hexes = [...guid]
+      .map(c => CTOH[c as hexchar]) satisfies hex[] as unknown as Tuple<hex, 32>,
     buffer: Octad<hex[]> = [
       [],
       [],
@@ -71,40 +38,17 @@ function guid64() {
       [],
     ];
 
-    hexchars.forEach(
-      (hexchar, i) => {
-        buffer[Math.floor(i / 4) as octal].push(hexchar);
-      },
-    );
+    hexes.forEach((h, i) => { buffer[Math.floor(i / 4) as octal].push(h) });
 
     const quads = buffer satisfies Octad<hex[]> as unknown as Octad<Quad<hex>>,
-    charcodes = quads
-      .map(
-        ([
-          q0,
-          q1,
-          q2,
-          q3,
-        ]) => q0 + q1 + q2 + q3 as base64,
-      )
-      .map(word => word + 43)
-      .map(
-        charRangePlus => charRangePlus > 43
-          ? charRangePlus + 3
-          : charRangePlus,
-      )
-      .map(
-        charRangeSlashDigit => charRangeSlashDigit > 57
-          ? charRangeSlashDigit + 7
-          : charRangeSlashDigit,
-      )
-      .map(
-        charRangeAlphaUpper => charRangeAlphaUpper > 90
-          ? charRangeAlphaUpper + 6
-          : charRangeAlphaUpper,
-      );
+    chars = quads
+      .map(q => q.reduce((q, qi) => q + qi, 0))
+      .map(c => c + 43)
+      .map(c => c > 43 ? c + 3 : c)
+      .map(c => c > 57 ? c + 7 : c)
+      .map(c => c > 90 ? c + 6 : c);
 
-    return guid64(String.fromCharCode(...charcodes));
+    return String.fromCharCode(...chars) as guid<64>;
   }
   catch (e) {
     throw new Error(
