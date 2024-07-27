@@ -1,8 +1,8 @@
 const pMoment = importModule<typeof Moment>(
-  `moment/Moment`,
+  `moment/moment`,
 );
 
-class Timeprint extends pMoment {
+class timeprint extends pMoment {
   protected separator = " ";
   protected dateFormat = {
     weekday: "long",
@@ -25,4 +25,4 @@ class Timeprint extends pMoment {
   }
 }
 
-module.exports = Timeprint;
+module.exports = timeprint;

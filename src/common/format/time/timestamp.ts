@@ -1,8 +1,8 @@
 const sMoment = importModule<typeof Moment>(
-  `moment/Moment`,
+  `moment/moment`,
 );
 
-class Timestamp extends sMoment {
+class timestamp extends sMoment {
   protected separator = "";
   protected dateFormat = {
     month: "2-digit",
@@ -29,4 +29,4 @@ class Timestamp extends sMoment {
   }
 }
 
-module.exports = Timestamp;
+module.exports = timestamp;

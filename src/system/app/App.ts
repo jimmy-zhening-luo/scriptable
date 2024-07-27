@@ -81,13 +81,13 @@ abstract class App<
 
   protected get timestamp() {
     try {
-      return importModule<typeof Timestamp>(
-        "./common/format/time/Timestamp",
+      return importModule<typeof timestamp>(
+        "./common/format/time/timestamp",
       );
     }
     catch (e) {
       throw new ReferenceError(
-        `App: import Timestamp`,
+        `App: import timestamp`,
         { cause: e },
       );
     }
@@ -95,13 +95,13 @@ abstract class App<
 
   protected get timeprint() {
     try {
-      return importModule<typeof Timeprint>(
-        "./common/format/time/Timeprint",
+      return importModule<typeof timeprint>(
+        "./common/format/time/timeprint",
       );
     }
     catch (e) {
       throw new ReferenceError(
-        `App: import Timeprint`,
+        `App: import timeprint`,
         { cause: e },
       );
     }
