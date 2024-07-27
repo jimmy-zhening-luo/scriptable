@@ -1,27 +1,22 @@
-class Bookmark {
-  public readonly alias: alias;
-  public readonly path: rootpath.toString;
+function bookmark(bookmark: string) {
+  try {
+    const alias = bookmark.trim(),
+    manager = FileManager.local();
 
-  constructor(bookmark: string) {
-    try {
-      const alias = bookmark.trim();
-
-      if (alias.length < 1)
-        throw new TypeError(`Bookmark alias is empty`);
-      else if (!FileManager.local().bookmarkExists(alias))
-        throw new ReferenceError(`Bookmark not found`);
-      else {
-        this.alias = alias as alias;
-        this.path = FileManager.local().bookmarkedPath(this.alias) as typeof this.path;
-      }
+    if (alias.length < 1)
+      throw new TypeError(`Bookmark alias is empty`);
+    else if (!manager.bookmarkExists(alias))
+      throw new ReferenceError(`Bookmark not found`);
+    else {
+      return manager.bookmarkedPath(alias) as rootpath.toString;
     }
-    catch (e) {
-      throw new Error(
-        `Bookmark: "${bookmark}"`,
-        { cause: e },
-      );
-    }
+  }
+  catch (e) {
+    throw new Error(
+      `bookmark: "${bookmark}"`,
+      { cause: e },
+    );
   }
 }
 
-module.exports = Bookmark;
+module.exports = bookmark;

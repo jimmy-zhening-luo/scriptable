@@ -14,7 +14,7 @@ class File {
       this._root = "root" in root
         ? root.path
         : "bookmark" in root
-          ? new File.Bookmark(root.bookmark).path
+          ? File.bookmark(root.bookmark)
           : root.graft._root;
       this._subpath = new File.subpath(
         0,
@@ -29,15 +29,15 @@ class File {
     }
   }
 
-  private static get Bookmark() {
+  private static get bookmark() {
     try {
-      return importModule<typeof Bookmark>(
+      return importModule<typeof bookmark>(
         "bookmark/Bookmark",
       );
     }
     catch (e) {
       throw new ReferenceError(
-        `File: import Bookmark`,
+        `File: import bookmark`,
         { cause: e },
       );
     }
