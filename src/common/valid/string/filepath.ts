@@ -31,7 +31,7 @@ class filepath<N extends number> {
   private static get filenode() {
     try {
       return importModule<typeof filenode>(
-        "node/filenode",
+        "filenode",
       );
     }
     catch (e) {

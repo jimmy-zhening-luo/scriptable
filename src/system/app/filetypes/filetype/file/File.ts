@@ -46,7 +46,7 @@ class File {
   private static get subpath() {
     try {
       return importModule<subpath>(
-        "./common/validator/impl/filepath/filepath",
+        "./common/valid/string/filepath",
       );
     }
     catch (e) {

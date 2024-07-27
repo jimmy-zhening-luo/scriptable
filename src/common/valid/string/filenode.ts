@@ -1,5 +1,5 @@
 const fcharstring = importModule<typeof charstring>(
-  `./common/validator/base/string/charstring`,
+  `charstring/charstring`,
 );
 
 class filenode extends fcharstring<"filenode"> {
