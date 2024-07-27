@@ -65,10 +65,10 @@ abstract class App<
     }
   }
 
-  protected get base64guid() {
+  protected get guid64() {
     try {
-      return importModule<typeof Base64Guid>(
-        "./common/format/guid/Base64Guid",
+      return importModule<typeof guid64>(
+        "./common/format/guid/guid64",
       );
     }
     catch (e) {

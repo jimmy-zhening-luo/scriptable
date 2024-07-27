@@ -1,4 +1,4 @@
-function Base64Guid() {
+function guid64() {
   function hex(guid: string) {
     try {
       const normalized = guid
@@ -114,4 +114,4 @@ function Base64Guid() {
   }
 }
 
-module.exports = Base64Guid;
+module.exports = guid64;

@@ -23,7 +23,7 @@ namespace Ziplink {
         return id;
       }
       else {
-        const id = this.base64guid();
+        const id = this.guid64();
 
         storage[id] = url;
         this.write(
