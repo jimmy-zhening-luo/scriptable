@@ -63,7 +63,7 @@ class filepath<N extends number> {
     );
   }
 
-  public prepend(root: rootpath.toString) {
+  public prepend(root: Stringify<rootpath>) {
     return this.nodes.length > 0
       ? [root, String(this)].join("/") as typeof root
       : root;

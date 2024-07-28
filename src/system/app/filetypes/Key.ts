@@ -11,7 +11,7 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
     super(
       "Key",
       category,
-      Key.ReadonlyFile,
+      false,
       `txt`,
       app,
       handle,
@@ -165,7 +165,7 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
   }
 
   public write(): never {
-    this.file.write();
+    throw new TypeError("Key: write forbidden");
   }
 }
 

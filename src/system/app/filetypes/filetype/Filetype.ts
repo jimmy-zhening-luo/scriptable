@@ -1,20 +1,21 @@
 abstract class Filetype<
   Type extends string,
   Class extends string,
-  F extends File = ReadonlyFile,
+  W extends boolean = false,
 > {
-  protected readonly file: F;
+  protected readonly file: File<W>;
 
   constructor(
     type: literalful<Type>,
     appClass: literalful<Class>,
-    FileConstructor: new(...path: ConstructorParameters<typeof File>)=> F & File,
+    writable: W,
     ext: string,
     subpath: string,
     filename?: string,
   ) {
     try {
-      this.file = new FileConstructor(
+      this.file = new this.File(
+        writable,
         { bookmark: type },
         appClass,
         ...typeof filename === "undefined"
@@ -33,9 +34,13 @@ abstract class Filetype<
     }
   }
 
-  protected static get File() {
+  public get subpath() {
+    return this.file.subpath;
+  }
+
+  private get File() {
     try {
-      return importModule<typeof File>(
+      return importModule<typeof File<W>>(
         "file/File",
       );
     }
@@ -47,25 +52,7 @@ abstract class Filetype<
     }
   }
 
-  protected static get ReadonlyFile() {
-    try {
-      return importModule<typeof ReadonlyFile>(
-        "file/ReadonlyFile",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Filetype: import ReadonlyFile`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get subpath() {
-    return this.file.subpath;
-  }
-
-  public read(...error: Parameters<F["read"]>) {
+  public read(...error: Parameters<File<W>["read"]>) {
     return this.file.read(...error);
   }
 
@@ -73,7 +60,7 @@ abstract class Filetype<
     return this.file.readful(this.subpath);
   }
 
-  public data<Data>(...error: Parameters<F["read"]>): Null<Data> {
+  public data<Data>(...error: Parameters<File<W>["read"]>): Null<Data> {
     try {
       const string = this
         .file
@@ -90,7 +77,7 @@ abstract class Filetype<
     }
   }
 
-  public abstract write(...args: Parameters<F["write"]>): ReturnType<F["write"]>;
+  public abstract write(...args: W extends true ? Parameters<File<W>["write"]> : never): W extends true ? ReturnType<File<W>["write"]> : never;
 }
 
 module.exports = Filetype;

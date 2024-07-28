@@ -1,13 +1,14 @@
-class File {
+class File<Writable extends boolean> {
   private readonly manager = FileManager.local();
-  private readonly _root: rootpath.toString;
+  private readonly _root: Stringify<rootpath>;
   private readonly _subpath: subpath.instance;
 
   constructor(
+    public readonly writable: Writable,
     root:
-      | File
+      | File<Writable>
       | { bookmark: string }
-      | { graft: File },
+      | { graft: File<Writable> },
     ...subpaths: ConstructorParameters<subpath>[1][]
   ) {
     try {
@@ -43,11 +44,11 @@ class File {
     }
   }
 
-  public get path(): rootpath.toString {
+  public get path(): Stringify<rootpath> {
     return this._subpath.prepend(this._root);
   }
 
-  public get subpath(): subpath.toString {
+  public get subpath(): Stringify<subpath> {
     return this._subpath.toString();
   }
 
@@ -59,11 +60,14 @@ class File {
     return this.manager.fileExists(this.path);
   }
 
-  public get root(): this {
+  public get root(): File<Writable> {
     try {
-      const { constructor } = this;
+      const { constructor, writable } = this;
 
-      return new (constructor as ThisConstructor<typeof File, this>)({ graft: this });
+      return new (constructor as Constructor<typeof File<Writable>>)(
+        writable,
+        { graft: this },
+      );
     }
     catch (e) {
       throw new Error(
@@ -77,11 +81,13 @@ class File {
     try {
       const {
         constructor,
+        writable,
         root,
         _subpath,
       } = this;
 
-      return new (constructor as ThisConstructor<typeof File, this>)(
+      return new (constructor as Constructor<typeof File<Writable>>)(
+        writable,
         root,
         _subpath.parent,
       );
@@ -116,9 +122,10 @@ class File {
 
   public readful(error = "") {
     try {
-      const read = this.read(true);
+      const read = this.read(true),
+      { length } = read;
 
-      if (read.length > 0)
+      if (length > 0)
         return read as stringful;
       else
         throw new TypeError(error);
@@ -140,40 +147,45 @@ class File {
   ) {
     try {
       const {
-        path,
+        writable,
         isDirectory,
         isFile,
+        path,
+        manager,
       } = this;
 
-      if (isDirectory)
-        throw new ReferenceError(`Tried to write to folder`);
+      if (writable === false)
+        throw new TypeError("File is readonly");
       else
-        if (isFile)
-          if (overwrite === false)
-            throw new TypeError(`Tried to overwrite existing file with overwrite:false`);
-          else
-            this.manager.writeString(
+        if (isDirectory)
+          throw new TypeError("Write destination is folder");
+        else
+          if (isFile)
+            if (overwrite === false)
+              throw new TypeError("Existing file, overwrite:false");
+            else
+              manager.writeString(
+                path,
+                overwrite === "append"
+                  ? [this.read(), string].join("")
+                  : overwrite === "line"
+                    ? [string, this.read()].join("\n")
+                    : string,
+              );
+          else {
+            const { parent } = this;
+
+            if (!parent.isDirectory)
+              manager.createDirectory(
+                parent.path,
+                true,
+              );
+
+            manager.writeString(
               path,
-              overwrite === "append"
-                ? [this.read(), string].join("")
-                : overwrite === "line"
-                  ? [string, this.read()].join("\n")
-                  : string,
+              string,
             );
-        else {
-          const { parent } = this;
-
-          if (!parent.isDirectory)
-            this.manager.createDirectory(
-              parent.path,
-              true,
-            );
-
-          this.manager.writeString(
-            path,
-            string,
-          );
-        }
+          }
     }
     catch (e) {
       throw new Error(
@@ -189,15 +201,16 @@ class File {
 
   private bookmark(bookmark: string) {
     try {
-      const alias = bookmark.trim(),
-      { length } = alias;
+      const name = bookmark.trim(),
+      { length } = name,
+      { manager } = this;
 
       if (length < 1)
         throw new TypeError(`Bookmark alias is empty`);
-      else if (!this.manager.bookmarkExists(alias))
+      else if (!manager.bookmarkExists(name))
         throw new ReferenceError(`Bookmark not found`);
       else
-        return this.manager.bookmarkedPath(alias) as rootpath.toString;
+        return manager.bookmarkedPath(name) as Stringify<rootpath>;
     }
     catch (e) {
       throw new ReferenceError(

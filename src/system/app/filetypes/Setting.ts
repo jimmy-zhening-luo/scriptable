@@ -13,7 +13,7 @@ class Setting<
     super(
       "Setting",
       category,
-      Setting.ReadonlyFile,
+      false,
       `json`,
       app,
     );
@@ -53,7 +53,7 @@ class Setting<
   }
 
   public write(): never {
-    this.file.write();
+    throw new TypeError("Storage: write forbidden");
   }
 
   private _cache?: Schema;
