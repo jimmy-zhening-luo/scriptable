@@ -14,7 +14,7 @@ class File {
       this._root = "root" in root
         ? root.path
         : "bookmark" in root
-          ? File.bookmark(root.bookmark)
+          ? this.bookmark(root.bookmark)
           : root.graft._root;
       this._subpath = new File.subpath(
         0,
@@ -24,20 +24,6 @@ class File {
     catch (e) {
       throw new Error(
         `File`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static get bookmark() {
-    try {
-      return importModule<typeof bookmark>(
-        "bookmark/Bookmark",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `File: import bookmark`,
         { cause: e },
       );
     }
@@ -66,32 +52,18 @@ class File {
   }
 
   public get isDirectory() {
-    try {
-      return this.manager.isDirectory(this.path);
-    }
-    catch (e) {
-      throw new SyntaxError(
-        `File: isDirectory`,
-        { cause: e },
-      );
-    }
+    return this.manager.isDirectory(this.path);
   }
 
   public get isFile() {
-    try {
-      return this.manager.fileExists(this.path);
-    }
-    catch (e) {
-      throw new SyntaxError(
-        `File: isFile`,
-        { cause: e },
-      );
-    }
+    return this.manager.fileExists(this.path);
   }
 
   public get root(): this {
     try {
-      return new (this.constructor as ThisConstructor<typeof File, this>)({ graft: this });
+      const { constructor } = this;
+
+      return new (constructor as ThisConstructor<typeof File, this>)({ graft: this });
     }
     catch (e) {
       throw new Error(
@@ -103,9 +75,15 @@ class File {
 
   public get parent() {
     try {
-      return new (this.constructor as ThisConstructor<typeof File, this>)(
-        this.root,
-        this._subpath.parent,
+      const {
+        constructor,
+        root,
+        _subpath,
+      } = this;
+
+      return new (constructor as ThisConstructor<typeof File, this>)(
+        root,
+        _subpath.parent,
       );
     }
     catch (e) {
@@ -116,15 +94,17 @@ class File {
     }
   }
 
-  public read(stringful = false) {
+  public read(stringfully = false) {
     try {
-      if (!this.isFile)
-        if (stringful)
+      const { path, isFile } = this;
+
+      if (!isFile)
+        if (stringfully)
           throw new ReferenceError(`Tried to read non-existent file`);
         else
           return "";
       else
-        return this.manager.readString(this.path);
+        return this.manager.readString(path);
     }
     catch (e) {
       throw new Error(
@@ -141,10 +121,7 @@ class File {
       if (read.length > 0)
         return read as stringful;
       else
-        throw new TypeError(
-          `Read empty file, expected non-empty`,
-          { cause: { error } },
-        );
+        throw new TypeError(error);
     }
     catch (e) {
       throw new Error(
@@ -162,32 +139,38 @@ class File {
       | boolean = false,
   ) {
     try {
-      if (this.isDirectory)
+      const {
+        path,
+        isDirectory,
+        isFile,
+      } = this;
+
+      if (isDirectory)
         throw new ReferenceError(`Tried to write to folder`);
       else
-        if (this.isFile)
+        if (isFile)
           if (overwrite === false)
             throw new TypeError(`Tried to overwrite existing file with overwrite:false`);
           else
             this.manager.writeString(
-              this.path,
+              path,
               overwrite === "append"
-                ? [this.read(), string]
-                    .join("")
+                ? [this.read(), string].join("")
                 : overwrite === "line"
-                  ? [string, this.read()]
-                      .join("\n")
+                  ? [string, this.read()].join("\n")
                   : string,
             );
         else {
-          if (!this.parent.isDirectory)
+          const { parent } = this;
+
+          if (!parent.isDirectory)
             this.manager.createDirectory(
-              this.parent.path,
+              parent.path,
               true,
             );
 
           this.manager.writeString(
-            this.path,
+            path,
             string,
           );
         }
@@ -202,6 +185,26 @@ class File {
 
   public toString() {
     return this.path;
+  }
+
+  private bookmark(bookmark: string) {
+    try {
+      const alias = bookmark.trim(),
+      { length } = alias;
+
+      if (length < 1)
+        throw new TypeError(`Bookmark alias is empty`);
+      else if (!this.manager.bookmarkExists(alias))
+        throw new ReferenceError(`Bookmark not found`);
+      else
+        return this.manager.bookmarkedPath(alias) as rootpath.toString;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `File: bookmark "${bookmark}"`,
+        { cause: e },
+      );
+    }
   }
 }
 

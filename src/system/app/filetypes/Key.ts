@@ -1,5 +1,5 @@
 const kFiletype = importModule<typeof Filetype>(
-  `filetype/Filetype`,
+  "filetype/Filetype",
 );
 
 class Key<Class extends string> extends kFiletype<"Key", Class> {

@@ -1,5 +1,5 @@
 const file = importModule<typeof File>(
-  `File`,
+  "File",
 );
 
 class ReadonlyFile extends file {

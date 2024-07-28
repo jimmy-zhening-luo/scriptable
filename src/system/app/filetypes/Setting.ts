@@ -1,5 +1,5 @@
 const cFiletype = importModule<typeof Filetype>(
-  `filetype/Filetype`,
+  "filetype/Filetype",
 );
 
 class Setting<
