@@ -51,15 +51,15 @@ abstract class App<
     }
   }
 
-  private static get ErrorHandler() {
+  private static get errorcatch() {
     try {
-      return importModule<typeof ErrorHandler>(
-        "error/ErrorHandler",
+      return importModule<typeof errorcatch>(
+        "error/errorcatch",
       );
     }
     catch (e) {
       throw new ReferenceError(
-        `App: import ErrorHandler`,
+        `App: import errorcatch`,
         { cause: e },
       );
     }
@@ -233,15 +233,10 @@ abstract class App<
       return this.output(this.runtime());
     }
     catch (e) {
-      throw new Error(
-        (new App.ErrorHandler)
-          .handle(
-            new Error(
-              `${this.name}: runtime`,
-              { cause: e },
-            ),
-          ),
-      );
+      throw new Error(App.errorcatch(new Error(
+        `${this.name}: runtime`,
+        { cause: e },
+      )));
     }
   }
 
@@ -272,33 +267,30 @@ abstract class App<
   }
 
   protected read(
-    extensionE?: boolean | string,
+    extE?: boolean | string,
     filenameE?: boolean | string,
     E?: boolean,
   ) {
-    return typeof extensionE === "undefined"
+    return typeof extE === "undefined"
       ? this.storage().read()
-      : typeof extensionE === "boolean"
-        ? this.storage().read(extensionE)
+      : typeof extE === "boolean"
+        ? this.storage().read(extE)
         : typeof filenameE === "boolean"
           ? this
-            .storage(extensionE)
+            .storage(extE)
             .read(filenameE)
           : this
             .storage(
-              extensionE,
+              extE,
               filenameE,
             )
             .read(E);
   }
 
-  protected readful(
-    extension?: string,
-    filename?: string,
-  ) {
+  protected readful(ext?: string, filename?: string) {
     return this
       .storage(
-        extension,
+        ext,
         filename,
       )
       .readful();
@@ -359,10 +351,7 @@ abstract class App<
     this.key(handle).roll();
   }
 
-  protected storage(
-    ext?: string,
-    filename?: string,
-  ) {
+  protected storage(ext?: string, filename?: string) {
     const cacheId = [filename ?? "", ext ?? ""]
       .join(":"),
     cache = this._storage[cacheId] ?? null;

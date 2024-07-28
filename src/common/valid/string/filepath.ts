@@ -10,19 +10,25 @@ class filepath<N extends number> {
     ...subpaths: (filepath<N> | string)[]
   ) {
     try {
-      this.nodes = this.check(
-        min,
-        subpaths
-          .flatMap(
-            subpath => typeof subpath !== "string"
-              ? subpath.nodes
-              : subpath
-                .split("/")
-                .map(node => node.trim())
-                .filter((node): node is stringful => node.length > 0)
-                .map(node => filepath.filenode(node).string),
-          ),
-      );
+      const nodes = subpaths
+        .flatMap(
+          subpath => typeof subpath !== "string"
+            ? subpath.nodes
+            : subpath
+              .split("/")
+              .map(node => node.trim())
+              .filter((node): node is stringful => node.length > 0)
+              .map(node => filepath.filenode(node).string),
+        ),
+      { length } = nodes;
+
+      if (length < min)
+        throw new RangeError(
+          `Filepath too short`,
+          { cause: { min, nodes } },
+        );
+      else
+        this.nodes = nodes as ArrayN<Stringify<charstring<"filenode">>, N>;
     }
     catch (e) {
       throw new Error(
@@ -34,15 +40,26 @@ class filepath<N extends number> {
 
   public get parent() {
     try {
-      const { min } = this,
-      parent = new (this.constructor as Constructor<typeof filepath<N>>)(
-        min,
-        this,
-      );
+      const { min, nodes } = this,
+      { length } = nodes;
 
-      parent.pop();
+      if (length < 1)
+        throw new RangeError(`Empty filepath has no parent.`);
+      else if (length - 1 < min)
+        throw new RangeError(
+          `File parent is protected.`,
+          { cause: { min, nodes } },
+        );
+      else {
+        const parent = new (this.constructor as Constructor<typeof filepath<N>>)(
+          min,
+          this,
+        );
 
-      return parent;
+        parent.nodes.pop();
+
+        return parent;
+      }
     }
     catch (e) {
       throw new Error(
@@ -78,56 +95,6 @@ class filepath<N extends number> {
     catch (e) {
       throw new Error(
         `filepath: toString`,
-        { cause: e },
-      );
-    }
-  }
-
-  private pop() {
-    try {
-      const { min, nodes } = this,
-      { length } = nodes;
-
-      if (length < 1)
-        throw new RangeError(`Filepath is already empty.`);
-      else if (length - 1 < min)
-        throw new RangeError(
-          `Filepath would be too short after pop.`,
-          { cause: { min, nodes } },
-        );
-      else {
-        const queue = [...nodes].reverse(),
-        [popped] = queue as Arrayful<typeof nodes[number]>;
-
-        this.nodes.pop();
-
-        return popped;
-      }
-    }
-    catch (e) {
-      throw new Error(
-        `filepath: pop`,
-        { cause: e },
-      );
-    }
-  }
-
-  private check(
-    min: N,
-    nodes: Stringify<charstring<"filenode">>[],
-  ) {
-    try {
-      if (nodes.length < min)
-        throw new RangeError(
-          `filepath too short`,
-          { cause: { min, nodes } },
-        );
-      else
-        return nodes as ArrayN<Stringify<charstring<"filenode">>, N>;
-    }
-    catch (e) {
-      throw new Error(
-        `filepath: check`,
         { cause: e },
       );
     }

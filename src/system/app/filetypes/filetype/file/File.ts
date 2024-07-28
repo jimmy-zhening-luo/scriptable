@@ -1,22 +1,15 @@
 class File<Writable extends boolean> {
   private readonly manager = FileManager.local();
-  private readonly _root: Stringify<rootpath>;
+  private readonly root: Stringify<rootpath>;
   private readonly _subpath: InstanceType<subpath>;
 
   constructor(
     public readonly writable: Writable,
-    root:
-      | File<Writable>
-      | { bookmark: string }
-      | { graft: File<Writable> },
-    ...subpaths: ConstructorParameters<subpath>[1][]
+    bookmark: string,
+    ...subpaths: (InstanceType<subpath> | string)[]
   ) {
     try {
-      this._root = "root" in root
-        ? root.path
-        : "bookmark" in root
-          ? this.bookmark(root.bookmark)
-          : root.graft._root;
+      this.root = this.bookmark(bookmark);
       this._subpath = new File.subpath(
         0,
         ...subpaths,
@@ -45,7 +38,9 @@ class File<Writable extends boolean> {
   }
 
   public get path(): Stringify<rootpath> {
-    return this._subpath.prepend(this._root);
+    const { root, _subpath } = this;
+
+    return _subpath.prepend(root);
   }
 
   public get subpath(): Stringify<subpath> {
@@ -58,46 +53,6 @@ class File<Writable extends boolean> {
 
   public get isFile() {
     return this.manager.fileExists(this.path);
-  }
-
-  public get root(): File<Writable> {
-    try {
-      const { constructor, writable } = this;
-
-      return new (constructor as Constructor<typeof File<Writable>>)(
-        writable,
-        { graft: this },
-      );
-    }
-    catch (e) {
-      throw new Error(
-        `File: root`,
-        { cause: e },
-      );
-    }
-  }
-
-  public get parent() {
-    try {
-      const {
-        constructor,
-        writable,
-        root,
-        _subpath,
-      } = this;
-
-      return new (constructor as Constructor<typeof File<Writable>>)(
-        writable,
-        root,
-        _subpath.parent,
-      );
-    }
-    catch (e) {
-      throw new Error(
-        `File: parent`,
-        { cause: e },
-      );
-    }
   }
 
   public read(stringfully = false) {
@@ -154,7 +109,7 @@ class File<Writable extends boolean> {
         manager,
       } = this;
 
-      if (writable === false)
+      if (!writable)
         throw new TypeError("File is readonly");
       else
         if (isDirectory)
@@ -173,14 +128,7 @@ class File<Writable extends boolean> {
                     : string,
               );
           else {
-            const { parent } = this;
-
-            if (!parent.isDirectory)
-              manager.createDirectory(
-                parent.path,
-                true,
-              );
-
+            this.createParent();
             manager.writeString(
               path,
               string,
@@ -215,6 +163,29 @@ class File<Writable extends boolean> {
     catch (e) {
       throw new ReferenceError(
         `File: bookmark "${bookmark}"`,
+        { cause: e },
+      );
+    }
+  }
+
+  private createParent() {
+    try {
+      const {
+        root,
+        _subpath,
+        manager,
+      } = this,
+      parentPath = _subpath.parent.prepend(root);
+
+      if (!manager.isDirectory(parentPath))
+        manager.createDirectory(
+          parentPath,
+          true,
+        );
+    }
+    catch (e) {
+      throw new Error(
+        `File: createParent`,
         { cause: e },
       );
     }

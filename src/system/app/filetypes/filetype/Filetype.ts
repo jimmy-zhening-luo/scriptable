@@ -14,16 +14,15 @@ abstract class Filetype<
     filename?: string,
   ) {
     try {
+      const bookmark = filetype;
+
       this.file = new this.File(
         writable,
-        { bookmark: filetype },
+        bookmark,
         apptype,
         ...typeof filename === "undefined"
           ? [[subpath, ext].join(".")]
-          : [
-              subpath,
-              [filename, ext].join("."),
-            ],
+          : [subpath, [filename, ext].join(".")],
       );
     }
     catch (e) {
