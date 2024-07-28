@@ -2,20 +2,22 @@ const dFiletype = importModule<typeof Filetype>(
   "filetype/Filetype",
 );
 
-class Storage<Class extends string> extends dFiletype<"Storage", Class, true> {
+class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {
   constructor(
-    category: literalful<Class>,
+    apptype: literalful<AT>,
     app: stringful,
-    ext = `txt`,
-    filename?: string,
+    ext = "txt",
+    filename: string = app,
   ) {
+    const subpath = app;
+
     super(
       "Storage",
-      category,
+      apptype,
       true,
       ext,
-      app,
-      filename ?? app,
+      subpath,
+      filename,
     );
   }
 
@@ -27,36 +29,32 @@ class Storage<Class extends string> extends dFiletype<"Storage", Class, true> {
       | boolean = true,
   ) {
     try {
-      const buffer = data ?? null;
+      const { file } = this,
+      buffer = data ?? null;
 
       if (buffer === null)
-        throw new TypeError(`Tried to undefined | null to storage`);
+        throw new TypeError("Tried to write null data");
       else if (typeof buffer === "object")
-        if (
-          Array.isArray(buffer)
-          && buffer.every(element => typeof element === "string")
-        )
-          this.file.write(
-            buffer
-              .reverse()
-              .join("\n"),
+        if (Array.isArray(buffer) && buffer.every(i => typeof i === "string"))
+          file.write(
+            buffer.reverse().join("\n"),
             overwrite === false ? false : "line",
           );
         else
-          this.file.write(
+          file.write(
             JSON.stringify(buffer),
             overwrite !== false,
           );
 
       else
-        this.file.write(
+        file.write(
           String(buffer),
           overwrite,
         );
     }
     catch (e) {
       throw new Error(
-        `Storage: write`,
+        `Storage: write (${String(this)})`,
         { cause: e },
       );
     }

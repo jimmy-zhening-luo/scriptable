@@ -2,19 +2,22 @@ const kFiletype = importModule<typeof Filetype>(
   "filetype/Filetype",
 );
 
-class Key<Class extends string> extends kFiletype<"Key", Class> {
+class Key<AT extends string> extends kFiletype<"Key", AT> {
   constructor(
-    category: literalful<Class>,
+    apptype: literalful<AT>,
     app: stringful,
     handle: stringful,
   ) {
+    const subpath = app,
+    filename = handle;
+
     super(
       "Key",
-      category,
+      apptype,
       false,
-      `txt`,
-      app,
-      handle,
+      "txt",
+      subpath,
+      filename,
     );
   }
 
@@ -28,42 +31,22 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
 
       if (!Keychain.contains(fullname))
         if (!fallback)
-          throw new ReferenceError(
-            `No such key in Keychain, fallback:false`,
-            {
-              cause: {
-                fullname,
-                inKeychain: Keychain.contains(fullname),
-                fallback,
-                local: super.read(),
-              },
-            },
-          );
+          throw new ReferenceError("No such key in Keychain, fallback:false");
         else
           return super.readful();
       else {
-        const key = Keychain.get(fullname);
+        const key = Keychain.get(fullname),
+        { length } = key;
 
-        if (key.length < 1)
-          throw new ReferenceError(
-            `Unexpected: Key exists in Keychain but is empty string`,
-            {
-              cause: {
-                fullname,
-                inKeychain: Keychain.contains(fullname),
-                key,
-                fallback,
-                local: super.read(),
-              },
-            },
-          );
-        else
+        if (length > 0)
           return key as stringful;
+        else
+          throw new EvalError("Fatal: key found in Keychain, but empty");
       }
     }
     catch (e) {
       throw new Error(
-        `Key: load`,
+        `Key: load (${String(this)})`,
         { cause: e },
       );
     }
@@ -74,18 +57,7 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
       const { fullname } = this;
 
       if (Keychain.contains(fullname) && !roll)
-        throw new ReferenceError(
-          `Tried to overwrite existing key with roll:false`,
-          {
-            cause: {
-              fullname,
-              roll,
-              local: super.read(),
-              inKeychain: Keychain.contains(fullname),
-              keychain: Keychain.get(fullname),
-            },
-          },
-        );
+        throw new ReferenceError("Key already in Keychain, roll:false");
       else {
         const local = super.readful();
 
@@ -94,24 +66,18 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
           local,
         );
 
-        if (local !== Keychain.get(fullname))
-          throw new ReferenceError(
-            `Created key in Keychain, but resulting key has wrong value`,
-            {
-              cause: {
-                fullname,
-                roll,
-                local,
-                inKeychain: Keychain.contains(fullname),
-                keychain: Keychain.get(fullname),
-              },
-            },
+        const keychain = Keychain.get(fullname);
+
+        if (local !== keychain)
+          throw new EvalError(
+            "Fatal: Created key in Keychain with wrong value",
+            { cause: { local, keychain } },
           );
       }
     }
     catch (e) {
       throw new Error(
-        `Key: add`,
+        `Key: add (${String(this)})`,
         { cause: e },
       );
     }
@@ -129,39 +95,23 @@ class Key<Class extends string> extends kFiletype<"Key", Class> {
         Keychain.remove(fullname);
 
         if (Keychain.contains(fullname))
-          throw new ReferenceError(
-            `Removed key is still in Keychain`,
-            {
-              cause: {
-                fullname,
-                inKeychain: Keychain.contains(fullname),
-                keychain: Keychain.get(fullname),
-                local: super.read(),
-              },
-            },
-          );
+          throw new EvalError("Fatal: Removed key is still in Keychain");
       }
     }
     catch (e) {
       throw new Error(
-        `Key: remove`,
+        `Key: remove (${String(this)})`,
         { cause: e },
       );
     }
   }
 
   public override read(): never {
-    throw new ReferenceError(
-      `Key: read forbidden`,
-      { cause: "Use load() instead" },
-    );
+    throw new ReferenceError("Key: read forbidden");
   }
 
   public override readful(): never {
-    throw new ReferenceError(
-      `Key: readful forbidden`,
-      { cause: `Use load(true) instead` },
-    );
+    throw new ReferenceError("Key: readful forbidden");
   }
 
   public write(): never {

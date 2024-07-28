@@ -1,14 +1,14 @@
 abstract class Filetype<
-  Type extends string,
-  Class extends string,
-  W extends boolean = false,
+  T extends string,
+  AT extends string,
+  Writable extends boolean = false,
 > {
-  protected readonly file: File<W>;
+  protected readonly file: File<Writable>;
 
   constructor(
-    type: literalful<Type>,
-    appClass: literalful<Class>,
-    writable: W,
+    filetype: literalful<T>,
+    apptype: literalful<AT>,
+    writable: Writable,
     ext: string,
     subpath: string,
     filename?: string,
@@ -16,8 +16,8 @@ abstract class Filetype<
     try {
       this.file = new this.File(
         writable,
-        { bookmark: type },
-        appClass,
+        { bookmark: filetype },
+        apptype,
         ...typeof filename === "undefined"
           ? [[subpath, ext].join(".")]
           : [
@@ -28,7 +28,7 @@ abstract class Filetype<
     }
     catch (e) {
       throw new Error(
-        `Filetype (${type}/${appClass})`,
+        `Filetype (${filetype}/${apptype}: ${subpath})`,
         { cause: e },
       );
     }
@@ -40,7 +40,7 @@ abstract class Filetype<
 
   private get File() {
     try {
-      return importModule<typeof File<W>>(
+      return importModule<typeof File<Writable>>(
         "file/File",
       );
     }
@@ -52,32 +52,54 @@ abstract class Filetype<
     }
   }
 
-  public read(...error: Parameters<File<W>["read"]>) {
-    return this.file.read(...error);
-  }
-
-  public readful() {
-    return this.file.readful(this.subpath);
-  }
-
-  public data<Data>(...error: Parameters<File<W>["read"]>): Null<Data> {
+  public read(stringfully = false) {
     try {
-      const string = this
-        .file
-        .read(...error)
-        .trim();
-
-      return string.length > 0 ? JSON.parse(string) as Data : null;
+      return this.file.read(stringfully);
     }
     catch (e) {
       throw new Error(
-        `Filetype: data`,
+        `Filetype: read (${String(this)})`,
         { cause: e },
       );
     }
   }
 
-  public abstract write(...args: W extends true ? Parameters<File<W>["write"]> : never): W extends true ? ReturnType<File<W>["write"]> : never;
+  public readful() {
+    try {
+      const { file, subpath } = this,
+      error = subpath;
+
+      return file.readful(error);
+    }
+    catch (e) {
+      throw new Error(
+        `Filetype: readful (${String(this)})`,
+        { cause: e },
+      );
+    }
+  }
+
+  public data<Data>(stringfully = false): Null<Data> {
+    try {
+      const { file } = this,
+      string = file.read(stringfully).trim(),
+      { length } = string;
+
+      return length > 0 ? JSON.parse(string) as Data : null;
+    }
+    catch (e) {
+      throw new Error(
+        `Filetype: data (${String(this)})`,
+        { cause: e },
+      );
+    }
+  }
+
+  public toString() {
+    return this.subpath;
+  }
+
+  public abstract write(...args: Writable extends true ? Parameters<File<Writable>["write"]> : never): Writable extends true ? ReturnType<File<Writable>["write"]> : never;
 }
 
 module.exports = Filetype;

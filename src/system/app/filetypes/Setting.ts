@@ -2,20 +2,19 @@ const cFiletype = importModule<typeof Filetype>(
   "filetype/Filetype",
 );
 
-class Setting<
-  Class extends string,
-  Schema,
-> extends cFiletype<"Setting", Class> {
+class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {
   constructor(
-    category: literalful<Class>,
+    apptype: literalful<AT>,
     app: stringful,
   ) {
+    const subpath = app;
+
     super(
       "Setting",
-      category,
+      apptype,
       false,
-      `json`,
-      app,
+      "json",
+      subpath,
     );
   }
 
@@ -24,29 +23,20 @@ class Setting<
       if (typeof this._cache === "undefined") {
         const setting: unknown = JSON.parse(this.readful());
 
-        if (
-          typeof setting === "object"
-          && setting !== null
-          && Object.keys(setting).length > 0
-        )
+        if (typeof setting === "object" && setting !== null)
           this._cache = setting as Schema;
         else
           throw new TypeError(
-            `Setting file does not match schema`,
-            {
-              cause: {
-                file: this.subpath,
-                content: this.read(),
-              },
-            },
+            "Setting file has wrong schema",
+            { cause: this.read() },
           );
       }
 
       return this._cache;
     }
     catch (e) {
-      throw new Error(
-        `Setting: parse`,
+      throw new SyntaxError(
+        `Setting: parse (${String(this)})`,
         { cause: e },
       );
     }

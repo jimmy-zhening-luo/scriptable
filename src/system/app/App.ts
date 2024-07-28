@@ -1,13 +1,13 @@
 abstract class App<
-  Class extends string,
+  AT extends string,
   Input,
   Output,
   Schema,
 > {
-  private readonly _storage: Record<string, Storage<Class>> = {};
-  private readonly _keys: Record<string, Key<Class>> = {};
+  private readonly _storage: Record<string, Storage<AT>> = {};
+  private readonly _keys: Record<string, Key<AT>> = {};
 
-  constructor(private readonly _class: literalful<Class>) {}
+  constructor(private readonly apptype: literalful<AT>) {}
 
   private static get Setting() {
     try {
@@ -221,8 +221,8 @@ abstract class App<
   private get _setting() {
     try {
       if (typeof this.__setting === "undefined")
-        this.__setting = new App.Setting<Class, Schema>(
-          this._class,
+        this.__setting = new App.Setting<AT, Schema>(
+          this.apptype,
           this.name,
         );
 
@@ -467,8 +467,8 @@ abstract class App<
       if (cache !== null)
         return cache;
       else {
-        const newStorage = new App.Storage<Class>(
-          this._class,
+        const newStorage = new App.Storage<AT>(
+          this.apptype,
           this.name,
           extension,
           filename,
@@ -494,8 +494,8 @@ abstract class App<
       if (cache !== null)
         return cache;
       else {
-        const newKey = new App.Key<Class>(
-          this._class,
+        const newKey = new App.Key<AT>(
+          this.apptype,
           this.name,
           this.stringful(handle),
         );
@@ -542,13 +542,13 @@ abstract class App<
   }
 
   protected abstract runtime(): Output;
-  protected abstract output(runtime: ReturnType<App<Class, Input, Output, Schema>["runtime"]>): ReturnType<App<Class, Input, Output, Schema>["runtime"]>;
+  protected abstract output(runtime: ReturnType<App<AT, Input, Output, Schema>["runtime"]>): ReturnType<App<AT, Input, Output, Schema>["runtime"]>;
   private _name?: stringful;
   private _input?: Input;
   private _inputful?: NonNullable<Input>;
   private _inputString?: string;
   private _inputStringful?: stringful;
-  private __setting?: Setting<Class, Schema>;
+  private __setting?: Setting<AT, Schema>;
 }
 
 module.exports = App;
