@@ -13,7 +13,7 @@ class timeprint extends pMoment {
   protected timeFormat = { timeStyle: "short" };
 
   public override get offset() {
-    return String();
+    return "" as string;
   }
 
   protected postdate(date: string) {

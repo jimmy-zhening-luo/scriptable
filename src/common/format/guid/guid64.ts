@@ -7,16 +7,6 @@ function guid64() {
       )
       .toUpperCase(),
     CTOH = {
-      0: 0,
-      1: 1,
-      2: 2,
-      3: 3,
-      4: 4,
-      5: 5,
-      6: 6,
-      7: 7,
-      8: 8,
-      9: 9,
       A: 10,
       B: 11,
       C: 12,
@@ -24,7 +14,7 @@ function guid64() {
       E: 14,
       F: 15,
     } as const,
-    hexes = [...guid].map(c => CTOH[c as hexchar]) satisfies hex[] as unknown as Tuple<hex, 32>,
+    hexes = [...guid].map(c => typeof CTOH[c as keyof typeof CTOH] === "undefined" ? Number(c) as decimal : CTOH[c as Exclude<hexchar, digit>]) satisfies hex[] as unknown as Tuple<hex, 32>,
     buffer: Octad<hex[]> = [
       [],
       [],
