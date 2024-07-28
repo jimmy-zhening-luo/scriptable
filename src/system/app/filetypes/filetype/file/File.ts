@@ -91,7 +91,7 @@ class File {
 
   public get root(): this {
     try {
-      return new (this.constructor as new (...path: ConstructorParameters<typeof File>)=> this)({ graft: this });
+      return new (this.constructor as ThisConstructor<typeof File, this>)({ graft: this });
     }
     catch (e) {
       throw new Error(
@@ -103,7 +103,7 @@ class File {
 
   public get parent() {
     try {
-      return new (this.constructor as new (...path: ConstructorParameters<typeof File>)=> this)(
+      return new (this.constructor as ThisConstructor<typeof File, this>)(
         this.root,
         this._subpath.parent,
       );

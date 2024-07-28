@@ -36,10 +36,6 @@ class charstring<Validator extends string> {
     }
   }
 
-  public toString() {
-    return this.string;
-  }
-
   private is(
     filter: "include" | "exclude",
     string: string,

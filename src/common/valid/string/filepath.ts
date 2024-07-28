@@ -3,7 +3,7 @@ const fcharstring = importModule<typeof charstring>(
 );
 
 class filepath<N extends number> {
-  protected readonly nodes: PathN<Stringify<typeof filepath.filenode>, N>;
+  protected readonly nodes: ArrayN<Stringify<charstring<"filenode">>, N>;
 
   constructor(
     public readonly min: N,
@@ -20,7 +20,7 @@ class filepath<N extends number> {
                 .split("/")
                 .map(node => node.trim())
                 .filter((node): node is stringful => node.length > 0)
-                .map(node => String(filepath.filenode(node))),
+                .map(node => filepath.filenode(node).string),
           ),
       );
     }
@@ -35,9 +35,7 @@ class filepath<N extends number> {
   public get parent() {
     try {
       const { min } = this,
-      parent: filepath<N> = new (
-        this.constructor as new (...args: ConstructorParameters<typeof filepath<N>>)=> filepath<N>
-      )(
+      parent = new (this.constructor as Constructor<typeof filepath<N>>)(
         min,
         this,
       );
@@ -55,44 +53,27 @@ class filepath<N extends number> {
   }
 
   private static filenode(node: stringful) {
-    try {
-      return new fcharstring<"filenode">(
-        node,
-        [
-          ":" as char,
-          "/" as char,
-        ],
-        { max: 255 as Positive<int> },
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `filepath: import filenode`,
-        { cause: e },
-      );
-    }
+    return new fcharstring<"filenode">(
+      node,
+      [
+        ":" as char,
+        "/" as char,
+      ],
+      { max: 255 as Positive<int> },
+    );
   }
 
   public prepend(root: rootpath.toString) {
-    try {
-      if (this.nodes.length > 0)
-        return [root satisfies stringful, String(this)].join("/") as rootpath.toString;
-      else
-        return root;
-    }
-    catch (e) {
-      throw new Error(
-        `filepath: prepend`,
-        { cause: e },
-      );
-    }
+    return this.nodes.length > 0
+      ? [root, String(this)].join("/") as typeof root
+      : root;
   }
 
   public toString() {
     try {
       const { nodes } = this;
 
-      return nodes.join("/") as N extends 0 ? string : stringful;
+      return nodes.join("/") as fs<N extends 0 ? string : stringful>;
     }
     catch (e) {
       throw new Error(
@@ -104,26 +85,24 @@ class filepath<N extends number> {
 
   private pop() {
     try {
-      const { min } = this,
-      { length } = this.nodes,
-      popped = this.nodes.pop() ?? null;
+      const { min, nodes } = this,
+      { length } = nodes;
 
-      if (popped === null)
-        throw new RangeError(`filepath is already empty`);
-      else if (this.nodes.length < min)
+      if (length < 1)
+        throw new RangeError(`Filepath is already empty.`);
+      else if (length - 1 < min)
         throw new RangeError(
-          `filepath would be too short after pop`,
-          {
-            cause: {
-              min,
-              before: length,
-              after: this.nodes.length,
-              nodes: this.nodes,
-            },
-          },
+          `Filepath would be too short after pop.`,
+          { cause: { min, nodes } },
         );
-      else
+      else {
+        const queue = [...nodes].reverse(),
+        [popped] = queue as Arrayful<typeof nodes[number]>;
+
+        this.nodes.pop();
+
         return popped;
+      }
     }
     catch (e) {
       throw new Error(
@@ -135,7 +114,7 @@ class filepath<N extends number> {
 
   private check(
     min: N,
-    nodes: readonly Stringify<typeof filepath.filenode>[],
+    nodes: Stringify<charstring<"filenode">>[],
   ) {
     try {
       if (nodes.length < min)
@@ -144,7 +123,7 @@ class filepath<N extends number> {
           { cause: { min, nodes } },
         );
       else
-        return nodes as PathN<typeof filepath.filenode, N>;
+        return nodes as ArrayN<Stringify<charstring<"filenode">>, N>;
     }
     catch (e) {
       throw new Error(
