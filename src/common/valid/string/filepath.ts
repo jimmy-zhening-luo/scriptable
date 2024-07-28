@@ -1,5 +1,9 @@
+const fcharstring = importModule<typeof charstring>(
+  "charstring/charstring",
+);
+
 class filepath<N extends number> {
-  protected readonly nodes: PathN<filenode, N>;
+  protected readonly nodes: PathN<Stringify<typeof filepath.filenode>, N>;
 
   constructor(
     public readonly min: N,
@@ -15,28 +19,14 @@ class filepath<N extends number> {
               : subpath
                 .split("/")
                 .map(node => node.trim())
-                .filter(node => node.length > 0)
-                .map(node => new filepath.filenode(node).string),
+                .filter((node): node is stringful => node.length > 0)
+                .map(node => String(filepath.filenode(node))),
           ),
       );
     }
     catch (e) {
       throw new Error(
         `filepath`,
-        { cause: e },
-      );
-    }
-  }
-
-  private static get filenode() {
-    try {
-      return importModule<typeof filenode>(
-        "filenode",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `filepath: import filenode`,
         { cause: e },
       );
     }
@@ -59,6 +49,25 @@ class filepath<N extends number> {
     catch (e) {
       throw new Error(
         `filepath: parent`,
+        { cause: e },
+      );
+    }
+  }
+
+  private static filenode(node: stringful) {
+    try {
+      return new fcharstring<"filenode">(
+        node,
+        [
+          ":" as char,
+          "/" as char,
+        ],
+        { max: 255 as Positive<int> },
+      );
+    }
+    catch (e) {
+      throw new ReferenceError(
+        `filepath: import filenode`,
         { cause: e },
       );
     }
@@ -126,7 +135,7 @@ class filepath<N extends number> {
 
   private check(
     min: N,
-    nodes: PathN<filenode>,
+    nodes: readonly Stringify<typeof filepath.filenode>[],
   ) {
     try {
       if (nodes.length < min)
@@ -135,7 +144,7 @@ class filepath<N extends number> {
           { cause: { min, nodes } },
         );
       else
-        return nodes as PathN<filenode, N>;
+        return nodes as PathN<typeof filepath.filenode, N>;
     }
     catch (e) {
       throw new Error(

@@ -23,8 +23,8 @@ class charstring<Validator extends string> {
         throw new TypeError(`String is too short`);
       else
         this.string = this.is(
-          string,
           filter,
+          string,
           chars,
         );
     }
@@ -36,9 +36,13 @@ class charstring<Validator extends string> {
     }
   }
 
-  public is(
-    string: string,
+  public toString() {
+    return this.string;
+  }
+
+  private is(
     filter: "include" | "exclude",
+    string: string,
     chars: char[],
   ) {
     try {
@@ -58,10 +62,9 @@ class charstring<Validator extends string> {
     }
   }
 
-  protected include(string: string, chars: char[]): string is this["string"] {
+  private include(string: string, chars: char[]): string is this["string"] {
     try {
-      return ([...string] as char[])
-        .every(stringchar => chars.includes(stringchar));
+      return [...string].every(s => chars.includes(s as char));
     }
     catch (e) {
       throw new Error(
@@ -71,10 +74,9 @@ class charstring<Validator extends string> {
     }
   }
 
-  protected exclude(string: string, chars: char[]): string is this["string"] {
+  private exclude(string: string, chars: char[]): string is this["string"] {
     try {
-      return chars
-        .every(char => !string.includes(char));
+      return chars.every(c => !string.includes(c));
     }
     catch (e) {
       throw new Error(
