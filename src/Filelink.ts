@@ -4,7 +4,7 @@
 "use strict";
 
 namespace Filelink {
-  const shortcut = importModule<typeof Shortcut>("system/Shortcut");
+  const shortcut = importModule("system/Shortcut");
 
   export class Filelink extends shortcut<
     FilelinkInput,

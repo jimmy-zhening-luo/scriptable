@@ -4,7 +4,7 @@
 "use strict";
 
 namespace Things {
-  const shortcut = importModule<typeof Shortcut>("system/Shortcut");
+  const shortcut = importModule("system/Shortcut");
 
   export class Things extends shortcut<
     string,

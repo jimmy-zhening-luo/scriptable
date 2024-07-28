@@ -108,21 +108,13 @@ abstract class App<
   }
 
   protected get name() {
-    try {
-      if (typeof this._name === "undefined")
-        this._name = this.stringful(
-          this.constructor.name,
-          `App instance has no name`,
-        );
-
-      return this._name;
-    }
-    catch (e) {
-      throw new EvalError(
-        `App: name`,
-        { cause: e },
+    if (typeof this._name === "undefined")
+      this._name = this.stringful(
+        this.constructor.name,
+        "App instance has no name",
       );
-    }
+
+    return this._name;
   }
 
   protected get setting() {
@@ -153,7 +145,7 @@ abstract class App<
           this._inputful = input;
         else
           throw new TypeError(
-            `Null input when expecting inputful`,
+            "Null input",
             { cause: { input, type: typeof input } },
           );
       }
@@ -178,7 +170,7 @@ abstract class App<
           this._inputString = String(truthy);
         else
           throw new TypeError(
-            `Non-stringable input when expecting stringable`,
+            "Non-stringable input",
             {
               cause: {
                 input,
@@ -201,63 +193,39 @@ abstract class App<
   }
 
   protected get inputStringful() {
-    try {
-      if (typeof this._inputStringful === "undefined")
-        this._inputStringful = this.stringful(
-          this.inputString,
-          `String input empty when expecting stringful`,
-        );
-
-      return this._inputStringful;
-    }
-    catch (e) {
-      throw new TypeError(
-        `App: inputStringful`,
-        { cause: e },
+    if (typeof this._inputStringful === "undefined")
+      this._inputStringful = this.stringful(
+        this.inputString,
+        "App: inputStringful",
       );
-    }
+
+    return this._inputStringful;
   }
 
   private get _setting() {
-    try {
-      if (typeof this.__setting === "undefined")
-        this.__setting = new App.Setting<AT, Schema>(
-          this.apptype,
-          this.name,
-        );
-
-      return this.__setting;
-    }
-    catch (e) {
-      throw new Error(
-        `App: _setting`,
-        { cause: e },
+    if (typeof this.__setting === "undefined")
+      this.__setting = new App.Setting<AT, Schema>(
+        this.apptype,
+        this.name,
       );
-    }
+
+    return this.__setting;
   }
 
   protected abstract get getInput(): Input;
 
   protected static falsy(value: unknown): value is Null<undefined> {
-    try {
-      const v = value ?? false,
-      bv = Boolean(v);
+    const v = value ?? false,
+    bv = Boolean(v);
 
-      return !bv
-        || (
-          typeof v === "string"
-            ? Number(v) === 0
-            : Array.isArray(v)
-              ? v.join("").length < 1
-              : false
-        );
-    }
-    catch (e) {
-      throw new TypeError(
-        `App: falsy`,
-        { cause: e },
+    return !bv
+      || (
+        typeof v === "string"
+          ? Number(v) === 0
+          : Array.isArray(v)
+            ? v.join("").length < 1
+            : false
       );
-    }
   }
 
   public run() {
@@ -281,42 +249,26 @@ abstract class App<
     string: string,
     error = "",
   ) {
-    try {
-      if (string.length > 0)
-        return string as stringful;
-      else
-        throw new TypeError(
-          `Not stringful`,
-          { cause: error },
-        );
-    }
-    catch (e) {
+    if (string.length > 0)
+      return string as stringful;
+    else
       throw new TypeError(
-        `App: stringful`,
-        { cause: e },
+        "Not stringful",
+        { cause: error },
       );
-    }
   }
 
   protected stringfuls(
     array: string[],
     error = "",
   ) {
-    try {
-      if (array.every((node): node is stringful => node.length > 0))
-        return array;
-      else
-        throw new TypeError(
-          `Not stringful array`,
-          { cause: { array, error } },
-        );
-    }
-    catch (e) {
+    if (array.every((i): i is stringful => i.length > 0))
+      return array;
+    else
       throw new TypeError(
-        `App: stringfuls`,
-        { cause: e },
+        "Not stringful array",
+        { cause: { array, error } },
       );
-    }
   }
 
   protected read(
@@ -324,48 +276,32 @@ abstract class App<
     filenameE?: boolean | string,
     E?: boolean,
   ) {
-    try {
-      return typeof extensionE === "undefined"
-        ? this.storage().read()
-        : typeof extensionE === "boolean"
-          ? this.storage().read(extensionE)
-          : typeof filenameE === "boolean"
-            ? this
-              .storage(extensionE)
-              .read(filenameE)
-            : this
-              .storage(
-                extensionE,
-                filenameE,
-              )
-              .read(E);
-    }
-    catch (e) {
-      throw new Error(
-        `App: read`,
-        { cause: e },
-      );
-    }
+    return typeof extensionE === "undefined"
+      ? this.storage().read()
+      : typeof extensionE === "boolean"
+        ? this.storage().read(extensionE)
+        : typeof filenameE === "boolean"
+          ? this
+            .storage(extensionE)
+            .read(filenameE)
+          : this
+            .storage(
+              extensionE,
+              filenameE,
+            )
+            .read(E);
   }
 
   protected readful(
     extension?: string,
     filename?: string,
   ) {
-    try {
-      return this
-        .storage(
-          extension,
-          filename,
-        )
-        .readful();
-    }
-    catch (e) {
-      throw new Error(
-        `App: readful`,
-        { cause: e },
-      );
-    }
+    return this
+      .storage(
+        extension,
+        filename,
+      )
+      .readful();
   }
 
   protected data<Data>(
@@ -377,28 +313,20 @@ abstract class App<
       | string,
     E?: boolean,
   ): Null<Data> {
-    try {
-      return typeof extensionE === "undefined"
-        ? this.storage().data<Data>()
-        : typeof extensionE === "boolean"
-          ? this.storage().data<Data>(extensionE)
-          : typeof filenameE === "boolean"
-            ? this
-              .storage(extensionE)
-              .data<Data>(filenameE)
-            : this
-              .storage(
-                extensionE,
-                filenameE,
-              )
-              .data<Data>(E);
-    }
-    catch (e) {
-      throw new Error(
-        `App: data`,
-        { cause: e },
-      );
-    }
+    return typeof extensionE === "undefined"
+      ? this.storage().data<Data>()
+      : typeof extensionE === "boolean"
+        ? this.storage().data<Data>(extensionE)
+        : typeof filenameE === "boolean"
+          ? this
+            .storage(extensionE)
+            .data<Data>(filenameE)
+          : this
+            .storage(
+              extensionE,
+              filenameE,
+            )
+            .data<Data>(E);
   }
 
   protected write(
@@ -410,106 +338,68 @@ abstract class App<
       | "append"
       | boolean,
   ) {
-    try {
-      this
-        .storage(
-          extension,
-          filename,
-        )
-        .write(
-          data,
-          overwrite,
-        );
-
-      return this;
-    }
-    catch (e) {
-      throw new Error(
-        `App: write`,
-        { cause: e },
+    this
+      .storage(
+        extension,
+        filename,
+      )
+      .write(
+        data,
+        overwrite,
       );
-    }
+
+    return this;
   }
 
   protected load(handle: string) {
-    try {
-      return this.key(handle).load();
-    }
-    catch (e) {
-      throw new Error(
-        `App: load`,
-        { cause: e },
-      );
-    }
+    return this.key(handle).load();
   }
 
   protected roll(handle: string) {
-    try {
-      this.key(handle).roll();
-    }
-    catch (e) {
-      throw new Error(
-        `App: load`,
-        { cause: e },
-      );
-    }
+    this.key(handle).roll();
   }
 
   protected storage(
-    extension?: string,
+    ext?: string,
     filename?: string,
   ) {
-    try {
-      const cacheId = [filename ?? "", extension ?? ""]
-        .join(":"),
-      cache = this._storage[cacheId] ?? null;
+    const cacheId = [filename ?? "", ext ?? ""]
+      .join(":"),
+    cache = this._storage[cacheId] ?? null;
 
-      if (cache !== null)
-        return cache;
-      else {
-        const newStorage = new App.Storage<AT>(
-          this.apptype,
-          this.name,
-          extension,
-          filename,
-        );
-
-        this._storage[cacheId] = newStorage;
-
-        return newStorage;
-      }
-    }
-    catch (e) {
-      throw new Error(
-        `App: storage`,
-        { cause: e },
+    if (cache !== null)
+      return cache;
+    else {
+      const { apptype, name } = this,
+      newStorage = new App.Storage<AT>(
+        apptype,
+        name,
+        ext,
+        filename,
       );
+
+      this._storage[cacheId] = newStorage;
+
+      return newStorage;
     }
   }
 
   protected key(handle: string) {
-    try {
-      const cache = this._keys[handle] ?? null;
+    const cache = this._keys[handle] ?? null;
 
-      if (cache !== null)
-        return cache;
-      else {
-        const newKey = new App.Key<AT>(
-          this.apptype,
-          this.name,
-          this.stringful(handle),
-        );
-
-        this._keys[handle] = newKey;
-
-        return newKey;
-      }
-    }
-    catch (e) {
-      throw new Error(
-        `App: key`,
-        { cause: e },
+    if (cache !== null)
+      return cache;
+    else {
+      const { apptype, name } = this,
+      newKey = new App.Key<AT>(
+        apptype,
+        name,
+        this.stringful(handle),
       );
+
+      this._keys[handle] = newKey;
+
+      return newKey;
     }
   }
 
@@ -518,27 +408,19 @@ abstract class App<
   }
 
   protected url(string: string) {
-    try {
-      const matcher = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u,
-      _parts = matcher.exec(string) ?? [],
-      parts = (_parts[2] ?? null) !== null
-        ? _parts
-        : matcher.exec(`https://${string}`) ?? [];
+    const matcher = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u,
+    _parts = matcher.exec(string) ?? [],
+    parts = (_parts[2] ?? null) !== null
+      ? _parts
+      : matcher.exec(`https://${string}`) ?? [];
 
-      return {
-        scheme: parts[2] ?? "",
-        host: parts[4] ?? "",
-        path: parts[5] ?? "",
-        query: parts[7] ?? "",
-        fragment: parts[9] ?? "",
-      };
-    }
-    catch (e) {
-      throw new Error(
-        `App: url`,
-        { cause: e },
-      );
-    }
+    return {
+      scheme: parts[2] ?? "",
+      host: parts[4] ?? "",
+      path: parts[5] ?? "",
+      query: parts[7] ?? "",
+      fragment: parts[9] ?? "",
+    };
   }
 
   protected abstract runtime(): Output;

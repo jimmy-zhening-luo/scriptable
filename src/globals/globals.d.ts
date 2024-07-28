@@ -1,5 +1,5 @@
 export {};
 
 declare global {
-  function importModule<T>(path: string): T;
+  function importModule<T = typeof Shortcut>(path: string): T;
 }
