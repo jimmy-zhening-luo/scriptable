@@ -1,7 +1,7 @@
 class File<Writable extends boolean> {
   private readonly manager = FileManager.local();
   private readonly _root: Stringify<rootpath>;
-  private readonly _subpath: subpath.instance;
+  private readonly _subpath: InstanceType<subpath>;
 
   constructor(
     public readonly writable: Writable,
@@ -38,7 +38,7 @@ class File<Writable extends boolean> {
     }
     catch (e) {
       throw new ReferenceError(
-        `File: import subpath as Subpath`,
+        `File: import filepath<0> as subpath`,
         { cause: e },
       );
     }
