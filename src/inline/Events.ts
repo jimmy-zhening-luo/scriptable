@@ -38,7 +38,10 @@ records = events.map(
   ],
 );
 
-records.push(["╋    New", "NEW"]);
+records.push(
+  ["☏    Request Appointment", "REQUEST"],
+  ["╋    Add to Calendar", "ADD_EVENT"],
+);
 
 const labels = records.map(([label]) => label),
 dates = Object.fromEntries(records) as FieldTable;
