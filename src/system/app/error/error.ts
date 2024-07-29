@@ -7,10 +7,10 @@ function error(e: Error) {
     n.body = lines.join("\n");
     n.sound = "failure";
     n.schedule().catch((e: unknown) => {
-        throw new EvalError(
-          `Fatal: Scriptable notification failed`,
-          { cause: e },
-        );
+      throw new EvalError(
+        `Fatal: Scriptable notification failed`,
+        { cause: e },
+      );
     });
   }
 
