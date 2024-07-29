@@ -40,7 +40,7 @@ function error(e: Error) {
   )
     errors.unshift(ee.cause as ErrorLike);
 
-  const i = errors.findIndex((ee): ee is ErrorLike<true> => typeof ee === object && "message" in ee),
+  const i = errors.findIndex((ee): ee is ErrorLike<true> => typeof ee === "object" && "message" in ee),
   hoisted: readonly ErrorLike[] = i < 0
     ? errors
     : [
