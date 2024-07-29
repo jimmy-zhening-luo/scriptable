@@ -51,15 +51,15 @@ abstract class App<
     }
   }
 
-  private static get errorcatch() {
+  private static get error() {
     try {
-      return importModule<typeof errorcatch>(
-        "error/errorcatch",
+      return importModule<typeof error>(
+        "error/error",
       );
     }
     catch (e) {
       throw new ReferenceError(
-        `App: import errorcatch`,
+        `App: import error`,
         { cause: e },
       );
     }
@@ -233,7 +233,7 @@ abstract class App<
       return this.output(this.runtime());
     }
     catch (e) {
-      throw new Error(App.errorcatch(new Error(
+      throw new Error(App.error(new Error(
         `${this.name}: runtime`,
         { cause: e },
       )));
