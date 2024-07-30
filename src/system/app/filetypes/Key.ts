@@ -114,8 +114,8 @@ class Key<AT extends string> extends kFiletype<"Key", AT> {
     throw new ReferenceError("Key: readful forbidden");
   }
 
-  public write(): never {
-    throw new TypeError("Key: write forbidden");
+  protected write(): never {
+    throw new ReferenceError("Key: write forbidden");
   }
 }
 

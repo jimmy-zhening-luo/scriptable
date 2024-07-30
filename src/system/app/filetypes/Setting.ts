@@ -42,8 +42,8 @@ class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {
     }
   }
 
-  public write(): never {
-    throw new TypeError("Storage: write forbidden");
+  protected write(): never {
+    throw new ReferenceError("Storage: write forbidden");
   }
 
   private _cache?: Schema;

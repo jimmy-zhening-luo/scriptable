@@ -102,7 +102,7 @@ abstract class Filetype<
     return this.subpath;
   }
 
-  public abstract write(...args: Writable extends true ? Parameters<File<Writable>["write"]> : never): Writable extends true ? ReturnType<File<Writable>["write"]> : never;
+  protected abstract write(...args: Writable extends true ? Parameters<File<Writable>["write"]> : never): Writable extends true ? ReturnType<File<Writable>["write"]> : never;
 }
 
 module.exports = Filetype;
