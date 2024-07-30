@@ -171,14 +171,7 @@ abstract class App<
         else
           throw new TypeError(
             "Non-stringable input",
-            {
-              cause: {
-                input,
-                truthy,
-                type: typeof input,
-                isArray: Array.isArray(input),
-              },
-            },
+            { cause: { input, type: Array.isArray(input) ? "array" : typeof input } },
           );
       }
 
@@ -297,7 +290,7 @@ abstract class App<
   }
 
   protected data<Data>(
-    extensionE?:
+    extE?:
       | boolean
       | string,
     filenameE?:
@@ -305,17 +298,17 @@ abstract class App<
       | string,
     E?: boolean,
   ): Null<Data> {
-    return typeof extensionE === "undefined"
+    return typeof extE === "undefined"
       ? this.storage().data<Data>()
-      : typeof extensionE === "boolean"
-        ? this.storage().data<Data>(extensionE)
+      : typeof extE === "boolean"
+        ? this.storage().data<Data>(extE)
         : typeof filenameE === "boolean"
           ? this
-            .storage(extensionE)
+            .storage(extE)
             .data<Data>(filenameE)
           : this
             .storage(
-              extensionE,
+              extE,
               filenameE,
             )
             .data<Data>(E);
@@ -323,7 +316,7 @@ abstract class App<
 
   protected write(
     data: unknown,
-    extension?: string,
+    ext?: string,
     filename?: string,
     overwrite?:
       | "line"
@@ -332,7 +325,7 @@ abstract class App<
   ) {
     this
       .storage(
-        extension,
+        ext,
         filename,
       )
       .write(
