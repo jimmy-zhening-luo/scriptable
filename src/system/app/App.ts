@@ -307,9 +307,9 @@ abstract class App<
   }
 
   protected data<Data>(
-    fileE: boolean | Null<string>,
-    extE: boolean | Null<string>,
-    E: boolean,
+    fileE?: boolean | Null<string>,
+    extE?: boolean | Null<string>,
+    E?: boolean,
   ): Null<Data> {
     const [
       file,
