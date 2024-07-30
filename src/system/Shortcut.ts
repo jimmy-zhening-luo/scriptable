@@ -13,16 +13,12 @@ abstract class Shortcut<
 
   protected get getInput() {
     try {
-      if (typeof this._getInput === "undefined") {
-        const { shortcutParameter } = args as { shortcutParameter: Null<undefined | Input> };
+      const { shortcutParameter } = args as { shortcutParameter: Null<undefined | Input> };
 
-        this._getInput = shortcutParameter ?? null;
-      }
-
-      return this._getInput;
+      return shortcutParameter ?? null;
     }
     catch (e) {
-      throw new ReferenceError(
+      throw new Error(
         `Shortcut: getInput`,
         { cause: e },
       );
@@ -36,14 +32,12 @@ abstract class Shortcut<
       return runtime;
     }
     catch (e) {
-      throw new EvalError(
+      throw new Error(
         `Shortcut: output`,
         { cause: e },
       );
     }
   }
-
-  private _getInput?: Shortcut<Input>["input"];
 }
 
 module.exports = Shortcut;
