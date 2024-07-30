@@ -207,7 +207,7 @@ abstract class App<
 
   protected abstract get getInput(): Input;
 
-  protected static falsy(value: unknown): value is Null<undefined> {
+  private static falsy(value: unknown): value is Null<undefined> {
     const v = value ?? false,
     bv = Boolean(v);
 
@@ -260,64 +260,91 @@ abstract class App<
   }
 
   protected read(
-    extE?: boolean | string,
-    filenameE?: boolean | string,
+    fileE?: boolean | Null<string>,
+    extE?: boolean | Null<string>,
     E?: boolean,
   ) {
-    return typeof extE === "undefined"
-      ? this.storage().read()
+    const [
+      file,
+      ext,
+      stringfully,
+    ] = typeof fileE === "boolean"
+      ? [
+          null,
+          null,
+          fileE,
+        ] as const
       : typeof extE === "boolean"
-        ? this.storage().read(extE)
-        : typeof filenameE === "boolean"
-          ? this
-            .storage(extE)
-            .read(filenameE)
-          : this
-            .storage(
-              extE,
-              filenameE,
-            )
-            .read(E);
-  }
+        ? [
+            fileE,
+            null,
+            extE,
+          ] as const
+        : [
+            fileE,
+            extE,
+            E,
+          ] as const;
 
-  protected readful(ext?: string, filename?: string) {
     return this
       .storage(
+        file,
         ext,
-        filename,
+      )
+      .read(stringfully);
+  }
+
+  protected readful(
+    file?: string,
+    ext?: string,
+  ) {
+    return this
+      .storage(
+        file,
+        ext,
       )
       .readful();
   }
 
   protected data<Data>(
-    extE?:
-      | boolean
-      | string,
-    filenameE?:
-      | boolean
-      | string,
-    E?: boolean,
+    fileE: boolean | Null<string>,
+    extE: boolean | Null<string>,
+    E: boolean,
   ): Null<Data> {
-    return typeof extE === "undefined"
-      ? this.storage().data<Data>()
+    const [
+      file,
+      ext,
+      stringfully,
+    ] = typeof fileE === "boolean"
+      ? [
+          null,
+          null,
+          fileE,
+        ] as const
       : typeof extE === "boolean"
-        ? this.storage().data<Data>(extE)
-        : typeof filenameE === "boolean"
-          ? this
-            .storage(extE)
-            .data<Data>(filenameE)
-          : this
-            .storage(
-              extE,
-              filenameE,
-            )
-            .data<Data>(E);
+        ? [
+            fileE,
+            null,
+            extE,
+          ] as const
+        : [
+            fileE,
+            extE,
+            E,
+          ] as const;
+
+    return this
+      .storage(
+        file,
+        ext,
+      )
+      .data<Data>(stringfully);
   }
 
   protected write(
     data: unknown,
-    ext?: string,
-    filename?: string,
+    file?: Null<string>,
+    ext?: Null<string>,
     overwrite?:
       | "line"
       | "append"
@@ -325,8 +352,8 @@ abstract class App<
   ) {
     this
       .storage(
+        file,
         ext,
-        filename,
       )
       .write(
         data,
@@ -344,8 +371,11 @@ abstract class App<
     this.key(handle).roll();
   }
 
-  protected storage(ext?: string, filename?: string) {
-    const cacheId = [filename ?? "", ext ?? ""]
+  protected storage(
+    file?: Null<string>,
+    ext?: Null<string>,
+  ) {
+    const cacheId = [file ?? "", ext ?? ""]
       .join(":"),
     cache = this._storage[cacheId] ?? null;
 
@@ -353,11 +383,12 @@ abstract class App<
       return cache;
     else {
       const { apptype, name } = this,
+      app = name,
       newStorage = new App.Storage<AT>(
         apptype,
-        name,
+        app,
+        file,
         ext,
-        filename,
       );
 
       this._storage[cacheId] = newStorage;
@@ -385,10 +416,6 @@ abstract class App<
     }
   }
 
-  protected truthy(value: Input): value is NonNullable<Input> {
-    return !App.falsy(value);
-  }
-
   protected url(string: string) {
     const matcher = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u,
     _parts = matcher.exec(string) ?? [],
@@ -403,6 +430,10 @@ abstract class App<
       query: parts[7] ?? "",
       fragment: parts[9] ?? "",
     };
+  }
+
+  private truthy(value: Input): value is NonNullable<Input> {
+    return !App.falsy(value);
   }
 
   protected abstract runtime(): Output;

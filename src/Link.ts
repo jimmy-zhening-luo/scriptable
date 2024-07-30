@@ -134,10 +134,7 @@ namespace Link {
       }
     }
 
-    private Processor<H extends string>(host: H): new (
-      host: H,
-      path: string
-    )=> LinkPathProcessor<H> {
+    private Processor<H extends string>(host: H): new (host: H, path: string)=> LinkPathProcessor<H> {
       try {
         return importModule<new (host: H, path: string)=> LinkPathProcessor<H>>(
           `apps/method/link/processors/${host}`,

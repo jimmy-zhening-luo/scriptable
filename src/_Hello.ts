@@ -12,12 +12,9 @@ namespace _Hello {
     Field<never, "space">
   > {
     protected runtime() {
-      const FILENAME_WORLDTIME = "worldtime",
+      const F_WORLDTIME = "worldtime",
       HELLO = this.readful(),
-      worldtime = this.read(
-        "txt",
-        FILENAME_WORLDTIME,
-      ),
+      worldtime = this.read(F_WORLDTIME),
       SPACE = this.stringful(
         this.setting.space ?? "",
         "space",
@@ -26,8 +23,7 @@ namespace _Hello {
 
       this.write(
         `World!\n(Previous: ${(new Date).toISOString()})`,
-        "txt",
-        FILENAME_WORLDTIME,
+        F_WORLDTIME,
       );
       console.warn(notification);
 

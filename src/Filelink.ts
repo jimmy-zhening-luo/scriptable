@@ -30,7 +30,7 @@ namespace Filelink {
       if (provider === null)
         throw new ReferenceError(
           `Provider not found`,
-          { cause: { rootNode, providers: Object.keys(providers) } },
+          { cause: rootNode },
         );
       else {
         path.shift();
@@ -87,14 +87,7 @@ namespace Filelink {
             if (containerEncoded === null)
               throw new ReferenceError(
                 `Provider has no such container`,
-                {
-                  cause: {
-                    containerNode,
-                    providerRootEncoded,
-                    folders,
-                    apps: Object.keys(apps),
-                  },
-                },
+                { cause: { containerNode, providerRootEncoded } },
               );
             else
               return [
@@ -119,7 +112,7 @@ namespace Filelink {
         else if (length < 2)
           throw new RangeError(
             `Path points to provider root`,
-            { cause: { path, length } },
+            { cause: path },
           );
         else
           return path as ArrayN<stringful, 2>;
