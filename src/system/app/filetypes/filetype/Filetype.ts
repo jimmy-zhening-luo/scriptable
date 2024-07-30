@@ -31,7 +31,7 @@ abstract class Filetype<
     }
     catch (e) {
       throw new Error(
-        `Filetype (${filetype}/${apptype}: ${subpath})`,
+        `Filetype (${filetype}/${apptype}: ${folder ?? ""}/${file})`,
         { cause: e },
       );
     }
