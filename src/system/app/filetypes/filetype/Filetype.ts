@@ -9,20 +9,24 @@ abstract class Filetype<
     filetype: literalful<T>,
     apptype: literalful<AT>,
     writable: Writable,
-    ext: string,
-    subpath: string,
-    filename?: string,
+    file: string,
+    ext?: Null<string>,
+    folder: Null<string> = null,
   ) {
     try {
-      const bookmark = filetype;
+      const EXT = "txt",
+      bookmark = filetype,
+      root = apptype,
+      subpaths = [
+        root,
+        ...folder === null ? [] : [folder],
+        [file, ext ?? EXT].join("."),
+      ];
 
       this.file = new this.File(
         writable,
         bookmark,
-        apptype,
-        ...typeof filename === "undefined"
-          ? [[subpath, ext].join(".")]
-          : [subpath, [filename, ext].join(".")],
+        ...subpaths,
       );
     }
     catch (e) {
@@ -33,7 +37,7 @@ abstract class Filetype<
     }
   }
 
-  public get subpath() {
+  protected get subpath() {
     return this.file.subpath;
   }
 

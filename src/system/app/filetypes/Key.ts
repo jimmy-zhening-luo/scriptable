@@ -8,16 +8,16 @@ class Key<AT extends string> extends kFiletype<"Key", AT> {
     app: stringful,
     handle: stringful,
   ) {
-    const subpath = app,
-    filename = handle;
+    const folder = app,
+    file = handle;
 
     super(
       "Key",
       apptype,
       false,
-      "txt",
-      subpath,
-      filename,
+      file,
+      null,
+      folder,
     );
   }
 

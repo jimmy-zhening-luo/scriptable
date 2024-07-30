@@ -6,18 +6,18 @@ class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {
   constructor(
     apptype: literalful<AT>,
     app: stringful,
-    ext = "txt",
-    filename: string = app,
+    ext?: Null<string>,
+    file: string = app,
   ) {
-    const subpath = app;
+    const folder = app;
 
     super(
       "Storage",
       apptype,
       true,
+      file,
       ext,
-      subpath,
-      filename,
+      folder,
     );
   }
 

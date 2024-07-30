@@ -7,14 +7,14 @@ class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {
     apptype: literalful<AT>,
     app: stringful,
   ) {
-    const subpath = app;
+    const file = app;
 
     super(
       "Setting",
       apptype,
       false,
+      file,
       "json",
-      subpath,
     );
   }
 
