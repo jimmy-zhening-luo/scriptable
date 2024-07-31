@@ -125,11 +125,11 @@ namespace Search {
       }
     }
 
-    private SearchEngine<T>(provider: string): T {
+    private SearchEngine<T>(provider: string | Fake<T>): T {
       try {
-        return importModule<typeof SearchEngine>(
+        return importModule<T>(
           `apps/method/search/engines/${provider}`,
-        ) as T;
+        );
       }
       catch (e) {
         throw new ReferenceError(
