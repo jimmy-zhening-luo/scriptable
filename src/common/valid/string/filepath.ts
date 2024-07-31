@@ -18,7 +18,7 @@ class filepath<N extends number> {
               .split("/")
               .map(node => node.trim())
               .filter((node): node is stringful => node.length > 0)
-              .map(node => filepath.filenode(node).string),
+              .map(node => filepath.filenode(node)),
         ),
       { length } = nodes;
 
@@ -70,7 +70,7 @@ class filepath<N extends number> {
   }
 
   private static filenode(node: stringful) {
-    return new fcharstring<"filenode">(
+    return fcharstring<"filenode">(
       node,
       [
         ":" as char,
