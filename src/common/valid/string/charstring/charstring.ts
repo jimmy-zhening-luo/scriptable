@@ -15,71 +15,32 @@ class charstring<Validator extends string> {
     } = {},
   ) {
     try {
-      const { length } = string;
-
       if (min > max)
         throw new RangeError(`Bad args: min > max`);
-      else if (length < min)
+      else if (string.length < min)
         throw new TypeError(`String is too short`);
+      else if (!this[filter](
+        string,
+        chars,
+      ))
+        throw new TypeError(`String has disallowed chars`);
       else
-        this.string = this.is(
-          filter,
-          string,
-          chars,
-        );
+        this.string = string;
     }
     catch (e) {
-      throw new Error(
+      throw new SyntaxError(
         `charstring`,
         { cause: e },
       );
     }
   }
 
-  private is(
-    filter: "include" | "exclude",
-    string: string,
-    chars: char[],
-  ) {
-    try {
-      if (this[filter](
-        string,
-        chars,
-      ))
-        return string;
-      else
-        throw new TypeError(`String has disallowed chars`);
-    }
-    catch (e) {
-      throw new Error(
-        `charset: allows`,
-        { cause: e },
-      );
-    }
-  }
-
   private include(string: string, chars: char[]): string is this["string"] {
-    try {
-      return [...string].every(s => chars.includes(s as char));
-    }
-    catch (e) {
-      throw new Error(
-        `charset: include`,
-        { cause: e },
-      );
-    }
+    return [...string].every(s => chars.includes(s as char));
   }
 
   private exclude(string: string, chars: char[]): string is this["string"] {
-    try {
-      return chars.every(c => !string.includes(c));
-    }
-    catch (e) {
-      throw new Error(
-        `charset: exclude`,
-        { cause: e },
-      );
-    }
+    return [...string].every(s => chars.includes(s as char));
   }
 }
 
