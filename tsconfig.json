@@ -40,7 +40,7 @@
     // "baseUrl": "./",
     // "customConditions": [],
     "module": "ES6" /* @OVERRIDE */,
-    "moduleResolution": "bundler",
+    "moduleResolution": "bundler" /* @OVERRIDE */,
     // "moduleSuffixes": [],
     // "noResolve": true,
     // "paths": { "*": ["node_modules/*"] },
