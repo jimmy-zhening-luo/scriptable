@@ -100,7 +100,11 @@ class File<Writable extends boolean> {
     root: bookmark,
     subpath: readonly filenode[],
   ) {
-    return [root, ...subpath.length > 0 ? [subpath] : []].join("/") as typeof root & filepath<typeof subpath>;
+    return [
+      root,
+      ...subpath.length > 0 ? [...subpath] : [],
+    ]
+      .join("/") as typeof root & filepath<typeof subpath>;
   }
 
   public read(stringfully = false) {
