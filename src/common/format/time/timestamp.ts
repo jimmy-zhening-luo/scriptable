@@ -1,5 +1,5 @@
 const sMoment = importModule<typeof Moment>(
-  `moment/moment`,
+  `moment/index`,
 );
 
 class timestamp extends sMoment {

@@ -1,5 +1,5 @@
 const redd_ILinkPathProcessor = importModule<typeof LinkPathProcessor>(
-  `processor/LinkPathProcessor`,
+  `processor/index`,
 );
 
 class RedditPathProcessor extends redd_ILinkPathProcessor<"reddit.com"> {

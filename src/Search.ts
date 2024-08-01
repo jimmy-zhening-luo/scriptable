@@ -14,7 +14,7 @@ namespace Search {
     private static get Query() {
       try {
         return importModule<typeof Query>(
-          "apps/method/search/Query",
+          "apps/method/search/query/index",
         );
       }
       catch (e) {

@@ -1,5 +1,5 @@
 const amzn_LinkPathProcessor = importModule<typeof LinkPathProcessor>(
-  `processor/LinkPathProcessor`,
+  `processor/index`,
 );
 
 class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {

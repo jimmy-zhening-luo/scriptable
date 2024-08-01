@@ -1,5 +1,5 @@
 const pMoment = importModule<typeof Moment>(
-  `moment/moment`,
+  `moment/index`,
 );
 
 class timeprint extends pMoment {

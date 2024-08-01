@@ -1,5 +1,5 @@
 const app = importModule<typeof App>(
-  "app/App",
+  "app/index",
 );
 
 abstract class Shortcut<

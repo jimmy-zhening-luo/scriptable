@@ -1,5 +1,5 @@
 const drop_ILinkPathProcessor = importModule<typeof LinkPathProcessor>(
-  `processor/LinkPathProcessor`,
+  `processor/index`,
 );
 
 class DropboxPathProcessor extends drop_ILinkPathProcessor<"dropbox.com"> {

@@ -1,5 +1,5 @@
 const cFiletype = importModule<typeof Filetype>(
-  "filetype/Filetype",
+  "filetype/index",
 );
 
 class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {

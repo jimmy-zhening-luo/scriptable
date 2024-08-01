@@ -1,5 +1,5 @@
 const dFiletype = importModule<typeof Filetype>(
-  "filetype/Filetype",
+  "filetype/index",
 );
 
 class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {

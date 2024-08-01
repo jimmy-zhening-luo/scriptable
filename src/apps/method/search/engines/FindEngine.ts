@@ -1,5 +1,5 @@
 const fIEngine = importModule<typeof SearchEngine>(
-  `engine/SearchEngine`,
+  `engine/index`,
 );
 
 class FindEngine extends fIEngine {
