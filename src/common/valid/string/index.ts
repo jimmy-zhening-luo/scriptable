@@ -20,7 +20,7 @@ function charstring<Validator extends string>(
         return [...string].every(s => chars.includes(s as char));
       },
       exclude(string: string, chars: char[]): string is charstring<Validator> {
-        return [...string].every(s => chars.includes(s as char));
+        return chars.every(c => !string.includes(c));
       },
     } satisfies Record<Filter, (string: string, chars: char[])=> string is charstring<Validator>>;
 
