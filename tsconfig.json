@@ -5,6 +5,7 @@
   "include": [
     "*.config.ts",
     "src/**/*.ts",
+    "typings/**/*.d.ts", /* @OVERRIDE */
   ],
   "exclude": [],
   "compilerOptions": {
@@ -52,7 +53,6 @@
     // "typeRoots": [],
     "types": [
       /* {CONFIGURE} */
-      "scriptable-ios",
     ],
     // #endregion
 
