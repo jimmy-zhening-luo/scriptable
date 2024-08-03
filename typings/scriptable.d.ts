@@ -2482,17 +2482,17 @@ declare class FileManager {
    *
    * Checks if the file exists at the specified file path. Checking this before moving or copying to a destination can be a good idea as those operations will replace any existing file
    * at the destination file path.
-   * @param filePath - File path to examine.
+   * @param path - File path to examine.
    * @see https://docs.scriptable.app/filemanager/#-fileexists
    */
-  fileExists(filePath: string): boolean;
+  fileExists<T extends string>(path: T): path is exists<T>;
 
   /**
    * _Checks if a path points to a directory._
    * @param path - Path to examine.
    * @see https://docs.scriptable.app/filemanager/#-isdirectory
    */
-  isDirectory(path: string): boolean;
+  isDirectory<T extends string>(path: T): path is directory<T>;
 
   /**
    * _Creates a directory at the specified path._
@@ -2696,7 +2696,7 @@ declare class FileManager {
    * @param name - Name of bookmark to create path for.
    * @see https://docs.scriptable.app/filemanager/#-bookmarkedpath
    */
-  bookmarkedPath(name: string): bookmark;
+  bookmarkedPath(alias: alias): bookmark;
 
   /**
    * _Check if a bookmark exists._
@@ -2707,10 +2707,10 @@ declare class FileManager {
    *
    * Please beware that bookmarks created from Scriptables settings only can be used when running a script in the app and not from the Share Sheet, Siri and Shortcuts. If you wish to
    * use a bookmark from Siri or the Shortcuts app, the bookmark must be created using Scriptables "Create File Bookmark" shortcut action using the Shortcuts app.
-   * @param name - Name of bookmark.
+   * @param alias - Name of bookmark.
    * @see https://docs.scriptable.app/filemanager/#-bookmarkexists
    */
-  bookmarkExists(name: string): boolean;
+  bookmarkExists(alias: string): alias is alias;
 
   /**
    * _Download file from iCloud if necessary._
