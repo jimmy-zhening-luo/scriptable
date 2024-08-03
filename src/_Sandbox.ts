@@ -4,4 +4,4 @@
 "use strict";
 
 void 0;
-console.log(null);
+log(null);
