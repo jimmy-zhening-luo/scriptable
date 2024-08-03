@@ -19,15 +19,15 @@ namespace _Hello {
         this.setting.space ?? "",
         "space",
       ),
-      notification = `${HELLO}${SPACE}${worldtime}`;
+      warning = `${HELLO}${SPACE}${worldtime}`;
 
       this.write(
         `World!\n(Previous: ${(new Date).toISOString()})`,
         F_WORLDTIME,
       );
-      logWarning(notification);
+      logWarning(warning);
 
-      return notification;
+      return warning;
     }
   }
 }

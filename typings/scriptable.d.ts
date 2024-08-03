@@ -859,7 +859,7 @@ declare const console: {
    * @param message - Message to log to the console.
    * @see https://docs.scriptable.app/console/#warn
    */
-  warn: (message: unknown)=> void;
+  warn: (warning: unknown)=> void;
 
   /**
    * _Logs an error message to the console._
@@ -870,7 +870,7 @@ declare const console: {
    * @param message - Message to log to the console.
    * @see https://docs.scriptable.app/console/#error
    */
-  error: (message: unknown)=> void;
+  error: (error: unknown)=> void;
 };
 
 declare namespace Contact {
@@ -6982,19 +6982,19 @@ declare class XMLParser {
 /**
 * _Logs a message to the console._
 */
-declare function log(message: unknown): void;/**
+declare function log(log: unknown): void;/**
 * _Logs a warning message to the console._
 */
-declare function logWarning(message: unknown): void;/**
+declare function logWarning(warning: unknown): void;/**
 * _Logs an error message to the console._
 */
-declare function logError(message: unknown): void;/**
+declare function logError(error: unknown): void;/**
 * _Converts base64 string to ascii._
 */
-declare function atob(str: string): string;/**
+declare function atob(string: string): string;/**
 * _Converts ascii string to base64._
 */
-declare function btoa(str: string): string;/**
+declare function btoa(string: string): string;/**
 * _Imports module with specified name._
 *
 * Modules are imported by specifying the name of the file. For example, to import the file `foo.js`, call `importModule('foo')`. Including the file extension is optional. Scriptable
