@@ -53,7 +53,7 @@ function error(e: Error) {
       ],
   messages = hoisted.map(e => print(e));
 
-  console.error(messages.join("\n"));
+  logError(messages.join("\n"));
   notify(messages);
 
   return messages[0] ?? "";

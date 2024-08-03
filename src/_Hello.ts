@@ -25,7 +25,7 @@ namespace _Hello {
         `World!\n(Previous: ${(new Date).toISOString()})`,
         F_WORLDTIME,
       );
-      console.warn(notification);
+      logWarning(notification);
 
       return notification;
     }
