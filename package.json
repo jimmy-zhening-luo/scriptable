@@ -25,13 +25,11 @@
     "node": ">=20.15.0",
     "npm": ">=10.7.0"
   },
-  "peerDependencies": {},
   "peerDependenciesMeta": {},
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^20.14.14",
     "eslint": "~9.8.0",
-    "linted": "~16.0.4",
+    "linted": "~16.0.6",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.5.4"
   },
