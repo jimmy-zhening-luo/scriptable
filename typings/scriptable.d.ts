@@ -2696,7 +2696,7 @@ declare class FileManager {
    * @param name - Name of bookmark to create path for.
    * @see https://docs.scriptable.app/filemanager/#-bookmarkedpath
    */
-  bookmarkedPath(name: string): string;
+  bookmarkedPath(name: string): bookmark;
 
   /**
    * _Check if a bookmark exists._

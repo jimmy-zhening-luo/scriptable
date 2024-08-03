@@ -75,7 +75,7 @@ class File<Writable extends boolean> {
       else if (!manager.bookmarkExists(name))
         throw new ReferenceError(`Bookmark not found`);
       else
-        return manager.bookmarkedPath(name) as bookmark;
+        return manager.bookmarkedPath(name);
     }
     catch (e) {
       throw new ReferenceError(
