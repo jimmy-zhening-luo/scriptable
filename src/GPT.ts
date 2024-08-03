@@ -52,7 +52,7 @@ namespace GPT {
           ? wrap.preset
           : preset,
         location: wrap.location ?? location,
-        date: wrap.date ?? (new this.timeprint).date,
+        date: wrap.date ?? this.dateprint,
       },
       presetConfig = presets[opts.preset] ?? null,
       [presetPlugins, plugins] = presetConfig === null || !("plugins" in presetConfig)

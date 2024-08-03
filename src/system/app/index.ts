@@ -81,9 +81,12 @@ abstract class App<
 
   protected get timestamp() {
     try {
-      return importModule<typeof timestamp>(
-        "./common/format/time/timestamp",
-      );
+      const dt = new DateFormatter;
+
+      dt.dateFormat = "yyyyMMddhhmmssZ";
+      dt.locale = "en";
+
+      return dt.string(new Date);
     }
     catch (e) {
       throw new ReferenceError(
@@ -93,11 +96,14 @@ abstract class App<
     }
   }
 
-  protected get timeprint() {
+  protected get dateprint() {
     try {
-      return importModule<typeof timeprint>(
-        "./common/format/time/timeprint",
-      );
+      const dt = new DateFormatter;
+
+      dt.dateFormat = "EEEE, MMMM d, y";
+      dt.locale = "en";
+
+      return dt.string(new Date);
     }
     catch (e) {
       throw new ReferenceError(

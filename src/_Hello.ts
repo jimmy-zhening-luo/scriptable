@@ -12,18 +12,22 @@ namespace _Hello {
     Field<never, "space">
   > {
     protected runtime() {
-      const F_WORLDTIME = "worldtime",
-      HELLO = this.readful(),
-      worldtime = this.read(F_WORLDTIME),
-      SPACE = this.stringful(
+      const PATH_WORLDTIME = "worldtime",
+      hello = this.readful(),
+      space = this.stringful(
         this.setting.space ?? "",
         "space",
       ),
-      warning = `${HELLO}${SPACE}${worldtime}`;
+      worldtime = this.read(PATH_WORLDTIME),
+      warning = [
+        hello satisfies stringful,
+        space satisfies stringful,
+        worldtime satisfies string,
+      ].join("");
 
       this.write(
-        `World!\n(Previous: ${(new Date).toISOString()})`,
-        F_WORLDTIME,
+        `World!\n(Previous: ${this.timestamp})`,
+        PATH_WORLDTIME,
       );
       logWarning(warning);
 
