@@ -1,4 +1,6 @@
-const dFiletype = importModule<typeof Filetype>("filetype/index");
+import type { Filetype } from "./filetype/index";
+
+const dFiletype = importModule<typeof Filetype>("./filetype/index");
 
 class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {
   constructor(
@@ -34,29 +36,18 @@ class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {
         throw new TypeError("Tried to write null data");
       else if (typeof buffer === "object")
         if (Array.isArray(buffer) && buffer.every(i => typeof i === "string"))
-          file.write(
-            buffer.reverse().join("\n"),
-            overwrite === false ? false : "line",
-          );
+          file.write(buffer.reverse().join("\n"), overwrite === false ? false : "line");
         else
-          file.write(
-            JSON.stringify(buffer),
-            overwrite !== false,
-          );
+          file.write(JSON.stringify(buffer), overwrite !== false);
 
       else
-        file.write(
-          String(buffer),
-          overwrite,
-        );
+        file.write(String(buffer), overwrite);
     }
     catch (e) {
-      throw new Error(
-        `Storage: write (${String(this)})`,
-        { cause: e },
-      );
+      throw new Error(`Storage: write (${String(this)})`, { cause: e });
     }
   }
 }
 
 module.exports = Storage;
+export type { Storage };

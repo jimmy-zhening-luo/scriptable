@@ -1,4 +1,4 @@
-import type { SearchEngine } from "./engine/index";
+import type { SearchEngine, Query } from "./engine/index";
 
 const bSearchEngine = importModule<typeof SearchEngine>("./engine/index");
 

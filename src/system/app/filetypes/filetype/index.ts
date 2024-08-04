@@ -1,3 +1,5 @@
+import type { File } from "./file/index";
+
 abstract class Filetype<
   T extends string,
   AT extends string,
@@ -39,7 +41,7 @@ abstract class Filetype<
   }
 
   private get File() {
-    return importModule<typeof File<Writable>>("file/index");
+    return importModule<typeof File<Writable>>("./file/index");
   }
 
   public read(stringfully = false) {
@@ -84,3 +86,4 @@ abstract class Filetype<
 }
 
 module.exports = Filetype;
+export type { Filetype };

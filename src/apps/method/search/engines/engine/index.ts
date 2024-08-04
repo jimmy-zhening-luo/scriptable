@@ -1,3 +1,5 @@
+import type { Query } from "../../query";
+
 abstract class SearchEngine<T extends "browser" | "find" | "shortcut"> {
   constructor(protected readonly app: T, protected readonly thing: string, protected readonly output: string | boolean = false) {}
 
@@ -27,4 +29,4 @@ abstract class SearchEngine<T extends "browser" | "find" | "shortcut"> {
 }
 
 module.exports = SearchEngine;
-export type { SearchEngine };
+export type { SearchEngine, Query };

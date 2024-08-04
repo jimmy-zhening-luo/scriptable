@@ -3,8 +3,10 @@
 // icon-color: deep-blue; icon-glyph: pen-square;
 "use strict";
 
+import type { Shortcut } from "./system/Shortcut";
+
 namespace Things {
-  const shortcut = importModule("./system/Shortcut");
+  const shortcut = importModule<typeof Shortcut>("./system/Shortcut");
 
   export class Things extends shortcut<
     string,

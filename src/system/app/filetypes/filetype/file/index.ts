@@ -1,7 +1,9 @@
+import type { charstring } from "../../../../../common/valid/string/index";
+
 class File<Writable extends boolean> {
-  public readonly path: bookmark & filepath<readonly filenode[]>;
-  public readonly subpath: filepath<readonly filenode[]>;
-  private readonly parent: filepath<readonly filenode[]>;
+  public readonly path: string;
+  public readonly subpath: string;
+  private readonly parent: string;
   private readonly manager = FileManager.local();
 
   constructor(
@@ -23,7 +25,7 @@ class File<Writable extends boolean> {
 
       this.path = File.append(root, subpath);
       this.parent = File.append(root, parentSubpath);
-      this.subpath = subpath.join("/") as filepath<typeof subpath>;
+      this.subpath = subpath.join("/");
     }
     catch (e) {
       throw new Error(`File`, { cause: e });
@@ -31,7 +33,7 @@ class File<Writable extends boolean> {
   }
 
   private static get charstring() {
-    return importModule<typeof charstring>("./common/valid/string/index");
+    return importModule<typeof charstring>("common/valid/string/index");
   }
 
   public get isDirectory() {
@@ -69,10 +71,10 @@ class File<Writable extends boolean> {
   }
 
   private static append(
-    root: bookmark,
-    subpath: readonly filenode[],
+    root: string,
+    subpath: readonly string[],
   ) {
-    return [root, ...subpath.length > 0 ? [...subpath] : []].join("/") as typeof root & filepath<typeof subpath>;
+    return [root, ...subpath.length > 0 ? [...subpath] : []].join("/");
   }
 
   public read(stringfully = false) {
@@ -164,3 +166,4 @@ class File<Writable extends boolean> {
 }
 
 module.exports = File;
+export type { File };

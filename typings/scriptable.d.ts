@@ -2485,14 +2485,14 @@ declare class FileManager {
    * @param path - File path to examine.
    * @see https://docs.scriptable.app/filemanager/#-fileexists
    */
-  fileExists<T extends string>(path: T): path is exists<T>;
+  fileExists<T extends string>(path: T): boolean;
 
   /**
    * _Checks if a path points to a directory._
    * @param path - Path to examine.
    * @see https://docs.scriptable.app/filemanager/#-isdirectory
    */
-  isDirectory<T extends string>(path: T): path is directory<T>;
+  isDirectory<T extends string>(path: T): boolean;
 
   /**
    * _Creates a directory at the specified path._
@@ -2696,7 +2696,7 @@ declare class FileManager {
    * @param name - Name of bookmark to create path for.
    * @see https://docs.scriptable.app/filemanager/#-bookmarkedpath
    */
-  bookmarkedPath(alias: alias): bookmark;
+  bookmarkedPath(alias: string): string;
 
   /**
    * _Check if a bookmark exists._
@@ -2710,7 +2710,7 @@ declare class FileManager {
    * @param alias - Name of bookmark.
    * @see https://docs.scriptable.app/filemanager/#-bookmarkexists
    */
-  bookmarkExists(alias: string): alias is alias;
+  bookmarkExists(alias: string): boolean;
 
   /**
    * _Download file from iCloud if necessary._
@@ -7032,5 +7032,6 @@ declare function btoa(string: string): string;/**
 * For more information about modules, refer to the documentation on the `module` variable.
 * @see https://docs.scriptable.app/importmodule
 */
-declare function importModule<T, S extends string>(path: S): S extends "./system/Shortcut" ? typeof Shortcut : T;
+
+declare function importModule<T>(path: string): T;
 declare function importModule<T>(path: string | Fake<T>): T;

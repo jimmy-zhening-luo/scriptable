@@ -3,8 +3,10 @@
 // icon-color: light-gray; icon-glyph: sign-in-alt;
 "use strict";
 
+import type { Shortcut } from "./system/Shortcut";
+
 namespace Ziplink {
-  const shortcut = importModule("./system/Shortcut");
+  const shortcut = importModule<typeof Shortcut>("./system/Shortcut");
 
   export class Ziplink extends shortcut<
     string,

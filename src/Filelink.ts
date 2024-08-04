@@ -3,8 +3,10 @@
 // icon-color: light-gray; icon-glyph: folder;
 "use strict";
 
+import type { Shortcut } from "./system/Shortcut";
+
 namespace Filelink {
-  const shortcut = importModule("./system/Shortcut");
+  const shortcut = importModule<typeof Shortcut>("./system/Shortcut");
 
   export class Filelink extends shortcut<
     FilelinkInput,

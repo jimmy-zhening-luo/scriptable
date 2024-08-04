@@ -1,3 +1,8 @@
+import type { Key } from "./filetypes/Key";
+import type { Setting } from "./filetypes/Setting";
+import type { Storage } from "./filetypes/Storage";
+import type { error } from "./error/index";
+
 abstract class App<
   AT extends string,
   Input,
@@ -10,19 +15,19 @@ abstract class App<
   constructor(private readonly apptype: literalful<AT>) {}
 
   private static get Setting() {
-    return importModule<typeof Setting>("filetypes/Setting");
+    return importModule<typeof Setting>("./filetypes/Setting");
   }
 
   private static get Storage() {
-    return importModule<typeof Storage>("filetypes/Storage");
+    return importModule<typeof Storage>("./filetypes/Storage");
   }
 
   private static get Key() {
-    return importModule<typeof Key>("filetypes/Key");
+    return importModule<typeof Key>("./filetypes/Key");
   }
 
   private static get error() {
-    return importModule<typeof error>("error/index");
+    return importModule<error>("error/index");
   }
 
   protected get timestamp() {
@@ -311,3 +316,4 @@ abstract class App<
 }
 
 module.exports = App;
+export type { App };

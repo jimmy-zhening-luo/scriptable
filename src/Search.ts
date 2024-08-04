@@ -3,8 +3,20 @@
 // icon-color: blue; icon-glyph: search;
 "use strict";
 
+import type { Shortcut } from "./system/Shortcut";
+import type { Query } from "./apps/method/search/query/index";
+import type BrowserEngine from "./apps/method/search/engines/browser";
+import type FindEngine from "./apps/method/search/engines/find";
+import type ShortcutEngine from "./apps/method/search/engines/shortcut";
+
+type SearchEngines = {
+  browser: typeof BrowserEngine;
+  find: typeof FindEngine;
+  shortcut: typeof ShortcutEngine;
+};
+
 namespace Search {
-  const shortcut = importModule("./system/Shortcut");
+  const shortcut = importModule<typeof Shortcut>("./system/Shortcut");
 
   export class Search extends shortcut<
     string,
@@ -12,7 +24,7 @@ namespace Search {
     SearchSetting
   > {
     private static get Query() {
-      return importModule<typeof Query>("apps/method/search/query/index");
+      return importModule<typeof Query>("./apps/method/search/query/index");
     }
 
     protected runtime() {
@@ -105,19 +117,9 @@ namespace Search {
     }
 
     private SearchEngine<T extends "browser" | "find" | "shortcut">(provider: T) {
-      return importModule<SearchEngines[T]>(`apps/method/search/engines/${provider}`);
+      return importModule<SearchEngines[T]>(`./apps/method/search/engines/${provider}`);
     }
   }
 }
-
-import type BrowserEngine from "./apps/method/search/engines/browser";
-import type FindEngine from "./apps/method/search/engines/find";
-import type ShortcutEngine from "./apps/method/search/engines/shortcut";
-
-type SearchEngines = {
-  browser: typeof BrowserEngine;
-  find: typeof FindEngine;
-  shortcut: typeof ShortcutEngine;
-};
 
 (new Search.Search).run();

@@ -3,10 +3,11 @@
 // icon-color: light-gray; icon-glyph: link;
 "use strict";
 
+import type { Shortcut } from "./system/Shortcut";
 import type { LinkPathProcessor } from "./apps/method/link/processors/processor";
 
 namespace Link {
-  const shortcut = importModule("./system/Shortcut");
+  const shortcut = importModule<typeof Shortcut>("./system/Shortcut");
 
   export class Link extends shortcut<
     string,
@@ -79,7 +80,7 @@ namespace Link {
     }
 
     private Processor<H extends string>(host: H): new (host: H, path: string)=> LinkPathProcessor<H> {
-      return importModule<new (host: H, path: string)=> LinkPathProcessor<H>>(`apps/method/link/processors/${host}`);
+      return importModule<new (host: H, path: string)=> LinkPathProcessor<H>>(`./apps/method/link/processors/${host}`);
     }
   }
 }

@@ -1,4 +1,6 @@
-const cFiletype = importModule<typeof Filetype>("filetype/index");
+import type { Filetype } from "./filetype/index";
+
+const cFiletype = importModule<typeof Filetype>("./filetype/index");
 
 class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {
   constructor(
@@ -24,19 +26,13 @@ class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {
         if (typeof setting === "object" && setting !== null)
           this._cache = setting as Schema;
         else
-          throw new TypeError(
-            "Setting file has wrong schema",
-            { cause: this.read() },
-          );
+          throw new TypeError("Setting file has wrong schema", { cause: this.read() });
       }
 
       return this._cache;
     }
     catch (e) {
-      throw new SyntaxError(
-        `Setting: parse (${String(this)})`,
-        { cause: e },
-      );
+      throw new SyntaxError(`Setting: parse (${String(this)})`, { cause: e });
     }
   }
 
@@ -48,3 +44,4 @@ class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {
 }
 
 module.exports = Setting;
+export type { Setting };

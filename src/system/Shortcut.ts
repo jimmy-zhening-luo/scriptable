@@ -1,4 +1,6 @@
-const app = importModule<typeof App>("app/index");
+import type { App } from "./app/index";
+
+const app = importModule<typeof App>("./app/index");
 
 abstract class Shortcut<
   Input = never,
@@ -23,3 +25,4 @@ abstract class Shortcut<
 }
 
 module.exports = Shortcut;
+export type { Shortcut };

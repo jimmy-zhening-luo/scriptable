@@ -41,7 +41,7 @@
     // "baseUrl": "./",
     // "customConditions": [],
     "module": "none" /* @OVERRIDE */,
-    "moduleResolution": "node" /* @OVERRIDE */,
+    "moduleResolution": "node10" /* @OVERRIDE */,
     // "moduleSuffixes": [],
     // "noResolve": true,
     // "paths": { "*": ["node_modules/*"] },

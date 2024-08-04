@@ -48,3 +48,4 @@ function error(e: Error) {
 }
 
 module.exports = error;
+export type error = typeof error;

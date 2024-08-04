@@ -39,3 +39,4 @@ function charstring<Validator extends string>(
 }
 
 module.exports = charstring;
+export type { charstring };

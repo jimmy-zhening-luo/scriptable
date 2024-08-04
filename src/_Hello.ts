@@ -3,8 +3,11 @@
 // icon-color: yellow; icon-glyph: circle;
 "use strict";
 
+import type { Shortcut } from "./system/Shortcut";
+
 namespace _Hello {
-  const shortcut = importModule("./system/Shortcut");
+
+  const shortcut = importModule<typeof Shortcut>("./system/Shortcut");
 
   export class _Hello extends shortcut<
     never,

@@ -1,4 +1,6 @@
-const kFiletype = importModule<typeof Filetype>("filetype/index");
+import type { Filetype } from "./filetype/index";
+
+const kFiletype = importModule<typeof Filetype>("./filetype/index");
 
 class Key<AT extends string> extends kFiletype<"Key", AT> {
   constructor(
@@ -43,10 +45,7 @@ class Key<AT extends string> extends kFiletype<"Key", AT> {
       }
     }
     catch (e) {
-      throw new Error(
-        `Key: load (${String(this)})`,
-        { cause: e },
-      );
+      throw new Error(`Key: load (${String(this)})`, { cause: e });
     }
   }
 
@@ -59,25 +58,16 @@ class Key<AT extends string> extends kFiletype<"Key", AT> {
       else {
         const local = super.readful();
 
-        Keychain.set(
-          fullname,
-          local,
-        );
+        Keychain.set(fullname, local);
 
         const keychain = Keychain.get(fullname);
 
         if (local !== keychain)
-          throw new EvalError(
-            "Fatal: Created key in Keychain with wrong value",
-            { cause: { local, keychain } },
-          );
+          throw new EvalError("Fatal: Created key in Keychain with wrong value", { cause: { local, keychain } });
       }
     }
     catch (e) {
-      throw new Error(
-        `Key: add (${String(this)})`,
-        { cause: e },
-      );
+      throw new Error(`Key: add (${String(this)})`, { cause: e });
     }
   }
 
@@ -86,21 +76,13 @@ class Key<AT extends string> extends kFiletype<"Key", AT> {
   }
 
   public remove() {
-    try {
-      const { fullname } = this;
+    const { fullname } = this;
 
-      if (Keychain.contains(fullname)) {
-        Keychain.remove(fullname);
+    if (Keychain.contains(fullname)) {
+      Keychain.remove(fullname);
 
-        if (Keychain.contains(fullname))
-          throw new EvalError("Fatal: Removed key is still in Keychain");
-      }
-    }
-    catch (e) {
-      throw new Error(
-        `Key: remove (${String(this)})`,
-        { cause: e },
-      );
+      if (Keychain.contains(fullname))
+        throw new EvalError("Fatal: Removed key is still in Keychain");
     }
   }
 
@@ -118,3 +100,4 @@ class Key<AT extends string> extends kFiletype<"Key", AT> {
 }
 
 module.exports = Key;
+export type { Key };
