@@ -12,15 +12,13 @@ namespace Link {
     LinkSetting
   > {
     protected runtime() {
-      const {
-        host: { www, swap },
-        query: {
-          omit,
-          include,
-          exclude,
-        },
-        fragment: { trim },
-      } = this.setting,
+      const processors = [
+        "amazon.com",
+        "dropbox.com",
+        "linkedin.com",
+        "reddit.com",
+      ],
+      { host: { www, swap }, query: { omit, include, exclude }, fragment: { trim } } = this.setting,
       {
         scheme,
         host,
@@ -28,22 +26,10 @@ namespace Link {
         query,
         fragment,
       } = this.url(this.inputString),
-      ___host = host.startsWith("www.") && !www.includes(host)
-        ? host.slice(4)
-        : host,
+      ___host = host.startsWith("www.") && !www.includes(host) ? host.slice(4) : host,
       HOST = swap[___host] ?? ___host,
-      [inclusions, exclusions] = [
-        include[HOST]?.map(p => p.toLowerCase()) ?? [],
-        exclude[HOST]?.map(p => p.toLowerCase()) ?? [],
-      ],
-      processor = [
-        "amazon.com",
-        "dropbox.com",
-        "linkedin.com",
-        "reddit.com",
-      ].includes(HOST)
-        ? new (this.Processor(HOST))(HOST, path)
-        : null,
+      [inclusions, exclusions] = [include[HOST]?.map(p => p.toLowerCase()) ?? [], exclude[HOST]?.map(p => p.toLowerCase()) ?? []],
+      processor = processors.includes(HOST) ? new (this.Processor(HOST))(HOST, path) : null,
       postprocessor = processor?.postprocessor ?? null,
       url = {
         scheme: ["http", "https"].includes(scheme.toLowerCase()) ? "" : scheme.toLowerCase(),
@@ -56,26 +42,12 @@ namespace Link {
               ? ""
               : query
                 .split("&")
-                .filter(
-                  param => inclusions.includes(
-                    param
-                      .toLowerCase()
-                      .split("=")
-                      .shift() ?? "",
-                  ),
-                )
+                .filter(param => inclusions.includes(param.toLowerCase().split("=")[0] ?? ""))
                 .join("&")
             : HOST in exclude
               ? query
                 .split("&")
-                .filter(
-                  param => !exclusions.includes(
-                    param
-                      .toLowerCase()
-                      .split("=")
-                      .shift() ?? "",
-                  ),
-                )
+                .filter(param => !exclusions.includes(param.toLowerCase().split("=")[0] ?? ""))
                 .join("&")
               : query,
         fragment: trim.includes(HOST) ? "" : fragment,
@@ -93,45 +65,19 @@ namespace Link {
         | "fragment"
       >,
     ) {
-      try {
-        const {
-          scheme,
-          host,
-          path,
-          query,
-          fragment,
-        } = url;
+      const {
+        scheme,
+        host,
+        path,
+        query,
+        fragment,
+      } = url;
 
-        return [
-          [
-            [
-              [
-                ...scheme.length > 0 ? [scheme] : [],
-                host,
-              ]
-                .join("://"),
-              ...path !== "/" ? [path] : [],
-            ]
-              .join(""),
-            ...query.length > 0 ? [query] : [],
-          ]
-            .join("?"),
-          ...fragment.length > 0 ? [fragment] : [],
-        ]
-          .join("#");
-      }
-      catch (e) {
-        throw new Error(`Link: buildURL`, { cause: e });
-      }
+      return [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#");
     }
 
     private Processor<H extends string>(host: H): new (host: H, path: string)=> LinkPathProcessor<H> {
-      try {
-        return importModule<new (host: H, path: string)=> LinkPathProcessor<H>>(`apps/method/link/processors/${host}`);
-      }
-      catch (e) {
-        throw new Error(`Link: import <P>Processor`, { cause: e });
-      }
+      return importModule<new (host: H, path: string)=> LinkPathProcessor<H>>(`apps/method/link/processors/${host}`);
     }
   }
 }

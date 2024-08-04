@@ -1,6 +1,4 @@
-const sIEngine = importModule<typeof SearchEngine>(
-  `engine/index`,
-);
+const sIEngine = importModule<typeof SearchEngine>(`engine/index`);
 
 class ShortcutEngine extends sIEngine {
   protected readonly shortcut: string;
