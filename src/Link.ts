@@ -42,10 +42,7 @@ namespace Link {
         "linkedin.com",
         "reddit.com",
       ].includes(HOST)
-        ? new (this.Processor(HOST))(
-          HOST,
-          path,
-        )
+        ? new (this.Processor(HOST))(HOST, path)
         : null,
       postprocessor = processor?.postprocessor ?? null,
       url = {
@@ -84,10 +81,7 @@ namespace Link {
         fragment: trim.includes(HOST) ? "" : fragment,
       };
 
-      return {
-        link: this.buildURL(url),
-        ...postprocessor === null ? {} : { postprocessor },
-      };
+      return { link: this.buildURL(url), ...postprocessor === null ? {} : { postprocessor } };
     }
 
     private buildURL(
@@ -127,24 +121,16 @@ namespace Link {
           .join("#");
       }
       catch (e) {
-        throw new Error(
-          `Link: buildURL`,
-          { cause: e },
-        );
+        throw new Error(`Link: buildURL`, { cause: e });
       }
     }
 
     private Processor<H extends string>(host: H): new (host: H, path: string)=> LinkPathProcessor<H> {
       try {
-        return importModule<new (host: H, path: string)=> LinkPathProcessor<H>>(
-          `apps/method/link/processors/${host}`,
-        );
+        return importModule<new (host: H, path: string)=> LinkPathProcessor<H>>(`apps/method/link/processors/${host}`);
       }
       catch (e) {
-        throw new Error(
-          `Link: import <P>Processor`,
-          { cause: e },
-        );
+        throw new Error(`Link: import <P>Processor`, { cause: e });
       }
     }
   }

@@ -10,115 +10,41 @@ abstract class App<
   constructor(private readonly apptype: literalful<AT>) {}
 
   private static get Setting() {
-    try {
-      return importModule<typeof Setting>(
-        "filetypes/Setting",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Setting`,
-        { cause: e },
-      );
-    }
+    return importModule<typeof Setting>("filetypes/Setting");
   }
 
   private static get Storage() {
-    try {
-      return importModule<typeof Storage>(
-        "filetypes/Storage",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Storage`,
-        { cause: e },
-      );
-    }
+    return importModule<typeof Storage>("filetypes/Storage");
   }
 
   private static get Key() {
-    try {
-      return importModule<typeof Key>(
-        "filetypes/Key",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import Key`,
-        { cause: e },
-      );
-    }
+    return importModule<typeof Key>("filetypes/Key");
   }
 
   private static get error() {
-    try {
-      return importModule<typeof error>(
-        "error/index",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import error`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected get guid64() {
-    try {
-      return importModule<typeof guid64>(
-        "./common/format/guid/index",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import guid64`,
-        { cause: e },
-      );
-    }
+    return importModule<typeof error>("error/index");
   }
 
   protected get timestamp() {
-    try {
-      const dt = new DateFormatter;
+    const dt = new DateFormatter;
 
-      dt.dateFormat = "yyyyMMddhhmmssZ";
-      dt.locale = "en";
+    dt.dateFormat = "yyyyMMddhhmmssZ";
 
-      return dt.string(new Date);
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import timestamp`,
-        { cause: e },
-      );
-    }
+    return dt.string(new Date);
   }
 
   protected get dateprint() {
-    try {
-      const dt = new DateFormatter;
+    const dt = new DateFormatter;
 
-      dt.dateFormat = "EEEE, MMMM d, y";
-      dt.locale = "en";
+    dt.dateFormat = "EEEE, MMMM d, y";
+    dt.locale = "en";
 
-      return dt.string(new Date);
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `App: import timeprint`,
-        { cause: e },
-      );
-    }
+    return dt.string(new Date);
   }
 
   protected get name() {
     if (typeof this._name === "undefined")
-      this._name = this.stringful(
-        this.constructor.name,
-        "App instance has no name",
-      );
+      this._name = this.stringful(this.constructor.name, "App instance has no name");
 
     return this._name;
   }
@@ -128,18 +54,10 @@ abstract class App<
   }
 
   protected get input() {
-    try {
-      if (typeof this._input === "undefined")
-        this._input = this.getInput;
+    if (typeof this._input === "undefined")
+      this._input = this.getInput;
 
-      return this._input;
-    }
-    catch (e) {
-      throw new TypeError(
-        `App: input`,
-        { cause: e },
-      );
-    }
+    return this._input;
   }
 
   protected get inputful() {
@@ -150,19 +68,13 @@ abstract class App<
         if (this.truthy(input))
           this._inputful = input;
         else
-          throw new TypeError(
-            "Null input",
-            { cause: { input, type: typeof input } },
-          );
+          throw new TypeError("Null input", { cause: { input, type: typeof input } });
       }
 
       return this._inputful;
     }
     catch (e) {
-      throw new TypeError(
-        `App: inputful`,
-        { cause: e },
-      );
+      throw new TypeError(`App: inputful`, { cause: e });
     }
   }
 
@@ -175,38 +87,26 @@ abstract class App<
         if (typeof truthy === "string" || typeof truthy === "number")
           this._inputString = String(truthy);
         else
-          throw new TypeError(
-            "Non-stringable input",
-            { cause: { input, type: Array.isArray(input) ? "array" : typeof input } },
-          );
+          throw new TypeError("Non-stringable input", { cause: { input, type: Array.isArray(input) ? "array" : typeof input } });
       }
 
       return this._inputString;
     }
     catch (e) {
-      throw new TypeError(
-        `App: inputString`,
-        { cause: e },
-      );
+      throw new TypeError(`App: inputString`, { cause: e });
     }
   }
 
   protected get inputStringful() {
     if (typeof this._inputStringful === "undefined")
-      this._inputStringful = this.stringful(
-        this.inputString,
-        "App: inputStringful",
-      );
+      this._inputStringful = this.stringful(this.inputString, "App: inputStringful");
 
     return this._inputStringful;
   }
 
   private get _setting() {
     if (typeof this.__setting === "undefined")
-      this.__setting = new App.Setting<AT, Schema>(
-        this.apptype,
-        this.name,
-      );
+      this.__setting = new App.Setting<AT, Schema>(this.apptype, this.name);
 
     return this.__setting;
   }
@@ -217,14 +117,7 @@ abstract class App<
     const v = value ?? false,
     bv = Boolean(v);
 
-    return !bv
-      || (
-        typeof v === "string"
-          ? Number(v) === 0
-          : Array.isArray(v)
-            ? v.join("").length < 1
-            : false
-      );
+    return !bv || (typeof v === "string" ? Number(v) === 0 : Array.isArray(v) ? v.join("").length < 1 : false);
   }
 
   public run() {
@@ -232,10 +125,7 @@ abstract class App<
       return this.output(this.runtime());
     }
     catch (e) {
-      throw new Error(App.error(new Error(
-        `${this.name}: runtime`,
-        { cause: e },
-      )));
+      throw new Error(App.error(new Error(`${this.name}: runtime`, { cause: e })));
     }
   }
 
@@ -246,10 +136,7 @@ abstract class App<
     if (string.length > 0)
       return string as stringful;
     else
-      throw new TypeError(
-        "Not stringful",
-        { cause: error },
-      );
+      throw new TypeError("Not stringful", { cause: error });
   }
 
   protected stringfuls(
@@ -259,10 +146,40 @@ abstract class App<
     if (array.every((i): i is stringful => i.length > 0))
       return array;
     else
-      throw new TypeError(
-        "Not stringful array",
-        { cause: { array, error } },
-      );
+      throw new TypeError("Not stringful array", { cause: { array, error } });
+  }
+
+  protected guid64() {
+    const CTOH = {
+      A: 10,
+      B: 11,
+      C: 12,
+      D: 13,
+      E: 14,
+      F: 15,
+    } as const,
+    hexes = [...UUID.string().replace("-", "")].map(c => typeof CTOH[c as keyof typeof CTOH] === "undefined" ? Number(c) as decimal : CTOH[c as Exclude<hexchar, digit>]) satisfies hex[] as unknown as Tuple<hex, 32>,
+    buffer: Octad<hex[]> = [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+    ];
+
+    hexes.forEach((h, i) => {
+      buffer[Math.floor(i / 4) as octal].push(h);
+    });
+
+    return String.fromCharCode(...(buffer satisfies Octad<hex[]> as unknown as Octad<Quad<hex>>)
+      .map(q => q.reduce((q: number, qi) => q + qi, 0))
+      .map(c => c + 43)
+      .map(c => c > 43 ? c + 3 : c)
+      .map(c => c > 57 ? c + 7 : c)
+      .map(c => c > 90 ? c + 6 : c));
   }
 
   protected read(
@@ -270,46 +187,20 @@ abstract class App<
     extE?: boolean | Null<string>,
     E?: boolean,
   ) {
-    const [
-      file,
-      ext,
-      stringfully,
-    ] = typeof fileE === "boolean"
-      ? [
-          null,
-          null,
-          fileE,
-        ] as const
+    const [file, ext, stringfully] = typeof fileE === "boolean"
+      ? [null, null, fileE] as const
       : typeof extE === "boolean"
-        ? [
-            fileE,
-            null,
-            extE,
-          ] as const
-        : [
-            fileE,
-            extE,
-            E,
-          ] as const;
+        ? [fileE, null, extE] as const
+        : [fileE, extE, E] as const;
 
-    return this
-      .storage(
-        file,
-        ext,
-      )
-      .read(stringfully);
+    return this.storage(file, ext).read(stringfully);
   }
 
   protected readful(
     file?: string,
     ext?: string,
   ) {
-    return this
-      .storage(
-        file,
-        ext,
-      )
-      .readful();
+    return this.storage(file, ext).readful();
   }
 
   protected data<Data>(
@@ -317,34 +208,13 @@ abstract class App<
     extE?: boolean | Null<string>,
     E?: boolean,
   ): Null<Data> {
-    const [
-      file,
-      ext,
-      stringfully,
-    ] = typeof fileE === "boolean"
-      ? [
-          null,
-          null,
-          fileE,
-        ] as const
+    const [file, ext, stringfully] = typeof fileE === "boolean"
+      ? [null, null, fileE] as const
       : typeof extE === "boolean"
-        ? [
-            fileE,
-            null,
-            extE,
-          ] as const
-        : [
-            fileE,
-            extE,
-            E,
-          ] as const;
+        ? [fileE, null, extE] as const
+        : [fileE, extE, E] as const;
 
-    return this
-      .storage(
-        file,
-        ext,
-      )
-      .data<Data>(stringfully);
+    return this.storage(file, ext).data<Data>(stringfully);
   }
 
   protected write(
@@ -356,17 +226,7 @@ abstract class App<
       | "append"
       | boolean,
   ) {
-    this
-      .storage(
-        file,
-        ext,
-      )
-      .write(
-        data,
-        overwrite,
-      );
-
-    return this;
+    this.storage(file, ext).write(data, overwrite);
   }
 
   protected load(handle: string) {
@@ -425,9 +285,7 @@ abstract class App<
   protected url(string: string) {
     const matcher = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u,
     _parts = matcher.exec(string) ?? [],
-    parts = (_parts[2] ?? null) !== null
-      ? _parts
-      : matcher.exec(`https://${string}`) ?? [];
+    parts = (_parts[2] ?? null) !== null ? _parts : matcher.exec(`https://${string}`) ?? [];
 
     return {
       scheme: parts[2] ?? "",

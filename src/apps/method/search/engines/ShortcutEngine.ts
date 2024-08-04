@@ -5,14 +5,8 @@ const sIEngine = importModule<typeof SearchEngine>(
 class ShortcutEngine extends sIEngine {
   protected readonly shortcut: string;
 
-  constructor(
-    shortcut: string,
-    output?: string | boolean,
-  ) {
-    super(
-      "shortcut",
-      output,
-    );
+  constructor(shortcut: string, output?: string | boolean) {
+    super("shortcut", output);
 
     if (shortcut.length > 0)
       this.shortcut = shortcut;

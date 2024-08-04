@@ -1,6 +1,4 @@
-const dFiletype = importModule<typeof Filetype>(
-  "filetype/index",
-);
+const dFiletype = importModule<typeof Filetype>("filetype/index");
 
 class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {
   constructor(

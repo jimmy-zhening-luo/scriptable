@@ -13,15 +13,10 @@ namespace Search {
   > {
     private static get Query() {
       try {
-        return importModule<typeof Query>(
-          "apps/method/search/query/index",
-        );
+        return importModule<typeof Query>("apps/method/search/query/index");
       }
       catch (e) {
-        throw new ReferenceError(
-          `Search: import Query`,
-          { cause: e },
-        );
+        throw new ReferenceError(`Search: import Query`, { cause: e });
       }
     }
 
@@ -92,16 +87,10 @@ namespace Search {
       setting = engines[key] ?? null;
 
       if (setting === null)
-        throw new ReferenceError(
-          `Search key has no engine setting`,
-          { cause: key },
-        );
+        throw new ReferenceError(`Search key has no engine setting`, { cause: key });
       else {
         const engine = Array.isArray(setting) || typeof setting === "string"
-          ? new (this.SearchEngine<typeof UrlEngine>("UrlEngine"))(
-            setting,
-            TAG,
-          )
+          ? new (this.SearchEngine<typeof UrlEngine>("UrlEngine"))(setting, TAG)
           : "url" in setting
             ? new (this.SearchEngine<typeof UrlEngine>("UrlEngine"))(
               setting.url,
@@ -113,10 +102,7 @@ namespace Search {
               setting.output,
             )
             : "shortcut" in setting
-              ? new (this.SearchEngine<typeof ShortcutEngine>("ShortcutEngine"))(
-                setting.shortcut,
-                setting.output,
-              )
+              ? new (this.SearchEngine<typeof ShortcutEngine>("ShortcutEngine"))(setting.shortcut, setting.output)
               : new (this.SearchEngine<typeof FindEngine>("FindEngine"))(setting.find);
 
         this.write(String(query));
@@ -127,15 +113,10 @@ namespace Search {
 
     private SearchEngine<T>(provider: string | Fake<T>): T {
       try {
-        return importModule<T>(
-          `apps/method/search/engines/${provider}`,
-        );
+        return importModule<T>(`apps/method/search/engines/${provider}`);
       }
       catch (e) {
-        throw new ReferenceError(
-          `Search: import <T>SearchEngine`,
-          { cause: e },
-        );
+        throw new ReferenceError(`Search: import <T>SearchEngine`, { cause: e });
       }
     }
   }

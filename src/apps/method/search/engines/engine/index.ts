@@ -1,25 +1,11 @@
 abstract class SearchEngine {
-  constructor(
-    protected readonly app: string,
-    protected readonly output: string | boolean = false,
-  ) {}
+  constructor(protected readonly app: string, protected readonly output: string | boolean = false) {}
 
   public resolve(query: Query) {
-    try {
-      if (query.locked)
-        return {
-          ...this.required(query),
-          ...this.options(query),
-        };
-      else
-        throw new SyntaxError(`Tried to resolve unlocked query`);
-    }
-    catch (e) {
-      throw new Error(
-        `SearchEngine: resolve [${String(query)}]`,
-        { cause: e },
-      );
-    }
+    if (query.locked)
+      return { ...this.required(query), ...this.options(query) };
+    else
+      throw new SyntaxError(`Tried to resolve unlocked query`);
   }
 
   protected transform(query: Query): Unflat {
@@ -27,25 +13,9 @@ abstract class SearchEngine {
   }
 
   private required(query: Query) {
-    try {
-      const { app, output } = this;
+    const { app, output } = this;
 
-      return {
-        app,
-        action: this.transform(query),
-        ...output === false
-          ? {}
-          : output === true || output.length < 1
-            ? { output: "_" }
-            : { output },
-      };
-    }
-    catch (e) {
-      throw new Error(
-        `SearchEngine: required [${String(query)}]`,
-        { cause: e },
-      );
-    }
+    return { app, action: this.transform(query), ...output === false ? {} : output === true || output.length < 1 ? { output: "_" } : { output } };
   }
 
   protected abstract options(query: Query): Omit<SearchOutput, keyof ReturnType<SearchEngine["required"]>>;

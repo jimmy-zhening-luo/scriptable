@@ -30,10 +30,7 @@ abstract class Filetype<
       );
     }
     catch (e) {
-      throw new Error(
-        `Filetype (${filetype}/${apptype}: ${folder ?? ""}/${file})`,
-        { cause: e },
-      );
+      throw new Error(`Filetype (${filetype}/${apptype}: ${folder ?? ""}/${file})`, { cause: e });
     }
   }
 
@@ -42,17 +39,7 @@ abstract class Filetype<
   }
 
   private get File() {
-    try {
-      return importModule<typeof File<Writable>>(
-        "file/index",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `Filetype: import File`,
-        { cause: e },
-      );
-    }
+    return importModule<typeof File<Writable>>("file/index");
   }
 
   public read(stringfully = false) {
@@ -60,10 +47,7 @@ abstract class Filetype<
       return this.file.read(stringfully);
     }
     catch (e) {
-      throw new Error(
-        `Filetype: read (${String(this)})`,
-        { cause: e },
-      );
+      throw new Error(`Filetype: read (${String(this)})`, { cause: e });
     }
   }
 
@@ -75,10 +59,7 @@ abstract class Filetype<
       return file.readful(error);
     }
     catch (e) {
-      throw new Error(
-        `Filetype: readful (${String(this)})`,
-        { cause: e },
-      );
+      throw new Error(`Filetype: readful (${String(this)})`, { cause: e });
     }
   }
 
@@ -91,10 +72,7 @@ abstract class Filetype<
       return length > 0 ? JSON.parse(string) as Data : null;
     }
     catch (e) {
-      throw new Error(
-        `Filetype: data (${String(this)})`,
-        { cause: e },
-      );
+      throw new Error(`Filetype: data (${String(this)})`, { cause: e });
     }
   }
 

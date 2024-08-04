@@ -12,26 +12,15 @@ namespace Filelink {
     FilelinkSetting
   > {
     protected runtime() {
-      const {
-        scheme,
-        commonRoot,
-        providers,
-      } = this.setting,
+      const { scheme, commonRoot, providers } = this.setting,
       SCHEME_ROOT = [scheme, commonRoot].join("://"),
-      {
-        nodes,
-        ext,
-        type,
-      } = this.inputful,
+      { nodes, ext, type } = this.inputful,
       path = this.validPath(nodes),
       [rootNode] = path,
       provider = providers[rootNode] ?? null;
 
       if (provider === null)
-        throw new ReferenceError(
-          `Provider not found`,
-          { cause: rootNode },
-        );
+        throw new ReferenceError(`Provider not found`, { cause: rootNode });
       else {
         path.shift();
 
@@ -40,19 +29,10 @@ namespace Filelink {
         head = [SCHEME_ROOT, providerRootEncoded].join("/"),
         leafNode = path.pop() as unknown as stringful,
         remainingPath = [...path],
-        filenameEncoded = encodeURI(
-          type === "Folder"
-            ? leafNode
-            : [leafNode, ext].join("."),
-        );
+        filenameEncoded = encodeURI(type === "Folder" ? leafNode : [leafNode, ext].join("."));
 
         if (!provider.hasContainers)
-          return [
-            head,
-            ...remainingPath.map(node => encodeURI(node)),
-            filenameEncoded,
-          ]
-            .join("/");
+          return [head, ...remainingPath.map(node => encodeURI(node)), filenameEncoded].join("/");
         else {
           const {
             postContainerRoot,
@@ -62,10 +42,7 @@ namespace Filelink {
           } = provider;
 
           if (remainingPath.length < 1)
-            throw new ReferenceError(
-              `Path points to container root within a provider`,
-              { cause: { remainingPath } },
-            );
+            throw new ReferenceError(`Path points to container root within a provider`, { cause: { remainingPath } });
           else {
             const containerNode = remainingPath.shift() as unknown as stringful,
             containerEncoded = (
@@ -85,10 +62,7 @@ namespace Filelink {
             ) ?? null;
 
             if (containerEncoded === null)
-              throw new ReferenceError(
-                `Provider has no such container`,
-                { cause: { containerNode, providerRootEncoded } },
-              );
+              throw new ReferenceError(`Provider has no such container`, { cause: { containerNode, providerRootEncoded } });
             else
               return [
                 head,
@@ -103,26 +77,15 @@ namespace Filelink {
     }
 
     private validPath(nodes: Unflat) {
-      try {
-        const path = this.stringfuls([nodes].flat()),
-        { length } = path;
+      const path = this.stringfuls([nodes].flat()),
+      { length } = path;
 
-        if (length < 1)
-          throw new SyntaxError(`Input path empty`);
-        else if (length < 2)
-          throw new RangeError(
-            `Path points to provider root`,
-            { cause: path },
-          );
-        else
-          return path as ArrayN<stringful, 2>;
-      }
-      catch (e) {
-        throw new Error(
-          `Filelink: validPath`,
-          { cause: e },
-        );
-      }
+      if (length < 1)
+        throw new SyntaxError(`Input path empty`);
+      else if (length < 2)
+        throw new RangeError(`Path points to provider root`, { cause: path });
+      else
+        return path as ArrayN<stringful, 2>;
     }
   }
 }

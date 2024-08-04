@@ -13,27 +13,13 @@ namespace Things {
   > {
     protected runtime() {
       const { lists, delims } = this.setting,
-      {
-        TAG,
-        LINE,
-        ITEM,
-      } = delims,
-      validator = [
-        TAG,
-        LINE,
-        ITEM,
-      ] as const;
+      { TAG, LINE, ITEM } = delims,
+      validator = [TAG, LINE, ITEM] as const;
 
       if (validator.some(d => d.length < 0))
-        throw new TypeError(
-          `Delim empty or too short`,
-          { cause: delims },
-        );
+        throw new TypeError(`Delim empty or too short`, { cause: delims });
       else if (TAG === ITEM || TAG === LINE || ITEM === LINE)
-        throw new SyntaxError(
-          `Conflicting delims`,
-          { cause: delims },
-        );
+        throw new SyntaxError(`Conflicting delims`, { cause: delims });
       else {
         const items = this
           .inputStringful
@@ -53,27 +39,14 @@ namespace Things {
           (item): ThingsItem => {
             const tokens = item.split("::"),
             { length } = tokens,
-            tag = length > 1
-              ? (tokens[length - 1] ?? "")[0]?.toLowerCase() ?? null
-              : null;
+            tag = length > 1 ? (tokens[length - 1] ?? "")[0]?.toLowerCase() ?? null : null;
 
-            if (tag !== null) {
-              const last = tokens.pop() ?? "";
-
-              tokens.push(last.slice(1));
-            }
+            if (tag !== null)
+              tokens.push((tokens.pop() ?? "").slice(1));
 
             const untaggedItem = tokens.join(""),
-            [when, list] = tag === null
-              ? [null, null]
-              : tag.length < 1 || tag === LINE || !(tag in lists) || (lists[tag] ?? "").length < 1
-                ? ["today", null]
-                : [
-                    null,
-                    lists[tag] as unknown as string,
-                  ],
-            lines = untaggedItem
-              .split(LINE);
+            [when, list] = tag === null ? [null, null] : tag.length < 1 || tag === LINE || !(tag in lists) || (lists[tag] ?? "").length < 1 ? ["today", null] : [null, lists[tag] as unknown as string],
+            lines = untaggedItem.split(LINE);
 
             return {
               title: lines.shift() ?? "",

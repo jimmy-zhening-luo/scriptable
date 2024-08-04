@@ -14,21 +14,11 @@ namespace _Hello {
     protected runtime() {
       const PATH_WORLDTIME = "worldtime",
       hello = this.readful(),
-      space = this.stringful(
-        this.setting.space ?? "",
-        "space",
-      ),
+      space = this.stringful(this.setting.space ?? "", "space"),
       worldtime = this.read(PATH_WORLDTIME),
-      warning = [
-        hello satisfies stringful,
-        space satisfies stringful,
-        worldtime satisfies string,
-      ].join("");
+      warning = [hello satisfies stringful, space satisfies stringful, worldtime satisfies string].join("");
 
-      this.write(
-        `World!\n(Previous: ${this.timestamp})`,
-        PATH_WORLDTIME,
-      );
+      this.write(`World!\n(Previous: ${this.timestamp})`, PATH_WORLDTIME);
       logWarning(warning);
 
       return warning;

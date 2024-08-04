@@ -1,20 +1,8 @@
-const lnkd_ILinkPathProcessor = importModule<typeof LinkPathProcessor>(
-  `processor/index`,
-);
+const lnkd_ILinkPathProcessor = importModule<typeof LinkPathProcessor>(`processor/index`);
 
 class LinkedInPathProcessor extends lnkd_ILinkPathProcessor<"linkedin.com"> {
   protected process(path: string) {
-    try {
-      return path.startsWith("/mwlite/")
-        ? path.slice(7)
-        : path;
-    }
-    catch (e) {
-      throw new Error(
-        `LinkedInPathProcessor: process`,
-        { cause: e },
-      );
-    }
+    return path.startsWith("/mwlite/") ? path.slice(7) : path;
   }
 }
 

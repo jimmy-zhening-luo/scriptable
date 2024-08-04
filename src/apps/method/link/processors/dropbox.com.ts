@@ -1,40 +1,29 @@
-const drop_ILinkPathProcessor = importModule<typeof LinkPathProcessor>(
-  `processor/index`,
-);
+const drop_ILinkPathProcessor = importModule<typeof LinkPathProcessor>(`processor/index`);
 
 class DropboxPathProcessor extends drop_ILinkPathProcessor<"dropbox.com"> {
   protected process(path: string) {
-    try {
-      if (!path.startsWith("/scl/fi/"))
+    if (!path.startsWith("/scl/fi/"))
+      return path;
+    else {
+      const nodes = path.split("/");
+
+      if (nodes.length < 4)
         return path;
       else {
-        const nodes = path.split("/");
+        const [
+          BLANK,
+          SCL,
+          FI,
+          fileId,
+        ] = nodes as ArrayN<string, 4>;
 
-        if (nodes.length < 4)
-          return path;
-        else {
-          const [
-            BLANK,
-            SCL,
-            FI,
-            fileId,
-          ] = nodes as ArrayN<string, 4>;
-
-          return [
-            BLANK,
-            SCL,
-            FI,
-            fileId,
-          ]
-            .join("/");
-        }
+        return [
+          BLANK,
+          SCL,
+          FI,
+          fileId,
+        ].join("/");
       }
-    }
-    catch (e) {
-      throw new Error(
-        `DropboxPathProcessor: process`,
-        { cause: e },
-      );
     }
   }
 }

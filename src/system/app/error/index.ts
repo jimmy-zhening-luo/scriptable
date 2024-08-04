@@ -7,10 +7,7 @@ function error(e: Error) {
     n.body = lines.join("\n");
     n.sound = "failure";
     n.schedule().catch((e: unknown) => {
-      throw new EvalError(
-        `Fatal: Scriptable notification failed`,
-        { cause: e },
-      );
+      throw new EvalError(`Fatal: Scriptable notification failed`, { cause: e });
     });
   }
 
@@ -26,9 +23,7 @@ function error(e: Error) {
           : String(e);
     }
 
-    return typeof e === "object" && "message" in e
-      ? e.message
-      : stringify(e);
+    return typeof e === "object" && "message" in e ? e.message : stringify(e);
   }
 
   const errors = [e] as ErrorLike[];
@@ -43,14 +38,7 @@ function error(e: Error) {
   const i = errors.findIndex((ee): ee is ErrorLike<true> => typeof ee === "object" && "message" in ee),
   hoisted: readonly ErrorLike[] = i < 0
     ? errors
-    : [
-        errors[i] as ErrorLike<true>,
-        ...errors.slice(
-          0,
-          i,
-        ),
-        ...errors.slice(i + 1),
-      ],
+    : [errors[i] as ErrorLike<true>, ...errors.slice(0, i), ...errors.slice(i + 1)],
   messages = hoisted.map(e => print(e));
 
   logError(messages.join("\n"));

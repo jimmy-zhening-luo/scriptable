@@ -2,25 +2,14 @@ abstract class LinkPathProcessor<Host extends string> {
   public readonly processed: string;
   public readonly postprocessor: Null<string> = null;
 
-  constructor(
-    protected readonly host: literalful<Host>,
-    path: string,
-  ) {
-    try {
-      const process = this.process(path);
+  constructor(protected readonly host: literalful<Host>, path: string) {
+    const process = this.process(path);
 
-      if (typeof process === "string")
-        this.processed = process;
-      else {
-        this.processed = process.processed;
-        this.postprocessor = process.postprocessor;
-      }
-    }
-    catch (e) {
-      throw new Error(
-        `LinkPathProcessor`,
-        { cause: e },
-      );
+    if (typeof process === "string")
+      this.processed = process;
+    else {
+      this.processed = process.processed;
+      this.postprocessor = process.postprocessor;
     }
   }
 

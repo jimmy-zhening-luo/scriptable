@@ -21,12 +21,7 @@ class UrlEngine extends uIEngine {
     inprivate = false,
     output?: string | boolean,
   ) {
-    super(
-      "browser",
-      browser === "api"
-        ? output ?? true
-        : false,
-    );
+    super("browser", browser === "api" ? output ?? true : false);
     this.TAG = TAG;
     this.browser = browser;
     this.separator = separator;
@@ -35,9 +30,7 @@ class UrlEngine extends uIEngine {
     this.PLUS = "+";
     this.PLUS_ENCODED = "%2B";
 
-    const urlfuls = [urls]
-      .flat()
-      .filter((url): url is stringful => url.length > 0);
+    const urlfuls = [urls].flat().filter((url): url is stringful => url.length > 0);
 
     if (urlfuls.length > 0)
       this.urls = urlfuls;
@@ -46,58 +39,31 @@ class UrlEngine extends uIEngine {
   }
 
   protected override transform(query: Query) {
-    try {
-      const {
-        TAG,
-        separator,
-        encodeComponent,
-        PLUS,
-        PLUS_ENCODED,
-      } = this,
-      encoder = encodeComponent
-        ? function (operand: string) {
-          return encodeURI(operand);
-        }
+    const {
+      TAG,
+      separator,
+      encodeComponent,
+      PLUS,
+      PLUS_ENCODED,
+    } = this,
+    encoder = encodeComponent
+      ? function (operand: string) { return encodeURI(operand); }
+      : function (operand: string) { return encodeURIComponent(operand); },
+    encodedQuery = query.terms
+      .map(term => term
+        .split(PLUS)
+        .map(encoder)
+        .join(PLUS_ENCODED))
+      .join(separator);
 
-        : function (operand: string) {
-          return encodeURIComponent(operand);
-        },
-      encodedQuery = query
-        .terms
-        .map(
-          term => term
-            .split(PLUS)
-            .map(encoder)
-            .join(PLUS_ENCODED),
-        )
-        .join(separator);
-
-      return this
-        .urls
-        .map(
-          url => url.replace(
-            TAG,
-            encodedQuery,
-          ),
-        );
-    }
-    catch (e) {
-      throw new Error(
-        `BrowserEngine: transform`,
-        { cause: e },
-      );
-    }
+    return this.urls.map(url => url.replace(TAG, encodedQuery));
   }
 
   protected options(query: Query) {
     const { browser, inprivate } = this,
     { natural } = query;
 
-    return {
-      browser,
-      natural,
-      ...inprivate ? { inprivate } : {},
-    };
+    return { browser, natural, ...inprivate ? { inprivate } : {} };
   }
 }
 

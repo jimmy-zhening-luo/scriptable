@@ -1,28 +1,10 @@
-const amzn_LinkPathProcessor = importModule<typeof LinkPathProcessor>(
-  `processor/index`,
-);
+const amzn_LinkPathProcessor = importModule<typeof LinkPathProcessor>(`processor/index`);
 
 class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
   protected process(path: string) {
-    try {
-      const processed = path.includes("/dp/")
-        ? [
-            "/dp/",
-            (path.split("/dp/").pop() ?? "")
-              .split("/")
-              .shift() ?? "",
-          ]
-            .join("")
-        : path;
+    const processed = path.includes("/dp/") ? ["/dp/", (path.split("/dp/").pop() ?? "").split("/").shift() ?? ""].join("") : path;
 
-      return { processed, postprocessor: "Fakespot" };
-    }
-    catch (e) {
-      throw new Error(
-        `AmazonPathProcessor: process`,
-        { cause: e },
-      );
-    }
+    return { processed, postprocessor: "Fakespot" };
   }
 }
 

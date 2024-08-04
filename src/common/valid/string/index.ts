@@ -28,19 +28,13 @@ function charstring<Validator extends string>(
       throw new RangeError(`Bad args: min > max`);
     else if (string.length < min)
       throw new TypeError(`String is too short`);
-    else if (!filters[filter](
-      string,
-      chars,
-    ))
+    else if (!filters[filter](string, chars))
       throw new TypeError(`String has disallowed chars`);
     else
       return string;
   }
   catch (e) {
-    throw new SyntaxError(
-      `charstring`,
-      { cause: e },
-    );
+    throw new SyntaxError(`charstring`, { cause: e });
   }
 }
 

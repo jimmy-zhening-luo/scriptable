@@ -1,6 +1,4 @@
-const cFiletype = importModule<typeof Filetype>(
-  "filetype/index",
-);
+const cFiletype = importModule<typeof Filetype>("filetype/index");
 
 class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {
   constructor(

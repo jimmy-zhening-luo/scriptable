@@ -19,41 +19,19 @@ class File<Writable extends boolean> {
             .filter((node): node is stringful => node.length > 0)
             .map(node => File.node(node)),
         ),
-      parentSubpath = subpath.slice(
-        0,
-        -1,
-      );
+      parentSubpath = subpath.slice(0, -1);
 
-      this.path = File.append(
-        root,
-        subpath,
-      );
-      this.parent = File.append(
-        root,
-        parentSubpath,
-      );
+      this.path = File.append(root, subpath);
+      this.parent = File.append(root, parentSubpath);
       this.subpath = subpath.join("/") as filepath<typeof subpath>;
     }
     catch (e) {
-      throw new Error(
-        `File`,
-        { cause: e },
-      );
+      throw new Error(`File`, { cause: e });
     }
   }
 
   private static get charstring() {
-    try {
-      return importModule<typeof charstring>(
-        "./common/valid/string/index",
-      );
-    }
-    catch (e) {
-      throw new ReferenceError(
-        `File: import charstring`,
-        { cause: e },
-      );
-    }
+    return importModule<typeof charstring>("./common/valid/string/index");
   }
 
   public get isDirectory() {
@@ -78,20 +56,14 @@ class File<Writable extends boolean> {
         return manager.bookmarkedPath(alias);
     }
     catch (e) {
-      throw new ReferenceError(
-        `File: bookmark "${bookmark}"`,
-        { cause: e },
-      );
+      throw new ReferenceError(`File: bookmark "${bookmark}"`, { cause: e });
     }
   }
 
   private static node(node: stringful) {
     return File.charstring<"filenode">(
       node,
-      [
-        ":" as char,
-        "/" as char,
-      ],
+      [":", "/"] as char[],
       { max: 255 as Positive<int> },
     );
   }
@@ -100,11 +72,7 @@ class File<Writable extends boolean> {
     root: bookmark,
     subpath: readonly filenode[],
   ) {
-    return [
-      root,
-      ...subpath.length > 0 ? [...subpath] : [],
-    ]
-      .join("/") as typeof root & filepath<typeof subpath>;
+    return [root, ...subpath.length > 0 ? [...subpath] : []].join("/") as typeof root & filepath<typeof subpath>;
   }
 
   public read(stringfully = false) {
@@ -120,10 +88,7 @@ class File<Writable extends boolean> {
         return this.manager.readString(path);
     }
     catch (e) {
-      throw new Error(
-        `File: read (${String(this)})`,
-        { cause: e },
-      );
+      throw new Error(`File: read (${String(this)})`, { cause: e });
     }
   }
 
@@ -138,10 +103,7 @@ class File<Writable extends boolean> {
         throw new TypeError(error);
     }
     catch (e) {
-      throw new Error(
-        `File: readful (${String(this)})`,
-        { cause: e },
-      );
+      throw new Error(`File: readful (${String(this)})`, { cause: e });
     }
   }
 
@@ -181,17 +143,11 @@ class File<Writable extends boolean> {
               );
           else {
             this.createParent();
-            manager.writeString(
-              path,
-              string,
-            );
+            manager.writeString(path, string);
           }
     }
     catch (e) {
-      throw new Error(
-        `File: write (${String(this)})`,
-        { cause: e },
-      );
+      throw new Error(`File: write (${String(this)})`, { cause: e });
     }
   }
 
@@ -203,10 +159,7 @@ class File<Writable extends boolean> {
     const { parent, manager } = this;
 
     if (!manager.isDirectory(parent))
-      manager.createDirectory(
-        parent,
-        true,
-      );
+      manager.createDirectory(parent, true);
   }
 }
 

@@ -1,6 +1,4 @@
-const app = importModule<typeof App>(
-  "app/index",
-);
+const app = importModule<typeof App>("app/index");
 
 abstract class Shortcut<
   Input = never,
@@ -12,31 +10,15 @@ abstract class Shortcut<
   }
 
   protected get getInput() {
-    try {
-      const { shortcutParameter } = args as { shortcutParameter: Null<undefined | Input> };
+    const { shortcutParameter } = args as { shortcutParameter: Null<undefined | Input> };
 
-      return shortcutParameter ?? null;
-    }
-    catch (e) {
-      throw new Error(
-        `Shortcut: getInput`,
-        { cause: e },
-      );
-    }
+    return shortcutParameter ?? null;
   }
 
   protected output(runtime: ReturnType<Shortcut<Input, Output>["run"]>) {
-    try {
-      Script.setShortcutOutput(runtime);
+    Script.setShortcutOutput(runtime);
 
-      return runtime;
-    }
-    catch (e) {
-      throw new Error(
-        `Shortcut: output`,
-        { cause: e },
-      );
-    }
+    return runtime;
   }
 }
 
