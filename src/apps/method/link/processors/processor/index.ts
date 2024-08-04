@@ -17,3 +17,4 @@ abstract class LinkPathProcessor<Host extends string> {
 }
 
 module.exports = LinkPathProcessor;
+export type { LinkPathProcessor };

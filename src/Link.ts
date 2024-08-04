@@ -3,8 +3,10 @@
 // icon-color: light-gray; icon-glyph: link;
 "use strict";
 
+import type { LinkPathProcessor } from "./apps/method/link/processors/processor";
+
 namespace Link {
-  const shortcut = importModule("system/Shortcut");
+  const shortcut = importModule("./system/Shortcut");
 
   export class Link extends shortcut<
     string,

@@ -4,7 +4,7 @@
 "use strict";
 
 namespace Search {
-  const shortcut = importModule("system/Shortcut");
+  const shortcut = importModule("./system/Shortcut");
 
   export class Search extends shortcut<
     string,
@@ -109,6 +109,11 @@ namespace Search {
     }
   }
 }
+
+import type BrowserEngine from "./apps/method/search/engines/browser";
+import type FindEngine from "./apps/method/search/engines/find";
+import type ShortcutEngine from "./apps/method/search/engines/shortcut";
+
 type SearchEngines = {
   browser: typeof BrowserEngine;
   find: typeof FindEngine;

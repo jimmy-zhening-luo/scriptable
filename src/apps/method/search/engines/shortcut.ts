@@ -1,6 +1,8 @@
-const sIEngine = importModule<typeof SearchEngine>("engine/index");
+import type { SearchEngine } from "./engine";
 
-class ShortcutEngine extends sIEngine<"shortcut"> {
+const sSearchEngine = importModule<typeof SearchEngine>("./engine/index");
+
+class ShortcutEngine extends sSearchEngine<"shortcut"> {
   constructor(shortcut: string, output?: string | boolean) {
     super("shortcut", shortcut, output);
   }
@@ -11,3 +13,4 @@ class ShortcutEngine extends sIEngine<"shortcut"> {
 }
 
 module.exports = ShortcutEngine;
+export type { ShortcutEngine as default };

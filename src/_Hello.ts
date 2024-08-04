@@ -4,7 +4,7 @@
 "use strict";
 
 namespace _Hello {
-  const shortcut = importModule("system/Shortcut");
+  const shortcut = importModule("./system/Shortcut");
 
   export class _Hello extends shortcut<
     never,

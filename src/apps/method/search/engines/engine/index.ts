@@ -27,3 +27,4 @@ abstract class SearchEngine<T extends "browser" | "find" | "shortcut"> {
 }
 
 module.exports = SearchEngine;
+export type { SearchEngine };

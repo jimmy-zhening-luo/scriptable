@@ -1,6 +1,8 @@
-const bIEngine = importModule<typeof SearchEngine>("engine/index");
+import type { SearchEngine } from "./engine/index";
 
-class BrowserEngine extends bIEngine<"browser"> {
+const bSearchEngine = importModule<typeof SearchEngine>("./engine/index");
+
+class BrowserEngine extends bSearchEngine<"browser"> {
   protected readonly urls: readonly stringful[];
   protected readonly TAG: stringful;
   protected readonly separator: string;
@@ -64,3 +66,4 @@ class BrowserEngine extends bIEngine<"browser"> {
 }
 
 module.exports = BrowserEngine;
+export type { BrowserEngine as default };

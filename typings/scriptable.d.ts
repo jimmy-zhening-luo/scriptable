@@ -7032,5 +7032,5 @@ declare function btoa(string: string): string;/**
 * For more information about modules, refer to the documentation on the `module` variable.
 * @see https://docs.scriptable.app/importmodule
 */
-declare function importModule<T, S extends string>(path: S): S extends "system/Shortcut" ? typeof Shortcut : T;
+declare function importModule<T, S extends string>(path: S): S extends "./system/Shortcut" ? typeof Shortcut : T;
 declare function importModule<T>(path: string | Fake<T>): T;

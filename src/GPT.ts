@@ -4,7 +4,7 @@
 "use strict";
 
 namespace GPT {
-  const shortcut = importModule("system/Shortcut");
+  const shortcut = importModule("./system/Shortcut");
 
   export class GPT extends shortcut<
     GptInput,
