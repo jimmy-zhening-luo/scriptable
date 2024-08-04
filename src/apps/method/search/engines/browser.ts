@@ -1,9 +1,8 @@
-const uIEngine = importModule<typeof SearchEngine>(`engine/index`);
+const bIEngine = importModule<typeof SearchEngine>("engine/index");
 
-class UrlEngine extends uIEngine {
+class BrowserEngine extends bIEngine<"browser"> {
   protected readonly urls: readonly stringful[];
   protected readonly TAG: stringful;
-  protected readonly browser: string;
   protected readonly separator: string;
   protected readonly encodeComponent: boolean;
   protected readonly inprivate: boolean;
@@ -19,9 +18,8 @@ class UrlEngine extends uIEngine {
     inprivate = false,
     output?: string | boolean,
   ) {
-    super("browser", browser === "api" ? output ?? true : false);
+    super("browser", browser, browser === "api" ? output ?? true : false);
     this.TAG = TAG;
-    this.browser = browser;
     this.separator = separator;
     this.encodeComponent = encodeComponent;
     this.inprivate = inprivate;
@@ -58,11 +56,11 @@ class UrlEngine extends uIEngine {
   }
 
   protected options(query: Query) {
-    const { browser, inprivate } = this,
+    const { inprivate } = this,
     { natural } = query;
 
-    return { browser, natural, ...inprivate ? { inprivate } : {} };
+    return { natural, ...inprivate ? { inprivate } : {} };
   }
 }
 
-module.exports = UrlEngine;
+module.exports = BrowserEngine;

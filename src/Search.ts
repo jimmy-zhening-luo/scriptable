@@ -12,12 +12,7 @@ namespace Search {
     SearchSetting
   > {
     private static get Query() {
-      try {
-        return importModule<typeof Query>("apps/method/search/query/index");
-      }
-      catch (e) {
-        throw new ReferenceError(`Search: import Query`, { cause: e });
-      }
+      return importModule<typeof Query>("apps/method/search/query/index");
     }
 
     protected runtime() {
@@ -60,9 +55,7 @@ namespace Search {
         rest,
       ]) satisfies stringful[] as unknown as Nonad<stringful>,
       query = new Search.Query(
-        this.inputString.length > 0
-          ? this.inputString
-          : this.read(),
+        this.inputString.length > 0 ? this.inputString : this.read(),
         CHAT,
         TRANSLATE,
         MATH_SHORT,
@@ -90,9 +83,9 @@ namespace Search {
         throw new ReferenceError(`Search key has no engine setting`, { cause: key });
       else {
         const engine = Array.isArray(setting) || typeof setting === "string"
-          ? new (this.SearchEngine<typeof UrlEngine>("UrlEngine"))(setting, TAG)
+          ? new (this.SearchEngine("browser"))(setting, TAG)
           : "url" in setting
-            ? new (this.SearchEngine<typeof UrlEngine>("UrlEngine"))(
+            ? new (this.SearchEngine("browser"))(
               setting.url,
               TAG,
               setting.browser,
@@ -102,8 +95,8 @@ namespace Search {
               setting.output,
             )
             : "shortcut" in setting
-              ? new (this.SearchEngine<typeof ShortcutEngine>("ShortcutEngine"))(setting.shortcut, setting.output)
-              : new (this.SearchEngine<typeof FindEngine>("FindEngine"))(setting.find);
+              ? new (this.SearchEngine("shortcut"))(setting.shortcut, setting.output)
+              : new (this.SearchEngine("find"))(setting.find);
 
         this.write(String(query));
 
@@ -111,15 +104,15 @@ namespace Search {
       }
     }
 
-    private SearchEngine<T>(provider: string | Fake<T>): T {
-      try {
-        return importModule<T>(`apps/method/search/engines/${provider}`);
-      }
-      catch (e) {
-        throw new ReferenceError(`Search: import <T>SearchEngine`, { cause: e });
-      }
+    private SearchEngine<T extends "browser" | "find" | "shortcut">(provider: T) {
+      return importModule<SearchEngines[T]>(`apps/method/search/engines/${provider}`);
     }
   }
 }
+type SearchEngines = {
+  browser: typeof BrowserEngine;
+  find: typeof FindEngine;
+  shortcut: typeof ShortcutEngine;
+};
 
 (new Search.Search).run();
