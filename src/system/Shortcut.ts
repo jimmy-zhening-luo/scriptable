@@ -7,9 +7,7 @@ abstract class Shortcut<
   Output = never,
   Schema = never,
 > extends app<"Shortcut", Nullable<Input>, Null<Output>, Schema> {
-  constructor() {
-    super("Shortcut");
-  }
+  protected apptype = "Shortcut" as const;
 
   protected get getInput() {
     const { shortcutParameter } = args as { shortcutParameter: Null<undefined | Input> };

@@ -12,7 +12,7 @@ abstract class App<
   private readonly _storage: Record<string, Storage<AT>> = {};
   private readonly _keys: Record<string, Key<AT>> = {};
 
-  constructor(private readonly apptype: literalful<AT>) {}
+  protected abstract apptype: literalful<AT>;
 
   private static get Setting() {
     return importModule<typeof Setting>("./filetypes/Setting");
