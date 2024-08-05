@@ -1,4 +1,4 @@
-import type { charstring } from "../../../../../common/valid/string/index";
+import type { vstring } from "../../../../../common/valid/string/index";
 
 class File<Writable extends boolean> {
   public readonly path: string;
@@ -32,8 +32,8 @@ class File<Writable extends boolean> {
     }
   }
 
-  private static get charstring() {
-    return importModule<typeof charstring>("common/valid/string/index");
+  private static get vstring() {
+    return importModule<typeof vstring>("../../../../../common/valid/string/index");
   }
 
   public get isDirectory() {
@@ -63,7 +63,7 @@ class File<Writable extends boolean> {
   }
 
   private static node(node: stringful) {
-    return File.charstring<"filenode">(
+    return File.vstring<"filenode">(
       node,
       [":", "/"] as char[],
       { max: 255 as Positive<int> },

@@ -1,7 +1,7 @@
-declare type charstring<Validator extends string> = valid<stringful, [Validator, "string"]>;
+declare type vstring<Validator extends string> = valid<stringful, [Validator, "string"]>;
 type Filter = "include" | "exclude";
 
-function charstring<Validator extends string>(
+function vstring<Validator extends string>(
   string: string,
   chars: char[],
   {
@@ -13,16 +13,16 @@ function charstring<Validator extends string>(
     min?: Positive<fint>;
     max?: Positive<int>;
   } = {},
-): charstring<Validator> {
+): vstring<Validator> {
   try {
     const filters = {
-      include(string: string, chars: char[]): string is charstring<Validator> {
+      include(string: string, chars: char[]): string is vstring<Validator> {
         return [...string].every(s => chars.includes(s as char));
       },
-      exclude(string: string, chars: char[]): string is charstring<Validator> {
+      exclude(string: string, chars: char[]): string is vstring<Validator> {
         return chars.every(c => !string.includes(c));
       },
-    } satisfies Record<Filter, (string: string, chars: char[])=> string is charstring<Validator>>;
+    } satisfies Record<Filter, (string: string, chars: char[])=> string is vstring<Validator>>;
 
     if (min > max)
       throw new RangeError(`Bad args: min > max`);
@@ -34,9 +34,9 @@ function charstring<Validator extends string>(
       return string;
   }
   catch (e) {
-    throw new SyntaxError(`charstring`, { cause: e });
+    throw new SyntaxError(`vstring`, { cause: e });
   }
 }
 
-module.exports = charstring;
-export type { charstring };
+module.exports = vstring;
+export type { vstring };
