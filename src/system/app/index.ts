@@ -78,9 +78,7 @@ abstract class App<
 
       return this._inputful;
     }
-    catch (e) {
-      throw new TypeError(`App: inputful`, { cause: e });
-    }
+    catch (e) { throw new TypeError(`App: inputful`, { cause: e }); }
   }
 
   protected get inputString() {
@@ -97,9 +95,7 @@ abstract class App<
 
       return this._inputString;
     }
-    catch (e) {
-      throw new TypeError(`App: inputString`, { cause: e });
-    }
+    catch (e) { throw new TypeError(`App: inputString`, { cause: e }); }
   }
 
   protected get inputStringful() {
@@ -129,9 +125,7 @@ abstract class App<
     try {
       return this.output(this.runtime());
     }
-    catch (e) {
-      throw new Error(App.error(new Error(`${this.name}: runtime`, { cause: e })));
-    }
+    catch (e) { throw new Error(App.error(new Error(`${this.name}: runtime`, { cause: e }))); }
   }
 
   protected stringful(

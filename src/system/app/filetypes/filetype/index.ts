@@ -31,9 +31,7 @@ abstract class Filetype<
         ...subpaths,
       );
     }
-    catch (e) {
-      throw new Error(`Filetype (${filetype}/${apptype}: ${folder ?? ""}/${file})`, { cause: e });
-    }
+    catch (e) { throw new Error(`Filetype (${filetype}/${apptype}: ${folder ?? ""}/${file})`, { cause: e }); }
   }
 
   protected get subpath() {
@@ -45,37 +43,22 @@ abstract class Filetype<
   }
 
   public read(stringfully = false) {
-    try {
-      return this.file.read(stringfully);
-    }
-    catch (e) {
-      throw new Error(`Filetype: read (${String(this)})`, { cause: e });
-    }
+    return this.file.read(stringfully);
   }
 
   public readful() {
-    try {
-      const { file, subpath } = this,
-      error = subpath;
+    const { file, subpath } = this,
+    error = subpath;
 
-      return file.readful(error);
-    }
-    catch (e) {
-      throw new Error(`Filetype: readful (${String(this)})`, { cause: e });
-    }
+    return file.readful(error);
   }
 
   public data<Data>(stringfully = false): Null<Data> {
-    try {
-      const { file } = this,
-      string = file.read(stringfully).trim(),
-      { length } = string;
+    const { file } = this,
+    string = file.read(stringfully).trim(),
+    { length } = string;
 
-      return length > 0 ? JSON.parse(string) as Data : null;
-    }
-    catch (e) {
-      throw new Error(`Filetype: data (${String(this)})`, { cause: e });
-    }
+    return length > 0 ? JSON.parse(string) as Data : null;
   }
 
   public toString() {

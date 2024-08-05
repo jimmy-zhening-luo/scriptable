@@ -43,9 +43,7 @@ class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {
       else
         file.write(String(buffer), overwrite);
     }
-    catch (e) {
-      throw new Error(`Storage: write (${String(this)})`, { cause: e });
-    }
+    catch (e) { throw new Error(`Storage: write (${String(this)})`, { cause: e }); }
   }
 }
 

@@ -27,9 +27,7 @@ class File<Writable extends boolean> {
       this.parent = File.append(root, parentSubpath);
       this.subpath = subpath.join("/");
     }
-    catch (e) {
-      throw new Error(`File`, { cause: e });
-    }
+    catch (e) { throw new Error(`File`, { cause: e }); }
   }
 
   private static get vstring() {
@@ -57,9 +55,7 @@ class File<Writable extends boolean> {
       else
         return manager.bookmarkedPath(alias);
     }
-    catch (e) {
-      throw new ReferenceError(`File: bookmark "${bookmark}"`, { cause: e });
-    }
+    catch (e) { throw new ReferenceError(`File: bookmark "${bookmark}"`, { cause: e }); }
   }
 
   private static node(node: stringful) {
@@ -70,10 +66,7 @@ class File<Writable extends boolean> {
     );
   }
 
-  private static append(
-    root: string,
-    subpath: readonly string[],
-  ) {
+  private static append(root: string, subpath: readonly string[]) {
     return [root, ...subpath.length > 0 ? [...subpath] : []].join("/");
   }
 
@@ -89,9 +82,7 @@ class File<Writable extends boolean> {
       else
         return this.manager.readString(path);
     }
-    catch (e) {
-      throw new Error(`File: read (${String(this)})`, { cause: e });
-    }
+    catch (e) { throw new Error(`File: read (${String(this)})`, { cause: e }); }
   }
 
   public readful(error = "") {
@@ -104,9 +95,7 @@ class File<Writable extends boolean> {
       else
         throw new TypeError(error);
     }
-    catch (e) {
-      throw new Error(`File: readful (${String(this)})`, { cause: e });
-    }
+    catch (e) { throw new Error(`File: readful (${String(this)})`, { cause: e }); }
   }
 
   public write(
@@ -148,9 +137,7 @@ class File<Writable extends boolean> {
             manager.writeString(path, string);
           }
     }
-    catch (e) {
-      throw new Error(`File: write (${String(this)})`, { cause: e });
-    }
+    catch (e) { throw new Error(`File: write (${String(this)})`, { cause: e }); }
   }
 
   public toString() {

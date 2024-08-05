@@ -73,9 +73,7 @@ class Query {
       this.terms = terms;
       this._key = Query.toLower(key);
     }
-    catch (e) {
-      throw new Error(`Query`, { cause: e });
-    }
+    catch (e) { throw new Error(`Query`, { cause: e }); }
   }
 
   public get key() {
