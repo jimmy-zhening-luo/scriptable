@@ -65,10 +65,6 @@ abstract class Filetype<
     return length > 0 ? JSON.parse(string) as Data : null;
   }
 
-  public toString() {
-    return this.subpath;
-  }
-
   protected abstract write(...args: Writable extends true ? Parameters<File<Writable>["write"]> : never): Writable extends true ? ReturnType<File<Writable>["write"]> : never;
 }
 
