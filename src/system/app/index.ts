@@ -31,20 +31,20 @@ abstract class App<
   }
 
   protected get timestamp() {
-    const dt = new DateFormatter;
+    const d = new DateFormatter;
 
-    dt.dateFormat = "yyyyMMddhhmmssZ";
+    d.dateFormat = "yyyyMMddhhmmssZ";
 
-    return dt.string(new Date);
+    return d.string(new Date);
   }
 
   protected get dateprint() {
-    const dt = new DateFormatter;
+    const d = new DateFormatter;
 
-    dt.dateFormat = "EEEE, MMMM d, y";
-    dt.locale = "en";
+    d.dateFormat = "EEEE, MMMM d, y";
+    d.locale = "en";
 
-    return dt.string(new Date);
+    return d.string(new Date);
   }
 
   protected get name() {
