@@ -48,10 +48,16 @@ abstract class App<
   }
 
   protected get name() {
-    if (typeof this._name === "undefined")
-      this._name = this.stringful(this.constructor.name, "App instance has no name");
+    const name = this.stringful(this.constructor.name, "App instance has no name");
 
-    return this._name;
+    Object.defineProperty(this, "name", {
+      value: name,
+      writable: false,
+      enumerable: true,
+      configurable: true,
+    });
+
+    return name;
   }
 
   protected get setting() {
@@ -292,7 +298,6 @@ abstract class App<
 
   protected abstract runtime(): Output;
   protected abstract output(runtime: ReturnType<App<AT, Input, Output, Schema>["runtime"]>): ReturnType<App<AT, Input, Output, Schema>["runtime"]>;
-  private _name?: stringful;
   private _input?: Input;
   private _inputful?: NonNullable<Input>;
   private _inputString?: string;
