@@ -35,13 +35,12 @@ class Key<AT extends string> extends kFiletype<"Key", AT> {
         else
           return super.readful();
       else {
-        const key = Keychain.get(fullname),
-        { length } = key;
+        const key = Keychain.get(fullname);
 
-        if (length > 0)
-          return key as stringful;
-        else
+        if (key.length < 1)
           throw new EvalError("Fatal: key found in Keychain, but empty");
+        else
+          return key as stringful;
       }
     }
     catch (e) { throw new Error(`Key: load (${this.name})`, { cause: e }); }

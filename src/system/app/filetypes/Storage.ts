@@ -21,13 +21,7 @@ class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {
     );
   }
 
-  public write(
-    data: unknown,
-    overwrite:
-      | "line"
-      | "append"
-      | boolean = true,
-  ) {
+  public write(data: unknown, overwrite: "line" | "append" | boolean = true) {
     try {
       const { file } = this,
       buffer = data ?? null;

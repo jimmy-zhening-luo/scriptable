@@ -47,17 +47,16 @@ class File<Writable extends boolean> {
   private static bookmark(bookmark: string) {
     try {
       const alias = bookmark.trim(),
-      { length } = alias,
       manager = FileManager.iCloud();
 
-      if (length < 1)
+      if (alias.length < 1)
         throw new TypeError(`Bookmark alias is empty`);
       else if (!manager.bookmarkExists(alias))
         throw new ReferenceError(`Bookmark not found`);
       else
         return manager.bookmarkedPath(alias);
     }
-    catch (e) { throw new ReferenceError(`File: bookmark "${bookmark}"`, { cause: e }); }
+    catch (e) { throw new ReferenceError(`File: bookmark (${bookmark})`, { cause: e }); }
   }
 
   private static node(node: stringful) {
