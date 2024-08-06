@@ -1,16 +1,4 @@
 function error(e: Error) {
-  function notify(messages: readonly string[]) {
-    const n = new Notification,
-    lines = [...messages];
-
-    n.title = lines.shift() ?? "Fatal: Empty error trace.";
-    n.body = lines.join("\n");
-    n.sound = "failure";
-    n.schedule().catch((e: unknown) => {
-      throw new EvalError(`Fatal: Scriptable notification`, { cause: e });
-    });
-  }
-
   function print(e: ErrorLike) {
     function stringify(e: unknown): string {
       return Array.isArray(e)
@@ -35,16 +23,16 @@ function error(e: Error) {
   )
     errors.unshift(ee.cause as ErrorLike<true>);
 
-  const i = errors.findIndex((ee): ee is ErrorLike<true> => typeof ee === "object" && "message" in ee),
-  hoisted: readonly ErrorLike[] = i < 0
-    ? errors
-    : [errors[i] as ErrorLike<true>, ...errors.slice(0, i), ...errors.slice(i + 1)],
-  messages = hoisted.map(e => print(e));
+  const messages = errors.map(e => print(e)),
+  n = new Notification;
 
+  n.title = messages[0] ?? "Fatal: Empty error trace.";
+  n.body = messages.slice(1).join("\n");
+  n.sound = "failure";
+  n.schedule().catch((e: unknown) => logError(e));
   logError(messages.join("\n"));
-  notify(messages);
 
-  return messages[0] ?? "";
+  return e;
 }
 
 module.exports = error;

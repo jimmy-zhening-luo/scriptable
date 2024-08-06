@@ -125,60 +125,7 @@ abstract class App<
     try {
       return this.output(this.runtime());
     }
-    catch (e) { throw new Error(App.error(new Error(`${this.name}: runtime`, { cause: e }))); }
-  }
-
-  protected stringful(
-    string: string,
-    error = "",
-  ) {
-    if (string.length > 0)
-      return string as stringful;
-    else
-      throw new TypeError("Not stringful", { cause: error });
-  }
-
-  protected stringfuls(
-    array: string[],
-    error = "",
-  ) {
-    if (array.every((i): i is stringful => i.length > 0))
-      return array;
-    else
-      throw new TypeError("Not stringful array", { cause: { array, error } });
-  }
-
-  protected guid64() {
-    const CTOH = {
-      A: 10,
-      B: 11,
-      C: 12,
-      D: 13,
-      E: 14,
-      F: 15,
-    } as const,
-    hexes = [...UUID.string().replace("-", "")].map(c => typeof CTOH[c as keyof typeof CTOH] === "undefined" ? Number(c) as decimal : CTOH[c as Exclude<hexchar, digit>]) satisfies hex[] as unknown as Tuple<hex, 32>,
-    buffer: Octad<hex[]> = [
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-    ];
-
-    hexes.forEach((h, i) => {
-      buffer[Math.floor(i / 4) as octal].push(h);
-    });
-
-    return String.fromCharCode(...(buffer satisfies Octad<hex[]> as unknown as Octad<Quad<hex>>)
-      .map(q => q.reduce((q: number, qi) => q + qi, 0))
-      .map(c => c + 43)
-      .map(c => c > 43 ? c + 3 : c)
-      .map(c => c > 57 ? c + 7 : c)
-      .map(c => c > 90 ? c + 6 : c));
+    catch (e) { throw App.error(new Error(`${this.name}: run`, { cause: e })); }
   }
 
   protected read(
@@ -195,10 +142,7 @@ abstract class App<
     return this.storage(file, ext).read(stringfully);
   }
 
-  protected readful(
-    file?: string,
-    ext?: string,
-  ) {
+  protected readful(file?: string, ext?: string) {
     return this.storage(file, ext).readful();
   }
 
@@ -236,10 +180,7 @@ abstract class App<
     this.key(handle).roll();
   }
 
-  protected storage(
-    file?: Null<string>,
-    ext?: Null<string>,
-  ) {
+  protected storage(file?: Null<string>, ext?: Null<string>) {
     const cacheId = [file ?? "", ext ?? ""]
       .join(":"),
     cache = this._storage[cacheId] ?? null;
@@ -279,6 +220,56 @@ abstract class App<
 
       return newKey;
     }
+  }
+
+  protected stringful(
+    string: string,
+    error = "",
+  ) {
+    if (string.length > 0)
+      return string as stringful;
+    else
+      throw new TypeError("Not stringful", { cause: error });
+  }
+
+  protected stringfuls(array: string[], error = "") {
+    if (array.every((i): i is stringful => i.length > 0))
+      return array;
+    else
+      throw new TypeError("Not stringful array", { cause: { array, error } });
+  }
+
+  protected guid64() {
+    const CTOH = {
+      A: 10,
+      B: 11,
+      C: 12,
+      D: 13,
+      E: 14,
+      F: 15,
+    } as const,
+    hexes = [...UUID.string().replace("-", "")].map(c => typeof CTOH[c as keyof typeof CTOH] === "undefined" ? Number(c) as decimal : CTOH[c as Exclude<hexchar, digit>]) satisfies hex[] as unknown as Tuple<hex, 32>,
+    buffer: Octad<hex[]> = [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+    ];
+
+    hexes.forEach((h, i) => {
+      buffer[Math.floor(i / 4) as octal].push(h);
+    });
+
+    return String.fromCharCode(...(buffer satisfies Octad<hex[]> as unknown as Octad<Quad<hex>>)
+      .map(q => q.reduce((q: number, qi) => q + qi, 0))
+      .map(c => c + 43)
+      .map(c => c > 43 ? c + 3 : c)
+      .map(c => c > 57 ? c + 7 : c)
+      .map(c => c > 90 ? c + 6 : c));
   }
 
   protected url(string: string) {
