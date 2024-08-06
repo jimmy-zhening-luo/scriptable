@@ -18,9 +18,9 @@ abstract class Filetype<
     try {
       const EXT = "txt",
       alias = filetype,
-      root = apptype,
+      container = apptype,
       subpaths = [
-        root,
+        container,
         ...folder === null ? [] : [folder],
         [file, ext ?? EXT].join("."),
       ];

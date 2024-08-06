@@ -9,7 +9,7 @@ class File<Writable extends boolean> {
 
   constructor(
     public readonly writable: Writable,
-    public readonly alias: string,
+    alias: string,
     ...subpaths: string[]
   ) {
     try {
@@ -22,11 +22,11 @@ class File<Writable extends boolean> {
             .filter((node): node is stringful => node.length > 0)
             .map(node => File.node(node)),
         ),
-      parentSubpath = subpath.slice(0, -1);
+      parent = subpath.slice(0, -1);
 
       this.name = File.append(alias, subpath);
       this.path = File.append(bookmark, subpath);
-      this.parent = File.append(bookmark, parentSubpath);
+      this.parent = File.append(bookmark, parent);
       this.subpath = subpath.join("/");
     }
     catch (e) { throw new Error(`File`, { cause: e }); }
@@ -68,8 +68,8 @@ class File<Writable extends boolean> {
     );
   }
 
-  private static append(root: string, subpath: readonly string[]) {
-    return [root, ...subpath.length > 0 ? [...subpath] : []].join("/");
+  private static append(bookmark: string, subpath: readonly vstring<"filenode">[]) {
+    return [bookmark, ...subpath.length > 0 ? [...subpath] : []].join("/");
   }
 
   public read(stringfully = false) {
@@ -89,24 +89,17 @@ class File<Writable extends boolean> {
 
   public readful(error = "") {
     try {
-      const read = this.read(true),
-      { length } = read;
+      const read = this.read(true);
 
-      if (length > 0)
-        return read as stringful;
-      else
+      if (read.length < 1)
         throw new TypeError(error);
+      else
+        return read as stringful;
     }
     catch (e) { throw new Error(`File: readful (${this.name})`, { cause: e }); }
   }
 
-  public write(
-    string: string,
-    overwrite:
-      | "line"
-      | "append"
-      | boolean = false,
-  ) {
+  public write(string: string, overwrite: "line" | "append" | boolean = false) {
     try {
       const {
         writable,
@@ -126,14 +119,7 @@ class File<Writable extends boolean> {
             if (overwrite === false)
               throw new TypeError("Existing file, overwrite:false");
             else
-              manager.writeString(
-                path,
-                overwrite === "append"
-                  ? [this.read(), string].join("")
-                  : overwrite === "line"
-                    ? [string, this.read()].join("\n")
-                    : string,
-              );
+              manager.writeString(path, overwrite === "append" ? [this.read(), string].join("") : overwrite === "line" ? [string, this.read()].join("\n") : string);
           else {
             this.createParent();
             manager.writeString(path, string);
