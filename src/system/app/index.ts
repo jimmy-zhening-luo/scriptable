@@ -9,8 +9,7 @@ abstract class App<
   Output,
   Schema,
 > {
-  private readonly _storage: Record<string, Storage<AT>> = {};
-  private readonly _keys: Record<string, Key<AT>> = {};
+  private readonly cache: { storage: Record<string, Storage<AT>>; keys: Record<string, Key<AT>> } = { storage: {}, keys: {} };
 
   protected abstract apptype: literalful<AT>;
 
@@ -50,72 +49,66 @@ abstract class App<
   protected get name() {
     const name = this.stringful(this.constructor.name, "App instance has no name");
 
-    Object.defineProperty(this, "name", {
-      value: name,
-      writable: false,
-      enumerable: true,
-      configurable: true,
-    });
+    Object.defineProperty(this, "name", { value: name, enumerable: true });
 
     return name;
   }
 
-  protected get setting() {
-    return this._setting.parse;
+  protected get setting(): Schema extends Schema ? Schema : never {
+    const setting = new App.Setting<AT, Schema>(this.apptype, this.name).parse;
+
+    Object.defineProperty(this, "setting", { value: setting, enumerable: true });
+
+    return setting;
   }
 
   protected get input() {
-    if (typeof this._input === "undefined")
-      this._input = this.getInput;
+    const input = this.getInput;
 
-    return this._input;
+    Object.defineProperty(this, "input", { value: input, enumerable: true });
+
+    return input;
   }
 
   protected get inputful() {
     try {
-      if (typeof this._inputful === "undefined") {
-        const { input } = this;
+      const { input } = this;
 
-        if (this.truthy(input))
-          this._inputful = input;
-        else
-          throw new TypeError("Null input", { cause: { input, type: typeof input } });
+      if (!this.truthy(input))
+        throw new TypeError("Null input", { cause: { input, type: typeof input } });
+      else {
+        Object.defineProperty(this, "inputful", { value: input, enumerable: true });
+
+        return input;
       }
-
-      return this._inputful;
     }
     catch (e) { throw new TypeError(`App: inputful`, { cause: e }); }
   }
 
   protected get inputString() {
     try {
-      if (typeof this._inputString === "undefined") {
-        const { input } = this,
-        truthy = this.truthy(input) ? input : "";
+      const { input } = this,
+      truthy = this.truthy(input) ? input : "";
 
-        if (typeof truthy === "string" || typeof truthy === "number")
-          this._inputString = String(truthy);
-        else
-          throw new TypeError("Non-stringable input", { cause: { input, type: Array.isArray(input) ? "array" : typeof input } });
+      if (typeof truthy !== "string" && typeof truthy !== "number")
+        throw new TypeError("Non-stringable input", { cause: { input, type: Array.isArray(input) ? "array" : typeof input } });
+      else {
+        const inputString = String(truthy);
+
+        Object.defineProperty(this, "inputString", { value: inputString, enumerable: true });
+
+        return inputString;
       }
-
-      return this._inputString;
     }
     catch (e) { throw new TypeError(`App: inputString`, { cause: e }); }
   }
 
   protected get inputStringful() {
-    if (typeof this._inputStringful === "undefined")
-      this._inputStringful = this.stringful(this.inputString, "App: inputStringful");
+    const inputStringful = this.stringful(this.inputString, "App: inputStringful");
 
-    return this._inputStringful;
-  }
+    Object.defineProperty(this, "inputStringful", { value: inputStringful, enumerable: true });
 
-  private get _setting() {
-    if (typeof this.__setting === "undefined")
-      this.__setting = new App.Setting<AT, Schema>(this.apptype, this.name);
-
-    return this.__setting;
+    return inputStringful;
   }
 
   protected abstract get getInput(): Input;
@@ -189,7 +182,7 @@ abstract class App<
   protected storage(file?: Null<string>, ext?: Null<string>) {
     const cacheId = [file ?? "", ext ?? ""]
       .join(":"),
-    cache = this._storage[cacheId] ?? null;
+    cache = this.cache.storage[cacheId] ?? null;
 
     if (cache !== null)
       return cache;
@@ -203,14 +196,14 @@ abstract class App<
         ext,
       );
 
-      this._storage[cacheId] = newStorage;
+      this.cache.storage[cacheId] = newStorage;
 
       return newStorage;
     }
   }
 
   protected key(handle: string) {
-    const cache = this._keys[handle] ?? null;
+    const cache = this.cache.keys[handle] ?? null;
 
     if (cache !== null)
       return cache;
@@ -222,16 +215,13 @@ abstract class App<
         this.stringful(handle),
       );
 
-      this._keys[handle] = newKey;
+      this.cache.keys[handle] = newKey;
 
       return newKey;
     }
   }
 
-  protected stringful(
-    string: string,
-    error = "",
-  ) {
+  protected stringful(string: string, error = "") {
     if (string.length > 0)
       return string as stringful;
     else
@@ -298,11 +288,6 @@ abstract class App<
 
   protected abstract runtime(): Output;
   protected abstract output(runtime: ReturnType<App<AT, Input, Output, Schema>["runtime"]>): ReturnType<App<AT, Input, Output, Schema>["runtime"]>;
-  private _input?: Input;
-  private _inputful?: NonNullable<Input>;
-  private _inputString?: string;
-  private _inputStringful?: stringful;
-  private __setting?: Setting<AT, Schema>;
 }
 
 module.exports = App;
