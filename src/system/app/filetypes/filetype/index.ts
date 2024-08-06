@@ -17,7 +17,7 @@ abstract class Filetype<
   ) {
     try {
       const EXT = "txt",
-      bookmark = filetype,
+      alias = filetype,
       root = apptype,
       subpaths = [
         root,
@@ -27,11 +27,15 @@ abstract class Filetype<
 
       this.file = new this.File(
         writable,
-        bookmark,
+        alias,
         ...subpaths,
       );
     }
     catch (e) { throw new Error(`Filetype (${filetype}/${apptype}: ${folder ?? ""}/${file})`, { cause: e }); }
+  }
+
+  protected get name() {
+    return this.file.name;
   }
 
   protected get subpath() {

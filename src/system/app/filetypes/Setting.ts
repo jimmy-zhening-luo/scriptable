@@ -31,7 +31,7 @@ class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {
 
       return this._cache;
     }
-    catch (e) { throw new SyntaxError(`Setting: parse (${String(this)})`, { cause: e }); }
+    catch (e) { throw new SyntaxError(`Setting: parse (${this.name})`, { cause: e }); }
   }
 
   protected write(): never {

@@ -1,6 +1,7 @@
 import type { vstring } from "../../../../../common/valid/string/index";
 
 class File<Writable extends boolean> {
+  public readonly name: string;
   public readonly path: string;
   public readonly subpath: string;
   private readonly parent: string;
@@ -8,11 +9,11 @@ class File<Writable extends boolean> {
 
   constructor(
     public readonly writable: Writable,
-    bookmark: string,
+    public readonly alias: string,
     ...subpaths: string[]
   ) {
     try {
-      const root = File.bookmark(bookmark),
+      const bookmark = File.bookmark(alias),
       subpath = subpaths
         .flatMap(
           subpath => subpath
@@ -23,8 +24,9 @@ class File<Writable extends boolean> {
         ),
       parentSubpath = subpath.slice(0, -1);
 
-      this.path = File.append(root, subpath);
-      this.parent = File.append(root, parentSubpath);
+      this.name = File.append(alias, subpath);
+      this.path = File.append(bookmark, subpath);
+      this.parent = File.append(bookmark, parentSubpath);
       this.subpath = subpath.join("/");
     }
     catch (e) { throw new Error(`File`, { cause: e }); }
@@ -82,7 +84,7 @@ class File<Writable extends boolean> {
       else
         return this.manager.readString(path);
     }
-    catch (e) { throw new Error(`File: read (${String(this)})`, { cause: e }); }
+    catch (e) { throw new Error(`File: read (${this.name})`, { cause: e }); }
   }
 
   public readful(error = "") {
@@ -95,7 +97,7 @@ class File<Writable extends boolean> {
       else
         throw new TypeError(error);
     }
-    catch (e) { throw new Error(`File: readful (${String(this)})`, { cause: e }); }
+    catch (e) { throw new Error(`File: readful (${this.name})`, { cause: e }); }
   }
 
   public write(
@@ -137,11 +139,7 @@ class File<Writable extends boolean> {
             manager.writeString(path, string);
           }
     }
-    catch (e) { throw new Error(`File: write (${String(this)})`, { cause: e }); }
-  }
-
-  public toString() {
-    return this.path;
+    catch (e) { throw new Error(`File: write (${this.name})`, { cause: e }); }
   }
 
   private createParent() {

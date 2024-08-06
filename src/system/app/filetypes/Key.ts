@@ -44,7 +44,7 @@ class Key<AT extends string> extends kFiletype<"Key", AT> {
           throw new EvalError("Fatal: key found in Keychain, but empty");
       }
     }
-    catch (e) { throw new Error(`Key: load (${String(this)})`, { cause: e }); }
+    catch (e) { throw new Error(`Key: load (${this.name})`, { cause: e }); }
   }
 
   public add(roll = false) {
@@ -64,7 +64,7 @@ class Key<AT extends string> extends kFiletype<"Key", AT> {
           throw new EvalError("Fatal: Created key in Keychain with wrong value", { cause: { local, keychain } });
       }
     }
-    catch (e) { throw new Error(`Key: add (${String(this)})`, { cause: e }); }
+    catch (e) { throw new Error(`Key: add (${this.name})`, { cause: e }); }
   }
 
   public roll() {
