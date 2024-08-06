@@ -240,7 +240,17 @@ abstract class App<
   }
 
   protected guid64() {
-    const CTOH = {
+    const buffer: Octad<hex[]> = [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+    ],
+    CTOH = {
       A: 10,
       B: 11,
       C: 12,
@@ -248,17 +258,7 @@ abstract class App<
       E: 14,
       F: 15,
     } as const,
-    hexes = [...UUID.string().replace("-", "")].map(c => typeof CTOH[c as keyof typeof CTOH] === "undefined" ? Number(c) as decimal : CTOH[c as Exclude<hexchar, digit>]) satisfies hex[] as unknown as Tuple<hex, 32>,
-    buffer: Octad<hex[]> = [
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-    ];
+    hexes = [...UUID.string().replace("-", "")].map(c => typeof CTOH[c as keyof typeof CTOH] === "undefined" ? Number(c) as decimal : CTOH[c as Exclude<hexchar, digit>]) satisfies hex[] as unknown as Tuple<hex, 32>;
 
     hexes.forEach((h, i) => {
       buffer[Math.floor(i / 4) as octal].push(h);
