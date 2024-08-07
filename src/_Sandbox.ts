@@ -3,5 +3,5 @@
 // icon-color: deep-green; icon-glyph: leaf;
 "use strict";
 
-void 0;
-log(null);
+const foo = null;
+log(foo);
