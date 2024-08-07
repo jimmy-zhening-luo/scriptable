@@ -6,7 +6,6 @@
 import type { Shortcut } from "./system/Shortcut";
 
 namespace _Hello {
-
   const shortcut = importModule<typeof Shortcut>("./system/Shortcut");
 
   export class _Hello extends shortcut<
