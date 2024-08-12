@@ -14,11 +14,12 @@ namespace _Hello {
     Field<never, "space">
   > {
     protected runtime() {
-      const PATH_WORLDTIME = "worldtime",
-      hello = this.readful(),
-      space = this.stringful(this.setting.space ?? "", "space"),
+      const hello = this.readful() satisfies stringful,
+      { space } = this.setting,
+      spaceful = this.stringful(space, "setting.space") satisfies stringful,
+      PATH_WORLDTIME = "worldtime",
       worldtime = this.read(PATH_WORLDTIME),
-      warning = [hello satisfies stringful, space satisfies stringful, worldtime satisfies string].join("");
+      warning = `${hello satisfies stringful}${spaceful satisfies stringful}${worldtime}`;
 
       this.write(`World!\n(Previous: ${this.timestamp()})`, PATH_WORLDTIME);
       logWarning(warning);

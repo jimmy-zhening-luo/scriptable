@@ -79,12 +79,10 @@ namespace Filelink {
     }
 
     private validPath(nodes: Unflat) {
-      const path = this.stringfuls([nodes].flat()),
+      const path = this.stringfuls([nodes].flat(), "Path empty or has empty nodes"),
       { length } = path;
 
-      if (length < 1)
-        throw new SyntaxError(`Input path empty`);
-      else if (length < 2)
+      if (length < 2)
         throw new RangeError(`Path points to provider root`, { cause: path });
       else
         return path as ArrayN<stringful, 2>;

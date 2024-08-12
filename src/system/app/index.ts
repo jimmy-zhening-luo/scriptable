@@ -204,18 +204,18 @@ abstract class App<
     }
   }
 
-  protected stringful(string: string, error = "") {
+  protected stringful(string = "", error = "") {
     if (string.length > 0)
       return string as stringful;
     else
-      throw new TypeError("Not stringful", { cause: error });
+      throw new TypeError("Unstringful", { cause: error });
   }
 
-  protected stringfuls(array: string[], error = "") {
-    if (array.every((i): i is stringful => i.length > 0))
-      return array;
+  protected stringfuls<T extends readonly string[]>(array: T, error = "") {
+    if (array.length > 0 && array.every((i): i is stringful => i.length > 0))
+      return array as unknown as (T extends readonly [string, ...string[]] ? { [K in keyof T]: stringful; } : Arrayful<stringful>);
     else
-      throw new TypeError("Not stringful array", { cause: { array, error } });
+      throw new TypeError("Unstringful array", { cause: { array, error } });
   }
 
   protected timestamp(date = new Date) {

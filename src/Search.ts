@@ -65,7 +65,7 @@ namespace Search {
         two,
         three,
         rest,
-      ]) satisfies stringful[] as unknown as Nonad<stringful>,
+      ] as const),
       query = new Search.Query(
         this.inputString.length > 0 ? this.inputString : this.read(),
         CHAT,
