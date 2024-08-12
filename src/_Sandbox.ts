@@ -4,4 +4,5 @@
 "use strict";
 
 const foo = null;
+
 log(foo);
