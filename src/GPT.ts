@@ -42,7 +42,7 @@ namespace GPT {
         p: "p" in wrap && wrap.p >= limit.p.min && wrap.p <= limit.p.max ? wrap.p : p,
         preset: "preset" in wrap && wrap.preset in presets ? wrap.preset : preset,
         location: wrap.location ?? location,
-        date: wrap.date ?? this.dateprint,
+        date: wrap.date ?? this.dateprint(),
       },
       presetConfig = presets[opts.preset] ?? null,
       [presetPlugins, plugins] = presetConfig === null || !("plugins" in presetConfig) ? [{}, {}] : [presetConfig.plugins, wrap.plugins ?? {}],

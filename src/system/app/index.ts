@@ -29,23 +29,6 @@ abstract class App<
     return importModule<error>("error/index");
   }
 
-  protected get timestamp() {
-    const d = new DateFormatter;
-
-    d.dateFormat = "yyyyMMddhhmmssZ";
-
-    return d.string(new Date);
-  }
-
-  protected get dateprint() {
-    const d = new DateFormatter;
-
-    d.dateFormat = "EEEE, MMMM d, y";
-    d.locale = "en";
-
-    return d.string(new Date);
-  }
-
   protected get name() {
     const name = this.stringful(this.constructor.name, "App instance has no name");
 
@@ -233,6 +216,23 @@ abstract class App<
       return array;
     else
       throw new TypeError("Not stringful array", { cause: { array, error } });
+  }
+
+  protected timestamp(date = new Date) {
+    const d = new DateFormatter;
+
+    d.dateFormat = "yyyyMMddhhmmssZ";
+
+    return d.string(date);
+  }
+
+  protected dateprint(date = new Date) {
+    const d = new DateFormatter;
+
+    d.dateFormat = "EEEE, MMMM d, y";
+    d.locale = "en";
+
+    return d.string(date);
   }
 
   protected guid64() {
