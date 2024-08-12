@@ -1,17 +1,13 @@
 function error(e: Error) {
-  function print(e: ErrorLike) {
-    function stringify(e: unknown): string {
-      return Array.isArray(e)
-        ? `[${e.map((i: unknown) => stringify(i)).join(", ")}]`
-        : typeof e === "object" && e !== null
-          ? Object
-            .keys(e)
-            .map(k => `${k}: ${stringify((e as FieldTable)[k])}`)
-            .join(", ")
-          : String(e);
-    }
-
-    return typeof e === "object" && "message" in e ? e.message : stringify(e);
+  function stringify(e: unknown): string {
+    return Array.isArray(e)
+      ? `[${e.map((i: unknown) => stringify(i)).join(", ")}]`
+      : typeof e === "object" && e !== null
+        ? Object
+          .keys(e)
+          .map(k => `${k}: ${stringify((e as FieldTable)[k])}`)
+          .join(", ")
+        : String(e);
   }
 
   const errors = [e] as ErrorLike[];
@@ -23,7 +19,7 @@ function error(e: Error) {
   )
     errors.unshift(ee.cause as ErrorLike<true>);
 
-  const messages = errors.map(e => print(e)),
+  const messages = errors.map(e => typeof e === "object" && "message" in e ? e.message : stringify(e)),
   n = new Notification;
 
   n.title = messages[0] ?? "Fatal: Empty error trace.";
