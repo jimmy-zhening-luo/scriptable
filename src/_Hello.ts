@@ -20,7 +20,7 @@ namespace _Hello {
       worldtime = this.read(PATH_WORLDTIME),
       warning = [hello satisfies stringful, space satisfies stringful, worldtime satisfies string].join("");
 
-      this.write(`World!\n(Previous: ${this.timestamp})`, PATH_WORLDTIME);
+      this.write(`World!\n(Previous: ${this.timestamp()})`, PATH_WORLDTIME);
       logWarning(warning);
 
       return warning;
