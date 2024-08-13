@@ -4,10 +4,7 @@ abstract class SearchEngine<T extends "browser" | "find" | "shortcut"> {
   constructor(protected readonly app: T, protected readonly thing: string, protected readonly output: string | boolean = false) {}
 
   public resolve(query: Query) {
-    if (query.locked)
-      return { ...this.required(query), ...this.options(query) };
-    else
-      throw new SyntaxError(`Tried to resolve unlocked query`);
+    return { ...this.required(query), ...this.options(query) };
   }
 
   protected transform(query: Query): Unflat {

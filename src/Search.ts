@@ -28,87 +28,41 @@ namespace Search {
     }
 
     protected runtime() {
-      const { app, user } = this.setting,
-      {
-        tag,
-        key: {
-          chat,
-          translate,
-          mathShort,
-          mathLong,
-        },
-        fallback: {
-          one,
-          two,
-          three,
-          rest,
-        },
-      } = app,
-      { engines, alias } = user,
-      [
-        TAG,
-        CHAT,
-        TRANSLATE,
-        MATH_SHORT,
-        MATH_LONG,
-        ONE,
-        TWO,
-        THREE,
-        REST,
-      ] = this.stringfuls([
-        tag,
-        chat,
-        translate,
-        mathShort,
-        mathLong,
-        one,
-        two,
-        three,
-        rest,
+      const { inputString, setting } = this,
+      input = inputString.length > 0 ? inputString : this.read(),
+      { app: { tag, key, fallback }, user: { engines, alias } } = setting,
+      TAG = this.stringful(tag),
+      params = this.stringfuls([
+        key.chat,
+        key.translate,
+        key.mathShort,
+        key.mathLong,
+        fallback.one,
+        fallback.two,
+        fallback.three,
+        fallback.rest,
       ] as const),
-      query = new Search.Query(
-        this.inputString.length > 0 ? this.inputString : this.read(),
-        CHAT,
-        TRANSLATE,
-        MATH_SHORT,
-        MATH_LONG,
-        ONE,
-        TWO,
-        THREE,
-        REST,
-      ),
-      keyToken = query.key,
-      dealias = alias[keyToken] ?? null;
+      query = new Search.Query(input, engines, alias, ...params),
+      entry = engines[query.key] ?? null;
 
-      query.lock(
-        keyToken in engines
-          ? keyToken
-          : dealias !== null && dealias in engines && dealias.length > 0
-            ? dealias as stringful
-            : null,
-      );
-
-      const { key } = query,
-      setting = engines[key] ?? null;
-
-      if (setting === null)
-        throw new ReferenceError(`Search key has no engine setting`, { cause: key });
+      if (entry === null)
+        throw new ReferenceError(`Search key has no matching record`, { cause: query.key });
       else {
-        const engine = Array.isArray(setting) || typeof setting === "string"
-          ? new (this.SearchEngine("browser"))(setting, TAG)
-          : "url" in setting
+        const engine = Array.isArray(entry) || typeof entry === "string"
+          ? new (this.SearchEngine("browser"))(entry, TAG)
+          : "url" in entry
             ? new (this.SearchEngine("browser"))(
-              setting.url,
+              entry.url,
               TAG,
-              setting.browser,
-              setting.separator,
-              setting.encodeComponent,
-              setting.inprivate,
-              setting.output,
+              entry.browser,
+              entry.separator,
+              entry.encodeComponent,
+              entry.inprivate,
+              entry.output,
             )
-            : "shortcut" in setting
-              ? new (this.SearchEngine("shortcut"))(setting.shortcut, setting.output)
-              : new (this.SearchEngine("find"))(setting.find);
+            : "shortcut" in entry
+              ? new (this.SearchEngine("shortcut"))(entry.shortcut, entry.output)
+              : new (this.SearchEngine("find"))(entry.find);
 
         this.write(String(query));
 

@@ -1,46 +1,11 @@
 class Query {
+  public readonly key: stringful;
   public readonly terms: stringful[];
-  protected _key: stringful;
-  protected _locked = false;
-  private readonly NUMERIC = [
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    ".",
-    "!",
-    ",",
-    ":",
-    "(",
-    ")",
-    "[",
-    "]",
-    "{",
-    "}",
-    "<",
-    ">",
-    "=",
-    "+",
-    "-",
-    "*",
-    "/",
-    "^",
-    "%",
-    "~",
-    "|",
-    "&",
-    "#",
-    "$",
-  ];
 
   constructor(
-    query: string,
+    input: string,
+    engines: SearchSetting["user"]["engines"],
+    alias: FieldTable,
     CHAT: stringful,
     TRANSLATE: stringful,
     MATH_SHORT: stringful,
@@ -51,11 +16,11 @@ class Query {
     private readonly REST: stringful,
   ) {
     try {
-      const [key, ...terms] = Query.mathefy(
+      const [K, ...T] = Query.mathefy(
         Query.dedot(
           Query.transliterate(
             Query.tokenize(
-              query,
+              input,
               ONE,
               TWO,
               THREE,
@@ -67,21 +32,46 @@ class Query {
         TRANSLATE,
         MATH_SHORT,
         MATH_LONG,
-        this.NUMERIC,
+        [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          ".",
+          "(",
+          ")",
+          "<",
+          ">",
+          "+",
+          "-",
+          "%",
+          "~",
+          "#",
+          "$",
+        ],
       );
 
-      this.terms = terms;
-      this._key = Query.toLower(key);
+      this.terms = T;
+
+      const key = (K satisfies stringful).toLowerCase() as stringful;
+
+      if (key in engines)
+        this.key = key;
+      else
+        if ((alias[key] as stringful) in engines)
+          this.key = alias[key] as stringful;
+        else {
+          this.terms.unshift(key);
+          this.key = this.REST;
+        }
     }
     catch (e) { throw new Error(`Query`, { cause: e }); }
-  }
-
-  public get key() {
-    return this._key;
-  }
-
-  public get locked() {
-    return this._locked;
   }
 
   public get natural() {
@@ -109,16 +99,16 @@ class Query {
         .filter((token): token is stringful => token.length > 0),
     ];
 
-    if (tokens.length > 0)
-      return tokens as Arrayful<stringful>;
+    if (tokens.length < 1)
+      throw new SyntaxError(`no tokens in query`, { cause: query });
     else
-      throw new SyntaxError(`no tokens in query`, { cause: String(query) });
+      return tokens as Arrayful<stringful>;
   }
 
   private static transliterate(tokens: Arrayful<stringful>, TRANSLATE: stringful) {
     const LANG_TAG = "@" as stringful,
     [T0] = tokens,
-    t0 = Query.toLower(T0),
+    t0 = (T0 satisfies stringful).toLowerCase() as stringful,
     pre = t0.startsWith(LANG_TAG)
       ? [TRANSLATE]
       : t0.startsWith(TRANSLATE)
@@ -143,11 +133,11 @@ class Query {
 
   private static dedot(tokens: Arrayful<stringful>) {
     const [T0] = tokens,
-    T0_Dedot = T0.endsWith(".") && !T0.startsWith(".") ? T0.slice(0, -1) as stringful : null;
+    dedot0 = T0.endsWith(".") && !T0.startsWith(".") ? T0.slice(0, -1) as stringful : null;
 
-    if (T0_Dedot !== null) {
+    if (dedot0 !== null) {
       tokens.shift();
-      tokens.unshift(T0_Dedot);
+      tokens.unshift(dedot0);
     }
 
     return tokens;
@@ -168,10 +158,10 @@ class Query {
       MATH_LONG,
     ] as const,
     [T0] = tokens,
-    t0 = Query.toLower(T0),
-    t0_len = t0.length,
+    t0 = (T0 satisfies stringful).toLowerCase() as stringful,
+    len0 = t0.length,
     longest = [...M]
-      .filter(mk => t0_len >= mk.length)
+      .filter(mk => len0 >= mk.length)
       .sort((a, b) => b.length - a.length)
       .find(mk => t0.startsWith(mk)) ?? null;
 
@@ -189,21 +179,6 @@ class Query {
     }
 
     return tokens;
-  }
-
-  private static toLower(stringful: stringful) {
-    return stringful.toLowerCase() as stringful;
-  }
-
-  public lock(key: Null<stringful>) {
-    if (key !== null)
-      this._key = key;
-    else {
-      this.terms.unshift(this.key);
-      this._key = this.REST;
-    }
-
-    this._locked = true;
   }
 
   public toString() {
