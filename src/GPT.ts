@@ -8,11 +8,7 @@ import type { Shortcut } from "./system/Shortcut";
 namespace GPT {
   const shortcut = importModule<typeof Shortcut>("./system/Shortcut");
 
-  export class GPT extends shortcut<
-    GptInput,
-    GptOutput,
-    GptSetting
-  > {
+  export class GPT extends shortcut<GptInput, GptOutput, GptSetting> {
     protected runtime() {
       function has<T extends "model" | "preset">(
         option: T,
