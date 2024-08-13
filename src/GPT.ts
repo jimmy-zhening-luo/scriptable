@@ -36,7 +36,7 @@ namespace GPT {
       input = this.inputful,
       wrap = typeof input !== "string" && "prompt" in input ? input : { prompt: input },
       opts = {
-        model: "model" in wrap && String(wrap.model) in models ? wrap.model : model,
+        model: "model" in wrap && wrap.model in models ? wrap.model : model,
         token: "token" in wrap && wrap.token >= limit.token.min && wrap.token <= limit.token.max ? wrap.token : token,
         temperature: "temperature" in wrap && wrap.temperature >= limit.temperature.min && wrap.temperature <= limit.temperature.max ? wrap.temperature : temperature,
         p: "p" in wrap && wrap.p >= limit.p.min && wrap.p <= limit.p.max ? wrap.p : p,
