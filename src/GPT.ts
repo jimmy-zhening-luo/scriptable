@@ -14,60 +14,67 @@ namespace GPT {
     GptSetting
   > {
     protected runtime() {
-      const { app, user } = this.setting,
+      function has<T extends "model" | "preset">(
+        option: T,
+        thing: Record<string, unknown>,
+        input: Partial<GptOpts>,
+        defaults: GptOpts,
+      ) {
+        return typeof input[option] !== "undefined" && input[option] in thing ? input[option] : defaults[option];
+      }
+
+      function bounded<T extends "token" | "temperature" | "p">(
+        option: T,
+        limit: Record<T, Boundary>,
+        input: Partial<GptOpts>,
+        defaults: GptOpts,
+      ) {
+        return typeof input[option] !== "undefined" && input[option] >= limit[option].min && input[option] <= limit[option].max ? input[option] : defaults[option];
+      }
+
+      const { inputful, setting } = this,
       {
-        api,
-        models,
-        limit,
-        tags,
-      } = app,
-      {
-        id,
-        presets,
-        defaults: {
-          model,
-          preset,
-          location,
-          token,
-          temperature,
-          p,
+        app: {
+          api: { host, version, action },
+          models,
+          limit,
+          tags,
         },
-      } = user,
-      input = this.inputful,
-      wrap = typeof input !== "string" && "prompt" in input ? input : { prompt: input },
-      opts = {
-        model: "model" in wrap && wrap.model in models ? wrap.model : model,
-        token: "token" in wrap && wrap.token >= limit.token.min && wrap.token <= limit.token.max ? wrap.token : token,
-        temperature: "temperature" in wrap && wrap.temperature >= limit.temperature.min && wrap.temperature <= limit.temperature.max ? wrap.temperature : temperature,
-        p: "p" in wrap && wrap.p >= limit.p.min && wrap.p <= limit.p.max ? wrap.p : p,
-        preset: "preset" in wrap && wrap.preset in presets ? wrap.preset : preset,
-        location: wrap.location ?? location,
-        date: wrap.date ?? this.dateprint(),
+        user: { id, presets, defaults },
+      } = setting,
+      input = typeof inputful !== "string" && "prompt" in inputful ? inputful : { prompt: inputful },
+      option = {
+        model: has("model", models, input, defaults),
+        token: bounded("token", limit, input, defaults),
+        temperature: bounded("temperature", limit, input, defaults),
+        p: bounded("p", limit, input, defaults),
+        preset: has("preset", presets, input, defaults),
+        location: input.location ?? defaults.location,
+        date: input.date ?? this.dateprint(),
       },
-      presetConfig = presets[opts.preset] ?? null,
-      [presetPlugins, plugins] = presetConfig === null || !("plugins" in presetConfig) ? [{}, {}] : [presetConfig.plugins, wrap.plugins ?? {}],
-      plugs = Object.keys(presetPlugins),
-      promptTemplate = typeof wrap.prompt !== "string" ? wrap.prompt : presetConfig === null ? { user: wrap.prompt } : { system: presetConfig.system, user: "user" in presetConfig && presetConfig.user.includes(tags.preset) ? presetConfig.user.replace(tags.preset, wrap.prompt) : wrap.prompt },
+      preset = presets[option.preset] ?? null,
+      [presetPlugins, plugins] = preset === null || !("plugins" in preset) ? [{}, {}] : [preset.plugins, input.plugins ?? {}],
+      promptTemplate = typeof input.prompt !== "string" ? input.prompt : preset === null ? { user: input.prompt } : { system: preset.system, user: "user" in preset && preset.user.includes(tags.preset) ? preset.user.replace(tags.preset, input.prompt) : input.prompt },
       messagesTemplate = "system" in promptTemplate ? [["system", promptTemplate.system], ["user", promptTemplate.user]] as const : [["user", promptTemplate.user]] as const,
-      messagesFilled = messagesTemplate
-        .map(([role, prompt]) => [
-          role,
-          plugs
-            .reduce((tagged, plug) => tagged.replaceAll(`{{${plug}}}`, plugins[plug] ?? presetPlugins[plug] ?? ""), prompt)
-            .replaceAll(tags.location, opts.location)
-            .replaceAll(tags.date, opts.date),
-        ] as const),
+      messagesFilled = messagesTemplate.map(([role, prompt]) => [
+        role,
+        Object
+          .keys(presetPlugins)
+          .reduce((tagged, plug) => tagged.replaceAll(`{{${plug}}}`, plugins[plug] ?? presetPlugins[plug] ?? ""), prompt)
+          .replaceAll(tags.location, option.location)
+          .replaceAll(tags.date, option.date),
+      ] as const),
       messages = messagesFilled.map(([role, content]) => { return { role, content }; });
 
       return {
-        api: [api.host, api.version, api.action[opts.model]].join("/"),
-        header: { auth: id.token, org: id.org },
+        api: [host, version, action[option.model]].join("/"),
+        header: id,
         body: {
           messages,
-          model: models[opts.model],
-          max_tokens: String(opts.token),
-          temperature: String(opts.temperature),
-          top_p: String(opts.p),
+          model: models[option.model],
+          max_tokens: String(option.token),
+          temperature: String(option.temperature),
+          top_p: String(option.p),
         },
       };
     }

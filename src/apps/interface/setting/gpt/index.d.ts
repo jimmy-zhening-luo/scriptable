@@ -18,7 +18,7 @@ declare interface GptSetting {
     >;
   };
   user: {
-    id: Field<"token" | "org">;
+    id: Field<"auth" | "org">;
     defaults: GptOpts;
     presets: Table<GptPreset>;
   };
