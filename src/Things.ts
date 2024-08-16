@@ -47,7 +47,11 @@ namespace Things {
               tokens.push((tokens.pop() ?? "").slice(1));
 
             const untaggedItem = tokens.join(""),
-            [when, list] = tag === null ? [null, null] : tag.length < 1 || tag === LINE || !(tag in lists) || (lists[tag] ?? "").length < 1 ? ["today", null] : [null, lists[tag] as unknown as string],
+            [when, list] = tag === null
+              ? [null, null]
+              : !(tag in lists)
+                ? ["today", null]
+                : [null, lists[tag]?[id] ?? ""],
             lines = untaggedItem.split(LINE);
 
             return {
