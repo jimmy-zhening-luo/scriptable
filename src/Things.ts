@@ -18,7 +18,7 @@ namespace Things {
       { TAG, LINE, ITEM } = delims,
       validator = [TAG, LINE, ITEM] as const;
 
-      if (validator.some(d => d.length < 0))
+      if (validator.some(d => d.length < 1))
         throw new TypeError(`Delim empty or too short`, { cause: delims });
       else if (TAG === ITEM || TAG === LINE || ITEM === LINE)
         throw new SyntaxError(`Conflicting delims`, { cause: delims });
