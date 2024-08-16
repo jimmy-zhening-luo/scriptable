@@ -50,8 +50,8 @@ namespace Things {
             [when, list] = tag === null
               ? [null, null]
               : !(tag in lists)
-                ? ["today", null]
-                : [null, lists[tag]?.id ?? ""],
+                  ? ["today", null]
+                  : [null, lists[tag]?.id ?? ""],
             lines = untaggedItem.split(LINE);
 
             return {
