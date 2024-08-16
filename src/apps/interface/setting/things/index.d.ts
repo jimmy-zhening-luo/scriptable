@@ -1,4 +1,4 @@
 declare interface ThingsSetting {
   delims: Field<"TAG" | "ITEM" | "LINE">;
-  lists: Table<Field<"handle" | "id">>;
+  lists: Table<Field<"id">>;
 }
