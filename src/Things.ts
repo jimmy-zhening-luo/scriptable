@@ -39,14 +39,14 @@ namespace Things {
 
         return items.map(
           (item): ThingsItem => {
-            const tokens = item.split("::"),
-            { length } = tokens,
-            tag = length > 1 ? (tokens[length - 1] ?? "")[0]?.toLowerCase() ?? null : null;
+            const untag = item.split(TAG),
+            { length } = untag,
+            tag = length > 1 ? (untag[length - 1] ?? "")[0]?.toLowerCase() ?? null : null;
 
             if (tag !== null)
-              tokens.push((tokens.pop() ?? "").slice(1));
+              untag.push((untag.pop() ?? "").slice(1));
 
-            const untaggedItem = tokens.join(""),
+            const untaggedItem = untag.join(""),
             [when, list] = tag === null
               ? [null, null]
               : !(tag in lists)
