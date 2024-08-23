@@ -2,11 +2,17 @@
   "_schemaVersion": "20.16.1",
   "name": "@jimbojet/scriptable",
   "version": "7.5.14",
-  "description": "A compelling use of Scriptable is using JavaScript to control custom iOS actions (see iOS Shortcuts), device-side and home automation, and on-screen Widgets. This project extends the Scriptable ecosystem by providing system classes like File, Url, Repository, Config, Data — making all the above safer and easier to do.",
+  "description": "Scriptable iOS/iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts or Widgets, useful for complex device/home automation and data transforms. This TypeScript project provides a standard class with hooks for Shortcut and filesystem I/O (e.g. settings/cache), transpiling to valid Scriptable code.",
   "keywords": [
-    "ios",
-    "shortcuts",
     "scriptable",
+    "ios",
+    "ipados",
+    "iphone",
+    "ipad",
+    "apple",
+    "shortcuts",
+    "widget",
+    "automation",
     "typescript"
   ],
   "license": "MIT",
@@ -27,7 +33,7 @@
   },
   "peerDependenciesMeta": {},
   "devDependencies": {
-    "eslint": "~9.9.0",
+    "eslint": "~9.9.1",
     "linted": "~16.3.4",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.5.4"

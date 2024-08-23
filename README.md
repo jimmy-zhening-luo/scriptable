@@ -4,13 +4,13 @@
 
 ## What is Scriptable?
 
-A compelling use of Scriptable is using JavaScript to control custom iOS actions (see iOS Shortcuts), device-side and home automation, and on-screen Widgets.
+Scriptable iOS/iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts or Widgets, useful for complex device/home automation and data transforms.
 
 Scriptable provides all the classes needed to interact with the above native iOS features and with the user.
 
 ## What is `@jimbojet/scriptable`?
 
-`@jimbojet/scriptable` extends the Scriptable ecosystem by providing system classes like File, Url, Repository, Setting, Data -- making it a lot safer and easier to e.g. write your code in a separate source controlled environment and then deploy it and test with a single button; write your code in TypeScript and then pull the JavaScript; write user libraries; create and mutate files; read and write data for a script you write without having to touch the file system; obtain a secret file from your local disk and load it into Keychain for later use (and configure re-load / key roll); define and read settings for a given script (with auto-merging of app-level and user-level settings, and error-handling if settings are improperly configured or otherwise invalid); get results from and return results to iOS Shortcuts; create and mutate URLs, making requests and handling responses for HTTP requests and x-callback-urls, opening the URL in Safari or WebView, opening other iOS url schemes.
+This TypeScript project provides a standard class with hooks for Shortcut and filesystem I/O (e.g. settings/cache), transpiling to valid Scriptable code.
 
 ## How to use
 
