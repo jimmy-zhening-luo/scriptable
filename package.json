@@ -1,7 +1,7 @@
 {
   "_schemaVersion": "20.16.1",
   "name": "@jimbojet/scriptable",
-  "version": "7.6.1",
+  "version": "7.6.2",
   "description": "Scriptable iOS/iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts or Widgets, useful for complex device/home automation and data transforms. This TypeScript project provides a standard class with hooks for Shortcut and filesystem I/O (e.g. settings/cache), transpiling to valid Scriptable code.",
   "keywords": [
     "scriptable",
