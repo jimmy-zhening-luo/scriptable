@@ -20,7 +20,13 @@ class BrowserEngine extends bSearchEngine<"browser"> {
     inprivate = false,
     output?: string | boolean,
   ) {
-    super("browser", browser, browser === "api" ? output ?? true : false);
+    super(
+      "browser",
+      browser,
+      browser === "api"
+        ? output ?? true
+        : false,
+    );
     this.TAG = TAG;
     this.separator = separator;
     this.encodeComponent = encodeComponent;

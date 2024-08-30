@@ -71,7 +71,9 @@ class Query {
           this.key = this.REST;
         }
     }
-    catch (e) { throw new Error(`Query`, { cause: e }); }
+    catch (e) {
+      throw new Error(`Query`, { cause: e });
+    }
   }
 
   public get natural() {

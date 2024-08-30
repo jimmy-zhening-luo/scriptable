@@ -9,23 +9,7 @@ class DropboxPathProcessor extends drop_ILinkPathProcessor<"dropbox.com"> {
     else {
       const nodes = path.split("/");
 
-      if (nodes.length < 4)
-        return path;
-      else {
-        const [
-          BLANK,
-          SCL,
-          FI,
-          fileId,
-        ] = nodes as ArrayN<string, 4>;
-
-        return [
-          BLANK,
-          SCL,
-          FI,
-          fileId,
-        ].join("/");
-      }
+      return nodes.length < 4 ? path : nodes.slice(0, 4).join("/");
     }
   }
 }
