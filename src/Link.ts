@@ -79,8 +79,8 @@ namespace Link {
       return [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#");
     }
 
-    private Processor<H extends string>(host: H): new (host: H, path: string)=> LinkPathProcessor<H> {
-      return importModule<new (host: H, path: string)=> LinkPathProcessor<H>>(`./apps/method/link/processors/${host}`);
+    private Processor<H extends string>(host: H): new (host: H, path: string) => LinkPathProcessor<H> {
+      return importModule<new (host: H, path: string) => LinkPathProcessor<H>>(`./apps/method/link/processors/${host}`);
     }
   }
 }

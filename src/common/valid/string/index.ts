@@ -22,7 +22,7 @@ function vstring<Validator extends string>(
       exclude(string: string, chars: char[]): string is vstring<Validator> {
         return chars.every(c => !string.includes(c));
       },
-    } satisfies Record<Filter, (string: string, chars: char[])=> string is vstring<Validator>>;
+    } satisfies Record<Filter, (string: string, chars: char[]) => string is vstring<Validator>>;
 
     if (min > max)
       throw new RangeError(`Bad args: min > max`);

@@ -41,10 +41,10 @@ declare namespace NotInterface {
   export type N1f = Interface<readonly [1]>;
   export type N1g = Interface<readonly [1, 1]>;
   export type N1h = Interface<readonly number[]>;
-  export type N2 = Interface<()=> void>;
-  export type N2a = Interface<(a: string)=> boolean>;
-  export type N2b = Interface<(a: string)=> string[]>;
-  export type N2c = Interface<(a: string)=> object>;
+  export type N2 = Interface<() => void>;
+  export type N2a = Interface<(a: string) => boolean>;
+  export type N2b = Interface<(a: string) => string[]>;
+  export type N2c = Interface<(a: string) => object>;
   export type N5 = Interface<[] | { a: 1 }>;
   export type N5a = Interface<[30] | { a: 1 }>;
   export type N5b = Interface<object | []>;

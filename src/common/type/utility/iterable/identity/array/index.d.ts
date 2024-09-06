@@ -38,8 +38,8 @@ declare namespace NotArrayType {
   export type N11 = ArrayType<unknown>;
   export type N12 = ArrayType<never>;
   export type N13 = ArrayType<void>;
-  export type N14 = ArrayType<()=> void>;
-  export type N15 = ArrayType<(a: string)=> []>;
+  export type N14 = ArrayType<() => void>;
+  export type N15 = ArrayType<(a: string) => []>;
   export type N16 = ArrayType<Record<string, unknown>>;
   export type N17 = ArrayType<Record<number, 5>>;
   export type N18 = ArrayType<stringful>;
