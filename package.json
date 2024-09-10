@@ -1,5 +1,5 @@
 {
-  "_schemaVersion": "20.17.0",
+  "_schemaVersion": "20.17.8",
   "name": "@jimbojet/scriptable",
   "version": "7.6.5",
   "description": "Scriptable iOS/iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts or Widgets, useful for complex device/home automation and data transforms. This TypeScript project provides a standard class with hooks for Shortcut and filesystem I/O (e.g. settings/cache), transpiling to valid Scriptable code.",
@@ -33,10 +33,10 @@
   },
   "peerDependenciesMeta": {},
   "devDependencies": {
-    "eslint": "~9.9.1",
-    "linted": "~16.4.0",
+    "eslint": "~9.10.0",
+    "linted": "~16.5.0",
     "npm-run-all": "^4.1.5",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   },
   "scripts": {
     "build": "run-s \"build:{1}:*\" lint:built  --  ts",
@@ -47,9 +47,9 @@
     "build:svelte:prelint": "npm run ln src/**/*.svelte",
     "lint": "npm run build",
     "lint:built": "run-s lint:built:*",
-    "lint:built:configs": "npm run ln {*,.github/workflows/*}.{json,jsonc,js,ts,yml}",
-    "lint:built:source": "npm run ln src/**/*.{js,ts,html}",
-    "ln": "eslint --cache --fix",
+    "lint:built:configs": "npm run ln --files={*,.github/workflows/*}.{json,jsonc,js,ts,yml}",
+    "lint:built:source": "npm run ln --files=src/**/*.{js,ts,html}",
+    "ln": "eslint --cache --fix --no-error-on-unmatched-pattern %npm_config_files% || echo \"No linter installed.\"",
     "pretest": "npm run build",
     "test": "",
     "start": "vite preview || node .",
