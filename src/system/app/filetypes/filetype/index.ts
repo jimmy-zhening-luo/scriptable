@@ -31,7 +31,9 @@ abstract class Filetype<
         ...subpaths,
       );
     }
-    catch (e) { throw new Error(`Filetype (${filetype}/${apptype}: ${folder ?? ""}/${file})`, { cause: e }); }
+    catch (e) {
+      throw new Error(`Filetype (${filetype}/${apptype}: ${folder ?? ""}/${file})`, { cause: e });
+    }
   }
 
   protected get name() {

@@ -33,7 +33,9 @@ function vstring<V extends string>(
     else
       return string;
   }
-  catch (e) { throw new SyntaxError(`vstring`, { cause: e }); }
+  catch (e) {
+    throw new SyntaxError(`vstring`, { cause: e });
+  }
 }
 
 module.exports = vstring;
