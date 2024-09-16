@@ -1,7 +1,7 @@
-declare type vstring<Validator extends string> = valid<stringful, [Validator, "string"]>;
+declare type vstring<V extends string> = valid<stringful, [V, "string"]>;
 type Filter = "include" | "exclude";
 
-function vstring<Validator extends string>(
+function vstring<V extends string>(
   string: string,
   chars: char[],
   {
@@ -13,16 +13,16 @@ function vstring<Validator extends string>(
     min?: Positive<fint>;
     max?: Positive<int>;
   } = {},
-): vstring<Validator> {
+): vstring<V> {
   try {
     const filters = {
-      include(string: string, chars: char[]): string is vstring<Validator> {
+      include(string: string, chars: char[]): string is vstring<V> {
         return [...string].every(s => chars.includes(s as char));
       },
-      exclude(string: string, chars: char[]): string is vstring<Validator> {
+      exclude(string: string, chars: char[]): string is vstring<V> {
         return chars.every(c => !string.includes(c));
       },
-    } satisfies Record<Filter, (string: string, chars: char[]) => string is vstring<Validator>>;
+    } satisfies Record<Filter, (string: string, chars: char[]) => string is vstring<V>>;
 
     if (min > max)
       throw new RangeError(`Bad args: min > max`);
