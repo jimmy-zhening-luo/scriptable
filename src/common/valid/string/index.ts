@@ -4,17 +4,17 @@ function vstring<V extends string>(
   string: string,
   chars: char[],
   {
-    comparator = "exclude",
+    rule = "exclude",
     min = 1 as Positive<fint>,
     max = Infinity as Positive<int>,
   }: {
-    comparator?: "include" | "exclude";
+    rule?: "include" | "exclude";
     min?: Positive<fint>;
     max?: Positive<int>;
   } = {},
 ): vstring<V> {
   try {
-    const comparators = {
+    const rules = {
       include(string: string, chars: char[]): string is vstring<V> {
         return [...string].every(s => chars.includes(s as char));
       },
@@ -27,7 +27,7 @@ function vstring<V extends string>(
       throw new RangeError(`Bad args: min > max`);
     else if (string.length < min)
       throw new TypeError(`String is too short`);
-    else if (!comparators[comparator](string, chars))
+    else if (!rules[rule](string, chars))
       throw new TypeError(`String has disallowed chars`);
     else
       return string;
