@@ -15,8 +15,7 @@ namespace _Hello {
   > {
     protected runtime() {
       const hello = this.readful() satisfies stringful,
-      { space } = this.setting,
-      spaceful = this.stringful(space, "setting.space") satisfies stringful,
+      spaceful = this.stringful(this.setting.space, "setting.space") satisfies stringful,
       PATH_WORLDTIME = "worldtime",
       worldtime = this.read(PATH_WORLDTIME),
       warning = `${hello satisfies stringful}${spaceful satisfies stringful}${worldtime}`;
