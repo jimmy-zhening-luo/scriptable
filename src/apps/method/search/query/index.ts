@@ -17,8 +17,8 @@ class Query {
   ) {
     try {
       const [K, ...T] = Query.mathefy(
-        Query.dedot(
-          Query.transliterate(
+        Query.undot(
+          Query.translator(
             Query.tokenize(
               input,
               ONE,
@@ -86,15 +86,15 @@ class Query {
     TWO: stringful,
     THREE: stringful,
   ) {
-    const preprocessed = query.startsWith(" ")
-      ? query.startsWith("  ")
-        ? query.startsWith("   ")
+    const implicit = query.startsWith(" ")
+      ? query.charAt(1) === " "
+        ? query.charAt(2) === " "
           ? [THREE]
           : [TWO]
         : [ONE]
       : [],
     tokens = [
-      ...preprocessed,
+      ...implicit,
       ...query
         .trim()
         .split(" ")
@@ -107,35 +107,36 @@ class Query {
       return tokens as Arrayful<stringful>;
   }
 
-  private static transliterate(tokens: Arrayful<stringful>, TRANSLATE: stringful) {
-    const LANG_TAG = "@" as stringful,
+  private static translator(tokens: Arrayful<stringful>, TRANSLATE: stringful) {
+    const LANGUAGE = "@" as stringful,
     [T0] = tokens,
     t0 = (T0 satisfies stringful).toLowerCase() as stringful,
-    pre = t0.startsWith(LANG_TAG)
+    language = t0.startsWith(LANGUAGE)
       ? [TRANSLATE]
       : t0.startsWith(TRANSLATE)
-        ? LANG_TAG === t0
-          .slice(TRANSLATE.length, TRANSLATE.length + LANG_TAG.length)
+        ? LANGUAGE === t0.slice(TRANSLATE.length, TRANSLATE.length + LANGUAGE.length)
           ? [TRANSLATE, tokens.shift()?.slice(TRANSLATE.length) as stringful]
           : TRANSLATE.length > t0.length
             ? [
                 TRANSLATE,
-                ([LANG_TAG, t0[TRANSLATE.length] as string] satisfies [stringful, string]).join("") as stringful,
-                ...TRANSLATE.length + LANG_TAG.length < (tokens.shift()?.length ?? 0)
-                  ? [t0.slice(TRANSLATE.length + LANG_TAG.length) as stringful]
+                ([LANGUAGE, t0[TRANSLATE.length] as string] satisfies [stringful, string]).join("") as stringful,
+                ...TRANSLATE.length + LANGUAGE.length < (tokens.shift()?.length ?? 0)
+                  ? [t0.slice(TRANSLATE.length + LANGUAGE.length) as stringful]
                   : [],
               ]
             : []
         : [];
 
-    tokens.unshift(...pre);
+    tokens.unshift(...language);
 
     return tokens;
   }
 
-  private static dedot(tokens: Arrayful<stringful>) {
+  private static undot(tokens: Arrayful<stringful>) {
     const [T0] = tokens,
-    dedot0 = T0.endsWith(".") && !T0.startsWith(".") ? T0.slice(0, -1) as stringful : null;
+    dedot0 = !T0.startsWith(".") && T0.endsWith(".")
+      ? T0.slice(0, -1) as stringful
+      : null;
 
     if (dedot0 !== null) {
       tokens.shift();
@@ -153,29 +154,28 @@ class Query {
     MATH_LONG: stringful,
     NUMERIC: readonly string[],
   ) {
-    const M = [
+    const [T0] = tokens,
+    t0 = (T0 satisfies stringful).toLowerCase() as stringful,
+    longest = [
       MATH_SHORT,
       CHAT,
       TRANSLATE,
       MATH_LONG,
-    ] as const,
-    [T0] = tokens,
-    t0 = (T0 satisfies stringful).toLowerCase() as stringful,
-    len0 = t0.length,
-    longest = [...M]
-      .filter(mk => len0 >= mk.length)
+    ]
+      .filter(math => t0.length >= math.length)
       .sort((a, b) => b.length - a.length)
-      .find(mk => t0.startsWith(mk)) ?? null;
+      .find(math => t0.startsWith(math))
+      ?? null;
 
     if (longest === null) {
       if (NUMERIC.includes(t0[0]))
         tokens.unshift(MATH_SHORT);
     }
     else {
-      const operand_0 = tokens.shift()?.slice(longest.length) ?? "";
+      const operand = tokens.shift()?.slice(longest.length) ?? "";
 
-      if (operand_0.length > 0)
-        tokens.unshift(operand_0 as stringful);
+      if (operand.length > 0)
+        tokens.unshift(operand as stringful);
 
       tokens.unshift(longest);
     }
@@ -184,11 +184,9 @@ class Query {
   }
 
   public toString() {
-    const { key, natural } = this,
-    predicates = [key, natural] as const satisfies Tuple<string>,
-    separator = " " satisfies literalful<" ">;
+    const { key, natural } = this;
 
-    return predicates.join(separator) as stringful;
+    return `${key satisfies stringful} ${natural}` as stringful;
   }
 }
 
