@@ -20,13 +20,15 @@ function error(e: Error) {
     errors.unshift(ee.cause as ErrorLike<true>);
 
   const messages = errors.map(e => typeof e === "object" && "message" in e ? e.message : stringify(e)),
+  title = messages[0] ?? "Fatal: Empty error trace.",
+  body = messages.slice(1).join("\n"),
   n = new Notification;
 
-  n.title = messages[0] ?? "Fatal: Empty error trace.";
-  n.body = messages.slice(1).join("\n");
+  n.title = title;
+  n.body = body;
   n.sound = "failure";
   n.schedule().catch((e: unknown) => logError(e));
-  logError(messages.join("\n"));
+  logError(`${title}\n${body}`);
 
   return e;
 }
