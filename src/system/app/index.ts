@@ -160,54 +160,12 @@ abstract class App<
     this.storage(file, ext).write(data, overwrite);
   }
 
-  protected load(handle: string) {
-    return this.key(handle).load();
+  protected load(handle: string, roll?: boolean) {
+    return this.key(handle).load(roll);
   }
 
-  protected roll(handle: string) {
-    this.key(handle).roll();
-  }
-
-  protected storage(file?: Null<string>, ext?: Null<string>) {
-    const cacheId = [file ?? "", ext ?? ""]
-      .join(":"),
-    cache = this.cache.storage[cacheId] ?? null;
-
-    if (cache !== null)
-      return cache;
-    else {
-      const { apptype, name } = this,
-      app = name,
-      newStorage = new App.Storage<AT>(
-        apptype,
-        app,
-        file,
-        ext,
-      );
-
-      this.cache.storage[cacheId] = newStorage;
-
-      return newStorage;
-    }
-  }
-
-  protected key(handle: string) {
-    const cache = this.cache.keys[handle] ?? null;
-
-    if (cache !== null)
-      return cache;
-    else {
-      const { apptype, name } = this,
-      newKey = new App.Key<AT>(
-        apptype,
-        name,
-        this.stringful(handle),
-      );
-
-      this.cache.keys[handle] = newKey;
-
-      return newKey;
-    }
+  protected purge(handle: string) {
+    this.key(handle).purge();
   }
 
   protected stringful(string = "", error = "") {
@@ -286,6 +244,48 @@ abstract class App<
       query: parts[7] ?? "",
       fragment: parts[9] ?? "",
     };
+  }
+
+  private storage(file?: Null<string>, ext?: Null<string>) {
+    const cacheId = [file ?? "", ext ?? ""]
+      .join(":"),
+    cache = this.cache.storage[cacheId] ?? null;
+
+    if (cache !== null)
+      return cache;
+    else {
+      const { apptype, name } = this,
+      app = name,
+      newStorage = new App.Storage<AT>(
+        apptype,
+        app,
+        file,
+        ext,
+      );
+
+      this.cache.storage[cacheId] = newStorage;
+
+      return newStorage;
+    }
+  }
+
+  private key(handle: string) {
+    const cache = this.cache.keys[handle] ?? null;
+
+    if (cache !== null)
+      return cache;
+    else {
+      const { apptype, name } = this,
+      newKey = new App.Key<AT>(
+        apptype,
+        name,
+        this.stringful(handle),
+      );
+
+      this.cache.keys[handle] = newKey;
+
+      return newKey;
+    }
   }
 
   private truthy(value: Input): value is NonNullable<Input> {
