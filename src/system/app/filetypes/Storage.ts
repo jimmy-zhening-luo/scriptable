@@ -39,6 +39,10 @@ class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {
       throw new Error(`Storage: write (${this.name})`, { cause: e });
     }
   }
+
+  protected delete(): void {
+    this.file.delete();
+  }
 }
 
 module.exports = Storage;

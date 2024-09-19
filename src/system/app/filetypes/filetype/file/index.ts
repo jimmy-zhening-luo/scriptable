@@ -1,6 +1,6 @@
 import type { vstring } from "../../../../../common/valid/string/index";
 
-class File<Writable extends boolean> {
+class File<M extends boolean> {
   public readonly name: string;
   public readonly path: string;
   public readonly subpath: string;
@@ -8,7 +8,7 @@ class File<Writable extends boolean> {
   private readonly manager = FileManager.local();
 
   constructor(
-    public readonly writable: Writable,
+    public readonly mutable: M,
     alias: string,
     ...subpaths: string[]
   ) {
@@ -109,14 +109,14 @@ class File<Writable extends boolean> {
   public write(string: string, overwrite: "line" | "append" | boolean = false) {
     try {
       const {
-        writable,
+        mutable,
         isDirectory,
         isFile,
         path,
         manager,
       } = this;
 
-      if (!writable)
+      if (!mutable)
         throw new TypeError("File is readonly");
       else
         if (isDirectory)
@@ -134,6 +134,15 @@ class File<Writable extends boolean> {
     }
     catch (e) {
       throw new Error(`File: write (${this.name})`, { cause: e });
+    }
+  }
+
+  public delete() {
+    try {
+      this.manager.remove(this.path);
+    }
+    catch (e) {
+      throw new Error(`File: delete (${this.name})`, { cause: e });
     }
   }
 

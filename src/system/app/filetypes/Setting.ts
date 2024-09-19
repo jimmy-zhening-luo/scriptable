@@ -34,7 +34,11 @@ class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {
   }
 
   protected write(): never {
-    throw new ReferenceError("Storage: write forbidden");
+    throw new ReferenceError("Setting: write forbidden");
+  }
+
+  protected delete(): never {
+    throw new ReferenceError("Setting: delete forbidden");
   }
 }
 

@@ -3,14 +3,14 @@ import type { File } from "./file/index";
 abstract class Filetype<
   T extends string,
   AT extends string,
-  Writable extends boolean = false,
+  M extends boolean = false,
 > {
-  protected readonly file: File<Writable>;
+  protected readonly file: File<M>;
 
   constructor(
     filetype: literalful<T>,
     apptype: literalful<AT>,
-    writable: Writable,
+    mutable: M,
     file: string,
     ext?: Null<string>,
     folder: Null<string> = null,
@@ -26,7 +26,7 @@ abstract class Filetype<
       ];
 
       this.file = new this.File(
-        writable,
+        mutable,
         alias,
         ...subpaths,
       );
@@ -45,7 +45,7 @@ abstract class Filetype<
   }
 
   private get File() {
-    return importModule<typeof File<Writable>>("./file/index");
+    return importModule<typeof File<M>>("./file/index");
   }
 
   public read(stringfully = false) {
@@ -67,7 +67,8 @@ abstract class Filetype<
     return length > 0 ? JSON.parse(string) as Data : null;
   }
 
-  protected abstract write(...args: Writable extends true ? Parameters<File<Writable>["write"]> : never): Writable extends true ? ReturnType<File<Writable>["write"]> : never;
+  protected abstract write(...args: M extends true ? Parameters<File<M>["write"]> : never): M extends true ? ReturnType<File<M>["write"]> : never;
+  protected abstract delete(...args: M extends true ? Parameters<File<M>["delete"]> : never): M extends true ? ReturnType<File<M>["delete"]> : never;
 }
 
 module.exports = Filetype;
