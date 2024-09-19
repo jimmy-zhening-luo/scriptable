@@ -9,15 +9,13 @@ class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {
     file?: Null<string>,
     ext?: Null<string>,
   ) {
-    const folder = app;
-
     super(
       "Storage",
       apptype,
       true,
       file ?? app,
       ext,
-      folder,
+      app,
     );
   }
 
