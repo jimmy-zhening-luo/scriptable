@@ -16,10 +16,11 @@ namespace Filelink {
     protected runtime() {
       const { nodes, ext, type } = this.inputful,
       { providers, scheme, commonRoot } = this.setting,
-      path = this.path(nodes),
-      provider = providers[path[0]] ?? null;
+      path = this.path(nodes);
 
       try {
+        const provider = providers[path[0]] ?? null;
+
         if (provider === null)
           throw new ReferenceError(`Provider not found`);
         else {
