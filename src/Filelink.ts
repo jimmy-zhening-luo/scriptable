@@ -14,76 +14,68 @@ namespace Filelink {
     FilelinkSetting
   > {
     protected runtime() {
-      const { scheme, commonRoot, providers } = this.setting,
-      SCHEME_ROOT = [scheme, commonRoot].join("://"),
-      { nodes, ext, type } = this.inputful,
-      path = this.validPath(nodes),
-      [rootNode] = path,
-      provider = providers[rootNode] ?? null;
+      const { nodes, ext, type } = this.inputful,
+      { providers, scheme, commonRoot } = this.setting,
+      path = this.path(nodes),
+      provider = providers[path[0]] ?? null;
 
-      if (provider === null)
-        throw new ReferenceError(`Provider not found`, { cause: rootNode });
-      else {
-        path.shift();
-
-        const { providerRoot } = provider,
-        providerRootEncoded = encodeURI(providerRoot),
-        head = [SCHEME_ROOT, providerRootEncoded].join("/"),
-        leafNode = path.pop() as unknown as stringful,
-        remainingPath = [...path],
-        filenameEncoded = encodeURI(type === "Folder" ? leafNode : [leafNode, ext].join("."));
-
-        if (!provider.hasContainers)
-          return [head, ...remainingPath.map(node => encodeURI(node)), filenameEncoded].join("/");
+      try {
+        if (provider === null)
+          throw new ReferenceError(`Provider not found`);
         else {
-          const {
-            postContainerRoot,
-            folderRoot,
-            preAppRoot,
-            containers: { folders, apps },
-          } = provider;
+          path.shift();
 
-          if (remainingPath.length < 1)
-            throw new ReferenceError(`Path points to container root within a provider`, { cause: { remainingPath } });
-          else {
-            const containerNode = remainingPath.shift() as unknown as stringful,
-            containerEncoded = (
-              folders.includes(containerNode)
-                ? [folderRoot, containerNode]
-                    .map(segment => encodeURI(segment))
-                    .join("/")
-                : containerNode in apps
-                  ? [
-                      ...typeof preAppRoot === "undefined" ? [] : [preAppRoot],
-                      apps[containerNode] as unknown as string,
-                      postContainerRoot,
-                    ]
-                      .map(segment => encodeURI(segment))
-                      .join("/")
-                  : null
-            ) ?? null;
+          const head = [`${scheme}://${commonRoot}`, encodeURI(provider.providerRoot)].join("/"),
+          tail = encodeURI(`${path.pop() as string}${type === "Folder" ? "" : `.${ext}`}`),
+          torso = [...path],
+          container: string[] = [];
 
-            if (containerEncoded === null)
-              throw new ReferenceError(`Provider has no such container`, { cause: { containerNode, providerRootEncoded } });
-            else
-              return [
-                head,
-                containerEncoded,
-                ...remainingPath.map(node => encodeURI(node)),
-                filenameEncoded,
-              ]
-                .join("/");
+          if (provider.hasContainers) {
+            const {
+              containers: { folders, apps },
+              folderRoot,
+              preAppRoot,
+              postContainerRoot,
+            } = provider;
+
+            if (torso.length < 1)
+              throw new ReferenceError(`Path cannot be container root`);
+            else {
+              const p2 = torso.shift() as string;
+
+              if (folders.includes(p2))
+                container.push(`${encodeURI(folderRoot)}/${encodeURI(p2)}`);
+              else if (p2 in apps)
+                container.push([
+                  ...typeof preAppRoot === "undefined" ? [] : [encodeURI(preAppRoot)],
+                  encodeURI(apps[p2] as string),
+                  encodeURI(postContainerRoot),
+                ].join("/"));
+              else
+                throw new ReferenceError(`Container not found in provider`);
+            }
           }
+
+          return [
+            head,
+            ...container,
+            ...torso.map(node => encodeURI(node)),
+            tail,
+          ]
+            .join("/");
         }
+      }
+      catch (e) {
+        throw new Error(path.join("/"), { cause: e });
       }
     }
 
-    private validPath(nodes: Unflat) {
+    private path(nodes: Unflat) {
       const path = this.stringfuls([nodes].flat(), "Path empty or has empty nodes"),
       { length } = path;
 
       if (length < 2)
-        throw new RangeError(`Path points to provider root`, { cause: path });
+        throw new RangeError(`Path points to provider root`);
       else
         return path as ArrayN<stringful, 2>;
     }
