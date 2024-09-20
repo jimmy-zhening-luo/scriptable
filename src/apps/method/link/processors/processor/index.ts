@@ -3,17 +3,10 @@ abstract class LinkPathProcessor<Host extends string> {
   public readonly postprocessor: Null<string> = null;
 
   constructor(protected readonly host: literalful<Host>, path: string) {
-    const process = this.process(path);
-
-    if (typeof process === "string")
-      this.processed = process;
-    else {
-      this.processed = process.processed;
-      this.postprocessor = process.postprocessor;
-    }
+    this.processed = this.process(path);
   }
 
-  protected abstract process(path: string): string | Field<"processed" | "postprocessor">;
+  protected abstract process(path: string): string;
 }
 
 module.exports = LinkPathProcessor;

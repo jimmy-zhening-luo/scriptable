@@ -11,17 +11,16 @@ namespace Link {
 
   export class Link extends shortcut<
     string,
-    Field<"link", "postprocessor">,
+    string,
     LinkSetting
   > {
     protected runtime() {
-      const processors = [
+      const PROCESSORS = [
         "amazon.com",
         "dropbox.com",
         "linkedin.com",
         "reddit.com",
       ],
-      { host: { www, swap }, query: { omit, include, exclude }, fragment: { trim } } = this.setting,
       {
         scheme,
         host,
@@ -29,15 +28,22 @@ namespace Link {
         query,
         fragment,
       } = this.url(this.inputString),
-      ___host = host.startsWith("www.") && !www.includes(host) ? host.slice(4) : host,
-      HOST = swap[___host] ?? ___host,
-      [inclusions, exclusions] = [include[HOST]?.map(p => p.toLowerCase()) ?? [], exclude[HOST]?.map(p => p.toLowerCase()) ?? []],
-      processor = processors.includes(HOST) ? new (this.Processor(HOST))(HOST, path) : null,
-      postprocessor = processor?.postprocessor ?? null,
-      url = {
-        scheme: ["http", "https"].includes(scheme.toLowerCase()) ? "" : scheme.toLowerCase(),
+      {
+        host: { www, swap },
+        query: { omit, include, exclude },
+        fragment: { trim },
+      } = this.setting,
+      unhost = host.startsWith("www.") && !www.includes(host)
+        ? host.slice(4)
+        : host,
+      HOST = swap[unhost] ?? unhost,
+      inclusions = this.deindex(include, HOST),
+      exclusions = this.deindex(exclude, HOST);
+      
+      return this.buildURL({
+        scheme: ["http", "https"].includes(scheme) ? "" : scheme,
         host: HOST,
-        path: processor === null ? path : processor.processed,
+        path: PROCESSORS.includes(HOST) ? new (this.Processor(HOST))(HOST, path).processed : path,
         query: omit.includes(HOST)
           ? ""
           : HOST in include
@@ -45,18 +51,20 @@ namespace Link {
               ? ""
               : query
                 .split("&")
-                .filter(param => inclusions.includes(param.toLowerCase().split("=")[0] ?? ""))
+                .filter(param => inclusions.includes(param.toLowerCase().split("=")[0] as string))
                 .join("&")
             : HOST in exclude
               ? query
                 .split("&")
-                .filter(param => !exclusions.includes(param.toLowerCase().split("=")[0] ?? ""))
+                .filter(param => !exclusions.includes(param.toLowerCase().split("=")[0] as string))
                 .join("&")
               : query,
         fragment: trim.includes(HOST) ? "" : fragment,
-      };
+      });
+    }
 
-      return { link: this.buildURL(url), ...postprocessor === null ? {} : { postprocessor } };
+    private deindex(list: ListTable, host: string) {
+      return list[host]?.map(i => i.toLowerCase()) ?? [];
     }
 
     private buildURL(

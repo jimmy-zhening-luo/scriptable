@@ -221,7 +221,7 @@ abstract class App<
     hexes = [...UUID.string().replace("-", "")].map(c => typeof CTOH[c as keyof typeof CTOH] === "undefined" ? Number(c) as decimal : CTOH[c as Exclude<hexchar, digit>]) satisfies hex[] as unknown as Tuple<hex, 32>;
 
     hexes.forEach((h, i) => {
-      buffer[Math.floor(i / 4) as octal].push(h);
+      buffer[(i % 8) as octal].push(h);
     });
 
     return String.fromCharCode(...(buffer satisfies Octad<hex[]> as unknown as Octad<Quad<hex>>)
@@ -238,8 +238,8 @@ abstract class App<
     parts = (_parts[2] ?? null) !== null ? _parts : matcher.exec(`https://${string}`) ?? [];
 
     return {
-      scheme: parts[2] ?? "",
-      host: parts[4] ?? "",
+      scheme: parts[2]?.toLowerCase() ?? "",
+      host: parts[4]?.toLowerCase() ?? "",
       path: parts[5] ?? "",
       query: parts[7] ?? "",
       fragment: parts[9] ?? "",
