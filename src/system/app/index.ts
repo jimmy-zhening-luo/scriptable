@@ -4,14 +4,14 @@ import type { Storage } from "./filetypes/Storage";
 import type { error } from "./error/index";
 
 abstract class App<
-  AT extends string,
+  T extends string,
   Input,
   Output,
   Schema,
 > {
-  private readonly cache: { storage: Record<string, Storage<AT>>; keys: Record<string, Key<AT>> } = { storage: {}, keys: {} };
+  private readonly cache: { storage: Record<string, Storage<T>>; keys: Record<string, Key<T>> } = { storage: {}, keys: {} };
 
-  protected abstract apptype: literalful<AT>;
+  protected abstract apptype: literalful<T>;
 
   private static get Setting() {
     return importModule<typeof Setting>("./filetypes/Setting");
@@ -38,7 +38,7 @@ abstract class App<
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    const setting = new App.Setting<AT, Schema>(this.apptype, this.name).parse;
+    const setting = new App.Setting<T, Schema>(this.apptype, this.name).parse;
 
     Object.defineProperty(this, "setting", { value: setting, enumerable: true });
 
@@ -256,7 +256,7 @@ abstract class App<
     else {
       const { apptype, name } = this,
       app = name,
-      newStorage = new App.Storage<AT>(
+      newStorage = new App.Storage<T>(
         apptype,
         app,
         file,
@@ -276,7 +276,7 @@ abstract class App<
       return cache;
     else {
       const { apptype, name } = this,
-      newKey = new App.Key<AT>(
+      newKey = new App.Key<T>(
         apptype,
         name,
         this.stringful(handle),
@@ -293,7 +293,7 @@ abstract class App<
   }
 
   protected abstract runtime(): Output;
-  protected abstract output(runtime: ReturnType<App<AT, Input, Output, Schema>["runtime"]>): ReturnType<App<AT, Input, Output, Schema>["runtime"]>;
+  protected abstract output(runtime: ReturnType<App<T, Input, Output, Schema>["runtime"]>): ReturnType<App<T, Input, Output, Schema>["runtime"]>;
 }
 
 module.exports = App;
