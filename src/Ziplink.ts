@@ -8,32 +8,23 @@ import type { Shortcut } from "./system/Shortcut";
 namespace Ziplink {
   const shortcut = importModule<typeof Shortcut>("./system/Shortcut");
 
-  export class Ziplink extends shortcut<
-    string,
-    string
-  > {
+  export class Ziplink extends shortcut<string, string> {
     protected runtime() {
-      const url = this.inputStringful.trim(),
-      storage = this.data<FieldTable>(null, "json") ?? {},
-      ziplink = Object.entries(storage).find(([, u]) => u === url) ?? null;
+      const url = this.inputStringful,
+      cache = this.data<FieldTable>(null, "json") ?? {},
+      cached = Object.entries(cache).find(([, u]) => u === url)?.[0] ?? null,
+      id = cached ?? this.guid64();
 
-      if (ziplink !== null) {
-        const [id] = ziplink;
-
-        return id;
-      }
-      else {
-        const id = this.guid64();
-
-        storage[id] = url;
+      if (id !== cached) {
+        cache[id] = url;
         this.write(
-          storage,
+          cache,
           null,
           "json",
         );
-
-        return `shortcuts://run-shortcut?name=I&input=${id}`;
       }
+
+      return `shortcuts://run-shortcut?name=i&input=${id}`;
     }
   }
 }
