@@ -39,7 +39,7 @@ namespace Link {
       HOST = swap[unhost] ?? unhost,
       inclusions = this.deindex(include, HOST),
       exclusions = this.deindex(exclude, HOST);
-      
+
       return this.buildURL({
         scheme: ["http", "https"].includes(scheme) ? "" : scheme,
         host: HOST,
