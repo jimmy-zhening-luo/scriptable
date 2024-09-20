@@ -10,9 +10,7 @@ abstract class Shortcut<
   protected apptype = "Shortcut" as const;
 
   protected get getInput() {
-    const { shortcutParameter } = args as { shortcutParameter: Null<undefined | Input> };
-
-    return shortcutParameter ?? null;
+    return (args.shortcutParameter as Null<undefined | Input>) ?? null;
   }
 
   protected output(runtime: ReturnType<Shortcut<Input, Output>["run"]>) {
