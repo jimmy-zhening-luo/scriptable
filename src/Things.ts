@@ -38,9 +38,9 @@ namespace Things {
                 untagged: item.slice(TAG.length + 1).trim(),
                 tag: item.slice(TAG.length, TAG.length + 1).toLowerCase(),
               }
-            : item.slice(0 - TAG.length) === TAG
+            : item.slice(-1 - TAG.length, -1) === TAG
               ? {
-                  untagged: item.slice(0, 0 - TAG.length - 1).trim(),
+                  untagged: item.slice(0, -1 - TAG.length).trim(),
                   tag: item.slice(-1).toLowerCase(),
                 }
               : { untagged: item },
