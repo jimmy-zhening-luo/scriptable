@@ -15,53 +15,63 @@ namespace Things {
   > {
     protected runtime() {
       const { lists, delims } = this.setting,
-      { TAG, LINE, ITEM } = delims,
-      validator = [TAG, LINE, ITEM] as const;
+      { TAG, LINE, ITEM } = delims;
 
-      if (validator.some(d => d.length < 1))
-        throw new TypeError(`Delim empty or too short`, { cause: delims });
-      else if (TAG === ITEM || TAG === LINE || ITEM === LINE)
-        throw new SyntaxError(`Conflicting delims`, { cause: delims });
-      else {
-        const items = this
-          .inputStringful
-          .split(ITEM)
-          .reverse()
-          .map(
-            item => item
-              .trim()
-              .split(LINE)
-              .map(line => line.trim())
-              .filter(line => line.length > 0)
-              .join(LINE),
-          )
-          .filter(item => item.length > 0);
+      this.checkDelims(delims);
 
-        return items.map(
-          (item): ThingsItem => {
-            const untag = item.split(TAG),
-            { length } = untag,
-            tag = length > 1 ? (untag[length - 1] ?? "")[0]?.toLowerCase() ?? null : null;
+      const items = this.inputStringful
+        .split(ITEM)
+        .reverse()
+        .map(
+          item => item
+            .split(LINE)
+            .map(line => line.trim())
+            .filter(line => line.length > 0)
+            .join(LINE),
+        )
+        .filter(item => item.length > 0);
 
-            if (tag !== null)
-              untag.push((untag.pop() ?? "").slice(1));
+      return items.map(
+        (item): ThingsItem => {
+          const { untagged, tag }: Field<"untagged", "tag"> = item.startsWith(TAG)
+            ? {
+                untagged: item.slice(TAG.length + 1).trim(),
+                tag: item.slice(TAG.length, TAG.length + 1).toLowerCase(),
+              }
+            : item.slice(0 - TAG.length) === TAG
+              ? {
+                  untagged: item.slice(0, 0 - TAG.length - 1).trim(),
+                  tag: item.slice(-1).toLowerCase(),
+                }
+              : { untagged: item },
+          { when, list }: Field<never, "when" | "list"> = typeof tag === "undefined"
+            ? {}
+            : !(tag in lists)
+                ? { when: "today" }
+                : { list: (lists[tag] as typeof lists[number]).id },
+          lines = untagged.split(LINE);
 
-            const untaggedItem = untag.join(""),
-            [when, list] = tag === null
-              ? [null, null]
-              : !(tag in lists)
-                  ? ["today", null]
-                  : [null, lists[tag]?.id ?? ""],
-            lines = untaggedItem.split(LINE);
+          return {
+            title: lines.shift() ?? "",
+            notes: lines.join(LINE),
+            ...typeof when === "undefined" ? {} : { when },
+            ...typeof list === "undefined" ? {} : { list },
+          };
+        },
+      );
+    }
 
-            return {
-              title: lines.shift() ?? "",
-              notes: lines.join(LINE),
-              ...when === null ? {} : { when },
-              ...list === null ? {} : { list },
-            };
-          },
-        );
+    private checkDelims(delims: ThingsSetting["delims"]) {
+      try {
+        const validator = Object.values(delims);
+
+        if (validator.some(d => d.length < 1))
+          throw new TypeError(`Delimeter empty or too short`);
+        else if (new Set(validator).size < validator.length)
+          throw new SyntaxError(`Duplicate delimeters`);
+      }
+      catch (e) {
+        throw new SyntaxError(`Invalid delimeters: ${JSON.stringify(delims)}`, { cause: e });
       }
     }
   }
