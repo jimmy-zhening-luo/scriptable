@@ -15,7 +15,8 @@ namespace Things {
   > {
     protected runtime() {
       const { lists, delims } = this.setting,
-      { TAG, LINE, ITEM } = delims;
+      { TAG, LINE, ITEM } = delims,
+      TODAY = "today";
 
       this.checkDelims(delims);
 
@@ -38,17 +39,22 @@ namespace Things {
                 untagged: item.slice(TAG.length + 1).trim(),
                 tag: item.slice(TAG.length, TAG.length + 1).toLowerCase(),
               }
-            : item.slice(-1 - TAG.length, -1) === TAG
+            : item.endsWith(TAG)
               ? {
-                  untagged: item.slice(0, -1 - TAG.length).trim(),
-                  tag: item.slice(-1).toLowerCase(),
+                  untagged: item.slice(0, 0 - TAG.length).trim(),
+                  tag: TODAY /* bad practice: reserved word */,
                 }
-              : { untagged: item },
+              : item.slice(-1 - TAG.length, -1) === TAG
+                ? {
+                    untagged: item.slice(0, -1 - TAG.length).trim(),
+                    tag: item.slice(-1).toLowerCase(),
+                  }
+                : { untagged: item },
           { when, list }: Field<never, "when" | "list"> = typeof tag === "undefined"
             ? {}
-            : !(tag in lists)
-                ? { when: "today" }
-                : { list: (lists[tag] as typeof lists[number]).id },
+            : tag === TODAY || !(tag in lists)
+              ? { when: TODAY }
+              : { list: (lists[tag] as typeof lists[number]).id },
           lines = untagged.split(LINE);
 
           return {
