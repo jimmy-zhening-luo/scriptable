@@ -5,7 +5,7 @@ const sSearchEngine = importModule<typeof SearchEngine>("./engine/index");
 class ShortcutEngine extends sSearchEngine<"shortcut"> {
   constructor(
     shortcut: string,
-    output?: string | boolean,
+    output?: boolean,
   ) {
     super(
       "shortcut",

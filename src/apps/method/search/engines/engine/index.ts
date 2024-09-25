@@ -4,7 +4,7 @@ abstract class SearchEngine<T extends "browser" | "find" | "shortcut"> {
   constructor(
     protected readonly app: T,
     protected readonly thing: string,
-    protected readonly output: string | boolean = false,
+    protected readonly output = false,
   ) {}
 
   public resolve(query: Query) {
@@ -25,11 +25,7 @@ abstract class SearchEngine<T extends "browser" | "find" | "shortcut"> {
       app,
       [app]: thing,
       action: this.transform(query),
-      ...output === false
-        ? {}
-        : output === true || output.length < 1
-          ? { output: "_" }
-          : { output },
+      ...!output ? {} : { output },
     };
   }
 

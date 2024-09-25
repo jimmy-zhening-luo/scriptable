@@ -58,7 +58,6 @@ namespace Search {
               entry.separator,
               entry.encodeComponent,
               entry.inprivate,
-              entry.output,
             )
             : "shortcut" in entry
               ? new (this.SearchEngine("shortcut"))(entry.shortcut, entry.output)

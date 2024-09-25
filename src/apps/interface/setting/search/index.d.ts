@@ -19,10 +19,9 @@ declare interface SearchSetting {
     engines: Table<
       | Unflat<string, false>
       | SearchEngineSetting<"find">
-      | SearchEngineSetting<"shortcut", true>
+      | SearchEngineSetting<"shortcut", "output">
       | SearchEngineSetting<
         "url",
-        true,
         | "encodeComponent"
         | "inprivate"
         ,
