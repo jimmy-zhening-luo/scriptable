@@ -34,8 +34,8 @@ namespace GPT {
         return typeof input[option] !== "undefined" && input[option] >= limit[option].min && input[option] <= limit[option].max
           ? input[option]
           : typeof preset[option] !== "undefined" && preset[option] >= limit[option].min && preset[option] <= limit[option].max
-          ? preset[option]
-          : defaults[option];
+            ? preset[option]
+            : defaults[option];
       }
 
       const { inputful, setting } = this,
@@ -58,8 +58,8 @@ namespace GPT {
         {},
         defaults,
       ),
-      preset = presets[presetId] ?? {},
-      [presetPlugins, plugins] = "plugins" in preset
+      preset = presets[presetId] ?? null,
+      [presetPlugins, plugins] = preset !== null && "plugins" in preset
         ? [
             preset.plugins,
             input.plugins ?? {},
@@ -67,51 +67,51 @@ namespace GPT {
         : [{}, {}],
       option = {
         model: has(
-        "model", 
-        models, 
-        input, 
-        preset, 
-        defaults
+          "model",
+          models,
+          input,
+          preset ?? {},
+          defaults,
         ),
         token: bounded(
-        "token", 
-        limit, 
-        input, 
-        preset,
-        defaults
+          "token",
+          limit,
+          input,
+          preset ?? {},
+          defaults,
         ),
         temperature: bounded(
-        "temperature",
-        limit, 
-        input,
-        preset,
-        defaults
+          "temperature",
+          limit,
+          input,
+          preset ?? {},
+          defaults,
         ),
         p: bounded(
-        "p", 
-        limit,
-        input,
-        preset, 
-        defaults
+          "p",
+          limit,
+          input,
+          preset ?? {},
+          defaults,
         ),
         location: input.location ?? defaults.location,
         date: input.date ?? this.dateprint(),
       },
       promptTemplate = typeof input.prompt !== "string"
         ? input.prompt
-        : "system" in preset
+        : preset !== null && "system" in preset
           ? {
-            system: preset.system,
-            user: "user" in preset && preset.user.includes(tags.preset)
-              ? preset.user.replace(tags.preset, input.prompt)
-              : input.prompt,
+              system: preset.system,
+              user: "user" in preset && preset.user.includes(tags.preset)
+                ? preset.user.replace(tags.preset, input.prompt)
+                : input.prompt,
             }
           : { user: input.prompt },
       messagesTemplate = "system" in promptTemplate
         ? [
-          ["system", promptTemplate.system],
-          ["user", promptTemplate.user],
-        ] as const
+            ["system", promptTemplate.system],
+            ["user", promptTemplate.user],
+          ] as const
         : [["user", promptTemplate.user]] as const,
       messagesFilled = messagesTemplate.map(([role, prompt]) => [
         role,
