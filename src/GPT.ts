@@ -14,18 +14,28 @@ namespace GPT {
         option: T,
         thing: Record<string, unknown>,
         input: Partial<GptOpts>,
+        preset: Partial<GptOpts>,
         defaults: GptOpts,
       ) {
-        return typeof input[option] !== "undefined" && input[option] in thing ? input[option] : defaults[option];
+        return typeof input[option] !== "undefined" && input[option] in thing
+          ? input[option]
+          : typeof preset[option] !== "undefined" && preset[option] in thing
+            ? preset[option]
+            : defaults[option];
       }
 
       function bounded<T extends "token" | "temperature" | "p">(
         option: T,
         limit: Record<T, Boundary>,
         input: Partial<GptOpts>,
+        preset: Partial<GptOpts>,
         defaults: GptOpts,
       ) {
-        return typeof input[option] !== "undefined" && input[option] >= limit[option].min && input[option] <= limit[option].max ? input[option] : defaults[option];
+        return typeof input[option] !== "undefined" && input[option] >= limit[option].min && input[option] <= limit[option].max
+          ? input[option]
+          : typeof preset[option] !== "undefined" && preset[option] >= limit[option].min && preset[option] <= limit[option].max
+          ? preset[option]
+          : defaults[option];
       }
 
       const { inputful, setting } = this,
@@ -38,20 +48,71 @@ namespace GPT {
         },
         user: { id, presets, defaults },
       } = setting,
-      input = typeof inputful !== "string" && "prompt" in inputful ? inputful : { prompt: inputful },
+      input = typeof inputful !== "string" && "prompt" in inputful
+        ? inputful
+        : { prompt: inputful },
+      presetId = has(
+        "preset",
+        presets,
+        input,
+        {},
+        defaults,
+      ),
+      preset = presets[option.preset] ?? {},
+      [presetPlugins, plugins] = "plugins" in preset
+        ? [
+            preset.plugins,
+            input.plugins ?? {},
+          ]
+        : [{}, {}],
       option = {
-        model: has("model", models, input, defaults),
-        token: bounded("token", limit, input, defaults),
-        temperature: bounded("temperature", limit, input, defaults),
-        p: bounded("p", limit, input, defaults),
-        preset: has("preset", presets, input, defaults),
+        model: has(
+        "model", 
+        models, 
+        input, 
+        preset, 
+        defaults
+        ),
+        token: bounded(
+        "token", 
+        limit, 
+        input, 
+        preset,
+        defaults
+        ),
+        temperature: bounded(
+        "temperature",
+        limit, 
+        input,
+        preset,
+        defaults
+        ),
+        p: bounded(
+        "p", 
+        limit,
+        input,
+        preset, 
+        defaults
+        ),
         location: input.location ?? defaults.location,
         date: input.date ?? this.dateprint(),
       },
-      preset = presets[option.preset] ?? null,
-      [presetPlugins, plugins] = preset === null || !("plugins" in preset) ? [{}, {}] : [preset.plugins, input.plugins ?? {}],
-      promptTemplate = typeof input.prompt !== "string" ? input.prompt : preset === null ? { user: input.prompt } : { system: preset.system, user: "user" in preset && preset.user.includes(tags.preset) ? preset.user.replace(tags.preset, input.prompt) : input.prompt },
-      messagesTemplate = "system" in promptTemplate ? [["system", promptTemplate.system], ["user", promptTemplate.user]] as const : [["user", promptTemplate.user]] as const,
+      promptTemplate = typeof input.prompt !== "string"
+        ? input.prompt
+        : "system" in preset
+          ? {
+            system: preset.system,
+            user: "user" in preset && preset.user.includes(tags.preset)
+              ? preset.user.replace(tags.preset, input.prompt)
+              : input.prompt,
+            }
+          : { user: input.prompt },
+      messagesTemplate = "system" in promptTemplate
+        ? [
+          ["system", promptTemplate.system],
+          ["user", promptTemplate.user],
+        ] as const
+        : [["user", promptTemplate.user]] as const,
       messagesFilled = messagesTemplate.map(([role, prompt]) => [
         role,
         Object
