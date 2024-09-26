@@ -58,7 +58,7 @@ namespace GPT {
         {},
         defaults,
       ),
-      preset = presets[option.preset] ?? {},
+      preset = presets[presetId] ?? {},
       [presetPlugins, plugins] = "plugins" in preset
         ? [
             preset.plugins,
