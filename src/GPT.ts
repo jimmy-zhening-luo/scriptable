@@ -10,34 +10,6 @@ namespace GPT {
 
   export class GPT extends shortcut<GptInput, GptOutput, GptSetting> {
     protected runtime() {
-      function has<T extends "model" | "preset">(
-        option: T,
-        thing: Record<string, unknown>,
-        input: Partial<GptOpts>,
-        preset: Partial<GptOpts>,
-        defaults: GptOpts,
-      ) {
-        return typeof input[option] !== "undefined" && input[option] in thing
-          ? input[option]
-          : typeof preset[option] !== "undefined" && preset[option] in thing
-            ? preset[option]
-            : defaults[option];
-      }
-
-      function bounded<T extends "token" | "temperature" | "p">(
-        option: T,
-        limit: Record<T, Boundary>,
-        input: Partial<GptOpts>,
-        preset: Partial<GptOpts>,
-        defaults: GptOpts,
-      ) {
-        return typeof input[option] !== "undefined" && input[option] >= limit[option].min && input[option] <= limit[option].max
-          ? input[option]
-          : typeof preset[option] !== "undefined" && preset[option] >= limit[option].min && preset[option] <= limit[option].max
-            ? preset[option]
-            : defaults[option];
-      }
-
       const { inputful, setting } = this,
       {
         app: {
@@ -51,7 +23,7 @@ namespace GPT {
       input = typeof inputful !== "string" && "prompt" in inputful
         ? inputful
         : { prompt: inputful },
-      presetId = has(
+      presetId = this.has(
         "preset",
         presets,
         input,
@@ -66,28 +38,28 @@ namespace GPT {
           ]
         : [{}, {}],
       option = {
-        model: has(
+        model: this.has(
           "model",
           models,
           input,
           preset ?? {},
           defaults,
         ),
-        token: bounded(
+        token: this.bounded(
           "token",
           limit,
           input,
           preset ?? {},
           defaults,
         ),
-        temperature: bounded(
+        temperature: this.bounded(
           "temperature",
           limit,
           input,
           preset ?? {},
           defaults,
         ),
-        p: bounded(
+        p: this.bounded(
           "p",
           limit,
           input,
@@ -134,6 +106,34 @@ namespace GPT {
           top_p: String(option.p),
         },
       };
+    }
+
+    private has<T extends "model" | "preset">(
+      option: T,
+      thing: Record<string, unknown>,
+      input: Partial<GptOpts>,
+      preset: Partial<GptOpts>,
+      defaults: GptOpts,
+    ) {
+      return typeof input[option] !== "undefined" && input[option] in thing
+        ? input[option]
+        : typeof preset[option] !== "undefined" && preset[option] in thing
+          ? preset[option]
+          : defaults[option];
+    }
+
+    private bounded<T extends "token" | "temperature" | "p">(
+      option: T,
+      limit: Record<T, Boundary>,
+      input: Partial<GptOpts>,
+      preset: Partial<GptOpts>,
+      defaults: GptOpts,
+    ) {
+      return typeof input[option] !== "undefined" && input[option] >= limit[option].min && input[option] <= limit[option].max
+        ? input[option]
+        : typeof preset[option] !== "undefined" && preset[option] >= limit[option].min && preset[option] <= limit[option].max
+          ? preset[option]
+          : defaults[option];
     }
   }
 }
