@@ -1,5 +1,5 @@
 declare type GptChatModel =
-  | "stable"
-  | "preview"
-  | "legacy"
+  | "good"
+  | "fast"
+  | "reason"
 ;
