@@ -24,7 +24,7 @@ namespace Ziplink {
         );
       }
 
-      return `shortcuts://run-shortcut?name=i&input=${id}`;
+      return `shortcuts://run-shortcut?name=u&input=${id}`;
     }
   }
 }
