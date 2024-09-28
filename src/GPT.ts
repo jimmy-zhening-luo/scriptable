@@ -117,7 +117,7 @@ namespace GPT {
     private unpack(inputful: GPT["inputful"]) {
       return typeof inputful !== "string" && "prompt" in inputful
         ? inputful
-        : { prompt: inputful },
+        : { prompt: inputful };
     }
 
     private has<T extends "model" | "preset">(
