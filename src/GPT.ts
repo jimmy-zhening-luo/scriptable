@@ -15,14 +15,12 @@ namespace GPT {
         app: {
           api: { host, version, action },
           models,
-          limit,
+          limits,
           tags,
         },
         user: { id, presets, defaults },
       } = setting,
-      input = typeof inputful !== "string" && "prompt" in inputful
-        ? inputful
-        : { prompt: inputful },
+      input = this.unpack(inputful),
       presetId = this.has(
         "preset",
         presets,
@@ -31,12 +29,12 @@ namespace GPT {
         defaults,
       ),
       preset = presets[presetId] ?? null,
-      [presetPlugins, plugins] = preset !== null && "plugins" in preset
-        ? [
-            preset.plugins,
-            input.plugins ?? {},
-          ]
-        : [{}, {}],
+      plugins = {
+        input: input.plugins ?? {},
+        preset: preset === null
+          ? {}
+          : preset.plugins ?? {},
+      },
       option = {
         model: this.has(
           "model",
@@ -47,21 +45,21 @@ namespace GPT {
         ),
         token: this.bounded(
           "token",
-          limit,
+          limits,
           input,
           preset ?? {},
           defaults,
         ),
         temperature: this.bounded(
           "temperature",
-          limit,
+          limits,
           input,
           preset ?? {},
           defaults,
         ),
         p: this.bounded(
           "p",
-          limit,
+          limits,
           input,
           preset ?? {},
           defaults,
@@ -69,31 +67,39 @@ namespace GPT {
         location: input.location ?? defaults.location,
         date: input.date ?? this.dateprint(),
       },
-      promptTemplate = typeof input.prompt !== "string"
+      promptT = typeof input.prompt !== "string"
         ? input.prompt
-        : preset !== null && "system" in preset
-          ? {
-              system: preset.system,
-              user: "user" in preset && preset.user.includes(tags.preset)
-                ? preset.user.replace(tags.preset, input.prompt)
+        : preset === null
+          ? { user: input.prompt }
+          : {
+              ..."system" in preset
+                ? { system: preset.system }
+                : {},
+              user: "user" in preset
+                ? preset.user.includes(tags.preset)
+                  ? preset.user.replace(tags.preset, input.prompt)
+                  : [preset.user, input.prompt].join("\n\n")
                 : input.prompt,
-            }
-          : { user: input.prompt },
-      messagesTemplate = "system" in promptTemplate
+            },
+      messagesT = "system" in promptT
         ? [
-            ["system", promptTemplate.system],
-            ["user", promptTemplate.user],
+            ["system", promptT.system],
+            ["user", promptT.user],
           ] as const
-        : [["user", promptTemplate.user]] as const,
-      messagesFilled = messagesTemplate.map(([role, prompt]) => [
-        role,
-        Object
-          .keys(presetPlugins)
-          .reduce((tagged, plug) => tagged.replaceAll(`{{${plug}}}`, plugins[plug] ?? presetPlugins[plug] ?? ""), prompt)
-          .replaceAll(tags.location, option.location)
-          .replaceAll(tags.date, option.date),
-      ] as const),
-      messages = messagesFilled.map(([role, content]) => { return { role, content }; });
+        : [["user", promptT.user]] as const,
+      messages = messagesT
+        .map(([role, messageT]) => [
+          role,
+          Object
+            .keys(plugins.preset)
+            .reduce(
+              (message, p) => message.replaceAll(`{{${p}}}`, plugins.input[p] ?? plugins.preset[p] ?? ""),
+              messageT,
+            )
+            .replaceAll(tags.location, option.location)
+            .replaceAll(tags.date, option.date),
+        ] as const)
+        .map(([role, content]) => { return { role, content }; });
 
       return {
         api: [host, version, action[option.model]].join("/"),
@@ -108,30 +114,36 @@ namespace GPT {
       };
     }
 
+    private unpack(inputful: GPT["inputful"]) {
+      return typeof inputful !== "string" && "prompt" in inputful
+        ? inputful
+        : { prompt: inputful },
+    }
+
     private has<T extends "model" | "preset">(
       option: T,
-      thing: Record<string, unknown>,
+      table: Record<string, unknown>,
       input: Partial<GptOpts>,
       preset: Partial<GptOpts>,
       defaults: GptOpts,
     ) {
-      return typeof input[option] !== "undefined" && input[option] in thing
+      return typeof input[option] !== "undefined" && input[option] in table
         ? input[option]
-        : typeof preset[option] !== "undefined" && preset[option] in thing
+        : typeof preset[option] !== "undefined" && preset[option] in table
           ? preset[option]
           : defaults[option];
     }
 
     private bounded<T extends "token" | "temperature" | "p">(
       option: T,
-      limit: Record<T, Boundary>,
+      limits: Record<T, Boundary>,
       input: Partial<GptOpts>,
       preset: Partial<GptOpts>,
       defaults: GptOpts,
     ) {
-      return typeof input[option] !== "undefined" && input[option] >= limit[option].min && input[option] <= limit[option].max
+      return typeof input[option] !== "undefined" && input[option] >= limits[option].min && input[option] <= limits[option].max
         ? input[option]
-        : typeof preset[option] !== "undefined" && preset[option] >= limit[option].min && preset[option] <= limit[option].max
+        : typeof preset[option] !== "undefined" && preset[option] >= limits[option].min && preset[option] <= limits[option].max
           ? preset[option]
           : defaults[option];
     }

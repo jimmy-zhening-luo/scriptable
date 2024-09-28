@@ -6,7 +6,7 @@ declare interface GptSetting {
       action: Field<GptModel>;
     };
     models: Field<GptModel>;
-    limit: Limit<
+    limits: Limit<
       | "token"
       | "temperature"
       | "p"
