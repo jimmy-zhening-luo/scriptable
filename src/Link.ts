@@ -14,68 +14,54 @@ namespace Link {
     string,
     LinkSetting
   > {
+    private readonly PROCESSORS = [
+      "amazon.com",
+      "dropbox.com",
+      "linkedin.com",
+      "reddit.com",
+    ];
+
     protected runtime() {
-      const PROCESSORS = [
-        "amazon.com",
-        "dropbox.com",
-        "linkedin.com",
-        "reddit.com",
-      ],
-      {
-        scheme,
-        host,
-        path,
-        query,
-        fragment,
-      } = this.url(this.inputString),
-      {
-        host: { www, swap },
-        query: { omit, include, exclude },
-        fragment: { trim },
-      } = this.setting,
-      unhost = host.startsWith("www.") && !www.includes(host)
-        ? host.slice(4)
-        : host,
-      HOST = swap[unhost] ?? unhost,
-      inclusions = this.deindex(include, HOST),
-      exclusions = this.deindex(exclude, HOST);
+      const { inputString, setting } = this,
+      url = this.url(inputString),
+      host = this.resolve(url.host, setting.host),
+      params = {
+        include: this.deindex(setting.query.include, host),
+        exclude: this.deindex(setting.query.exclude, host),
+      };
 
       return this.buildURL({
-        scheme: ["http", "https"].includes(scheme) ? "" : scheme,
-        host: HOST,
-        path: PROCESSORS.includes(HOST) ? new (this.Processor(HOST))(HOST, path).processed : path,
-        query: omit.includes(HOST)
+        host,
+        scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
+        path: this.PROCESSORS.includes(host) ? new (this.Processor(host))(host, url.path).processed : url.path,
+        query: setting.query.omit.includes(host)
           ? ""
-          : HOST in include
-            ? inclusions.length < 1
-              ? ""
-              : query
+          : params.include.length > 0
+            ? url.query
+              .split("&")
+              .filter(p => params.include.includes(p.toLowerCase().split("=")[0] as string))
+              .join("&")
+            : params.exclude.length > 0
+              ? url.query
                 .split("&")
-                .filter(param => inclusions.includes(param.toLowerCase().split("=")[0] as string))
+                .filter(p => !params.exclude.includes(p.toLowerCase().split("=")[0] as string))
                 .join("&")
-            : HOST in exclude
-              ? query
-                .split("&")
-                .filter(param => !exclusions.includes(param.toLowerCase().split("=")[0] as string))
-                .join("&")
-              : query,
-        fragment: trim.includes(HOST) ? "" : fragment,
+              : url.query,
+        fragment: setting.fragment.trim.includes(host) ? "" : url.fragment,
       });
+    }
+
+    private resolve(host: string, setting: Link["setting"]["host"]) {
+      const pruned = host.slice(host.startsWith("www.") && !setting.www.includes(host) ? 4 : 0);
+
+      return setting.swap[pruned] ?? pruned;
     }
 
     private deindex(list: ListTable, host: string) {
       return list[host]?.map(i => i.toLowerCase()) ?? [];
     }
 
-    private buildURL(
-      url: Field<
-        | "scheme"
-        | "host"
-        | "path"
-        | "query"
-        | "fragment"
-      >,
-    ) {
+    private buildURL(url: ReturnType<Link["url"]>) {
       const {
         scheme,
         host,
