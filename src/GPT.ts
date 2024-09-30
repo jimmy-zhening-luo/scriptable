@@ -28,7 +28,21 @@ namespace GPT {
         {},
         defaults,
       ),
-      preset = presets[presetId] ?? null,
+      { model, preset } = "model" in input && input["model"] in models
+        ? {
+            preset: null,
+            model: models[input["model"]] as GptModel,
+          }
+        : {
+            preset: presets[presetId] ?? null,
+            model: models[this.has(
+              "model",
+              models,
+              {},
+              presets[presetId] ?? {},
+              defaults,
+            )] as GptModel,
+          },
       plugins = {
         input: input.plugins ?? {},
         preset: preset === null
@@ -36,13 +50,6 @@ namespace GPT {
           : preset.plugins ?? {},
       },
       option = {
-        model: this.has(
-          "model",
-          models,
-          input,
-          preset ?? {},
-          defaults,
-        ),
         temperature: this.bounded(
           "temperature",
           limits,
@@ -93,7 +100,6 @@ namespace GPT {
             .replaceAll(tags.date, option.date),
         ] as const)
         .map(([role, content]) => { return { role, content }; }),
-      model = models[option.model] as GptModel;
 
       return {
         api: [host, version, action[model.action]].join("/"),
