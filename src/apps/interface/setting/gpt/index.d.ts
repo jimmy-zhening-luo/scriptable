@@ -3,9 +3,9 @@ declare interface GptSetting {
     api: {
       host: string;
       version: string;
-      action: Field<GptModel>;
+      action: Record<keyof GptSetting["app"]["models"], string>;
     };
-    models: Field<GptModel>;
+    models: FieldTable;
     limits: Limit<
       | "token"
       | "temperature"

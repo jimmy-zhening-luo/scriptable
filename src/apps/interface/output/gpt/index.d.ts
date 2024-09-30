@@ -5,6 +5,7 @@ declare interface GptOutput {
     & { messages: readonly GptMessage[] }
     & Field<
       | "model"
+      ,
       | "max_tokens"
       | "temperature"
       | "top_p"
