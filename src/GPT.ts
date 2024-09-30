@@ -43,13 +43,6 @@ namespace GPT {
           preset ?? {},
           defaults,
         ),
-        token: this.bounded(
-          "token",
-          limits,
-          input,
-          preset ?? {},
-          defaults,
-        ),
         temperature: this.bounded(
           "temperature",
           limits,
@@ -108,9 +101,6 @@ namespace GPT {
         body: {
           messages,
           model: model.id,
-          ...Math.round(option.token) < 1
-            ? {}
-            : { max_tokens: String(option.token) },
           temperature: String(option.temperature),
           top_p: String(option.p),
         },
@@ -137,7 +127,7 @@ namespace GPT {
           : defaults[option];
     }
 
-    private bounded<T extends "token" | "temperature" | "p">(
+    private bounded<T extends Keys<GptSetting["app"]["limits"]>>(
       option: T,
       limits: Record<T, Boundary>,
       input: Partial<GptOpts>,

@@ -6,7 +6,6 @@ declare interface GptOutput {
     & Field<
       | "model"
       ,
-      | "max_tokens"
       | "temperature"
       | "top_p"
     >;

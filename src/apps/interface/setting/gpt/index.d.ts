@@ -12,7 +12,6 @@ declare interface GptSetting {
     };
     models: Table<GptModel>;
     limits: Limit<
-      | "token"
       | "temperature"
       | "p"
     >;
