@@ -107,7 +107,7 @@ namespace GPT {
         body: {
           messages,
           model: models[option.model],
-          ...max_tokens < 1
+          ...Math.round(option.token) < 1
             ? {}
             : { max_tokens: String(option.token) },
           temperature: String(option.temperature),
