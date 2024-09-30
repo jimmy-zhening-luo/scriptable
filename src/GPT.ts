@@ -99,7 +99,7 @@ namespace GPT {
             .replaceAll(tags.location, option.location)
             .replaceAll(tags.date, option.date),
         ] as const)
-        .map(([role, content]) => { return { role, content }; }),
+        .map(([role, content]) => { return { role, content }; });
 
       return {
         api: [host, version, action[model.action]].join("/"),
