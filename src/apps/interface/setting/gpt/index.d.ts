@@ -3,9 +3,14 @@ declare interface GptSetting {
     api: {
       host: string;
       version: string;
-      action: Record<keyof GptSetting["app"]["models"], string>;
+      action: Field<
+        | "chat"
+        | "speech"
+        | "transcribe"
+        | "image"
+      >;
     };
-    models: FieldTable;
+    models: Table<GptModel>;
     limits: Limit<
       | "token"
       | "temperature"

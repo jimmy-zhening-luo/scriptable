@@ -99,14 +99,15 @@ namespace GPT {
             .replaceAll(tags.location, option.location)
             .replaceAll(tags.date, option.date),
         ] as const)
-        .map(([role, content]) => { return { role, content }; });
+        .map(([role, content]) => { return { role, content }; }),
+      model = models[option.model] as GptModel;
 
       return {
-        api: [host, version, action[option.model]].join("/"),
+        api: [host, version, action[model.action]].join("/"),
         header: id,
         body: {
           messages,
-          model: models[option.model],
+          model: model.id,
           ...Math.round(option.token) < 1
             ? {}
             : { max_tokens: String(option.token) },
