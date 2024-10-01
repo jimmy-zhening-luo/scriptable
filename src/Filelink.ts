@@ -39,9 +39,7 @@ namespace Filelink {
               postContainerRoot,
             } = provider;
 
-            if (torso.length < 1)
-              throw new ReferenceError(`Path cannot be container root`);
-            else {
+            if (torso.length > 0) {
               const p2 = torso.shift() as string;
 
               if (folders.includes(p2))
@@ -55,6 +53,8 @@ namespace Filelink {
               else
                 throw new ReferenceError(`Container not found in provider`);
             }
+            else
+              throw new ReferenceError(`Path cannot be container root`);
           }
 
           return [

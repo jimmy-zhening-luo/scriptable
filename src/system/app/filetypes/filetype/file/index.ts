@@ -52,9 +52,9 @@ class File<M extends boolean> {
       manager = FileManager.iCloud();
 
       if (alias.length < 1)
-        throw new TypeError(`Bookmark alias is empty`);
+        throw new TypeError(`Empty bookmark alias`);
       else if (!manager.bookmarkExists(alias))
-        throw new ReferenceError(`Bookmark not found`);
+        throw new ReferenceError(`Bookmark does not exist`);
       else
         return manager.bookmarkedPath(alias);
     }
@@ -72,16 +72,16 @@ class File<M extends boolean> {
   }
 
   private static append(bookmark: string, subpath: readonly vstring<"filenode">[]) {
-    return [bookmark, ...subpath.length > 0 ? [...subpath] : []].join("/");
+    return [bookmark, ...subpath].join("/");
   }
 
-  public read(stringfully = false) {
+  public read(fail = false) {
     try {
       const { path, isFile } = this;
 
       if (!isFile)
-        if (stringfully)
-          throw new ReferenceError(`Tried to read non-existent file`);
+        if (fail)
+          throw new ReferenceError(`File does not exist`);
         else
           return "";
       else
@@ -92,21 +92,27 @@ class File<M extends boolean> {
     }
   }
 
-  public readful(error = "") {
+  public readful(error = this.name) {
     try {
       const read = this.read(true);
 
-      if (read.length < 1)
-        throw new TypeError(error);
-      else
+      if (read.length > 0)
         return read as stringful;
+      else
+        throw new TypeError(`Empty file is not stringful`, { cause: error });
     }
     catch (e) {
-      throw new Error(`File: readful (${this.name})`, { cause: e });
+      throw new Error(`File: readful`, { cause: e });
     }
   }
 
-  public write(string: string, overwrite: "line" | "append" | boolean = false) {
+  public write(
+    string: string,
+    overwrite:
+      | "line"
+      | "append"
+      | boolean = false,
+  ) {
     try {
       const {
         mutable,
@@ -117,18 +123,18 @@ class File<M extends boolean> {
       } = this;
 
       if (!mutable)
-        throw new TypeError("File is readonly");
+        throw new TypeError("Readonly file");
       else
         if (isDirectory)
-          throw new TypeError("Write destination is folder");
+          throw new ReferenceError("Write path is folder");
         else
           if (isFile)
             if (overwrite === false)
-              throw new TypeError("Existing file, overwrite:false");
+              throw new ReferenceError("Existing file, overwrite false");
             else
               manager.writeString(path, overwrite === "append" ? [this.read(), string].join("") : overwrite === "line" ? [string, this.read()].join("\n") : string);
           else {
-            this.createParent();
+            this.mkdir();
             manager.writeString(path, string);
           }
     }
@@ -146,7 +152,7 @@ class File<M extends boolean> {
     }
   }
 
-  private createParent() {
+  private mkdir() {
     const { parent, manager } = this;
 
     if (!manager.isDirectory(parent))

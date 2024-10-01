@@ -10,7 +10,7 @@ function error(e: Error) {
         : String(e);
   }
 
-  const errors = [e] as ErrorLike[];
+  const errors = [e] as Arrayful<ErrorLike>;
 
   for (
     let ee: ErrorLike<true> = e;
@@ -19,9 +19,9 @@ function error(e: Error) {
   )
     errors.unshift(ee.cause as ErrorLike<true>);
 
-  const messages = errors.map(e => typeof e === "object" && "message" in e ? e.message : stringify(e)),
-  title = messages[0] ?? "Fatal: Empty error trace.",
-  body = messages.slice(1).join("\n"),
+  const messages = errors.map(e => typeof e === "object" && "message" in e ? e.message : stringify(e)) as Arrayful<string>,
+  [title, ...stack] = messages,
+  body = stack.join("\n"),
   n = new Notification;
 
   n.title = title;
