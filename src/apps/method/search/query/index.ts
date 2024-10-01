@@ -6,60 +6,33 @@ class Query {
     input: string,
     engines: SearchSetting["user"]["engines"],
     alias: FieldTable,
-    CHAT: stringful,
+    SELECTOR: stringful,
     TRANSLATE: stringful,
-    MATH_SHORT: stringful,
-    MATH_LONG: stringful,
+    MATH: stringful,
     ONE: stringful,
     TWO: stringful,
     THREE: stringful,
-    private readonly REST: stringful,
+    REST: stringful,
   ) {
     try {
-      const [K, ...T] = Query.mathefy(
-        Query.undot(
-          Query.translator(
+      const [K, ...terms] = Query.undot(
+        Query.translate(
+          Query.mathefy(
             Query.tokenize(
               input,
               ONE,
               TWO,
               THREE,
             ),
-            TRANSLATE,
+            MATH,
           ),
+          SELECTOR,
+          TRANSLATE,
         ),
-        CHAT,
-        TRANSLATE,
-        MATH_SHORT,
-        MATH_LONG,
-        [
-          "0",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          ".",
-          "(",
-          ")",
-          "<",
-          ">",
-          "+",
-          "-",
-          "%",
-          "~",
-          "#",
-          "$",
-        ],
-      );
+      ),
+      key = (K satisfies stringful).toLowerCase() as stringful;
 
-      this.terms = T;
-
-      const key = (K satisfies stringful).toLowerCase() as stringful;
+      this.terms = terms;
 
       if (key in engines)
         this.key = key;
@@ -67,12 +40,12 @@ class Query {
         if ((alias[key] as stringful) in engines)
           this.key = alias[key] as stringful;
         else {
+          this.key = REST;
           this.terms.unshift(key);
-          this.key = this.REST;
         }
     }
     catch (e) {
-      throw new Error(`Query`, { cause: e });
+      throw new Error(`Query: [${input}]`, { cause: e });
     }
   }
 
@@ -81,103 +54,89 @@ class Query {
   }
 
   private static tokenize(
-    query: string,
+    input: string,
     ONE: stringful,
     TWO: stringful,
     THREE: stringful,
   ) {
-    const implicit = query.startsWith(" ")
-      ? query.charAt(1) === " "
-        ? query.charAt(2) === " "
+    const imply = input.startsWith(" ")
+      ? input.charAt(1) === " "
+        ? input.charAt(2) === " "
           ? [THREE]
           : [TWO]
         : [ONE]
       : [],
     tokens = [
-      ...implicit,
-      ...query
+      ...imply,
+      ...input
         .trim()
         .split(" ")
         .filter((token): token is stringful => token.length > 0),
     ];
 
-    if (tokens.length < 1)
-      throw new SyntaxError(`no tokens in query`, { cause: query });
-    else
+    if (tokens.length > 0)
       return tokens as Arrayful<stringful>;
+    else
+      throw new SyntaxError(`Input query has no tokens`);
   }
 
-  private static translator(tokens: Arrayful<stringful>, TRANSLATE: stringful) {
-    const LANGUAGE = "@" as stringful,
-    [T0] = tokens,
-    t0 = (T0 satisfies stringful).toLowerCase() as stringful,
-    language = t0.startsWith(LANGUAGE)
-      ? [TRANSLATE]
-      : t0.startsWith(TRANSLATE)
-        ? LANGUAGE === t0.slice(TRANSLATE.length, TRANSLATE.length + LANGUAGE.length)
-          ? [TRANSLATE, tokens.shift()?.slice(TRANSLATE.length) as stringful]
-          : TRANSLATE.length > t0.length
-            ? [
-                TRANSLATE,
-                ([LANGUAGE, t0[TRANSLATE.length] as string] satisfies [stringful, string]).join("") as stringful,
-                ...TRANSLATE.length + LANGUAGE.length < (tokens.shift()?.length ?? 0)
-                  ? [t0.slice(TRANSLATE.length + LANGUAGE.length) as stringful]
-                  : [],
-              ]
-            : []
-        : [];
+  private static mathefy(
+    tokens: Arrayful<stringful>,
+    MATH: stringful,
+  ) {
+    const [token0] = tokens,
+    NUMERIC = [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      ".",
+      "(",
+      ")",
+      "<",
+      ">",
+      "+",
+      "-",
+      "%",
+      "~",
+      "#",
+      "$",
+    ];
 
-    tokens.unshift(...language);
+    if (NUMERIC.includes(token0[0]))
+      tokens.unshift(MATH);
+
+    return tokens;
+  }
+
+  private static translate(
+    tokens: Arrayful<stringful>,
+    SELECTOR: stringful,
+    TRANSLATE: stringful,
+  ) {
+    const [token0] = tokens;
+
+    if (token0.startsWith(SELECTOR))
+      tokens.unshift(TRANSLATE);
 
     return tokens;
   }
 
   private static undot(tokens: Arrayful<stringful>) {
-    const [T0] = tokens,
-    dedot0 = !T0.startsWith(".") && T0.endsWith(".")
-      ? T0.slice(0, -1) as stringful
+    const [token0] = tokens,
+    token_ = !token0.startsWith(".") && token0.endsWith(".")
+      ? token0.slice(0, -1) as stringful
       : null;
 
-    if (dedot0 !== null) {
+    if (token_ !== null) {
       tokens.shift();
       tokens.unshift(dedot0);
-    }
-
-    return tokens;
-  }
-
-  private static mathefy(
-    tokens: Arrayful<stringful>,
-    CHAT: stringful,
-    TRANSLATE: stringful,
-    MATH_SHORT: stringful,
-    MATH_LONG: stringful,
-    NUMERIC: readonly string[],
-  ) {
-    const [T0] = tokens,
-    t0 = (T0 satisfies stringful).toLowerCase() as stringful,
-    longest = [
-      MATH_SHORT,
-      CHAT,
-      TRANSLATE,
-      MATH_LONG,
-    ]
-      .filter(math => t0.length >= math.length)
-      .sort((a, b) => b.length - a.length)
-      .find(math => t0.startsWith(math))
-      ?? null;
-
-    if (longest === null) {
-      if (NUMERIC.includes(t0[0]))
-        tokens.unshift(MATH_SHORT);
-    }
-    else {
-      const operand = tokens.shift()?.slice(longest.length) ?? "";
-
-      if (operand.length > 0)
-        tokens.unshift(operand as stringful);
-
-      tokens.unshift(longest);
     }
 
     return tokens;

@@ -1,17 +1,17 @@
 declare interface SearchSetting {
   app: {
     tag: string;
+    selector: string;
     key: Field<
       | "chat"
       | "translate"
-      | "mathShort"
-      | "mathLong"
+      | "math"
     >;
     fallback: Field<
-      | "rest"
       | "one"
       | "two"
       | "three"
+      | "rest"
     >;
   };
   user: {

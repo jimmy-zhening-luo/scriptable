@@ -30,19 +30,31 @@ namespace Search {
     protected runtime() {
       const { inputString, setting } = this,
       input = inputString.length > 0 ? inputString : this.read(),
-      { app: { tag, key, fallback }, user: { engines, alias } } = setting,
+      {
+        user: { engines, alias },
+        app: {
+          tag,
+          selector,
+          key,
+          fallback,
+        },
+      } = setting,
       TAG = this.stringful(tag),
-      params = this.stringfuls([
-        key.chat,
+      RESERVED = this.stringfuls([
+        selector,
         key.translate,
-        key.mathShort,
-        key.mathLong,
+        key.math,
         fallback.one,
         fallback.two,
         fallback.three,
         fallback.rest,
       ] as const),
-      query = new Search.Query(input, engines, alias, ...params),
+      query = new Search.Query(
+        input,
+        engines,
+        alias,
+        ...RESERVED
+      ),
       entry = engines[query.key] ?? null;
 
       if (entry === null)
