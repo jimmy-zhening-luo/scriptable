@@ -28,10 +28,10 @@ namespace GPT {
         {},
         defaults,
       ),
-      { model, preset } = "model" in input && input["model"] in models
+      { model, preset } = "model" in input && input.model in models
         ? {
             preset: null,
-            model: models[input["model"]] as GptModel,
+            model: models[input.model] as GptModel,
           }
         : {
             preset: presets[presetId] ?? null,

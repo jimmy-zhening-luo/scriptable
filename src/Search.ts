@@ -53,7 +53,7 @@ namespace Search {
         input,
         engines,
         alias,
-        ...RESERVED
+        ...RESERVED,
       ),
       entry = engines[query.key] ?? null;
 
