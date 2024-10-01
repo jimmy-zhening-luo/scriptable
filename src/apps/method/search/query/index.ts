@@ -136,7 +136,7 @@ class Query {
 
     if (token_ !== null) {
       tokens.shift();
-      tokens.unshift(dedot0);
+      tokens.unshift(token_);
     }
 
     return tokens;
