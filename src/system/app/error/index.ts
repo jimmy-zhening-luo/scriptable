@@ -4,8 +4,8 @@ function error(e: Error) {
       ? `[${e.map((i: unknown) => stringify(i)).join(", ")}]`
       : typeof e === "object" && e !== null
         ? Object
-          .keys(e)
-          .map(k => `${k}: ${stringify((e as FieldTable)[k])}`)
+          .entries(e)
+          .map(([k, v]) => `${k}: ${stringify(v)}`)
           .join(", ")
         : String(e);
   }

@@ -116,6 +116,12 @@ abstract class App<
     }
   }
 
+  protected subsetting<Subschema>(
+    subpath: string,
+  ) {
+    return new App.Setting<T, Subschema>(this.apptype, this.name).parse;
+  }
+
   protected read(
     fileE?: boolean | Null<string>,
     extE?: boolean | Null<string>,
