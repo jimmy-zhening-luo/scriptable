@@ -35,8 +35,10 @@ class Key<T extends string> extends kFiletype<"Key", T, true> {
       { address } = this;
 
       Keychain.set(address, local);
+      
+      const keychain = Keychain.get(address)
 
-      if (local !== Keychain.get(address))
+      if (local !== keychain)
         throw new EvalError("Fatal: Key set in Keychain mismatches local");
 
       this.delete();

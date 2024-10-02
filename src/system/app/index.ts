@@ -124,7 +124,7 @@ abstract class App<
     const { type, name } = this;
 
     if (subpath.length > 0)
-      return new App.Setting<T, Subschema>(type, `${name}/${subpath}`).parse;
+      return new App.Setting<T, Subschema>(type, `${name satisfies stringful}/${subpath as stringful}` as stringful).parse;
     else
       throw new TypeError("Empty subsetting subpath");
   }
