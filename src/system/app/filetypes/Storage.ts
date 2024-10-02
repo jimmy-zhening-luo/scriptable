@@ -2,33 +2,42 @@ import type { Filetype } from "./filetype/index";
 
 const dFiletype = importModule<typeof Filetype>("./filetype/index");
 
-class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {
+class Storage<T extends string> extends dFiletype<"Storage", T, true> {
   constructor(
-    apptype: literalful<AT>,
+    type: literalful<T>,
     app: stringful,
     file?: Null<string>,
-    ext?: Null<string>,
+    ext?: string,
   ) {
     super(
       true,
       "Storage",
-      apptype,
+      type,
+      app,
       file ?? app,
       ext,
-      app,
     );
   }
 
-  public write(data: unknown, overwrite: "line" | "append" | boolean = true) {
+  public write(
+    data: unknown,
+    overwrite:
+      | "line"
+      | "append"
+      | boolean = true,
+  ) {
     try {
       const { file } = this,
       buffer = data ?? null;
 
       if (buffer === null)
-        throw new TypeError("Tried to write null data");
+        throw new TypeError("Cannot write null data");
       else if (typeof buffer === "object")
         if (Array.isArray(buffer) && buffer.every(i => typeof i === "string"))
-          file.write(buffer.reverse().join("\n"), overwrite === false ? false : "line");
+          file.write(
+            buffer.reverse().join("\n"),
+            overwrite === false ? false : "line",
+          );
         else
           file.write(JSON.stringify(buffer), overwrite !== false);
 

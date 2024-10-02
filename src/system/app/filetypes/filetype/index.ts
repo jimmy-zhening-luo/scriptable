@@ -1,33 +1,34 @@
 import type { File } from "./file/index";
 
 abstract class Filetype<
+  FT extends string,
   T extends string,
-  AT extends string,
   Mutable extends boolean = false,
 > {
   protected readonly file: File<Mutable>;
 
   constructor(
     mutable: Mutable,
-    filetype: literalful<T>,
-    apptype: literalful<AT>,
+    filetype: literalful<FT>,
+    type: literalful<T>,
+    folder: Null<string>,
     file: string,
-    ext?: Null<string>,
-    folder: Null<string> = null,
+    ext: string = "txt",
   ) {
     try {
-      this.file = new this.File(
-        mutable,
-        filetype,
-        ...[
-          apptype,
-          ...folder === null ? [] : [folder],
-          [file, ext ?? "txt"].join("."),
-        ],
-      );
+      if (file.length > 0 && ext.length > 0)
+        this.file = new this.File(
+          mutable,
+          filetype,
+          type,
+          folder ?? "",
+          `${file}.${ext}`,
+        );
+      else
+        throw new TypeError("Empty filename or extension");
     }
     catch (e) {
-      throw new Error(`Filetype (${filetype}/${apptype}: ${folder ?? ""}/${file})`, { cause: e });
+      throw new Error(`Filetype (${filetype}/${type}/${folder ?? ""}/${file}.${ext})`, { cause: e });
     }
   }
 
@@ -35,31 +36,22 @@ abstract class Filetype<
     return this.file.name;
   }
 
-  protected get subpath() {
-    return this.file.subpath;
-  }
-
   private get File() {
     return importModule<typeof File<Mutable>>("./file/index");
   }
 
-  public read(stringfully = false) {
-    return this.file.read(stringfully);
+  public read() {
+    return this.file.read();
   }
 
   public readful() {
-    const { file, subpath } = this,
-    error = subpath;
-
-    return file.readful(error);
+    return this.file.readful();
   }
 
-  public data<Data>(stringfully = false): Null<Data> {
-    const { file } = this,
-    string = file.read(stringfully).trim(),
-    { length } = string;
+  public data<Data>(): Null<Data> {
+    const string = this.read().trim();
 
-    return length > 0 ? JSON.parse(string) as Data : null;
+    return string.length > 0 ? JSON.parse(string) as Data : null;
   }
 
   protected abstract write(...args: Mutable extends true ? Parameters<File<Mutable>["write"]> : never): Mutable extends true ? ReturnType<File<Mutable>["write"]> : never;

@@ -2,15 +2,16 @@ import type { Filetype } from "./filetype/index";
 
 const cFiletype = importModule<typeof Filetype>("./filetype/index");
 
-class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {
+class Setting<T extends string, Schema> extends cFiletype<"Setting", T> {
   constructor(
-    apptype: literalful<AT>,
+    type: literalful<T>,
     app: stringful,
   ) {
     super(
       false,
       "Setting",
-      apptype,
+      type,
+      null,
       app,
       "json",
     );

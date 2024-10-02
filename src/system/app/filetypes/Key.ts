@@ -2,42 +2,42 @@ import type { Filetype } from "./filetype/index";
 
 const kFiletype = importModule<typeof Filetype>("./filetype/index");
 
-class Key<AT extends string> extends kFiletype<"Key", AT, true> {
+class Key<T extends string> extends kFiletype<"Key", T, true> {
   constructor(
-    apptype: literalful<AT>,
+    type: literalful<T>,
     app: stringful,
-    handle: stringful,
+    handle: string,
   ) {
     super(
       true,
       "Key",
-      apptype,
-      handle,
-      null,
+      type,
       app,
+      handle,
     );
   }
 
   private get address() {
-    return this.subpath;
+    return this.name;
   }
 
   public load(roll = false) {
     const { address } = this;
 
-    return roll || !Keychain.contains(address) ? this.roll() : Keychain.get(address);
+    return roll || !Keychain.contains(address)
+      ? this.roll()
+      : Keychain.get(address);
   }
 
   public roll(): string {
     try {
-      const local = super.readful();
+      const local = super.readful(),
+      { address } = this;
 
-      Keychain.set(this.address, local);
+      Keychain.set(address, local);
 
-      const keychain = Keychain.get(this.address);
-
-      if (local !== keychain)
-        throw new EvalError("Fatal: Key set in Keychain mismatches local", { cause: { local, keychain } });
+      if (local !== Keychain.get(address))
+        throw new EvalError("Fatal: Key set in Keychain mismatches local");
 
       this.delete();
 

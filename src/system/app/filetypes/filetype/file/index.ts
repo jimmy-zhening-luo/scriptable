@@ -21,12 +21,11 @@ class File<Mutable extends boolean> {
             .map(node => node.trim())
             .filter((node): node is stringful => node.length > 0)
             .map(node => File.node(node)),
-        ),
-      parent = subpath.slice(0, -1);
+        );
 
       this.name = File.append(alias, subpath);
       this.path = File.append(bookmark, subpath);
-      this.parent = File.append(bookmark, parent);
+      this.parent = File.append(bookmark, subpath.slice(0, -1));
       this.subpath = subpath.join("/");
     }
     catch (e) {
@@ -52,9 +51,9 @@ class File<Mutable extends boolean> {
       manager = FileManager.iCloud();
 
       if (alias.length < 1)
-        throw new TypeError(`Empty bookmark alias`);
+        throw new TypeError("Empty bookmark alias");
       else if (!manager.bookmarkExists(alias))
-        throw new ReferenceError(`Bookmark does not exist`);
+        throw new ReferenceError("Bookmark does not exist");
       else
         return manager.bookmarkedPath(alias);
     }
@@ -71,35 +70,36 @@ class File<Mutable extends boolean> {
     );
   }
 
-  private static append(bookmark: string, subpath: readonly vstring<"filenode">[]) {
+  private static append(
+    bookmark: string,
+    subpath: readonly vstring<"filenode">[],
+  ) {
     return [bookmark, ...subpath].join("/");
   }
 
   public read(fail = false) {
     try {
-      const { path, isFile } = this;
-
-      if (!isFile)
+      if (!this.isFile)
         if (fail)
-          throw new ReferenceError(`File does not exist`);
+          throw new ReferenceError("File does not exist");
         else
           return "";
       else
-        return this.manager.readString(path);
+        return this.manager.readString(this.path);
     }
     catch (e) {
       throw new Error(`File: read (${this.name})`, { cause: e });
     }
   }
 
-  public readful(error = this.name) {
+  public readful(cause = this.name) {
     try {
       const read = this.read(true);
 
       if (read.length > 0)
         return read as stringful;
       else
-        throw new TypeError(`Empty file is not stringful`, { cause: error });
+        throw new TypeError(`Empty file is not stringful`, { cause });
     }
     catch (e) {
       throw new Error(`File: readful`, { cause: e });
@@ -124,19 +124,27 @@ class File<Mutable extends boolean> {
 
       if (!mutable)
         throw new TypeError("Readonly file");
-      else
-        if (isDirectory)
-          throw new ReferenceError("Write path is folder");
-        else
-          if (isFile)
-            if (overwrite === false)
-              throw new ReferenceError("Existing file, overwrite false");
-            else
-              manager.writeString(path, overwrite === "append" ? [this.read(), string].join("") : overwrite === "line" ? [string, this.read()].join("\n") : string);
-          else {
-            this.mkdir();
-            manager.writeString(path, string);
-          }
+      else if (isDirectory)
+        throw new ReferenceError("Write path is folder");
+      else if (isFile)
+        if (overwrite === false)
+          throw new ReferenceError("Existing file, overwrite false");
+        else {
+          const read = this.read();
+
+          manager.writeString(
+            path,
+            overwrite === "append"
+              ? `${read}${string}`
+              : overwrite === "line"
+                ? `${string}\n${read}`
+                : string,
+          );
+        }
+      else {
+        this.mkdir();
+        manager.writeString(path, string);
+      }
     }
     catch (e) {
       throw new Error(`File: write (${this.name})`, { cause: e });

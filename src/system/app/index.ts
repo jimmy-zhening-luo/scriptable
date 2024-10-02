@@ -9,9 +9,12 @@ abstract class App<
   Output,
   Schema,
 > {
-  private readonly cache: { storage: Record<string, Storage<T>>; keys: Record<string, Key<T>> } = { storage: {}, keys: {} };
+  private readonly cache: {
+    storage: Record<string, Storage<T>>;
+    keys: Record<string, Key<T>>;
+  } = { storage: {}, keys: {} };
 
-  protected abstract apptype: literalful<T>;
+  protected abstract type: literalful<T>;
 
   private static get Setting() {
     return importModule<typeof Setting>("./filetypes/Setting");
@@ -37,8 +40,9 @@ abstract class App<
     return name;
   }
 
-  protected get setting(): Schema extends Schema ? Schema : never {
-    const setting = new App.Setting<T, Schema>(this.apptype, this.name).parse;
+  protected get setting(): Schema {
+    const { type, name } = this,
+    setting = new App.Setting<T, Schema>(type, name).parse;
 
     Object.defineProperty(this, "setting", { value: setting, enumerable: true });
 
@@ -116,48 +120,31 @@ abstract class App<
     }
   }
 
-  protected subsetting<Subschema>(
-    subpath: string,
-  ) {
-    return new App.Setting<T, Subschema>(this.apptype, this.name).parse;
+  protected subsetting<Subschema>(subpath: string) {
+    const { type, name } = this;
+
+    if (subpath.length > 0)
+      return new App.Setting<T, Subschema>(type, `${name}/${subpath}`).parse;
+    else
+      throw new TypeError("Empty subsetting subpath");
   }
 
-  protected read(
-    fileE?: boolean | Null<string>,
-    extE?: boolean | Null<string>,
-    E?: boolean,
-  ) {
-    const [file, ext, stringfully] = typeof fileE === "boolean"
-      ? [null, null, fileE] as const
-      : typeof extE === "boolean"
-        ? [fileE, null, extE] as const
-        : [fileE, extE, E] as const;
-
-    return this.storage(file, ext).read(stringfully);
+  protected read(file?: Null<string>, ext?: string) {
+    return this.storage(file, ext).read();
   }
 
-  protected readful(file?: string, ext?: string) {
+  protected readful(file?: Null<string>, ext?: string) {
     return this.storage(file, ext).readful();
   }
 
-  protected data<Data>(
-    fileE?: boolean | Null<string>,
-    extE?: boolean | Null<string>,
-    E?: boolean,
-  ): Null<Data> {
-    const [file, ext, stringfully] = typeof fileE === "boolean"
-      ? [null, null, fileE] as const
-      : typeof extE === "boolean"
-        ? [fileE, null, extE] as const
-        : [fileE, extE, E] as const;
-
-    return this.storage(file, ext).data<Data>(stringfully);
+  protected data<Data>(file?: Null<string>, ext?: string): Null<Data> {
+    return this.storage(file, ext).data<Data>();
   }
 
   protected write(
     data: unknown,
     file?: Null<string>,
-    ext?: Null<string>,
+    ext?: string,
     overwrite?:
       | "line"
       | "append"
@@ -174,18 +161,18 @@ abstract class App<
     this.key(handle).purge();
   }
 
-  protected stringful(string = "", error = "") {
+  protected stringful(string = "", cause = "") {
     if (string.length > 0)
       return string as stringful;
     else
-      throw new TypeError("Unstringful", { cause: error });
+      throw new TypeError("Unstringful", { cause });
   }
 
-  protected stringfuls<T extends readonly string[]>(array: T, error = "") {
+  protected stringfuls<T extends readonly string[]>(array: T, cause = "") {
     if (array.length > 0 && array.every((i): i is stringful => i.length > 0))
       return array as unknown as (T extends readonly [string, ...string[]] ? { [K in keyof T]: stringful; } : Arrayful<stringful>);
     else
-      throw new TypeError("Unstringful array", { cause: { array, error } });
+      throw new TypeError("Unstringful array", { cause });
   }
 
   protected timestamp(date = new Date) {
@@ -252,7 +239,7 @@ abstract class App<
     };
   }
 
-  private storage(file?: Null<string>, ext?: Null<string>) {
+  private storage(file?: Null<string>, ext?: string) {
     const cacheId = [file ?? "", ext ?? ""]
       .join(":"),
     cache = this.cache.storage[cacheId] ?? null;
@@ -260,10 +247,10 @@ abstract class App<
     if (cache !== null)
       return cache;
     else {
-      const { apptype, name } = this,
+      const { type, name } = this,
       app = name,
       newStorage = new App.Storage<T>(
-        apptype,
+        type,
         app,
         file,
         ext,
@@ -281,11 +268,11 @@ abstract class App<
     if (cache !== null)
       return cache;
     else {
-      const { apptype, name } = this,
+      const { type, name } = this,
       newKey = new App.Key<T>(
-        apptype,
+        type,
         name,
-        this.stringful(handle),
+        handle,
       );
 
       this.cache.keys[handle] = newKey;
