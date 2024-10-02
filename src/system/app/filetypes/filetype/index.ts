@@ -13,7 +13,7 @@ abstract class Filetype<
     type: literalful<T>,
     folder: Null<string>,
     file: string,
-    ext: string = "txt",
+    ext = "txt",
   ) {
     try {
       if (file.length > 0 && ext.length > 0)
