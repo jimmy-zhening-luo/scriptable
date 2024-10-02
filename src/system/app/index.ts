@@ -40,7 +40,7 @@ abstract class App<
     return name;
   }
 
-  protected get setting(): Schema {
+  protected get setting(): Schema extends Schema ? Schema : never {
     const { type, name } = this,
     setting = new App.Setting<T, Schema>(type, name).parse;
 
@@ -120,7 +120,7 @@ abstract class App<
     }
   }
 
-  protected subsetting<Subschema>(subpath: string) {
+  protected subsetting<Subschema>(subpath: string): Subschema extends Subschema ? Subschema : never {
     const { type, name } = this;
 
     if (subpath.length > 0)
