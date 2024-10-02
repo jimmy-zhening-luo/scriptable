@@ -30,10 +30,6 @@ class File<Mutable extends boolean> {
     }
   }
 
-  private static get vstring() {
-    return importModule<typeof vstring>("../../../../../common/valid/string/index");
-  }
-
   public get isDirectory() {
     return this.manager.isDirectory(this.path);
   }
