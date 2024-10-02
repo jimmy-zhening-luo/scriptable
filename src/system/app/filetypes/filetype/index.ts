@@ -3,32 +3,27 @@ import type { File } from "./file/index";
 abstract class Filetype<
   T extends string,
   AT extends string,
-  M extends boolean = false,
+  Mutable extends boolean = false,
 > {
-  protected readonly file: File<M>;
+  protected readonly file: File<Mutable>;
 
   constructor(
+    mutable: Mutable,
     filetype: literalful<T>,
     apptype: literalful<AT>,
-    mutable: M,
     file: string,
     ext?: Null<string>,
     folder: Null<string> = null,
   ) {
     try {
-      const EXT = "txt",
-      alias = filetype,
-      container = apptype,
-      subpaths = [
-        container,
-        ...folder === null ? [] : [folder],
-        [file, ext ?? EXT].join("."),
-      ];
-
       this.file = new this.File(
         mutable,
-        alias,
-        ...subpaths,
+        filetype,
+        ...[
+          apptype,
+          ...folder === null ? [] : [folder],
+          [file, ext ?? "txt"].join("."),
+        ],
       );
     }
     catch (e) {
@@ -45,7 +40,7 @@ abstract class Filetype<
   }
 
   private get File() {
-    return importModule<typeof File<M>>("./file/index");
+    return importModule<typeof File<Mutable>>("./file/index");
   }
 
   public read(stringfully = false) {
@@ -67,8 +62,8 @@ abstract class Filetype<
     return length > 0 ? JSON.parse(string) as Data : null;
   }
 
-  protected abstract write(...args: M extends true ? Parameters<File<M>["write"]> : never): M extends true ? ReturnType<File<M>["write"]> : never;
-  protected abstract delete(...args: M extends true ? Parameters<File<M>["delete"]> : never): M extends true ? ReturnType<File<M>["delete"]> : never;
+  protected abstract write(...args: Mutable extends true ? Parameters<File<Mutable>["write"]> : never): Mutable extends true ? ReturnType<File<Mutable>["write"]> : never;
+  protected abstract delete(...args: Mutable extends true ? Parameters<File<Mutable>["delete"]> : never): Mutable extends true ? ReturnType<File<Mutable>["delete"]> : never;
 }
 
 module.exports = Filetype;

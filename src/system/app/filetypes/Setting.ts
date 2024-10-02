@@ -8,9 +8,9 @@ class Setting<AT extends string, Schema> extends cFiletype<"Setting", AT> {
     app: stringful,
   ) {
     super(
+      false,
       "Setting",
       apptype,
-      false,
       app,
       "json",
     );

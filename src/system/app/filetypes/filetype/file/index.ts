@@ -1,6 +1,6 @@
 import type { vstring } from "../../../../../common/valid/string/index";
 
-class File<M extends boolean> {
+class File<Mutable extends boolean> {
   public readonly name: string;
   public readonly path: string;
   public readonly subpath: string;
@@ -8,7 +8,7 @@ class File<M extends boolean> {
   private readonly manager = FileManager.local();
 
   constructor(
-    public readonly mutable: M,
+    public readonly mutable: Mutable,
     alias: string,
     ...subpaths: string[]
   ) {

@@ -10,9 +10,9 @@ class Storage<AT extends string> extends dFiletype<"Storage", AT, true> {
     ext?: Null<string>,
   ) {
     super(
+      true,
       "Storage",
       apptype,
-      true,
       file ?? app,
       ext,
       app,

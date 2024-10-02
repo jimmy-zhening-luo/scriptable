@@ -9,9 +9,9 @@ class Key<AT extends string> extends kFiletype<"Key", AT, true> {
     handle: stringful,
   ) {
     super(
+      true,
       "Key",
       apptype,
-      true,
       handle,
       null,
       app,
