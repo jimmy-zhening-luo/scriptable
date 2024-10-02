@@ -1,5 +1,3 @@
-import type { vstring } from "../../../../../common/valid/string/index";
-
 class File<Mutable extends boolean> {
   public readonly name: string;
   public readonly path: string;
@@ -19,8 +17,7 @@ class File<Mutable extends boolean> {
           subpath => subpath
             .split("/")
             .map(node => node.trim())
-            .filter((node): node is stringful => node.length > 0)
-            .map(node => File.node(node)),
+            .filter((node): node is vstring<"filenode"> => node.length > 0 && node.length < 256 && [":", "&"].every(c => !node.includes(c))),
         );
 
       this.name = File.append(alias, subpath);
@@ -60,14 +57,6 @@ class File<Mutable extends boolean> {
     catch (e) {
       throw new ReferenceError(`File: bookmark (${bookmark})`, { cause: e });
     }
-  }
-
-  private static node(node: stringful) {
-    return File.vstring<"filenode">(
-      node,
-      [":", "/"] as char[],
-      { max: 255 as Positive<int> },
-    );
   }
 
   private static append(
