@@ -3,7 +3,7 @@ declare interface GptSetting {
   api: {
     host: string;
     version: string;
-    action: Field<
+    actions: Field<
       | "chat"
       | "speech"
       | "transcribe"
@@ -12,16 +12,16 @@ declare interface GptSetting {
   };
   models: Table<
     {
-      id: string;
+      name: string;
       action: Keys<GptSetting["api"]["action"]>;
     }
   >;
   defaults:
     & Field<"model">
     & Scalar<"temperature" | "p">
-    & GptSetting["plugins"]
+    & GptSetting["placeholders"]
   ;
-  plugins: Field<
+  placeholders: Field<
     | "preset"
     | "location"
     | "date"

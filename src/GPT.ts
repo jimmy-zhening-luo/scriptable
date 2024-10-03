@@ -12,11 +12,11 @@ namespace GPT {
     protected runtime() {
       const { inputful, setting } = this,
       {
-        api: { host, version, action },
+        api: { host, version, actions },
         id,
         models,
-        plugins,
         defaults,
+        placeholders,
       } = setting,
       input = this.unpack(inputful),
       preset = this.subsetting<GptPreset>(
@@ -25,17 +25,13 @@ namespace GPT {
           : defaults.preset,
       ),
       model = models[this.has("model", input, preset, defaults)] as GptSetting["models"][string],
-      plugs = {
-        input: input.plugins,
-        preset: preset.plugins,
-      },
       option = {
         temperature: this.has("temperature", input, preset, defaults),
         p: this.has("p", input, preset, defaults),
         location: this.has("location", input, preset, defaults),
-        date: input.date ?? preset.date ?? this.dateprint(),
+        date: this.has("date", input, preset, { date: this.dateprint() }),
       },
-      promptT = typeof input.prompt !== "string"
+      prompt = typeof input.prompt !== "string"
         ? input.prompt
         : "model" in input
           ? { user: input.prompt }
@@ -44,37 +40,47 @@ namespace GPT {
                 ? { system: preset.system }
                 : {},
               user: "user" in preset
-                ? preset.user.includes(plugins.preset)
-                  ? preset.user.replace(plugins.preset, input.prompt)
+                ? preset.user.includes(placeholders.preset)
+                  ? preset.user.replace(placeholders.preset, input.prompt)
                   : `${preset.user}\n\n${input.prompt}`
                 : input.prompt,
             },
-      messagesT = "system" in promptT
-        ? [
-            ["system", promptT.system],
-            ["user", promptT.user],
-          ] as const
-        : [["user", promptT.user]] as const,
-      messages = messagesT
-        .map(([role, messageT]) => [
-          role,
-          Object
-            .keys(plugs.preset)
-            .reduce(
-              (message, p) => message.replaceAll(`{{${p}}}`, plugs.input?.[p] ?? plugs.preset[p] ?? ""),
-              messageT,
+      messages = (
+        "system" in prompt
+          ? [
+              { role: "system", content: prompt.system },
+              { role: "user", content: prompt.user },
+            ] as const
+          : [{ role: "user", content: prompt.user }] as const
+      )
+        .map(({ role, content }) => {
+          return {
+            role,
+            content: (
+              "plugins" in preset
+                ? Object
+                  .keys(preset.plugins)
+                  .reduce(
+                    (c, p) => c.replaceAll(`{{${p}}}`, input.plugins?.[p] ?? preset.plugins[p] ?? ""),
+                    content,
+                  )
+                : content
             )
-            .replaceAll(plugins.location, option.location)
-            .replaceAll(plugins.date, option.date),
-        ] as const)
-        .map(([role, content]) => { return { role, content }; });
+              .replaceAll(placeholders.location, option.location)
+              .replaceAll(placeholders.date, option.date),
+          };
+        });
 
       return {
-        api: [host, version, action[model.action]].join("/"),
+        api: [
+          host,
+          version,
+          actions[model.action],
+        ].join("/"),
         header: id,
         body: {
           messages,
-          model: model.id,
+          model: model.name,
           temperature: String(option.temperature),
           top_p: String(option.p),
         },
@@ -90,7 +96,7 @@ namespace GPT {
     private has<T extends Keys<GptSetting["defaults"]>>(
       option: T,
       input: GptInputWrap,
-      preset: GptOpts,
+      preset: GptOptions,
       defaults: GptSetting["defaults"],
     ) {
       return input[option] ?? preset[option] ?? defaults[option];
