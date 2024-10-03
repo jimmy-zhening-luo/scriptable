@@ -61,7 +61,7 @@ namespace GPT {
                 ? Object
                   .keys(preset.plugins)
                   .reduce(
-                    (c, p) => c.replaceAll(`{{${p}}}`, input.plugins?.[p] ?? preset.plugins[p] ?? ""),
+                    (c, p) => c.replaceAll(`{{${p}}}`, input.plugins?.[p] ?? preset.plugins?.[p] ?? ""),
                     content,
                   )
                 : content
