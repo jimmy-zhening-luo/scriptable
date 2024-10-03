@@ -1,5 +1,5 @@
 declare type GptPreset =
-  & GptPlugins
   & Partial<GptPromptful>
-  & Partial<GptOpts>
+  & { plugins: FieldTable }
+  & Partial<GptSetting["defaults"]>
 ;

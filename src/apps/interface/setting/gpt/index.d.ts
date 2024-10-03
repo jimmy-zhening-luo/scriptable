@@ -1,29 +1,29 @@
 declare interface GptSetting {
-  app: {
-    api: {
-      host: string;
-      version: string;
-      action: Field<
-        | "chat"
-        | "speech"
-        | "transcribe"
-        | "image"
-      >;
-    };
-    models: Table<GptModel>;
-    limits: Limit<
-      | "temperature"
-      | "p"
-    >;
-    tags: Field<
-      | "preset"
-      | "location"
-      | "date"
+  id: Field<"auth" | "org">;
+  api: {
+    host: string;
+    version: string;
+    action: Field<
+      | "chat"
+      | "speech"
+      | "transcribe"
+      | "image"
     >;
   };
-  user: {
-    id: Field<"auth" | "org">;
-    defaults: GptOpts;
-    presets: Table<GptPreset>;
-  };
+  models: Table<
+    {
+      id: string;
+      action: Keys<GptSetting["api"]["action"]>;
+    }
+  >;
+  defaults:
+    & Field<"model">
+    & Scalar<"temperature" | "p">
+    & GptSetting["plugins"]
+  ;
+  plugins: Field<
+    | "preset"
+    | "location"
+    | "date"
+  >;
 }

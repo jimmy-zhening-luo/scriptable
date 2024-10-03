@@ -12,73 +12,41 @@ namespace GPT {
     protected runtime() {
       const { inputful, setting } = this,
       {
-        app: {
-          api: { host, version, action },
-          models,
-          limits,
-          tags,
-        },
-        user: { id, presets, defaults },
+        api: { host, version, action },
+        id,
+        models,
+        plugins,
+        defaults,
       } = setting,
       input = this.unpack(inputful),
-      presetId = this.has(
-        "preset",
-        presets,
-        input,
-        {},
-        defaults,
+      preset = this.subsetting<GptPreset>(
+        "preset" in input
+          ? input.preset
+          : defaults.preset,
       ),
-      { model, preset } = "model" in input && input.model in models
-        ? {
-            preset: null,
-            model: models[input.model] as GptModel,
-          }
-        : {
-            preset: presets[presetId] ?? null,
-            model: models[this.has(
-              "model",
-              models,
-              {},
-              presets[presetId] ?? {},
-              defaults,
-            )] as GptModel,
-          },
-      plugins = {
-        input: input.plugins ?? {},
-        preset: preset === null
-          ? {}
-          : preset.plugins ?? {},
+      model = models[this.has("model", input, preset, defaults)] as GptSetting["models"][string],
+      plugs = {
+        input: input.plugins,
+        preset: preset.plugins,
       },
       option = {
-        temperature: this.bounded(
-          "temperature",
-          limits,
-          input,
-          preset ?? {},
-          defaults,
-        ),
-        p: this.bounded(
-          "p",
-          limits,
-          input,
-          preset ?? {},
-          defaults,
-        ),
-        location: input.location ?? defaults.location,
-        date: input.date ?? this.dateprint(),
+        temperature: this.has("temperature", input, preset, defaults),
+        p: this.has("p", input, preset, defaults),
+        location: this.has("location", input, preset, defaults),
+        date: input.date ?? preset.date ?? this.dateprint(),
       },
       promptT = typeof input.prompt !== "string"
         ? input.prompt
-        : preset === null
+        : "model" in input
           ? { user: input.prompt }
           : {
               ..."system" in preset
                 ? { system: preset.system }
                 : {},
               user: "user" in preset
-                ? preset.user.includes(tags.preset)
-                  ? preset.user.replace(tags.preset, input.prompt)
-                  : [preset.user, input.prompt].join("\n\n")
+                ? preset.user.includes(plugins.preset)
+                  ? preset.user.replace(plugins.preset, input.prompt)
+                  : `${preset.user}\n\n${input.prompt}`
                 : input.prompt,
             },
       messagesT = "system" in promptT
@@ -91,13 +59,13 @@ namespace GPT {
         .map(([role, messageT]) => [
           role,
           Object
-            .keys(plugins.preset)
+            .keys(plugs.preset)
             .reduce(
-              (message, p) => message.replaceAll(`{{${p}}}`, plugins.input[p] ?? plugins.preset[p] ?? ""),
+              (message, p) => message.replaceAll(`{{${p}}}`, plugs.input?.[p] ?? plugs.preset[p] ?? ""),
               messageT,
             )
-            .replaceAll(tags.location, option.location)
-            .replaceAll(tags.date, option.date),
+            .replaceAll(plugins.location, option.location)
+            .replaceAll(plugins.date, option.date),
         ] as const)
         .map(([role, content]) => { return { role, content }; });
 
@@ -119,32 +87,13 @@ namespace GPT {
         : { prompt: inputful };
     }
 
-    private has<T extends "model" | "preset">(
+    private has<T extends Keys<GptSetting["defaults"]>>(
       option: T,
-      table: Record<string, unknown>,
-      input: Partial<GptOpts>,
-      preset: Partial<GptOpts>,
-      defaults: GptOpts,
+      input: GptInputWrap,
+      preset: GptOpts,
+      defaults: GptSetting["defaults"],
     ) {
-      return typeof input[option] !== "undefined" && input[option] in table
-        ? input[option]
-        : typeof preset[option] !== "undefined" && preset[option] in table
-          ? preset[option]
-          : defaults[option];
-    }
-
-    private bounded<T extends Keys<GptSetting["app"]["limits"]>>(
-      option: T,
-      limits: Record<T, Boundary>,
-      input: Partial<GptOpts>,
-      preset: Partial<GptOpts>,
-      defaults: GptOpts,
-    ) {
-      return typeof input[option] !== "undefined" && input[option] >= limits[option].min && input[option] <= limits[option].max
-        ? input[option]
-        : typeof preset[option] !== "undefined" && preset[option] >= limits[option].min && preset[option] <= limits[option].max
-          ? preset[option]
-          : defaults[option];
+      return input[option] ?? preset[option] ?? defaults[option];
     }
   }
 }

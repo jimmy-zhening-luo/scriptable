@@ -3,6 +3,6 @@ declare type Property<K extends string, OK extends string, V> = literalful<K> ex
   : Recordful<K, V>
     & (
     literalful<OK> extends never
-      ? object
+      ? Recordful<K, V>
       : Particord<OK, V>
   );
