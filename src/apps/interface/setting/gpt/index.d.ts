@@ -13,7 +13,7 @@ declare interface GptSetting {
   models: Table<
     {
       name: string;
-      action: Keys<GptSetting["api"]["action"]>;
+      action: Keys<GptSetting["api"]["actions"]>;
     }
   >;
   defaults:
