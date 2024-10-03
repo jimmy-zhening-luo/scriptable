@@ -29,7 +29,7 @@ namespace GPT {
         temperature: this.has("temperature", input, preset, defaults),
         p: this.has("p", input, preset, defaults),
         location: this.has("location", input, preset, defaults),
-        date: this.has("date", input, preset, { date: this.dateprint() }),
+        date: this.has("date", input, preset, { date: this.dateprint() } as unknown as GptSetting["defaults"]),
       },
       prompt = typeof input.prompt !== "string"
         ? input.prompt
