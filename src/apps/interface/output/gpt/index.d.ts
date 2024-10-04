@@ -6,7 +6,6 @@ declare interface GptOutput {
     & Field<
       | "model"
       ,
-      | "temperature"
-      | "top_p"
+      GptSlider
     >;
 }

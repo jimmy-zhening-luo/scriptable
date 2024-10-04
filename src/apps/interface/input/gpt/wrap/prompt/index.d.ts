@@ -1,1 +1,4 @@
-declare type GptPrompt = string | GptPromptful;
+declare type GptPrompt =
+  | string
+  | GptPromptful
+;

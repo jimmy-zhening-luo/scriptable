@@ -24,25 +24,30 @@ namespace GPT {
           ? input.preset
           : defaults.preset,
       ),
-      model = models[this.has("model", input, preset, defaults)] as GptSetting["models"][string],
-      option = {
-        temperature: this.has("temperature", input, preset, defaults),
-        p: this.has("p", input, preset, defaults),
-        location: this.has("location", input, preset, defaults),
-        date: this.has("date", input, preset, { date: this.dateprint() } as unknown as GptSetting["defaults"]),
+      model = models[input.model ?? preset.model ?? defaults.model] as GptSetting["models"][string],
+      slider = {
+        temperature: input.temperature ?? preset.slider?.temperature ?? defaults.slider.temperature,
+        top_p: input.top_p ?? preset.slider?.top_p ?? defaults.slider.top_p,
+      },
+      placeholder = {
+        date: input.date ?? preset.placeholder?.date ?? defaults.placeholder.date,
+        location: input.location ?? preset.placeholder?.location ?? defaults.placeholder.location,
       },
       prompt = typeof input.prompt !== "string"
         ? input.prompt
         : "model" in input
           ? { user: input.prompt }
           : {
-              ..."system" in preset
-                ? { system: preset.system }
+              ..."system" in preset.prompt
+                ? { system: preset.prompt.system }
                 : {},
-              user: "user" in preset
-                ? preset.user.includes(placeholders.preset)
-                  ? preset.user.replace(placeholders.preset, input.prompt)
-                  : `${preset.user}\n\n${input.prompt}`
+              user: "user" in preset.prompt
+                ? preset.prompt.user.includes(placeholders.insert)
+                  ? preset.prompt.user.replace(
+                    placeholders.insert,
+                    input.prompt,
+                  )
+                  : `${preset.prompt.user}\n\n${input.prompt}`
                 : input.prompt,
             },
       messages = (
@@ -66,8 +71,8 @@ namespace GPT {
                   )
                 : content
             )
-              .replaceAll(placeholders.location, option.location)
-              .replaceAll(placeholders.date, option.date),
+              .replaceAll(placeholders.location, placeholder.location)
+              .replaceAll(placeholders.date, placeholder.date),
           };
         });
 
@@ -81,25 +86,16 @@ namespace GPT {
         body: {
           messages,
           model: model.name,
-          temperature: String(option.temperature),
-          top_p: String(option.p),
+          temperature: String(slider.temperature),
+          top_p: String(slider.top_p),
         },
       };
     }
 
-    private unpack(inputful: GPT["inputful"]) {
+    private unpack(inputful: GPT["inputful"]): GptInputWrap {
       return typeof inputful !== "string" && "prompt" in inputful
         ? inputful
         : { prompt: inputful };
-    }
-
-    private has<T extends Keys<GptSetting["defaults"]>>(
-      option: T,
-      input: GptInputWrap,
-      preset: GptOptions,
-      defaults: GptSetting["defaults"],
-    ) {
-      return input[option] ?? preset[option] ?? defaults[option];
     }
   }
 }

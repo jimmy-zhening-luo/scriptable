@@ -1,1 +1,4 @@
-declare type GptInput = GptInputWrap | GptPrompt;
+declare type GptInput =
+  | GptInputWrap
+  | GptPrompt
+;
