@@ -9,7 +9,11 @@ namespace Filelink {
   const shortcut = importModule<typeof Shortcut>("./system/Shortcut");
 
   export class Filelink extends shortcut<
-    FilelinkInput,
+    {
+      nodes: Unflat;
+      ext: string;
+      type: "File" | "Folder";
+    },
     string,
     FilelinkSetting
   > {
