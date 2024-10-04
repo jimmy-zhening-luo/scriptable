@@ -176,11 +176,11 @@ abstract class App<
   }
 
   protected time(date?: Date) {
-    return print("yyyyMMddhhmmssZ", date);
+    return this.print("yyyyMMddhhmmssZ", date);
   }
 
   protected date(date?: Date) {
-    return print("EEEE, MMMM d, y", date);
+    return this.print("EEEE, MMMM d, y", date);
   }
 
   protected guid64() {
