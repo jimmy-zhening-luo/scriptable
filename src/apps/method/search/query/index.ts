@@ -1,7 +1,7 @@
 class Query {
   public readonly key: stringful;
   public readonly terms: stringful[];
-  public readonly engine: Search["setting"]["engines"][string];
+  public readonly engine: SearchSetting["user"]["engines"][string];
 
   constructor(
     input: string,
@@ -44,7 +44,7 @@ class Query {
         this.terms.unshift(key);
       }
 
-      this.engine = engines[this.key] as Search["setting"]["engines"][string];
+      this.engine = engines[this.key] as SearchSetting["user"]["engines"][string];
     }
     catch (e) {
       throw new Error(`Query: [${input}]`, { cause: e });

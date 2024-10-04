@@ -62,7 +62,7 @@ namespace Search {
         : "url" in entry
           ? new (this.SearchEngine("browser"))(
             entry.url,
-            TAG,
+            this.stringful(tag),
             entry.browser,
             entry.separator,
             entry.encodeComponent,
