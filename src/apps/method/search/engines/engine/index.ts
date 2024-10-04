@@ -13,7 +13,7 @@ abstract class SearchEngine<
     protected readonly engine: string,
     output = false,
   ) {
-    this.output = output ? output : null;
+    this.output = output || null;
   }
 
   public resolve(query: Query) {

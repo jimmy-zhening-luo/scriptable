@@ -34,7 +34,7 @@ class BrowserEngine extends bSearchEngine<"browser"> {
     this.TAG = TAG;
     this.separator = separator;
     this.encodeComponent = encodeComponent;
-    this.inprivate = inprivate ? inprivate : null;
+    this.inprivate = inprivate || null;
   }
 
   protected override stringify(query: Query) {
@@ -60,7 +60,7 @@ class BrowserEngine extends bSearchEngine<"browser"> {
   protected optional(query: Query) {
     const { inprivate } = this,
     { natural } = query;
-    
+
     return { natural, inprivate };
   }
 }
