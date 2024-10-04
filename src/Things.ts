@@ -83,4 +83,4 @@ namespace Things {
   }
 }
 
-(new Things.Things).run();
+new Things.Things().run();

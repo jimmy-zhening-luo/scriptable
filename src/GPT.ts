@@ -104,4 +104,4 @@ namespace GPT {
   }
 }
 
-(new GPT.GPT).run();
+new GPT.GPT().run();

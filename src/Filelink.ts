@@ -87,4 +87,4 @@ namespace Filelink {
   }
 }
 
-(new Filelink.Filelink).run();
+new Filelink.Filelink().run();

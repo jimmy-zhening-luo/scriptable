@@ -13,4 +13,4 @@ class Sandbox extends importModule<typeof Shortcut>("./system/Shortcut") {
   }
 }
 
-(new Sandbox).run();
+new Sandbox().run();

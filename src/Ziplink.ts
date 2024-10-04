@@ -29,4 +29,4 @@ namespace Ziplink {
   }
 }
 
-(new Ziplink.Ziplink).run();
+new Ziplink.Ziplink().run();

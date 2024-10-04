@@ -79,4 +79,4 @@ namespace Link {
   }
 }
 
-(new Link.Link).run();
+new Link.Link().run();

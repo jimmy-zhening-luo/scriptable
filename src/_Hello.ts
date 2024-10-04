@@ -29,4 +29,4 @@ namespace Hello {
   }
 }
 
-(new Hello.Hello).run();
+new Hello.Hello().run();
