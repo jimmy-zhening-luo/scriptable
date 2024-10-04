@@ -37,7 +37,7 @@ class Query {
 
       if (key in engines)
         this.key = key;
-      else if (key in alias && alias[key] in engines)
+      else if (key in alias && (alias[key] as stringful) in engines)
         this.key = alias[key] as stringful;
       else {
         this.key = REST;
