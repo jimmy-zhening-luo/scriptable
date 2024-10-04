@@ -14,7 +14,7 @@ class ShortcutEngine extends sSearchEngine<"shortcut"> {
     );
   }
 
-  protected options() {
+  protected optional() {
     return {};
   }
 }

@@ -1,35 +1,40 @@
 import type { Query } from "../../query";
 
-abstract class SearchEngine<T extends "browser" | "find" | "shortcut"> {
+abstract class SearchEngine<
+  T extends
+    | "browser"
+    | "find"
+    | "shortcut"
+> {
   constructor(
     protected readonly app: T,
-    protected readonly thing: string,
+    protected readonly engine: string,
     protected readonly output = false,
   ) {}
 
   public resolve(query: Query) {
     return {
       ...this.required(query),
-      ...this.options(query),
+      ...this.optional(query),
     };
   }
 
-  protected transform(query: Query): Unflat {
+  protected stringify(query: Query): Unflat {
     return query.natural;
   }
 
   private required(query: Query) {
-    const { app, thing, output } = this;
+    const { app, engine, output } = this;
 
     return {
       app,
-      [app]: thing,
-      action: this.transform(query),
+      [app]: engine,
+      action: this.stringify(query),
       ...!output ? {} : { output },
     };
   }
 
-  protected abstract options(query: Query): Omit<SearchOutput, keyof ReturnType<SearchEngine<T>["required"]>>;
+  protected abstract optional(query: Query): Omit<SearchOutput, keyof ReturnType<SearchEngine<T>["required"]>>;
 }
 
 module.exports = SearchEngine;

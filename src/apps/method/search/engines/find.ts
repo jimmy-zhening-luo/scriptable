@@ -7,7 +7,7 @@ class FindEngine extends fSearchEngine<"find"> {
     super("find", find);
   }
 
-  protected options() {
+  protected optional() {
     return {};
   }
 }

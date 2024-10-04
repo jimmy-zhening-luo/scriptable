@@ -39,7 +39,7 @@ class BrowserEngine extends bSearchEngine<"browser"> {
       throw new SyntaxError(`URL engine has no search URLs`);
   }
 
-  protected override transform(query: Query) {
+  protected override stringify(query: Query) {
     const {
       TAG,
       separator,
@@ -60,9 +60,9 @@ class BrowserEngine extends bSearchEngine<"browser"> {
     return this.urls.map(url => url.replace(TAG, encodedQuery));
   }
 
-  protected options(query: Query) {
-    const { inprivate } = this,
-    { natural } = query;
+  protected optional(query: Query) {
+    const { natural } = query,
+    { inprivate } = this;
 
     return { natural, ...inprivate ? { inprivate } : {} };
   }
