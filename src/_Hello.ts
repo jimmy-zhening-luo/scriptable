@@ -21,7 +21,7 @@ namespace _Hello {
         this.read(FILE),
       ].join("");
 
-      this.write(`World!\n(Previous: ${this.timestamp()})`, FILE);
+      this.write(`World!\n(Previous: ${this.time()})`, FILE);
       logWarning(warning);
 
       return warning;
