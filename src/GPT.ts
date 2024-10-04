@@ -30,7 +30,7 @@ namespace GPT {
         top_p: input.top_p ?? preset.slider?.top_p ?? defaults.slider.top_p,
       },
       placeholder = {
-        date: input.date ?? preset.placeholder?.date ?? defaults.placeholder.date,
+        date: input.date ?? preset.placeholder?.date ?? this.date(),
         location: input.location ?? preset.placeholder?.location ?? defaults.placeholder.location,
       },
       prompt = typeof input.prompt !== "string"

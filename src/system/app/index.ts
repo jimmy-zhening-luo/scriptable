@@ -175,21 +175,12 @@ abstract class App<
       throw new TypeError("Unstringful array", { cause });
   }
 
-  protected timestamp(date = new Date) {
-    const d = new DateFormatter;
-
-    d.dateFormat = "yyyyMMddhhmmssZ";
-
-    return d.string(date);
+  protected time(date = new Date) {
+    return format("yyyyMMddhhmmssZ");
   }
 
-  protected dateprint(date = new Date) {
-    const d = new DateFormatter;
-
-    d.dateFormat = "EEEE, MMMM d, y";
-    d.locale = "en";
-
-    return d.string(date);
+  protected date(date = new Date) {
+    return format("EEEE, MMMM d, y");
   }
 
   protected guid64() {
@@ -283,6 +274,19 @@ abstract class App<
 
   private truthy(value: Input): value is NonNullable<Input> {
     return !App.falsy(value);
+  }
+
+  private print(
+    format: string,
+    date = new Date,
+    locale = "en",
+  ) {
+    const d = new DateFormatter;
+
+    d.dateFormat = format;
+    d.locale = locale;
+
+    return d.string(date);
   }
 
   protected abstract runtime(): Output;
