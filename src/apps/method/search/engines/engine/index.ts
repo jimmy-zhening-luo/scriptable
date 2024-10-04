@@ -6,6 +6,8 @@ abstract class SearchEngine<
   | "find"
   | "shortcut",
 > {
+  protected readonly output: Null<true>;
+
   constructor(
     protected readonly app: T,
     protected readonly engine: string,
