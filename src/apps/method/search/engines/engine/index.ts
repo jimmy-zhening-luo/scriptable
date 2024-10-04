@@ -2,9 +2,9 @@ import type { Query } from "../../query";
 
 abstract class SearchEngine<
   T extends
-    | "browser"
-    | "find"
-    | "shortcut"
+  | "browser"
+  | "find"
+  | "shortcut",
 > {
   constructor(
     protected readonly app: T,
