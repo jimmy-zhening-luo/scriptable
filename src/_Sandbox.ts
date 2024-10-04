@@ -6,3 +6,4 @@
 const foo = null;
 
 log(foo);
+Script.setShortcutOutput(foo);
