@@ -5,10 +5,10 @@
 
 import type { Shortcut } from "./system/Shortcut";
 
-namespace _Hello {
+namespace Hello {
   const shortcut = importModule<typeof Shortcut>("./system/Shortcut");
 
-  export class _Hello extends shortcut<
+  export class Hello extends shortcut<
     never,
     string,
     Field<never, "space">
@@ -29,4 +29,4 @@ namespace _Hello {
   }
 }
 
-(new _Hello._Hello).run();
+(new Hello.Hello).run();
