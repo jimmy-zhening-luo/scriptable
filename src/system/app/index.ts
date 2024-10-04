@@ -175,12 +175,12 @@ abstract class App<
       throw new TypeError("Unstringful array", { cause });
   }
 
-  protected time(date = new Date) {
-    return print("yyyyMMddhhmmssZ");
+  protected time(date?: Date) {
+    return print("yyyyMMddhhmmssZ", date);
   }
 
-  protected date(date = new Date) {
-    return print("EEEE, MMMM d, y");
+  protected date(date?: Date) {
+    return print("EEEE, MMMM d, y", date);
   }
 
   protected guid64() {
