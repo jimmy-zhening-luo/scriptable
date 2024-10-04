@@ -176,11 +176,11 @@ abstract class App<
   }
 
   protected time(date = new Date) {
-    return format("yyyyMMddhhmmssZ");
+    return print("yyyyMMddhhmmssZ");
   }
 
   protected date(date = new Date) {
-    return format("EEEE, MMMM d, y");
+    return print("EEEE, MMMM d, y");
   }
 
   protected guid64() {
