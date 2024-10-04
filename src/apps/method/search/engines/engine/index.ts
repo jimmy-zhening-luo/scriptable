@@ -9,8 +9,10 @@ abstract class SearchEngine<
   constructor(
     protected readonly app: T,
     protected readonly engine: string,
-    protected readonly output = false,
-  ) {}
+    output = false,
+  ) {
+    this.output = output ? output : null;
+  }
 
   public resolve(query: Query) {
     return {
@@ -29,8 +31,8 @@ abstract class SearchEngine<
     return {
       app,
       [app]: engine,
+      output,
       action: this.stringify(query),
-      ...!output ? {} : { output },
     };
   }
 

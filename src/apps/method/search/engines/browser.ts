@@ -3,13 +3,15 @@ import type { SearchEngine, Query } from "./engine/index";
 const bSearchEngine = importModule<typeof SearchEngine>("./engine/index");
 
 class BrowserEngine extends bSearchEngine<"browser"> {
-  protected readonly urls: readonly stringful[];
-  protected readonly TAG: stringful;
-  protected readonly separator: string;
-  protected readonly encodeComponent: boolean;
-  protected readonly inprivate: boolean;
-  private readonly PLUS: string;
-  private readonly PLUS_ENCODED: string;
+  private readonly urls: readonly stringful[];
+  private readonly TAG: stringful;
+  private readonly separator: string;
+  private readonly encodeComponent: boolean;
+  private readonly inprivate: Null<true>;
+  private readonly PLUS = {
+    plain: "+",
+    encoded: "%2B",
+  } as const;
 
   constructor(
     urls: Unflat,
@@ -24,47 +26,42 @@ class BrowserEngine extends bSearchEngine<"browser"> {
       browser,
       browser === "api",
     );
+    this.urls = [urls].flat().filter((url): url is stringful => url.length > 0);
+
+    if (this.urls.length < 1)
+      throw new TypeError(`URL search engine has no URLs`);
+
     this.TAG = TAG;
     this.separator = separator;
     this.encodeComponent = encodeComponent;
-    this.inprivate = inprivate;
-    this.PLUS = "+";
-    this.PLUS_ENCODED = "%2B";
-
-    const urlfuls = [urls].flat().filter((url): url is stringful => url.length > 0);
-
-    if (urlfuls.length > 0)
-      this.urls = urlfuls;
-    else
-      throw new SyntaxError(`URL engine has no search URLs`);
+    this.inprivate = inprivate ? inprivate : null;
   }
 
   protected override stringify(query: Query) {
     const {
-      TAG,
-      separator,
       encodeComponent,
+      separator,
       PLUS,
-      PLUS_ENCODED,
+      TAG,
     } = this,
     encoder = encodeComponent
       ? function (operand: string) { return encodeURI(operand); }
       : function (operand: string) { return encodeURIComponent(operand); },
     encodedQuery = query.terms
       .map(term => term
-        .split(PLUS)
+        .split(PLUS.plain)
         .map(encoder)
-        .join(PLUS_ENCODED))
+        .join(PLUS.encoded))
       .join(separator);
 
     return this.urls.map(url => url.replace(TAG, encodedQuery));
   }
 
   protected optional(query: Query) {
-    const { natural } = query,
-    { inprivate } = this;
-
-    return { natural, ...inprivate ? { inprivate } : {} };
+    const { inprivate } = this,
+    { natural } = query;
+    
+    return { natural, inprivate };
   }
 }
 
