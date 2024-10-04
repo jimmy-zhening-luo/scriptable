@@ -3,7 +3,14 @@
 // icon-color: deep-green; icon-glyph: leaf;
 "use strict";
 
-const foo = null;
+import type { Shortcut } from "./system/Shortcut";
 
-log(foo);
-Script.setShortcutOutput(foo);
+class Sandbox extends importModule<typeof Shortcut>("./system/Shortcut") {
+  protected runtime() {
+    const foo = null;
+
+    return foo;
+  }
+}
+
+(new Sandbox).run();
