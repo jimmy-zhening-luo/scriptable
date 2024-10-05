@@ -233,7 +233,7 @@ abstract class App<
     if (attempt === null && retry === null)
       throw new SyntaxError("Unparseable to URL", { cause: string });
     else {
-      const parts = (attempt === null ? retry : attempt) as Field<
+      const parts = (attempt ?? retry) as Field<
         | "scheme"
         | "host"
         | "path"
