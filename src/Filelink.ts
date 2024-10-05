@@ -36,12 +36,14 @@ class Filelink extends importModule<typeof Shortcut<
         ...subpath.length < 1
           ? []
           : [
-              subpath.join("/"),
-              ...typeof ext === "undefined"
-                ? []
-                : [ext],
-            ]
-              .join("."),
+              [
+                subpath.join("/"),
+                ...typeof ext === "undefined"
+                  ? []
+                  : [ext],
+              ]
+                .join("."),
+            ],
       ]
         .join("/"),
     );
