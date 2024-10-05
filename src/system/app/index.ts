@@ -221,17 +221,27 @@ abstract class App<
   }
 
   protected url(string: string) {
-    const matcher = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u,
-    _parts = matcher.exec(string) ?? [],
-    parts = (_parts[2] ?? null) !== null ? _parts : matcher.exec(`https://${string}`) ?? [];
+    function normalize(part = "", lower = false) {
+      return lower ? part.toLowerCase() : part;
+    }
+    const attempt = this.parseURL(string),
+    retry = attempt === null
+      ? this.parseURL(`https://${string}`)
+      : null;
+    
+    if (attempt === null && (retry === null || typeof retry[4] === undefined && typeof retry[5] === undefined))
+      throw new SyntaxError("Unparseable to URL", { cause: string });
+    else {
+      const parts = (attempt ?? retry) as Decad<string>;
 
-    return {
-      scheme: parts[2]?.toLowerCase() ?? "",
-      host: parts[4]?.toLowerCase() ?? "",
-      path: parts[5] ?? "",
-      query: parts[7] ?? "",
-      fragment: parts[9] ?? "",
-    };
+      return {
+        scheme: normalize(parts[2], true),
+        host: normalize(parts[4], true),
+        path: normalize(parts[5]),
+        query: normalize(parts[7]),
+        fragment: normalize(parts[9]),
+      };
+    }
   }
 
   private storage(file?: Null<string>, ext?: string) {
@@ -291,6 +301,15 @@ abstract class App<
     d.locale = locale;
 
     return d.string(date);
+  }
+  
+  private parseURL(string: string) {
+    const regex = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u,
+    parts = regex.exec(string);
+    
+    return parts === null || typeof parts[2] === "undefined"
+      ? null
+      : parts as readonly [undefined, undefined, string, ...undefined];
   }
 
   protected abstract runtime(): Output;
