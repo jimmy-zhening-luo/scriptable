@@ -224,11 +224,12 @@ abstract class App<
     function normalize(part = "", lower = false) {
       return lower ? part.toLowerCase() : part;
     }
+
     const attempt = this.parseURL(string),
     retry = attempt === null
       ? this.parseURL(string, true)
       : null;
-    
+
     if (attempt === null && retry === null)
       throw new SyntaxError("Unparseable to URL", { cause: string });
     else {
@@ -244,7 +245,7 @@ abstract class App<
         host,
         path,
         query,
-        fragment
+        fragment,
       } = parts;
 
       return {
@@ -315,7 +316,7 @@ abstract class App<
 
     return d.string(date);
   }
-  
+
   private parseURL(string: string, tryHttp = false) {
     function ok(part: undefined | string): part is stringful {
       return typeof part !== "undefined" && part.length > 1;
