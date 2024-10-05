@@ -170,7 +170,11 @@ abstract class App<
 
   protected stringfuls<T extends readonly string[]>(array: T, cause = "") {
     if (array.length > 0 && array.every((i): i is stringful => i.length > 0))
-      return array as unknown as (T extends readonly [string, ...string[]] ? { [K in keyof T]: stringful; } : Arrayful<stringful>);
+      return array as unknown as (
+        T extends readonly [string, ...string[]]
+          ? { [K in keyof T]: stringful; }
+          : Arrayful<stringful>
+      );
     else
       throw new TypeError("Unstringful array", { cause });
   }

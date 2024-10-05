@@ -8,78 +8,43 @@ import type { Shortcut } from "./system/Shortcut";
 class Filelink extends importModule<typeof Shortcut<
   {
     nodes: Unflat;
-    ext: string;
-    type: "File" | "Folder";
+    ext?: string;
   },
-  string,
-  FilelinkSetting
+  string
 >>("./system/Shortcut") {
   protected runtime() {
-    const { nodes, ext, type } = this.inputful,
-    { providers, scheme, commonRoot } = this.setting,
-    path = this.path(nodes);
+    const manager = FileManager.local(),
+    { nodes, ext } = this.inputful,
+    path = this.stringfuls(
+      [nodes].flat(),
+      "Empty or sparse path",
+    ),
+    [p1, p2] = path;
 
-    try {
-      const provider = providers[path[0]] ?? null;
+    if (!manager.bookmarkExists(p1))
+      throw new ReferenceError(`No bookmark found for path`);
 
-      if (provider === null)
-        throw new ReferenceError(`Provider not found`);
-      else {
-        path.shift();
-
-        const head = [`${scheme}://${commonRoot}`, encodeURI(provider.providerRoot)].join("/"),
-        tail = encodeURI(`${path.pop() as string}${type === "Folder" ? "" : `.${ext}`}`),
-        torso = [...path],
-        container: string[] = [];
-
-        if (provider.hasContainers) {
-          const {
-            containers: { folders, apps },
-            folderRoot,
-            preAppRoot,
-            postContainerRoot,
-          } = provider;
-
-          if (torso.length > 0) {
-            const p2 = torso.shift() as string;
-
-            if (folders.includes(p2))
-              container.push(`${encodeURI(folderRoot)}/${encodeURI(p2)}`);
-            else if (p2 in apps)
-              container.push([
-                ...typeof preAppRoot === "undefined" ? [] : [encodeURI(preAppRoot)],
-                encodeURI(apps[p2] as string),
-                encodeURI(postContainerRoot),
-              ].join("/"));
-            else
-              throw new ReferenceError(`Container not found in provider`);
-          }
-          else
-            throw new ReferenceError(`Path cannot be container root`);
-        }
-
-        return [
-          head,
-          ...container,
-          ...torso.map(node => encodeURI(node)),
-          tail,
-        ]
-          .join("/");
-      }
-    }
-    catch (e) {
-      throw new Error(path.join("/"), { cause: e });
-    }
-  }
-
-  private path(nodes: Unflat) {
-    const path = this.stringfuls([nodes].flat(), "Path empty or has empty nodes"),
-    { length } = path;
-
-    if (length < 2)
-      throw new RangeError(`Path points to provider root`);
-    else
-      return path as ArrayN<stringful, 2>;
+    const [bookmark, head] = typeof p2 === "undefined" || !manager.bookmarkExists(`${p1}/${p2}`)
+      ? [p1, 1]
+      : [`${p1}/${p2}`, 2],
+    root = manager.bookmarkedPath(bookmark),
+    subpath = path.slice(head);
+    
+    return encodeURI(
+      [
+        `shareddocuments://${root}`,
+        ...subpath.length < 1
+          ? []
+          : [
+              subpath.join("/"),
+              ...typeof ext === "undefined"
+                ? []
+                : [ext],
+            ]
+              .join("."),
+      ]
+        .join("/"),
+    );
   }
 }
 
