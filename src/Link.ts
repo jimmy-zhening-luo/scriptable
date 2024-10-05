@@ -11,13 +11,6 @@ class Link extends importModule<typeof Shortcut<
   string,
   LinkSetting
 >>("./system/Shortcut") {
-  private readonly PROCESSORS = [
-    "amazon.com",
-    "dropbox.com",
-    "linkedin.com",
-    "reddit.com",
-  ];
-
   protected runtime() {
     const { inputString, setting } = this,
     url = this.url(inputString),
@@ -25,12 +18,18 @@ class Link extends importModule<typeof Shortcut<
     params = {
       include: this.deindex(setting.query.include, host),
       exclude: this.deindex(setting.query.exclude, host),
-    };
+    },
+    PROCESSORS = [
+      "amazon.com",
+      "dropbox.com",
+      "linkedin.com",
+      "reddit.com",
+    ] as const;
 
     return this.buildURL({
       host,
       scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
-      path: this.PROCESSORS.includes(host) ? new (this.Processor(host))(host, url.path).processed : url.path,
+      path: PROCESSORS.includes(host) ? new (this.Processor(host))(host, url.path).processed : url.path,
       query: setting.query.omit.includes(host)
         ? ""
         : params.include.length > 0
