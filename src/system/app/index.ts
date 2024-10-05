@@ -232,30 +232,22 @@ abstract class App<
 
     if (attempt === null && retry === null)
       throw new SyntaxError("Unparseable to URL", { cause: string });
-    else {
-      const parts = (attempt ?? retry) as Field<
-        | "scheme"
-        | "host"
-        | "path"
-        | "query"
-        | "fragment"
-      >,
-      {
-        scheme,
-        host,
-        path,
-        query,
-        fragment,
-      } = parts;
 
-      return {
-        scheme: normalize(scheme, true),
-        host: normalize(host, true),
-        path: normalize(path),
-        query: normalize(query),
-        fragment: normalize(fragment),
-      };
-    }
+    const parts = (attempt ?? retry) as Field<
+      | "scheme"
+      | "host"
+      | "path"
+      | "query"
+      | "fragment"
+    >;
+
+    return {
+      scheme: normalize(parts.scheme, true),
+      host: normalize(parts.host, true),
+      path: normalize(parts.path),
+      query: normalize(parts.query),
+      fragment: normalize(parts.fragment),
+    };
   }
 
   private storage(file?: Null<string>, ext?: string) {
@@ -323,20 +315,23 @@ abstract class App<
     }
 
     const regex = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u,
-    match = regex.exec(`${tryHttp ? "https" : ""}${string}`),
-    parts = match === null
-      ? null
-      : {
-          scheme: match[2],
-          host: match[4],
-          path: match[5],
-          query: match[7],
-          fragment: match[9],
-        } as const;
+    match = regex.exec(`${tryHttp ? "https" : ""}${string}`);
 
-    return parts !== null && ok(parts.scheme) && (!tryHttp || ok(parts.host) || ok(parts.path))
-      ? parts
-      : null;
+    if (match === null)
+      return null;
+    else {
+      const parts = {
+        scheme: match[2],
+        host: match[4],
+        path: match[5],
+        query: match[7],
+        fragment: match[9],
+      } as const;
+
+      return ok(parts.scheme) && (!tryHttp || ok(parts.host) || ok(parts.path))
+        ? parts
+        : null;
+    }
   }
 
   protected abstract runtime(): Output;
