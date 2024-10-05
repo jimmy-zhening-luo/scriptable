@@ -24,7 +24,7 @@ class Link extends importModule<typeof Shortcut<
       "dropbox.com",
       "linkedin.com",
       "reddit.com",
-    ] as const;
+    ];
 
     return this.buildURL({
       host,
