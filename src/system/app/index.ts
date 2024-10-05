@@ -226,20 +226,33 @@ abstract class App<
     }
     const attempt = this.parseURL(string),
     retry = attempt === null
-      ? this.parseURL(`https://${string}`)
+      ? this.parseURL(string, true)
       : null;
     
-    if (attempt === null && (retry === null || typeof retry[4] === undefined && typeof retry[5] === undefined))
+    if (attempt === null && retry === null)
       throw new SyntaxError("Unparseable to URL", { cause: string });
     else {
-      const parts = (attempt ?? retry) as Decad<string>;
+      const parts = (attempt === null ? retry : attempt) as Field<
+        | "scheme"
+        | "host"
+        | "path"
+        | "query"
+        | "fragment"
+      >,
+      {
+        scheme,
+        host,
+        path,
+        query,
+        fragment
+      } = parts;
 
       return {
-        scheme: normalize(parts[2], true),
-        host: normalize(parts[4], true),
-        path: normalize(parts[5]),
-        query: normalize(parts[7]),
-        fragment: normalize(parts[9]),
+        scheme: normalize(scheme, true),
+        host: normalize(host, true),
+        path: normalize(path),
+        query: normalize(query),
+        fragment: normalize(fragment),
       };
     }
   }
@@ -303,13 +316,26 @@ abstract class App<
     return d.string(date);
   }
   
-  private parseURL(string: string) {
+  private parseURL(string: string, tryHttp = false) {
+    function ok(part: undefined | string): part is stringful {
+      return typeof part !== "undefined" && part.length > 1;
+    }
+
     const regex = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u,
-    parts = regex.exec(string);
-    
-    return parts === null || typeof parts[2] === "undefined"
+    match = regex.exec(`${tryHttp ? "https" : ""}${string}`),
+    parts = match === null
       ? null
-      : parts as readonly [undefined, undefined, string, ...undefined];
+      : {
+          scheme: match[2],
+          host: match[4],
+          path: match[5],
+          query: match[7],
+          fragment: match[9],
+        } as const;
+
+    return parts !== null && ok(parts.scheme) && (!tryHttp || ok(parts.host) || ok(parts.path))
+      ? parts
+      : null;
   }
 
   protected abstract runtime(): Output;
