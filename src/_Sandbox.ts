@@ -5,7 +5,7 @@
 
 import type { Shortcut } from "./system/Shortcut";
 
-class _Sandbox extends importModule<typeof Shortcut<never, unknown>>("./system/Shortcut") {
+class _Sandbox extends importModule<typeof Shortcut>("./system/Shortcut") {
   protected runtime() {
     const foo = null;
 
