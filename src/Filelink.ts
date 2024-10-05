@@ -29,7 +29,7 @@ class Filelink extends importModule<typeof Shortcut<
       : [`${p1}/${p2}`, 2],
     root = manager.bookmarkedPath(bookmark),
     subpath = path.slice(head);
-    
+
     return encodeURI(
       [
         `shareddocuments://${root}`,
