@@ -1,6 +1,6 @@
-import type { SearchEngine } from "./engine/index";
+import type { SearchEngine } from "./engine";
 
-const fSearchEngine = importModule<typeof SearchEngine>("./engine/index");
+const fSearchEngine = importModule<typeof SearchEngine>("./engine");
 
 class FindEngine extends fSearchEngine<"find"> {
   constructor(find: string) {

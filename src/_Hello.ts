@@ -3,13 +3,13 @@
 // icon-color: yellow; icon-glyph: circle;
 "use strict";
 
-import type { Shortcut } from "./system/Shortcut";
+import type { Shortcut } from "./lib";
 
 class _Hello extends importModule<typeof Shortcut<
   never,
   string,
   Field<never, "space">
->>("./system/Shortcut") {
+>>("./lib") {
   protected runtime() {
     const FILE = "worldtime",
     warning = [

@@ -1,6 +1,6 @@
-import type { App } from "./app/index";
+import type { App } from "./app";
 
-const app = importModule<typeof App>("./app/index");
+const app = importModule<typeof App>("./app");
 
 abstract class Shortcut<
   Input = never,

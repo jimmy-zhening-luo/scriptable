@@ -3,12 +3,12 @@
 // icon-color: light-gray; icon-glyph: sign-in-alt;
 "use strict";
 
-import type { Shortcut } from "./system/Shortcut";
+import type { Shortcut } from "./lib";
 
 class Ziplink extends importModule<typeof Shortcut<
   string,
   string
->>("./system/Shortcut") {
+>>("./lib") {
   protected runtime() {
     const url = this.inputStringful,
     cache = this.data<FieldTable>(null, "json") ?? {},

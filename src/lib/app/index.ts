@@ -1,7 +1,7 @@
 import type { Key } from "./filetypes/Key";
 import type { Setting } from "./filetypes/Setting";
 import type { Storage } from "./filetypes/Storage";
-import type { error } from "./error/index";
+import type { error } from "./error";
 
 abstract class App<
   T extends string,
@@ -29,7 +29,7 @@ abstract class App<
   }
 
   private static get error() {
-    return importModule<error>("error/index");
+    return importModule<error>("./error");
   }
 
   protected get name() {
@@ -229,8 +229,7 @@ abstract class App<
   }
 
   private storage(file?: Null<string>, ext?: string) {
-    const cacheId = [file ?? "", ext ?? ""]
-      .join(":"),
+    const cacheId = `${file ?? ""}:${ext ?? ""}`,
     cache = this.cache.storage[cacheId];
 
     if (typeof cache !== "undefined")
@@ -291,13 +290,13 @@ abstract class App<
   }
 
   private parseURL(string: string, tryHttp = false) {
-    const ok = (part: undefined | string): part is stringful => typeof part !== "undefined" && part.length > 1,
+    const is = (part: undefined | string): part is stringful => typeof part !== "undefined" && part.length > 1,
     [
       ,,scheme,,host,
       path,,query,,fragment,
     ] = (/^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u).exec(`${tryHttp ? "https" : ""}${string}`) ?? [];
 
-    return ok(scheme) && (!tryHttp || ok(host) || ok(path))
+    return is(scheme) && (!tryHttp || is(host) || is(path))
       ? {
           scheme,
           host,

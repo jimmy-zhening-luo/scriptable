@@ -1,6 +1,6 @@
-import type { Filetype } from "./filetype/index";
+import type { Filetype } from "./filetype";
 
-const cFiletype = importModule<typeof Filetype>("./filetype/index");
+const cFiletype = importModule<typeof Filetype>("./filetype");
 
 class Setting<T extends string, Schema> extends cFiletype<"Setting", T> {
   constructor(
@@ -32,14 +32,6 @@ class Setting<T extends string, Schema> extends cFiletype<"Setting", T> {
     catch (e) {
       throw new SyntaxError(`Setting: parse (${this.name})`, { cause: e });
     }
-  }
-
-  protected write(): never {
-    throw new ReferenceError("Setting: write forbidden");
-  }
-
-  protected delete(): never {
-    throw new ReferenceError("Setting: delete forbidden");
   }
 }
 

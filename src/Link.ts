@@ -3,14 +3,14 @@
 // icon-color: light-gray; icon-glyph: link;
 "use strict";
 
-import type { Shortcut } from "./system/Shortcut";
+import type { Shortcut } from "./lib";
 import type { LinkPathProcessor } from "./apps/method/link/processors/processor";
 
 class Link extends importModule<typeof Shortcut<
   string,
   string,
   LinkSetting
->>("./system/Shortcut") {
+>>("./lib") {
   protected runtime() {
     const { inputString, setting } = this,
     url = this.url(inputString),

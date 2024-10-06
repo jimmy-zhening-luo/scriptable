@@ -3,13 +3,13 @@
 // icon-color: deep-blue; icon-glyph: pen-square;
 "use strict";
 
-import type { Shortcut } from "./system/Shortcut";
+import type { Shortcut } from "./lib";
 
 class Things extends importModule<typeof Shortcut<
   string,
   readonly ThingsItem[],
   ThingsSetting
->>("./system/Shortcut") {
+>>("./lib") {
   protected runtime() {
     const { lists, delims } = this.setting,
     { TAG, LINE, ITEM } = delims,

@@ -3,8 +3,8 @@
 // icon-color: blue; icon-glyph: search;
 "use strict";
 
-import type { Shortcut } from "./system/Shortcut";
-import type { Query } from "./apps/method/search/query/index";
+import type { Shortcut } from "./lib";
+import type { Query } from "./apps/method/search/query";
 import type BrowserEngine from "./apps/method/search/engines/browser";
 import type FindEngine from "./apps/method/search/engines/find";
 import type ShortcutEngine from "./apps/method/search/engines/shortcut";
@@ -22,9 +22,9 @@ class Search extends importModule<typeof Shortcut<
   >,
   SearchOutput,
   SearchSetting
->>("./system/Shortcut") {
+>>("./lib") {
   private static get Query() {
-    return importModule<typeof Query>("./apps/method/search/query/index");
+    return importModule<typeof Query>("./apps/method/search/query");
   }
 
   protected runtime() {

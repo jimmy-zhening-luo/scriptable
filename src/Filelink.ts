@@ -3,7 +3,7 @@
 // icon-color: light-gray; icon-glyph: folder;
 "use strict";
 
-import type { Shortcut } from "./system/Shortcut";
+import type { Shortcut } from "./lib";
 
 class Filelink extends importModule<typeof Shortcut<
   {
@@ -11,7 +11,7 @@ class Filelink extends importModule<typeof Shortcut<
     ext?: string;
   },
   string
->>("./system/Shortcut") {
+>>("./lib") {
   protected runtime() {
     const manager = FileManager.local(),
     { nodes, ext } = this.inputful,
