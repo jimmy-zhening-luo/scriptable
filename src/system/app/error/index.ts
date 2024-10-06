@@ -13,11 +13,11 @@ function error(e: Error) {
   const errors = [e] as Arrayful<ErrorLike>;
 
   for (
-    let ee: ErrorLike<true> = e;
+    let ee: ErrorLike = e;
     typeof ee === "object" && "cause" in ee;
-    ee = ee.cause as ErrorLike<true>
+    ee = ee.cause as ErrorLike
   )
-    errors.unshift(ee.cause as ErrorLike<true>);
+    errors.unshift(ee.cause as ErrorLike);
 
   const messages = errors.map(e => typeof e === "object" && "message" in e ? e.message : stringify(e)) as Arrayful<string>,
   [title, ...stack] = messages,
