@@ -21,7 +21,6 @@ function error(error: Error) {
   n.body = body;
   n.sound = "failure";
   n.schedule().catch((e: unknown) => logError(e));
-  Script.setShortcutOutput(null);
 
   return error;
 }
