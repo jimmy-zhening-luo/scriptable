@@ -33,7 +33,7 @@ abstract class App<
   }
 
   protected get name() {
-    const name = this.stringful(this.constructor.name, "App instance has no name");
+    const name = this.stringful(this.constructor.name, "Nameless app");
 
     Object.defineProperty(this, "name", { value: name, enumerable: true });
 
@@ -50,7 +50,7 @@ abstract class App<
   }
 
   protected get input() {
-    const input = this.getInput;
+    const input = this.getInput();
 
     Object.defineProperty(this, "input", { value: input, enumerable: true });
 
@@ -58,40 +58,28 @@ abstract class App<
   }
 
   protected get inputful() {
-    try {
-      const { input } = this;
+    const { input } = this;
 
-      if (!this.truthy(input))
-        throw new TypeError("Null input", { cause: { input, type: typeof input } });
-      else {
-        Object.defineProperty(this, "inputful", { value: input, enumerable: true });
+    if (!this.truthy(input))
+      throw new TypeError("Null input", { cause: input });
 
-        return input;
-      }
-    }
-    catch (e) {
-      throw new TypeError(`App: inputful`, { cause: e });
-    }
+    Object.defineProperty(this, "inputful", { value: input, enumerable: true });
+
+    return input;
   }
 
   protected get inputString() {
-    try {
-      const { input } = this,
-      truthy = this.truthy(input) ? input : "";
+    const { input } = this,
+    truthy = this.truthy(input) ? input : "";
 
-      if (typeof truthy !== "string" && typeof truthy !== "number")
-        throw new TypeError("Non-stringable input", { cause: { input, type: Array.isArray(input) ? "array" : typeof input } });
-      else {
-        const inputString = String(truthy);
+    if (typeof truthy !== "string" && typeof truthy !== "number")
+      throw new TypeError("Non-string input", { cause: input });
 
-        Object.defineProperty(this, "inputString", { value: inputString, enumerable: true });
+    const inputString = String(truthy);
 
-        return inputString;
-      }
-    }
-    catch (e) {
-      throw new TypeError(`App: inputString`, { cause: e });
-    }
+    Object.defineProperty(this, "inputString", { value: inputString, enumerable: true });
+
+    return inputString;
   }
 
   protected get inputStringful() {
@@ -100,15 +88,6 @@ abstract class App<
     Object.defineProperty(this, "inputStringful", { value: inputStringful, enumerable: true });
 
     return inputStringful;
-  }
-
-  protected abstract get getInput(): Input;
-
-  private static falsy(value: unknown): value is Null<undefined> {
-    const v = value ?? false,
-    bv = Boolean(v);
-
-    return !bv || (typeof v === "string" ? Number(v) === 0 : Array.isArray(v) ? v.join("").length < 1 : false);
   }
 
   public run() {
@@ -123,10 +102,10 @@ abstract class App<
   protected subsetting<Subschema>(subpath: string): Subschema extends Subschema ? Subschema : never {
     const { type, name } = this;
 
-    if (subpath.length > 0)
-      return new App.Setting<T, Subschema>(type, `${name satisfies stringful}/${subpath as stringful}` as stringful).parse;
-    else
-      throw new TypeError("Empty subsetting subpath");
+    if (subpath.length < 1)
+      throw new ReferenceError("Empty subsetting path");
+
+    return new App.Setting<T, Subschema>(type, `${name satisfies stringful}/${subpath as stringful}` as stringful).parse;
   }
 
   protected read(file?: Null<string>, ext?: string) {
@@ -162,21 +141,21 @@ abstract class App<
   }
 
   protected stringful(string = "", cause = "") {
-    if (string.length > 0)
-      return string as stringful;
-    else
+    if (string.length < 1)
       throw new TypeError("Unstringful", { cause });
+
+    return string as stringful;
   }
 
   protected stringfuls<T extends readonly string[]>(array: T, cause = "") {
-    if (array.length > 0 && array.every((i): i is stringful => i.length > 0))
-      return array as unknown as (
-        T extends readonly [string, ...string[]]
-          ? { [K in keyof T]: stringful; }
-          : Arrayful<stringful>
-      );
-    else
+    if (array.length < 1 || !array.every((i): i is stringful => i.length > 0))
       throw new TypeError("Unstringful array", { cause });
+
+    return array as unknown as (
+      T extends readonly [string, ...string[]]
+        ? { [K in keyof T]: stringful; }
+        : Arrayful<stringful>
+    );
   }
 
   protected time(date?: Date) {
@@ -188,17 +167,7 @@ abstract class App<
   }
 
   protected guid64() {
-    const buffer: Octad<hex[]> = [
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-    ],
-    CTOH = {
+    const CTOH = {
       A: 10,
       B: 11,
       C: 12,
@@ -206,11 +175,23 @@ abstract class App<
       E: 14,
       F: 15,
     } as const,
-    hexes = [...UUID.string().replace("-", "")].map(c => typeof CTOH[c as keyof typeof CTOH] === "undefined" ? Number(c) as decimal : CTOH[c as Exclude<hexchar, digit>]) satisfies hex[] as unknown as Tuple<hex, 32>;
+    buffer: Octad<hex[]> = [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+    ];
 
-    hexes.forEach((h, i) => {
-      buffer[(i % 8) as octal].push(h);
-    });
+    (
+      [...UUID.string().replace("-", "")].map(c => typeof CTOH[c as keyof typeof CTOH] === "undefined" ? Number(c) as decimal : CTOH[c as Exclude<hexchar, digit>]) satisfies hex[] as unknown as Tuple<hex, 32>
+    )
+      .forEach((h, i) => {
+        buffer[(i % 8) as octal].push(h);
+      });
 
     return String.fromCharCode(...(buffer satisfies Octad<hex[]> as unknown as Octad<Quad<hex>>)
       .map(q => q.reduce((q: number, qi) => q + qi, 0))
@@ -221,11 +202,8 @@ abstract class App<
   }
 
   protected url(string: string) {
-    function normalize(part = "", lower = false) {
-      return lower ? part.toLowerCase() : part;
-    }
-
-    const attempt = this.parseURL(string),
+    const normalize = (part = "", lower = false) => lower ? part.toLowerCase() : part,
+    attempt = this.parseURL(string),
     retry = attempt === null
       ? this.parseURL(string, true)
       : null;
@@ -253,9 +231,9 @@ abstract class App<
   private storage(file?: Null<string>, ext?: string) {
     const cacheId = [file ?? "", ext ?? ""]
       .join(":"),
-    cache = this.cache.storage[cacheId] ?? null;
+    cache = this.cache.storage[cacheId];
 
-    if (cache !== null)
+    if (typeof cache !== "undefined")
       return cache;
     else {
       const { type, name } = this,
@@ -274,9 +252,9 @@ abstract class App<
   }
 
   private key(handle: string) {
-    const cache = this.cache.keys[handle] ?? null;
+    const cache = this.cache.keys[handle];
 
-    if (cache !== null)
+    if (typeof cache !== "undefined")
       return cache;
     else {
       const { type, name } = this,
@@ -293,14 +271,17 @@ abstract class App<
   }
 
   private truthy(value: Input): value is NonNullable<Input> {
-    return !App.falsy(value);
+    const falsy = (value: unknown): value is Null<undefined> => {
+      const v = value ?? false,
+      bv = Boolean(v);
+
+      return !bv || (typeof v === "string" ? Number(v) === 0 : Array.isArray(v) ? v.join("").length < 1 : false);
+    };
+
+    return !falsy(value);
   }
 
-  private print(
-    format: string,
-    date = new Date,
-    locale = "en",
-  ) {
+  private print(format: string, date = new Date, locale = "en") {
     const d = new DateFormatter;
 
     d.dateFormat = format;
@@ -310,30 +291,21 @@ abstract class App<
   }
 
   private parseURL(string: string, tryHttp = false) {
-    function ok(part: undefined | string): part is stringful {
-      return typeof part !== "undefined" && part.length > 1;
-    }
+    const ok = (part: undefined | string): part is stringful => typeof part !== "undefined" && part.length > 1, 
+    [,,scheme,,host,path,,query,,fragment] = (/^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u).exec(`${tryHttp ? "https" : ""}${string}`) ?? [];
 
-    const regex = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u,
-    match = regex.exec(`${tryHttp ? "https" : ""}${string}`);
-
-    if (match === null)
-      return null;
-    else {
-      const parts = {
-        scheme: match[2],
-        host: match[4],
-        path: match[5],
-        query: match[7],
-        fragment: match[9],
-      } as const;
-
-      return ok(parts.scheme) && (!tryHttp || ok(parts.host) || ok(parts.path))
-        ? parts
-        : null;
-    }
+    return ok(scheme) && (!tryHttp || ok(host) || ok(path))
+      ? {
+          scheme,
+          host,
+          path,
+          query,
+          fragment,
+        }
+      : null;
   }
 
+  protected abstract getInput(): Input;
   protected abstract runtime(): Output;
   protected abstract output(runtime: ReturnType<App<T, Input, Output, Schema>["runtime"]>): ReturnType<App<T, Input, Output, Schema>["runtime"]>;
 }

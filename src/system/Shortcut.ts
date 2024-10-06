@@ -9,7 +9,7 @@ abstract class Shortcut<
 > extends app<"Shortcut", Nullable<Input>, Null<Output>, Schema> {
   protected type = "Shortcut" as const;
 
-  protected get getInput() {
+  protected getInput() {
     return (args.shortcutParameter as Null<undefined | Input>) ?? null;
   }
 
