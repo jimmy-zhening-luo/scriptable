@@ -291,8 +291,11 @@ abstract class App<
   }
 
   private parseURL(string: string, tryHttp = false) {
-    const ok = (part: undefined | string): part is stringful => typeof part !== "undefined" && part.length > 1, 
-    [,,scheme,,host,path,,query,,fragment] = (/^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u).exec(`${tryHttp ? "https" : ""}${string}`) ?? [];
+    const ok = (part: undefined | string): part is stringful => typeof part !== "undefined" && part.length > 1,
+    [
+      ,,scheme,,host,
+      path,,query,,fragment,
+    ] = (/^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u).exec(`${tryHttp ? "https" : ""}${string}`) ?? [];
 
     return ok(scheme) && (!tryHttp || ok(host) || ok(path))
       ? {
