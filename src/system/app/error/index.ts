@@ -1,13 +1,13 @@
 function error(e: Error) {
   function stringify(e: unknown): string {
-    return Array.isArray(e)
-      ? `[${e.map((i: unknown) => stringify(i)).join(", ")}]`
-      : typeof e === "object" && e !== null
-        ? Object
+    return typeof e === "object" && e !== null
+      ? Array.isArray(e)
+        ? `[${e.map((i: unknown) => stringify(i)).join(", ")}]`
+        : Object
           .entries(e)
           .map(([k, v]) => `${k}: ${stringify(v)}`)
           .join(", ")
-        : String(e);
+      : String(e);
   }
 
   const errors = [e] as Arrayful<ErrorLike>;
