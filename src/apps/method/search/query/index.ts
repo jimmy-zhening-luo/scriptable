@@ -86,32 +86,9 @@ class Query {
     tokens: Arrayful<stringful>,
     MATH: stringful,
   ) {
-    const [token0] = tokens,
-    NUMERIC = [
-      "0",
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      ".",
-      "(",
-      ")",
-      "<",
-      ">",
-      "+",
-      "-",
-      "%",
-      "~",
-      "#",
-      "$",
-    ];
+    const [token0] = tokens;
 
-    if (NUMERIC.includes(token0[0]))
+    if (!Number.isNaN(Number(`${token0[0]}0`)))
       tokens.unshift(MATH);
 
     return tokens;
