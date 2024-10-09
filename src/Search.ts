@@ -37,7 +37,9 @@ class Search extends importModule<typeof Shortcut<
         tag,
         selector,
         key: { translate, math },
-        fallback: { one, two, three, rest },
+        fallback: {
+          one, two, three, rest,
+        },
       },
     } = setting,
     query = new Search.Query(
