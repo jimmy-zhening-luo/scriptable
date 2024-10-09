@@ -4,7 +4,7 @@
 "use strict";
 
 import type { Shortcut } from "./lib";
-import type { LinkPathProcessor } from "./apps/method/link/processors/processor";
+import type { LinkPathProcessor } from "./apps/method/link/processor";
 
 class Link extends importModule<typeof Shortcut<
   string,
@@ -14,10 +14,16 @@ class Link extends importModule<typeof Shortcut<
   protected runtime() {
     const { inputString, setting } = this,
     url = this.url(inputString),
-    host = this.resolve(url.host, setting.host),
+    resolve = (host: string, setting: typeof setting["host"]) => {
+      const pruned = host.slice(host.startsWith("www.") && !setting.www.includes(host) ? 4 : 0);
+  
+      return setting.swap[pruned] ?? pruned;
+    },
+    deindex = (list: ListTable, host: string) => list[host]?.map(i => i.toLowerCase()) ?? [],
+    host = resolve(url.host, setting.host),
     params = {
-      include: this.deindex(setting.query.include, host),
-      exclude: this.deindex(setting.query.exclude, host),
+      include: deindex(setting.query.include, host),
+      exclude: deindex(setting.query.exclude, host),
     },
     PROCESSORS = [
       "amazon.com",
@@ -47,16 +53,6 @@ class Link extends importModule<typeof Shortcut<
     });
   }
 
-  private resolve(host: string, setting: Link["setting"]["host"]) {
-    const pruned = host.slice(host.startsWith("www.") && !setting.www.includes(host) ? 4 : 0);
-
-    return setting.swap[pruned] ?? pruned;
-  }
-
-  private deindex(list: ListTable, host: string) {
-    return list[host]?.map(i => i.toLowerCase()) ?? [];
-  }
-
   private buildURL(url: ReturnType<Link["url"]>) {
     const {
       scheme,
@@ -70,7 +66,7 @@ class Link extends importModule<typeof Shortcut<
   }
 
   private Processor<H extends string>(host: H): new (host: H, path: string) => LinkPathProcessor<H> {
-    return importModule<new (host: H, path: string) => LinkPathProcessor<H>>(`./apps/method/link/processors/${host}`);
+    return importModule<new (host: H, path: string) => LinkPathProcessor<H>>(`./apps/method/link/${host}`);
   }
 }
 
