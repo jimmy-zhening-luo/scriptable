@@ -16,7 +16,7 @@ class Link extends importModule<typeof Shortcut<
     url = this.url(inputString),
     resolve = (host: string, setting: typeof this.setting.host) => {
       const pruned = host.slice(host.startsWith("www.") && !setting.www.includes(host) ? 4 : 0);
-  
+
       return setting.swap[pruned] ?? pruned;
     },
     deindex = (list: ListTable, host: string) => list[host]?.map(i => i.toLowerCase()) ?? [],
