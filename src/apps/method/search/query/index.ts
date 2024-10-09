@@ -1,11 +1,11 @@
 class Query {
   public readonly key: stringful;
   public readonly terms: stringful[];
-  public readonly engine: SearchSetting["user"]["engines"][string];
+  public readonly engine: SearchSetting["engines"][string];
 
   constructor(
     input: string,
-    engines: SearchSetting["user"]["engines"],
+    engines: SearchSetting["engines"],
     alias: FieldTable,
     SELECTOR: stringful,
     TRANSLATE: stringful,
@@ -44,7 +44,7 @@ class Query {
         this.terms.unshift(key);
       }
 
-      this.engine = engines[this.key] as SearchSetting["user"]["engines"][string];
+      this.engine = engines[this.key] as typeof engines[string];
     }
     catch (e) {
       throw new Error(`Query: [${input}]`, { cause: e });
