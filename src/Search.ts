@@ -31,12 +31,13 @@ class Search extends importModule<typeof Shortcut<
     const { inputful, setting } = this,
     input = inputful.query.length > 0 ? inputful.query : this.read(),
     {
-      user: { engines, alias },
-      app: {
+      engines,
+      alias,
+      reserved: {
         tag,
         selector,
-        key,
-        fallback,
+        key: { translate, math },
+        fallback: { one, two, three, rest },
       },
     } = setting,
     query = new Search.Query(
@@ -45,12 +46,12 @@ class Search extends importModule<typeof Shortcut<
       alias,
       ...this.stringfuls([
         selector,
-        key.translate,
-        key.math,
-        fallback.one,
-        fallback.two,
-        fallback.three,
-        fallback.rest,
+        translate,
+        math,
+        one,
+        two,
+        three,
+        rest,
       ] as const),
     ),
     entry = query.engine,
