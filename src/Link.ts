@@ -14,7 +14,7 @@ class Link extends importModule<typeof Shortcut<
   protected runtime() {
     const { inputString, setting } = this,
     url = this.url(inputString),
-    resolve = (host: string, setting: typeof setting["host"]) => {
+    resolve = (host: string, setting: typeof this.setting.host) => {
       const pruned = host.slice(host.startsWith("www.") && !setting.www.includes(host) ? 4 : 0);
   
       return setting.swap[pruned] ?? pruned;
