@@ -30,7 +30,7 @@ class Things extends importModule<typeof Shortcut<
     return !tagged
       ? items
         .map(item => item.split(LINE) as Arrayful<string>)
-        .map(([title, ...notes]) => { title, notes: notes.join(LINE) })
+        .map(([title, ...notes]) => ({ title, notes: notes.join(LINE) }))
       : items.map((item): ThingsItem => {
           const { untagged, tag }: Field<"untagged", "tag"> = item.endsWith(TAG)
             ? {
