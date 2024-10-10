@@ -6,18 +6,16 @@
 import type { Shortcut } from "./lib";
 
 class Things extends importModule<typeof Shortcut<
-  string,
+  Field<"tasks"> & Flag<never, "tagged">,
   readonly ThingsItem[],
   ThingsSetting
 >>("./lib") {
   protected runtime() {
-    const { lists, delims } = this.setting,
-    { TAG, LINE, ITEM } = delims,
-    TODAY = "today";
-
-    this.checkDelims(delims);
-
-    const items = this.inputStringful
+    const TODAY = "today",
+    { tasks, tagged } = this.input,
+    { lists, delims } = this.setting,
+    { TAG, LINE, ITEM } = this.check(delims),
+    items = tasks
       .split(ITEM)
       .reverse()
       .map(
@@ -29,42 +27,44 @@ class Things extends importModule<typeof Shortcut<
       )
       .filter(item => item.length > 0);
 
-    return items.map(
-      (item): ThingsItem => {
-        const { untagged, tag }: Field<"untagged", "tag"> = item.endsWith(TAG)
-          ? {
-              untagged: item.slice(0, 0 - TAG.length).trim(),
-              tag: TODAY /* bad practice: reserved word */,
-            }
-          : item.slice(-1 - TAG.length, -1) === TAG
+    return !tagged
+      ? items
+        .map(item => item.split(LINE) as Arrayful<string>)
+        .map(([title, ...notes]) => { title, notes: notes.join(LINE) })
+      : items.map((item): ThingsItem => {
+          const { untagged, tag }: Field<"untagged", "tag"> = item.endsWith(TAG)
             ? {
-                untagged: item.slice(0, -1 - TAG.length).trim(),
-                tag: item.slice(-1).toLowerCase(),
+                untagged: item.slice(0, 0 - TAG.length).trim(),
+                tag: TODAY /* bad practice: reserved word */,
               }
-            : item.startsWith(TAG)
+            : item.slice(-1 - TAG.length, -1) === TAG
               ? {
-                  untagged: item.slice(TAG.length + 1).trim(),
-                  tag: item.slice(TAG.length, TAG.length + 1).toLowerCase(),
+                  untagged: item.slice(0, -1 - TAG.length).trim(),
+                  tag: item.slice(-1).toLowerCase(),
                 }
-              : { untagged: item },
-        { when, list }: Field<never, "when" | "list"> = typeof tag === "undefined"
-          ? {}
-          : tag === TODAY || !(tag in lists)
-            ? { when: TODAY }
-            : { list: (lists[tag] as typeof lists[number]).id },
-        lines = untagged.split(LINE);
-
-        return {
-          title: lines.shift() ?? "",
-          notes: lines.join(LINE),
-          ...typeof when === "undefined" ? {} : { when },
-          ...typeof list === "undefined" ? {} : { list },
-        };
-      },
-    );
+              : item.startsWith(TAG)
+                ? {
+                    untagged: item.slice(TAG.length + 1).trim(),
+                    tag: item.slice(TAG.length, TAG.length + 1).toLowerCase(),
+                  }
+                : { untagged: item },
+          { when, list }: Field<never, "when" | "list"> = typeof tag === "undefined"
+            ? {}
+            : tag === TODAY || !(tag in lists)
+              ? { when: TODAY }
+              : { list: (lists[tag] as typeof lists[number]).id },
+          [title, ...notes] = untagged.split(LINE) as Arrayful<string>;
+  
+          return {
+            title,
+            notes: notes.join(LINE),
+            ...typeof when === "undefined" ? {} : { when },
+            ...typeof list === "undefined" ? {} : { list },
+          };
+        });
   }
 
-  private checkDelims(delims: ThingsSetting["delims"]) {
+  private check(delims: ThingsSetting["delims"]) {
     try {
       const validator = Object.values(delims);
 
@@ -72,6 +72,8 @@ class Things extends importModule<typeof Shortcut<
         throw new TypeError(`Delimeter empty or too short`);
       else if (new Set(validator).size < validator.length)
         throw new SyntaxError(`Duplicate delimeters`);
+
+      return delims;
     }
     catch (e) {
       throw new SyntaxError(`Invalid delimeters: ${JSON.stringify(delims)}`, { cause: e });
