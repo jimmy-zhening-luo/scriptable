@@ -30,38 +30,38 @@ class Things extends importModule<typeof Shortcut<
     return !tagged
       ? items
         .map(item => item.split(LINE) as Arrayful<string>)
-        .map(([title, ...notes]) => ({ title, notes: notes.join(LINE) }))
+        .map(([title, ...notes]) => { return { title, notes: notes.join(LINE) }; })
       : items.map((item): ThingsItem => {
-          const { untagged, tag }: Field<"untagged", "tag"> = item.endsWith(TAG)
+        const { untagged, tag }: Field<"untagged", "tag"> = item.endsWith(TAG)
+          ? {
+              untagged: item.slice(0, 0 - TAG.length).trim(),
+              tag: TODAY /* bad practice: reserved word */,
+            }
+          : item.slice(-1 - TAG.length, -1) === TAG
             ? {
-                untagged: item.slice(0, 0 - TAG.length).trim(),
-                tag: TODAY /* bad practice: reserved word */,
+                untagged: item.slice(0, -1 - TAG.length).trim(),
+                tag: item.slice(-1).toLowerCase(),
               }
-            : item.slice(-1 - TAG.length, -1) === TAG
+            : item.startsWith(TAG)
               ? {
-                  untagged: item.slice(0, -1 - TAG.length).trim(),
-                  tag: item.slice(-1).toLowerCase(),
+                  untagged: item.slice(TAG.length + 1).trim(),
+                  tag: item.slice(TAG.length, TAG.length + 1).toLowerCase(),
                 }
-              : item.startsWith(TAG)
-                ? {
-                    untagged: item.slice(TAG.length + 1).trim(),
-                    tag: item.slice(TAG.length, TAG.length + 1).toLowerCase(),
-                  }
-                : { untagged: item },
-          { when, list }: Field<never, "when" | "list"> = typeof tag === "undefined"
-            ? {}
-            : tag === TODAY || !(tag in lists)
-              ? { when: TODAY }
-              : { list: (lists[tag] as typeof lists[number]).id },
-          [title, ...notes] = untagged.split(LINE) as Arrayful<string>;
-  
-          return {
-            title,
-            notes: notes.join(LINE),
-            ...typeof when === "undefined" ? {} : { when },
-            ...typeof list === "undefined" ? {} : { list },
-          };
-        });
+              : { untagged: item },
+        { when, list }: Field<never, "when" | "list"> = typeof tag === "undefined"
+          ? {}
+          : tag === TODAY || !(tag in lists)
+            ? { when: TODAY }
+            : { list: (lists[tag] as typeof lists[number]).id },
+        [title, ...notes] = untagged.split(LINE) as Arrayful<string>;
+
+        return {
+          title,
+          notes: notes.join(LINE),
+          ...typeof when === "undefined" ? {} : { when },
+          ...typeof list === "undefined" ? {} : { list },
+        };
+      });
   }
 
   private check(delims: ThingsSetting["delims"]) {
