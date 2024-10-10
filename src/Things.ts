@@ -12,7 +12,7 @@ class Things extends importModule<typeof Shortcut<
 >>("./lib") {
   protected runtime() {
     const TODAY = "today",
-    { tasks, tagged } = this.input,
+    { tasks, tagged } = this.inputful,
     { lists, delims } = this.setting,
     { TAG, LINE, ITEM } = this.check(delims),
     items = tasks
