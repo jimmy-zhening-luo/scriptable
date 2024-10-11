@@ -1,6 +1,6 @@
-import type { LinkPathProcessor } from "./processor/index";
+import type { LinkPathProcessor } from "./processor";
 
-const amzn_LinkPathProcessor = importModule<typeof LinkPathProcessor>("./processor/index");
+const amzn_LinkPathProcessor = importModule<typeof LinkPathProcessor>("./processor");
 
 class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
   protected process(path: string) {

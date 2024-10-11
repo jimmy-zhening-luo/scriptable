@@ -1,6 +1,6 @@
-import type { LinkPathProcessor } from "./processor/index";
+import type { LinkPathProcessor } from "./processor";
 
-const redd_ILinkPathProcessor = importModule<typeof LinkPathProcessor>("./processor/index");
+const redd_ILinkPathProcessor = importModule<typeof LinkPathProcessor>("./processor");
 
 class RedditPathProcessor extends redd_ILinkPathProcessor<"reddit.com"> {
   protected process(path: string) {
