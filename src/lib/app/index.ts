@@ -1,7 +1,7 @@
 import type { Setting } from "./filetypes/Setting";
 import type { Storage } from "./filetypes/Storage";
-import type { url } from "./url";
 import type { error } from "./error";
+import type utility from "./utility";
 
 abstract class App<
   T extends string,
@@ -86,6 +86,10 @@ abstract class App<
       throw new TypeError("Unstringful", { cause });
 
     return string as stringful;
+  }
+
+  protected static utility<U extends keyof utility>(utility: U, ...args: Parameters<utility[U]>) {
+    return importModule<utility[U]>("./utility/${utility}")(...args);
   }
 
   protected static stringfuls<T extends readonly string[]>(array: T, cause = "") {
