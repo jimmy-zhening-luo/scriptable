@@ -15,10 +15,27 @@ class Link extends importModule<typeof Shortcut<
     return importModule<new (host: H, path: string) => LinkPathProcessor<H>>(`./apps/method/link/${host}`);
   }
 
+  private static buildURL(url: Field<
+    | "scheme"
+    | "host"
+    | "path"
+    | "query"
+    | "fragment"
+  >) {
+    const {
+      scheme,
+      host,
+      path,
+      query,
+      fragment,
+    } = url;
+
+    return [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#");
+  }
+
   protected runtime() {
     const { inputString, setting } = this,
     url = Link.url(inputString),
-    buildURL = (({ scheme, host, path, query, fragment}): typeof url) => [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#"),
     resolve = (host: string, setting: typeof this.setting.host) => {
       const pruned = host.slice(host.startsWith("www.") && !setting.www.includes(host) ? 4 : 0);
 
@@ -37,7 +54,7 @@ class Link extends importModule<typeof Shortcut<
       "reddit.com",
     ];
 
-    return buildURL({
+    return Link.buildURL({
       host,
       scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
       path: PROCESSORS.includes(host) ? new (Link.Processor(host))(host, url.path).processed : url.path,
