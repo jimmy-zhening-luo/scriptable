@@ -10,6 +10,22 @@ class Things extends importModule<typeof Shortcut<
   readonly ThingsItem[],
   ThingsSetting
 >>("./lib") {
+  private static check(delims: Things["setting"]["delims"]) {
+    try {
+      const validator = Object.values(delims);
+
+      if (validator.some(d => d.length < 1))
+        throw new TypeError(`Delimeter empty or too short`);
+      else if (new Set(validator).size < validator.length)
+        throw new SyntaxError(`Duplicate delimeters`);
+
+      return delims;
+    }
+    catch (e) {
+      throw new SyntaxError(`Invalid delimeters: ${JSON.stringify(delims)}`, { cause: e });
+    }
+  }
+
   protected runtime() {
     const TODAY = "today",
     { tasks, tagged } = this.inputful,
@@ -62,22 +78,6 @@ class Things extends importModule<typeof Shortcut<
           ...typeof list === "undefined" ? {} : { list },
         };
       });
-  }
-
-  private check(delims: ThingsSetting["delims"]) {
-    try {
-      const validator = Object.values(delims);
-
-      if (validator.some(d => d.length < 1))
-        throw new TypeError(`Delimeter empty or too short`);
-      else if (new Set(validator).size < validator.length)
-        throw new SyntaxError(`Duplicate delimeters`);
-
-      return delims;
-    }
-    catch (e) {
-      throw new SyntaxError(`Invalid delimeters: ${JSON.stringify(delims)}`, { cause: e });
-    }
   }
 }
 

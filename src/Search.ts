@@ -27,6 +27,10 @@ class Search extends importModule<typeof Shortcut<
     return importModule<typeof Query>("./apps/method/search/query");
   }
 
+  private static SearchEngine<T extends "browser" | "find" | "shortcut">(provider: T) {
+    return importModule<SearchEngines[T]>(`./apps/method/search/engines/${provider}`);
+  }
+
   protected runtime() {
     const { inputful, setting } = this,
     input = inputful.query.length > 0 ? inputful.query : this.read(),
@@ -46,7 +50,7 @@ class Search extends importModule<typeof Shortcut<
       input,
       engines,
       alias,
-      ...this.stringfuls([
+      ...Search.stringfuls([
         selector,
         translate,
         math,
@@ -58,11 +62,11 @@ class Search extends importModule<typeof Shortcut<
     ),
     entry = query.engine,
     engine = Array.isArray(entry) || typeof entry === "string"
-      ? new (this.SearchEngine("browser"))(entry, this.stringful(tag))
+      ? new (this.SearchEngine("browser"))(entry, Search.stringful(tag))
       : "url" in entry
         ? new (this.SearchEngine("browser"))(
           entry.url,
-          this.stringful(tag),
+          Search.stringful(tag),
           entry.browser,
           entry.separator,
           entry.encodeComponent,
@@ -75,10 +79,6 @@ class Search extends importModule<typeof Shortcut<
     this.write(String(query));
 
     return engine.resolve(query);
-  }
-
-  private SearchEngine<T extends "browser" | "find" | "shortcut">(provider: T) {
-    return importModule<SearchEngines[T]>(`./apps/method/search/engines/${provider}`);
   }
 }
 

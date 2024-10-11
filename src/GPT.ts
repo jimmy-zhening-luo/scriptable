@@ -10,6 +10,12 @@ class GPT extends importModule<typeof Shortcut<
   GptOutput,
   GptSetting
 >>("./lib") {
+  private static unpack(inputful: GPT["inputful"]): GptInputWrap {
+    return typeof inputful !== "string" && "prompt" in inputful
+      ? inputful
+      : { prompt: inputful };
+  }
+
   protected runtime() {
     const { inputful, setting } = this,
     {
@@ -31,7 +37,7 @@ class GPT extends importModule<typeof Shortcut<
       top_p: input.top_p ?? preset.slider?.top_p ?? defaults.slider.top_p,
     },
     placeholder = {
-      date: input.date ?? preset.placeholder?.date ?? this.date(),
+      date: input.date ?? preset.placeholder?.date ?? GPT.date(),
       location: input.location ?? preset.placeholder?.location ?? defaults.placeholder.location,
     },
     prompt = typeof input.prompt !== "string"
@@ -91,12 +97,6 @@ class GPT extends importModule<typeof Shortcut<
         top_p: String(slider.top_p),
       },
     };
-  }
-
-  private unpack(inputful: GPT["inputful"]): GptInputWrap {
-    return typeof inputful !== "string" && "prompt" in inputful
-      ? inputful
-      : { prompt: inputful };
   }
 }
 

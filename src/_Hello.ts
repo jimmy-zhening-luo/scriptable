@@ -14,11 +14,11 @@ class _Hello extends importModule<typeof Shortcut<
     const FILE = "worldtime",
     warning = [
       this.readful(),
-      this.stringful(this.setting.space, "setting.space"),
+      _Hello.stringful(this.setting.space, "setting.space"),
       this.read(FILE),
     ].join("");
 
-    this.write(`World!\n(Previous: ${this.time()})`, true, FILE);
+    this.write(`World!\n(Previous: ${_Hello.time()})`, true, FILE);
     logWarning(warning);
 
     return warning;

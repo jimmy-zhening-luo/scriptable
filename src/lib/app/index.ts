@@ -1,5 +1,6 @@
 import type { Setting } from "./filetypes/Setting";
 import type { Storage } from "./filetypes/Storage";
+import type { url } from "./url";
 import type { error } from "./error";
 
 abstract class App<
@@ -24,7 +25,7 @@ abstract class App<
   }
 
   protected get app() {
-    const app = this.stringful(this.constructor.name, "Nameless app");
+    const app = App.stringful(this.constructor.name, "Nameless app");
 
     Object.defineProperty(this, "app", { value: app, enumerable: true });
 
@@ -73,11 +74,50 @@ abstract class App<
   }
 
   protected get inputStringful() {
-    const inputStringful = this.stringful(this.inputString, "App: inputStringful");
+    const inputStringful = App.stringful(this.inputString, "App: inputStringful");
 
     Object.defineProperty(this, "inputStringful", { value: inputStringful, enumerable: true });
 
     return inputStringful;
+  }
+
+  protected static stringful(string = "", cause = "") {
+    if (string.length < 1)
+      throw new TypeError("Unstringful", { cause });
+
+    return string as stringful;
+  }
+
+  protected static stringfuls<T extends readonly string[]>(array: T, cause = "") {
+    if (array.length < 1 || !array.every((i): i is stringful => i.length > 0))
+      throw new TypeError("Unstringful array", { cause });
+
+    return array as unknown as (
+      T extends readonly [string, ...string[]]
+        ? { [K in keyof T]: stringful; }
+        : Arrayful<stringful>
+    );
+  }
+
+  protected static url(url: string) {
+    return (importModule<url>("./url"))(url);
+  }
+
+  protected static time(date?: Date) {
+    return App.datetime("yyyyMMddhhmmssZ", date);
+  }
+
+  protected static date(date?: Date) {
+    return App.datetime("EEEE, MMMM d, y", date);
+  }
+
+  private static datetime(format: string, date = new Date, locale = "en") {
+    const d = new DateFormatter;
+
+    d.dateFormat = format;
+    d.locale = locale;
+
+    return d.string(date);
   }
 
   public run() {
@@ -93,7 +133,7 @@ abstract class App<
     if (subpath.length < 1)
       throw new ReferenceError("Empty subsetting path");
 
-    return new App.Setting<Subschema>(`${this.app satisfies stringful}/${subpath as stringful}` as stringful).parse;
+    return new App.Setting<Subschema>(`${this.app}/${subpath}` as stringful).parse;
   }
 
   protected read(...file: Parameters<App<T, Input, Output, Schema>["storage"]>) {
@@ -137,59 +177,6 @@ abstract class App<
     Keychain.remove(`${this.app}/${id}`);
   }
 
-  protected stringful(string = "", cause = "") {
-    if (string.length < 1)
-      throw new TypeError("Unstringful", { cause });
-
-    return string as stringful;
-  }
-
-  protected stringfuls<T extends readonly string[]>(array: T, cause = "") {
-    if (array.length < 1 || !array.every((i): i is stringful => i.length > 0))
-      throw new TypeError("Unstringful array", { cause });
-
-    return array as unknown as (
-      T extends readonly [string, ...string[]]
-        ? { [K in keyof T]: stringful; }
-        : Arrayful<stringful>
-    );
-  }
-
-  protected time(date?: Date) {
-    return this.datetime("yyyyMMddhhmmssZ", date);
-  }
-
-  protected date(date?: Date) {
-    return this.datetime("EEEE, MMMM d, y", date);
-  }
-
-  protected url(string: string) {
-    const normalize = (part = "", lower = false) => lower ? part.toLowerCase() : part,
-    attempt = this.parseURL(string),
-    retry = attempt === null
-      ? this.parseURL(string, true)
-      : null;
-
-    if (attempt === null && retry === null)
-      throw new SyntaxError("Unparseable to URL", { cause: string });
-
-    const parts = (attempt ?? retry) as Field<
-      | "scheme"
-      | "host"
-      | "path"
-      | "query"
-      | "fragment"
-    >;
-
-    return {
-      scheme: normalize(parts.scheme, true),
-      host: normalize(parts.host, true),
-      path: normalize(parts.path),
-      query: normalize(parts.query),
-      fragment: normalize(parts.fragment),
-    };
-  }
-
   private storage(file: string | { ext: string; name?: string } = this.app) {
     const { name, ext } = typeof file === "object"
       ? {
@@ -200,7 +187,6 @@ abstract class App<
           name: file,
           ext: "txt",
         },
-
     cacheId = `${name}:${ext}`,
     cache = this.cache[cacheId];
 
@@ -232,33 +218,6 @@ abstract class App<
     };
 
     return !falsy(value);
-  }
-
-  private datetime(format: string, date = new Date, locale = "en") {
-    const d = new DateFormatter;
-
-    d.dateFormat = format;
-    d.locale = locale;
-
-    return d.string(date);
-  }
-
-  private parseURL(string: string, tryHttp = false) {
-    const is = (part: undefined | string): part is stringful => typeof part !== "undefined" && part.length > 1,
-    [
-      ,,scheme,,host,
-      path,,query,,fragment,
-    ] = (/^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u).exec(`${tryHttp ? "https" : ""}${string}`) ?? [];
-
-    return is(scheme) && (!tryHttp || is(host) || is(path))
-      ? {
-          scheme,
-          host,
-          path,
-          query,
-          fragment,
-        }
-      : null;
   }
 
   protected abstract getInput(): Input;

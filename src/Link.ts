@@ -11,9 +11,25 @@ class Link extends importModule<typeof Shortcut<
   string,
   LinkSetting
 >>("./lib") {
+  private static Processor<H extends string>(host: H): new (host: H, path: string) => LinkPathProcessor<H> {
+    return importModule<new (host: H, path: string) => LinkPathProcessor<H>>(`./apps/method/link/${host}`);
+  }
+
+  private static buildURL(url: ReturnType<Link["url"]>) {
+    const {
+      scheme,
+      host,
+      path,
+      query,
+      fragment,
+    } = url;
+
+    return [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#");
+  }
+
   protected runtime() {
     const { inputString, setting } = this,
-    url = this.url(inputString),
+    url = Link.url(inputString),
     resolve = (host: string, setting: typeof this.setting.host) => {
       const pruned = host.slice(host.startsWith("www.") && !setting.www.includes(host) ? 4 : 0);
 
@@ -51,22 +67,6 @@ class Link extends importModule<typeof Shortcut<
             : url.query,
       fragment: setting.fragment.trim.includes(host) ? "" : url.fragment,
     });
-  }
-
-  private buildURL(url: ReturnType<Link["url"]>) {
-    const {
-      scheme,
-      host,
-      path,
-      query,
-      fragment,
-    } = url;
-
-    return [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#");
-  }
-
-  private Processor<H extends string>(host: H): new (host: H, path: string) => LinkPathProcessor<H> {
-    return importModule<new (host: H, path: string) => LinkPathProcessor<H>>(`./apps/method/link/${host}`);
   }
 }
 
