@@ -89,7 +89,7 @@ abstract class App<
   }
 
   protected static utility<U extends keyof utility>(utility: U, ...args: Parameters<utility[U]>) {
-    return importModule<utility[U]>("./utility/${utility}")(...args);
+    return importModule<utility[U]>(`./utility/${utility}`)(...args);
   }
 
   protected static stringfuls<T extends readonly string[]>(array: T, cause = "") {
