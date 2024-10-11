@@ -48,10 +48,10 @@ class Link extends importModule<typeof Shortcut<
       "reddit.com",
     ];
 
-    return this.buildURL({
+    return Link.buildURL({
       host,
       scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
-      path: PROCESSORS.includes(host) ? new (this.Processor(host))(host, url.path).processed : url.path,
+      path: PROCESSORS.includes(host) ? new (Link.Processor(host))(host, url.path).processed : url.path,
       query: setting.query.omit.includes(host)
         ? ""
         : params.include.length > 0

@@ -27,7 +27,7 @@ class Search extends importModule<typeof Shortcut<
     return importModule<typeof Query>("./apps/method/search/query");
   }
 
-  private static SearchEngine<T extends "browser" | "find" | "shortcut">(provider: T) {
+  private static Engine<T extends "browser" | "find" | "shortcut">(provider: T) {
     return importModule<SearchEngines[T]>(`./apps/method/search/engines/${provider}`);
   }
 
@@ -62,9 +62,9 @@ class Search extends importModule<typeof Shortcut<
     ),
     entry = query.engine,
     engine = Array.isArray(entry) || typeof entry === "string"
-      ? new (this.SearchEngine("browser"))(entry, Search.stringful(tag))
+      ? new (Search.Engine("browser"))(entry, Search.stringful(tag))
       : "url" in entry
-        ? new (this.SearchEngine("browser"))(
+        ? new (Search.Engine("browser"))(
           entry.url,
           Search.stringful(tag),
           entry.browser,
@@ -73,8 +73,8 @@ class Search extends importModule<typeof Shortcut<
           entry.inprivate,
         )
         : "shortcut" in entry
-          ? new (this.SearchEngine("shortcut"))(entry.shortcut, entry.output)
-          : new (this.SearchEngine("find"))(entry.find);
+          ? new (Search.Engine("shortcut"))(entry.shortcut, entry.output)
+          : new (Search.Engine("find"))(entry.find);
 
     this.write(String(query));
 

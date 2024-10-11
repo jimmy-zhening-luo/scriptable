@@ -30,7 +30,7 @@ class Things extends importModule<typeof Shortcut<
     const TODAY = "today",
     { tasks, tagged } = this.inputful,
     { lists, delims } = this.setting,
-    { TAG, LINE, ITEM } = this.check(delims),
+    { TAG, LINE, ITEM } = Things.check(delims),
     items = tasks
       .split(ITEM)
       .reverse()

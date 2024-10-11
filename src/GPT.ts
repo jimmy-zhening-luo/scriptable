@@ -25,7 +25,7 @@ class GPT extends importModule<typeof Shortcut<
       defaults,
       placeholders,
     } = setting,
-    input = this.unpack(inputful),
+    input = GPT.unpack(inputful),
     preset = this.subsetting<GptPreset>(
       "preset" in input
         ? input.preset
