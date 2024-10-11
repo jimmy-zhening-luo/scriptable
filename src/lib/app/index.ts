@@ -100,7 +100,7 @@ abstract class App<
   }
 
   protected static url(url: string) {
-    return (importModule<url>("./url"))(url);
+    return importModule<url>("./url")(url);
   }
 
   protected static time(date?: Date) {
