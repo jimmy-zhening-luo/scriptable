@@ -18,7 +18,7 @@ class _Hello extends importModule<typeof Shortcut<
       this.read(FILE),
     ].join("");
 
-    this.write(`World!\n(Previous: ${this.time()})`, FILE);
+    this.write(`World!\n(Previous: ${this.time()})`, true, FILE);
     logWarning(warning);
 
     return warning;

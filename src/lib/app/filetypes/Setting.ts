@@ -23,11 +23,10 @@ class Setting<T extends string, Schema> extends cFiletype<"Setting", T> {
 
       if (typeof setting !== "object" || setting === null)
         throw new TypeError("Setting file has wrong schema", { cause: this.read() });
-      else {
-        Object.defineProperty(this, "parse", { value: setting, writable: false });
 
-        return setting as Schema;
-      }
+      Object.defineProperty(this, "parse", { value: setting, writable: false });
+
+      return setting as Schema;
     }
     catch (e) {
       throw new SyntaxError(`Setting: parse (${this.name})`, { cause: e });

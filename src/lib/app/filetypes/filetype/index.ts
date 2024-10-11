@@ -12,22 +12,28 @@ abstract class Filetype<
     filetype: literalful<FT>,
     type: literalful<T>,
     folder: Null<string>,
-    file: string,
-    ext = "txt",
+    name: string,
+    ext: string,
   ) {
-    if (file.length < 1 || ext.length < 1)
-      throw new TypeError("Empty filename or extension", { cause: `${filetype}/${type}/${folder ?? ""}/${file}.${ext}` });
+    if (name.length < 1)
+      throw new TypeError("Empty filename", {
+        cause: {
+          filetype, type, folder, name, ext,
+        },
+      });
 
     this.file = new this.File(
       mutable,
       filetype,
       type,
-      folder ?? "",
-      `${file}.${ext}`,
+      ...[
+        ...folder === null ? [] : [folder],
+        ext.length < 1 ? name : `${name}.${ext}`,
+      ],
     );
   }
 
-  protected get name() {
+  public get name() {
     return this.file.name;
   }
 
@@ -49,8 +55,8 @@ abstract class Filetype<
     return string.length > 0 ? JSON.parse(string) as Data : null;
   }
 
-  protected write(...args: Parameters<File<Mutable>["write"]>): Mutable extends true ? ReturnType<File<Mutable>["write"]> : never {
-    throw new ReferenceError("Write forbidden", { cause: args });
+  protected write(...content: Parameters<File<Mutable>["write"]>): Mutable extends true ? ReturnType<File<Mutable>["write"]> : never {
+    throw new ReferenceError("Write forbidden", { cause: content });
   }
 
   protected delete(): Mutable extends true ? ReturnType<File<Mutable>["write"]> : never {

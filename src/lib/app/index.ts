@@ -1,4 +1,3 @@
-import type { Key } from "./filetypes/Key";
 import type { Setting } from "./filetypes/Setting";
 import type { Storage } from "./filetypes/Storage";
 import type { error } from "./error";
@@ -9,11 +8,7 @@ abstract class App<
   Output,
   Schema,
 > {
-  private readonly cache: {
-    storage: Record<string, Storage<T>>;
-    keys: Record<string, Key<T>>;
-  } = { storage: {}, keys: {} };
-
+  private readonly cache: Record<string, Storage<T>> = {};
   protected abstract type: literalful<T>;
 
   private static get Setting() {
@@ -24,25 +19,21 @@ abstract class App<
     return importModule<typeof Storage>("./filetypes/Storage");
   }
 
-  private static get Key() {
-    return importModule<typeof Key>("./filetypes/Key");
-  }
-
   private static get error() {
     return importModule<error>("./error");
   }
 
-  protected get name() {
-    const name = this.stringful(this.constructor.name, "Nameless app");
+  protected get app() {
+    const app = this.stringful(this.constructor.name, "Nameless app");
 
-    Object.defineProperty(this, "name", { value: name, enumerable: true });
+    Object.defineProperty(this, "app", { value: app, enumerable: true });
 
-    return name;
+    return app;
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    const { type, name } = this,
-    setting = new App.Setting<T, Schema>(type, name).parse;
+    const { type, app } = this,
+    setting = new App.Setting<T, Schema>(type, app).parse;
 
     Object.defineProperty(this, "setting", { value: setting, enumerable: true });
 
@@ -95,49 +86,64 @@ abstract class App<
       return this.output(this.runtime());
     }
     catch (e) {
-      throw App.error(new Error(`${this.name}: run`, { cause: e }));
+      throw App.error(new Error(`${this.app}: run`, { cause: e }));
     }
   }
 
   protected subsetting<Subschema>(subpath: string): Subschema extends Subschema ? Subschema : never {
-    const { type, name } = this;
+    const { type, app } = this;
 
     if (subpath.length < 1)
       throw new ReferenceError("Empty subsetting path");
 
-    return new App.Setting<T, Subschema>(type, `${name satisfies stringful}/${subpath as stringful}` as stringful).parse;
+    return new App.Setting<T, Subschema>(type, `${app satisfies stringful}/${subpath as stringful}` as stringful).parse;
   }
 
-  protected read(file?: Null<string>, ext?: string) {
-    return this.storage(file, ext).read();
+  protected read(...file: Parameters<App<T, Input, Output, Schema>["storage"]>) {
+    return this.storage(...file).read();
   }
 
-  protected readful(file?: Null<string>, ext?: string) {
-    return this.storage(file, ext).readful();
+  protected readful(...file: Parameters<App<T, Input, Output, Schema>["storage"]>) {
+    return this.storage(...file).readful();
   }
 
-  protected data<Data>(file?: Null<string>, ext?: string): Null<Data> {
-    return this.storage(file, ext).data<Data>();
+  protected data<Data>(...file: Parameters<App<T, Input, Output, Schema>["storage"]>): Null<Data> {
+    return this.storage(...file).data<Data>();
   }
 
   protected write(
     data: unknown,
-    file?: Null<string>,
-    ext?: string,
     overwrite?:
       | "line"
       | "append"
       | boolean,
+    ...file: Parameters<App<T, Input, Output, Schema>["storage"]>
   ) {
-    this.storage(file, ext).write(data, overwrite);
+    this.storage(...file).write(data, overwrite);
   }
 
-  protected load(handle: string, roll?: boolean) {
-    return this.key(handle).load(roll);
+  protected load(id: string, roll = false) {
+    const key = `${this.app}/${id}`;
+
+    if (roll || !Keychain.contains(key)) {
+      const local = this.key(id),
+      value = local.readful();
+
+      Keychain.set(key, value);
+      local.delete();
+    }
+
+    return Keychain.get(key);
   }
 
-  protected purge(handle: string) {
-    this.key(handle).purge();
+  protected purge(id: string) {
+    const key = `${this.app}/${id}`;
+
+    if (Keychain.contains(key))
+      Keychain.remove(key);
+
+    if (Keychain.contains(key))
+      throw new EvalError("Failed to purge keychain key", { cause: key });
   }
 
   protected stringful(string = "", cause = "") {
@@ -159,11 +165,11 @@ abstract class App<
   }
 
   protected time(date?: Date) {
-    return this.print("yyyyMMddhhmmssZ", date);
+    return this.datetime("yyyyMMddhhmmssZ", date);
   }
 
   protected date(date?: Date) {
-    return this.print("EEEE, MMMM d, y", date);
+    return this.datetime("EEEE, MMMM d, y", date);
   }
 
   protected guid64() {
@@ -228,45 +234,40 @@ abstract class App<
     };
   }
 
-  private storage(file?: Null<string>, ext?: string) {
-    const cacheId = `${file ?? ""}:${ext ?? ""}`,
-    cache = this.cache.storage[cacheId];
+  private storage(file: string | { ext: string; name?: string } = this.app) {
+    const { name, ext } = typeof file === "object"
+      ? {
+          name: "name" in file ? file.name : this.app,
+          ext: file.ext,
+        }
+      : {
+          name: file,
+          ext: "txt",
+        },
+
+    cacheId = `${name}:${ext}`,
+    cache = this.cache[cacheId];
 
     if (typeof cache !== "undefined")
       return cache;
     else {
-      const { type, name } = this,
-      app = name,
+      const { type } = this,
+      { app } = this,
       newStorage = new App.Storage<T>(
         type,
         app,
-        file,
+        name,
         ext,
       );
 
-      this.cache.storage[cacheId] = newStorage;
+      this.cache[cacheId] = newStorage;
 
       return newStorage;
     }
   }
 
-  private key(handle: string) {
-    const cache = this.cache.keys[handle];
-
-    if (typeof cache !== "undefined")
-      return cache;
-    else {
-      const { type, name } = this,
-      newKey = new App.Key<T>(
-        type,
-        name,
-        handle,
-      );
-
-      this.cache.keys[handle] = newKey;
-
-      return newKey;
-    }
+  private key(id: string) {
+    return this.storage({ name: id, ext: "" });
   }
 
   private truthy(value: Input): value is NonNullable<Input> {
@@ -280,7 +281,7 @@ abstract class App<
     return !falsy(value);
   }
 
-  private print(format: string, date = new Date, locale = "en") {
+  private datetime(format: string, date = new Date, locale = "en") {
     const d = new DateFormatter;
 
     d.dateFormat = format;

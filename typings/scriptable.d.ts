@@ -2696,7 +2696,7 @@ declare class FileManager {
    * @param name - Name of bookmark to create path for.
    * @see https://docs.scriptable.app/filemanager/#-bookmarkedpath
    */
-  bookmarkedPath(alias: string): string;
+  bookmarkedPath(bookmark: string): string;
 
   /**
    * _Check if a bookmark exists._
@@ -2710,7 +2710,7 @@ declare class FileManager {
    * @param alias - Name of bookmark.
    * @see https://docs.scriptable.app/filemanager/#-bookmarkexists
    */
-  bookmarkExists(alias: string): boolean;
+  bookmarkExists(bookmark: string): boolean;
 
   /**
    * _Download file from iCloud if necessary._

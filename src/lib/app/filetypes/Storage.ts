@@ -6,45 +6,45 @@ class Storage<T extends string> extends dFiletype<"Storage", T, true> {
   constructor(
     type: literalful<T>,
     app: stringful,
-    file?: Null<string>,
-    ext?: string,
+    name: string,
+    ext: string,
   ) {
     super(
       true,
       "Storage",
       type,
       app,
-      file ?? app,
+      name,
       ext,
     );
   }
 
   public override write(
-    data: unknown,
+    content: unknown,
     overwrite:
       | "line"
       | "append"
       | boolean = true,
   ) {
-    const { file } = this,
-    buffer = data ?? null;
+    if (content === null || typeof content === "undefined")
+      throw new TypeError("Write data is null", { cause: content });
 
-    if (buffer === null)
-      throw new TypeError("No data to write");
-    else if (typeof buffer === "object")
-      if (Array.isArray(buffer) && buffer.every(i => typeof i === "string"))
-        file.write(
-          buffer.reverse().join("\n"),
-          overwrite === false ? false : "line",
-        );
-      else
-        file.write(JSON.stringify(buffer), overwrite !== false);
+    const { string, coerce }: { string: string; coerce: typeof overwrite } = Array.isArray(content)
+      ? {
+          string: content.reverse().join("\n"),
+          coerce: overwrite === false ? false : "line",
+        }
+      : {
+          string: JSON.stringify(content),
+          coerce: typeof content === "object"
+            ? overwrite !== false
+            : overwrite,
+        };
 
-    else
-      file.write(String(buffer), overwrite);
+    this.file.write(string, coerce);
   }
 
-  protected override delete(): void {
+  public override delete(): void {
     this.file.delete();
   }
 }
