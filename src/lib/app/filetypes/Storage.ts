@@ -2,9 +2,8 @@ import type { Filetype } from "./filetype";
 
 const dFiletype = importModule<typeof Filetype>("./filetype");
 
-class Storage<T extends string> extends dFiletype<"Storage", T, true> {
+class Storage extends dFiletype<"Storage", true> {
   constructor(
-    type: literalful<T>,
     app: stringful,
     name: string,
     ext: string,
@@ -12,7 +11,6 @@ class Storage<T extends string> extends dFiletype<"Storage", T, true> {
     super(
       true,
       "Storage",
-      type,
       app,
       name,
       ext,

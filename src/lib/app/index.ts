@@ -8,7 +8,7 @@ abstract class App<
   Output,
   Schema,
 > {
-  private readonly cache: Record<string, Storage<T>> = {};
+  private readonly cache: Record<string, Storage> = {};
   protected abstract type: literalful<T>;
 
   private static get Setting() {
@@ -32,8 +32,7 @@ abstract class App<
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    const { type, app } = this,
-    setting = new App.Setting<T, Schema>(type, app).parse;
+    const setting = new App.Setting<Schema>(this.app).parse;
 
     Object.defineProperty(this, "setting", { value: setting, enumerable: true });
 
@@ -91,12 +90,10 @@ abstract class App<
   }
 
   protected subsetting<Subschema>(subpath: string): Subschema extends Subschema ? Subschema : never {
-    const { type, app } = this;
-
     if (subpath.length < 1)
       throw new ReferenceError("Empty subsetting path");
 
-    return new App.Setting<T, Subschema>(type, `${app satisfies stringful}/${subpath as stringful}` as stringful).parse;
+    return new App.Setting<Subschema>(`${this.app satisfies stringful}/${subpath as stringful}` as stringful).parse;
   }
 
   protected read(...file: Parameters<App<T, Input, Output, Schema>["storage"]>) {
@@ -137,13 +134,7 @@ abstract class App<
   }
 
   protected purge(id: string) {
-    const key = `${this.app}/${id}`;
-
-    if (Keychain.contains(key))
-      Keychain.remove(key);
-
-    if (Keychain.contains(key))
-      throw new EvalError("Failed to purge keychain key", { cause: key });
+    Keychain.remove(`${this.app}/${id}`);
   }
 
   protected stringful(string = "", cause = "") {
@@ -170,41 +161,6 @@ abstract class App<
 
   protected date(date?: Date) {
     return this.datetime("EEEE, MMMM d, y", date);
-  }
-
-  protected guid64() {
-    const CTOH = {
-      A: 10,
-      B: 11,
-      C: 12,
-      D: 13,
-      E: 14,
-      F: 15,
-    } as const,
-    buffer: Octad<hex[]> = [
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-    ];
-
-    (
-      [...UUID.string().replace("-", "")].map(c => typeof CTOH[c as keyof typeof CTOH] === "undefined" ? Number(c) as decimal : CTOH[c as Exclude<hexchar, digit>]) satisfies hex[] as unknown as Tuple<hex, 32>
-    )
-      .forEach((h, i) => {
-        buffer[(i % 8) as octal].push(h);
-      });
-
-    return String.fromCharCode(...(buffer satisfies Octad<hex[]> as unknown as Octad<Quad<hex>>)
-      .map(q => q.reduce((q: number, qi) => q + qi, 0))
-      .map(c => c + 43)
-      .map(c => c > 43 ? c + 3 : c)
-      .map(c => c > 57 ? c + 7 : c)
-      .map(c => c > 90 ? c + 6 : c));
   }
 
   protected url(string: string) {
@@ -251,11 +207,8 @@ abstract class App<
     if (typeof cache !== "undefined")
       return cache;
     else {
-      const { type } = this,
-      { app } = this,
-      newStorage = new App.Storage<T>(
-        type,
-        app,
+      const newStorage = new App.Storage(
+        this.app,
         name,
         ext,
       );

@@ -2,7 +2,6 @@ import type { File } from "./file";
 
 abstract class Filetype<
   FT extends string,
-  T extends string,
   Mutable extends boolean = false,
 > {
   protected readonly file: File<Mutable>;
@@ -10,7 +9,6 @@ abstract class Filetype<
   constructor(
     mutable: Mutable,
     filetype: literalful<FT>,
-    type: literalful<T>,
     folder: Null<string>,
     name: string,
     ext: string,
@@ -18,14 +16,13 @@ abstract class Filetype<
     if (name.length < 1)
       throw new TypeError("Empty filename", {
         cause: {
-          filetype, type, folder, name, ext,
+          filetype, folder, name, ext,
         },
       });
 
     this.file = new this.File(
       mutable,
       filetype,
-      type,
       ...[
         ...folder === null ? [] : [folder],
         ext.length < 1 ? name : `${name}.${ext}`,
