@@ -17,7 +17,6 @@ function url(url: string) {
         }
       : null;
   },
-  normalize = (part = "", lower = false) => lower ? part.toLowerCase() : part,
   parts = parseURL(url) ?? parseURL(url, true);
 
   if (parts === null)
