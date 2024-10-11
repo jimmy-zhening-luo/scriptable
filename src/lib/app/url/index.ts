@@ -1,11 +1,11 @@
 function url(url: string) {
-  const parseURL = (string: string, tryHttp = false) => {
+  const parseURL = (url: string, tryHttp = false) => {
     const is = (part: undefined | string): part is stringful => typeof part !== "undefined" && part.length > 1,
     normalize = (part = "", lower = false) => lower ? part.toLowerCase() : part,
     [
       ,,scheme,,host,
       path,,query,,fragment,
-    ] = (/^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u).exec(`${tryHttp ? "https" : ""}${string}`) ?? [];
+    ] = (/^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/u).exec(`${tryHttp ? "https" : ""}${url}`) ?? [];
 
     return is(scheme) && (!tryHttp || is(host) || is(path))
       ? {
@@ -18,10 +18,10 @@ function url(url: string) {
       : null;
   },
   normalize = (part = "", lower = false) => lower ? part.toLowerCase() : part,
-  parts = this.parseURL(string) ?? this.parseURL(string, true);
+  parts = this.parseURL(url) ?? this.parseURL(url, true);
 
   if (parts === null)
-    throw new SyntaxError("Unparseable to URL", { cause: string });
+    throw new SyntaxError("Unparseable to URL", { cause: url });
 
   return parts;
 }
