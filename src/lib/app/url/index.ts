@@ -18,7 +18,7 @@ function url(url: string) {
       : null;
   },
   normalize = (part = "", lower = false) => lower ? part.toLowerCase() : part,
-  parts = this.parseURL(url) ?? this.parseURL(url, true);
+  parts = parseURL(url) ?? parseURL(url, true);
 
   if (parts === null)
     throw new SyntaxError("Unparseable to URL", { cause: url });
