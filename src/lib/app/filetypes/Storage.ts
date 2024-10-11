@@ -29,19 +29,22 @@ class Storage<T extends string> extends dFiletype<"Storage", T, true> {
     if (content === null || typeof content === "undefined")
       throw new TypeError("Write data is null", { cause: content });
 
-    const { string, coerce }: { string: string; coerce: typeof overwrite } = Array.isArray(content)
+    const write = Array.isArray(content)
       ? {
           string: content.reverse().join("\n"),
-          coerce: overwrite === false ? false : "line",
+          overwrite: overwrite === false ? false : "line" as const,
         }
-      : {
-          string: JSON.stringify(content),
-          coerce: typeof content === "object"
-            ? overwrite !== false
-            : overwrite,
-        };
+      : typeof content === "object"
+        ? {
+            string: JSON.stringify(content),
+            overwrite: overwrite !== false,
+          }
+        : {
+            string: String(content),
+            overwrite,
+          };
 
-    this.file.write(string, coerce);
+    this.file.write(write.string, write.overwrite);
   }
 
   public override delete(): void {
