@@ -8,10 +8,6 @@ class BrowserEngine extends bSearchEngine<"browser"> {
   private readonly separator: string;
   private readonly encodeComponent: boolean;
   private readonly inprivate: Null<true>;
-  private readonly PLUS = {
-    plain: "+",
-    encoded: "%2B",
-  } as const;
 
   constructor(
     urls: Unflat,
@@ -39,22 +35,22 @@ class BrowserEngine extends bSearchEngine<"browser"> {
 
   protected override stringify(query: Query) {
     const {
-      encodeComponent,
-      separator,
-      PLUS,
+      urls,
       TAG,
+      separator,
+      encodeComponent,
     } = this,
     encoder = encodeComponent
       ? function (operand: string) { return encodeURI(operand); }
       : function (operand: string) { return encodeURIComponent(operand); },
     encodedQuery = query.terms
       .map(term => term
-        .split(PLUS.plain)
+        .split("+")
         .map(encoder)
-        .join(PLUS.encoded))
+        .join("%2B"))
       .join(separator);
 
-    return this.urls.map(url => url.replace(TAG, encodedQuery));
+    return urls.map(url => url.replace(TAG, encodedQuery));
   }
 
   protected optional(query: Query) {
