@@ -1,0 +1,124 @@
+{
+  // v0.35.0
+  // https://github.com/DavidAnson/markdownlint/blob/v0.35.0/doc/Rules.md
+  // "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.35.0/schema/markdownlint-config-schema.json",
+  "heading-increment": true /* MD001 */,
+  "heading-style": {
+    "style": "atx",
+  } /* MD003 */,
+  "ul-style": {
+    "style": "sublist",
+  } /* MD004 */,
+  "list-indent": true /* MD005 */,
+  "ul-indent": {
+    "indent": 2,
+    "start_indent": 2,
+    "start_indented": false,
+  } /* MD007 */,
+  "no-trailing-spaces": {
+    "br_spaces": 0,
+    "list_item_empty_lines": false,
+    "strict": true,
+  } /* MD009 */,
+  "no-hard-tabs": {
+    "spaces_per_tab": 2,
+    "code_blocks": true,
+    "ignore_code_languages": [],
+  } /* MD010 */,
+  "no-reversed-links": false /* MD011 */,
+  "no-multiple-blanks": {
+    "maximum": 1,
+  } /* MD012 */,
+  "line-length": false /* MD013 */,
+  "commands-show-output": true /* MD014 */,
+  "no-missing-space-atx": true /* MD018 */,
+  "no-multiple-space-atx": true /* MD019 */,
+  "no-missing-space-closed-atx": true /* MD020 */,
+  "no-multiple-space-closed-atx": true /* MD021 */,
+  "blanks-around-headings": {
+    "lines_above": 1,
+    "lines_below": 0,
+  } /* MD022 */,
+  "heading-start-left": true /* MD023 */,
+  "no-duplicate-heading": {
+    "siblings_only": true,
+  } /* MD024 */,
+  "single-title": false /* MD025, single-h1 */,
+  "no-trailing-punctuation": {
+    "punctuation": "" /* @DEFAULT: .,;:!。，；：！ */,
+  } /* MD026 */,
+  "no-multiple-space-blockquote": true /* MD027 */,
+  "no-blanks-blockquote": true /* MD028 */,
+  "ol-prefix": {
+    "style": "one_or_ordered",
+  } /* MD029 */,
+  "list-marker-space": {
+    "ol_multi": 1,
+    "ol_single": 1,
+    "ul_multi": 1,
+    "ul_single": 1,
+  } /* MD030 */,
+  "blanks-around-fences": {
+    "list_items": false,
+  } /* MD031 */,
+  "blanks-around-lists": true /* MD032 */,
+  "no-inline-html": {
+    "allowed_elements": [
+      "br",
+      "details",
+      "summary",
+    ],
+  } /* MD033 */,
+  "no-bare-urls": true /* MD034 */,
+  "hr-style": {
+    "style": "---",
+  } /* MD035 */,
+  "no-emphasis-as-heading": false /* MD036 */,
+  "no-space-in-emphasis": true /* MD037 */,
+  "no-space-in-code": true /* MD038 */,
+  "no-space-in-links": true /* MD039 */,
+  "fenced-code-language": {
+    "allowed_languages": [],
+    "language_only": false,
+  } /* MD040 */,
+  "first-line-heading": false /* MD041, first-line-h1 */,
+  "no-empty-links": true /* MD042 */,
+  "required-headings": false /* MD043 */,
+  "proper-names": false /* MD044 */,
+  "no-alt-text": true /* MD045 */,
+  "code-block-style": {
+    "style": "fenced",
+  } /* MD046 */,
+  "single-trailing-newline": true /* MD047 */,
+  "code-fence-style": {
+    "style": "backtick",
+  } /* MD048 */,
+  "emphasis-style": {
+    "style": "underscore",
+  } /* MD049 */,
+  "strong-style": {
+    "style": "underscore",
+  } /* MD050 */,
+  "link-fragments": true /* MD051 */,
+  "reference-links-images": {
+    "shortcut_syntax": false,
+  } /* MD052 */,
+  "link-image-reference-definitions": {
+    "ignored_definitions": [
+      "//",
+    ] /* @DEFAULT: ["//"] */,
+  } /* MD053 */,
+  "link-image-style": {
+    "autolink": true,
+    "collapsed": true,
+    "full": true,
+    "inline": true,
+    "shortcut": true,
+    "url_inline": true,
+  } /* MD054 */,
+  "table-pipe-style": {
+    "style": "leading_and_trailing",
+  } /* MD055 */,
+  "table-column-count": true /* MD056 */,
+  "blanks-around-tables": false /* MD058 */,
+}
