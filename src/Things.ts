@@ -45,7 +45,7 @@ class Things extends importModule<typeof Shortcut<
 
     return !tagged
       ? items
-        .map(item => item.split(LINE) as Arrayful<string>)
+        .map(item => item.split(LINE) as Arrayful)
         .map(([title, ...notes]) => { return { title, notes: notes.join(LINE) }; })
       : items.map((item): ThingsItem => {
         const { untagged, tag }: Field<"untagged", "tag"> = item.endsWith(TAG)
@@ -69,7 +69,7 @@ class Things extends importModule<typeof Shortcut<
           : tag === TODAY || !(tag in lists)
             ? { when: TODAY }
             : { list: (lists[tag] as typeof lists[number]).id },
-        [title, ...notes] = untagged.split(LINE) as Arrayful<string>;
+        [title, ...notes] = untagged.split(LINE) as Arrayful;
 
         return {
           title,

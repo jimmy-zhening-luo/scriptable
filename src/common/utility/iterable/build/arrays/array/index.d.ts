@@ -1,12 +1,11 @@
-// TODO: constrain to positive integer
-declare type ArrayN<I, N extends number = 0> = [I] extends [never]
+declare type ArrayN<N extends number = 0, I = string> = [I] extends [never]
   ? never
   : N extends number
-    ? N extends 0
+    ? N extends 0 /* TODO: constrain posint */
       ? [...I[]]
-      : ArrayBuilder<I, N>
+      : ArrayBuilder<N, I>
     : never;
 
-type ArrayBuilder<I, N extends number, H extends I[] = []> = H["length"] extends N
+type ArrayBuilder<N extends number, I, H extends I[] = []> = H["length"] extends N
   ? [...H, ...I[]]
-  : ArrayBuilder<I, N, [...H, I]>;
+  : ArrayBuilder<N, I, [...H, I]>;

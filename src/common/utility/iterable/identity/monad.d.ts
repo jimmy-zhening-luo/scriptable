@@ -12,11 +12,11 @@ declare namespace MonadType {
   export type T6 = MonadType<string[] | int[]>;
   export type T7 = MonadType<(string | int)[]>;
   export type T18 = MonadType<[string] | [5, 10]>;
-  export type T8a = MonadType<Tuple<boolean>>;
-  export type T8b = MonadType<ArrayN<string, 3>>;
+  export type T8a = MonadType<Tuple>;
+  export type T8b = MonadType<ArrayN<3>>;
   export type T8c = MonadType<
-    | ArrayN<string, 3>
-    | Tuple<boolean>
+    | ArrayN<3>
+    | Tuple
     | [string]
     | [5, 10]
     | [5, 13]
@@ -42,7 +42,7 @@ declare namespace NotMonadType {
     | readonly [5, 10]
     | readonly string[]
   >;
-  export type N31 = MonadType<ArrayN<string>>;
+  export type N31 = MonadType<ArrayN>;
   export type N32 = MonadType<[string?]>;
   export type N33 = MonadType<readonly [string?]>;
 }

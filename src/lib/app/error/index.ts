@@ -9,7 +9,7 @@ function error(error: Error) {
   while (typeof errors[0] === "object" && "cause" in errors[0])
     errors.unshift(errors[0].cause as ErrorLike);
 
-  const messages = errors.map(e => typeof e === "object" && "message" in e ? e.message : stringify(e)) as Arrayful<string>,
+  const messages = errors.map(e => typeof e === "object" && "message" in e ? e.message : stringify(e)) as Arrayful,
   [title, ...rest] = messages,
   body = rest.join("\n"),
   n = new Notification;
