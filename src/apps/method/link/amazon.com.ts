@@ -14,5 +14,3 @@ class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
 
 module.exports = AmazonPathProcessor;
 
-
-
