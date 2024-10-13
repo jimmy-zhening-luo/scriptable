@@ -11,7 +11,6 @@ class DropboxPathProcessor extends drop_ILinkPathProcessor<"dropbox.com"> {
       : nodes.length < 4
         ? path
         : nodes.slice(0, 4).join("/");
-    }
   }
 }
 

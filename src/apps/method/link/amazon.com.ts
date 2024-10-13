@@ -8,7 +8,7 @@ class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
 
     return productPath.length < 2
       ? path
-      : `/dp/${(productPath[1].split("/") as Arrayful)[0]}`;
+      : `/dp/${((productPath as Arrayfully)[1].split("/") as Arrayful)[0]}`;
   }
 }
 
