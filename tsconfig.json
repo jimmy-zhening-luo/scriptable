@@ -1,11 +1,12 @@
 {
   "display": "@jimbojet/tsc",
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_version": "5.5.10",
+  "_version": "5.6.0",
   "include": [
     "*.config.ts",
     "src/**/*.ts",
-    "typings/**/*.d.ts", /* @OVERRIDE */
+    "tests/**/*.ts",
+    "typings/**/*.d.ts",
   ],
   "exclude": [],
   "compilerOptions": {
