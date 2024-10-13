@@ -6,13 +6,11 @@ class RedditPathProcessor extends redd_ILinkPathProcessor<"reddit.com"> {
   protected process(path: string) {
     const nodes = path.split("/");
 
-    return nodes.slice(
-      0,
-      nodes.length < 6 || nodes[3] !== "comments"
-        ? Infinity
-        : nodes[5] === "comment" ? 7 : 5,
-    )
-      .join("/");
+    return nodes.length < 6 || nodes[3] !== "comments"
+      ? path
+      : nodes
+        .slice(0, nodes[5] === "comment" ? 7 : 5)
+        .join("/");
   }
 }
 

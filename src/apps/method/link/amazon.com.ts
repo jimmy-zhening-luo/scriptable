@@ -4,20 +4,15 @@ const amzn_LinkPathProcessor = importModule<typeof LinkPathProcessor>("./process
 
 class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
   protected process(path: string) {
-    const processed = path.includes("/dp/")
-      ? `/dp/${
-        (
-          path
-            .split("/dp/")
-            .pop() as string
-        )
-          .split("/")
-          .shift() as string
-      }`
-      : path;
+    const productPath = path.split("/dp/");
 
-    return processed;
+    return productPath.length < 2
+      ? path
+      : `/dp/${(productPath[1].split("/") as Arrayful)[0]}`;
   }
 }
 
 module.exports = AmazonPathProcessor;
+
+
+

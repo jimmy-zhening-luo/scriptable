@@ -1,7 +1,8 @@
 abstract class LinkPathProcessor<Host extends string> {
   public readonly processed: string;
 
-  constructor(protected readonly host: literalful<Host>, path: string) {
+  constructor(host: literalful<Host>, path: string) {
+    log(host);
     this.processed = this.process(path);
   }
 
