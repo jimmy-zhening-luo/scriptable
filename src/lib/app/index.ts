@@ -159,24 +159,6 @@ abstract class App<
     this.storage(...file).write(data, overwrite);
   }
 
-  protected load(id: string, roll = false) {
-    const key = `${this.app}/${id}`;
-
-    if (roll || !Keychain.contains(key)) {
-      const local = this.key(id),
-      value = local.readful();
-
-      Keychain.set(key, value);
-      local.delete();
-    }
-
-    return Keychain.get(key);
-  }
-
-  protected purge(id: string) {
-    Keychain.remove(`${this.app}/${id}`);
-  }
-
   private storage(file: string | { ext: string; name?: string } = this.app) {
     const { name, ext } = typeof file === "object"
       ? {
@@ -203,10 +185,6 @@ abstract class App<
 
       return newStorage;
     }
-  }
-
-  private key(id: string) {
-    return this.storage({ name: id, ext: "" });
   }
 
   private truthy(value: Input): value is NonNullable<Input> {
