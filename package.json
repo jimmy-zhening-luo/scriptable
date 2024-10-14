@@ -63,7 +63,7 @@
     "fix:true": "run-s \"fix:dist:{1}\" --",
     "fix:false": "echo \"Fix skipped (fix=false)\"",
     "fix:dist:ts": "ts-add-js-extension --dir=dist",
-    "fix:dist:svelte": "echo \"Skipped fix for Svelte (handled by SvelteKit)\"",
+    "fix:dist:svelte": "echo \"Fix skipped for Svelte (handled by SvelteKit)\"",
     "li": "eslint --cache --fix",
     "lint": "npm run build",
     "lint:true": "run-os",
