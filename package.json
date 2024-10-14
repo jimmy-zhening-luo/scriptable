@@ -1,5 +1,5 @@
 {
-  "_schemaVersion": "20.17.10-rc.2",
+  "_schemaVersion": "20.17.10-rc.3",
   "name": "@jimbojet/scriptable",
   "version": "12.1.3-rc.4",
   "description": "Scriptable iOS/iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts or Widgets, useful for complex device/home automation and data transforms. This TypeScript project provides a standard class with hooks for Shortcut and filesystem I/O (e.g. settings/cache), transpiling to valid Scriptable code.",
@@ -70,7 +70,7 @@
     "lint:all:configs": "npm run ln -- {*,.github/workflows/*}.{json,jsonc,yml,yaml,js,cjs,mjs,ts,cts,mts}",
     "lint:all:code": "npm run ln -- {src,tests,static,typings}/**/*.{html,js,cjs,mjs,ts,cts,mts}",
     "lint:scope:ts": "echo \"Done linting TypeScript\"",
-    "lint:scope:svelte": "npm run ln -- src/**/*.svelte",
+    "lint:scope:svelte": "npm run ln -- {src,tests,static}/**/*.svelte",
     "ln": "eslint --cache --fix",
     "pretest": "npm run build",
     "test": "",
