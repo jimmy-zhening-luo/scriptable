@@ -1,5 +1,5 @@
 {
-  "_schemaVersion": "20.17.8",
+  "_schemaVersion": "20.17.9",
   "name": "@jimbojet/scriptable",
   "version": "12.1.2",
   "description": "Scriptable iOS/iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts or Widgets, useful for complex device/home automation and data transforms. This TypeScript project provides a standard class with hooks for Shortcut and filesystem I/O (e.g. settings/cache), transpiling to valid Scriptable code.",
@@ -34,13 +34,15 @@
   "peerDependenciesMeta": {},
   "devDependencies": {
     "eslint": "~9.12.0",
-    "linted": "~16.12.5",
+    "linted": "~16.13.0",
     "npm-run-all": "^4.1.5",
+    "ts-add-js-extension": "^1.6.4",
     "typescript": "^5.6.3"
   },
   "scripts": {
     "build": "run-s \"build:{1}:*\" lint:built  --  ts",
     "build:ts:compile": "tsc",
+    "build:ts:fix": "ts-add-js-extension --dir=dist",
     "build:svelte:sync": "svelte-kit sync",
     "build:svelte:check": "svelte-check --tsconfig ./tsconfig.json",
     "build:svelte:compile": "vite build",
