@@ -1,3 +1,8 @@
 import linted from "linted";
 
-export default linted();
+export default [
+  {
+    ignores: ["typings"],
+  },
+  ...linted(),
+];
