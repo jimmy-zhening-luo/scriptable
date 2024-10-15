@@ -9,7 +9,7 @@ abstract class App<
   Output,
   Schema,
 > {
-  private readonly cache: Map<string, Storage> = new Map;
+  private readonly cache = new Map<string, Storage>;
   protected abstract type: literalful<T>;
 
   private static get Setting() {
@@ -177,7 +177,7 @@ abstract class App<
             ),
           )
     )
-      .get(id);
+      .get(id) as Storage;
   }
 
   private truthy(value: Input): value is NonNullable<Input> {
