@@ -1,5 +1,5 @@
 import type { url } from "./url";
 
-export default interface utility {
+export interface tools {
   url: url;
 }

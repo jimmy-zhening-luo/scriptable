@@ -1,7 +1,7 @@
 import type { Setting } from "./filetypes/Setting";
 import type { Storage } from "./filetypes/Storage";
+import type { tools } from "./tools";
 import type { error } from "./error";
-import type utility from "./utility";
 
 abstract class App<
   T extends string,
@@ -88,8 +88,8 @@ abstract class App<
     return string as stringful;
   }
 
-  protected static utility<U extends keyof utility>(utility: U) {
-    return importModule<utility[U]>(`./utility/${utility}`);
+  protected static tool<U extends keyof tools>(tool: U) {
+    return importModule<tools[U]>(`./tools/${tool}`);
   }
 
   protected static stringfuls<T extends readonly string[]>(array: T, cause = "") {
@@ -160,15 +160,9 @@ abstract class App<
   }
 
   private storage(file: string | { ext: string; name?: string } = this.app) {
-    const { name, ext } = typeof file === "object"
-      ? {
-          name: "name" in file ? file.name : this.app,
-          ext: file.ext,
-        }
-      : {
-          name: file,
-          ext: "txt",
-        },
+    const { name = this.app, ext = txt } = typeof file === "object"
+      ? file
+      : { name: file },
     cacheId = `${name}:${ext}`,
     cache = this.cache[cacheId];
 
