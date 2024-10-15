@@ -170,12 +170,8 @@ abstract class App<
         ? this.cache
         : this.cache.set(
           id,
-            new App.Storage(
-              this.app,
-              name,
-              ext,
-            ),
-          )
+          new App.Storage(this.app, name, ext),
+        )
     )
       .get(id) as Storage;
   }
