@@ -9,7 +9,7 @@ abstract class App<
   Output,
   Schema,
 > {
-  private readonly cache: Record<string, Storage> = {};
+  private readonly cache: Map<string, Storage> = new Map;
   protected abstract type: literalful<T>;
 
   private static get Setting() {
@@ -160,25 +160,24 @@ abstract class App<
   }
 
   private storage(file: string | { ext: string; name?: string } = this.app) {
-    const { name = this.app, ext = txt } = typeof file === "object"
+    const { name = this.app, ext = "txt" } = typeof file === "object"
       ? file
       : { name: file },
-    cacheId = `${name}:${ext}`,
-    cache = this.cache[cacheId];
+    id = `${name}:${ext}`;
 
-    if (typeof cache !== "undefined")
-      return cache;
-    else {
-      const newStorage = new App.Storage(
-        this.app,
-        name,
-        ext,
-      );
-
-      this.cache[cacheId] = newStorage;
-
-      return newStorage;
-    }
+    return (
+      this.cache.has(id)
+        ? this.cache
+        : this.cache.set(
+          id,
+            new App.Storage(
+              this.app,
+              name,
+              ext,
+            ),
+          )
+    )
+      .get(id);
   }
 
   private truthy(value: Input): value is NonNullable<Input> {
