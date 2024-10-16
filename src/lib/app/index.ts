@@ -61,12 +61,12 @@ abstract class App<
 
   protected get inputString() {
     const { input } = this,
-    truthy = this.truthy(input) ? input : "";
+    string = this.truthy(input) ? input : "";
 
-    if (typeof truthy !== "string" && typeof truthy !== "number")
+    if (typeof string !== "string" && typeof string !== "number")
       throw new TypeError("Non-string input", { cause: input });
 
-    const inputString = String(truthy);
+    const inputString = String(string);
 
     Object.defineProperty(this, "inputString", { value: inputString, enumerable: true });
 
@@ -74,7 +74,7 @@ abstract class App<
   }
 
   protected get inputStringful() {
-    const inputStringful = App.stringful(this.inputString, "App: inputStringful");
+    const inputStringful = App.stringful(this.inputString, "input");
 
     Object.defineProperty(this, "inputStringful", { value: inputStringful, enumerable: true });
 
@@ -176,12 +176,11 @@ abstract class App<
       .get(id) as Storage;
   }
 
-  private truthy(value: Input): value is NonNullable<Input> {
-    const falsy = (value: unknown): value is Null<undefined> => {
-      const v = value ?? false,
-      bv = Boolean(v);
+  private truthy(value: undefined | null | Input): value is NonNullable<Input> {
+    const falsy = (value: unknown): value is (null | undefined) => {
+      const truth = Boolean(value);
 
-      return !bv || (typeof v === "string" ? Number(v) === 0 : Array.isArray(v) ? v.join("").length < 1 : false);
+      return !truth;
     };
 
     return !falsy(value);

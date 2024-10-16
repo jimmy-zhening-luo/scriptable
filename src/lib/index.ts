@@ -10,7 +10,7 @@ abstract class Shortcut<
   protected type = "Shortcut" as const;
 
   protected getInput() {
-    const input = args.shortcutParameter as undefined | Nullable<Input>;
+    const input = args.shortcutParameter as undefined | Input;
 
     return typeof input === "undefined" ? null : input;
   }
