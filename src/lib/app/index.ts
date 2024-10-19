@@ -1,5 +1,5 @@
-import type { Setting } from "./filetypes/Setting";
-import type { Storage } from "./filetypes/Storage";
+import type { Setting } from "./filetypes/_setting";
+import type { Storage } from "./filetypes/_storage";
 import type { tools } from "./tools";
 import type { error } from "./error";
 
@@ -13,11 +13,11 @@ abstract class App<
   protected abstract type: literalful<T>;
 
   private static get Setting() {
-    return importModule<typeof Setting>("./filetypes/Setting");
+    return importModule<typeof Setting>("./filetypes/_setting");
   }
 
   private static get Storage() {
-    return importModule<typeof Storage>("./filetypes/Storage");
+    return importModule<typeof Storage>("./filetypes/_storage");
   }
 
   private static get error() {
