@@ -1,7 +1,8 @@
 {
   "display": "@jimbojet/tsc",
+  "_version": "5.6.4",
+  "_help": "https://www.typescriptlang.org/tsconfig/#quick-nav-Top%20Level",
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_version": "5.6.1",
   "include": [
     "*.config.ts",
     "src/**/*.ts",
@@ -10,8 +11,6 @@
   ],
   "exclude": [],
   "compilerOptions": {
-    /* http://aka.ms/tsconfig#quick-nav-Top%20Level */
-
     // #region TYPE CHECKING
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
@@ -131,7 +130,7 @@
     // "noLib": true,
     // "reactNamespace": "",
     "target": "ES6" /* @OVERRIDE */,
-    "useDefineForClassFields": true,
+    // "useDefineForClassFields": true /* @default: target > es2022 : true; else : false*/,
     // #endregion
 
 
