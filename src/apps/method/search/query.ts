@@ -13,7 +13,6 @@ class Query {
     ONE: stringful,
     TWO: stringful,
     THREE: stringful,
-    REST: stringful,
   ) {
     try {
       const [K, ...terms] = Query.undot(
@@ -40,7 +39,7 @@ class Query {
       else if (key in alias && (alias[key] as stringful) in engines)
         this.key = alias[key] as stringful;
       else {
-        this.key = REST;
+        this.key = THREE;
         this.terms.unshift(key);
       }
 

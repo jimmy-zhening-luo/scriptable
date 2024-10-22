@@ -32,11 +32,6 @@ declare interface SearchSetting {
       | "translate"
       | "math"
     >;
-    fallback: Field<
-      | "one"
-      | "two"
-      | "three"
-      | "rest"
-    >;
+    fallback: Quad;
   };
 }
