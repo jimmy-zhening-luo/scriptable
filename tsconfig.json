@@ -121,6 +121,7 @@
       "ES2017.Object",
       "ES2019.Array",
       "ES2021.String",
+      "ES2021.Promise",
       "ES2022.Error",
     ],
     // "moduleDetection": "auto",
