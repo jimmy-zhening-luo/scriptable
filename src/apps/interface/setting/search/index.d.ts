@@ -28,7 +28,6 @@ declare interface SearchSetting {
     tag: string;
     selector: string;
     key: Field<
-      | "chat"
       | "translate"
       | "math"
     >;
