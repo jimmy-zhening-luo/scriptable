@@ -12,7 +12,7 @@ class Query {
     MATH: stringful,
     ONE: stringful,
     TWO: stringful,
-    THREE: stringful,
+    REST: stringful,
   ) {
     try {
       const [K, ...terms] = Query.undot(
@@ -22,7 +22,7 @@ class Query {
               input,
               ONE,
               TWO,
-              THREE,
+              REST,
             ),
             MATH,
           ),
@@ -39,7 +39,7 @@ class Query {
       else if (key in alias && (alias[key] as stringful) in engines)
         this.key = alias[key] as stringful;
       else {
-        this.key = THREE;
+        this.key = REST;
         this.terms.unshift(key);
       }
 
@@ -58,17 +58,17 @@ class Query {
     input: string,
     ONE: stringful,
     TWO: stringful,
-    THREE: stringful,
+    REST: stringful,
   ) {
-    const imply = input.startsWith(" ")
+    const implied = input.startsWith(" ")
       ? input.charAt(1) === " "
         ? input.charAt(2) === " "
-          ? [THREE]
+          ? [REST]
           : [TWO]
         : [ONE]
       : [],
     tokens = [
-      ...imply,
+      ...implied,
       ...input
         .trim()
         .split(" ")
