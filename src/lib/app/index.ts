@@ -56,7 +56,7 @@ abstract class App<
     const { input } = this;
 
     if (!this.truthy(input))
-      throw new TypeError("Null input", { cause: input });
+      throw new TypeError("Null input");
 
     Object.defineProperty(this, "inputful", { value: input, enumerable: true });
 
@@ -87,7 +87,7 @@ abstract class App<
 
   protected static stringful(string = "", cause = "") {
     if (string.length < 1)
-      throw new TypeError("Unstringful", { cause });
+      throw new TypeError("Unstringful");
 
     return string as stringful;
   }
