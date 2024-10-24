@@ -87,7 +87,7 @@ abstract class App<
 
   protected static stringful(string = "", cause = "") {
     if (string.length < 1)
-      throw new TypeError("Unstringful");
+      throw new TypeError("Unstringful", { cause });
 
     return string as stringful;
   }
