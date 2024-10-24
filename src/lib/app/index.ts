@@ -12,6 +12,8 @@ abstract class App<
   private readonly cache = new Map<string, Storage>;
   protected abstract type: literalful<T>;
 
+  constructor(protected synthetic?: Input) {}
+
   private static get Setting() {
     return importModule<typeof Setting>("./filetypes/setting");
   }
@@ -41,7 +43,9 @@ abstract class App<
   }
 
   protected get input() {
-    const input = this.getInput();
+    const input = typeof this.synthetic !== "undefined"
+      ? this.synthetic
+      : this.getInput();
 
     Object.defineProperty(this, "input", { value: input, enumerable: true });
 
