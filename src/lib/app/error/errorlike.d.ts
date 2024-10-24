@@ -1,5 +1,5 @@
 declare type ErrorLike =
   | Error
-  | { cause?: ErrorLike }
   | Unflat<primitive>
+  | { cause?: Null<ErrorLike> }
 ;

@@ -6,10 +6,20 @@ function error(error: Error) {
     : String(e),
   errors = [error] as Arrayful<ErrorLike>;
 
-  while (typeof errors[0] === "object" && "cause" in errors[0])
-    errors.unshift(errors[0].cause as ErrorLike);
+  while (typeof errors[0] === "object" && "cause" in errors[0]) {
+    const cause = errors[0].cause as null | ErrorLike;
+    errors.unshift(
+      cause === null
+        ? "null"
+        : cause,
+    );
+  }
 
-  const messages = errors.map(e => typeof e === "object" && "message" in e ? e.message : stringify(e)) as Arrayful,
+  const messages = errors.map(
+    e => typeof e === "object" && "message" in e
+      ? e.message
+      : stringify(e),
+  ) satisfies string[] as Arrayful,
   [title, ...rest] = messages,
   body = rest.join("\n"),
   n = new Notification;
