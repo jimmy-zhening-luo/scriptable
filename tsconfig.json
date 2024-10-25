@@ -1,6 +1,6 @@
 {
   "display": "@jimbojet/tsc",
-  "_version": "5.6.4",
+  "_version": "5.6.5",
   "_help": "https://www.typescriptlang.org/tsconfig/#quick-nav-Top%20Level",
   "$schema": "https://json.schemastore.org/tsconfig",
   "include": [
@@ -31,7 +31,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "useUnknownInCatchVariables": true,
-    // #endregion
+    // #endregion TYPE CHECKING
 
 
     // #region MODULES
@@ -54,7 +54,7 @@
     "types": [
       /* {CONFIGURE} */
     ],
-    // #endregion
+    // #endregion MODULES
 
 
     // #region EMIT
@@ -79,20 +79,20 @@
     "sourceMap": false /* @OVERRIDE */,
     // "sourceRoot": "",
     // "stripInternal": true,
-    // #endregion
+    // #endregion EMIT
 
 
     // #region JAVASCRIPT SUPPORT
     // "allowJs": true,
     // "checkJs": true,
     // "maxNodeModuleJsDepth": 1,
-    // #endregion
+    // #endregion JAVASCRIPT SUPPORT
 
 
     // #region EDITOR SUPPORT
     // "disableSizeLimit": false,
     // "plugins": [],
-    // #endregion
+    // #endregion EDITOR SUPPORT
 
 
     // #region INTEROP CONSTRAINTS
@@ -103,7 +103,7 @@
     // "isolatedModules": true,
     // "preserveSymlinks": true,
     "verbatimModuleSyntax": false /* @OVERRIDE */,
-    // #endregion
+    // #endregion INTEROP CONSTRAINTS
 
 
     // #region LANGUAGE AND ENVIRONMENT
@@ -129,7 +129,7 @@
     // "reactNamespace": "",
     "target": "ES6" /* @OVERRIDE */,
     // "useDefineForClassFields": true /* @default: target > es2022 : true; else : false*/,
-    // #endregion
+    // #endregion LANGUAGE AND ENVIRONMENT
 
 
     // #region COMPILER DIAGNOSTICS
@@ -141,7 +141,7 @@
     // "listFiles": true,
     // "noCheck": true,
     // "traceResolution": true,
-    // #endregion
+    // #endregion COMPILER DIAGNOSTICS
 
 
     // #region PROJECTS
@@ -151,18 +151,18 @@
     // "disableSourceOfProjectReferenceRedirect": true,
     "incremental": true,
     "tsBuildInfoFile": "dist/.tsbuildinfo",
-    // #endregion
+    // #endregion PROJECTS
 
 
     // #region OUTPUT FORMATTING
     // "noErrorTruncation": true,
     // "preserveWatchOutput": true,
     // "pretty": true,
-    // #endregion
+    // #endregion OUTPUT FORMATTING
 
 
     // #region COMPLETENESS
     "skipLibCheck": false,
-    // #endregion
+    // #endregion COMPLETENESS
   },
 }
