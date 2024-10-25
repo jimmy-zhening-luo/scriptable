@@ -56,7 +56,7 @@ abstract class Filetype<
     throw new ReferenceError("Write forbidden", { cause: content });
   }
 
-  protected delete(): Mutable extends true ? ReturnType<File<Mutable>["write"]> : never {
+  protected delete(): Mutable extends true ? ReturnType<File<Mutable>["delete"]> : never {
     throw new ReferenceError("Delete forbidden");
   }
 }
