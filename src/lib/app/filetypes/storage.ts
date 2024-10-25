@@ -17,7 +17,7 @@ class Storage extends dFiletype<"Storage", true> {
     );
   }
 
-  public override write<T extends unknown>(
+  public override write<T>(
     content: T,
     overwrite:
       | "line"
