@@ -17,8 +17,8 @@ class Storage extends dFiletype<"Storage", true> {
     );
   }
 
-  public override write(
-    content: unknown,
+  public override write<T extends unknown>(
+    content: T,
     overwrite:
       | "line"
       | "append"
@@ -42,7 +42,7 @@ class Storage extends dFiletype<"Storage", true> {
             overwrite,
           };
 
-    this.file.write(write.string, write.overwrite);
+    return this.file.write(write.string, write.overwrite) as unknown as T;
   }
 
   public override delete(): void {

@@ -66,23 +66,31 @@ class File<Mutable extends boolean> {
         throw new TypeError("Readonly file");
       else if (this.isDirectory)
         throw new ReferenceError("Write path is folder");
-      else if (this.isFile)
+      else if (this.isFile) {
         if (overwrite === false)
           throw new ReferenceError("Existing file, overwrite false");
-        else
-          File.manager.writeString(
-            this.path,
-            overwrite === "append"
-              ? `${this.read()}${string}`
-              : overwrite === "line"
-                ? `${string}\n${this.read()}`
-                : string,
-          );
+      }
+      else if (!File.manager.isDirectory(this.parent))
+          File.manager.createDirectory(this.parent, true);
 
-      if (!File.manager.isDirectory(this.parent))
-        File.manager.createDirectory(this.parent, true);
+      const before = this.read(),
+      after = overwrite === "append"
+        ? `${before}${string}`
+        : overwrite === "line"
+          ? [
+              string,
+              ...before.length > 0
+                ? [before]
+                : []
+            ].join("\n")
+          : string;
 
-      File.manager.writeString(this.path, string);
+      File.manager.writeString(
+        this.path,
+        after,
+      );
+
+      return after;
     }
     catch (e) {
       throw new Error(`File: write (${this.name})`, { cause: e });
