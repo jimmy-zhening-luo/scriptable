@@ -92,10 +92,6 @@ abstract class App<
     return string as stringful;
   }
 
-  protected static tool<U extends keyof tools>(tool: U) {
-    return importModule<tools[U]>(`./tools/${tool}`);
-  }
-
   protected static stringfuls<T extends readonly string[]>(array: T, cause = "") {
     if (array.length < 1 || !array.every((i): i is stringful => i.length > 0))
       throw new TypeError("Unstringful array", { cause });
@@ -105,6 +101,10 @@ abstract class App<
         ? { [K in keyof T]: stringful; }
         : Arrayful<stringful>
     );
+  }
+
+  protected static tool<U extends keyof tools>(tool: U) {
+    return importModule<tools[U]>(`./tools/${tool}`);
   }
 
   protected static time(date?: Date) {

@@ -11,17 +11,11 @@ class _Hello extends importModule<typeof Shortcut<
   Field<never, "space">
 >>("./lib") {
   protected runtime() {
-    const FILE = "worldtime",
-    warning = [
-      this.readful(),
-      _Hello.stringful(this.setting.space, "setting.space"),
-      this.read(FILE),
-    ].join("");
+    const greeting = `${this.read("hi")}${_Hello.stringful(this.setting.space, "setting")}${this.read()}`;
 
-    this.write(`World!\n(Previous: ${_Hello.time()})`, true, FILE);
-    logWarning(warning);
+    this.write(`World from ${_Hello.time()}`);
 
-    return warning;
+    return greeting;
   }
 }
 
