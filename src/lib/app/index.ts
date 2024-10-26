@@ -107,12 +107,12 @@ abstract class App<
     return importModule<tools[U]>(`./tools/${tool}`);
   }
 
-  protected static time(date?: Date) {
-    return App.datetime("yyyyMMddhhmmssZ", date);
-  }
-
   protected static date(date?: Date) {
     return App.datetime("EEEE, MMMM d, y", date);
+  }
+
+  protected static time(date?: Date) {
+    return App.datetime("yyyyMMddhhmmssZ", date);
   }
 
   private static datetime(format: string, date = new Date, locale = "en") {
