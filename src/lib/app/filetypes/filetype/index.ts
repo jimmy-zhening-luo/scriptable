@@ -20,7 +20,7 @@ abstract class Filetype<
         },
       });
 
-    this.file = new this.File(
+    this.file = new (importModule<typeof File<Mutable>>("./file"))(
       mutable,
       filetype,
       ...[
@@ -32,10 +32,6 @@ abstract class Filetype<
 
   public get name() {
     return this.file.name;
-  }
-
-  private get File() {
-    return importModule<typeof File<Mutable>>("./file");
   }
 
   public read() {
