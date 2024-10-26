@@ -1,7 +1,7 @@
 {
   "display": "@jimbojet/tsc",
-  "_version": "5.6.7",
-  "_help": "https://www.typescriptlang.org/tsconfig/#quick-nav-Top%20Level",
+  "_version": "5.6.8",
+  "$help": "https://www.typescriptlang.org/tsconfig/#quick-nav-Top%20Level",
   "$schema": "https://json.schemastore.org/tsconfig",
   "include": [
     "*.config.ts",
@@ -40,8 +40,8 @@
     // "allowUmdGlobalAccess": true,
     // "baseUrl": "./",
     // "customConditions": [],
-    "module": "none" /* @OVERRIDE */,
-    "moduleResolution": "node10" /* @OVERRIDE */,
+    "module": "es2022",
+    "moduleResolution": "bundler",
     // "moduleSuffixes": [],
     // "noResolve": true,
     // "paths": { "*": ["node_modules/*"] },
@@ -61,7 +61,7 @@
 
     // #region EMIT
     "declaration": true,
-    "declarationDir": "dist/d" /* @OVERRIDE */,
+    "declarationDir": "dist",
     "declarationMap": true,
     // "downlevelIteration": true,
     // "emitBOM": true,
@@ -74,11 +74,11 @@
     // "noEmit": true,
     // "noEmitHelpers": true,
     "noEmitOnError": true,
-    "outDir": "dist/js" /* @OVERRIDE */,
+    "outDir": "dist",
     // "outFile": "./",
     // "preserveConstEnums": true,
-    "removeComments": false /* @OVERRIDE */,
-    "sourceMap": false /* @OVERRIDE */,
+    "removeComments": true,
+    "sourceMap": true,
     // "sourceRoot": "",
     // "stripInternal": true,
     // #endregion EMIT
@@ -104,7 +104,7 @@
     // "isolatedDeclarations": false,
     // "isolatedModules": true,
     // "preserveSymlinks": true,
-    "verbatimModuleSyntax": false /* @OVERRIDE */,
+    "verbatimModuleSyntax": true,
     // #endregion INTEROP CONSTRAINTS
 
 
@@ -116,20 +116,13 @@
     // "jsxFragmentFactory": "",
     // "jsxImportSource": "",
     "lib": [
-      // "es2023" /* @OVERRIDE */,
+      "es2023",
       /* {CONFIGURE} */
-      "ES2015",
-      "ES2016.Array.Include",
-      "ES2017.Object",
-      "ES2019.Array",
-      "ES2021.String",
-      "ES2021.Promise",
-      "ES2022.Error",
     ],
     // "moduleDetection": "auto",
     // "noLib": true,
     // "reactNamespace": "",
-    "target": "ES6" /* @OVERRIDE */,
+    "target": "es2022",
     // "useDefineForClassFields": true /* @default: target > es2022 : true; else : false*/,
     // #endregion LANGUAGE AND ENVIRONMENT
 
