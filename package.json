@@ -39,7 +39,7 @@
   "peerDependenciesMeta": {},
   "devDependencies": {
     "eslint": "~9.13.0",
-    "linted": "~19.0.0",
+    "linted": "~19.0.2",
     "npm-run-all": "^4.1.5",
     "run-script-os": "^1.1.6",
     "ts-add-js-extension": "^1.6.4",
