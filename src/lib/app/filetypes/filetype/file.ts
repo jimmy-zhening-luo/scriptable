@@ -71,7 +71,7 @@ class File<Mutable extends boolean> {
           throw new ReferenceError("Existing file, overwrite false");
       }
       else if (!File.manager.isDirectory(this.parent))
-          File.manager.createDirectory(this.parent, true);
+        File.manager.createDirectory(this.parent, true);
 
       const before = this.read(),
       after = overwrite === "append"
@@ -81,7 +81,7 @@ class File<Mutable extends boolean> {
               string,
               ...before.length > 0
                 ? [before]
-                : []
+                : [],
             ].join("\n")
           : string;
 
