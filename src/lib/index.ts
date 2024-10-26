@@ -18,6 +18,7 @@ abstract class Shortcut<
   protected output(runtime: ReturnType<Shortcut<Input, Output>["run"]>) {
     log(runtime);
     Script.setShortcutOutput(runtime);
+    Script.complete();
 
     return runtime;
   }
