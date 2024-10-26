@@ -112,7 +112,7 @@ abstract class App<
   }
 
   protected static time(date?: Date) {
-    return App.datetime("yyyyMMddhhmmssZ", date);
+    return App.datetime("yyMMddHHmmssZ", date);
   }
 
   private static datetime(format: string, date = new Date, locale = "en") {
