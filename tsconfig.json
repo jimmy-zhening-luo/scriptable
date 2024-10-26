@@ -1,6 +1,6 @@
 {
   "display": "@jimbojet/tsc",
-  "_version": "5.6.5",
+  "_version": "5.6.7",
   "_help": "https://www.typescriptlang.org/tsconfig/#quick-nav-Top%20Level",
   "$schema": "https://json.schemastore.org/tsconfig",
   "include": [
@@ -52,6 +52,8 @@
     // "rootDirs": [],
     // "typeRoots": [],
     "types": [
+      "mocha",
+      "chai",
       /* {CONFIGURE} */
     ],
     // #endregion MODULES
