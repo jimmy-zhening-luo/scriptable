@@ -10,16 +10,14 @@ class File<Mutable extends boolean> {
     ...subpaths: string[]
   ) {
     if (!File.manager.bookmarkExists(bookmark))
-      throw new ReferenceError("Bookmark does not exist", { cause: { bookmark } });
+      throw new ReferenceError("Bookmark does not exist", { cause: bookmark });
 
-    const root = File.manager.bookmarkedPath(bookmark),
-    subpath = subpaths.flatMap(
-      subpath => subpath
-        .split("/")
-        .map(node => node.trim())
-        .filter((node): node is vstring<"f"> => node.length > 0 && node.length < 256 && ![":", "&"].some(c => node.includes(c))),
-    ) satisfies readonly vstring<"f">[],
-    separator = "/";
+    const separator = "/",
+    root = File.manager.bookmarkedPath(bookmark),
+    subpath = subpaths.flatMap(subpath => subpath.split(separator).filter(node => node.length > 0));
+
+    if (subpath.length < 1)
+      throw new ReferenceError("File points to root (empty subpath)");
 
     this.name = [bookmark, ...subpath].join(separator);
     this.path = [root, ...subpath].join(separator);
