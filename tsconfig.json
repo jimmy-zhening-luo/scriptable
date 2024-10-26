@@ -61,7 +61,7 @@
 
     // #region EMIT
     "declaration": true,
-    "declarationDir": "dist",
+    "declarationDir": "dist/d" /* @OVERRIDE */,
     "declarationMap": true,
     // "downlevelIteration": true,
     // "emitBOM": true,
@@ -74,11 +74,11 @@
     // "noEmit": true,
     // "noEmitHelpers": true,
     "noEmitOnError": true,
-    "outDir": "dist",
+    "outDir": "dist/js" /* @OVERRIDE */,
     // "outFile": "./",
     // "preserveConstEnums": true,
-    "removeComments": true,
-    "sourceMap": true,
+    "removeComments": false /* @OVERRIDE */,
+    "sourceMap": false /* @OVERRIDE */,
     // "sourceRoot": "",
     // "stripInternal": true,
     // #endregion EMIT
