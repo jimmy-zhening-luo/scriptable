@@ -119,7 +119,7 @@ class Query {
           ? [TRANSLATE, ...tokens] as const
           : select(
               SELECTOR,
-              TAG,
+              DOT,
               token0,
               rest,
             );
