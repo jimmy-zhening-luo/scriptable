@@ -47,8 +47,8 @@ class Search extends importModule<typeof Shortcut<
     } = setting,
     query = new Search.Query(
       input,
-      alias,
       engines,
+      alias,
       ...Search.stringfuls([
         selector,
         operators,
