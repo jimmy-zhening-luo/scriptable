@@ -91,7 +91,14 @@
     "prestart": "npm test",
     "prepublishOnly": "npm test",
     "predeploy": "npm test",
-    "deploy": "((mkdir packed)   ||   (((rm -rf packed) || (rmdir /s /q packed))  &&  (mkdir packed)))    &&    ((cp -r dist/js/* packed)   ||   (xcopy /e /k /h /i \"./dist/js\" \"packed\"))"
+    "deploy": "run-s deploy:*",
+    "deploy:clean": "run-os",
+    "deploy:clean:default": "rm -rf packed",
+    "deploy:clean:windows": "cmd /c if exist packed rmdir /s /q packed",
+    "deploy:mkdir": "mkdir packed",
+    "deploy:pack": "run-os",
+    "deploy:pack:default": "cp -r dist/js/* packed",
+    "deploy:pack:windows": "cmd /c xcopy /e /k /h /i \"./dist/js\" \"packed\""
   },
   "mocha": {
     "spec": [
