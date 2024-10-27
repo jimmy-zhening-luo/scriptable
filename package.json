@@ -96,9 +96,16 @@
     "deploy:clean:default": "rm -rf packed",
     "deploy:clean:windows": "cmd /c if exist packed rmdir /s /q packed",
     "deploy:mkdir": "mkdir packed",
-    "deploy:pack": "run-os",
-    "deploy:pack:default": "cp -r dist/js/* packed",
-    "deploy:pack:windows": "cmd /c xcopy /e /k /h /i \"./dist/js\" \"packed\""
+    "deploy:copy": "run-os",
+    "deploy:copy:default": "cp -r dist/* packed",
+    "deploy:copy:windows": "cmd /c xcopy /e /k /h /i \"./dist\" \"packed\"",
+    "deploy:filter": "run-os",
+    "deploy:filter:default": "",
+    "deploy:filter:windows": "run-s deploy:filter:windows:*",
+    "deploy:filter:windows:tsbuildinfo": "cmd /c del /s /q packed\\*.tsbuildinfo",
+    "deploy:filter:windows:dts": "cmd /c del /s /q packed\\*.d.ts",
+    "deploy:filter:windows:dtsmap": "cmd /c del /s /q packed\\*.d.ts.map",
+    "deploy:filter:windows:spec": "cmd /c del /s /q packed\\*.spec.js"
   },
   "mocha": {
     "spec": [
