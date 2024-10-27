@@ -100,7 +100,7 @@
     "deploy:copy:default": "cp -r dist/* packed",
     "deploy:copy:windows": "cmd /c xcopy /e /k /h /i \"./dist\" \"packed\"",
     "deploy:filter": "run-os",
-    "deploy:filter:default": "",
+    "deploy:filter:default": "find src -type f \\( -name '*.tsbuildinfo' -name '*.d.ts' -or -name '*.d.ts.map' -or -name '*.spec.js'  \\) -delete",
     "deploy:filter:windows": "run-s deploy:filter:windows:*",
     "deploy:filter:windows:tsbuildinfo": "cmd /c del /s /q packed\\*.tsbuildinfo",
     "deploy:filter:windows:dts": "cmd /c del /s /q packed\\*.d.ts",
