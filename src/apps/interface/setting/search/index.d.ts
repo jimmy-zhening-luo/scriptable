@@ -1,4 +1,16 @@
 declare interface SearchSetting {
+  tag: string;
+  reserved: Field<
+    | "selector"
+    | "operators"
+  >;
+  defaults: Field<
+    | "math"
+    | "translate"
+  > & {
+    fallback: Triad;
+  };
+  alias: FieldTable;
   engines: Table<
     | Unflat<string, false>
     | SearchEngineSetting<"find">
@@ -13,24 +25,13 @@ declare interface SearchSetting {
       | "inprivate"
       ,
       never,
-      {
+      Field<never, "separator"> & {
         browser?:
           | "api"
           | "force"
         ;
-        separator?: "%20";
       },
       true
     >
   >;
-  alias: FieldTable;
-  reserved: {
-    tag: string;
-    selector: string;
-    key: Field<
-      | "translate"
-      | "math"
-    >;
-    fallback: Quad;
-  };
 }

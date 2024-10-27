@@ -8,27 +8,25 @@ class Query {
     engines: SearchSetting["engines"],
     alias: FieldTable,
     SELECTOR: stringful,
-    TRANSLATE: stringful,
+    OP: stringful,
     MATH: stringful,
+    TRANSLATE: stringful,
     ONE: stringful,
     TWO: stringful,
     REST: stringful,
   ) {
     try {
-      const [K, ...terms] = Query.undot(
-        Query.translate(
-          Query.mathefy(
-            Query.tokenize(
-              input,
-              ONE,
-              TWO,
-              REST,
-            ),
-            MATH,
-          ),
-          SELECTOR,
-          TRANSLATE,
+      const [K, ...terms] = Query.parse(
+        Query.tokenize(
+          input,
+          ONE,
+          TWO,
+          REST,
         ),
+        SELECTOR,
+        OP,
+        MATH,
+        TRANSLATE,
       ),
       key = (K satisfies stringful).toLowerCase() as stringful;
 
@@ -60,70 +58,75 @@ class Query {
     TWO: stringful,
     REST: stringful,
   ) {
-    const implied = input.startsWith(" ")
-      ? input.charAt(1) === " "
-        ? input.charAt(2) === " "
-          ? [REST]
-          : [TWO]
-        : [ONE]
-      : [],
-    tokens = [
-      ...implied,
-      ...input
-        .trim()
-        .split(" ")
-        .filter((token): token is stringful => token.length > 0),
+    const tokens = [
+      ...input.startsWith(" ")
+        ? input.charAt(1) === " "
+          ? input.charAt(2) === " "
+            ? [REST]
+            : [TWO]
+          : [ONE]
+        : [],
+      ...input.split(" ").filter((token): token is stringful => token.length > 0),
     ];
 
-    if (tokens.length > 0)
-      return tokens as Arrayful<stringful>;
-    else
+    if (tokens.length < 1)
       throw new SyntaxError(`Input query has no tokens`);
+
+    return tokens as Arrayful<stringful>;
   }
 
-  private static mathefy(
-    tokens: Arrayful<stringful>,
-    MATH: stringful,
-  ) {
-    const [token0] = tokens;
-
-    if (!Number.isNaN(Number(`${token0[0]}0`)))
-      tokens.unshift(MATH);
-
-    return tokens;
-  }
-
-  private static translate(
+  private static parse(
     tokens: Arrayful<stringful>,
     SELECTOR: stringful,
+    OP: stringful,
+    MATH: stringful,
     TRANSLATE: stringful,
   ) {
-    const [token0] = tokens;
+    function select(
+      SELECTOR: stringful,
+      DOT: stringful,
+      token: stringful,
+      rest: stringful[],
+    ) {
+      const s = token.indexOf(SELECTOR),
+      d = token.indexOf(DOT),
+      x = d < 0 || d > s ? SELECTOR : DOT,
+      [key, ...tx] = tokens.split(x) as readonly [stringful, ...string[]],
+      { selection, tokens = rest } = tx.length > 0
+        ? { selection: tx.join(x) }
+        : {
+            selection: rest[0] ?? "",
+            tokens: rest.slice(1) as stringful[],
+          };
 
-    if (token0.startsWith(SELECTOR))
-      tokens.unshift(TRANSLATE);
-
-    return tokens;
-  }
-
-  private static undot(tokens: Arrayful<stringful>) {
-    const [token0] = tokens,
-    token_ = !token0.startsWith(".") && token0.endsWith(".")
-      ? token0.slice(0, -1) as stringful
-      : null;
-
-    if (token_ !== null) {
-      tokens.shift();
-      tokens.unshift(token_);
+      return [key, `${x}${selection}` as stringful, ...tokens] as const;
     }
 
-    return tokens;
+    const [token0, ...rest] = tokens,
+    DIGIT = "0123456789",
+    DIGITOP = `${DIGIT}${OP}`,
+    DOT = "." as stringful,
+    X = [SELECTOR, DOT] as const;
+
+    if (SELECTOR.includes(DOT) || DIGITOP.includes(SELECTOR[0]))
+      throw new SyntaxError("Selector must neither contain dot nor begin with digit/operator.");
+
+    return DIGITOP.includes(token0[0]) || token0[0] === "." && token0.length > 1 && DIGIT.includes(token0[1] as unknown as stringful)
+      ? [MATH, ...tokens] as const
+      : !X.some(x => token0.includes(x))
+        ? tokens
+        : X.some(x => token0.startsWith(x))
+          ? [TRANSLATE, ...tokens] as const
+          : select(
+              SELECTOR,
+              TAG,
+              token0,
+              rest,
+            );
   }
 
   public toString() {
-    const { key, natural } = this;
-
-    return `${key satisfies stringful} ${natural}` as stringful;
+    return `${this.key satisfies stringful} ${this.natural}` as stringful;
   }
 }
 
