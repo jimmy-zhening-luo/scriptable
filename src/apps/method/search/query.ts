@@ -91,7 +91,7 @@ class Query {
       const s = token.indexOf(SELECTOR),
       d = token.indexOf(DOT),
       x = d < 0 || d > s ? SELECTOR : DOT,
-      [key, ...tx] = token.split(x) as readonly [stringful, ...string[]],
+      [key, ...tx] = token.split(x) as unknown as readonly [stringful, ...string[]],
       { selection, tokens = rest } = tx.length > 0
         ? { selection: tx.join(x) }
         : {
