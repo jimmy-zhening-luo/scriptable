@@ -96,7 +96,7 @@ class Query {
         ? { selection: tx.join(x) }
         : {
             selection: rest[0] ?? "",
-            tokens: rest.slice(1) as stringful[],
+            tokens: rest.slice(1),
           };
 
       return [key, `${x}${selection}` as stringful, ...tokens] as const;
@@ -111,13 +111,13 @@ class Query {
     if (SELECTOR.includes(DOT) || DIGITOP.includes(SELECTOR[0]))
       throw new SyntaxError("Selector must neither contain dot nor begin with digit/operator.");
 
-    return DIGITOP.includes(token0[0]) || token0[0] === "." && token0.length > 1 && DIGIT.includes(token0[1] as unknown as stringful)
+    return DIGITOP.includes(token0[0]) || token0.startsWith(".") && token0.length > 1 && DIGIT.includes(token0[1] as unknown as stringful)
       ? [MATH, ...tokens] as const
       : !X.some(x => token0.includes(x))
-        ? tokens
-        : X.some(x => token0.startsWith(x))
-          ? [TRANSLATE, ...tokens] as const
-          : select(
+          ? tokens
+          : X.some(x => token0.startsWith(x))
+            ? [TRANSLATE, ...tokens] as const
+            : select(
               SELECTOR,
               DOT,
               token0,
