@@ -30,7 +30,7 @@ class Query {
       else if (key in alias && (alias[key] as stringful) in engines)
         this.key = alias[key] as stringful;
       else {
-        this.key = (FALLBACK satisfies Readonly<Arrayful<stringful>>).at(-1);
+        this.key = (FALLBACK satisfies Readonly<Arrayful<stringful>>).at(-1) as stringful;
         this.terms.unshift(key);
       }
 
