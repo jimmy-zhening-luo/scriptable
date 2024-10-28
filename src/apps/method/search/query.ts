@@ -30,7 +30,7 @@ class Query {
       else if (key in alias && (alias[key] as stringful) in engines)
         this.key = alias[key] as stringful;
       else {
-        this.key = REST;
+        this.key = FALLBACK.at(-1);
         this.terms.unshift(key);
       }
 
@@ -49,16 +49,16 @@ class Query {
     input: string,
     [F0, F1, Fn]: Triad<stringful>,
   ) {
-    const tokens = [
-      ...input.startsWith(" ")
-        ? input.charAt(1) === " "
+    const tokens = input.split(" ").filter((token): token is stringful => token.length > 0);
+
+    if (input.startsWith(" "))
+      tokens.unshift(
+        input.charAt(1) === " "
           ? input.charAt(2) === " "
-            ? [Fn]
-            : [F1]
-          : [F0]
-        : [],
-      ...input.split(" ").filter((token): token is stringful => token.length > 0),
-    ];
+            ? Fn
+            : F1
+          : F0
+      );
 
     if (tokens.length < 1)
       throw new SyntaxError(`Input query has no tokens`);
