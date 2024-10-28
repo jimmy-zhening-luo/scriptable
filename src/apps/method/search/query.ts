@@ -57,7 +57,7 @@ class Query {
           ? input.charAt(2) === " "
             ? Fn
             : F1
-          : F0
+          : F0,
       );
 
     if (tokens.length < 1)
