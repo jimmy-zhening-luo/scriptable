@@ -116,7 +116,7 @@ class Query {
 
     const [token0, ...rest] = tokens,
     DOT = "." as stringful,
-    isNum = (char = null, operators = "") => char === null || !Number.isNaN(Number(char)) || operators.includes(char);
+    isNum = (char: stringful = null, operators = "") => char === null || !Number.isNaN(Number(char)) || operators.includes(char);
 
     if ([OP, SELECTOR].some(string => string.includes(DOT)))
       throw new TypeError("Selector and operators must not include reserved char `.`");
