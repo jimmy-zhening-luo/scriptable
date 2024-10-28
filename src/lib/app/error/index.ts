@@ -9,8 +9,8 @@ function error(error: unknown) {
   while (typeof errors[0] === "object" && errors[0] !== null && "cause" in errors[0])
     errors.unshift(errors[0].cause);
 
-  const messages = errors.map(stringify(
-    e => typeof e === "object" && e !== null && "message" in e
+  const messages = errors.map(e => stringify(
+    typeof e === "object" && e !== null && "message" in e
       ? e.message
       : e,
   )) satisfies string[] as Arrayful,
