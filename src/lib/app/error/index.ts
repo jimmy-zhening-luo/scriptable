@@ -2,7 +2,7 @@ function error(error: Error) {
   const stringify = (e: unknown): string => typeof e === "object" && e !== null
     ? Array.isArray(e)
       ? `[${e.map(i => stringify(i)).join(", ")}]`
-      : stringify(Object.entries(e).map(([k, v]) => `${k}: ${stringify(v)}`))
+      : `{ ${Object.entries(e).map(([k, v]) => `${k}: ${stringify(v)}`).join(", ")} }`
     : String(e),
   errors = [error] as Arrayful<ErrorLike>;
 

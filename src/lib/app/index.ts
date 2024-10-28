@@ -129,7 +129,7 @@ abstract class App<
       return this.output(this.runtime());
     }
     catch (e) {
-      throw App.error(new Error(`${this.app}: run`, { cause: e }));
+      throw App.error(e);
     }
   }
 
