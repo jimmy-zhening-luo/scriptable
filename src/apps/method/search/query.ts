@@ -11,18 +11,11 @@ class Query {
     OPERATORS: stringful,
     MATH: stringful,
     TRANSLATE: stringful,
-    ONE: stringful,
-    TWO: stringful,
-    REST: stringful,
+    FALLBACK: Triad<stringful>,
   ) {
     try {
       const [Key, ...terms] = Query.parse(
-        Query.tokenize(
-          input,
-          ONE,
-          TWO,
-          REST,
-        ),
+        Query.tokenize(input, FALLBACK),
         SELECTOR,
         OPERATORS,
         MATH,
@@ -54,17 +47,15 @@ class Query {
 
   private static tokenize(
     input: string,
-    ONE: stringful,
-    TWO: stringful,
-    REST: stringful,
+    [F0, F1, Fn]: Triad<stringful>,
   ) {
     const tokens = [
       ...input.startsWith(" ")
         ? input.charAt(1) === " "
           ? input.charAt(2) === " "
-            ? [REST]
-            : [TWO]
-          : [ONE]
+            ? [Fn]
+            : [F1]
+          : [F0]
         : [],
       ...input.split(" ").filter((token): token is stringful => token.length > 0),
     ];

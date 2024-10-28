@@ -16,10 +16,7 @@ type SearchEngines = {
 };
 
 class Search extends importModule<typeof Shortcut<
-  Field<
-    | "query"
-    | "clipboard"
-  >,
+  Field<"query" | "clipboard">,
   SearchOutput,
   SearchSetting
 >>("./lib") {
@@ -54,8 +51,8 @@ class Search extends importModule<typeof Shortcut<
         operators,
         math,
         translate,
-        ...fallback,
       ] as const),
+      Search.stringfuls(fallback),
     ),
     entry = query.engine,
     engine = Array.isArray(entry) || typeof entry === "string"
