@@ -83,6 +83,7 @@ class Query {
     TRANSLATE: stringful,
   ) {
     function select(
+      TRANSLATE: stringful,
       SELECTOR: stringful,
       DOT: stringful,
       token: stringful,
@@ -90,39 +91,41 @@ class Query {
     ) {
       const s = token.indexOf(SELECTOR),
       d = token.indexOf(DOT),
-      x = d < 0 || d > s ? SELECTOR : DOT,
-      [key, ...tx] = token.split(x) as unknown as readonly [stringful, ...string[]],
-      { selection, tokens = rest } = tx.length > 0
-        ? { selection: tx.join(x) }
-        : {
-            selection: rest[0] ?? "",
-            tokens: rest.slice(1),
-          };
+      { x, i } = d < 0 || d > s
+        ? { x: SELECTOR, i: s }
+        : { x: DOT, i: d };
 
-      return [key, `${x}${selection}` as stringful, ...tokens] as const;
+      if (i > 0) {
+        const [key, ...tx] = token.split(x) as unknown as readonly [stringful, ...string[]],
+        { selection, tokens = rest } = tx.length > 0
+          ? { selection: tx.join(x) }
+          : {
+              selection: rest[0] ?? "",
+              tokens: rest.slice(1),
+            };
+
+        return [key, `${x}${selection}` as stringful, ...tokens] as const;
+      }
+      else
+        return [
+          ...i < 0 ? [] as const : [TRANSLATE] as const,
+          token0,
+          ...rest,
+        ] as const;
     }
 
     const [token0, ...rest] = tokens,
-    DIGIT = "0123456789",
-    DIGITOP = `${DIGIT}${OP}`,
     DOT = "." as stringful,
-    X = [SELECTOR, DOT] as const;
+    isNum = (char = null, operators = "") => char === null || !Number.isNaN(Number(char)) || operators.includes(char);
 
-    if (SELECTOR.includes(DOT) || DIGITOP.includes(SELECTOR[0]))
-      throw new SyntaxError("Selector must neither contain dot nor begin with digit/operator.");
+    if ([OP, SELECTOR].some(string => string.includes(DOT)))
+      throw new TypeError("Selector and operators must not include reserved char `.`");
+    else if (isNum(SELECTOR[0], OP))
+      throw new SyntaxError("Selector must not begin with digit/operator");
 
-    return DIGITOP.includes(token0[0]) || token0.startsWith(".") && token0.length > 1 && DIGIT.includes(token0[1] as unknown as stringful)
+    return isNum(token0[0], OP) || token0.startsWith(".") && isNum(token0[1])
       ? [MATH, ...tokens] as const
-      : !X.some(x => token0.includes(x))
-          ? tokens
-          : X.some(x => token0.startsWith(x))
-            ? [TRANSLATE, ...tokens] as const
-            : select(
-              SELECTOR,
-              DOT,
-              token0,
-              rest,
-            );
+      : select(SELECTOR, DOT, token0, rest);
   }
 
   public toString() {
