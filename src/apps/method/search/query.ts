@@ -115,7 +115,7 @@ class Query {
         ] as const;
     };
 
-    return isNum(head[0], OP) || head.startsWith(".") && isNum(head[1])
+    return isNum(head[0], OPERATORS) || head.startsWith(".") && isNum(head[1])
       ? [MATH, ...tokens] as const
       : select(SELECTOR, TRANSLATE, head, rest);
   }
