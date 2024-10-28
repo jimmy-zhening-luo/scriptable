@@ -83,7 +83,7 @@ class Query {
     TRANSLATE: stringful,
   ) {
     const [head, ...rest] = tokens,
-    isNum = (char?: string, operators = "") => typeof !Number.isNaN(Number(char)) || operators.includes(char as string),
+    isNum = (char?: string, operators = "") => !Number.isNaN(Number(char)) || operators.includes(char as string),
     select = (
       SELECTOR: stringful,
       TRANSLATE: stringful,
