@@ -96,19 +96,34 @@ class Query {
         ? { x: SELECTOR, i: s }
         : { x: ".", i: d };
 
-      if (i > 0) {
-        const [key, ...hx] = head.split(x) as unknown as readonly [stringful, ...string[]],
-        { selection, slicer = 0 } = hx.length > 0
-          ? { selection: hx.join(x) }
-          : {
-              selection: rest[0] ?? "",
-              slicer: 1,
-            };
+      if (i < 0)
+        return [head, ...rest] as const;
+      else {
+        const [h, ...hx] = head.split(x) as unknown as readonly [stringful, ...string[]],
+        {
+          key = h,
+          selection = hx.join(x),
+          slicer = 0,
+        } = h.length > 0
+          ? hx.length > 0
+            ? {}
+            : {
+                selection: rest[0] ?? "",
+                slicer: 1,
+              }
+          : { key: TRANSLATE };
 
-        return [key, `${x}${selection}` as stringful, ...rest.slice(slicer)] as const;
+        return [key, `${SELECTOR}${selection}` as stringful, ...rest.slice(slicer)] as const;
       }
       else
-        return [
+        return i < 0
+          ? [head, ...rest] as const
+          : [
+              TRANSLATE,
+              `${SELECTOR}${head.slice(x.length)}`,
+            ] as const;
+       
+        [
           ...i < 0 ? [] as const : [TRANSLATE] as const,
           head,
           ...rest,
