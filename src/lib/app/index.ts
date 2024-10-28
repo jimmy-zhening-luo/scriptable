@@ -131,6 +131,9 @@ abstract class App<
     catch (e) {
       throw App.error(e);
     }
+    finally {
+      Script.complete();
+    }
   }
 
   protected subsetting<Subschema>(subpath: string): Subschema extends Subschema ? Subschema : never {

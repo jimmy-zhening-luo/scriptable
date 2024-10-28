@@ -4,17 +4,14 @@ function error(error: unknown) {
       ? `[${e.map(i => stringify(i)).join(", ")}]`
       : `{ ${Object.entries(e).map(([k, v]) => `${k}: ${stringify(v)}`).join(", ")} }`
     : String(e),
-  errors = [error] as Arrayful<unknown>;
+  genuine = (e: unknown): e is Error => typeof error === "object" && error !== null && "message" in error,
+  cast = (e: unknown) => genuine(e) ? e : stringify(e),
+  errors = [cast(error)] as Arrayful<Error | string>;
 
-  while (typeof errors[0] === "object" && errors[0] !== null && "cause" in errors[0])
-    errors.unshift(errors[0].cause);
+  while (typeof errors[0] !== "string" && "cause" in errors[0])
+    errors.unshift(cast(errors[0].cause));
 
-  const messages = errors.map(e => stringify(
-    typeof e === "object" && e !== null && "message" in e
-      ? e.message
-      : e,
-  )) satisfies string[] as Arrayful,
-  [title, ...rest] = messages,
+  const [title, ...rest] = errors.map(e => typeof e === "string" ? e : e.message) as Arrayful,
   body = rest.join("\n"),
   n = new Notification;
 
@@ -22,9 +19,11 @@ function error(error: unknown) {
   n.title = title;
   n.body = body;
   n.sound = "failure";
-  n.schedule().catch((e: unknown) => logError(e));
+  n.schedule()
+    .catch((e: unknown) => logError(e))
+    .finally(() => logWarning("Error notification dispatched"));
 
-  return error;
+  return new Error(title, { cause: body });
 }
 
 module.exports = error;
