@@ -16,7 +16,7 @@ class Query {
     REST: stringful,
   ) {
     try {
-      const [K, ...terms] = Query.parse(
+      const [Key, ...terms] = Query.parse(
         Query.tokenize(
           input,
           ONE,
@@ -28,7 +28,7 @@ class Query {
         MATH,
         TRANSLATE,
       ),
-      key = (K satisfies stringful).toLowerCase() as stringful;
+      key = (Key satisfies stringful).toLowerCase() as stringful;
 
       this.terms = terms;
 
