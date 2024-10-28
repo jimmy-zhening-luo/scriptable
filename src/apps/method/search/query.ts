@@ -8,7 +8,7 @@ class Query {
     engines: SearchSetting["engines"],
     alias: FieldTable,
     SELECTOR: stringful,
-    OP: stringful,
+    OPERATORS: stringful,
     MATH: stringful,
     TRANSLATE: stringful,
     ONE: stringful,
@@ -24,7 +24,7 @@ class Query {
           REST,
         ),
         SELECTOR,
-        OP,
+        OPERATORS,
         MATH,
         TRANSLATE,
       ),
@@ -78,60 +78,46 @@ class Query {
   private static parse(
     tokens: Arrayful<stringful>,
     SELECTOR: stringful,
-    OP: stringful,
+    OPERATORS: stringful,
     MATH: stringful,
     TRANSLATE: stringful,
   ) {
-    function select(
-      TRANSLATE: stringful,
+    const [head, ...rest] = tokens,
+    isNum = (char?: string, operators = "") => typeof !Number.isNaN(Number(char)) || operators.includes(char),
+    select = (
       SELECTOR: stringful,
-      DOT: stringful,
-      token: stringful,
+      TRANSLATE: stringful,
+      head: stringful,
       rest: stringful[],
-    ) {
-      const s = token.indexOf(SELECTOR),
-      d = token.indexOf(DOT),
+    ) => {
+      const s = head.indexOf(SELECTOR),
+      d = head.indexOf("."),
       { x, i } = d < 0 || d > s
         ? { x: SELECTOR, i: s }
-        : { x: DOT, i: d };
+        : { x: ".", i: d };
 
       if (i > 0) {
-        const [key, ...tx] = token.split(x) as unknown as readonly [stringful, ...string[]],
-        { selection, tokens = rest } = tx.length > 0
-          ? { selection: tx.join(x) }
+        const [key, ...hx] = head.split(x) as unknown as readonly [stringful, ...string[]],
+        { selection, slicer = 0 } = hx.length > 0
+          ? { selection: hx.join(x) }
           : {
               selection: rest[0] ?? "",
-              tokens: rest.slice(1),
+              slicer: 1,
             };
 
-        return [key, `${x}${selection}` as stringful, ...tokens] as const;
+        return [key, `${x}${selection}` as stringful, ...rest.slice(slicer)] as const;
       }
       else
         return [
           ...i < 0 ? [] as const : [TRANSLATE] as const,
-          token0,
+          head,
           ...rest,
         ] as const;
-    }
+    };
 
-    const [token0, ...rest] = tokens,
-    DOT = "." as stringful,
-    isNum = (char: stringful = null, operators = "") => char === null || !Number.isNaN(Number(char)) || operators.includes(char);
-
-    if ([OP, SELECTOR].some(string => string.includes(DOT)))
-      throw new TypeError("Selector and operators must not include reserved char `.`");
-    else if (isNum(SELECTOR[0], OP))
-      throw new SyntaxError("Selector must not begin with digit/operator");
-
-    return isNum(token0[0], OP) || token0.startsWith(".") && isNum(token0[1])
+    return isNum(head[0], OP) || head.startsWith(".") && isNum(head[1])
       ? [MATH, ...tokens] as const
-      : select(
-        TRANSLATE,
-        SELECTOR,
-        DOT,
-        token0,
-        rest,
-      );
+      : select(SELECTOR, TRANSLATE, head, rest);
   }
 
   public toString() {
