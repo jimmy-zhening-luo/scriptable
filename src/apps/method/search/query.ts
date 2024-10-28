@@ -115,19 +115,6 @@ class Query {
 
         return [key, `${SELECTOR}${selection}` as stringful, ...rest.slice(slicer)] as const;
       }
-      else
-        return i < 0
-          ? [head, ...rest] as const
-          : [
-              TRANSLATE,
-              `${SELECTOR}${head.slice(x.length)}`,
-            ] as const;
-       
-        [
-          ...i < 0 ? [] as const : [TRANSLATE] as const,
-          head,
-          ...rest,
-        ] as const;
     };
 
     return isNum(head[0], OPERATORS) || head.startsWith(".") && isNum(head[1])
