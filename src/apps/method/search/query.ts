@@ -92,7 +92,7 @@ class Query {
     ) => {
       const s = head.indexOf(SELECTOR),
       d = head.indexOf("."),
-      { x, i } = d < 0 || (s >= 0 && s < d)
+      { x, i } = d < 0 || s >= 0 && s < d
         ? { x: SELECTOR, i: s }
         : { x: ".", i: d };
 
