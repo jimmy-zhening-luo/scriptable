@@ -125,7 +125,13 @@ class Query {
 
     return isNum(token0[0], OP) || token0.startsWith(".") && isNum(token0[1])
       ? [MATH, ...tokens] as const
-      : select(SELECTOR, DOT, token0, rest);
+      : select(
+        TRANSLATE,
+        SELECTOR,
+        DOT,
+        token0,
+        rest,
+      );
   }
 
   public toString() {
