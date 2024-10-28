@@ -105,7 +105,7 @@ class Query {
           selection = hx.join(x),
           slicer = 0,
         } = h.length > 0
-          ? hx.length > 0
+          ? hx.length > 1 || (hx[0] as string).length > 0
             ? {}
             : {
                 selection: rest[0] ?? "",
