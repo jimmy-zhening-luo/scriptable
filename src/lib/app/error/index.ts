@@ -9,11 +9,11 @@ function error(error: unknown) {
   while (typeof errors[0] === "object" && errors[0] !== null && "cause" in errors[0])
     errors.unshift(errors[0].cause);
 
-  const messages = errors.map(
+  const messages = errors.map(stringify(
     e => typeof e === "object" && e !== null && "message" in e
       ? e.message
-      : stringify(e),
-  ) satisfies string[] as Arrayful,
+      : e,
+  )) satisfies string[] as Arrayful,
   [title, ...rest] = messages,
   body = rest.join("\n"),
   n = new Notification;
