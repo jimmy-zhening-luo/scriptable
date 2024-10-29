@@ -6,5 +6,6 @@ declare interface SearchOutput {
   find?: string;
   natural?: string;
   browser?: string;
+  api?: Null<true>;
   inprivate?: Null<true>;
 }

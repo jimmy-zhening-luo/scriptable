@@ -7,6 +7,7 @@ class BrowserEngine extends bSearchEngine<"browser"> {
   private readonly TAG: stringful;
   private readonly separator: string;
   private readonly encodeComponent: boolean;
+  private readonly api: Null<true>;
   private readonly force: boolean;
   private readonly inprivate: Null<true>;
 
@@ -21,7 +22,7 @@ class BrowserEngine extends bSearchEngine<"browser"> {
   ) {
     super(
       "browser",
-      api ? "api" : "browser",
+      api ? "api" : "",
       api,
     );
     this.urls = typeof urls === "string" ? [urls] : urls;
@@ -34,6 +35,7 @@ class BrowserEngine extends bSearchEngine<"browser"> {
     this.TAG = TAG;
     this.separator = separator;
     this.encodeComponent = encodeComponent;
+    this.api = api || null;
     this.force = force;
     this.inprivate = inprivate || null;
   }
@@ -48,17 +50,17 @@ class BrowserEngine extends bSearchEngine<"browser"> {
       .join(this.separator),
     actions = this.urls.map(url => url.replace(TAG, encodedQuery));
 
-    return this.force && this.engine !== "api"
+    return this.force && !this.api
       ? actions.map(action => `data:text/html,<meta name="color-scheme" content="dark light" />
       <meta http-equiv="Refresh" content="0; url=${action}" />`)
       : actions;
   }
 
   protected optional(query: Query) {
-    const { inprivate } = this,
+    const { api, inprivate } = this,
     { natural } = query;
 
-    return { natural, inprivate };
+    return { natural, api, inprivate };
   }
 }
 
