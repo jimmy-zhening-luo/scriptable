@@ -3,7 +3,7 @@ import type { SearchEngine, Query } from "./engine";
 const bSearchEngine = importModule<typeof SearchEngine>("./engine");
 
 class BrowserEngine extends bSearchEngine<"browser"> {
-  private readonly urls: readonly stringful[];
+  private readonly urls: readonly string[];
   private readonly TAG: stringful;
   private readonly separator: string;
   private readonly encodeComponent: boolean;
@@ -48,7 +48,7 @@ class BrowserEngine extends bSearchEngine<"browser"> {
       .join(this.separator),
     actions = this.urls.map(url => url.replace(TAG, encodedQuery));
 
-    return this.force && this.browser !== "api"
+    return this.force && this.engine !== "api"
       ? actions.map(action => `data:text/html,<meta name="color-scheme" content="dark light" />
       <meta http-equiv="Refresh" content="0; url=${action}" />`)
       : actions;
