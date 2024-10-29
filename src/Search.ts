@@ -61,9 +61,10 @@ class Search extends importModule<typeof Shortcut<
         ? new (Search.Engine("browser"))(
           entry.url,
           Search.stringful(tag),
-          entry.browser,
           entry.separator,
           entry.encodeComponent,
+          entry.api,
+          entry.force,
           entry.inprivate,
         )
         : "shortcut" in entry

@@ -7,50 +7,51 @@ class BrowserEngine extends bSearchEngine<"browser"> {
   private readonly TAG: stringful;
   private readonly separator: string;
   private readonly encodeComponent: boolean;
+  private readonly force: boolean;
   private readonly inprivate: Null<true>;
 
   constructor(
     urls: Unflat,
     TAG: stringful,
-    browser = "",
     separator = "+",
     encodeComponent = false,
+    api = false,
+    force = false,
     inprivate = false,
   ) {
     super(
       "browser",
-      browser,
-      browser === "api",
+      api ? "api" : "browser",
+      api,
     );
-    this.urls = [urls].flat().filter((url): url is stringful => url.length > 0);
-
+    this.urls = typeof urls === "string" ? [urls] : urls;
+    
     if (this.urls.length < 1)
-      throw new TypeError(`URL search engine has no URLs`);
+      throw new TypeError("No engine URLs");
+    else if (api && this.urls.length > 1)
+      throw new TypeError("API cannot call multiple URLs");
 
     this.TAG = TAG;
     this.separator = separator;
     this.encodeComponent = encodeComponent;
+    this.force = force;
     this.inprivate = inprivate || null;
   }
 
   protected override stringify(query: Query) {
-    const {
-      urls,
-      TAG,
-      separator,
-      encodeComponent,
-    } = this,
-    encoder = encodeComponent
-      ? function (operand: string) { return encodeURI(operand); }
-      : function (operand: string) { return encodeURIComponent(operand); },
+    const { TAG, encodeComponent } = this,
     encodedQuery = query.terms
       .map(term => term
         .split("+")
-        .map(encoder)
+        .map(c => encodeComponent ? encodeURI(c) : encodeURIComponent(c))
         .join("%2B"))
-      .join(separator);
+      .join(this.separator),
+    actions = this.urls.map(url => url.replace(TAG, encodedQuery));
 
-    return urls.map(url => url.replace(TAG, encodedQuery));
+    return this.force && this.browser !== "api"
+      ? actions.map(action => `data:text/html,<meta name="color-scheme" content="dark light" />
+      <meta http-equiv="Refresh" content="0; url=${action}" />`)
+      : actions;
   }
 
   protected optional(query: Query) {

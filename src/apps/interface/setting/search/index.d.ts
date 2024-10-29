@@ -22,15 +22,12 @@ declare interface SearchSetting {
     | SearchEngineSetting<
       "url",
       | "encodeComponent"
+      | "api"
+      | "force"
       | "inprivate"
       ,
       never,
-      Field<never, "separator"> & {
-        browser?:
-          | "api"
-          | "force"
-        ;
-      },
+      Field<never, "separator">,
       true
     >
   >;
