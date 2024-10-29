@@ -26,7 +26,7 @@ class BrowserEngine extends bSearchEngine<"browser"> {
       api,
     );
     this.urls = typeof urls === "string" ? [urls] : urls;
-    
+
     if (this.urls.length < 1)
       throw new TypeError("No engine URLs");
     else if (api && this.urls.length > 1)
