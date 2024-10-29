@@ -2,7 +2,8 @@ function error(error: unknown) {
   const stringify = (e: unknown): string => typeof e === "object" && e !== null
     ? Array.isArray(e)
       ? `[${e.map(i => stringify(i)).join(", ")}]`
-      : `{ ${Object.entries(e).map(([k, v]) => `${k}: ${stringify(v)}`).join(", ")} }`
+      : `{ ${Object.entries(e).map(([k, v]) => `${k}: ${stringify(v)}`)
+        .join(", ")} }`
     : String(e),
   genuine = (e: unknown): e is Error => typeof e === "object" && e !== null && "message" in e,
   cast = (e: unknown) => genuine(e) ? e : stringify(e),
