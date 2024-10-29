@@ -29,7 +29,7 @@ class Things extends importModule<typeof Shortcut<
       )
       .filter(item => item.length > 0);
 
-    return items.map((item): ThingsItem => {
+    return items.map(item => {
       const { untagged, tag = null } = item.endsWith(TAG)
         ? {
             untagged: item.slice(0, 0 - TAG.length).trim(),
