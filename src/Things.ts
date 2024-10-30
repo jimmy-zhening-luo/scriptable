@@ -7,10 +7,7 @@ import type { Shortcut } from "./lib";
 
 class Things extends importModule<typeof Shortcut<
   Field<"tasks">,
-  Array<
-    & Field<"title" | "notes">
-    & Record<"when" | "list", Null<string>>
-  >,
+  (Field<"title" | "notes"> & Record<"when" | "list", Null<string>>)[],
   ThingsSetting
 >>("./lib") {
   protected runtime() {
@@ -49,8 +46,8 @@ class Things extends importModule<typeof Shortcut<
       { when = null, list = null } = tag === null
         ? {}
         : !(tag in lists)
-          ? { when: "today" }
-          : { list: (lists[tag] as typeof lists[number]).id as unknown as string },
+            ? { when: "today" }
+            : { list: (lists[tag] as typeof lists[number]).id as unknown as string },
       [title, ...notes] = untagged.split(LINE) as Arrayful;
 
       return {
