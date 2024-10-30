@@ -20,11 +20,11 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Install Node v20
+      - name: Install Node v22
         id: node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           check-latest: true
       - name: Install Dependencies
         id: ci
