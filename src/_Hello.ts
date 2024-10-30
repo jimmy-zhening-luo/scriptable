@@ -3,7 +3,7 @@
 // icon-color: yellow; icon-glyph: circle;
 "use strict";
 
-import type { Shortcut } from "./lib";
+import type Shortcut from "./lib";
 
 class _Hello extends importModule<typeof Shortcut<
   never,

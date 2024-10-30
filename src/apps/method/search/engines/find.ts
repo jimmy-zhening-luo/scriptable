@@ -1,4 +1,4 @@
-import type { SearchEngine } from "./engine";
+import type SearchEngine from "./engine";
 
 const fSearchEngine = importModule<typeof SearchEngine>("./engine");
 
@@ -12,5 +12,4 @@ class FindEngine extends fSearchEngine<"find"> {
   }
 }
 
-module.exports = FindEngine;
-export type { FindEngine as default };
+export default FindEngine;

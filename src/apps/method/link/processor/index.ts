@@ -9,5 +9,4 @@ abstract class LinkPathProcessor<Host extends string> {
   protected abstract process(path: string): string;
 }
 
-module.exports = LinkPathProcessor;
-export type { LinkPathProcessor };
+export default LinkPathProcessor;

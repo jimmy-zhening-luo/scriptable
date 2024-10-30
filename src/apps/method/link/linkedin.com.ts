@@ -1,4 +1,4 @@
-import type { LinkPathProcessor } from "./processor";
+import type LinkPathProcessor from "./processor";
 
 const lnkd_ILinkPathProcessor = importModule<typeof LinkPathProcessor>("./processor");
 
@@ -8,4 +8,4 @@ class LinkedInPathProcessor extends lnkd_ILinkPathProcessor<"linkedin.com"> {
   }
 }
 
-module.exports = LinkedInPathProcessor;
+export default LinkedInPathProcessor;

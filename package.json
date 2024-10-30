@@ -106,7 +106,8 @@
     "deploy:filter:windows:tsbuildinfo": "cmd /c del /s /q packed\\*.tsbuildinfo",
     "deploy:filter:windows:dts": "cmd /c del /s /q packed\\*.d.ts",
     "deploy:filter:windows:dtsmap": "cmd /c del /s /q packed\\*.d.ts.map",
-    "deploy:filter:windows:spec": "cmd /c del /s /q packed\\*.spec.js"
+    "deploy:filter:windows:spec": "cmd /c del /s /q packed\\*.spec.js",
+    "deploy:sed": "rr \"export default \" \"module\\.exports = \" -I \"packed/**/*.js\""
   },
   "mocha": {
     "spec": [

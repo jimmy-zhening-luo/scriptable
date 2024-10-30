@@ -1,4 +1,4 @@
-import type { File } from "./file";
+import type File from "./file";
 
 abstract class Filetype<
   FT extends string,
@@ -57,5 +57,4 @@ abstract class Filetype<
   }
 }
 
-module.exports = Filetype;
-export type { Filetype };
+export default Filetype;

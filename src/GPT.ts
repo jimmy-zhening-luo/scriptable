@@ -3,7 +3,7 @@
 // icon-color: orange; icon-glyph: comment-alt;
 "use strict";
 
-import type { Shortcut } from "./lib";
+import type Shortcut from "./lib";
 
 class GPT extends importModule<typeof Shortcut<
   GptInput,

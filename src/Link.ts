@@ -3,8 +3,8 @@
 // icon-color: light-gray; icon-glyph: link;
 "use strict";
 
-import type { Shortcut } from "./lib";
-import type { LinkPathProcessor } from "./apps/method/link/processor";
+import type Shortcut from "./lib";
+import type LinkPathProcessor from "./apps/method/link/processor";
 
 class Link extends importModule<typeof Shortcut<
   string,

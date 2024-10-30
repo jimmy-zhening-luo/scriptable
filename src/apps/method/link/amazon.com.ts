@@ -1,4 +1,4 @@
-import type { LinkPathProcessor } from "./processor";
+import type LinkPathProcessor from "./processor";
 
 const amzn_LinkPathProcessor = importModule<typeof LinkPathProcessor>("./processor");
 
@@ -12,5 +12,4 @@ class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
   }
 }
 
-module.exports = AmazonPathProcessor;
-
+export default AmazonPathProcessor;

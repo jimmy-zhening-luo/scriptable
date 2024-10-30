@@ -1,4 +1,5 @@
-import type { SearchEngine, Query } from "./engine";
+import type SearchEngine from "./engine";
+import type Query from "../query";
 
 const bSearchEngine = importModule<typeof SearchEngine>("./engine");
 
@@ -64,5 +65,4 @@ class BrowserEngine extends bSearchEngine<"browser"> {
   }
 }
 
-module.exports = BrowserEngine;
-export type { BrowserEngine as default };
+export default BrowserEngine;

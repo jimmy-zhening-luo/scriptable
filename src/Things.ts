@@ -3,7 +3,7 @@
 // icon-color: deep-blue; icon-glyph: pen-square;
 "use strict";
 
-import type { Shortcut } from "./lib";
+import type Shortcut from "./lib";
 
 class Things extends importModule<typeof Shortcut<
   Field<"tasks">,

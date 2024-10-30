@@ -1,4 +1,4 @@
-import type { Query } from "../../query";
+import type Query from "../../query";
 
 abstract class SearchEngine<
   T extends
@@ -41,5 +41,4 @@ abstract class SearchEngine<
   protected abstract optional(query: Query): Omit<SearchOutput, keyof ReturnType<SearchEngine<T>["required"]>>;
 }
 
-module.exports = SearchEngine;
-export type { SearchEngine, Query };
+export default SearchEngine;
