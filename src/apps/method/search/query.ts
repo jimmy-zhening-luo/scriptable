@@ -44,7 +44,6 @@ class Query {
               key: (FALLBACK satisfies Readonly<Arrayful<stringful>>).at(-1) as stringful,
               terms: [key, ...terms],
             });
-
       this.engine = engines[this.key] as typeof engines[string];
     }
     catch (e) {
