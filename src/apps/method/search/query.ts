@@ -15,9 +15,9 @@ class Query {
   ) {
     try {
       if (SELECTOR.startsWith("."))
-        throw new TypeError("Selector must not begin with `.`")
+        throw new TypeError("Selector must not begin with `.`");
       else if (OPERATORS.includes("."))
-        throw new TypeError("Operators must not include `.`")
+        throw new TypeError("Operators must not include `.`");
 
       const [Key, ...terms] = Query.select(
         Query.operate(
@@ -79,7 +79,7 @@ class Query {
     MATH: stringful,
   ) {
     function unroll(head: stringful) {
-      const operation = head.match(/(?<key>^:{0}[a-zA-Z]+)(?<operand>:{0}(?:(?:\d)|(?:-\d))(?:[-a-zA-Z\d]*$))/u)
+      const operation = (/(?<key>^:{0}[a-zA-Z]+)(?<operand>:{0}(?:(?:\d)|(?:-\d))(?:[-a-zA-Z\d]*$))/u).exec(head)
         ?.groups;
 
       return typeof operation === "undefined"
@@ -89,7 +89,7 @@ class Query {
             operation["operand"] as stringful,
           ] as const;
     }
-    
+
     const [head, ...rest] = tokens,
     isNum = (char?: string, operators = "") => !Number.isNaN(Number(char)) || operators.includes(char as string);
 
