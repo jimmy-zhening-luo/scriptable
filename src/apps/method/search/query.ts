@@ -91,9 +91,9 @@ class Query {
     }
 
     const [head, ...rest] = tokens,
-    isNum = (char?: string, operators = "") => char >= "0" && char <= "9" || operators.includes(char as string);
+    numeric = (char: char, operators = "") => char >= "0" && char <= "9" || operators.includes(char);
 
-    return isNum(head[0], OPERATORS) || head.startsWith(".") && isNum(head[1])
+    return numeric(head[0], OPERATORS) || head.length > 1 && head.startsWith(".") && numeric(head[1] as char)
       ? [MATH, ...tokens] as const
       : [...unroll(head), ...rest] as const;
   }
