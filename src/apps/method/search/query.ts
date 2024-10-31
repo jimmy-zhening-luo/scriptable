@@ -84,8 +84,8 @@ class Query {
       return operation === null
         ? [head] as const
         : [
-            operation.groups.key as stringful,
-            operation.groups.operand as stringful,
+            operation.groups["key"] as stringful,
+            operation.groups["operand"] as stringful,
           ] as const;
     }
     
