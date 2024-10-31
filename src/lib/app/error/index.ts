@@ -5,8 +5,7 @@ function error(error: unknown) {
       : `{ ${Object.entries(e).map(([k, v]) => `${k}: ${stringify(v)}`)
         .join(", ")} }`
     : String(e),
-  genuine = (e: unknown): e is Error => typeof e === "object" && e !== null && "message" in e,
-  cast = (e: unknown) => genuine(e) ? e : stringify(e),
+  cast = (e: unknown) => ((e): e is Error => typeof e === "object" && e !== null && "message" in e)(e) ? e : stringify(e),
   errors = [cast(error)] as Arrayful<Error | string>;
 
   while (typeof errors[0] !== "string" && "cause" in errors[0])
