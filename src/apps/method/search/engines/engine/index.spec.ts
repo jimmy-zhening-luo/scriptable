@@ -1,31 +1,9 @@
 import { expect } from "chai";
-import SearchEngine from "./index.js";
-import type Query from "../../query";
+import TestEngine from "./index.engine.spec.js";
+import query from "./index.query.spec.js";
 
 describe("SearchEngine", function () {
-  class TestEngine extends SearchEngine<"find"> {
-    protected optional(query: Query) {
-      return {
-        reversed: [...query.natural]
-          .reverse()
-          .join(""),
-      };
-    }
-  }
-
-  // items near me
-  // em raen smeti
-
-  const query: Query = {
-    key: "foo" as stringful,
-    terms: ["items", "near", "me"] as stringful[],
-    natural: "items near me",
-    engine: { find: "Tester" },
-    toString() {
-      return `${this.key} ${this.natural}` as stringful;
-    },
-  },
-  engine = new TestEngine("find", "Tester"),
+  const engine = new TestEngine("find", "Tester"),
   outEngine = new TestEngine("find", "TesterWithOutput", true);
 
   describe("shape", function () {
