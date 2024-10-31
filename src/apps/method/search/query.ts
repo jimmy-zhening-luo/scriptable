@@ -127,7 +127,7 @@ class Query {
           ? {}
           : {
               selection: rest[0] ?? "",
-              tail = rest.slice(1),
+              tail: rest.slice(1),
             }
         : { key: TRANSLATE };
 
