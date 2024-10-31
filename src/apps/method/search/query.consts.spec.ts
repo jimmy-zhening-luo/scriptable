@@ -6,7 +6,7 @@ FALLBACK = [
   "g",
   "q",
   "x",
-],
+] as const,
 alias = {
   chat: "g",
   translate: "q",
