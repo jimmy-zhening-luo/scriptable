@@ -1,7 +1,7 @@
-import type { Setting } from "./filetypes/setting";
-import type { Storage } from "./filetypes/storage";
-import type { tools } from "./tools";
-import type { error } from "./error";
+import type Setting from "./filetypes/setting";
+import type Storage from "./filetypes/storage";
+import type tools from "./tools";
+import type error from "./error";
 
 abstract class App<
   T extends string,
@@ -23,7 +23,7 @@ abstract class App<
   }
 
   private static get error() {
-    return importModule<error>("./error");
+    return importModule<typeof error>("./error");
   }
 
   protected get app() {
@@ -198,5 +198,4 @@ abstract class App<
   protected abstract output(runtime: ReturnType<App<T, Input, Output, Schema>["runtime"]>): ReturnType<App<T, Input, Output, Schema>["runtime"]>;
 }
 
-module.exports = App;
-export type { App };
+export default App;

@@ -1,4 +1,4 @@
-import type { SearchEngine } from "./engine";
+import type SearchEngine from "./engine";
 
 const sSearchEngine = importModule<typeof SearchEngine>("./engine");
 
@@ -19,5 +19,4 @@ class ShortcutEngine extends sSearchEngine<"shortcut"> {
   }
 }
 
-module.exports = ShortcutEngine;
-export type { ShortcutEngine as default };
+export default ShortcutEngine;

@@ -3,8 +3,8 @@
 // icon-color: blue; icon-glyph: search;
 "use strict";
 
-import type { Shortcut } from "./lib";
-import type { Query } from "./apps/method/search/query";
+import type Shortcut from "./lib";
+import type Query from "./apps/method/search/query";
 import type BrowserEngine from "./apps/method/search/engines/browser";
 import type FindEngine from "./apps/method/search/engines/find";
 import type ShortcutEngine from "./apps/method/search/engines/shortcut";

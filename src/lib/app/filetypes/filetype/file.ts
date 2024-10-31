@@ -100,5 +100,4 @@ class File<Mutable extends boolean> {
   }
 }
 
-module.exports = File;
-export type { File };
+export default File;

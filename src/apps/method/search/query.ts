@@ -139,5 +139,4 @@ class Query {
   }
 }
 
-module.exports = Query;
-export type { Query };
+export default Query;

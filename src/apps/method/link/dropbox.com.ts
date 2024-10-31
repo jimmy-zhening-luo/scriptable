@@ -1,4 +1,4 @@
-import type { LinkPathProcessor } from "./processor";
+import type LinkPathProcessor from "./processor";
 
 const drop_ILinkPathProcessor = importModule<typeof LinkPathProcessor>("./processor");
 
@@ -14,4 +14,4 @@ class DropboxPathProcessor extends drop_ILinkPathProcessor<"dropbox.com"> {
   }
 }
 
-module.exports = DropboxPathProcessor;
+export default DropboxPathProcessor;

@@ -27,5 +27,4 @@ function error(error: unknown) {
   return new Error(title, { cause: body });
 }
 
-module.exports = error;
-export type error = typeof error;
+export default error;

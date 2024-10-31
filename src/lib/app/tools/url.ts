@@ -25,5 +25,4 @@ function url(url: string) {
   return parts;
 }
 
-module.exports = url;
-export type url = typeof url;
+export default url;

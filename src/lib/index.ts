@@ -1,4 +1,4 @@
-import type { App } from "./app";
+import type App from "./app";
 
 const app = importModule<typeof App>("./app");
 
@@ -23,5 +23,4 @@ abstract class Shortcut<
   }
 }
 
-module.exports = Shortcut;
-export type { Shortcut };
+export default Shortcut;

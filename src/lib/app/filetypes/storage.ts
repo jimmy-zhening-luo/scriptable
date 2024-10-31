@@ -1,4 +1,4 @@
-import type { Filetype } from "./filetype";
+import type Filetype from "./filetype";
 
 const dFiletype = importModule<typeof Filetype>("./filetype");
 
@@ -50,5 +50,4 @@ class Storage extends dFiletype<"Storage", true> {
   }
 }
 
-module.exports = Storage;
-export type { Storage };
+export default Storage;

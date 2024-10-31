@@ -1,4 +1,4 @@
-import type { LinkPathProcessor } from "./processor";
+import type LinkPathProcessor from "./processor";
 
 const redd_ILinkPathProcessor = importModule<typeof LinkPathProcessor>("./processor");
 
@@ -14,4 +14,4 @@ class RedditPathProcessor extends redd_ILinkPathProcessor<"reddit.com"> {
   }
 }
 
-module.exports = RedditPathProcessor;
+export default RedditPathProcessor;
