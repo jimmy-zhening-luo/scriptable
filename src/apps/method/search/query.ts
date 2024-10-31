@@ -35,7 +35,7 @@ class Query {
 
       ({
         key: this.key = key,
-        terms: this.term = terms,
+        terms: this.terms = terms,
       } = key in engines
         ? {}
         : key in alias && (alias[key] as string) in engines
