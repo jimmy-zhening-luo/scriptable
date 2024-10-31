@@ -14,11 +14,18 @@ class Query {
     FALLBACK: Triad<stringful>,
   ) {
     try {
-      const [Key, ...terms] = Query.parse(
-        Query.tokenize(input, FALLBACK),
+      if (SELECTOR.startsWith("."))
+        throw new TypeError("Selector must not begin with `.`")
+      else if (OPERATORS.includes("."))
+        throw new TypeError("Operators must not include `.`")
+
+      const [Key, ...terms] = Query.select(
+        Query.operate(
+          Query.tokenize(input, FALLBACK),
+          OPERATORS,
+          MATH,
+        ),
         SELECTOR,
-        OPERATORS,
-        MATH,
         TRANSLATE,
       ),
       key = (Key satisfies stringful).toLowerCase() as stringful;
@@ -66,51 +73,65 @@ class Query {
     return tokens as Arrayful<stringful>;
   }
 
-  private static parse(
+  private static operate(
     tokens: Arrayful<stringful>,
-    SELECTOR: stringful,
     OPERATORS: stringful,
     MATH: stringful,
-    TRANSLATE: stringful,
   ) {
+    function unroll(head: stringful) {
+      const operation = head.match(/(?<key>^:{0}[a-zA-Z]+)(?<operand>:{0}(?:(?:\d)|(?:\-\d))(?:[a-zA-Z\d\-]*$))/);
+
+      return operation === null
+        ? [head] as const
+        : [
+            operation.groups.key as stringful,
+            operation.groups.operand as stringful,
+          ] as const;
+    }
+    
     const [head, ...rest] = tokens,
-    isNum = (char?: string, operators = "") => !Number.isNaN(Number(char)) || operators.includes(char as string),
-    select = (
-      SELECTOR: stringful,
-      TRANSLATE: stringful,
-      head: stringful,
-      rest: stringful[],
-    ) => {
-      const s = head.indexOf(SELECTOR),
-      d = head.indexOf("."),
-      { x, i } = d < 0 || s >= 0 && s < d
-        ? { x: SELECTOR, i: s }
-        : { x: ".", i: d };
-
-      if (i < 0)
-        return [head, ...rest] as const;
-      else {
-        const [h, ...hx] = head.split(x) as unknown as readonly [stringful, ...string[]],
-        {
-          key = h,
-          selection = hx.join(x),
-          slicer = 0,
-        } = h.length > 0
-          ? hx.length > 1 || (hx[0] as string).length > 0
-            ? {}
-            : {
-                selection: rest[0] ?? "",
-                slicer: 1,
-              }
-          : { key: TRANSLATE };
-
-        return [key, `${SELECTOR}${selection}` as stringful, ...rest.slice(slicer)] as const;
-      }
-    };
+    isNum = (char?: string, operators = "") => !Number.isNaN(Number(char)) || operators.includes(char as string);
 
     return isNum(head[0], OPERATORS) || head.startsWith(".") && isNum(head[1])
       ? [MATH, ...tokens] as const
-      : select(SELECTOR, TRANSLATE, head, rest);
+      : [...unroll(head), ...rest] as const;
+  }
+
+  private static select(
+    tokens: Arrayful<stringful>,
+    SELECTOR: stringful,
+    TRANSLATE: stringful,
+  ) {
+    const [head, ...rest] = tokens,
+    iSelector = head.indexOf(SELECTOR),
+    iDot = head.indexOf("."),
+    { selector, index } = iDot < 0 || iSelector >= 0 && iSelector < iDot
+      ? { selector: SELECTOR, index: iSelector }
+      : { selector: ".", index: iDot };
+
+    if (index < 0)
+      return tokens;
+    else {
+      const [pre, ...selected] = head.split(selector) as unknown as readonly [stringful, ...string[]],
+      {
+        key = pre,
+        selection = selected.join(selector),
+        restPointer = 0,
+      } = pre.length > 0
+        ? selected.length > 1 || (selected[0] as string).length > 0
+          ? {}
+          : {
+              selection: rest[0] ?? "",
+              restPointer: 1,
+            }
+        : { key: TRANSLATE };
+
+      return [
+        key,
+        `${SELECTOR}${selection}` as stringful,
+        ...rest.slice(restPointer),
+      ] as const;
+    }
   }
 
   public toString() {
