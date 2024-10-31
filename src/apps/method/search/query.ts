@@ -74,7 +74,7 @@ class Query {
   }
 
   private static operate(
-    tokens: Arrayful<stringful>,
+    tokens: Readonly<Arrayful<stringful>>,
     OPERATORS: stringful,
     MATH: stringful,
   ) {
@@ -99,7 +99,7 @@ class Query {
   }
 
   private static select(
-    tokens: Arrayful<stringful>,
+    tokens: Readonly<Arrayful<stringful>>,
     SELECTOR: stringful,
     TRANSLATE: stringful,
   ) {
