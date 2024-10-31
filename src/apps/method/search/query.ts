@@ -79,13 +79,14 @@ class Query {
     MATH: stringful,
   ) {
     function unroll(head: stringful) {
-      const operation = head.match(/(?<key>^:{0}[a-zA-Z]+)(?<operand>:{0}(?:(?:\d)|(?:\-\d))(?:[a-zA-Z\d\-]*$))/);
+      const operation = head.match(/(?<key>^:{0}[a-zA-Z]+)(?<operand>:{0}(?:(?:\d)|(?:\-\d))(?:[a-zA-Z\d\-]*$))/)
+        ?.groups;
 
-      return operation === null
+      return typeof operation === "undefined"
         ? [head] as const
         : [
-            operation.groups["key"] as stringful,
-            operation.groups["operand"] as stringful,
+            operation["key"] as stringful,
+            operation["operand"] as stringful,
           ] as const;
     }
     
