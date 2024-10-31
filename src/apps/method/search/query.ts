@@ -91,7 +91,7 @@ class Query {
     }
 
     const [head, ...rest] = tokens,
-    isNum = (char?: string, operators = "") => !Number.isNaN(Number(char)) || operators.includes(char as string);
+    isNum = (char?: string, operators = "") => char >= "0" && char <= "9" || operators.includes(char as string);
 
     return isNum(head[0], OPERATORS) || head.startsWith(".") && isNum(head[1])
       ? [MATH, ...tokens] as const
