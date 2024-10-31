@@ -19,32 +19,36 @@ class Query {
       else if (OPERATORS.includes("."))
         throw new TypeError("Operators must not include `.`");
 
-      const [Key, ...terms] = Query.select(
+      const [K, ...terms] = Query.select(
         Query.operate(
-          Query.tokenize(input, FALLBACK),
+          Query.tokenize(
+            input,
+            FALLBACK,
+          ),
           OPERATORS,
           MATH,
         ),
         SELECTOR,
         TRANSLATE,
       ),
-      key = (Key satisfies stringful).toLowerCase() as stringful;
+      key = (K satisfies stringful).toLowerCase() as stringful;
 
-      this.terms = terms;
-
-      if (key in engines)
-        this.key = key;
-      else if (key in alias && (alias[key] as stringful) in engines)
-        this.key = alias[key] as stringful;
-      else {
-        this.key = (FALLBACK satisfies Readonly<Arrayful<stringful>>).at(-1) as stringful;
-        this.terms.unshift(key);
-      }
+      {
+        key: this.key = key,
+        terms: this.term = terms,
+      } = key in engines
+        ? {}
+        : key in alias && (alias[key] as string) in engines
+          ? { key: alias[key] as stringful }
+          : {
+              key: (FALLBACK satisfies Readonly<Arrayful<stringful>>).at(-1) as stringful,
+              terms: [key, ...terms],
+            };
 
       this.engine = engines[this.key] as typeof engines[string];
     }
     catch (e) {
-      throw new Error(`Query: [${input}]`, { cause: e });
+      throw new Error(`Query [${input}]`, { cause: e });
     }
   }
 
@@ -68,7 +72,7 @@ class Query {
       );
 
     if (tokens.length < 1)
-      throw new SyntaxError(`Input query has no tokens`);
+      throw new RangeError("Query has no tokens");
 
     return tokens as Arrayful<stringful>;
   }
@@ -117,20 +121,20 @@ class Query {
       {
         key = pre,
         selection = selected.join(selector),
-        restPointer = 0,
+        tail = rest,
       } = pre.length > 0
         ? selected.length > 1 || (selected[0] as string).length > 0
           ? {}
           : {
               selection: rest[0] ?? "",
-              restPointer: 1,
+              tail = rest.slice(1),
             }
         : { key: TRANSLATE };
 
       return [
         key,
         `${SELECTOR}${selection}` as stringful,
-        ...rest.slice(restPointer),
+        ...tail,
       ] as const;
     }
   }
