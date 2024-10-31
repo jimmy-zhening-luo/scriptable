@@ -2,10 +2,10 @@ import { expect } from "chai";
 import TestEngine from "./index.engine.spec.js";
 import query from "./index.query.spec.js";
 
-describe("SearchEngine", function () {
-  const engine = new TestEngine("find", "Tester"),
-  outEngine = new TestEngine("find", "TesterWithOutput", true);
+const engine = new TestEngine("find", "Tester"),
+outEngine = new TestEngine("find", "TesterWithOutput", true);
 
+describe("SearchEngine", function () {
   describe("shape", function () {
     it("is object", function () {
       expect(engine)
