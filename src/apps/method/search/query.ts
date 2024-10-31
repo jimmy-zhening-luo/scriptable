@@ -33,7 +33,7 @@ class Query {
       ),
       key = (K satisfies stringful).toLowerCase() as stringful;
 
-      {
+      ({
         key: this.key = key,
         terms: this.term = terms,
       } = key in engines
@@ -43,7 +43,7 @@ class Query {
           : {
               key: (FALLBACK satisfies Readonly<Arrayful<stringful>>).at(-1) as stringful,
               terms: [key, ...terms],
-            };
+            });
 
       this.engine = engines[this.key] as typeof engines[string];
     }
