@@ -1,7 +1,7 @@
-import type Setting from "./filetypes/setting";
-import type Storage from "./filetypes/storage";
+import Setting from "./filetypes/setting";
+import Storage from "./filetypes/storage";
+import error from "./error";
 import type tools from "./tools";
-import type error from "./error";
 
 abstract class App<
   T extends string,
@@ -14,18 +14,6 @@ abstract class App<
 
   constructor(protected synthetic?: Input) {}
 
-  private static get Setting() {
-    return importModule<typeof Setting>("./filetypes/setting");
-  }
-
-  private static get Storage() {
-    return importModule<typeof Storage>("./filetypes/storage");
-  }
-
-  private static get error() {
-    return importModule<typeof error>("./error");
-  }
-
   protected get app() {
     const app = App.stringful(this.constructor.name, "Nameless app");
 
@@ -35,7 +23,7 @@ abstract class App<
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    const setting = new App.Setting<Schema>(this.app).parse;
+    const setting = new Setting<Schema>(this.app).parse;
 
     Object.defineProperty(this, "setting", { value: setting, enumerable: true });
 
@@ -129,7 +117,7 @@ abstract class App<
       return this.output(this.runtime());
     }
     catch (e) {
-      throw App.error(e);
+      throw error(e);
     }
     finally {
       Script.complete();
@@ -140,7 +128,7 @@ abstract class App<
     if (subpath.length < 1)
       throw new ReferenceError("Empty subsetting path");
 
-    return new App.Setting<Subschema>(`${this.app}/${subpath}` as stringful).parse;
+    return new Setting<Subschema>(`${this.app}/${subpath}` as stringful).parse;
   }
 
   protected read(...file: Parameters<App<T, Input, Output, Schema>["storage"]>) {
@@ -177,7 +165,7 @@ abstract class App<
         ? this.cache
         : this.cache.set(
           id,
-          new App.Storage(this.app, name, ext),
+          new Storage(this.app, name, ext),
         )
     )
       .get(id) as Storage;

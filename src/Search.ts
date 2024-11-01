@@ -3,7 +3,7 @@
 // icon-color: blue; icon-glyph: search;
 "use strict";
 
-import type Shortcut from "./lib";
+import Shortcut from "./lib";
 import type Query from "./apps/method/search/query";
 import type BrowserEngine from "./apps/method/search/engines/browser";
 import type FindEngine from "./apps/method/search/engines/find";
@@ -15,11 +15,11 @@ type SearchEngines = {
   shortcut: typeof ShortcutEngine;
 };
 
-class Search extends importModule<typeof Shortcut<
+class Search extends Shortcut<
   Field<"query" | "clipboard">,
   SearchOutput,
   SearchSetting
->>("./lib") {
+> {
   private static get Query() {
     return importModule<typeof Query>("./apps/method/search/query");
   }

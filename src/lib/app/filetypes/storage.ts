@@ -1,8 +1,6 @@
-import type Filetype from "./filetype";
+import Filetype from "./filetype";
 
-const dFiletype = importModule<typeof Filetype>("./filetype");
-
-class Storage extends dFiletype<"Storage", true> {
+class Storage extends Filetype<"Storage", true> {
   constructor(
     app: stringful,
     name: string,

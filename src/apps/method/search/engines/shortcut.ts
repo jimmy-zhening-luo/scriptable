@@ -1,8 +1,6 @@
-import type SearchEngine from "./engine";
+import SearchEngine from "./engine";
 
-const sSearchEngine = importModule<typeof SearchEngine>("./engine");
-
-class ShortcutEngine extends sSearchEngine<"shortcut"> {
+class ShortcutEngine extends SearchEngine<"shortcut"> {
   constructor(
     shortcut: string,
     output?: boolean,

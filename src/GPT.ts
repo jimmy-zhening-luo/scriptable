@@ -3,13 +3,13 @@
 // icon-color: orange; icon-glyph: comment-alt;
 "use strict";
 
-import type Shortcut from "./lib";
+import Shortcut from "./lib";
 
-class GPT extends importModule<typeof Shortcut<
+class GPT extends Shortcut<
   GptInput,
   GptOutput,
   GptSetting
->>("./lib") {
+> {
   private static unpack(inputful: GPT["inputful"]): GptInputWrap {
     return typeof inputful !== "string" && "prompt" in inputful
       ? inputful

@@ -3,9 +3,9 @@
 // icon-color: deep-green; icon-glyph: leaf;
 "use strict";
 
-import type Shortcut from "./lib";
+import Shortcut from "./lib";
 
-class _Sandbox extends importModule<typeof Shortcut>("./lib") {
+class _Sandbox extends Shortcut {
   protected runtime() {
     const foo = null;
 

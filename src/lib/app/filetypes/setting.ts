@@ -1,8 +1,6 @@
-import type Filetype from "./filetype";
+import Filetype from "./filetype";
 
-const cFiletype = importModule<typeof Filetype>("./filetype");
-
-class Setting<Schema> extends cFiletype<"Setting"> {
+class Setting<Schema> extends Filetype<"Setting"> {
   constructor(
     app: stringful,
   ) {

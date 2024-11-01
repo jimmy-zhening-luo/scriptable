@@ -1,9 +1,7 @@
-import type SearchEngine from "./engine";
+import SearchEngine from "./engine";
 import type Query from "../query";
 
-const bSearchEngine = importModule<typeof SearchEngine>("./engine");
-
-class BrowserEngine extends bSearchEngine<"browser"> {
+class BrowserEngine extends SearchEngine<"browser"> {
   private readonly urls: readonly string[];
   private readonly TAG: stringful;
   private readonly separator: string;

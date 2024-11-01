@@ -1,8 +1,6 @@
-import type LinkPathProcessor from "./processor";
+import LinkPathProcessor from "./processor";
 
-const drop_ILinkPathProcessor = importModule<typeof LinkPathProcessor>("./processor");
-
-class DropboxPathProcessor extends drop_ILinkPathProcessor<"dropbox.com"> {
+class DropboxPathProcessor extends LinkPathProcessor<"dropbox.com"> {
   protected process(path: string) {
     const nodes = path.split("/");
 

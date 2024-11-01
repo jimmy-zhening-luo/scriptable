@@ -1,8 +1,6 @@
-import type LinkPathProcessor from "./processor";
+import LinkPathProcessor from "./processor";
 
-const amzn_LinkPathProcessor = importModule<typeof LinkPathProcessor>("./processor");
-
-class AmazonPathProcessor extends amzn_LinkPathProcessor<"amazon.com"> {
+class AmazonPathProcessor extends LinkPathProcessor<"amazon.com"> {
   protected process(path: string) {
     const productPath = path.split("/dp/");
 

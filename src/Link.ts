@@ -3,14 +3,14 @@
 // icon-color: light-gray; icon-glyph: link;
 "use strict";
 
-import type Shortcut from "./lib";
+import Shortcut from "./lib";
 import type LinkPathProcessor from "./apps/method/link/processor";
 
-class Link extends importModule<typeof Shortcut<
+class Link extends Shortcut<
   string,
   string,
   LinkSetting
->>("./lib") {
+> {
   private static Processor<H extends string>(host: H): new (host: H, path: string) => LinkPathProcessor<H> {
     return importModule<new (host: H, path: string) => LinkPathProcessor<H>>(`./apps/method/link/${host}`);
   }

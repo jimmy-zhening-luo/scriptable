@@ -1,4 +1,4 @@
-import type File from "./file";
+import File from "./file";
 
 abstract class Filetype<
   FT extends string,
@@ -20,7 +20,7 @@ abstract class Filetype<
         },
       });
 
-    this.file = new (importModule<typeof File<Mutable>>("./file"))(
+    this.file = new File(
       mutable,
       filetype,
       ...[

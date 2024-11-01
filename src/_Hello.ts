@@ -3,13 +3,13 @@
 // icon-color: yellow; icon-glyph: circle;
 "use strict";
 
-import type Shortcut from "./lib";
+import Shortcut from "./lib";
 
-class _Hello extends importModule<typeof Shortcut<
+class _Hello extends Shortcut<
   never,
   string,
   Field<never, "space">
->>("./lib") {
+> {
   protected runtime() {
     const greeting = `${this.read("hi")}${_Hello.stringful(this.setting.space, "setting")}${this.read()}`;
 
