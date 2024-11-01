@@ -11,8 +11,8 @@ class Link extends Shortcut<
   string,
   LinkSetting
 > {
-  private static Processor<H extends string>(host: H): new (host: H, path: string) => LinkPathProcessor<H> {
-    return importModule<new (host: H, path: string) => LinkPathProcessor<H>>(`./apps/method/link/${host}`);
+  private static async Processor<H extends string>(host: H) {
+    return await import(`./apps/method/link/${host}.js`) as new (host: H, path: string) => LinkPathProcessor<H>;
   }
 
   private static buildURL(url: Field<
@@ -33,7 +33,7 @@ class Link extends Shortcut<
     return [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#");
   }
 
-  protected runtime() {
+  protected async runtime() {
     const { inputString, setting } = this,
     url = Link.url(inputString),
     resolve = (host: string, setting: typeof this.setting.host) => {
@@ -57,7 +57,7 @@ class Link extends Shortcut<
     return Link.buildURL({
       host,
       scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
-      path: PROCESSORS.includes(host) ? new (Link.Processor(host))(host, url.path).processed : url.path,
+      path: PROCESSORS.includes(host) ? new (await Link.Processor(host))(host, url.path).processed : url.path,
       query: setting.query.omit.includes(host)
         ? ""
         : params.include.length > 0
