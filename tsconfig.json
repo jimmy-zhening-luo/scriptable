@@ -78,7 +78,7 @@
     // "outFile": "./",
     // "preserveConstEnums": true,
     "removeComments": false /* @OVERRIDE */,
-    "sourceMap": false /* @OVERRIDE */,
+    "sourceMap": true,
     // "sourceRoot": "",
     // "stripInternal": true,
     // #endregion EMIT
