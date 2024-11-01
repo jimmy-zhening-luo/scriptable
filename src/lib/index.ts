@@ -1,12 +1,10 @@
-import type App from "./app";
-
-const app = importModule<typeof App>("./app");
+import App from "./app";
 
 abstract class Shortcut<
   Input = never,
   Output = never,
   Schema = never,
-> extends app<"Shortcut", Nullable<Input>, Null<Output>, Schema> {
+> extends App<"Shortcut", Nullable<Input>, Null<Output>, Schema> {
   protected type = "Shortcut" as const;
 
   protected getInput() {
