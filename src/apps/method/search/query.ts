@@ -13,42 +13,35 @@ class Query {
     TRANSLATE: stringful,
     FALLBACK: Triad<stringful>,
   ) {
-    try {
-      if (SELECTOR.startsWith("."))
-        throw new TypeError("Selector must not begin with `.`");
-      else if (OPERATORS.includes("."))
-        throw new TypeError("Operators must not include `.`");
+    if (`${SELECTOR}${OPERATORS}`.includes("."))
+      throw new TypeError("Bad selector/operator");
 
-      const [K, ...terms] = Query.select(
-        Query.operate(
-          Query.tokenize(
-            input,
-            FALLBACK,
-          ),
-          OPERATORS,
-          MATH,
+    const [K, ...terms] = Query.select(
+      Query.operate(
+        Query.tokenize(
+          input,
+          FALLBACK,
         ),
-        SELECTOR,
-        TRANSLATE,
+        OPERATORS,
+        MATH,
       ),
-      key = (K satisfies stringful).toLowerCase() as stringful;
+      SELECTOR,
+      TRANSLATE,
+    ),
+    key = (K satisfies stringful).toLowerCase() as stringful;
 
-      ({
-        key: this.key = key,
-        terms: this.terms = terms,
-      } = key in engines
-        ? {}
-        : key in alias && (alias[key] as string) in engines
-          ? { key: alias[key] as stringful }
-          : {
-              key: (FALLBACK satisfies Readonly<Arrayful<stringful>>).at(-1) as stringful,
-              terms: [key, ...terms],
-            });
-      this.engine = engines[this.key] as typeof engines[string];
-    }
-    catch (e) {
-      throw new Error(`Query [${input}]`, { cause: e });
-    }
+    ({
+      key: this.key = key,
+      terms: this.terms = terms,
+    } = key in engines
+      ? {}
+      : key in alias && (alias[key] as string) in engines
+        ? { key: alias[key] as stringful }
+        : {
+            key: (FALLBACK satisfies Readonly<Arrayful<stringful>>).at(-1) as stringful,
+            terms: [key, ...terms],
+          });
+    this.engine = engines[this.key] as typeof engines[string];
   }
 
   public get natural() {
@@ -71,7 +64,7 @@ class Query {
       );
 
     if (tokens.length < 1)
-      throw new RangeError("Query has no tokens");
+      throw new RangeError(`Query has no tokens\n[${input}]`);
 
     return tokens as Arrayful<stringful>;
   }

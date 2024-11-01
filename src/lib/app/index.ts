@@ -117,7 +117,7 @@ abstract class App<
       return this.output(this.runtime());
     }
     catch (e) {
-      throw error(e);
+      throw error(this.app, e);
     }
     finally {
       Script.complete();

@@ -1,4 +1,4 @@
-function error(error: unknown) {
+function error(app: string, error: unknown) {
   const stringify = (e: unknown): string => typeof e === "object" && e !== null
     ? Array.isArray(e)
       ? `[${e.map(i => stringify(i)).join(", ")}]`
@@ -11,7 +11,8 @@ function error(error: unknown) {
   while (typeof errors[0] !== "string" && "cause" in errors[0])
     errors.unshift(cast(errors[0].cause));
 
-  const [title, ...rest] = errors.map(e => typeof e === "string" ? e : e.message) as Arrayful,
+  const [subtitle, ...rest] = errors.map(e => typeof e === "string" ? e : e.message) as Arrayful,
+  title = `${app}: ${subtitle}`,
   body = rest.join("\n"),
   n = new Notification;
 
