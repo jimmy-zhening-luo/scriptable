@@ -19,4 +19,4 @@ class _Hello extends Shortcut<
   }
 }
 
-new _Hello().run();
+await new _Hello().run();

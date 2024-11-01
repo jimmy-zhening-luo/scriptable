@@ -112,9 +112,9 @@ abstract class App<
     return d.string(date);
   }
 
-  public run() {
+  public async run() {
     try {
-      return this.output(this.runtime());
+      return await this.output(this.runtime());
     }
     catch (e) {
       throw error(e);
@@ -182,7 +182,7 @@ abstract class App<
   }
 
   protected abstract getInput(): Input;
-  protected abstract runtime(): Output;
+  protected abstract runtime(): Output | Promise<Output>;
   protected abstract output(runtime: ReturnType<App<T, Input, Output, Schema>["runtime"]>): ReturnType<App<T, Input, Output, Schema>["runtime"]>;
 }
 

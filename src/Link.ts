@@ -76,4 +76,4 @@ class Link extends Shortcut<
   }
 }
 
-new Link().run();
+await new Link().run();

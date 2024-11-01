@@ -13,4 +13,4 @@ class _Sandbox extends Shortcut {
   }
 }
 
-new _Sandbox().run();
+await new _Sandbox().run();
