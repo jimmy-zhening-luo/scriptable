@@ -35,7 +35,7 @@ class Link extends Shortcut<
 
   protected runtime() {
     const { inputString, setting } = this,
-    url = Link.tool("url")(inputString),
+    url = Link.url(inputString),
     resolve = (host: string, setting: typeof this.setting.host) => {
       const pruned = host.slice(host.startsWith("www.") && !setting.www.includes(host) ? 4 : 0);
 

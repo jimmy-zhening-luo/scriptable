@@ -1,7 +1,7 @@
 import Setting from "./filetypes/setting";
 import Storage from "./filetypes/storage";
 import error from "./error";
-import type tools from "./tools";
+import url from "./url";
 
 abstract class App<
   T extends string,
@@ -91,8 +91,8 @@ abstract class App<
     );
   }
 
-  protected static tool<U extends keyof tools>(tool: U) {
-    return importModule<tools[U]>(`./tools/${tool}`);
+  protected static url(string: string) {
+    return url(string);
   }
 
   protected static date(date?: Date) {
