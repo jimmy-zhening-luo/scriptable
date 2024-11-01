@@ -1,14 +1,12 @@
 {
-  // v0.35.0
-  // https://github.com/DavidAnson/markdownlint/blob/v0.35.0/doc/Rules.md
-  // "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.35.0/schema/markdownlint-config-schema.json",
+  // v0.36.1
+  // https://github.com/DavidAnson/markdownlint/blob/v0.36.1/doc/Rules.md
+  // "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.36.1/schema/markdownlint-config-schema.json",
   "heading-increment": true /* MD001 */,
   "heading-style": {
     "style": "atx",
   } /* MD003 */,
-  "ul-style": {
-    "style": "sublist",
-  } /* MD004 */,
+  "ul-style": false /* MD004 */,
   "list-indent": true /* MD005 */,
   "ul-indent": {
     "indent": 2,
