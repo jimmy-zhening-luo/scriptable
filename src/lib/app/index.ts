@@ -117,7 +117,7 @@ abstract class App<
       return this.output(await (this.runtime() as Promise<Awaited<Output>>));
     }
     catch (e) {
-      throw error(e);
+      throw await error(e);
     }
     finally {
       Script.complete();

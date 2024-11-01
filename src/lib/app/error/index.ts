@@ -1,4 +1,4 @@
-function error(error: unknown) {
+async function error(error: unknown) {
   const stringify = (e: unknown): string => typeof e === "object" && e !== null
     ? Array.isArray(e)
       ? `[${e.map(i => stringify(i)).join(", ")}]`
@@ -19,9 +19,7 @@ function error(error: unknown) {
   n.title = title;
   n.body = body;
   n.sound = "failure";
-  n.schedule()
-    .catch((e: unknown) => logError(e))
-    .finally(() => logWarning("Error notification dispatched"));
+  await n.schedule();
 
   return new Error(title, { cause: body });
 }
