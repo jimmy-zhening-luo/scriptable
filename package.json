@@ -29,7 +29,7 @@
   "types": "",
   "config": {
     "language": "ts",
-    "fix": "false",
+    "fix": "true",
     "lint": "true"
   },
   "engineStrict": true,
