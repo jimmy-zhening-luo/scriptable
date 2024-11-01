@@ -60,4 +60,4 @@ class Things extends Shortcut<
   }
 }
 
-await new Things().run();
+new Things().run();

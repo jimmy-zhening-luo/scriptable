@@ -100,4 +100,4 @@ class GPT extends Shortcut<
   }
 }
 
-await new GPT().run();
+new GPT().run();

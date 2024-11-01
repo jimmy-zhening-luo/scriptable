@@ -17,14 +17,14 @@ type SearchEngines = {
 
 class Search extends Shortcut<
   Field<"query" | "clipboard">,
-  Promise<SearchOutput>,
+  SearchOutput,
   SearchSetting
 > {
-  private static async Engine<T extends "browser" | "find" | "shortcut">(provider: T) {
-    return await import(`./apps/method/search/engines/${provider}.js`) as SearchEngines[T];
+  private static Engine<T extends "browser" | "find" | "shortcut">(provider: T) {
+    return importModule<SearchEngines[T]>(`./apps/method/search/engines/${provider}.js`);
   }
 
-  protected async runtime() {
+  protected runtime() {
     const { inputful, setting } = this,
     input = inputful.query.length > 0 ? inputful.query : this.read(),
     {
@@ -52,9 +52,9 @@ class Search extends Shortcut<
     ),
     entry = query.engine,
     engine = Array.isArray(entry) || typeof entry === "string"
-      ? new (await Search.Engine("browser"))(entry, Search.stringful(tag))
+      ? new (Search.Engine("browser"))(entry, Search.stringful(tag))
       : "url" in entry
-        ? new (await Search.Engine("browser"))(
+        ? new (Search.Engine("browser"))(
           entry.url,
           Search.stringful(tag),
           entry.separator,
@@ -64,8 +64,8 @@ class Search extends Shortcut<
           entry.inprivate,
         )
         : "shortcut" in entry
-          ? new (await Search.Engine("shortcut"))(entry.shortcut, entry.output)
-          : new (await Search.Engine("find"))(entry.find);
+          ? new (Search.Engine("shortcut"))(entry.shortcut, entry.output)
+          : new (Search.Engine("find"))(entry.find);
 
     this.write(String(query));
 
@@ -73,4 +73,4 @@ class Search extends Shortcut<
   }
 }
 
-await new Search().run();
+new Search().run();

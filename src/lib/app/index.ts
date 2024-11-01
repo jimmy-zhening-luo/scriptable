@@ -112,12 +112,12 @@ abstract class App<
     return d.string(date);
   }
 
-  public async run() {
+  public run() {
     try {
-      return this.output(await (this.runtime() as Promise<Awaited<Output>>));
+      return this.output(this.runtime());
     }
     catch (e) {
-      throw await error(e);
+      throw error(e);
     }
     finally {
       Script.complete();
