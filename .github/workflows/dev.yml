@@ -20,7 +20,7 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Install Node v22
+      - name: Install Node
         id: node
         uses: actions/setup-node@v4
         with:
