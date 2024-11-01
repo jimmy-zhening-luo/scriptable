@@ -21,7 +21,7 @@ class Search extends Shortcut<
   SearchSetting
 > {
   private static async Engine<T extends "browser" | "find" | "shortcut">(provider: T) {
-    return await import(`./apps/method/search/engines/${provider}`) as SearchEngines[T];
+    return await import(`./apps/method/search/engines/${provider}.js`) as SearchEngines[T];
   }
 
   protected async runtime() {
