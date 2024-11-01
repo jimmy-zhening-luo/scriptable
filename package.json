@@ -21,8 +21,7 @@
   "license": "MIT",
   "private": true,
   "publishConfig": {
-    "access": "public",
-    "preid": "rc"
+    "access": "public"
   },
   "type": "module",
   "main": "",
