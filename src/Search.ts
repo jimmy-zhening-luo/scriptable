@@ -4,7 +4,7 @@
 "use strict";
 
 import Shortcut from "./lib";
-import type Query from "./apps/method/search/query";
+import Query from "./apps/method/search/query";
 import type BrowserEngine from "./apps/method/search/engines/browser";
 import type FindEngine from "./apps/method/search/engines/find";
 import type ShortcutEngine from "./apps/method/search/engines/shortcut";
@@ -20,10 +20,6 @@ class Search extends Shortcut<
   SearchOutput,
   SearchSetting
 > {
-  private static get Query() {
-    return importModule<typeof Query>("./apps/method/search/query");
-  }
-
   private static Engine<T extends "browser" | "find" | "shortcut">(provider: T) {
     return importModule<SearchEngines[T]>(`./apps/method/search/engines/${provider}`);
   }
@@ -42,7 +38,7 @@ class Search extends Shortcut<
         fallback,
       },
     } = setting,
-    query = new Search.Query(
+    query = new Query(
       input,
       engines,
       alias,
