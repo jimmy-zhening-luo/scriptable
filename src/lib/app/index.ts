@@ -114,7 +114,7 @@ abstract class App<
 
   public async run() {
     try {
-      return await this.output(this.runtime());
+      return this.output(await (this.runtime() as Promise<Awaited<Output>>));
     }
     catch (e) {
       throw error(e);
@@ -182,7 +182,7 @@ abstract class App<
   }
 
   protected abstract getInput(): Input;
-  protected abstract runtime(): Output | Promise<Output>;
+  protected abstract runtime(): Output;
   protected abstract output(runtime: ReturnType<App<T, Input, Output, Schema>["runtime"]>): ReturnType<App<T, Input, Output, Schema>["runtime"]>;
 }
 

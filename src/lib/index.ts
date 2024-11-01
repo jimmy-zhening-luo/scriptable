@@ -13,7 +13,7 @@ abstract class Shortcut<
     return typeof input === "undefined" ? null : input;
   }
 
-  protected async output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
+  protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
     log(runtime);
     Script.setShortcutOutput(runtime);
 

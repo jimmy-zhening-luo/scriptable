@@ -17,7 +17,7 @@ type SearchEngines = {
 
 class Search extends Shortcut<
   Field<"query" | "clipboard">,
-  SearchOutput,
+  Promise<SearchOutput>,
   SearchSetting
 > {
   private static async Engine<T extends "browser" | "find" | "shortcut">(provider: T) {

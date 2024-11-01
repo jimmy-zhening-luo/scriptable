@@ -8,7 +8,7 @@ import type LinkPathProcessor from "./apps/method/link/processor";
 
 class Link extends Shortcut<
   string,
-  string,
+  Promise<string>,
   LinkSetting
 > {
   private static async Processor<H extends string>(host: H) {
