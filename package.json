@@ -112,8 +112,8 @@
     "deploy:filter:windows:dtsmap": "cmd /c del /s /q packed\\*.d.ts.map",
     "deploy:filter:windows:spec": "cmd /c del /s /q packed\\*.spec.js",
     "deploy:sed": "run-s deploy:sed:*",
-    "deploy:sed:import": "rr 'import ([-_a-zA-Z0-9]+) from (§\".*§\");$' 'const $1 = importModule($2);' -I 'packed/**/*.js'",
-    "deploy:sed:export": "rr 'export default ' 'module\\.exports = ' -I 'packed/**/*.js'"
+    "deploy:sed:import": "rr \"import ([-_a-zA-Z0-9]+) from (\\\".*\\\");$\" \"const $1 = importModule($2);\" -I \"packed/**/*.js\"",
+    "deploy:sed:export": "rr \"export default \" \"module\\.exports = \" -I \"packed/**/*.js\""
   },
   "mocha": {
     "spec": [
