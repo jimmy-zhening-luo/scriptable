@@ -9,12 +9,6 @@ import BrowserEngine from "./apps/method/search/engines/browser";
 import FindEngine from "./apps/method/search/engines/find";
 import ShortcutEngine from "./apps/method/search/engines/shortcut";
 
-type SearchEngines = {
-  browser: typeof BrowserEngine;
-  find: typeof FindEngine;
-  shortcut: typeof ShortcutEngine;
-};
-
 class Search extends Shortcut<
   Field<"query" | "clipboard">,
   SearchOutput,
