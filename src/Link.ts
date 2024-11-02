@@ -39,7 +39,7 @@ class Link extends Shortcut<
       exclude: deindex(setting.query.exclude, host),
     };
 
-    return Link.compose({
+    return compose({
       host,
       scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
       path: processor(host, url.path),
