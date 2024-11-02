@@ -1,6 +1,6 @@
-import LinkPathProcessor from "./processor";
+import Processor from "./processor";
 
-class RedditPathProcessor extends LinkPathProcessor<"reddit.com"> {
+class RedditProcessor extends Processor {
   protected process(path: string) {
     const nodes = path.split("/");
 
@@ -12,4 +12,4 @@ class RedditPathProcessor extends LinkPathProcessor<"reddit.com"> {
   }
 }
 
-export default RedditPathProcessor;
+export default RedditProcessor;

@@ -1,9 +1,9 @@
-import LinkPathProcessor from "./processor";
+import Processor from "./processor";
 
-class LinkedInPathProcessor extends LinkPathProcessor<"linkedin.com"> {
+class LinkedInProcessor extends Processor {
   protected process(path: string) {
     return path.startsWith("/mwlite/") ? path.slice(7) : path;
   }
 }
 
-export default LinkedInPathProcessor;
+export default LinkedInProcessor;

@@ -1,6 +1,6 @@
-import LinkPathProcessor from "./processor";
+import Processor from "./processor";
 
-class AmazonPathProcessor extends LinkPathProcessor<"amazon.com"> {
+class AmazonProcessor extends Processor {
   protected process(path: string) {
     const productPath = path.split("/dp/");
 
@@ -10,4 +10,4 @@ class AmazonPathProcessor extends LinkPathProcessor<"amazon.com"> {
   }
 }
 
-export default AmazonPathProcessor;
+export default AmazonProcessor;

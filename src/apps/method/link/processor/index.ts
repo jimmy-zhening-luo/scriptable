@@ -1,12 +1,11 @@
-abstract class LinkPathProcessor<Host extends string> {
+abstract class Processor {
   public readonly processed: string;
 
-  constructor(host: literalful<Host>, path: string) {
-    log(host);
+  constructor(path: string) {
     this.processed = this.process(path);
   }
 
   protected abstract process(path: string): string;
 }
 
-export default LinkPathProcessor;
+export default Processor;

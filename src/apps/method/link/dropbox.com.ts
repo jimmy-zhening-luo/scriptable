@@ -1,6 +1,6 @@
-import LinkPathProcessor from "./processor";
+import Processor from "./processor";
 
-class DropboxPathProcessor extends LinkPathProcessor<"dropbox.com"> {
+class DropboxProcessor extends Processor {
   protected process(path: string) {
     const nodes = path.split("/");
 
@@ -12,4 +12,4 @@ class DropboxPathProcessor extends LinkPathProcessor<"dropbox.com"> {
   }
 }
 
-export default DropboxPathProcessor;
+export default DropboxProcessor;
