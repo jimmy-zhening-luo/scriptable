@@ -12,7 +12,7 @@ class Link extends Shortcut<
   LinkSetting
 > {
   protected runtime() {
-    const resolve = (host: string, setting: typeof this.setting.host) => ((headless: string, setting: typeof this.setting.host) => setting.swap[headless] ?? headless)(!host.startsWith("www.") || setting.www.includes(host) ? host : host.slice(4)),
+    const resolve = (host: string, setting: typeof this.setting.host) => ((headless: string, setting: typeof this.setting.host) => setting.swap[headless] ?? headless)(!host.startsWith("www.") || setting.www.includes(host) ? host : host.slice(4), setting),
     deindex = (list: ListTable, host: string) => list[host]?.map(i => i.toLowerCase()) ?? [],
     compose = ({
       scheme,
