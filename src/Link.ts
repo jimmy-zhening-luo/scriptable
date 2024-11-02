@@ -11,22 +11,6 @@ class Link extends Shortcut<
   string,
   LinkSetting
 > {
-  private static compose({
-    scheme,
-    host,
-    path,
-    query,
-    fragment,
-  }: Field<
-    | "scheme"
-    | "host"
-    | "path"
-    | "query"
-    | "fragment"
-  >) {
-    return [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#");
-  }
-
   protected runtime() {
     const { inputString, setting } = this,
     url = Link.url(inputString),
@@ -36,6 +20,19 @@ class Link extends Shortcut<
       return setting.swap[pruned] ?? pruned;
     },
     deindex = (list: ListTable, host: string) => list[host]?.map(i => i.toLowerCase()) ?? [],
+    compose = ({
+      scheme,
+      host,
+      path,
+      query,
+      fragment,
+    }: Field<
+      | "scheme"
+      | "host"
+      | "path"
+      | "query"
+      | "fragment"
+    >) => [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#"),
     host = resolve(url.host, setting.host),
     params = {
       include: deindex(setting.query.include, host),
