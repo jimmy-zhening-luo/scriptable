@@ -8,7 +8,6 @@ import AmazonProcessor from "./apps/method/link/amazon.com";
 import DropboxProcessor from "./apps/method/link/dropbox.com";
 import LinkedInProcessor from "./apps/method/link/linkedin.com";
 import RedditProcessor from "./apps/method/link/reddit.com";
-import type Processor from "./apps/method/link/processor";
 
 const Processors = {
   "amazon.com": AmazonProcessor,
@@ -58,7 +57,7 @@ class Link extends Shortcut<
     return Link.compose({
       host,
       scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
-      path: host in Processors ? new (Processors[host as keyof typeof Processors])(host, url.path).processed : url.path,
+      path: host in Processors ? new (Processors[host as keyof typeof Processors])(host as keyof typeof Processors, url.path).processed : url.path,
       query: setting.query.omit.includes(host)
         ? ""
         : params.include.length > 0
