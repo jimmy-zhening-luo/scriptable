@@ -16,7 +16,7 @@ const Processors = {
   "linkedin.com": LinkedInProcessor,
   "reddit.com": RedditProcessor,
 } satisfies {
-  [H in typeof HostsToProcess[number]]: Processor<H>;
+  [H in typeof HostsToProcess[number]]: new (host: H, path: string) => Processor<H>;
 } as const;
 
 class Link extends Shortcut<
