@@ -4,18 +4,27 @@
 "use strict";
 
 import Shortcut from "./lib";
-import type LinkPathProcessor from "./apps/method/link/processor";
+import AmazonProcessor from "./apps/method/link/processor/amazon.com";
+import DropboxProcessor from "./apps/method/link/processor/dropbox.com";
+import LinkedInProcessor from "./apps/method/link/processor/linkedin.com";
+import RedditProcessor from "./apps/method/link/processor/reddit.com";
+import type Processor from "./apps/method/link/processor";
+
+const Processors = {
+  "amazon.com": AmazonProcessor,
+  "dropbox.com": DropboxProcessor,
+  "linkedin.com": LinkedInProcessor,
+  "reddit.com": RedditProcessor,
+} satisfies {
+  [H in typeof HostsToProcess[number]]: Processor<H>;
+} as const;
 
 class Link extends Shortcut<
   string,
   string,
   LinkSetting
 > {
-  private static Processor<H extends string>(host: H) {
-    return importModule<new (host: H, path: string) => LinkPathProcessor<H>>(`./apps/method/link/${host}.js`);
-  }
-
-  private static buildURL(url: Field<
+  private static compose(url: Field<
     | "scheme"
     | "host"
     | "path"
@@ -46,18 +55,12 @@ class Link extends Shortcut<
     params = {
       include: deindex(setting.query.include, host),
       exclude: deindex(setting.query.exclude, host),
-    },
-    PROCESSORS = [
-      "amazon.com",
-      "dropbox.com",
-      "linkedin.com",
-      "reddit.com",
-    ];
+    };
 
-    return Link.buildURL({
+    return Link.compose({
       host,
       scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
-      path: PROCESSORS.includes(host) ? new (Link.Processor(host))(host, url.path).processed : url.path,
+      path: host in Processors ? new (Processor[host])(host, url.path).processed : url.path,
       query: setting.query.omit.includes(host)
         ? ""
         : params.include.length > 0
