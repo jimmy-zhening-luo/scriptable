@@ -11,21 +11,19 @@ class Link extends Shortcut<
   string,
   LinkSetting
 > {
-  private static compose(url: Field<
+  private static compose({
+    scheme,
+    host,
+    path,
+    query,
+    fragment,
+  }: Field<
     | "scheme"
     | "host"
     | "path"
     | "query"
     | "fragment"
   >) {
-    const {
-      scheme,
-      host,
-      path,
-      query,
-      fragment,
-    } = url;
-
     return [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#");
   }
 
