@@ -5,9 +5,9 @@
 
 import Shortcut from "./lib";
 import Query from "./apps/method/search/query";
-import type BrowserEngine from "./apps/method/search/engines/browser";
-import type FindEngine from "./apps/method/search/engines/find";
-import type ShortcutEngine from "./apps/method/search/engines/shortcut";
+import BrowserEngine from "./apps/method/search/engines/browser";
+import FindEngine from "./apps/method/search/engines/find";
+import ShortcutEngine from "./apps/method/search/engines/shortcut";
 
 type SearchEngines = {
   browser: typeof BrowserEngine;
@@ -20,10 +20,6 @@ class Search extends Shortcut<
   SearchOutput,
   SearchSetting
 > {
-  private static Engine<T extends "browser" | "find" | "shortcut">(provider: T) {
-    return importModule<SearchEngines[T]>(`./apps/method/search/engines/${provider}.js`);
-  }
-
   protected runtime() {
     const { inputful, setting } = this,
     input = inputful.query.length > 0 ? inputful.query : this.read(),
@@ -52,9 +48,9 @@ class Search extends Shortcut<
     ),
     entry = query.engine,
     engine = Array.isArray(entry) || typeof entry === "string"
-      ? new (Search.Engine("browser"))(entry, Search.stringful(tag))
+      ? new BrowserEngine(entry, Search.stringful(tag))
       : "url" in entry
-        ? new (Search.Engine("browser"))(
+        ? new BrowserEngine(
           entry.url,
           Search.stringful(tag),
           entry.separator,
@@ -64,8 +60,8 @@ class Search extends Shortcut<
           entry.inprivate,
         )
         : "shortcut" in entry
-          ? new (Search.Engine("shortcut"))(entry.shortcut, entry.output)
-          : new (Search.Engine("find"))(entry.find);
+          ? new ShortcutEngine(entry.shortcut, entry.output)
+          : new FindEngine(entry.find);
 
     this.write(String(query));
 
