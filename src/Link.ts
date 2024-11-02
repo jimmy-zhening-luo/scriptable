@@ -12,8 +12,7 @@ class Link extends Shortcut<
   LinkSetting
 > {
   protected runtime() {
-    const
-    deindex = (list: ListTable, host: string) => list[host]?.map(i => i.toLowerCase()) ?? [],
+    const deindex = (list: ListTable, host: string) => list[host]?.map(i => i.toLowerCase()) ?? [],
     compose = ({
       scheme, host, path, query, fragment,
     }: Field<
