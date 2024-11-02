@@ -12,14 +12,10 @@ class Link extends Shortcut<
   LinkSetting
 > {
   protected runtime() {
-    const resolve = (host: string, setting: typeof this.setting.host) => ((headless: string, setting: typeof this.setting.host) => setting.swap[headless] ?? headless)(!host.startsWith("www.") || setting.www.includes(host) ? host : host.slice(4), setting),
+    const
     deindex = (list: ListTable, host: string) => list[host]?.map(i => i.toLowerCase()) ?? [],
     compose = ({
-      scheme,
-      host,
-      path,
-      query,
-      fragment,
+      scheme, host, path, query, fragment,
     }: Field<
       | "scheme"
       | "host"
@@ -29,7 +25,7 @@ class Link extends Shortcut<
     >) => [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#"),
     { inputString, setting } = this,
     url = Link.url(inputString),
-    host = resolve(url.host, setting.host),
+    host = ((host: string) => (headless => setting.host.swap[headless] ?? headless)(!host.startsWith("www.") || setting.host.www.includes(host) ? host : host.slice(4)))(url.host),
     params = {
       include: deindex(setting.query.include, host),
       exclude: deindex(setting.query.exclude, host),
