@@ -4,17 +4,7 @@
 "use strict";
 
 import Shortcut from "./lib";
-import AmazonProcessor from "./apps/method/link/amazon.com";
-import DropboxProcessor from "./apps/method/link/dropbox.com";
-import LinkedInProcessor from "./apps/method/link/linkedin.com";
-import RedditProcessor from "./apps/method/link/reddit.com";
-
-const Processors = {
-  "amazon.com": AmazonProcessor,
-  "dropbox.com": DropboxProcessor,
-  "linkedin.com": LinkedInProcessor,
-  "reddit.com": RedditProcessor,
-} as const;
+import processor from "./apps/method/link";
 
 class Link extends Shortcut<
   string,
@@ -57,7 +47,7 @@ class Link extends Shortcut<
     return Link.compose({
       host,
       scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
-      path: host in Processors ? new Processors[host as keyof typeof Processors](url.path).processed : url.path,
+      path: processor(host, url.path),
       query: setting.query.omit.includes(host)
         ? ""
         : params.include.length > 0
