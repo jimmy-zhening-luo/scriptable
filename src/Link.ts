@@ -4,10 +4,10 @@
 "use strict";
 
 import Shortcut from "./lib";
-import AmazonProcessor from "./apps/method/link/processors/amazon.com";
-import DropboxProcessor from "./apps/method/link/processors/dropbox.com";
-import LinkedInProcessor from "./apps/method/link/processors/linkedin.com";
-import RedditProcessor from "./apps/method/link/processors/reddit.com";
+import AmazonProcessor from "./apps/method/link/amazon.com";
+import DropboxProcessor from "./apps/method/link/dropbox.com";
+import LinkedInProcessor from "./apps/method/link/linkedin.com";
+import RedditProcessor from "./apps/method/link/reddit.com";
 import type Processor from "./apps/method/link/processor";
 
 const Processors = {
