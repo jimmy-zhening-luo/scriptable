@@ -60,7 +60,7 @@ class Link extends Shortcut<
     return Link.compose({
       host,
       scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
-      path: host in Processors ? new (Processor[host])(host, url.path).processed : url.path,
+      path: host in Processors ? new (Processors[host])(host, url.path).processed : url.path,
       query: setting.query.omit.includes(host)
         ? ""
         : params.include.length > 0
