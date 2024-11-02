@@ -1,4 +1,4 @@
-import Processor from "./processor";
+import Processor from ".";
 
 class DropboxProcessor extends Processor {
   protected process(path: string) {

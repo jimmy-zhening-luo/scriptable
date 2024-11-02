@@ -1,4 +1,4 @@
-import Processor from "./processor";
+import Processor from ".";
 
 class AmazonProcessor extends Processor {
   protected process(path: string) {

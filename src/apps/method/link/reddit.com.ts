@@ -1,4 +1,4 @@
-import Processor from "./processor";
+import Processor from ".";
 
 class RedditProcessor extends Processor {
   protected process(path: string) {
