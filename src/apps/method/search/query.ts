@@ -100,16 +100,14 @@ class Query {
     TRANSLATE: stringful,
   ) {
     const [head, ...rest] = tokens,
-    iSelector = head.indexOf(SELECTOR),
-    iDot = head.indexOf("."),
-    { selector, index } = iDot < 0 || iSelector >= 0 && iSelector < iDot
+    { selector, index } = (([iSelector, iDot]) => iDot < 0 || iSelector >= 0 && iSelector < iDot
       ? { selector: SELECTOR, index: iSelector }
-      : { selector: ".", index: iDot };
+      : { selector: ".", index: iDot })(([SELECTOR, "."] satisfies Dyad).map(s => head.indexOf(s)) satisfies number[] as unknown as Dyad<number>);
 
     if (index < 0)
       return tokens;
     else {
-      const [pre, ...selected] = head.split(selector) as unknown as readonly [stringful, ...string[]],
+      const [pre, ...selected] = head.split(selector) satisfies string[] as unknown as readonly [stringful, ...string[]],
       {
         key = pre,
         selection = selected.join(selector),
