@@ -5,8 +5,8 @@ class Setting<Schema> extends Filetype<"Setting"> {
     app: stringful,
   ) {
     super(
-      false,
       "Setting",
+      false,
       null,
       app,
       "json",

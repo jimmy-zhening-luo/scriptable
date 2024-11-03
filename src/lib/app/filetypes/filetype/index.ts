@@ -7,8 +7,8 @@ abstract class Filetype<
   protected readonly file: File<Mutable>;
 
   constructor(
-    mutable: Mutable,
     filetype: literalful<FT>,
+    mutable: Mutable,
     folder: Null<string>,
     name: string,
     ext: string,

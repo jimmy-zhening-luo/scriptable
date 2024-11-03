@@ -7,8 +7,8 @@ class Storage extends Filetype<"Storage", true> {
     ext: string,
   ) {
     super(
-      true,
       "Storage",
+      true,
       app,
       name,
       ext,
