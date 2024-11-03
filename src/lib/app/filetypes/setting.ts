@@ -18,7 +18,7 @@ class Setting<Schema> extends Filetype<"Setting"> {
       const setting: unknown = JSON.parse(this.readful());
 
       if (typeof setting !== "object" || setting === null)
-        throw new TypeError("Setting file has wrong schema", { cause: this.read() });
+        throw new TypeError("Setting file is not JSON");
 
       Object.defineProperty(this, "parse", { value: setting, writable: false });
 
