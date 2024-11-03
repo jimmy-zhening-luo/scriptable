@@ -1,15 +1,14 @@
 function url(string: string) {
   const parse = (string: string, tryHttp = false) => {
-    const parts = (/^(?:(?<scheme>[^:/?#]+):)?(?:\/\/(?<host>[^/?#]*))?(?<path>[^?#]*)(?:\?(?<query>[^#]*))?(?:#(?<fragment>.*))?/u)
-      .exec(`${tryHttp ? "https" : ""}${string}`)
-      ?.groups,
-    {
+    const {
       scheme = "",
       host = "",
       path = "",
       query = "",
       fragment = "",
-    } = typeof parts === "undefined" ? {} : parts;
+    } = (/^(?:(?<scheme>[^:/?#]+):)?(?:\/\/(?<host>[^/?#]*))?(?<path>[^?#]*)(?:\?(?<query>[^#]*))?(?:#(?<fragment>.*))?/u)
+      .exec(`${tryHttp ? "https" : ""}${string}`)
+      ?.groups ?? {};
 
     return scheme.length > 0 && (!tryHttp || host.length > 0 || path.length > 0)
       ? {
