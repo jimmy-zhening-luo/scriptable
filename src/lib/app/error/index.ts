@@ -2,7 +2,8 @@ function error(app: string, error: unknown) {
   const string = (e: unknown): string => typeof e === "object" && e !== null
     ? Array.isArray(e)
       ? `[${e.map(i => string(i)).join(", ")}]`
-      : `{ ${Object.entries(e).map(([k, v]) => `${k}: ${string(v)}`)
+      : `{ ${Object.entries(e)
+        .map(([k, v]) => `${k}: ${string(v)}`)
         .join(", ")} }`
     : String(e),
   cast = (e: unknown) => ((e): e is Error => typeof e === "object" && e !== null && "message" in e)(e) ? e : string(e),
