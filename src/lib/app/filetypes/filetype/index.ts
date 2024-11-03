@@ -13,12 +13,8 @@ abstract class Filetype<
     name: string,
     ext: string,
   ) {
-    if (name.length < 1)
-      throw new TypeError("Empty filename", {
-        cause: {
-          filetype, folder, name, ext,
-        },
-      });
+    if (name === "")
+      throw new TypeError("Empty filename");
 
     this.file = new File(
       mutable,
