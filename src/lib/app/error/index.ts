@@ -19,7 +19,6 @@ function error(app: string, error: unknown) {
 
   n.title = title;
   n.body = body;
-  n.sound = "failure";
   n.schedule().catch((e: unknown) => logError(e));
 
   return new Error(title, { cause: body });
