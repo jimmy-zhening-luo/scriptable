@@ -11,12 +11,12 @@ function error(app: string, error: unknown) {
   while (typeof errors[0] !== "string" && "cause" in errors[0])
     errors.unshift(cast(errors[0].cause));
 
-  const [subtitle, ...rest] = errors.map(e => typeof e === "string" ? e : e.message) as Arrayful,
-  title = `${app}: ${subtitle}`,
-  body = rest.join("\n"),
-  n = new Notification;
+  const [title, body] = (([head, ...rest]) => [`${app}: ${head}`, rest.join("\n")])(errors.map(e => typeof e === "string" ? e : e.message) as Arrayful);
 
   logError(`${title}\n${body}`);
+
+  const n = new Notification;
+
   n.title = title;
   n.body = body;
   n.sound = "failure";
