@@ -1,11 +1,11 @@
 function error(app: string, error: unknown) {
-  const stringify = (e: unknown): string => typeof e === "object" && e !== null
+  const string = (e: unknown): string => typeof e === "object" && e !== null
     ? Array.isArray(e)
-      ? `[${e.map(i => stringify(i)).join(", ")}]`
-      : `{ ${Object.entries(e).map(([k, v]) => `${k}: ${stringify(v)}`)
+      ? `[${e.map(i => string(i)).join(", ")}]`
+      : `{ ${Object.entries(e).map(([k, v]) => `${k}: ${string(v)}`)
         .join(", ")} }`
     : String(e),
-  cast = (e: unknown) => ((e): e is Error => typeof e === "object" && e !== null && "message" in e)(e) ? e : stringify(e),
+  cast = (e: unknown) => ((e): e is Error => typeof e === "object" && e !== null && "message" in e)(e) ? e : string(e),
   errors = [cast(error)] as Arrayful<Error | string>;
 
   while (typeof errors[0] !== "string" && "cause" in errors[0])
