@@ -28,7 +28,7 @@ class BrowserEngine extends SearchEngine<"browser"> {
     ([
       urls: this.urls,
       schemes: this.schemes = [],
-    ]} = typeof urls === "string"
+    ] = typeof urls === "string"
       ? [[urls]] as const
       : urls.reduce(([urls, schemes], url): Dyad<string[]> => typeof url === "string"
         ? [[...urls, url], schemes] as const
