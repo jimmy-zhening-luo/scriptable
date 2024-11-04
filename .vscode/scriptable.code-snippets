@@ -1,20 +1,37 @@
 {
-	// https://code.visualstudio.com/docs/editor/userdefinedsnippets
-	"Scriptable Header": {
-		"scope": "javascript,typescript",
-		"prefix": "header",
-		"body": [
-			"// Variables used by Scriptable.",
-			"// These must be at the very top of the file. Do not edit.",
-			"// icon-color: ${1|red,orange,yellow,green,deep-green,teal,cyan,blue,deep-blue,purple,deep-purple,pink,light-brown,brown,deep-brown,light-gray,gray,deep-gray|}; icon-glyph: ${2|angry,bug,dizzy,flushed,frown,frown-open,grimace,grin,grin-alt,grin-beam,grin-beam-sweat,grin-hearts,magic,play,search|};",
+  // https://code.visualstudio.com/docs/editor/userdefinedsnippets
+  "Scriptable Header": {
+    "scope": "javascript,typescript",
+    "prefix": "header",
+    "body": [
+      "// Variables used by Scriptable.",
+      "// These must be at the very top of the file. Do not edit.",
+      "// icon-color: ${1|red,orange,yellow,green,deep-green,teal,cyan,blue,deep-blue,purple,deep-purple,pink,light-brown,brown,deep-brown,light-gray,gray,deep-gray|}; icon-glyph: ${2|angry,bug,dizzy,flushed,frown,frown-open,grimace,grin,grin-alt,grin-beam,grin-beam-sweat,grin-hearts,magic,play,search|};",
 
-			// TBD: Share Sheet input optional line
-			// // share-sheet-inputs: plain-text, url, file-url, image;
+      // TBD: Share Sheet input optional line
+      // // share-sheet-inputs: plain-text, url, file-url, image;
+      "\"use strict\";",
+      "",
+      "$0",
+    ],
+    "description": "This snippet is used to add the header\nthat must be included at the very top\nof any Scriptable script.\n\nThe `\"use strict\";` directive must be\nincluded in the top level below the\nheader, otherwise the TypeScript\ncompiler will automatically add the\ndirective above the header during\ntranspilation, breaking the Scriptable\nruntime.\n\n",
+  },
+  "Scriptable Shortcut": {
+    "scope": "javascript,typescript",
+    "prefix": "shortcut",
+    "body": [
+      "import Shortcut from \"./lib\";",
+      "",
+      "class ${1:$TM_FILENAME_BASE} extends Shortcut {",
 
-			"\"use strict\";",
-			"",
-			"$0",
-		],
-		"description": "This snippet is used to add the header that must be at the very top of a Scriptable script."
-	}
+      // TBD: Template for input, output, and schema
+      "  protected runtime() {",
+      "    $0",
+      "  }",
+      "}",
+      "",
+      "new $1().run();",
+    ],
+    "description": "This snippet is used to create a\nScriptable Shortcut script.\n\nScriptable scripts must be in the\ntop level directory to be visible\nto Scriptale.\n\nIn best style, the class name\nshould be identical to the name\nof the file containing the\nscript, which is also the unique\nname (sans `.js`) by which\nScriptable refers to the script.\n\nIf not adhering to best style,\nthe class name should be unique\nfrom that of any other class with\nwhich you don't want to share\nsettings and storage.\n\n",
+  },
 }
