@@ -1,12 +1,12 @@
 declare type SearchEngineSetting<
-  ActionType extends string,
+  Key extends string,
   Flags extends string = never,
   Fields extends string = never,
-  Custom extends object = object,
-  MultiAction extends boolean = false,
+  ExtraProperty extends object = object,
+  Value = string,
 > =
-  & Record<ActionType, True<MultiAction> extends never ? string : Unflat<string, false>>
+  & Record<Key, Value>
   & (literalful<Flags> extends never ? object : Flag<Flags>)
   & (literalful<Fields> extends never ? object : Field<never, Fields>)
-  & Custom
+  & ExtraProperty
 ;
