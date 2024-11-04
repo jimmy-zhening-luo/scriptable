@@ -31,7 +31,7 @@ class BrowserEngine extends SearchEngine<"browser"> {
     } = typeof urls === "string"
       ? { urls: [urls] }
       : urls.reduce(
-        (stack, url) => typeof url === "string"
+        (stack, url): Record<"urls" | "schemes", string[]> => typeof url === "string"
           ? stack.urls.push(url)
           : stack.schemes.push(url.scheme),
         {
