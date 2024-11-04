@@ -1,11 +1,11 @@
 declare interface SearchOutput {
-  action: Unflat;
   app: string;
+  action: Unflat;
   output: Null<true>;
-  shortcut?: string;
   find?: string;
-  natural?: string;
+  shortcut?: string;
   browser?: string;
   api?: Null<true>;
   inprivate?: Null<true>;
+  natural?: string;
 }

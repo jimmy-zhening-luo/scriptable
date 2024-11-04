@@ -28,7 +28,7 @@ declare interface SearchSetting {
       ,
       never,
       Field<never, "separator">,
-      true
+      Unflat<string, false>
     >
   >;
 }
