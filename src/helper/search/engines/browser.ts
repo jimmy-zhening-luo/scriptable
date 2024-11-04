@@ -25,20 +25,17 @@ class BrowserEngine extends SearchEngine<"browser"> {
       api ? "api" : "",
       api,
     );
-    ({
+    ([
       urls: this.urls,
       schemes: this.schemes = [],
-    } = typeof urls === "string"
-      ? { urls: [urls] }
-      : urls.reduce(
-        (stack, url): Record<"urls" | "schemes", string[]> => typeof url === "string"
-          ? stack.urls.push(url)
-          : stack.schemes.push(url.scheme),
-        {
-          urls: [] as string[],
-          schemes: [] as string[],
-        } as const,
-      ));
+    ]} = typeof urls === "string"
+      ? [[urls]] as const
+      : urls.reduce(([urls, schemes]): Dyad<string[]> => typeof url === "string"
+        ? [[...urls, url], schemes] as const
+        : [urls, [...schemes, url.scheme]] as const,
+        [[] as string[], [] as string[]] as const,
+      )
+    );
 
     if (this.urls.length < 1 && this.schemes.length < 1)
       throw new TypeError("No engine URLs");
