@@ -1,20 +1,20 @@
 {
 	// https://code.visualstudio.com/docs/editor/userdefinedsnippets
-	"Scriptable script header": {
+	"Scriptable Header": {
 		"scope": "javascript,typescript",
-		"prefix": "Scriptable",
+		"prefix": "header",
 		"body": [
-			"$LINE_COMMENT Variables used by Scriptable.",
-			"$LINE_COMMENT These must be at the very top of the file. Do not edit.",
-			"$LINE_COMMENT icon-color: ${1|red,orange,yellow,green,deep-green,teal,cyan,blue,deep-blue,purple,deep-purple,pink,light-brown,brown,deep-brown,light-gray,gray,deep-gray|}; icon-glyph: ${2|angry,bug,dizzy,flushed,frown,frown-open,grimace,grin,grin-alt,grin-beam,grin-beam-sweat,grin-hearts,magic,play,search|};",
+			"// Variables used by Scriptable.",
+			"// These must be at the very top of the file. Do not edit.",
+			"// icon-color: ${1|red,orange,yellow,green,deep-green,teal,cyan,blue,deep-blue,purple,deep-purple,pink,light-brown,brown,deep-brown,light-gray,gray,deep-gray|}; icon-glyph: ${2|angry,bug,dizzy,flushed,frown,frown-open,grimace,grin,grin-alt,grin-beam,grin-beam-sweat,grin-hearts,magic,play,search|};",
 
 			// TBD: Share Sheet input optional line
-			// $LINE_COMMENT share-sheet-inputs: plain-text, url, file-url, image;
+			// // share-sheet-inputs: plain-text, url, file-url, image;
 
 			"\"use strict\";",
 			"",
 			"$0",
 		],
-		"description": "Scriptable script header"
+		"description": "This snippet is used to add the header that must be at the very top of a Scriptable script."
 	}
 }
