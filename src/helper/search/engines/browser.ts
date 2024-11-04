@@ -3,7 +3,6 @@ import type Query from "../query";
 
 class BrowserEngine extends SearchEngine<"browser"> {
   private readonly urls: readonly string[];
-  private schemes: readonly string[];
   private readonly TAG: stringful;
   private readonly separator: string;
   private readonly encodeComponent: boolean;
@@ -12,7 +11,7 @@ class BrowserEngine extends SearchEngine<"browser"> {
   private readonly inprivate: Null<true>;
 
   constructor(
-    urls: string | (string | Field<"scheme">)[],
+    urls: Unflat,
     TAG: stringful,
     separator = "+",
     encodeComponent = false,
@@ -25,21 +24,12 @@ class BrowserEngine extends SearchEngine<"browser"> {
       api ? "api" : "",
       api,
     );
-    [
-      this.urls,
-      this.schemes = [],
-    ] = typeof urls === "string"
-      ? [[urls]] as const
-      : urls.reduce(([urls, schemes], url): Dyad<string[]> => typeof url === "string"
-        ? [[...urls, url], schemes] as const
-        : [urls, [...schemes, url.scheme]] as const,
-        [[] as string[], [] as string[]] as const,
-      );
+    this.urls = typeof urls === "string" ? [urls] : urls;
 
-    if (this.urls.length < 1 && this.schemes.length < 1)
+    if (this.urls.length < 1)
       throw new TypeError("No engine URLs");
-    else if (api && this.urls.length !== 1)
-      throw new TypeError("API must call exactly one URL");
+    else if (api && this.urls.length > 1)
+      throw new TypeError("API cannot call multiple URLs");
 
     this.TAG = TAG;
     this.separator = separator;
@@ -59,8 +49,6 @@ class BrowserEngine extends SearchEngine<"browser"> {
       .join(this.separator),
     actions = this.urls.map(url => url.replace(TAG, encodedQuery));
 
-    this.schemes = this.schemes.map(scheme => scheme.replace(TAG, encodedQuery));
-
     return this.force && !this.api
       ? actions.map(action => `data:text/html,<meta name="color-scheme" content="dark light" />
       <meta http-equiv="Refresh" content="0; url=${action}" />`)
@@ -68,10 +56,10 @@ class BrowserEngine extends SearchEngine<"browser"> {
   }
 
   protected optional(query: Query) {
-    const { api, inprivate, schemes } = this,
+    const { api, inprivate } = this,
     { natural } = query;
 
-    return { natural, api, inprivate, schemes };
+    return { natural, api, inprivate };
   }
 }
 

@@ -12,8 +12,7 @@ declare interface SearchSetting {
   };
   alias: FieldTable;
   engines: Table<
-    | string
-    | (string | Field<"scheme">)[]
+    | Unflat<string, false>
     | SearchEngineSetting<"find">
     | SearchEngineSetting<
       "shortcut",
@@ -29,8 +28,7 @@ declare interface SearchSetting {
       ,
       never,
       Field<never, "separator">,
-      | string
-      | (string | Field<"scheme">)[]
+      true
     >
   >;
 }
