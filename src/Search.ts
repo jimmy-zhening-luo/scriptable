@@ -4,10 +4,10 @@
 "use strict";
 
 import Shortcut from "./lib";
-import Query from "./apps/method/search/query";
-import BrowserEngine from "./apps/method/search/engines/browser";
-import FindEngine from "./apps/method/search/engines/find";
-import ShortcutEngine from "./apps/method/search/engines/shortcut";
+import Query from "./helper/search/query";
+import BrowserEngine from "./helper/search/engines/browser";
+import FindEngine from "./helper/search/engines/find";
+import ShortcutEngine from "./helper/search/engines/shortcut";
 
 class Search extends Shortcut<
   Field<"query" | "clipboard">,

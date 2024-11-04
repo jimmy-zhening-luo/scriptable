@@ -4,7 +4,7 @@
 "use strict";
 
 import Shortcut from "./lib";
-import processor from "./apps/method/link";
+import processor from "./helper/link";
 
 class Link extends Shortcut<
   string,
