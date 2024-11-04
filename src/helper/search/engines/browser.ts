@@ -30,7 +30,7 @@ class BrowserEngine extends SearchEngine<"browser"> {
       schemes: this.schemes = [],
     ]} = typeof urls === "string"
       ? [[urls]] as const
-      : urls.reduce(([urls, schemes]): Dyad<string[]> => typeof url === "string"
+      : urls.reduce(([urls, schemes], url): Dyad<string[]> => typeof url === "string"
         ? [[...urls, url], schemes] as const
         : [urls, [...schemes, url.scheme]] as const,
         [[] as string[], [] as string[]] as const,
