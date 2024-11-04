@@ -26,10 +26,10 @@ class BrowserEngine extends SearchEngine<"browser"> {
       api,
     );
     ({
-      urls: this.urls = [urls],
+      urls: this.urls,
       schemes: this.schemes = [],
     } = typeof urls === "string"
-      ? {}
+      ? { urls: [urls] }
       : urls.reduce(
         (stack, url) => typeof url === "string"
           ? stack.urls.push(url)
