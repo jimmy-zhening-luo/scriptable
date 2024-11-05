@@ -48,7 +48,7 @@ abstract class App<
   }
 
   protected get inputStringful() {
-    return App.stringful(this.inputString, "input")
+    return App.stringful(this.inputString, "input");
   }
 
   protected static stringful(string = "", cause = "") {
