@@ -32,7 +32,7 @@ abstract class SearchEngine<
 
     return {
       app,
-      [app]: engine,
+      [app]: engine.length > 0 ? engine : query.key,
       output,
       action: this.stringify(query),
     };
