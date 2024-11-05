@@ -9,13 +9,15 @@ abstract class App<
   Output,
   Schema,
 > {
+  protected readonly app: stringful;
   private readonly cache = new Map<string, Storage>;
   protected abstract type: literalful<T>;
 
-  constructor(protected synthetic?: Input) {}
+  constructor(protected synthetic?: Input) {
+    if (this.constructor.name.length < 1)
+      throw new EvalError("App has no name");
 
-  protected get app() {
-    return this.memo("app", App.stringful(this.constructor.name, "App has no name"));
+    this.app = this.constructor.name as stringful;
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
@@ -23,12 +25,7 @@ abstract class App<
   }
 
   protected get input() {
-    return this.memo(
-      "input",
-      typeof this.synthetic !== "undefined"
-        ? this.synthetic
-        : this.getInput(),
-    );
+    return this.synthetic ?? this.getInput();
   }
 
   protected get inputful() {
@@ -37,7 +34,7 @@ abstract class App<
     if (!this.truthy(input))
       throw new TypeError("Null input");
 
-    return this.memo("inputful", input);
+    return input;
   }
 
   protected get inputString() {
@@ -47,11 +44,11 @@ abstract class App<
     if (typeof string !== "string" && typeof string !== "number")
       throw new TypeError("Non-string input", { cause: input });
 
-    return this.memo("inputString", String(string));
+    return String(string);
   }
 
   protected get inputStringful() {
-    return this.memo("inputStringful", App.stringful(this.inputString, "input"));
+    return App.stringful(this.inputString, "input")
   }
 
   protected static stringful(string = "", cause = "") {
