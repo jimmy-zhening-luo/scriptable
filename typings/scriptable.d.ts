@@ -7034,4 +7034,4 @@ declare function btoa(string: string): string;/**
 */
 
 declare function importModule<T>(path: string): T;
-declare function importModule<T>(path: string | Fake<T>): T;
+declare function importModule<T>(path: string): T;

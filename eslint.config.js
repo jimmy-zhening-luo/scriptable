@@ -2,7 +2,7 @@ import linted from "linted";
 
 export default [
   {
-    ignores: ["typings"],
+    ignores: ["typings/scriptable.d.ts"],
   },
   ...linted(),
 ];
