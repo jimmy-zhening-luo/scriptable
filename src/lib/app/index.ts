@@ -19,7 +19,7 @@ abstract class App<
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    return this.memo("setting", new Setting<Schema>(this.app).parse));
+    return this.memo("setting", new Setting<Schema>(this.app).parse);
   }
 
   protected get input() {
