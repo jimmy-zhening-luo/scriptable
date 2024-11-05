@@ -15,7 +15,7 @@ abstract class App<
   constructor(protected synthetic?: Input) {}
 
   protected get app() {
-    const app = App.stringful(this.constructor.name, "Nameless app");
+    const app = App.stringful(this.constructor.name, "App has no name");
 
     Object.defineProperty(this, "app", { value: app, enumerable: true });
 
