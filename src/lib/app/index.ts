@@ -15,19 +15,11 @@ abstract class App<
   constructor(protected synthetic?: Input) {}
 
   protected get app() {
-    return (value => {
-      Object.defineProperty(this, "setting", { value, enumerable: true });
-
-      return value;
-    })(App.stringful(this.constructor.name, "App has no name"));
+    return this.memo("app", App.stringful(this.constructor.name, "App has no name"));
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    return (value => {
-      Object.defineProperty(this, "setting", { value, enumerable: true });
-
-      return value;
-    })(new Setting<Schema>(this.app).parse);
+    return this.memo("setting", new Setting<Schema>(this.app).parse));
   }
 
   protected get input() {
@@ -45,9 +37,7 @@ abstract class App<
     if (!this.truthy(input))
       throw new TypeError("Null input");
 
-    Object.defineProperty(this, "inputful", { value: input, enumerable: true });
-
-    return input;
+    return this.memo("inputful", input);
   }
 
   protected get inputString() {
@@ -57,24 +47,16 @@ abstract class App<
     if (typeof string !== "string" && typeof string !== "number")
       throw new TypeError("Non-string input", { cause: input });
 
-    const inputString = String(string);
-
-    Object.defineProperty(this, "inputString", { value: inputString, enumerable: true });
-
-    return inputString;
+    return this.memo("inputString", String(string));
   }
 
   protected get inputStringful() {
-    const inputStringful = App.stringful(this.inputString, "input");
-
-    Object.defineProperty(this, "inputStringful", { value: inputStringful, enumerable: true });
-
-    return inputStringful;
+    return this.memo("inputStringful", App.stringful(this.inputString, "input"));
   }
 
   protected static stringful(string = "", cause = "") {
     if (string.length < 1)
-      throw new TypeError("Unstringful", { cause });
+      throw new TypeError(`Unstringful: ${cause}`);
 
     return string as stringful;
   }
