@@ -1,7 +1,7 @@
 import Setting from "./filetypes/setting";
 import Storage from "./filetypes/storage";
 import error from "./error";
-import url from "./url";
+import url from "./objects/url";
 
 abstract class App<
   T extends string,
