@@ -23,11 +23,11 @@ abstract class App<
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    const setting = new Setting<Schema>(this.app).parse;
+    return (setting => {
+      Object.defineProperty(this, "setting", { value: setting, enumerable: true });
 
-    Object.defineProperty(this, "setting", { value: setting, enumerable: true });
-
-    return setting;
+      return setting;
+    })(new Setting<Schema>(this.app).parse);
   }
 
   protected get input() {
