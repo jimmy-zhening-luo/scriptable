@@ -31,13 +31,11 @@ abstract class App<
   }
 
   protected get input() {
-    const input = typeof this.synthetic !== "undefined"
-      ? this.synthetic
-      : this.getInput();
-
-    Object.defineProperty(this, "input", { value: input, enumerable: true });
-
-    return input;
+    return this.memo(
+      typeof this.synthetic !== "undefined"
+        ? this.synthetic
+        : this.getInput(),
+    );
   }
 
   protected get inputful() {
@@ -152,6 +150,12 @@ abstract class App<
     ...file: Parameters<App<T, Input, Output, Schema>["storage"]>
   ) {
     this.storage(...file).write(data, overwrite);
+  }
+
+  private memo<T>(property: string, value: T) {
+    Object.defineProperty(this, property, { value, enumerable: true });
+
+    return value;
   }
 
   private storage(file: string | { ext: string; name?: string } = this.app) {
