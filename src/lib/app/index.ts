@@ -15,18 +15,18 @@ abstract class App<
   constructor(protected synthetic?: Input) {}
 
   protected get app() {
-    const app = App.stringful(this.constructor.name, "App has no name");
+    return (value => {
+      Object.defineProperty(this, "setting", { value, enumerable: true });
 
-    Object.defineProperty(this, "app", { value: app, enumerable: true });
-
-    return app;
+      return value;
+    })(App.stringful(this.constructor.name, "App has no name"));
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    return (setting => {
-      Object.defineProperty(this, "setting", { value: setting, enumerable: true });
+    return (value => {
+      Object.defineProperty(this, "setting", { value, enumerable: true });
 
-      return setting;
+      return value;
     })(new Setting<Schema>(this.app).parse);
   }
 
