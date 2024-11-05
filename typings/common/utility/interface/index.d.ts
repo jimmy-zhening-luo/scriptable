@@ -1,11 +1,5 @@
-declare type Interface<R extends object> = [R] extends [object]
-  ? [Extract<R, readonly unknown[]>] extends [never]
-      ? Required<R> extends Record<infer K, unknown>
-        ? Exclude<K, string> extends never
-          ? literalful<K & string> extends never
-            ? never
-            : R
-          : never
-        : never
-      : never
-  : never;
+declare type Recordful<K extends string, V> = [V] extends [never]
+  ? never
+  : literalful<K> extends never
+    ? never
+    : Record<literalful<K>, V>;
