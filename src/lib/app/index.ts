@@ -32,6 +32,7 @@ abstract class App<
 
   protected get input() {
     return this.memo(
+      "input",
       typeof this.synthetic !== "undefined"
         ? this.synthetic
         : this.getInput(),
