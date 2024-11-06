@@ -40,7 +40,7 @@
     // "allowUmdGlobalAccess": true,
     // "baseUrl": "./",
     // "customConditions": [],
-    "module": "preserve" /* @OVERRIDE */,
+    "module": "es2022",
     "moduleResolution": "bundler",
     // "moduleSuffixes": [],
     // "noResolve": true,
