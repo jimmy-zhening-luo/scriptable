@@ -1,7 +1,7 @@
 class File<Mutable extends boolean> {
   private static readonly manager = FileManager.local();
-  public readonly name: string;
   public readonly path: string;
+  public readonly parent: string;
   public readonly exists: boolean;
 
   constructor(
@@ -9,22 +9,24 @@ class File<Mutable extends boolean> {
     bookmark: string,
     ...subpaths: string[]
   ) {
-    const subpath = subpaths.flatMap(subpath => subpath.split("/").filter(node => node !== "")).join("/");
-
     if (!File.manager.bookmarkExists(bookmark))
       throw new ReferenceError(`Bookmark "${bookmark}" not found`);
-    else if (subpath === "")
-      throw new ReferenceError("Empty subpath");
 
-    this.name = `${bookmark}/${subpath}`;
-    this.path = `${File.manager.bookmarkedPath(bookmark)}/${subpath}`;
+    const root = File.manager.bookmarkedPath(bookmark),
+    subpath = subpaths.flatMap(subpath => subpath.split("/").filter(node => node !== ""));
+
+    if (subpath.length < 1)
+      throw new Error("Empty subpath");
+
+    this.path = `${root}/${subpath.join("/")}`;
+    this.parent = `${root}/${subpath.slice(0, -1).join("/")}`;
     this.exists = File.manager.fileExists(this.path);
   }
 
   public read(fail = false) {
     if (!this.exists) {
       if (fail)
-        throw new ReferenceError("File not found", { cause: this.name });
+        throw new ReferenceError(`File not found: ${this.path}`);
 
       return "";
     }
@@ -32,11 +34,11 @@ class File<Mutable extends boolean> {
     return File.manager.readString(this.path);
   }
 
-  public readful(cause = this.name) {
+  public readful() {
     const read = this.read(true);
 
     if (read.length < 1)
-      throw new TypeError("Unreadful", { cause });
+      throw new TypeError(`Unreadful: ${this.path}`);
 
     return read as stringful;
   }
@@ -50,38 +52,27 @@ class File<Mutable extends boolean> {
   ) {
     try {
       if (!this.mutable)
-        throw new TypeError("Readonly");
+        throw new TypeError("Readonly file");
       else if (File.manager.isDirectory(this.path))
-        throw new ReferenceError("Folder, not file");
+        throw new ReferenceError("Write location is folder");
       else if (this.exists) {
         if (overwrite === false)
-          throw new ReferenceError("Exists (no overwrite)");
+          throw new ReferenceError("File exists, overwrite false");
       }
-      else {
-        const parent = this.path.slice(0, this.path.lastIndexOf("/"));
+      else if (!File.manager.isDirectory(this.parent))
+        File.manager.createDirectory(this.parent, true);
 
-        if (!File.manager.isDirectory(parent))
-          File.manager.createDirectory(parent, true);
-      }
-
-      const before = this.read(),
-      after = overwrite === "append"
-        ? `${before}${string}`
-        : overwrite === "line"
-          ? [
-              string,
-              ...before.length > 0
-                ? [before]
-                : [],
-            ].join("\n")
-          : string;
-
-      File.manager.writeString(this.path, after);
-
-      return after;
+      File.manager.writeString(
+        this.path,
+        typeof overwrite !== "string"
+          ? string
+          : (prior => overwrite === "line"
+              ? `${string}${prior.length > 0 ? "" : `\n${prior}`}`
+              : `${prior}${string}`)(this.read()),
+      );
     }
     catch (e) {
-      throw new Error(`Write: ${this.name}`, { cause: e });
+      throw new Error(`Unwritable: ${this.path}`, { cause: e });
     }
   }
 

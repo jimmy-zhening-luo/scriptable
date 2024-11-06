@@ -13,21 +13,15 @@ abstract class Filetype<
     name: string,
     ext: string,
   ) {
-    if (name === "")
-      throw new TypeError("Empty filename");
+    if (name.length < 1)
+      throw new TypeError("No filename");
 
     this.file = new File(
       mutable,
       filetype,
-      ...[
-        ...folder === null ? [] : [folder],
-        ext.length < 1 ? name : `${name}.${ext}`,
-      ],
+      folder ?? "",
+      `${name}${ext.length > 0 ? `.${ext}` : ""}`,
     );
-  }
-
-  public get name() {
-    return this.file.name;
   }
 
   public read() {
@@ -44,11 +38,11 @@ abstract class Filetype<
     return string.length > 0 ? JSON.parse(string) as Data : null;
   }
 
-  protected write(...content: Parameters<File<Mutable>["write"]>): Mutable extends true ? ReturnType<File<Mutable>["write"]> : never {
+  protected write(...content: Parameters<File<Mutable>["write"]>) {
     throw new ReferenceError("Write forbidden", { cause: content });
   }
 
-  protected delete(): Mutable extends true ? ReturnType<File<Mutable>["delete"]> : never {
+  protected delete() {
     throw new ReferenceError("Delete forbidden");
   }
 }

@@ -15,32 +15,36 @@ class Storage extends Filetype<"Storage", true> {
     );
   }
 
-  public override write<T>(
-    content: T,
-    overwrite:
-      | "line"
-      | "append"
-      | boolean = true,
+  public override write(
+    data:
+      | undefined
+      | null
+      | string
+      | number
+      | boolean
+      | (string | number | boolean)[]
+      | Record<string, unknown>,
+    overwrite: Parameters<Filetype<never>["write"]>[1] = true,
   ) {
-    if (content === null || typeof content === "undefined")
-      throw new TypeError("Write data is null", { cause: content });
+    if (data === null || typeof data === "undefined")
+      throw new TypeError("Write data is null", { cause: data });
 
-    const write = Array.isArray(content)
-      ? {
-          string: content.reverse().join("\n"),
-          overwrite: overwrite === false ? false : "line" as const,
-        }
-      : typeof content === "object"
-        ? {
-            string: JSON.stringify(content),
-            overwrite: overwrite !== false,
-          }
-        : {
-            string: String(content),
-            overwrite,
-          };
-
-    return this.file.write(write.string, write.overwrite) as unknown as T;
+    this.file.write(
+      ...Array.isArray(data)
+        ? [
+            data.reverse().join("\n"),
+            overwrite === false ? false : "line",
+          ] as const
+        : typeof data === "object"
+          ? [
+              JSON.stringify(data),
+              overwrite !== false,
+            ] as const
+          : [
+              String(data),
+              overwrite,
+            ] as const,
+    );
   }
 
   public override delete(): void {

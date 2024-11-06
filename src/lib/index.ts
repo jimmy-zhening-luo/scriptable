@@ -4,9 +4,7 @@ abstract class Shortcut<
   Input = never,
   Output = never,
   Schema = never,
-> extends App<"Shortcut", Nullable<Input>, Null<Output>, Schema> {
-  protected type = "Shortcut" as const;
-
+> extends App<Nullable<Input>, Null<Output>, Schema> {
   protected getInput() {
     const input = args.shortcutParameter as undefined | Input;
 

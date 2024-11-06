@@ -4,14 +4,12 @@ import error from "./error";
 import url from "./objects/url";
 
 abstract class App<
-  T extends string,
   Input,
   Output,
   Schema,
 > {
   protected readonly app: stringful;
   private readonly cache = new Map<string, Storage>;
-  protected abstract type: literalful<T>;
 
   constructor(protected synthetic?: Input) {
     if (this.constructor.name.length < 1)
@@ -31,7 +29,7 @@ abstract class App<
   protected get inputful() {
     const { input } = this;
 
-    if (!this.truthy(input))
+    if (typeof input === "undefined" || input === null)
       throw new TypeError("Null input");
 
     return input;
@@ -39,7 +37,7 @@ abstract class App<
 
   protected get inputString() {
     const { input } = this,
-    string = this.truthy(input) ? input : "";
+    string = input ?? "";
 
     if (typeof string !== "string" && typeof string !== "number")
       throw new TypeError("Non-string input", { cause: input });
@@ -60,7 +58,7 @@ abstract class App<
 
   protected static stringfuls<T extends readonly string[]>(array: T, cause = "") {
     if (array.length < 1 || !array.every((i): i is stringful => i.length > 0))
-      throw new TypeError("Unstringful array", { cause });
+      throw new TypeError(`Unstringful array: ${cause}`);
 
     return array as unknown as (
       T extends readonly [string, ...string[]]
@@ -81,11 +79,10 @@ abstract class App<
     return App.datetime("yyMMddHHmmssZ", date);
   }
 
-  private static datetime(format: string, date = new Date, locale = "en") {
+  protected static datetime(format: string, date = new Date) {
     const d = new DateFormatter;
 
     d.dateFormat = format;
-    d.locale = locale;
 
     return d.string(date);
   }
@@ -102,34 +99,31 @@ abstract class App<
     }
   }
 
-  protected subsetting<Subschema>(subpath: string): Subschema extends Subschema ? Subschema : never {
+  protected subsetting<Subschema>(subpath: string) {
     if (subpath.length < 1)
       throw new ReferenceError("Empty subsetting path");
 
-    return new Setting<Subschema>(`${this.app}/${subpath}` as stringful).parse;
+    return new Setting<Subschema extends Subschema ? Subschema : never>(`${this.app}/${subpath}` as stringful).parse;
   }
 
-  protected read(...file: Parameters<App<T, Input, Output, Schema>["storage"]>) {
+  protected read(...file: Parameters<App<Input, Output, Schema>["storage"]>) {
     return this.storage(...file).read();
   }
 
-  protected readful(...file: Parameters<App<T, Input, Output, Schema>["storage"]>) {
+  protected readful(...file: Parameters<App<Input, Output, Schema>["storage"]>) {
     return this.storage(...file).readful();
   }
 
-  protected data<Data>(...file: Parameters<App<T, Input, Output, Schema>["storage"]>): Null<Data> {
+  protected data<Data>(...file: Parameters<App<Input, Output, Schema>["storage"]>): Null<Data> {
     return this.storage(...file).data<Data>();
   }
 
   protected write(
-    data: unknown,
-    overwrite?:
-      | "line"
-      | "append"
-      | boolean,
-    ...file: Parameters<App<T, Input, Output, Schema>["storage"]>
+    data: Parameters<Storage["write"]>[0],
+    overwrite?: Parameters<Storage["write"]>[1],
+    file?: Parameters<App<Input, Output, Schema>["storage"]>[0],
   ) {
-    this.storage(...file).write(data, overwrite);
+    this.storage(file).write(data, overwrite);
   }
 
   private memo<T>(property: string, value: T) {
@@ -155,19 +149,9 @@ abstract class App<
       .get(id) as Storage;
   }
 
-  private truthy(value: undefined | null | Input): value is NonNullable<Input> {
-    const falsy = (value: unknown): value is (null | undefined) => {
-      const truth = Boolean(value);
-
-      return !truth;
-    };
-
-    return !falsy(value);
-  }
-
   protected abstract getInput(): Input;
   protected abstract runtime(): Output;
-  protected abstract output(runtime: ReturnType<App<T, Input, Output, Schema>["runtime"]>): ReturnType<App<T, Input, Output, Schema>["runtime"]>;
+  protected abstract output(runtime: ReturnType<App<Input, Output, Schema>["runtime"]>): ReturnType<App<Input, Output, Schema>["runtime"]>;
 }
 
 export default App;
