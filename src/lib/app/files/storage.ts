@@ -1,6 +1,6 @@
-import Filetype from "./filetype";
+import File from "./file";
 
-class Storage extends Filetype<"Storage", true> {
+class Storage extends File<"Storage", true> {
   constructor(
     app: stringful,
     name: string,
@@ -24,12 +24,12 @@ class Storage extends Filetype<"Storage", true> {
       | boolean
       | (string | number | boolean)[]
       | Record<string, unknown>,
-    overwrite: Parameters<Filetype<never>["write"]>[1] = true,
+    overwrite: Parameters<File<never>["write"]>[1] = true,
   ) {
     if (data === null || typeof data === "undefined")
       throw new TypeError("Write data is null", { cause: data });
 
-    this.file.write(
+    super.write(
       ...Array.isArray(data)
         ? [
             data.reverse().join("\n"),
@@ -45,10 +45,6 @@ class Storage extends Filetype<"Storage", true> {
               overwrite,
             ] as const,
     );
-  }
-
-  public override delete(): void {
-    this.file.delete();
   }
 }
 

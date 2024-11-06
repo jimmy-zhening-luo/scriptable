@@ -1,6 +1,6 @@
-import Filetype from "./filetype";
+import File from "./file";
 
-class Setting<Schema> extends Filetype<"Setting"> {
+class Setting<Schema> extends File<"Setting"> {
   constructor(app: stringful) {
     super(
       "Setting",

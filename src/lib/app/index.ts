@@ -1,5 +1,5 @@
-import Setting from "./filetypes/setting";
-import Storage from "./filetypes/storage";
+import Setting from "./files/setting";
+import Storage from "./files/storage";
 import error from "./error";
 import url from "./objects/url";
 
