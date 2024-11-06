@@ -6,7 +6,7 @@ function error(app: string, error: unknown) {
         .map(([k, v]) => `${k}: ${string(v)}`)
         .join(", ")} }`
     : String(e),
-  cast = (e: unknown) => ((e): e is Error => typeof e === "object" && e !== null && "message" in e)(e) ? e : string(e),
+  cast = (e: unknown) => typeof e === "object" && e !== null && "message" in e ? e as Error : string(e),
   errors = [cast(error)] as Arrayful<Error | string>;
 
   while (typeof errors[0] !== "string" && "cause" in errors[0])
