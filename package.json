@@ -48,7 +48,7 @@
     "npm-run-all": "^4.1.5",
     "rexreplace": "^7.1.11",
     "run-script-os": "^1.1.6",
-    "ts-add-js-extension": "^1.6.4",
+    "ts-add-js-extension": "^1.6.5",
     "typescript": "^5.6.3"
   },
   "scripts": {
