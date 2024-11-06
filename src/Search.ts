@@ -1,8 +1,4 @@
-// Variables used by Scriptable.
-// These must be at the very top of the file. Do not edit.
 // icon-color: blue; icon-glyph: search;
-"use strict";
-
 import Shortcut from "./lib";
 import Query from "./helper/search/query";
 import BrowserEngine from "./helper/search/engines/browser";

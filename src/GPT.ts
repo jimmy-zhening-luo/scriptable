@@ -1,8 +1,4 @@
-// Variables used by Scriptable.
-// These must be at the very top of the file. Do not edit.
 // icon-color: orange; icon-glyph: comment-alt;
-"use strict";
-
 import Shortcut from "./lib";
 
 class GPT extends Shortcut<

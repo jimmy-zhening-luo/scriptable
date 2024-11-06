@@ -1,8 +1,4 @@
-// Variables used by Scriptable.
-// These must be at the very top of the file. Do not edit.
 // icon-color: yellow; icon-glyph: circle;
-"use strict";
-
 import Shortcut from "./lib";
 
 class _Hello extends Shortcut<
