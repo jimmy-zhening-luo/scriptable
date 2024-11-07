@@ -15,25 +15,30 @@ class GPT extends Shortcut<
       defaults,
       placeholders,
     } = setting,
-    input = (typeof inputful !== "string" && "prompt" in inputful
+    input = typeof inputful !== "string" && "prompt" in inputful
       ? inputful
-      : { prompt: inputful }),
+      : { prompt: inputful },
     preset = this.subsetting<GptPreset>(
       "preset" in input
         ? input.preset
         : defaults.preset,
     ),
-    get<Kind extends "slider" | "placeholder", Option> = (kind: Kind, option: Option) => input[option] ?? preset[kind]?.[option] ?? defaults[kind][option],
-    model = models[input.model ?? preset.model ?? defaults.model] as GptSetting["models"][string],
-    slider = {
-      temperature: get("slider", "temperature"),
-      top_p: input.top_p ?? preset.slider?.top_p ?? defaults.slider.top_p,
+    model = models[input.model ?? preset.model ?? defaults.model];
+
+    if (typeof model === "undefined")
+      throw new Error("Model not found.");
+
+    const getSlider = (option: keyof GptSetting["defaults"]["slider"]) => input[option] ?? preset.slider?.[option] ?? defaults.slider[option],
+    getPlaceholder = (option: keyof GptSetting["defaults"]["placeholder"], replacement?: string) => input[option] ?? preset.placeholder?.[option] ?? replacement ?? (defaults.slider as unknown as typeof defaults["placeholder"] & Record<"date", string>)[option],
+    sliders = {
+      temperature: getSlider("temperature"),
+      top_p: getSlider("top_p"),
     },
     placeholder = {
-      date: input.date ?? preset.placeholder?.date ?? GPT.date(),
-      location: input.location ?? preset.placeholder?.location ?? defaults.placeholder.location,
+      date: getPlaceholder("date", GPT.date()),
+      location: getPlaceholder("location"),
     },
-    prompt = (typeof input.prompt !== "string"
+    prompt = typeof input.prompt !== "string"
       ? input.prompt
       : "model" in input
         ? { user: input.prompt }
@@ -49,7 +54,7 @@ class GPT extends Shortcut<
                 )
                 : `${preset.prompt.user}\n\n${input.prompt}`
               : input.prompt,
-          }),
+          },
     messages = (
       "system" in prompt
         ? [
@@ -86,8 +91,8 @@ class GPT extends Shortcut<
       body: {
         messages,
         model: model.name,
-        temperature: String(slider.temperature),
-        top_p: String(slider.top_p),
+        temperature: String(sliders.temperature),
+        top_p: String(sliders.top_p),
       },
     };
   }
