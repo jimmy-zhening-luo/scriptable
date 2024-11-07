@@ -7,93 +7,83 @@ class GPT extends Shortcut<
   GptSetting
 > {
   protected runtime() {
-    const { inputful, setting } = this,
-    {
+    const {
+      header,
       api: { host, version, actions },
-      id,
       models,
+      tags,
       defaults,
-      placeholders,
-    } = setting,
-    input = typeof inputful !== "string" && "prompt" in inputful
-      ? inputful
-      : { prompt: inputful },
-    preset = this.subsetting<GptPreset>(
-      "preset" in input
-        ? input.preset
-        : defaults.preset,
+    } = this.setting,
+    input = (input => typeof input !== "string" && "prompt" in input
+      ? input
+      : { prompt: input })(this.inputful),
+    preset = this.subsetting<GptPreset>(input.preset ?? defaults.preset),
+    get = <Kind extends "placeholders" | "sliders">(
+      kind: Kind,
+      option: keyof (GptSetting["defaults"][Kind]),
+      sideload?: string,
+    ) => String(
+      (input as Partial<GptSetting["defaults"][Kind]>)[option]
+      ?? (preset[kind] as undefined | Partial<GptSetting["defaults"][Kind]>)?.[option]
+      ?? sideload
+      ?? defaults[kind][option],
     ),
-    model = models[input.model ?? preset.model ?? defaults.model];
-
-    if (typeof model === "undefined")
-      throw new Error("Model not found.");
-
-    const getSlider = (option: keyof GptSetting["defaults"]["slider"]) => input[option] ?? preset.slider?.[option] ?? defaults.slider[option],
-    getPlaceholder = (option: keyof GptSetting["defaults"]["placeholder"], replacement?: string) => input[option] ?? preset.placeholder?.[option] ?? replacement ?? (defaults.slider as unknown as typeof defaults["placeholder"] & Record<"date", string>)[option],
-    sliders = {
-      temperature: getSlider("temperature"),
-      top_p: getSlider("top_p"),
+    options = {
+      sliders: {
+        temperature: get("sliders", "temperature"),
+        top_p: get("sliders", "top_p"),
+      },
+      placeholders: {
+        date: get("placeholders", "date", GPT.date()),
+        location: get("placeholders", "location"),
+      },
     },
-    placeholder = {
-      date: getPlaceholder("date", GPT.date()),
-      location: getPlaceholder("location"),
-    },
-    prompt = typeof input.prompt !== "string"
-      ? input.prompt
-      : "model" in input
-        ? { user: input.prompt }
-        : {
-            ..."system" in preset.prompt
-              ? { system: preset.prompt.system }
-              : {},
-            user: "user" in preset.prompt
-              ? preset.prompt.user.includes(placeholders.insert)
-                ? preset.prompt.user.replace(
-                  placeholders.insert,
-                  input.prompt,
-                )
-                : `${preset.prompt.user}\n\n${input.prompt}`
-              : input.prompt,
-          },
-    messages = (
-      "system" in prompt
-        ? [
-            { role: "system", content: prompt.system },
-            { role: "user", content: prompt.user },
-          ] as const
-        : [{ role: "user", content: prompt.user }] as const
-    )
-      .map(({ role, content }) => {
-        return {
-          role,
-          content: (
-            "plugins" in preset
-              ? Object
-                .keys(preset.plugins)
-                .reduce(
-                  (c, p) => c.replaceAll(`{{${p}}}`, input.plugins?.[p] ?? preset.plugins?.[p] ?? ""),
-                  content,
-                )
-              : content
-          )
-            .replaceAll(placeholders.location, placeholder.location)
-            .replaceAll(placeholders.date, placeholder.date),
-        };
-      });
+    { user, system = null } = ((
+      { prompt: input },
+      { prompt: preset },
+      { prompt: tag },
+    ) => typeof input !== "string"
+      ? input
+      : {
+          ...preset,
+          user: "user" in preset
+            ? preset.user.includes(tag)
+              ? preset.user.replaceAll(tag, input)
+              : `${preset.user}\n\n${input}`
+            : input,
+        })(input, preset, tags),
+    messages = (system === null
+      ? [{ role: "user", content: user }] as const
+      : [
+          { role: "system", content: system },
+          { role: "user", content: user },
+        ] as const
+    ).map(({ role, content }) => {
+      return {
+        role,
+        content: ([...Object.keys(tags.placeholders)] as (keyof typeof tags.placeholders)[]).reduce(
+          (content, placeholder) => content.replaceAll(
+            tags.placeholders[placeholder],
+            options.placeholders[placeholder],
+          ),
+          !("plugins" in preset)
+            ? content
+            : Object.keys(preset.plugins).reduce(
+              (content, plugin) => content.replaceAll(`{{${plugin}}}`, input.plugins?.[plugin] ?? preset.plugins?.[plugin] ?? ""),
+              content,
+            ),
+        ),
+      };
+    }),
+    { model = null, action = null } = models[input.model ?? preset.model ?? defaults.model] ?? {};
+
+    if (model === null || action === null)
+      throw new ReferenceError("Model not found");
 
     return {
-      api: [
-        host,
-        version,
-        actions[model.action],
-      ].join("/"),
-      header: id,
-      body: {
-        messages,
-        model: model.name,
-        temperature: String(sliders.temperature),
-        top_p: String(sliders.top_p),
-      },
+      header,
+      api: `${host}/${version}/${actions[action]}`,
+      body: { model, messages, ...options.sliders },
     };
   }
 }

@@ -1,22 +1,35 @@
 declare interface GptSetting {
-  id: Field<
+  header: Field<
     | "auth"
     | "org"
   >;
   api: {
     host: string;
     version: string;
-    actions: Field<GptAction>;
+    actions: Field<
+      | "chat"
+      | "speech"
+      | "transcribe"
+      | "image">;
   };
   models: Table<{
-    name: string;
-    action: GptAction;
+    model: string;
+    action: keyof GptSetting["api"]["actions"];
   }>;
+  tags: {
+    prompt: string;
+    placeholders: Field<
+      | "date"
+      | "location"
+    >;
+  };
   defaults: {
     model: string;
     preset: string;
-    slider: Scalar<GptSlider>;
-    placeholder: Field<Exclude<GptPlaceholder, "insert">>;
+    sliders: Scalar<
+      | "temperature"
+      | "top_p"
+    >;
+    placeholders: GptSetting["tags"]["placeholders"];
   };
-  placeholders: Field<GptPlaceholder>;
 }

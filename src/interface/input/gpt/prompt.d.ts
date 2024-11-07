@@ -1,4 +1,4 @@
 declare type GptPrompt =
   | string
-  | GptPromptful
+  | Field<"system" | "user">
 ;

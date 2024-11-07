@@ -1,11 +1,8 @@
 declare interface GptOutput {
   api: string;
   header: Field<"auth" | "org">;
-  body:
-    & { messages: readonly GptMessage[] }
-    & Field<
-      | "model"
-      ,
-      GptSlider
-    >;
+  body: {
+    model: string;
+    messages: readonly GptMessage[];
+  } & Field<keyof GptSetting["defaults"]["sliders"]>;
 }
