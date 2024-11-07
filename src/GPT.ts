@@ -6,12 +6,6 @@ class GPT extends Shortcut<
   GptOutput,
   GptSetting
 > {
-  private static unpack(inputful: GPT["inputful"]): GptInputWrap {
-    return typeof inputful !== "string" && "prompt" in inputful
-      ? inputful
-      : { prompt: inputful };
-  }
-
   protected runtime() {
     const { inputful, setting } = this,
     {
@@ -21,22 +15,25 @@ class GPT extends Shortcut<
       defaults,
       placeholders,
     } = setting,
-    input = GPT.unpack(inputful),
+    input = (typeof inputful !== "string" && "prompt" in inputful
+      ? inputful
+      : { prompt: inputful }),
     preset = this.subsetting<GptPreset>(
       "preset" in input
         ? input.preset
         : defaults.preset,
     ),
+    get<Kind extends "slider" | "placeholder", Option> = (kind: Kind, option: Option) => input[option] ?? preset[kind]?.[option] ?? defaults[kind][option],
     model = models[input.model ?? preset.model ?? defaults.model] as GptSetting["models"][string],
     slider = {
-      temperature: input.temperature ?? preset.slider?.temperature ?? defaults.slider.temperature,
+      temperature: get("slider", "temperature"),
       top_p: input.top_p ?? preset.slider?.top_p ?? defaults.slider.top_p,
     },
     placeholder = {
       date: input.date ?? preset.placeholder?.date ?? GPT.date(),
       location: input.location ?? preset.placeholder?.location ?? defaults.placeholder.location,
     },
-    prompt = typeof input.prompt !== "string"
+    prompt = (typeof input.prompt !== "string"
       ? input.prompt
       : "model" in input
         ? { user: input.prompt }
@@ -52,7 +49,7 @@ class GPT extends Shortcut<
                 )
                 : `${preset.prompt.user}\n\n${input.prompt}`
               : input.prompt,
-          },
+          }),
     messages = (
       "system" in prompt
         ? [
