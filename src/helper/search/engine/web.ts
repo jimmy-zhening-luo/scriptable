@@ -7,6 +7,12 @@ class WebEngine<
     | "browser"
   ),
 > extends SearchEngine<T> {
+  protected override optional = (query: Query) => {
+    const { inprivate } = this,
+    { natural } = query;
+
+    return { natural, inprivate };
+  }
   private readonly urls: readonly string[];
   private readonly TAG: stringful;
   private readonly separator: string;
@@ -54,13 +60,6 @@ class WebEngine<
       ? actions.map(action => `data:text/html,<meta name="color-scheme" content="dark light" />
       <meta http-equiv="Refresh" content="0; url=${action}" />`)
       : actions;
-  }
-
-  protected override optional(query: Query) {
-    const { inprivate } = this,
-    { natural } = query;
-
-    return { natural, inprivate };
   }
 }
 
