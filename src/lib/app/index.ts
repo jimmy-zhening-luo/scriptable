@@ -19,9 +19,7 @@ abstract class App<
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    this.config = this.config ?? new Setting<Schema>(this.app).parse;
-
-    return this.config;
+    return this.config ??= new Setting<Schema>(this.app).parse;
   }
 
   protected get input() {
@@ -145,11 +143,10 @@ abstract class App<
       .get(id) as Storage;
   }
 
-  private config?: Schema;
-
   protected abstract getInput(): Input;
   protected abstract runtime(): Output;
   protected abstract output(runtime: ReturnType<App<Input, Output, Schema>["runtime"]>): ReturnType<App<Input, Output, Schema>["runtime"]>;
+  private config?: Schema;
 }
 
 export default App;
