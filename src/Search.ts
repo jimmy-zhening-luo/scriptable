@@ -22,7 +22,10 @@ class Search extends Shortcut<
       tag,
       engines,
       alias,
-      reserved: { selector, operators },
+      reserved: {
+        selector,
+        operators,
+      },
       defaults: {
         math,
         translate,
