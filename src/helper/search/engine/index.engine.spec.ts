@@ -8,5 +8,5 @@ export default class TestEngine extends SearchEngine<"find"> {
         .reverse()
         .join(""),
     };
-  }
+  };
 }

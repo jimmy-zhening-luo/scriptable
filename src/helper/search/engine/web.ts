@@ -42,7 +42,7 @@ class WebEngine<
     { natural } = query;
 
     return { natural, inprivate };
-  }
+  };
 
   protected override stringify(query: Query) {
     const {
