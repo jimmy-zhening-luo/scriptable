@@ -2,8 +2,8 @@ declare interface SearchSetting {
   tag: string;
   reserved: Field<
     | "selector"
+    | "replacer"
     | "operators"
-    | "replace"
   >;
   defaults: Field<
     | "math"
