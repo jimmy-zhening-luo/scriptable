@@ -135,7 +135,7 @@ abstract class App<
 
   protected abstract getInput(): undefined | Input;
   protected abstract runtime(): Output;
-  protected abstract output(runtime: ReturnType<App<Input, Output, Schema>["runtime"]>): ReturnType<App<Input, Output, Schema>["runtime"]>;
+  protected abstract output(runtime: Output): Output;
   private config?: Schema;
 }
 
