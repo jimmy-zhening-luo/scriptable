@@ -10,6 +10,7 @@ abstract class App<
 > {
   protected readonly app: stringful;
   private readonly cache = new Map<string, Storage>;
+  private config?: Schema;
 
   constructor(protected synthetic?: Input) {
     if (this.constructor.name.length < 1)
@@ -19,7 +20,9 @@ abstract class App<
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    return this.memo("setting", new Setting<Schema>(this.app).parse);
+    this.config = this.config ?? new Setting<Schema>(this.app).parse);
+
+    return this.config;
   }
 
   protected get input() {
