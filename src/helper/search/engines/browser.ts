@@ -24,7 +24,7 @@ class BrowserEngine extends SearchEngine<"browser"> {
       "browser",
       api,
     );
-    this.urls = (typeof urls === "string" ? [urls] : urls).map(url => url.replaceAll(LTAG, latlong));
+    this.urls = (typeof urls === "string" ? [urls] : urls).map(url => url.replace(LTAG, latlong));
 
     if (this.urls.length < 1)
       throw new TypeError("No engine URLs");
@@ -49,7 +49,7 @@ class BrowserEngine extends SearchEngine<"browser"> {
         .map(c => encodeComponent ? encodeURI(c) : encodeURIComponent(c))
         .join("%2B"))
       .join(this.separator),
-    actions = this.urls.map(url => url.replaceAll(TAG, encodedQuery));
+    actions = this.urls.map(url => url.replace(TAG, encodedQuery));
 
     return !this.output && this.force
       ? actions.map(action => `data:text/html,<meta name="color-scheme" content="dark light" />

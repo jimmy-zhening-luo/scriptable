@@ -48,7 +48,7 @@ class GPT extends Shortcut<
           ...preset,
           user: "user" in preset
             ? preset.user.includes(tag)
-              ? preset.user.replaceAll(tag, input)
+              ? preset.user.replace(tag, input)
               : `${preset.user}\n\n${input}`
             : input,
         })(input, preset, tags),

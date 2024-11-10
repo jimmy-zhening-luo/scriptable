@@ -41,7 +41,7 @@ class Search extends Shortcut<
       long,
     } = this.inputful,
     string = input.length > 0
-      ? input.replaceAll(
+      ? input.replace(
         `${replacer}${selector}`,
         clipboard,
       )
