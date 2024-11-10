@@ -1,27 +1,23 @@
 import WebEngine from "./engine/web";
 import type Query from "../query";
 
-class BrowserEngine extends WebEngine<"browser"> {
+class ApiEngine extends WebEngine<"api"> {
   constructor(
-    urls: Unflat,
+    api: string,
     latlong: stringful,
     tags: Dyad<stringful>,
     separator?: string,
     encodeComponent?: boolean,
-    force?: boolean,
-    inprivate?: boolean,
   ) {
     super(
-      "browser",
-      typeof urls === "string" ? [urls] : urls,
+      "api",
+      [api],
       latlong,
       tags,
       separator,
       encodeComponent,
-      force,
-      inprivate,
     );
   }
 }
 
-export default BrowserEngine;
+export default ApiEngine;

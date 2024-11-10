@@ -1,6 +1,7 @@
 // icon-color: blue; icon-glyph: search;
 import Shortcut from "./lib";
 import Query from "./helper/search/query";
+import ApiEngine from "./helper/search/engines/api";
 import BrowserEngine from "./helper/search/engines/browser";
 import FindEngine from "./helper/search/engines/find";
 import ShortcutEngine from "./helper/search/engines/shortcut";
@@ -68,20 +69,27 @@ class Search extends Shortcut<
         latlong,
         Search.stringfuls([tag, locationTag] as const),
       )
-      : "url" in entry
-        ? new BrowserEngine(
-          entry.url,
+      : "api" in entry
+        ? new ApiEngine(
+          entry.api,
           latlong,
           Search.stringfuls([tag, locationTag] as const),
           entry.separator,
           entry.encodeComponent,
-          entry.api,
-          entry.force,
-          entry.inprivate,
         )
-        : "shortcut" in entry
-          ? new ShortcutEngine(entry.shortcut, entry.output)
-          : new FindEngine(entry.find);
+        : "url" in entry
+          ? new BrowserEngine(
+            entry.url,
+            latlong,
+            Search.stringfuls([tag, locationTag] as const),
+            entry.separator,
+            entry.encodeComponent,
+            entry.force,
+            entry.inprivate,
+          )
+          : "shortcut" in entry
+            ? new ShortcutEngine(entry.shortcut, entry.output)
+            : new FindEngine(entry.find);
 
     this.write(String(query));
 

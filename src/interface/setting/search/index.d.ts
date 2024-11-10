@@ -24,9 +24,15 @@ declare interface SearchSetting {
       | "select"
     >
     | SearchEngineSetting<
+      "api",
+      | "encodeComponent"
+      ,
+      never,
+      Field<never, "separator">
+    >
+    | SearchEngineSetting<
       "url",
       | "encodeComponent"
-      | "api"
       | "force"
       | "inprivate"
       ,

@@ -1,10 +1,12 @@
 import type Query from "../../query";
 
 abstract class SearchEngine<
-  T extends
-  | "browser"
-  | "find"
-  | "shortcut",
+  T extends (
+    | "api"
+    | "browser"
+    | "find"
+    | "shortcut"
+  ),
 > {
   protected readonly output: Null<true>;
 
