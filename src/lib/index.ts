@@ -4,7 +4,7 @@ abstract class Shortcut<
   Input = never,
   Output = never,
   Schema = never,
-> extends App<undefined | Input>, Null<Output>, Schema> {
+> extends App<undefined | Input, Null<Output>, Schema> {
   protected getInput() {
     return (args.shortcutParameter as undefined | Input) ?? undefined;
   }
