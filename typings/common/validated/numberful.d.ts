@@ -1,1 +1,1 @@
-declare type numberful = Full<number, "!NaN">;
+declare type numberful<And = ""> = full<number, "!NaN", And>;

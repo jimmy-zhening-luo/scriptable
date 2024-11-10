@@ -1,1 +1,1 @@
-declare type char = stringful & StringLength<1>;
+declare type char = stringful & { length: 1 };

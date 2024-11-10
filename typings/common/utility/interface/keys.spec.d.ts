@@ -31,7 +31,7 @@ declare namespace Keys {
     N2e: Keys<object>;
     N2f: Keys<{
       a: 1;
-      [ful]: "cool";
+      [full]: "cool";
     }>;
     N3: Keys<[]>;
     N3a: Keys<readonly [1, 1]>;

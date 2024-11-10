@@ -1,13 +1,17 @@
 declare namespace Nullable {
-  type OK = Tester<TF> | 0;
-  type TF = {
+  type Canary = Tester<Suite> | 0;
+  type Suite = {
     T: {
-      T0: Nullable<string>;
-      T1: Nullable<string | null>;
-      T2: Nullable<string | undefined>;
-      T3: Nullable<string | null | undefined>;
-      T4: Nullable<string | int | null>;
-      T6: Nullable<NonNullable<undefined | string>>;
+      a: Nullable<string>;
+      a0: Nullable<string | null>;
+      b: Nullable<string | undefined>;
+      d: Nullable<string | null | undefined>;
+      e: Nullable<string | int | null>;
+      f: Nullable<NonNullable<undefined | string>>;
+      g: Nullable<"" | 5>;
+    };
+    F: {
+      a: Nullable<never>;
     };
   };
 }

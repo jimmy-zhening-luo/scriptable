@@ -1,1 +1,1 @@
-declare type stringful = Full<string, "length > 0"> & { 0: char };
+declare type stringful = full<string, "stringful"> & { 0: char };

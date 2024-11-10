@@ -1,8 +1,11 @@
-declare type Primitive<P extends T, T extends primitive> = [T] extends [primitive]
-  ? [P] extends [T]
+declare type Primitive<
+  P extends Type,
+  Type extends primitive,
+> = [Type] extends [primitive]
+  ? [P] extends [Type]
       ? Extract<P, object> extends never
-        ? Exclude<P, T> extends never
-          ? T extends P
+        ? Exclude<P, Type> extends never
+          ? Type extends P
             ? never
             : P
           : never

@@ -1,2 +1,9 @@
-declare const ful: unique symbol;
-declare type Full<Type extends primitive, Brand> = Type & { [ful]: Brand };
+declare const
+full: unique symbol,
+and: unique symbol;
+declare type full<Type extends primitive, Of, And = ""> =
+  & Type
+  & { [full]: Of }
+  & (And extends ""
+    ? Type
+    : { [and]: And });
