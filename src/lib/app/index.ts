@@ -12,10 +12,11 @@ abstract class App<
   private readonly cache = new Map<string, Storage>;
 
   constructor(protected synthetic?: Input) {
-    if (this.constructor.name.length < 1)
+    const name = this.constructor.name;
+    if (name === "")
       throw new EvalError("App has no name");
 
-    this.app = this.constructor.name as stringful;
+    this.app = name as stringful;
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
@@ -27,22 +28,21 @@ abstract class App<
   }
 
   protected get inputful() {
-    const { input } = this;
+    const { input = null } = this;
 
-    if (typeof input === "undefined" || input === null)
+    if (input === null)
       throw new TypeError("Null input");
 
     return input;
   }
 
   protected get inputString() {
-    const { input } = this,
-    string = input ?? "";
+    const { input = "" } = this;
 
-    if (typeof string !== "string" && typeof string !== "number")
+    if (typeof input !== "string" && typeof input !== "number")
       throw new TypeError("Non-string input", { cause: input });
 
-    return String(string);
+    return String(input);
   }
 
   protected get inputStringful() {
@@ -50,14 +50,14 @@ abstract class App<
   }
 
   protected static stringful(string = "", cause = "") {
-    if (string.length < 1)
+    if (string === "")
       throw new TypeError(`Unstringful: ${cause}`);
 
     return string as stringful;
   }
 
   protected static stringfuls<T extends readonly string[]>(array: T, cause = "") {
-    if (array.length < 1 || !array.every((i): i is stringful => i.length > 0))
+    if (array.length < 1 || !array.every((i): i is stringful => i !== ""))
       throw new TypeError(`Unstringful array: ${cause}`);
 
     return array as unknown as (
@@ -100,10 +100,7 @@ abstract class App<
   }
 
   protected subsetting<Subschema>(subpath: string) {
-    if (subpath.length < 1)
-      throw new ReferenceError("Empty subsetting path");
-
-    return new Setting<Subschema extends Subschema ? Subschema : never>(`${this.app}/${subpath}` as stringful).parse;
+    return new Setting<Subschema extends Subschema ? Subschema : never>(`${this.app}/${App.stringful(subpath, "subsetting")}` as stringful).parse;
   }
 
   protected read(...file: Parameters<App<Input, Output, Schema>["storage"]>) {

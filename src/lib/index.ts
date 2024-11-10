@@ -4,11 +4,9 @@ abstract class Shortcut<
   Input = never,
   Output = never,
   Schema = never,
-> extends App<Nullable<Input>, Null<Output>, Schema> {
+> extends App<undefined | Input>, Null<Output>, Schema> {
   protected getInput() {
-    const input = args.shortcutParameter as undefined | Input;
-
-    return typeof input === "undefined" ? null : input;
+    return (args.shortcutParameter as undefined | Input) ?? undefined;
   }
 
   protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
