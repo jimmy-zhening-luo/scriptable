@@ -21,7 +21,7 @@ abstract class App<
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    return this.config ??= new Setting<Schema>(`${this.app}.json`).parse;
+    return this.config ??= new Setting<Schema>(`${this.app}.json` as stringful).parse;
   }
 
   protected get input() {
