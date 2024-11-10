@@ -1,5 +1,5 @@
 import SearchEngine from ".";
-import type Query from "../..query";
+import type Query from "../../query";
 
 class WebEngine<
   T extends (
