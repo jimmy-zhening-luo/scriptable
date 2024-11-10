@@ -20,7 +20,7 @@ abstract class App<
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    this.config = this.config ?? new Setting<Schema>(this.app).parse);
+    this.config = this.config ?? new Setting<Schema>(this.app).parse;
 
     return this.config;
   }
