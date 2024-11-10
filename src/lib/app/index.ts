@@ -129,12 +129,6 @@ abstract class App<
     this.storage(file).write(data, overwrite);
   }
 
-  private memo<T>(property: string, value: T) {
-    Object.defineProperty(this, property, { value, enumerable: true });
-
-    return value;
-  }
-
   private storage(file: string | { ext: string; name?: string } = this.app) {
     const { name = this.app, ext = "txt" } = typeof file === "object"
       ? file
