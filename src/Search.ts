@@ -7,7 +7,7 @@ import ShortcutEngine from "./helper/search/engines/shortcut";
 
 class Search extends Shortcut<
   Field<
-    | "query"
+    | "input"
     | "clipboard"
     | "lat"
     | "long"
