@@ -131,6 +131,10 @@ abstract class App<
     this.storage(file).write(data, overwrite);
   }
 
+  protected delete(...[file]: Parameters<App<Input, Output, Schema>["storage"]>) {
+    this.storage(file).delete();
+  }
+
   private storage(file:
     | string
     | {
