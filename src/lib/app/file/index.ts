@@ -1,6 +1,6 @@
 abstract class File<
   FT extends string,
-  Mutable extends boolean = false,
+  Mutable extends boolean,
 > {
   private static readonly manager = FileManager.local();
   protected readonly path: string;
@@ -56,14 +56,22 @@ abstract class File<
   }
 
   public write(
-    string: string,
+    data:
+      | null
+      | string
+      | number
+      | boolean
+      | (string | number | boolean)[]
+      | Record<string, unknown> = null,
     overwrite:
       | "line"
       | "append"
       | boolean = false,
   ) {
-    if (!this.mutable)
-      throw new TypeError("Cannot write to readonly file", { cause: this.path });
+    if (data === null)
+      throw new TypeError("Write null data");
+    else if (!this.mutable)
+      throw new TypeError("Write readonly file", { cause: this.path });
     else if (File.manager.isDirectory(this.path))
       throw new ReferenceError("Write location is folder", { cause: this.path });
     else if (this.exists) {
@@ -75,11 +83,15 @@ abstract class File<
 
     File.manager.writeString(
       this.path,
-      typeof overwrite !== "string"
-        ? string
-        : (prior => overwrite === "line"
-            ? `${string}${prior.length > 0 ? "" : `\n${prior}`}`
-            : `${prior}${string}`)(this.read()),
+      Array.isArray(data)
+        ? `${data.reverse().join("\n")}\n${this.read()}`
+        : typeof data === "object"
+          ? JSON.stringify(data)
+          : typeof overwrite !== "string"
+            ? String(data)
+            : overwrite === "line"
+              ? `${String(data)}\n${this.read()}`
+              : `${this.read()}${String(data)}`
     );
   }
 

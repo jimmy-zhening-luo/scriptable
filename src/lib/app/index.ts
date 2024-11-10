@@ -1,5 +1,4 @@
-import Setting from "./files/setting";
-import Storage from "./files/storage";
+import File from "./file";
 import error from "./error";
 import url from "./objects/url";
 
@@ -117,7 +116,7 @@ abstract class App<
   }
 
   protected write(
-    data: Parameters<Storage["write"]>[0],
+    data: Parameters<File["write"]>[0],
     overwrite?: Parameters<Storage["write"]>[1],
     file?: Parameters<App<Input, Output, Schema>["storage"]>[0],
   ) {

@@ -1,4 +1,4 @@
-import File from "./file";
+import File from ".";
 
 class Setting<Schema> extends File<"Setting"> {
   constructor(filename: stringful) {

@@ -1,4 +1,4 @@
-import File from "./file";
+import File from ".";
 
 class Storage extends File<"Storage", true> {
   constructor(
