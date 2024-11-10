@@ -47,7 +47,7 @@ class Search extends Shortcut<
       )
       : this.read(),
     latlong = Search.stringfuls([lat, long] as const)
-      .map(coordinate => `${Math.round(Number(coordinate) * 1000000) / 1000000}`)
+      .map(coordinate => Math.round(Number(coordinate) * 1000000) / 1000000)
       .join(",") as stringful,
     query = new Query(
       string,
