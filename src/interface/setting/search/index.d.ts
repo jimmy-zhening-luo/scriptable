@@ -3,6 +3,7 @@ declare interface SearchSetting {
   reserved: Field<
     | "selector"
     | "operators"
+    | "replace"
   >;
   defaults: Field<
     | "math"
