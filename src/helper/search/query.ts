@@ -16,7 +16,7 @@ class Query {
     if (`${SELECTOR}${OPERATORS}`.includes("."))
       throw new TypeError("Bad selector/operator");
 
-    const [K, ...terms] = Query.select(
+    const [Key, ...terms] = Query.select(
       Query.operate(
         Query.tokenize(
           string,
@@ -28,7 +28,7 @@ class Query {
       SELECTOR,
       TRANSLATE,
     ),
-    key = (K satisfies stringful).toLowerCase() as stringful;
+    key = (Key satisfies stringful).toLowerCase() as stringful;
 
     ({
       key: this.key = key,
@@ -39,7 +39,7 @@ class Query {
         ? { key: alias[key] as stringful }
         : {
             key: (FALLBACK satisfies Readonly<Arrayful<stringful>>).at(-1) as stringful,
-            terms: [key, ...terms],
+            terms: [Key, ...terms],
           });
     this.engine = engines[this.key] as typeof engines[string];
   }
