@@ -21,7 +21,7 @@ class SearchEngine<
   public resolve(query: Query) {
     return {
       ...this.required(query),
-      ...this.optional(query) ?? {},
+      ...typeof this.optional !== "undefined" ? this.optional(query) : {},
     };
   }
 
@@ -40,7 +40,7 @@ class SearchEngine<
     };
   }
 
-  protected optional(query: Query)?: Omit<SearchOutput, keyof ReturnType<SearchEngine<T>["required"]>>;
+  protected optional?: (query: Query) => Omit<SearchOutput, keyof ReturnType<SearchEngine<T>["required"]>>;
 }
 
 export default SearchEngine;
