@@ -4,7 +4,7 @@ class Query {
   public readonly engine: SearchSetting["engines"][string];
 
   constructor(
-    input: string,
+    string: string,
     engines: SearchSetting["engines"],
     alias: FieldTable,
     SELECTOR: stringful,
@@ -19,7 +19,7 @@ class Query {
     const [K, ...terms] = Query.select(
       Query.operate(
         Query.tokenize(
-          input,
+          string,
           FALLBACK,
         ),
         OPERATORS,

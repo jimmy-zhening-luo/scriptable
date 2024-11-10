@@ -16,13 +16,15 @@ class Search extends Shortcut<
   SearchSetting
 > {
   protected runtime() {
-    const { inputful, setting } = this,
-    input = inputful.query.length > 0 ? inputful.query : this.read(),
-    {
-      tag,
+    const {
+      tags: {
+        query: tag,
+        location: locationTag,
+      },
       engines,
       alias,
       reserved: {
+        replacer,
         selector,
         operators,
       },
@@ -31,9 +33,24 @@ class Search extends Shortcut<
         translate,
         fallback,
       },
-    } = setting,
-    query = new Query(
+    } = this.setting,
+    {
       input,
+      clipboard,
+      lat,
+      long,
+    } = this.inputful,
+    string = input.length > 0
+      ? input.replaceAll(
+        `${replacer}${selector}`,
+        clipboard,
+      )
+      : this.read(),
+    latlong = Search.stringfuls([lat, long] as const)
+      .map(coordinate => `${Math.round(Number(coordinate) * 1000000) / 1000000}`)
+      .join(",") as stringful;
+    query = new Query(
+      string,
       engines,
       alias,
       ...Search.stringfuls([
@@ -46,11 +63,16 @@ class Search extends Shortcut<
     ),
     entry = query.engine,
     engine = Array.isArray(entry) || typeof entry === "string"
-      ? new BrowserEngine(entry, Search.stringful(tag))
+      ? new BrowserEngine(
+        entry,
+        latlong,
+        Search.stringfuls([tag, locationTag] as const),
+      )
       : "url" in entry
         ? new BrowserEngine(
           entry.url,
-          Search.stringful(tag),
+          latlong,
+          Search.stringfuls([tag, locationTag] as const),
           entry.separator,
           entry.encodeComponent,
           entry.api,

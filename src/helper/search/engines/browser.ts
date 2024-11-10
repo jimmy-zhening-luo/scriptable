@@ -11,7 +11,8 @@ class BrowserEngine extends SearchEngine<"browser"> {
 
   constructor(
     urls: Unflat,
-    TAG: stringful,
+    latlong: stringful,
+    [TAG, LTAG]: Dyad<stringful>,
     separator = "+",
     encodeComponent = false,
     api = false,
@@ -23,7 +24,7 @@ class BrowserEngine extends SearchEngine<"browser"> {
       "browser",
       api,
     );
-    this.urls = typeof urls === "string" ? [urls] : urls;
+    this.urls = (typeof urls === "string" ? [urls] : urls).map(url => url.replaceAll(LTAG, latlong));
 
     if (this.urls.length < 1)
       throw new TypeError("No engine URLs");
@@ -38,14 +39,17 @@ class BrowserEngine extends SearchEngine<"browser"> {
   }
 
   protected override stringify(query: Query) {
-    const { TAG, encodeComponent } = this,
+    const {
+      TAG,
+      encodeComponent,
+    } = this,
     encodedQuery = query.terms
       .map(term => term
         .split("+")
         .map(c => encodeComponent ? encodeURI(c) : encodeURIComponent(c))
         .join("%2B"))
       .join(this.separator),
-    actions = this.urls.map(url => url.replace(TAG, encodedQuery));
+    actions = this.urls.map(url => url.replaceAll(TAG, encodedQuery));
 
     return !this.output && this.force
       ? actions.map(action => `data:text/html,<meta name="color-scheme" content="dark light" />
