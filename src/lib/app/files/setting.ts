@@ -1,13 +1,11 @@
 import File from "./file";
 
 class Setting<Schema> extends File<"Setting"> {
-  constructor(app: stringful) {
+  constructor(filename: stringful) {
     super(
       "Setting",
       false,
-      null,
-      app,
-      "json",
+      filename,
     );
   }
 

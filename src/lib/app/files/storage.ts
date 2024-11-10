@@ -2,16 +2,14 @@ import File from "./file";
 
 class Storage extends File<"Storage", true> {
   constructor(
-    app: stringful,
-    name: string,
-    ext: string,
+    filename: string,
+    folder: stringful,
   ) {
     super(
       "Storage",
       true,
-      app,
-      name,
-      ext,
+      filename,
+      folder,
     );
   }
 

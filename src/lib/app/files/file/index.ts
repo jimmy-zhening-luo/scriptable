@@ -10,15 +10,14 @@ abstract class File<
   constructor(
     filetype: literalful<FT>,
     public readonly mutable: Mutable,
-    folder: Null<string>,
-    name: string,
-    ext: string,
+    filename: string,
+    folder: string = "",
   ) {
     if (!File.manager.bookmarkExists(filetype))
       throw new ReferenceError(`No bookmark for ${filetype}`);
 
     const root = File.manager.bookmarkedPath(filetype),
-    subpath = `${folder ?? ""}/${name}${ext.length > 0 ? `.${ext}` : ""}`
+    subpath = `${folder}/${filename}`
       .split("/")
       .filter(node => node !== "");
 

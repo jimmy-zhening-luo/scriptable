@@ -9,7 +9,7 @@ abstract class App<
   Schema,
 > {
   protected readonly app: stringful;
-  private readonly cache = new Map<string, Storage>;
+  private readonly cache: Record<string, Storage> = {};
 
   constructor(protected synthetic?: Input) {
     const { name } = this.constructor;
@@ -21,7 +21,7 @@ abstract class App<
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    return this.config ??= new Setting<Schema>(this.app).parse;
+    return this.config ??= new Setting<Schema>(`${this.app}.json`).parse;
   }
 
   protected get input() {
@@ -101,7 +101,7 @@ abstract class App<
   }
 
   protected subsetting<Subschema>(subpath: string) {
-    return new Setting<Subschema extends Subschema ? Subschema : never>(`${this.app}/${App.stringful(subpath, "subsetting")}` as stringful).parse;
+    return new Setting<Subschema extends Subschema ? Subschema : never>(`${this.app}/${App.stringful(subpath, "subsetting")}.json` as stringful).parse;
   }
 
   protected read(...file: Parameters<App<Input, Output, Schema>["storage"]>) {
@@ -124,21 +124,14 @@ abstract class App<
     this.storage(file).write(data, overwrite);
   }
 
-  private storage(file: string | { ext: string; name?: string } = this.app) {
-    const { name = this.app, ext = "txt" } = typeof file === "object"
+  private storage(file: string | { name?: string; ext?: string } = {}) {
+    const { app } = this,
+    { name = app, ext = "txt" } = typeof file === "object"
       ? file
       : { name: file },
-    id = `${name}:${ext}`;
+    filename = `${name}.${ext}`;
 
-    return (
-      this.cache.has(id)
-        ? this.cache
-        : this.cache.set(
-          id,
-          new Storage(this.app, name, ext),
-        )
-    )
-      .get(id) as Storage;
+    return this.cache[filename] ??= new Storage(filename, app);
   }
 
   protected abstract getInput(): undefined | Input;
