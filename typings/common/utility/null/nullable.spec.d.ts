@@ -9,9 +9,7 @@ declare namespace Nullable {
       e: Nullable<string | int | null>;
       f: Nullable<NonNullable<undefined | string>>;
       g: Nullable<"" | 5>;
-    };
-    F: {
-      a: Nullable<never>;
+      z: Nullable<never>; // null
     };
   };
 }
