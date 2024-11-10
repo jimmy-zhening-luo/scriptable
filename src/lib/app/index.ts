@@ -2,6 +2,8 @@ import File from "./file";
 import error from "./error";
 import url from "./objects/url";
 
+type Storage = File<"Storage", true>;
+
 abstract class App<
   Input,
   Output,
@@ -20,7 +22,12 @@ abstract class App<
   }
 
   protected get setting(): Schema extends Schema ? Schema : never {
-    return this.config ??= new Setting<Schema>(`${this.app}.json` as stringful).parse;
+    return this.config ??= ((config: unknown): Schema => {
+      if (typeof config !== "object" || config === null)
+        throw new TypeError("Setting file is not JSON");
+
+      return config satisfies object as Schema;
+    })(JSON.parse(new File<"Setting", false>("Setting", false, { name: `${this.app}.json` as stringful }).readful()) ?? null);
   }
 
   protected get input() {
@@ -99,38 +106,50 @@ abstract class App<
     }
   }
 
-  protected subsetting<Subschema>(subpath: string) {
-    return new Setting<Subschema extends Subschema ? Subschema : never>(`${this.app}/${App.stringful(subpath, "subsetting")}.json` as stringful).parse;
+  protected subsetting<Subschema>(subpath: string): Subschema extends Subschema ? Subschema : never {
+    return ((config: unknown): Subschema => {
+      if (typeof config !== "object" || config === null)
+        throw new TypeError("Setting file is not JSON");
+
+      return config satisfies object as Subschema;
+    })(JSON.parse(new File<"Setting", false>("Setting", false, { name: `${this.app}/${App.stringful(subpath, "subsetting")}.json` as stringful }).readful()) ?? null);
   }
 
-  protected read(...file: Parameters<App<Input, Output, Schema>["storage"]>) {
-    return this.storage(...file).read();
+  protected read(...[file]: Parameters<App<Input, Output, Schema>["storage"]>) {
+    return this.storage(file).read();
   }
 
-  protected readful(...file: Parameters<App<Input, Output, Schema>["storage"]>) {
-    return this.storage(...file).readful();
+  protected readful(...[file]: Parameters<App<Input, Output, Schema>["storage"]>) {
+    return this.storage(file).readful();
   }
 
-  protected data<Data>(...file: Parameters<App<Input, Output, Schema>["storage"]>): Null<Data> {
-    return this.storage(...file).data<Data>();
-  }
-
-  protected write(
-    data: Parameters<File["write"]>[0],
-    overwrite?: Parameters<Storage["write"]>[1],
-    file?: Parameters<App<Input, Output, Schema>["storage"]>[0],
-  ) {
+  protected write(...[
+    data,
+    overwrite,
+    file,
+  ]: [...Parameters<Storage["write"]>, ...Parameters<App<Input, Output, Schema>["storage"]>]) {
     this.storage(file).write(data, overwrite);
   }
 
-  private storage(file: string | { name?: string; ext?: string } = {}) {
-    const { app } = this,
-    { name = app, ext = "txt" } = typeof file === "object"
+  private storage(file:
+    | string
+    | {
+      name?: string;
+      ext?: string;
+    } = {}) {
+    const {
+      name: basename = this.app,
+      ext = "txt",
+    } = typeof file === "object"
       ? file
-      : { name: file },
-    filename = `${name}.${ext}`;
+      : { name: file };
 
-    return this.cache[filename] ??= new Storage(filename, app);
+    if (basename === "" || ext === "")
+      throw new TypeError("Empty filename");
+
+    const name = `${basename}.${ext}`;
+
+    return this.cache[name] ??= new File("Storage", true, { name, folder: this.app });
   }
 
   protected abstract getInput(): undefined | Input;

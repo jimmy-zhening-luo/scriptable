@@ -1,1 +1,1 @@
-declare type Un<T> = T extends never ? never : (undefined | T);
+declare type Un<T> = undefined | T;

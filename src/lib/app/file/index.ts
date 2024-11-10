@@ -1,4 +1,4 @@
-abstract class File<
+class File<
   FT extends string,
   Mutable extends boolean,
 > {
@@ -10,14 +10,19 @@ abstract class File<
   constructor(
     filetype: literalful<FT>,
     public readonly mutable: Mutable,
-    filename: string,
-    folder = "",
+    {
+      name,
+      folder = "",
+    }: Field<
+      "name",
+      | "folder"
+    >,
   ) {
     if (!File.manager.bookmarkExists(filetype))
       throw new ReferenceError(`No bookmark for ${filetype}`);
 
     const root = File.manager.bookmarkedPath(filetype),
-    subpath = `${folder}/${filename}`
+    subpath = `${folder}/${name}`
       .split("/")
       .filter(node => node !== "");
 
@@ -47,12 +52,6 @@ abstract class File<
       throw new ReferenceError("Unreadful file", { cause: this.path });
 
     return read as stringful;
-  }
-
-  public data<Data>(): Null<Data> {
-    const string = this.read().trim();
-
-    return string.length > 0 ? JSON.parse(string) as Data : null;
   }
 
   public write(
@@ -91,7 +90,7 @@ abstract class File<
             ? String(data)
             : overwrite === "line"
               ? `${String(data)}\n${this.read()}`
-              : `${this.read()}${String(data)}`
+              : `${this.read()}${String(data)}`,
     );
   }
 
