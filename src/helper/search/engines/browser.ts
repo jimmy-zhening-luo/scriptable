@@ -1,5 +1,4 @@
 import WebEngine from "./engine/web";
-import type Query from "../query";
 
 class BrowserEngine extends WebEngine<"browser"> {
   constructor(

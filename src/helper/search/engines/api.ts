@@ -1,5 +1,4 @@
 import WebEngine from "./engine/web";
-import type Query from "../query";
 
 class ApiEngine extends WebEngine<"api"> {
   constructor(
