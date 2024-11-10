@@ -6,7 +6,12 @@ import FindEngine from "./helper/search/engines/find";
 import ShortcutEngine from "./helper/search/engines/shortcut";
 
 class Search extends Shortcut<
-  Field<"query" | "clipboard">,
+  Field<
+    | "query"
+    | "clipboard"
+    | "lat"
+    | "long"
+  >,
   SearchOutput,
   SearchSetting
 > {
