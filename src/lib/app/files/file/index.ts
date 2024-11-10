@@ -11,7 +11,7 @@ abstract class File<
     filetype: literalful<FT>,
     public readonly mutable: Mutable,
     filename: string,
-    folder: string = "",
+    folder = "",
   ) {
     if (!File.manager.bookmarkExists(filetype))
       throw new ReferenceError(`No bookmark for ${filetype}`);
