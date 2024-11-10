@@ -10,7 +10,6 @@ abstract class App<
 > {
   protected readonly app: stringful;
   private readonly cache = new Map<string, Storage>;
-  private config?: Schema;
 
   constructor(protected synthetic?: Input) {
     if (this.constructor.name.length < 1)
@@ -145,6 +144,8 @@ abstract class App<
     )
       .get(id) as Storage;
   }
+
+  private config?: Schema;
 
   protected abstract getInput(): Input;
   protected abstract runtime(): Output;
