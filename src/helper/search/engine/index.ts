@@ -1,6 +1,6 @@
-import type Query from "../../query";
+import type Query from "../query";
 
-abstract class SearchEngine<
+class SearchEngine<
   T extends (
     | "api"
     | "browser"
@@ -21,7 +21,7 @@ abstract class SearchEngine<
   public resolve(query: Query) {
     return {
       ...this.required(query),
-      ...this.optional(query),
+      ...this.optional(query) ?? {},
     };
   }
 
@@ -40,7 +40,7 @@ abstract class SearchEngine<
     };
   }
 
-  protected abstract optional(query: Query): Omit<SearchOutput, keyof ReturnType<SearchEngine<T>["required"]>>;
+  protected optional(query: Query)?: Omit<SearchOutput, keyof ReturnType<SearchEngine<T>["required"]>>;
 }
 
 export default SearchEngine;

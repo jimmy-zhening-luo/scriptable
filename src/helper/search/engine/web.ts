@@ -1,5 +1,5 @@
 import SearchEngine from ".";
-import type Query from "../../query";
+import type Query from "../query";
 
 class WebEngine<
   T extends (
@@ -16,7 +16,7 @@ class WebEngine<
 
   constructor(
     webapp: T,
-    urls: readonly string[],
+    urls: Unflat,
     latlong: stringful,
     [TAG, LTAG]: Dyad<stringful>,
     separator = "+",
@@ -29,7 +29,7 @@ class WebEngine<
       webapp,
       webapp === "api",
     );
-    this.urls = urls.map(url => url.replace(LTAG, latlong));
+    this.urls = (typeof urls === "string" ? [urls] : urls).map(url => url.replace(LTAG, latlong));
     this.TAG = TAG;
     this.separator = separator;
     this.encodeComponent = encodeComponent;
@@ -56,7 +56,7 @@ class WebEngine<
       : actions;
   }
 
-  protected optional(query: Query) {
+  protected override optional(query: Query) {
     const { inprivate } = this,
     { natural } = query;
 
