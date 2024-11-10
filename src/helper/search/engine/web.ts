@@ -7,12 +7,6 @@ class WebEngine<
     | "browser"
   ),
 > extends SearchEngine<T> {
-  protected override optional = (query: Query) => {
-    const { inprivate } = this,
-    { natural } = query;
-
-    return { natural, inprivate };
-  }
   private readonly urls: readonly string[];
   private readonly TAG: stringful;
   private readonly separator: string;
@@ -41,6 +35,13 @@ class WebEngine<
     this.encodeComponent = encodeComponent;
     this.force = force;
     this.inprivate = inprivate || null;
+  }
+
+  protected override optional = (query: Query) => {
+    const { inprivate } = this,
+    { natural } = query;
+
+    return { natural, inprivate };
   }
 
   protected override stringify(query: Query) {
