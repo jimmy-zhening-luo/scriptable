@@ -12,7 +12,8 @@ abstract class App<
   private readonly cache = new Map<string, Storage>;
 
   constructor(protected synthetic?: Input) {
-    const name = this.constructor.name;
+    const { name } = this.constructor;
+
     if (name === "")
       throw new EvalError("App has no name");
 
@@ -24,7 +25,7 @@ abstract class App<
   }
 
   protected get input() {
-    return this.synthetic ?? this.getInput();
+    return this.synthetic ?? this.getInput() ?? undefined;
   }
 
   protected get inputful() {
@@ -140,7 +141,7 @@ abstract class App<
       .get(id) as Storage;
   }
 
-  protected abstract getInput(): Input;
+  protected abstract getInput(): undefined | Input;
   protected abstract runtime(): Output;
   protected abstract output(runtime: ReturnType<App<Input, Output, Schema>["runtime"]>): ReturnType<App<Input, Output, Schema>["runtime"]>;
   private config?: Schema;
