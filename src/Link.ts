@@ -19,8 +19,7 @@ class Link extends Shortcut<
   LinkSetting
 > {
   protected runtime() {
-    const deindex = (list: ListTable, host: string) => list[host]?.map(i => i.toLowerCase()) ?? [],
-    compose = ({
+    function compose({
       scheme, host, path, query, fragment,
     }: Field<
       | "scheme"
@@ -28,14 +27,18 @@ class Link extends Shortcut<
       | "path"
       | "query"
       | "fragment"
-    >) => [[[[...scheme === "" ? [] : [scheme], host].join("://"), ...path === "/" ? [] : [path]].join(""), ...query === "" ? [] : [query]].join("?"), ...fragment === "" ? [] : [fragment]].join("#"),
-    { inputString, setting } = this,
-    url = Url(inputString),
+    >) {
+      return `${scheme}${scheme === "" ? "" : "://"}${host}${path === "/" ? "" : path}${query === "" ? "" : "?"}${query}${fragment === "" ? "" : "#"}${fragment}`;
+    }
+    function deindex(list: ListTable, host: string) {
+      return list[host]?.map(i => i.toLowerCase()) ?? [];
+    }
+
+    const { setting } = this,
+    url = Url(this.inputString),
     host = ((host: string) => (headless => setting.host.swap[headless] ?? headless)(!host.startsWith("www.") || setting.host.www.includes(host) ? host : host.slice(4)))(url.host),
-    params = {
-      include: deindex(setting.query.include, host),
-      exclude: deindex(setting.query.exclude, host),
-    };
+    includeQ = deindex(setting.query.include, host),
+    excludeQ = deindex(setting.query.exclude, host);
 
     return compose({
       host,
@@ -43,15 +46,15 @@ class Link extends Shortcut<
       path: Processor(host, url.path),
       query: setting.query.omit.includes(host)
         ? ""
-        : params.include.length > 0
+        : includeQ.length > 0
           ? url.query
             .split("&")
-            .filter(p => params.include.includes(p.toLowerCase().split("=")[0] as string))
+            .filter(p => includeQ.includes((p.split("=")[0] as string).toLowerCase()))
             .join("&")
-          : params.exclude.length > 0
+          : excludeQ.length > 0
             ? url.query
               .split("&")
-              .filter(p => !params.exclude.includes(p.toLowerCase().split("=")[0] as string))
+              .filter(p => !excludeQ.includes((p.split("=")[0] as string).toLowerCase()))
               .join("&")
             : url.query,
       fragment: setting.fragment.trim.includes(host) ? "" : url.fragment,
