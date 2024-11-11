@@ -17,7 +17,7 @@ class WebEngine<
   constructor(
     webapp: T,
     urls: Unflat,
-    latlong: stringful,
+    latlong: string,
     [TAG, LTAG]: Dyad<stringful>,
     separator = "+",
     encodeComponent = false,
