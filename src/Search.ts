@@ -8,8 +8,7 @@ class Search extends Shortcut<
   Field<
     | "input"
     | "clipboard"
-    | "lat"
-    | "long"
+    | "latlong"
   >,
   SearchOutput,
   SearchSetting
@@ -36,8 +35,7 @@ class Search extends Shortcut<
     {
       input,
       clipboard,
-      lat,
-      long,
+      latlong,
     } = this.inputful,
     string = input === ""
       ? this.read()
@@ -45,9 +43,6 @@ class Search extends Shortcut<
         `${replacer}${selector}`,
         clipboard,
       ),
-    latlong = Search.stringfuls([lat, long] as const)
-      .map(coordinate => Math.trunc(Number(coordinate) * 1000000) / 1000000)
-      .join(",") as stringful,
     query = new Query(
       string,
       engines,
