@@ -84,7 +84,8 @@ class Query {
             operation["operand"] as stringful,
           ] as const;
     }
-    function numeric (char: char, operators = "") {
+
+    function numeric(char: char, operators = "") {
       return char >= "0" && char <= "9" || operators.includes(char);
     }
 
