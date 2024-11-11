@@ -1,6 +1,7 @@
 // icon-color: light-gray; icon-glyph: link;
 import Shortcut from "./lib";
-import processor from "./helper/link";
+import Url from "./lib/objects/url";
+import Processor from "./helper/link";
 
 class Link extends Shortcut<
   string,
@@ -17,9 +18,9 @@ class Link extends Shortcut<
       | "path"
       | "query"
       | "fragment"
-    >) => [[[[...scheme.length > 0 ? [scheme] : [], host].join("://"), ...path !== "/" ? [path] : []].join(""), ...query.length > 0 ? [query] : []].join("?"), ...fragment.length > 0 ? [fragment] : []].join("#"),
+    >) => [[[[...scheme === "" ? [] : [scheme], host].join("://"), ...path === "/" ? [] : [path]].join(""), ...query === "" ? [] : [query]].join("?"), ...fragment === "" ? [] : [fragment]].join("#"),
     { inputString, setting } = this,
-    url = Link.url(inputString),
+    url = Url(inputString),
     host = ((host: string) => (headless => setting.host.swap[headless] ?? headless)(!host.startsWith("www.") || setting.host.www.includes(host) ? host : host.slice(4)))(url.host),
     params = {
       include: deindex(setting.query.include, host),
@@ -29,7 +30,7 @@ class Link extends Shortcut<
     return compose({
       host,
       scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
-      path: processor(host, url.path),
+      path: Processor(host, url.path),
       query: setting.query.omit.includes(host)
         ? ""
         : params.include.length > 0

@@ -5,15 +5,15 @@ function url(string: string) {
     path = "",
     query = "",
     fragment = "",
-  }) => scheme.length > 0 && (!tryHttp || host.length > 0 || path.length > 0)
-    ? {
+  }) => scheme === "" || tryHttp && host === "" && path === ""
+    ? null
+    : {
         scheme: scheme.toLocaleLowerCase(),
         host: host.toLocaleLowerCase(),
         path,
         query,
         fragment,
-      }
-    : null)((/^(?:(?<scheme>[^:/?#]+):)?(?:\/\/(?<host>[^/?#]*))?(?<path>[^?#]*)(?:\?(?<query>[^#]*))?(?:#(?<fragment>.*))?/u)
+      })((/^(?:(?<scheme>[^:/?#]+):)?(?:\/\/(?<host>[^/?#]*))?(?<path>[^?#]*)(?:\?(?<query>[^#]*))?(?:#(?<fragment>.*))?/u)
     .exec(`${tryHttp ? "https" : ""}${string}`)
     ?.groups ?? {}),
   parts = parse(string) ?? parse(string, true);

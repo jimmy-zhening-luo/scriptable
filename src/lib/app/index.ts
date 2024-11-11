@@ -1,8 +1,4 @@
 import File from "./file";
-import error from "./error";
-import url from "./objects/url";
-
-type Storage = File<"Storage", true>;
 
 abstract class App<
   Input,
@@ -10,7 +6,7 @@ abstract class App<
   Schema,
 > {
   protected readonly app: stringful;
-  private readonly cache: Record<string, Storage> = {};
+  private readonly cache: Record<string, File<"Storage", true>> = {};
 
   constructor(protected synthetic?: Input) {
     const { name } = this.constructor;
@@ -74,10 +70,6 @@ abstract class App<
     );
   }
 
-  protected static url(string: string) {
-    return url(string);
-  }
-
   protected static date(date?: Date) {
     return App.datetime("EEEE, MMMM d, y", date);
   }
@@ -98,8 +90,8 @@ abstract class App<
     try {
       return this.output(this.runtime());
     }
-    catch (e) {
-      throw error(this.app, e);
+    catch (error) {
+      throw this.error(error);
     }
     finally {
       Script.complete();
@@ -127,7 +119,7 @@ abstract class App<
     data,
     overwrite = true,
     file,
-  ]: [...Parameters<Storage["write"]>, ...Parameters<App<Input, Output, Schema>["storage"]>]) {
+  ]: [...Parameters<File<"Storage", true>["write"]>, ...Parameters<App<Input, Output, Schema>["storage"]>]) {
     this.storage(file).write(data, overwrite);
   }
 
@@ -154,6 +146,29 @@ abstract class App<
     const name = `${basename}.${ext}`;
 
     return this.cache[name] ??= new File("Storage", true, { name, folder: this.app });
+  }
+
+  private error(error: unknown) {
+    function cast(e: unknown) {
+      return typeof e === "object" && e !== null && "message" in e
+        ? e as Error
+        : JSON.stringify(e);
+    }
+
+    const errors = [cast(error)] as Arrayful<string | Error>;
+
+    while (typeof errors[0] !== "string" && "cause" in errors[0])
+      errors.unshift(cast(errors[0].cause));
+
+    const n = new Notification,
+    [title, body] = (([head, ...rest]) => [`${this.app}: ${head}`, rest.join("\n")])(errors.map(e => typeof e === "string" ? e : e.message) as Arrayful);
+
+    n.title = title;
+    n.body = body;
+    n.schedule().catch((e: unknown) => console.error(e));
+    console.error(`${title}\n${body}`);
+
+    return new Error(title, { cause: body });
   }
 
   protected abstract getInput(): undefined | Input;
