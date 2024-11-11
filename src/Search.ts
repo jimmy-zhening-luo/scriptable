@@ -46,7 +46,7 @@ class Search extends Shortcut<
         clipboard,
       ),
     latlong = Search.stringfuls([lat, long] as const)
-      .map(coordinate => Math.round(Number(coordinate) * 1000000) / 1000000)
+      .map(coordinate => Math.trunc(Number(coordinate) * 1000000) / 1000000)
       .join(",") as stringful,
     query = new Query(
       string,
