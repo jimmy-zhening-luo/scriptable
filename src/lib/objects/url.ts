@@ -1,22 +1,28 @@
-function url(string: string) {
-  const parse = (string: string, tryHttp = false) => (({
-    scheme = "",
-    host = "",
-    path = "",
-    query = "",
-    fragment = "",
-  }) => scheme === "" || tryHttp && host === "" && path === ""
-    ? null
-    : {
-        scheme: scheme.toLocaleLowerCase(),
-        host: host.toLocaleLowerCase(),
-        path,
-        query,
-        fragment,
-      })((/^(?:(?<scheme>[^:/?#]+):)?(?:\/\/(?<host>[^/?#]*))?(?<path>[^?#]*)(?:\?(?<query>[^#]*))?(?:#(?<fragment>.*))?/u)
-    .exec(`${tryHttp ? "https" : ""}${string}`)
-    ?.groups ?? {}),
-  parts = parse(string) ?? parse(string, true);
+function Url(string: string) {
+  function parse(string: string, tryHttp = false) {
+    const {
+      scheme = "",
+      host = "",
+      path = "",
+      query = "",
+      fragment = "",
+    } = (/^(?:(?<scheme>[^:/?#]+):)?(?:\/\/(?<host>[^/?#]*))?(?<path>[^?#]*)(?:\?(?<query>[^#]*))?(?:#(?<fragment>.*))?/u)
+      .exec(`${tryHttp ? "https" : ""}${string}`)
+      ?.groups
+      ?? {};
+
+    return scheme === "" || tryHttp && host === "" && path === ""
+      ? null
+      : {
+          scheme: scheme.toLocaleLowerCase(),
+          host: host.toLocaleLowerCase(),
+          path,
+          query,
+          fragment,
+        };
+  }
+
+  const parts = parse(string) ?? parse(string, true);
 
   if (parts === null)
     throw new SyntaxError("Unparseable to URL", { cause: string });
@@ -24,4 +30,4 @@ function url(string: string) {
   return parts;
 }
 
-export default url;
+export default Url;
