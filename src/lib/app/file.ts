@@ -26,7 +26,7 @@ class File<
       .split("/")
       .filter(node => node !== "");
 
-    if (subpath === "")
+    if (subpath.length < 1)
       throw new RangeError("No subpath");
 
     this.path = `${root}/${subpath.join("/")}`;
