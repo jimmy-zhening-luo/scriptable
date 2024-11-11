@@ -30,6 +30,7 @@ class Link extends Shortcut<
     >) {
       return `${scheme}${scheme === "" ? "" : "://"}${host}${path === "/" ? "" : path}${query === "" ? "" : "?"}${query}${fragment === "" ? "" : "#"}${fragment}`;
     }
+
     function deindex(list: ListTable, host: string) {
       return list[host]?.map(i => i.toLowerCase()) ?? [];
     }
