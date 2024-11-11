@@ -39,12 +39,12 @@ class Search extends Shortcut<
       lat,
       long,
     } = this.inputful,
-    string = input.length > 0
-      ? input.replace(
+    string = input === ""
+      ? this.read()
+      : input.replace(
         `${replacer}${selector}`,
         clipboard,
-      )
-      : this.read(),
+      ),
     latlong = Search.stringfuls([lat, long] as const)
       .map(coordinate => Math.round(Number(coordinate) * 1000000) / 1000000)
       .join(",") as stringful,
@@ -92,7 +92,7 @@ class Search extends Shortcut<
             ? new Engine("shortcut", entry.shortcut, entry.output)
             : new Engine("find", entry.find);
 
-    this.write(String(query));
+    this.write(query.string);
 
     return engine.resolve(query);
   }

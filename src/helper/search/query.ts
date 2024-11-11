@@ -38,10 +38,14 @@ class Query {
       : key in alias && (alias[key] as string) in engines
         ? { key: alias[key] as stringful }
         : {
-            key: (FALLBACK satisfies Readonly<Arrayful<stringful>>).at(-1) as stringful,
+            key: FALLBACK.at(-1) as stringful,
             terms: [Key, ...terms],
           });
     this.engine = engines[this.key] as typeof engines[string];
+  }
+
+  public get string() {
+    return `${this.key} ${this.natural}`;
   }
 
   public get natural() {
@@ -50,18 +54,13 @@ class Query {
 
   private static tokenize(
     input: string,
-    [F0, F1, Fn]: Triad<stringful>,
+    FALLBACK: Triad<stringful>,
   ) {
-    const tokens = input.split(" ").filter((token): token is stringful => token.length > 0);
+    const tokens = input.split(" ").filter((token): token is stringful => token !== ""),
+    spaces = input.length - input.trimStart().length;
 
-    if (input.startsWith(" "))
-      tokens.unshift(
-        input.charAt(1) === " "
-          ? input.charAt(2) === " "
-            ? Fn
-            : F1
-          : F0,
-      );
+    if (spaces > 0)
+      tokens.unshift(FALLBACK.at(Math.min(spaces, FALLBACK.length) - 1) as stringful);
 
     if (tokens.length < 1)
       throw new RangeError(`Query has no tokens\n[${input}]`);
@@ -85,9 +84,11 @@ class Query {
             operation["operand"] as stringful,
           ] as const;
     }
+    function numeric (char: char, operators = "") {
+      return char >= "0" && char <= "9" || operators.includes(char);
+    }
 
-    const [head, ...rest] = tokens,
-    numeric = (char: char, operators = "") => char >= "0" && char <= "9" || operators.includes(char);
+    const [head, ...rest] = tokens;
 
     return numeric(head[0], OPERATORS) || head.length > 1 && head.startsWith(".") && numeric(head[1] as char)
       ? [MATH, ...tokens] as const
@@ -112,14 +113,14 @@ class Query {
         key = pre,
         selection = selected.join(selector),
         tail = rest,
-      } = pre.length > 0
-        ? selected.length > 1 || (selected[0] as string).length > 0
-          ? {}
-          : {
+      } = pre === ""
+        ? { key: TRANSLATE }
+        : selected.length < 2 && (selected[0] as string) === ""
+          ? {
               selection: rest[0] ?? "",
               tail: rest.slice(1),
             }
-        : { key: TRANSLATE };
+          : {};
 
       return [
         key,
@@ -127,10 +128,6 @@ class Query {
         ...tail,
       ] as const;
     }
-  }
-
-  public toString() {
-    return `${this.key satisfies stringful} ${this.natural}` as stringful;
   }
 }
 

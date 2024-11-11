@@ -34,7 +34,7 @@ class SearchEngine<
 
     return {
       app,
-      [app]: engine.length > 0 ? engine : query.key,
+      [app]: engine === "" ? query.key : engine,
       output,
       action: this.stringify(query),
     };

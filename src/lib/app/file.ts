@@ -26,7 +26,7 @@ class File<
       .split("/")
       .filter(node => node !== "");
 
-    if (subpath.length < 1)
+    if (subpath === "")
       throw new RangeError("No subpath");
 
     this.path = `${root}/${subpath.join("/")}`;
@@ -48,7 +48,7 @@ class File<
   public readful() {
     const read = this.read(true);
 
-    if (read.length < 1)
+    if (read === "")
       throw new ReferenceError("Unreadful file", { cause: this.path });
 
     return read as stringful;
