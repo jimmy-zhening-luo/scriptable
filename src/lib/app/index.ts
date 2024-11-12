@@ -79,7 +79,7 @@ abstract class App<
 
     d.dateFormat = `${date}${time}`;
 
-    return d.string(date);
+    return d.string(when);
   }
 
   public run() {
