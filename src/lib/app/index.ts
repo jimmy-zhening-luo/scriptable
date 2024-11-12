@@ -71,8 +71,8 @@ abstract class App<
   }
 
   protected static date({
-    date = "EEEE, MMMM d",
-    time = "y H:mm:ss",
+    date = "EEEE, MMMM d y",
+    time = "h:mm:ss a",
     when = new Date,
   } = {}) {
     const d = new DateFormatter;
