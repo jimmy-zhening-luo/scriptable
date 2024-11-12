@@ -70,18 +70,14 @@ abstract class App<
     );
   }
 
-  protected static date(date?: Date) {
-    return App.datetime("EEEE, MMMM d, y", date);
-  }
-
-  protected static time(date?: Date) {
-    return App.datetime("yyMMddHHmmssZ", date);
-  }
-
-  protected static datetime(format: string, date = new Date) {
+  protected static date({
+    date = "EEEE, MMMM d",
+    time = "y H:mm:ss",
+    when = new Date,
+  } = {}) {
     const d = new DateFormatter;
 
-    d.dateFormat = format;
+    d.dateFormat = `${date}${time}`;
 
     return d.string(date);
   }
