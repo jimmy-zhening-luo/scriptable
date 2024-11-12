@@ -71,7 +71,7 @@ abstract class App<
   }
 
   protected static date({
-    date = "EEEE, MMMM d y",
+    date = "MMMM d, y",
     time = "h:mm:ss a",
     when = new Date,
   } = {}) {
