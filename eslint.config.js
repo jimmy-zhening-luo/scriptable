@@ -1,8 +1,9 @@
 import linted from "linted";
 
-export default [
+export default linted(
   {
-    ignores: ["typings/scriptable.d.ts"],
+    "*": {
+      ignores: ["typings/scriptable.d.ts"],
+    },
   },
-  ...linted(),
-];
+);
