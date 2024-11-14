@@ -1,0 +1,27 @@
+{
+  "Scriptable App: Shortcut": {
+    "scope": "typescript",
+    "prefix": [
+      "shortcut",
+      "app-shortcut",
+      "scriptable-shortcut",
+      "scriptable-app-shortcut",
+    ],
+    "body": [
+      "import Shortcut from \"./lib\";",
+      "",
+      "class ${1:$TM_FILENAME_BASE} extends Shortcut<",
+      "  ${2|never,string|},",
+      "  ${3|never,string|},",
+      "  ${4|never|},",
+      "> {",
+      "  protected runtime() {",
+      "    $0",
+      "  }",
+      "}",
+      "",
+      "new $1().run();",
+    ],
+    "description": "This snippet is used to create a Scriptable Shortcut script.\n\nScriptable scripts must be in the top level directory to be visible to Scriptale.\n\nIn best style, the class name should be identical to the name of the file containing the script, which is also the unique name (sans `.js`) by which Scriptable refers to the script.\n\nIf not adhering to best style, the class name should be unique from that of any other class with which you don't want to share settings and storage.\n\n",
+  },
+}

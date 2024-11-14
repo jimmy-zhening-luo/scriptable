@@ -2,33 +2,33 @@
   // https://code.visualstudio.com/docs/editor/userdefinedsnippets
   "Scriptable Header": {
     "scope": "typescript",
-    "prefix": "header",
+    "prefix": [
+      "header",
+      "scriptable-header",
+    ],
     "body": [
       "// icon-color: ${1|red,orange,yellow,green,deep-green,teal,cyan,blue,deep-blue,purple,deep-purple,pink,light-brown,brown,deep-brown,light-gray,gray,deep-gray|}; icon-glyph: ${2|angry,bug,dizzy,flushed,frown,frown-open,grimace,grin,grin-alt,grin-beam,grin-beam-sweat,grin-hearts,magic,play,search|};",
-
+      "${3:optional-scriptable-header-share-sheet-inputs}$0",
       // TBD: Share Sheet input optional line
       // // share-sheet-inputs: plain-text, url, file-url, image;
-      "",
-      "$0",
     ],
     "description": "This snippet is used to add the configuration line(s) for the header that must be included at the very top of any Scriptable script. The configuration line(s) will automatically be prepended with the header preamble and appended with the `\"use strict\";` directive during the build step.\n\n",
   },
-  "Scriptable Shortcut": {
+  "Scriptable Header: Share Sheet": {
     "scope": "typescript",
-    "prefix": "shortcut",
-    "body": [
-      "import Shortcut from \"./lib\";",
-      "",
-      "class ${1:$TM_FILENAME_BASE} extends Shortcut {",
-
-      // TBD: Template for input, output, and schema
-      "  protected runtime() {",
-      "    $0",
-      "  }",
-      "}",
-      "",
-      "new $1().run();",
+    "prefix": [
+      "share",
+      "share-sheet",
+      "header-share",
+      "header-share-sheet",
+      "header-share-sheet-inputs",
+      "scriptable-header-share",
+      "scriptable-header-share-sheet",
+      "scriptable-header-share-sheet-inputs",
+      "optional-scriptable-header-share-sheet-inputs",
     ],
-    "description": "This snippet is used to create a Scriptable Shortcut script.\n\nScriptable scripts must be in the top level directory to be visible to Scriptale.\n\nIn best style, the class name should be identical to the name of the file containing the script, which is also the unique name (sans `.js`) by which Scriptable refers to the script.\n\nIf not adhering to best style, the class name should be unique from that of any other class with which you don't want to share settings and storage.\n\n",
+    "body": [
+      "// share-sheet-inputs: ${1|plain-text,url,file-url,image|};",
+    ],
   },
 }
