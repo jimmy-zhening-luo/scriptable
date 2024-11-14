@@ -49,6 +49,10 @@ Conversely, there are three (3) special requirements for writing an `App`:
 
 #### The Header &trade;
 
+This project has `VSCode` [snippets](./.vscode/Header.code-snippets) to generate Lines 1-3 (and optionally 4) of the Scriptable Header.
+
+Its grammar is implemented from the source of truth below:
+
 #### Line 1
 > `// Variables used by Scriptable.`
 
@@ -56,7 +60,7 @@ Conversely, there are three (3) special requirements for writing an `App`:
 > `// These must be at the very top of the file. Do not edit.`
 
 #### Line 3
-This line specifies your `App`'s icon in Scriptable UI.
+Line 3 specifies your `App`'s icon in Scriptable UI.
 
 ```javascript
 // icon-color: $COLOR; icon-glyph: $GLYPH;
@@ -65,10 +69,8 @@ This line specifies your `App`'s icon in Scriptable UI.
 - `$COLOR` is a color from a [predefined list](#color).
 - `$GLYPH` is a glyph from a [predefined list](#glyph).
 
-__This project has a `VSCode` [snippet](./.vscode/Header.code-snippets) to generate Line 3.__ Its grammar is implemented from the source of truth below:
-
 > [!IMPORTANT]
-> ___HUGE___ credit to __@nlawler1737__ for being the first (to my knowledge) to document all the below.
+> ___HUGE___ credit to __@nlawler1737__ for being the first (to my knowledge) to document the possible values for `$COLOR` and `$GLYPH`.
 
 ##### [`$COLOR`](https://github.com/nlawler1737/Scriptable/blob/main/Glyph%20%26%20Color%20Changer.js)
 
@@ -916,3 +918,31 @@ yin-yang
 ```
 
 </details>
+
+#### Line 4
+Line 4 specifies what type of input your `App` can receive from the `iOS` or `iPadOS` `Share Sheet`.
+
+```javascript
+// share-sheet-inputs: plain-text, url, file-url, image;
+```
+
+The possible types are:
+
+- `plain-text`
+- `url`
+- `file-url`
+- `image`
+
+... and they may be provided as a single type:
+
+```javascript
+// share-sheet-inputs: plain-text;
+```
+
+... or as a comma-and-space (`,`` `) separated list:
+
+```javascript
+// share-sheet-inputs: plain-text, url, file-url, image;
+```
+
+... terminated with a semicolon (`;`).

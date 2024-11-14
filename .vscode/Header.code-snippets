@@ -25,8 +25,6 @@
     "body": [
       "// share-sheet-inputs: ${1|plain-text,url,file-url,image,plain-text\\, url,plain-text\\, file-url,plain-text\\, image,url\\, file-url,url\\, image,file-url\\, image,plain-text\\, url\\, file-url,plain-text\\, url\\, image,plain-text\\, file-url\\, image,url\\, file-url\\, image,plain-text\\, url\\, file-url\\, image|};$0",
     ],
-    // TBD: Share Sheet input optional line
-    // // share-sheet-inputs: plain-text, url, file-url, image;
     "description": "Scriptable header (optional) Line 4.\n\nEvery Scriptable `App` (top-level) script must begin with Lines 1 and 2 (`header-boilerplate`), followed by Line 3 (`scriptable-header`), and optionally Line 4 (this).\n\nInput type(s) is a list of types separated by `, ` (comma-and-space), with the list terminated by `;` (a semicolon).\n\nExample:\n\n`// share-sheet-inputs: plain-text, url, file-url, image;`\n\nThis project's build step automatically prepends Scriptable header Lines 1 and 2 (`header-boilerplate`) whenever Line 3 is the first line of the file.\n\nThis project also automatically appends the `\"use strict\";` directive after Line 3 (or Line 4 if present) during the build step.\n\n",
   },
   "Scriptable Header: Boilerplate": {
