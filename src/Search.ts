@@ -7,7 +7,6 @@ import WebEngine from "./helper/search/engine/web";
 class Search extends Shortcut<
   Field<
     | "input"
-    | "clipboard"
     | "latlong"
   >,
   SearchOutput,
@@ -32,17 +31,8 @@ class Search extends Shortcut<
         fallback,
       },
     } = this.setting,
-    {
-      input,
-      clipboard,
-      latlong,
-    } = this.inputful,
-    string = input === ""
-      ? this.read()
-      : input.replace(
-        `${replacer}${selector}`,
-        clipboard,
-      ),
+    { input, latlong } = this.inputful,
+    string = input === "" ? this.read() : input,
     query = new Query(
       string,
       engines,
