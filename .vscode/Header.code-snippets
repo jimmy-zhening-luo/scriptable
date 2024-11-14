@@ -8,13 +8,11 @@
     ],
     "body": [
       "// icon-color: ${1|red,orange,yellow,green,deep-green,teal,cyan,blue,deep-blue,purple,deep-purple,pink,light-brown,brown,deep-brown,light-gray,gray,deep-gray|}; icon-glyph: ${2|angry,bug,dizzy,flushed,frown,frown-open,grimace,grin,grin-alt,grin-beam,grin-beam-sweat,grin-hearts,magic,play,search|};",
-      "${3:optional-scriptable-header-share-sheet-inputs}$0",
-      // TBD: Share Sheet input optional line
-      // // share-sheet-inputs: plain-text, url, file-url, image;
+      "${3:optional-header-share-sheet-inputs}$0",
     ],
-    "description": "This snippet is used to add the configuration line(s) for the header that must be included at the very top of any Scriptable script. The configuration line(s) will automatically be prepended with the header preamble and appended with the `\"use strict\";` directive during the build step.\n\n",
+    "description": "Scriptable header Line 3 (and optional: Line 4).\n\nEvery Scriptable `App` (top-level) script must begin with Lines 1 and 2 (`header-boilerplate`), followed by Line 3 (this), and optionally Line 4 (`optional-header-share-sheet-inputs`).\n\nThis project's build step automatically prepends Scriptable header Lines 1 and 2 (`header-boilerplate`) whenever Line 3 is the first line of the file.\n\nThis project also automatically appends the `\"use strict\";` directive after Line 3 (or Line 4 if present) during the build step.\n\n",
   },
-  "Scriptable Header: Share Sheet": {
+  "Scriptable Header: (Optional) Share Sheet": {
     "scope": "typescript",
     "prefix": [
       "share",
@@ -22,13 +20,26 @@
       "header-share",
       "header-share-sheet",
       "header-share-sheet-inputs",
-      "scriptable-header-share",
-      "scriptable-header-share-sheet",
-      "scriptable-header-share-sheet-inputs",
-      "optional-scriptable-header-share-sheet-inputs",
+      "optional-header-share-sheet-inputs",
     ],
     "body": [
-      "// share-sheet-inputs: ${1|plain-text,url,file-url,image|};",
+      "// share-sheet-inputs: ${1|plain-text,url,file-url,image,plain-text\\, url,plain-text\\, file-url,plain-text\\, image,url\\, file-url,url\\, image,file-url\\, image,plain-text\\, url\\, file-url,plain-text\\, url\\, image,plain-text\\, file-url\\, image,url\\, file-url\\, image,plain-text\\, url\\, file-url\\, image|};$0",
     ],
+    // TBD: Share Sheet input optional line
+    // // share-sheet-inputs: plain-text, url, file-url, image;
+    "description": "Scriptable header (optional) Line 4.\n\nEvery Scriptable `App` (top-level) script must begin with Lines 1 and 2 (`header-boilerplate`), followed by Line 3 (`scriptable-header`), and optionally Line 4 (this).\n\nInput type(s) is a list of types separated by `, ` (comma-and-space), with the list terminated by `;` (a semicolon).\n\nExample:\n\n`// share-sheet-inputs: plain-text, url, file-url, image;`\n\nThis project's build step automatically prepends Scriptable header Lines 1 and 2 (`header-boilerplate`) whenever Line 3 is the first line of the file.\n\nThis project also automatically appends the `\"use strict\";` directive after Line 3 (or Line 4 if present) during the build step.\n\n",
+  },
+  "Scriptable Header: Boilerplate": {
+    "scope": "typescript",
+    "prefix": [
+      "boilerplate",
+      "header-boilerplate",
+    ],
+    "body": [
+      "// Variables used by Scriptable.",
+      "// These must be at the very top of the file. Do not edit.",
+      "${1:scriptable-header}$0",
+    ],
+    "description": "Scriptable header Lines 1 and 2.\n\nEvery Scriptable `App` (top-level) script must begin with Lines 1 and 2 (`scriptable-header-boilerplate`), followed by Line 3 (`scriptable-header`), and optionally Line 4 (`optional-scriptable-header-share-sheet-inputs`).\n\nThis project's build step automatically prepends Scriptable header Lines 1 and 2 (`scriptable-header-boilerplate`) whenever Line 3 is the first line of the file.\n\nThis project also automatically appends the `\"use strict\";` directive after Line 3 (or Line 4 if present) during the build step.\n\n",
   },
 }

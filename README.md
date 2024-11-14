@@ -45,7 +45,7 @@ Conversely, there are three (3) special requirements for writing an `App`:
 2. Your script must only use the following globals:
     - [`Scriptable` objects](https://docs.scriptable.app/)
     - Apple [`JavaScriptCore`](https://developer.apple.com/documentation/javascriptcore) native objects
-3. Your Script must begin with a very specific [header](./.vscode/scriptable.code-snippets):
+3. Your Script must begin with a very specific [header](./.vscode/Header.code-snippets):
 
 #### The Header &trade;
 
@@ -65,7 +65,7 @@ This line specifies your `App`'s icon in Scriptable UI.
 - `$COLOR` is a color from a [predefined list](#color).
 - `$GLYPH` is a glyph from a [predefined list](#glyph).
 
-__This project has a `VSCode` [snippet](./.vscode/scriptable.code-snippets) to generate Line 3.__ Its grammar is implemented from the source of truth below:
+__This project has a `VSCode` [snippet](./.vscode/Header.code-snippets) to generate Line 3.__ Its grammar is implemented from the source of truth below:
 
 > [!IMPORTANT]
 > ___HUGE___ credit to __@nlawler1737__ for being the first (to my knowledge) to document all the below.
