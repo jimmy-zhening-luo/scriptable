@@ -4,7 +4,6 @@ declare interface SearchSetting {
     | "location"
   >;
   reserved: Field<
-    | "replacer"
     | "selector"
     | "operators"
   >;

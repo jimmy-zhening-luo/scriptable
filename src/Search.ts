@@ -21,7 +21,6 @@ class Search extends Shortcut<
       engines,
       alias,
       reserved: {
-        replacer,
         selector,
         operators,
       },
