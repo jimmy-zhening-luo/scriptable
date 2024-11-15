@@ -17,8 +17,7 @@ class WebEngine<
   constructor(
     webapp: T,
     urls: Unflat,
-    latlong: string,
-    [TAG, LTAG]: Dyad<stringful>,
+    TAG: stringful,
     separator = "+",
     encodeComponent = false,
     force = false,
@@ -29,7 +28,7 @@ class WebEngine<
       webapp,
       webapp === "api",
     );
-    this.urls = (typeof urls === "string" ? [urls] : urls).map(url => url.replace(LTAG, latlong));
+    this.urls = typeof urls === "string" ? [urls] : urls;
     this.TAG = TAG;
     this.separator = separator;
     this.encodeComponent = encodeComponent;

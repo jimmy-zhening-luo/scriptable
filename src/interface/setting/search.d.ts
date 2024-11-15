@@ -1,7 +1,6 @@
 declare interface SearchSetting {
   tags: Field<
     | "query"
-    | "location"
   >;
   reserved: Field<
     | "selector"

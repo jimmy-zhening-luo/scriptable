@@ -7,17 +7,13 @@ import WebEngine from "./helper/search/engine/web";
 class Search extends Shortcut<
   Field<
     | "input"
-    | "latlong"
   >,
   SearchOutput,
   SearchSetting
 > {
   protected runtime() {
     const {
-      tags: {
-        query: tag,
-        location: locationTag,
-      },
+      tags: { query: tag },
       engines,
       alias,
       reserved: {
@@ -30,7 +26,7 @@ class Search extends Shortcut<
         fallback,
       },
     } = this.setting,
-    { input, latlong } = this.inputful,
+    { input } = this.inputful,
     string = input === "" ? this.read() : input,
     query = new Query(
       string,
@@ -49,15 +45,13 @@ class Search extends Shortcut<
       ? new WebEngine(
         "browser",
         entry,
-        latlong,
-        Search.stringfuls([tag, locationTag] as const),
+        tag as stringful,
       )
       : "url" in entry
         ? new WebEngine(
           "browser",
           entry.url,
-          latlong,
-          Search.stringfuls([tag, locationTag] as const),
+          tag as stringful,
           entry.separator,
           entry.encodeComponent,
           entry.force,
@@ -67,8 +61,7 @@ class Search extends Shortcut<
           ? new WebEngine(
             "api",
             entry.api,
-            latlong,
-            Search.stringfuls([tag, locationTag] as const),
+            tag as stringful,
             entry.separator,
             entry.encodeComponent,
           )
