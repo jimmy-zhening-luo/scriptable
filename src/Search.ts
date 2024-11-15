@@ -5,10 +5,12 @@ import Engine from "./helper/search/engine";
 import WebEngine from "./helper/search/engine/web";
 
 class Search extends Shortcut<
-  Field<"input">,
+  string,
   SearchOutput,
   SearchSetting
 > {
+  protected override stringInput = true;
+
   protected runtime() {
     const {
       tags: { query: tag },
@@ -24,7 +26,7 @@ class Search extends Shortcut<
         fallback,
       },
     } = this.setting,
-    { input: { input = "" } = {} } = this,
+    { input = "" } = this,
     string = input === "" ? this.read() : input,
     query = new Query(
       string,
