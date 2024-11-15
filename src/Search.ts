@@ -5,9 +5,7 @@ import Engine from "./helper/search/engine";
 import WebEngine from "./helper/search/engine/web";
 
 class Search extends Shortcut<
-  Field<
-    | "input"
-  >,
+  string,
   SearchOutput,
   SearchSetting
 > {
@@ -26,7 +24,7 @@ class Search extends Shortcut<
         fallback,
       },
     } = this.setting,
-    { input } = this.inputful,
+    { input = "" } = this,
     string = input === "" ? this.read() : input,
     query = new Query(
       string,
