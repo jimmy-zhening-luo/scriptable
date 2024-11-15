@@ -6,7 +6,7 @@ class FileLink extends Share<
   string
 > {
   protected readonly type = "fileURLs";
-  
+
   protected runtime() {
     return "Hello World";
   }
