@@ -3,7 +3,6 @@
 import Share from "./lib/share";
 
 class FileLink extends Share<
-  "fileURLs",
   string
 > {
   protected readonly type = "fileURLs";
