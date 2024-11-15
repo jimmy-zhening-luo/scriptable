@@ -18,7 +18,7 @@ abstract class Shortcut<
     return runtime;
   }
 
-  protected stringInput?: Input extends string ? true : false;
+  protected stringInput?: Input extends string ? boolean : never;
 }
 
 export default Shortcut;
