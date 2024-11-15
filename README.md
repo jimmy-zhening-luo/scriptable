@@ -10,7 +10,18 @@ Scriptable provides all the classes needed to interact with the above native iOS
 
 ## What is `@jimbojet/scriptable`?
 
-This TypeScript project provides a standard class with hooks for Shortcut and filesystem I/O (e.g. settings/cache), transpiling to valid Scriptable code.
+Fully-contained library and build environment to:
+
+- Code in TypeScript.
+- Compile to efficient, strict JavaScript guaranteed to execute on Apple JavaScriptCore and to correctly interact with Scriptable global functions.
+- Use Scriptable bookmarks to pin filesystem roots for persistent storage and settings.
+- Import and extend an abstract Scriptable "app" that has terse, idiomatic methods to:
+  - Accept input of an expected type from iOS/iPadOS Shortcuts.
+  - Read/write data and load settings for each app from its own sandboxed subdirectory.
+  - Return output of an expected type to iOS/iPadOS Shortcuts.
+  - Catch branded error stacks and correctly log, display, and notify in _all_ contexts (in-Scriptable-app from the launcher screen, in-Scriptable-app in the edit view, Force Push Scriptable icon shortcut, Share Sheet Scriptable script, Force Push Shortcuts app to run a Shortcut that runs a Scriptable app, Share Sheet Shortcut, in-Shortcuts-editor, in-Shortcuts-launcher screen, from Spotlight search as a Home Screen bookmark, from Home Screen as a Home Screen bookmark (nope i didnt stutter), from Spotlight search as a Shortcut result, from lock screen widget, from regular widget, from Control Center, from Action Button) multiplied by (from Shortcuts URL scheme where the encapsulating Shortcut is in any of the contexts from the prior clause, from the Run Shortcut action inside a Shortcut where ditto) multiplied by (whether the "Run in Scriptable" toggle is on) multiplied by (whether the "Show when run" toggle is on). Wow, that was a mouthful, I almost forgot how great Apple products are, such a seamless, bug-free ecosystem, no wonder they don't need to respect user choice!
+
+If these all sound like not very impressive things, (1) I agree, and (2) go try yourself to write, iterate on, and debug reliable Scriptable scripts that interact with Shortcuts, and see how far you get without wanting to fly to Cuptertino and personally burn down the Appleplex or whatever the fuck it's called.
 
 ## Usage
 
