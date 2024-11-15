@@ -4,7 +4,7 @@ abstract class Share<
   InputType extends
     | "plainTexts"
     | "urls"
-    | "fileURLs" = "urls"
+    | "fileURLs" = "plainTexts",
   Output = never,
   Schema = never,
 > extends App<string[], Null<Output>, Schema> {
