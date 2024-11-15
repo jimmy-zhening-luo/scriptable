@@ -11,7 +11,7 @@ abstract class Share<
   protected readonly abstract type: InputType;
 
   protected getInput() {
-    return args[this.type] as undefined | Input;
+    return args[this.type] as undefined | string[];
   }
 
   protected output(runtime: ReturnType<Share<InputType, Output>["runtime"]>) {
