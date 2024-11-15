@@ -21,4 +21,4 @@ abstract class Share<
   }
 }
 
-export default Shortcut;
+export default Share;
