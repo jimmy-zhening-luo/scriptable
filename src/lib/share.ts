@@ -14,7 +14,7 @@ abstract class Share<
     return args[this.type] as undefined | Input;
   }
 
-  protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
+  protected output(runtime: ReturnType<Share<InputType, Output>["runtime"]>) {
     log(runtime);
 
     return runtime;
