@@ -6,7 +6,9 @@ abstract class Shortcut<
   Schema = never,
 > extends App<Input, Null<Output>, Schema> {
   protected getInput() {
-    return args.plainTexts?.[0] ?? args.shortcutParameter as undefined | Input;
+    return this.stringInput === true
+      ? args.plainTexts[0] as unknown as undefined | Input
+      : args.shortcutParameter as undefined | Input;
   }
 
   protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
@@ -15,6 +17,8 @@ abstract class Shortcut<
 
     return runtime;
   }
+
+  protected readonly stringInput?: Input extends string ? true : false;
 }
 
 export default Shortcut;
