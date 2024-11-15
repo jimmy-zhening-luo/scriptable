@@ -1,15 +1,12 @@
 # `@jimbojet/scriptable`
-
 [![Azure Publish (PROD.main)](https://github.com/jimmy-zhening-luo/scriptable/actions/workflows/PROD.main.yml/badge.svg)](https://github.com/jimmy-zhening-luo/scriptable/actions/workflows/PROD.main.yml)
 
 ## What is Scriptable?
-
 Scriptable iOS/iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts or Widgets, useful for complex device/home automation and data transforms.
 
 Scriptable provides all the classes needed to interact with the above native iOS features and with the user.
 
 ## What is `@jimbojet/scriptable`?
-
 Fully-contained library and build environment to:
 
 - Code in TypeScript.
@@ -19,26 +16,22 @@ Fully-contained library and build environment to:
   - Accept input of an expected type from iOS/iPadOS Shortcuts.
   - Read/write data and load settings for each app from its own sandboxed subdirectory.
   - Return output of an expected type to iOS/iPadOS Shortcuts.
-  - Catch branded error stacks and correctly log, display, and notify in _all_ contexts (in-Scriptable-app from the launcher screen, in-Scriptable-app in the edit view, Force Push Scriptable icon shortcut, Share Sheet Scriptable script, Force Push Shortcuts app to run a Shortcut that runs a Scriptable app, Share Sheet Shortcut, in-Shortcuts-editor, in-Shortcuts-launcher screen, from Spotlight search as a Home Screen bookmark, from Home Screen as a Home Screen bookmark (nope i didnt stutter), from Spotlight search as a Shortcut result, from lock screen widget, from regular widget, from Control Center, from Action Button) multiplied by (from Shortcuts URL scheme where the encapsulating Shortcut is in any of the contexts from the prior clause, from the Run Shortcut action inside a Shortcut where ditto) multiplied by (whether the "Run in Scriptable" toggle is on) multiplied by (whether the "Show when run" toggle is on). Wow, that was a mouthful, I almost forgot how great Apple products are, such a seamless, bug-free ecosystem, no wonder they don't need to respect user choice!
+  - Catch branded error stacks and correctly log, display, and notify in _all_ contexts (in-Scriptable-app from the launcher screen, in-Scriptable-app in the edit view, Force Push Scriptable icon shortcut, Share Sheet Scriptable script, Force Push Shortcuts app to run a Shortcut that runs a Scriptable app, Share Sheet Shortcut, in-Shortcuts-editor, in-Shortcuts-launcher screen, from Spotlight search as a Home Screen bookmark, from Spotlight search as a Scriptable result, from Home Screen as a Home Screen bookmark (nope i didnt stutter), from Spotlight search as a Shortcut result, from lock screen widget Shortcut, from lock screen widget Scriptable, from regular widget Shortcut, from lock screen widget Scriptable, from Control Center, from Action Button, from those weird force push buttons on the bottom left and bottom right of your lock screen) multiplied by (from Shortcuts URL scheme where the encapsulating Shortcut is in any of the contexts from the prior clause, from the Run Shortcut action inside a Shortcut where ditto) multiplied by (whether the "Run in Scriptable" toggle is on) multiplied by (whether the "Show when run" toggle is on). Wow, that was a mouthful, I almost forgot how great Apple products are, such a seamless, bug-free ecosystem, no wonder they don't need to respect user choice!
 
-If these all sound like not very impressive things, (1) I agree, and (2) go try yourself to write, iterate on, and debug reliable Scriptable scripts that interact with Shortcuts, and see how far you get without wanting to fly to Cuptertino and personally burn down the Appleplex or whatever the fuck it's called.
+If these all sound like not very impressive things, (1) I agree, and (2) go try yourself to write, iterate on, and debug reliable Scriptable scripts that interact with Shortcuts, and see how far you get without wanting to [fly](https://www.google.com/search?q=one-way+flights+SFO) to [Cupertino](https://maps.app.goo.gl/u4WEdXTrx97ewS2fA) and personally burn down the Appleplex or whatever the fuck it's called.
 
 ## Usage
 
 ### Vocabulary
-
 There are two types of scripts.
 
 #### `App`
-
 Top-level `JavaScript` file in your device's `Scriptable` folder. It is visible in the Scriptable app UI, force push menu, Share Sheet, Shortcuts, etc.
 
 #### `Library`
-
 `JavaScript` file in a subdirectory of your device's `Scriptable` folder. It can not be directly invoked, and can only be used within another script (App or Library) via [`importModule`](https://docs.scriptable.app/importmodule/).
 
 ### EASY: Write `Library` scripts
-
 There are two (2) special requirements for writing a `Library`:
 
 1. `Library` scripts must ___not___ be in the top-level directory of your device's `Scriptable` folder. Instead, they must be in any of the following:
@@ -48,8 +41,7 @@ There are two (2) special requirements for writing a `Library`:
     - [`Scriptable` objects](https://docs.scriptable.app/)
     - Apple [`JavaScriptCore`](https://developer.apple.com/documentation/javascriptcore) native objects
 
-### Write `App` scripts
-
+### NOT SO EASY: Write `App` scripts
 Conversely, there are three (3) special requirements for writing an `App`:
 
 1. Your script must be in the top-level directory of your device's `Scriptable` folder.
@@ -59,16 +51,19 @@ Conversely, there are three (3) special requirements for writing an `App`:
 3. Your Script must begin with a very specific [header](./.vscode/Header.code-snippets):
 
 #### The Header &trade;
-
 This project has `VSCode` [snippets](./.vscode/Header.code-snippets) to generate Lines 1-3 (and optionally 4) of the Scriptable Header.
 
 Its grammar is implemented from the source of truth below:
 
 #### Line 1
-> `// Variables used by Scriptable.`
+```javascript
+// Variables used by Scriptable.
+```
 
 #### Line 2
-> `// These must be at the very top of the file. Do not edit.`
+```javascript
+// These must be at the very top of the file. Do not edit.
+```
 
 #### Line 3
 Line 3 specifies your `App`'s icon in Scriptable UI.
