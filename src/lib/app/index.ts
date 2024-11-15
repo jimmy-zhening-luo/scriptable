@@ -8,8 +8,8 @@ abstract class App<
   protected readonly app: stringful;
   private readonly cache: Record<string, File<"Storage", true>> = {};
 
-  constructor(protected synthetic?: Input) {
-    const { name } = this.constructor;
+  constructor() {
+    const { name = "" } = this.constructor;
 
     if (name === "")
       throw new EvalError("App has no name");
@@ -27,7 +27,7 @@ abstract class App<
   }
 
   protected get input() {
-    return this.synthetic ?? this.getInput() ?? undefined;
+    return this.getInput() ?? this.synthetic ?? undefined;
   }
 
   protected get inputful() {
@@ -83,8 +83,10 @@ abstract class App<
     return d.string(when);
   }
 
-  public run() {
+  public run(synthetic?: Input) {
     try {
+      this.synthetic = synthetic;
+
       return this.output(this.runtime());
     }
     catch (error) {
@@ -172,6 +174,7 @@ abstract class App<
   protected abstract runtime(): Output;
   protected abstract output(runtime: Output): Output;
   private config?: Schema;
+  private synthetic?: undefined | Input;
 }
 
 export default App;
