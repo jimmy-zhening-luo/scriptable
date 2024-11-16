@@ -6,9 +6,9 @@ class SearchEngine<
     | "shortcut"
   ),
 > {
-  private readonly engine;
-  private readonly urls;
-  private readonly tag;
+  private readonly engine: Null<string>;
+  private readonly urls: Null<string[]>;
+  private readonly tag: Null<string>;
   private readonly output: Null<true>;
 
   constructor(
@@ -18,9 +18,7 @@ class SearchEngine<
       : string,
     outputOrTag:
       | boolean
-      | T extends ("browser" | "api")
-        ? stringful
-        : boolean = false,
+      | (T extends ("browser" | "api") ? stringful : boolean) = false,
     private readonly separator = "+",
     private readonly encodeComponent = false,
     private readonly force = false,
