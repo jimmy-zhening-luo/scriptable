@@ -1,6 +1,6 @@
 class Query {
-  public readonly key;
-  public readonly terms;
+  public readonly key: stringful;
+  public readonly terms: stringful[];
   public readonly engine: SearchSetting["engines"][string];
   public readonly question;
   public readonly recomposed;
