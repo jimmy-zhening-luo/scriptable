@@ -53,7 +53,7 @@ class SearchEngine<
       engine,
       urls,
       output,
-    } = this,
+    } = this;
 
     return {
       type,
