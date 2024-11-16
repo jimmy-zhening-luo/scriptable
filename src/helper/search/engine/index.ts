@@ -8,7 +8,7 @@ class SearchEngine<
 > {
   private readonly engine: Null<string>;
   private readonly urls: Null<string[]>;
-  private readonly tag: Null<string>;
+  private readonly tag: Null<stringful>;
   private readonly output: Null<true>;
 
   constructor(
@@ -77,7 +77,7 @@ class SearchEngine<
         .map(c => encodeComponent ? encodeURI(c) : encodeURIComponent(c))
         .join("%2B"))
       .join(this.separator),
-    U = urls.map(url => url.replace(tag, encodedQuery));
+    U = urls.map(url => url.replace(tag as stringful, encodedQuery));
 
     return this.force
       ? U.map(url => `data:text/html,<meta name="color-scheme" content="dark light" />
