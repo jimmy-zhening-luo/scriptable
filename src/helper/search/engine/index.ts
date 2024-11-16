@@ -61,7 +61,7 @@ class SearchEngine<
       question,
       urls: urls === null
         ? urls
-        : this.encode(urls, terms)
+        : this.encode(urls, terms),
       output,
     };
   }
