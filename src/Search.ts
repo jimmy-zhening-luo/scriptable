@@ -66,7 +66,7 @@ class Search extends Shortcut<
           : "shortcut" in entry
             ? new Engine("shortcut", entry.shortcut, entry.output)
             : new Engine("find", entry.find),
-    { 
+    {
       key,
       terms,
       question,
