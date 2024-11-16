@@ -1,11 +1,7 @@
 declare interface SearchOutput {
-  app: string;
-  action: Unflat;
+  type: string;
+  engine: Null<string>;
+  question: string;
+  urls: Null<string[]>;
   output: Null<true>;
-  find?: string;
-  shortcut?: string;
-  browser?: string;
-  api?: Null<true>;
-  inprivate?: Null<true>;
-  natural?: string;
 }

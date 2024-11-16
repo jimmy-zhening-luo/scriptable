@@ -2,7 +2,6 @@
 import Shortcut from "./lib";
 import Query from "./helper/search/query";
 import Engine from "./helper/search/engine";
-import WebEngine from "./helper/search/engine/web";
 
 class Search extends Shortcut<
   string,
@@ -42,13 +41,13 @@ class Search extends Shortcut<
     ),
     entry = query.engine,
     engine = Array.isArray(entry) || typeof entry === "string"
-      ? new WebEngine(
+      ? new Engine(
         "browser",
         entry,
         tag as stringful,
       )
       : "url" in entry
-        ? new WebEngine(
+        ? new Engine(
           "browser",
           entry.url,
           tag as stringful,
@@ -58,7 +57,7 @@ class Search extends Shortcut<
           entry.inprivate,
         )
         : "api" in entry
-          ? new WebEngine(
+          ? new Engine(
             "api",
             entry.api,
             tag as stringful,
@@ -67,11 +66,21 @@ class Search extends Shortcut<
           )
           : "shortcut" in entry
             ? new Engine("shortcut", entry.shortcut, entry.output)
-            : new Engine("find", entry.find);
+            : new Engine("find", entry.find),
+    { 
+      key,
+      terms,
+      question,
+      recomposed,
+    } = query;
 
-    this.write(query.string);
+    this.write(recomposed);
 
-    return engine.resolve(query);
+    return engine.resolve(
+      key,
+      terms,
+      question,
+    );
   }
 }
 

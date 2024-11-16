@@ -1,7 +1,9 @@
 class Query {
-  public readonly key: stringful;
-  public readonly terms: stringful[];
+  public readonly key;
+  public readonly terms;
   public readonly engine: SearchSetting["engines"][string];
+  public readonly question;
+  public readonly recomposed;
 
   constructor(
     string: string,
@@ -42,14 +44,8 @@ class Query {
             terms: [Key, ...terms],
           });
     this.engine = engines[this.key] as typeof engines[string];
-  }
-
-  public get string() {
-    return `${this.key} ${this.natural}`;
-  }
-
-  public get natural() {
-    return this.terms.join(" ");
+    this.question = this.terms.join(" ");
+    this.recomposed = `${this.key} ${this.question}`;
   }
 
   private static tokenize(
