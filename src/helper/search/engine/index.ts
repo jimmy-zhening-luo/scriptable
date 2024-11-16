@@ -12,10 +12,10 @@ class SearchEngine<
 
   constructor(
     protected readonly app: T,
-    protected readonly engine: string,
+    protected readonly engine: string & (T extends ("browser") ? string[] : string),
     output = false,
   ) {
-    this.output = output || null;
+    this.output = output || (app === "api") || null;
   }
 
   public resolve(query: Query) {
