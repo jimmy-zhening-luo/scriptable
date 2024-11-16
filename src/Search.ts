@@ -54,7 +54,6 @@ class Search extends Shortcut<
           entry.separator,
           entry.encodeComponent,
           entry.force,
-          entry.inprivate,
         )
         : "api" in entry
           ? new Engine(
