@@ -1,8 +1,8 @@
 // icon-color: light-gray; icon-glyph: link;
 import Shortcut from "./lib";
-import Url from "./lib/objects/url";
+import url from "./lib/objects/url";
 
-function Processor(host: string, path: string) {
+function process(host: string, path: string) {
   const processors = {
     "amazon.com": (path: string) => (([, pid = null]) => pid === null ? path : `/dp/${(pid.split("/") as Arrayful)[0]}`)(path.split("/dp/")),
     "dropbox.com": (path: string) => !path.startsWith("/scl/fi/") ? path : (nodes => nodes.length < 4 ? path : nodes.slice(0, 4).join("/"))(path.split("/")),
@@ -36,29 +36,35 @@ class Link extends Shortcut<
     }
 
     const { setting } = this,
-    url = Url(this.inputString),
-    host = ((host: string) => (headless => setting.host.swap[headless] ?? headless)(!host.startsWith("www.") || setting.host.www.includes(host) ? host : host.slice(4)))(url.host),
+    {
+      scheme,
+      host: parsedHost,
+      path,
+      query,
+      fragment,
+    } = url(this.inputString),
+    host = ((host: string) => (headless => setting.host.swap[headless] ?? headless)(!host.startsWith("www.") || setting.host.www.includes(host) ? host : host.slice(4)))(parsedHost),
     includeQ = deindex(setting.query.include, host),
     excludeQ = deindex(setting.query.exclude, host);
 
     return compose({
       host,
-      scheme: ["http", "https"].includes(url.scheme) ? "" : url.scheme,
-      path: Processor(host, url.path),
+      scheme: ["http", "https"].includes(scheme) ? "" : scheme,
+      path: process(host, path),
       query: setting.query.omit.includes(host)
         ? ""
         : includeQ.length > 0
-          ? url.query
+          ? query
             .split("&")
             .filter(p => includeQ.includes((p.split("=")[0] as string).toLowerCase()))
             .join("&")
           : excludeQ.length > 0
-            ? url.query
+            ? query
               .split("&")
               .filter(p => !excludeQ.includes((p.split("=")[0] as string).toLowerCase()))
               .join("&")
-            : url.query,
-      fragment: setting.fragment.trim.includes(host) ? "" : url.fragment,
+            : query,
+      fragment: setting.fragment.trim.includes(host) ? "" : fragment,
     });
   }
 }
