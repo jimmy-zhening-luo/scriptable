@@ -43,7 +43,7 @@
     "@types/mocha": "^10.0.9",
     "chai": "^5.1.2",
     "eslint": "~9.15.0",
-    "linted": "~23.1.1",
+    "linted": "~23.2.0",
     "mocha": "^10.8.2",
     "npm-run-all": "^4.1.5",
     "rexreplace": "^7.1.11",
