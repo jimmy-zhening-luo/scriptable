@@ -1,13 +1,12 @@
 class Query {
   public readonly key: stringful;
   public readonly terms: stringful[];
-  public readonly engine: SearchSetting["engines"][string];
   public readonly question;
   public readonly recomposed;
 
   constructor(
     string: string,
-    engines: SearchSetting["engines"],
+    engines: string[],
     alias: FieldTable,
     SELECTOR: stringful,
     OPERATORS: stringful,
@@ -43,7 +42,6 @@ class Query {
             key: FALLBACK.at(-1) as stringful,
             terms: [Key, ...terms],
           });
-    this.engine = engines[this.key] as typeof engines[string];
     this.question = this.terms.join(" ");
     this.recomposed = `${this.key} ${this.question}`;
   }

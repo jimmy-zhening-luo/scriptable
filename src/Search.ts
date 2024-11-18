@@ -27,9 +27,14 @@ class Search extends Shortcut<
     } = this.setting,
     { input = "" } = this,
     string = input === "" ? this.read() : input,
-    query = new Query(
+    {
+      key,
+      terms,
+      question,
+      recomposed,
+    } = new Query(
       string,
-      engines,
+      Object.keys(engines),
       alias,
       ...Search.stringfuls([
         selector,
@@ -39,7 +44,7 @@ class Search extends Shortcut<
       ] as const),
       Search.stringfuls(fallback),
     ),
-    entry = query.engine,
+    entry = engines[key] as typeof engines[string],
     engine = Array.isArray(entry) || typeof entry === "string"
       ? new Engine(
         "browser",
@@ -65,13 +70,7 @@ class Search extends Shortcut<
           )
           : "shortcut" in entry
             ? new Engine("shortcut", entry.shortcut, entry.output)
-            : new Engine("find", entry.find),
-    {
-      key,
-      terms,
-      question,
-      recomposed,
-    } = query;
+            : new Engine("find", entry.find);
 
     this.write(recomposed);
 
