@@ -6,7 +6,7 @@ class Query {
 
   constructor(
     string: string,
-    engines: string[],
+    engines: SearchSetting["engines"],
     alias: FieldTable,
     SELECTOR: stringful,
     OPERATORS: stringful,
@@ -17,7 +17,7 @@ class Query {
     if (`${SELECTOR}${OPERATORS}`.includes("."))
       throw new TypeError("Bad selector/operator");
 
-    const [Key, ...terms] = Query.select(
+    const [K, ...terms] = Query.select(
       Query.operate(
         Query.tokenize(
           string,
@@ -29,18 +29,18 @@ class Query {
       SELECTOR,
       TRANSLATE,
     ),
-    key = (Key satisfies stringful).toLowerCase() as stringful;
+    key = (K satisfies stringful).toLowerCase() as stringful;
 
     ({
       key: this.key = key,
       terms: this.terms = terms,
     } = key in engines
       ? {}
-      : key in alias && (alias[key] as string) in engines
+      : key in alias
         ? { key: alias[key] as stringful }
         : {
             key: FALLBACK.at(-1) as stringful,
-            terms: [Key, ...terms],
+            terms: [K, ...terms],
           });
     this.question = this.terms.join(" ");
     this.recomposed = `${this.key} ${this.question}`;
@@ -85,7 +85,10 @@ class Query {
 
     const [head, ...rest] = tokens;
 
-    return numeric(head[0], OPERATORS) || head.length > 1 && head.startsWith(".") && numeric(head[1] as char)
+    return numeric(head[0], OPERATORS)
+      || head.length > 1
+      && head.startsWith(".")
+      && numeric(head[1] as char)
       ? [MATH, ...tokens] as const
       : [...unroll(head), ...rest] as const;
   }

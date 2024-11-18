@@ -34,7 +34,7 @@ class Search extends Shortcut<
       recomposed,
     } = new Query(
       string,
-      Object.keys(engines),
+      engines,
       alias,
       ...Search.stringfuls([
         selector,
