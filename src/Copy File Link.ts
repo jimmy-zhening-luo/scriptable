@@ -13,7 +13,7 @@ class FileLink extends Share<
     if (files.length < 1)
       throw new RangeError("No folders/files shared");
 
-    const links = files.map(path => `shareddocuments://${path}`).join("\n");
+    const links = files.map(path => `shareddocuments://${encodeURI(path)}`).join("\n");
 
     Pasteboard.copyString(links);
 
