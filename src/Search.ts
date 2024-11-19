@@ -32,7 +32,7 @@ class Search extends Shortcut<
       terms,
       question,
       recomposed,
-    } = new Query(
+    } = Query(
       string,
       engines,
       alias,

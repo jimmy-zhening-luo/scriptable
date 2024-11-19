@@ -1,52 +1,14 @@
-class Query {
-  public readonly key: stringful;
-  public readonly terms: stringful[];
-  public readonly question;
-  public readonly recomposed;
-
-  constructor(
-    string: string,
-    engines: SearchSetting["engines"],
-    alias: FieldTable,
-    SELECTOR: stringful,
-    OPERATORS: stringful,
-    MATH: stringful,
-    TRANSLATE: stringful,
-    FALLBACK: Triad<stringful>,
-  ) {
-    if (`${SELECTOR}${OPERATORS}`.includes("."))
-      throw new TypeError("Bad selector/operator");
-
-    const [K, ...terms] = Query.select(
-      Query.operate(
-        Query.tokenize(
-          string,
-          FALLBACK,
-        ),
-        OPERATORS,
-        MATH,
-      ),
-      SELECTOR,
-      TRANSLATE,
-    ),
-    key = (K satisfies stringful).toLowerCase() as stringful;
-
-    ({
-      key: this.key = key,
-      terms: this.terms = terms,
-    } = key in engines
-      ? {}
-      : key in alias
-        ? { key: alias[key] as stringful }
-        : {
-            key: FALLBACK.at(-1) as stringful,
-            terms: [K, ...terms],
-          });
-    this.question = this.terms.join(" ");
-    this.recomposed = `${this.key} ${this.question}`;
-  }
-
-  private static tokenize(
+function Query(
+  string: string,
+  engines: SearchSetting["engines"],
+  alias: FieldTable,
+  SELECTOR: stringful,
+  OPERATORS: stringful,
+  MATH: stringful,
+  TRANSLATE: stringful,
+  FALLBACK: Triad<stringful>,
+) {
+  function tokenize(
     input: string,
     FALLBACK: Triad<stringful>,
   ) {
@@ -62,7 +24,7 @@ class Query {
     return tokens as Arrayful<stringful>;
   }
 
-  private static operate(
+  function operate(
     tokens: Readonly<Arrayful<stringful>>,
     OPERATORS: stringful,
     MATH: stringful,
@@ -93,7 +55,7 @@ class Query {
       : [...unroll(head), ...rest] as const;
   }
 
-  private static select(
+  function select(
     tokens: Readonly<Arrayful<stringful>>,
     SELECTOR: stringful,
     TRANSLATE: stringful,
@@ -127,6 +89,44 @@ class Query {
       ] as const;
     }
   }
+
+  if (`${SELECTOR}${OPERATORS}`.includes("."))
+    throw new TypeError("Bad selector/operator");
+
+  const [_K, ..._terms] = select(
+    operate(
+      tokenize(
+        string,
+        FALLBACK,
+      ),
+      OPERATORS,
+      MATH,
+    ),
+    SELECTOR,
+    TRANSLATE,
+  ),
+  _key = (_K satisfies stringful).toLowerCase() as stringful,
+
+  {
+    key = _key,
+    terms = _terms,
+  } = _key in engines
+    ? {}
+    : _key in alias
+      ? { key: alias[_key] as stringful }
+      : {
+          key: FALLBACK.at(-1) as stringful,
+          terms: [_K, ..._terms],
+        },
+  question = terms.join(" "),
+  recomposed = `${key} ${question}`;
+
+  return {
+    key,
+    terms,
+    question,
+    recomposed,
+  };
 }
 
 export default Query;
