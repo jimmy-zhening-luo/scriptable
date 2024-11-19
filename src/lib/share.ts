@@ -1,6 +1,6 @@
 import App from "./app";
 
-abstract class Share<
+export default abstract class Share<
   Output = never,
   Schema = never,
 > extends App<string[], Null<Output>, Schema> {
@@ -19,5 +19,3 @@ abstract class Share<
     return runtime;
   }
 }
-
-export default Share;

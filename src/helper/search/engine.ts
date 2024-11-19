@@ -1,4 +1,4 @@
-class SearchEngine<
+export default class SearchEngine<
   T extends (
     | "api"
     | "browser"
@@ -85,5 +85,3 @@ class SearchEngine<
       : U;
   }
 }
-
-export default SearchEngine;

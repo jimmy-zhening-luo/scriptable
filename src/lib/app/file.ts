@@ -1,4 +1,4 @@
-class File<
+export default class File<
   FT extends string,
   Mutable extends boolean,
 > {
@@ -101,5 +101,3 @@ class File<
     File.manager.remove(this.path);
   }
 }
-
-export default File;

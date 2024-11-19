@@ -1,6 +1,6 @@
 import App from "./app";
 
-abstract class Shortcut<
+export default abstract class Shortcut<
   Input = never,
   Output = never,
   Schema = never,
@@ -20,5 +20,3 @@ abstract class Shortcut<
 
   protected stringInput?: Input extends string ? boolean : never;
 }
-
-export default Shortcut;

@@ -1,4 +1,4 @@
-function Query(
+export default function (
   string: string,
   engines: SearchSetting["engines"],
   alias: FieldTable,
@@ -128,5 +128,3 @@ function Query(
     recomposed,
   };
 }
-
-export default Query;

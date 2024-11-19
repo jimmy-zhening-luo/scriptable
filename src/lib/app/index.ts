@@ -1,6 +1,6 @@
 import File from "./file";
 
-abstract class App<
+export default abstract class App<
   Input,
   Output,
   Schema,
@@ -163,5 +163,3 @@ abstract class App<
   private config?: Schema;
   private synthetic?: undefined | Input;
 }
-
-export default App;
