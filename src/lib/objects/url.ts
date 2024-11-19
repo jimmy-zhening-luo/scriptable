@@ -1,4 +1,4 @@
-function Url(string: string) {
+export default function (string: string) {
   function parse(string: string, tryHttp = false) {
     const {
       scheme = "",
@@ -29,5 +29,3 @@ function Url(string: string) {
 
   return parts;
 }
-
-export default Url;

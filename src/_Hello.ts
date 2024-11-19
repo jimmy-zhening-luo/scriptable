@@ -1,5 +1,6 @@
 // icon-color: yellow; icon-glyph: circle;
 import Shortcut from "./lib";
+import date from "./lib/objects/date";
 
 class _Hello extends Shortcut<
   never,
@@ -9,7 +10,7 @@ class _Hello extends Shortcut<
   protected runtime() {
     const greeting = `${this.read("hi")}${_Hello.stringful(this.setting.space, "setting")}${this.read()}`;
 
-    this.write(`World from ${_Hello.date()}`);
+    this.write(`World from ${date()}`);
 
     return greeting;
   }
