@@ -37,7 +37,7 @@ There are two (2) special requirements for writing a `Library`:
 1. `Library` scripts must ___not___ be in the top-level directory of your device's `Scriptable` folder. Instead, they must be in any of the following:
     - A subdirectory of your device's `Scriptable` folder
     - Anywhere (top-level or otherwise) in a [place](https://docs.scriptable.app/importmodule/) where Scriptable's `importModule` function will look
-2. (Identical to [`App` requirement](#write-app-scripts)) Your script must only use the following globals:
+2. (Identical to [`App` requirement](#not-so-easy-write-app-scripts)) Your script must only use the following globals:
     - [`Scriptable` objects](https://docs.scriptable.app/)
     - Apple [`JavaScriptCore`](https://developer.apple.com/documentation/javascriptcore) native objects
 
@@ -56,11 +56,13 @@ This project has `VSCode` [snippets](./.vscode/Header.code-snippets) to generate
 Its grammar is implemented from the source of truth below:
 
 #### Line 1
+
 ```javascript
 // Variables used by Scriptable.
 ```
 
 #### Line 2
+
 ```javascript
 // These must be at the very top of the file. Do not edit.
 ```
