@@ -1,14 +1,7 @@
 import { expect } from "chai";
+import { FakeDateFormatter } from "./fake/index.spec";
 
-class FakeDateFormatter {
-  public dateFormat = "DEFAULT DATE FORMAT";
-
-  public string(date: Date) {
-    return String(date.getTime());
-  }
-}
-
-global.DateFormatter = FakeDateFormatter as unknown as typeof DateFormatter;
+global.DateFormatter = FakeDateFormatter;
 
 import date from "./date";
 

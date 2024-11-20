@@ -151,6 +151,7 @@ export default abstract class App<
 
     n.title = title;
     n.body = body;
+    n.sound = "failure";
     n.schedule().catch((e: unknown) => console.error(e));
     console.error(`${title}\n${body}`);
 

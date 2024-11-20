@@ -1,6 +1,6 @@
 // icon-color: yellow; icon-glyph: circle;
 import Shortcut from "./lib";
-import date from "./lib/objects/date";
+import date from "./lib/object/date";
 
 class _Hello extends Shortcut<
   never,

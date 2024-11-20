@@ -1,6 +1,6 @@
 // icon-color: light-gray; icon-glyph: link;
 import Shortcut from "./lib";
-import url from "./lib/objects/url";
+import url from "./lib/object/url";
 
 function process(host: string, path: string) {
   const processors = {
