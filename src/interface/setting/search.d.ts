@@ -23,8 +23,7 @@ declare interface SearchSetting {
     >
     | SearchEngineSetting<
       "api",
-      | "encodeComponent"
-      ,
+      "encodeComponent",
       never,
       Field<never, "separator">
     >
@@ -32,8 +31,7 @@ declare interface SearchSetting {
       "url",
       | "encodeComponent"
       | "force"
-      | "inprivate"
-      ,
+      | "inprivate",
       never,
       Field<never, "separator">,
       Unflat<string, false>
