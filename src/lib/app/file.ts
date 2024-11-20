@@ -98,6 +98,7 @@ export default class File<
     if (!this.mutable)
       throw new TypeError("Cannot delete readonly file", { cause: this.path });
 
-    File.manager.remove(this.path);
+    if (this.exists)
+      File.manager.remove(this.path);
   }
 }
