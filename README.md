@@ -1,12 +1,34 @@
-# `@jimbojet/scriptable`
+# `type-scriptable`
 [![Azure Publish (PROD.main)](https://github.com/jimmy-zhening-luo/scriptable/actions/workflows/PROD.main.yml/badge.svg)](https://github.com/jimmy-zhening-luo/scriptable/actions/workflows/PROD.main.yml)
+
+- [What is `Scriptable`?](#what-is-scriptable)
+- [What is `type-scriptable`?](#what-is-type-scriptable)
+  - [Mission](#mission)
+  - [`Scriptable` Sucks](#scriptable-sucks)
+    - [A Devil's Bargain](#a-devils-bargain)
+  - [`type-scriptable` also sucks, but I don't care](#type-scriptable-also-sucks-but-i-dont-care)
+    - [Fully-contained library and build environment](#fully-contained-library-and-build-environment)
+- [How to use](#how-to-use)
+  - [Vocabulary](#vocabulary)
+    - [`App`](#app)
+    - [`Library`](#library)
+  - [EASY: Write `Library` scripts](#easy-write-library-scripts)
+  - [NOT SO EASY: Write `App` scripts](#not-so-easy-write-app-scripts)
+    - [The Header ™](#the-header-)
+    - [Line 1](#line-1)
+    - [Line 2](#line-2)
+    - [Line 3](#line-3)
+    - [Line 4](#line-4)
 
 ## What is `Scriptable`?
 `Scriptable` for `iOS` and `iPadOS` lets users author JavaScript procedures invokable by `Apple` `Shortcuts`, `Share Sheet` or `Widgets`, useful for home and device automation.
 
 Besides the aforementioned entry-points, `Scriptable` provides integration points into `iOS`/`iPadOS` filesystem and notifications.
 
-## What is `@jimbojet/scriptable`?
+## What is `type-scriptable`?
+
+### Mission
+Write type-safe, concise, continuously-deployed Scriptable apps.
 
 ### `Scriptable` Sucks
 Like most `iOS` tools, `Scriptable` is the best we've got but it's still bad:
@@ -22,13 +44,16 @@ This presented a difficult trade-off:
 - _Option A:_ Write unsafe but minimal scripts.
 - _Option B:_ Write safe but bloated, slow scripts.
 
-### `@jimbojet/scriptable` also sucks, but I don't care
+### `type-scriptable` also sucks, but I don't care
 I wrote this project simply for myself so that I could make `Scriptable` usable, not for any of you. My goals were:
 
 1. I wanted to be able to write complex `Scriptable` scripts using a real IDE ([`Visual Studio Code`](https://code.visualstudio.com/)), in a real scripting language [`TypeScript`](https://www.typescriptlang.org/).
-2. I wanted to interact with my file system in a somewhat sane manner, which `Scriptable` does not provide.
-3. I wanted to import modules from real locations, instead of whatever bad path I give to Scriptable's weird `importModule` dynamic loader.
-4. I wanted my scripts to be load and run in fewer than 500 milliseconds (SERIOUSLY, how bad is that? Fuck `Scriptable`, fuck all `Apple` developers, I think there's something about `Apple`'s general disrespect for and patronization of its users that persistently lowers the standards of both consumers and developers. Really, the Apple app ecosystem and Apple software itself is just absolutely, fucking, amateur hour.).
+2. I wanted said `TypeScript` to transpile to correct, efficient `JavaScript` that would execute on `Apple JavaScriptCore` and interact correctly with `Scriptable` globals.
+3. I wanted said transpiled scripts to be automatically published to package repos from where I could easily install them on my device.
+4. I wanted to gate said build and deployment on `mocha` `chai` tests for my scripts using mocked `Scriptable` globals.
+5. I wanted to interact with my file system in a somewhat sane manner, which `Scriptable` does not provide.
+6. I wanted to import modules from real locations using `ESModule` syntax, instead of whatever bad path I give to Scriptable's weird `importModule` dynamic (cough MACRO) loader.
+7. I wanted my scripts to be load and run in fewer than 500 milliseconds (SERIOUSLY, how bad is that? Fuck `Scriptable`, fuck all `Apple` developers, I think there's something about `Apple`'s general disrespect for and patronization of its users that persistently lowers the standards of both consumers and developers. Really, the Apple app ecosystem and Apple software itself is just absolutely, fucking, amateur hour.).
 
 #### Fully-contained library and build environment
 
