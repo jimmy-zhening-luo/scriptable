@@ -108,17 +108,16 @@ export default function (
     TRANSLATE,
   ),
   _key = (_K satisfies stringful).toLowerCase() as stringful,
-
   {
     key = _key,
-    terms = _terms,
+    terms = [..._terms] as const,
   } = _key in engines
     ? {}
     : _key in alias
       ? { key: alias[_key] as stringful }
       : {
           key: FALLBACK.at(-1) as stringful,
-          terms: [_K, ..._terms],
+          terms: [_K, ..._terms] as const,
         },
   question = terms.join(" "),
   recomposed = `${key} ${question}`;

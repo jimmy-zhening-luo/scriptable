@@ -1,27 +1,33 @@
 declare namespace Primitive {
-  export type T0 = Primitive<"fast", string>;
-  export type T0a = Primitive<"", string>;
-  export type T0b = Primitive<"fast" | "good", string>;
-  export type T0c = Primitive<"fast" | "", string>;
-  export type T1 = Primitive<5, number>;
-  export type T1a = Primitive<0, number>;
-  export type T2 = Primitive<true, boolean>;
-  export type T2a = Primitive<false, boolean>;
-  export type N0 = Primitive<string, string>;
-  export type N0a = Primitive<number, number>;
-  export type N0b = Primitive<boolean, boolean>;
-  export type N1 = Primitive<stringful, string>;
-  export type N1b = Primitive<numberful, number>;
-
-  // export type N2 = Primeval<number | 5, number>;
-  // export type N2a = Primeval<string | "good", string>;
-  // export type N2b = Primeval<boolean | true, boolean>;
-  // export type N3 = Primeval<5, number | object>;
-  // export type N3a = Primeval<symbol, symbol>;
-  // export type N3b = Primeval<object, object>;
-  // export type N3c = Primeval<[], readonly unknown[]>;
-  // export type N3d = Primeval<()=> 5, Function>;
-  // export type N3e = Primeval<5, unknown>;
-  // export type N3f = Primeval<true | 10, boolean>;
-  // export type N3g = Primeval<string | "good", string>;
+  export type Result = 0 | Test<{
+    T: {
+      T0: Primitive<"fast", string>;
+      T0a: Primitive<"", string>;
+      T0b: Primitive<"fast" | "good", string>;
+      T0c: Primitive<"fast" | "", string>;
+      T1: Primitive<5, number>;
+      T1a: Primitive<0, number>;
+      T2: Primitive<true, boolean>;
+      T2a: Primitive<false, boolean>;
+    };
+    F: {
+      N0: Primitive<string, string>;
+      N0a: Primitive<number, number>;
+      N0b: Primitive<boolean, boolean>;
+      N1: Primitive<stringful, string>;
+      N1b: Primitive<numberful, number>;
+      // Error:
+      // N2: Primeval<number | 5, number>;
+      // N2a: Primeval<string | "good", string>;
+      // N2b: Primeval<boolean | true, boolean>;
+      // N3: Primeval<5, number | object>;
+      // N3a: Primeval<symbol, symbol>;
+      // N3b: Primeval<object, object>;
+      // N3c: Primeval<[], readonly unknown[]>;
+      // N3d: Primeval<()=> 5, Function>;
+      // N3e: Primeval<5, unknown>;
+      // N3f: Primeval<true | 10, boolean>;
+      // N3g: Primeval<string | "good", string>;
+    };
+  }>;
 }

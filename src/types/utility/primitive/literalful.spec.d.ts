@@ -1,20 +1,26 @@
 declare namespace literalful {
-  export type T0 = literalful<"a">;
-  export type T1 = literalful<"a" | "b">;
-  export type N0 = literalful<never>;
-  export type N1 = literalful<"">;
-  export type N2 = literalful<string>;
-  export type N2b = literalful<stringful>;
-  export type N3 = literalful<"" | "a">;
-
-//   export type N5 = literalful<"a" | string>;
-//   export type N5a = literalful<unknown>;
-//   export type N5b = literalful<null>;
-//   export type N5c = literalful<undefined>;
-//   export type N5d = literalful<void>;
-//   export type N5e = literalful<[]>;
-//   export type N5f = literalful<object>;
-//   export type N5g = literalful<()=> "a">;
-//   export type N5h = literalful<symbol>;
-//   export type N5i = literalful<"a" | 5>;
+  export type Result = 0 | Test<{
+    T: {
+      T0: literalful<"a">;
+      T1: literalful<"a" | "b">;
+    };
+    F: {
+      N0: literalful<never>;
+      N1: literalful<"">;
+      N2: literalful<string>;
+      N2b: literalful<stringful>;
+      N3: literalful<"" | "a">;
+      // Error
+      // N5: literalful<"a" | string>;
+      // N5a: literalful<unknown>;
+      // N5b: literalful<null>;
+      // N5c: literalful<undefined>;
+      // N5d: literalful<void>;
+      // N5e: literalful<[]>;
+      // N5f: literalful<object>;
+      // N5g: literalful<()=> "a">;
+      // N5h: literalful<symbol>;
+      // N5i: literalful<"a" | 5>;
+    };
+  }>;
 }

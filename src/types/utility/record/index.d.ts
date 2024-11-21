@@ -1,4 +1,4 @@
-declare type Interface<R extends object> = [R] extends [object]
+declare type Interface<R> = [R] extends [object]
   ? [Extract<R, readonly unknown[]>] extends [never]
       ? Required<R> extends Record<infer K, unknown>
         ? Exclude<K, string> extends never

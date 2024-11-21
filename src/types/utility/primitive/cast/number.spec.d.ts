@@ -1,6 +1,5 @@
 declare namespace ToNumber {
-  export type Canary = Tester<Suite> | 0;
-  export type Suite = {
+  export type Result = 0 | Test<{
     T: {
       a: ToNumber<"0">;
       a0: ToNumber<"-0">;
@@ -77,5 +76,5 @@ declare namespace ToNumber {
       an: ToNumber<`1${number}`>;
       ana: ToNumber<`-1${number}`>;
     };
-  };
+  }>;
 }

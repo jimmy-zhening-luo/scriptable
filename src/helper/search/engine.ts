@@ -7,7 +7,7 @@ export default class SearchEngine<
   ),
 > {
   private readonly engine: Null<string>;
-  private readonly urls: Null<string[]>;
+  private readonly urls: Null<readonly string[]>;
   private readonly tag: Null<stringful>;
   private readonly output: Null<true>;
 
@@ -45,7 +45,7 @@ export default class SearchEngine<
 
   public resolve(
     key: stringful,
-    terms: stringful[],
+    terms: readonly stringful[],
     question: string,
   ) {
     const {
@@ -67,8 +67,8 @@ export default class SearchEngine<
   }
 
   private encode(
-    urls: string[],
-    terms: stringful[],
+    urls: readonly string[],
+    terms: readonly stringful[],
   ) {
     const { tag, encodeComponent } = this,
     encodedQuery = terms

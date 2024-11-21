@@ -1,6 +1,5 @@
 declare namespace Null {
-  type OK = Tester<TF> | 0;
-  type TF = {
+  type Result = 0 | Test<{
     T: {
       T0: Null<string>;
       T1: Null<string | null>;
@@ -9,5 +8,8 @@ declare namespace Null {
       T4: Null<string | int | null>;
       T6: Null<NonNullable<undefined | string>>;
     };
-  };
+    F: {
+      a: never;
+    };
+  }>;
 }

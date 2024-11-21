@@ -1,3 +1,10 @@
-declare type Unflat<In = string, RO extends boolean = true> = [In] extends [never]
+declare type Unflat<
+  Element = string,
+  Mutable extends boolean = false,
+> = [Element] extends [never]
   ? never
-  : In | (Truth<RO> extends never ? In[] : readonly In[]);
+  :
+    | Element
+    | (Truth<Mutable> extends never
+      ? readonly Element[]
+      : Element[]);

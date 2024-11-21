@@ -16,7 +16,7 @@ export interface SearchSetting {
   };
   alias: FieldTable;
   engines: Table<
-    | Unflat<string, false>
+    | Unflat<string, true>
     | SearchEngineSetting<"find">
     | SearchEngineSetting<
       "shortcut",
@@ -36,7 +36,7 @@ export interface SearchSetting {
       | "inprivate",
       never,
       Field<never, "separator">,
-      Unflat<string, false>
+      Unflat
     >
   >;
 }

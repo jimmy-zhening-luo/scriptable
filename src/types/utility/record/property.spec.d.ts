@@ -1,4 +1,4 @@
-declare namespace Un {
+declare namespace Property {
   type Result = 0 | Test<{
     T: {
       a: true;

@@ -1,6 +1,5 @@
 declare namespace Nullable {
-  type Canary = Tester<Suite> | 0;
-  type Suite = {
+  type Result = 0 | Test<{
     T: {
       a: Nullable<string>;
       a0: Nullable<string | null>;
@@ -11,5 +10,8 @@ declare namespace Nullable {
       g: Nullable<"" | 5>;
       z: Nullable<never>; // null
     };
-  };
+    F: {
+      a: never;
+    };
+  }>;
 }
