@@ -1,1 +1,1 @@
-declare type Numeric<N extends number> = Primitive<N, number>;
+declare type Numeric<N extends number> = LiteralPrimitive<N, number>;

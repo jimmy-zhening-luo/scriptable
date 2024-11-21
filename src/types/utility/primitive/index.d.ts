@@ -1,4 +1,4 @@
-declare type Primitive<
+declare type LiteralPrimitive<
   P extends Type,
   Type extends primitive,
 > = [Type] extends [primitive]

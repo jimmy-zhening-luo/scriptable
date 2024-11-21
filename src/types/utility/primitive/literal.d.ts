@@ -1,1 +1,1 @@
-declare type literal<S extends string> = Primitive<S, string>;
+declare type literal<S extends string> = LiteralPrimitive<S, string>;

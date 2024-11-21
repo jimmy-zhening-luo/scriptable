@@ -1,21 +1,21 @@
-declare namespace Primitive {
+declare namespace LiteralPrimitive {
   export type Result = 0 | Test<{
     T: {
-      T0: Primitive<"fast", string>;
-      T0a: Primitive<"", string>;
-      T0b: Primitive<"fast" | "good", string>;
-      T0c: Primitive<"fast" | "", string>;
-      T1: Primitive<5, number>;
-      T1a: Primitive<0, number>;
-      T2: Primitive<true, boolean>;
-      T2a: Primitive<false, boolean>;
+      T0: LiteralPrimitive<"fast", string>;
+      T0a: LiteralPrimitive<"", string>;
+      T0b: LiteralPrimitive<"fast" | "good", string>;
+      T0c: LiteralPrimitive<"fast" | "", string>;
+      T1: LiteralPrimitive<5, number>;
+      T1a: LiteralPrimitive<0, number>;
+      T2: LiteralPrimitive<true, boolean>;
+      T2a: LiteralPrimitive<false, boolean>;
     };
     F: {
-      N0: Primitive<string, string>;
-      N0a: Primitive<number, number>;
-      N0b: Primitive<boolean, boolean>;
-      N1: Primitive<stringful, string>;
-      N1b: Primitive<numberful, number>;
+      N0: LiteralPrimitive<string, string>;
+      N0a: LiteralPrimitive<number, number>;
+      N0b: LiteralPrimitive<boolean, boolean>;
+      N1: LiteralPrimitive<stringful, string>;
+      N1b: LiteralPrimitive<numberful, number>;
       // Error:
       // N2: Primeval<number | 5, number>;
       // N2a: Primeval<string | "good", string>;
