@@ -1,4 +1,4 @@
-declare namespace Un {
+declare namespace Undef {
   type Result = 0 | Test<{
     T: {
       a: true;
