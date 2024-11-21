@@ -7,11 +7,16 @@ declare namespace Nullable {
       d: Nullable<string | null | undefined>;
       e: Nullable<string | int | null>;
       f: Nullable<NonNullable<undefined | string>>;
+      f0: Nullable<NonNullable<null | string>>;
+      f1: Nullable<NonNullable<undefined | Null<string>>>;
       g: Nullable<"" | 5>;
-      z: Nullable<never>; // null
+      // Error:
+      // z: Nullable<string | never> /* string | null */;
+      // z0: Nullable<5 | NonNullable<never>> /* 5 | null */;
     };
     F: {
-      a: never;
+      a: Nullable<never>;
+      b: Nullable<NonNullable<never>>;
     };
   }>;
 }
