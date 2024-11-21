@@ -5,7 +5,7 @@ import date from "./lib/object/date";
 class _Hello extends Shortcut<
   never,
   string,
-  Field<never, "space">
+  { space?: string }
 > {
   protected runtime() {
     const greeting = `${this.read("hi")}${_Hello.stringful(this.setting.space, "setting")}${this.read()}`;
