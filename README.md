@@ -1,13 +1,36 @@
 # `@jimbojet/scriptable`
 [![Azure Publish (PROD.main)](https://github.com/jimmy-zhening-luo/scriptable/actions/workflows/PROD.main.yml/badge.svg)](https://github.com/jimmy-zhening-luo/scriptable/actions/workflows/PROD.main.yml)
 
-## What is Scriptable?
-Scriptable iOS/iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts or Widgets, useful for complex device/home automation and data transforms.
+## What is `Scriptable`?
+`Scriptable` for `iOS` and `iPadOS` lets users author JavaScript procedures invokable by `Apple` `Shortcuts`, `Share Sheet` or `Widgets`, useful for home and device automation.
 
-Scriptable provides all the classes needed to interact with the above native iOS features and with the user.
+Besides the aforementioned entry-points, `Scriptable` provides integration points into `iOS`/`iPadOS` filesystem and notifications.
 
 ## What is `@jimbojet/scriptable`?
-Fully-contained library and build environment:
+
+### `Scriptable` Sucks
+Like most `iOS` tools, `Scriptable` is the best we've got but it's still bad:
+
+- Executes insanely slow even by `Apple JavaScriptCore` standards. Iterating an array, for example, is an order of magnitude slower in `Scriptable` than in `Shortcuts` using a native action.
+- When invoking from `Shortcuts` (its entire appeal), its loading latency increases linearly with the total size of all `Scriptable` scripts on your device, even if (as a test) you load a script that simply returns `Hello World` and has no dependencies.
+- It doesn't have module loading, that's a lie. `importModule` should actually be titled `pasteMacro`, because it's actually copy/pasting the contents of the module into your script, which causes unexpected namespace collisions. Further, say you have three extensions of a base class, and you import all three extensions into your module. You now have hulking 10s of kilobytes ___triplicate___-prototype chain, exacerbating Scriptable's already total-size-dependent latency. Furthermore, unlike with a real `import`, it breaks the prototype chain, so for example an `Error` object created in one script will fail `instanceof Error` in another script.
+- There's no file system safety, you can just delete any non-system file, and `Scriptable` will happily, ___silently___ let you do it.
+
+#### A Devil's Bargain
+This presented a difficult trade-off:
+
+- _Option A:_ Write unsafe but minimal scripts.
+- _Option B:_ Write safe but bloated, slow scripts.
+
+### `@jimbojet/scriptable` also sucks, but I don't care
+I wrote this project simply for myself so that I could make `Scriptable` usable, not for any of you. My goals were:
+
+1. I wanted to be able to write complex `Scriptable` scripts using a real IDE ([`Visual Studio Code`](https://code.visualstudio.com/)), in a real scripting language [`TypeScript`](https://www.typescriptlang.org/).
+2. I wanted to interact with my file system in a somewhat sane manner, which `Scriptable` does not provide.
+3. I wanted to import modules from real locations, instead of whatever bad path I give to Scriptable's weird `importModule` dynamic loader.
+4. I wanted my scripts to be load and run in fewer than 500 milliseconds (SERIOUSLY, how bad is that? Fuck `Scriptable`, fuck all `Apple` developers, I think there's something about `Apple`'s general disrespect for and patronization of its users that persistently lowers the standards of both consumers and developers. Really, the Apple app ecosystem and Apple software itself is just absolutely, fucking, amateur hour.).
+
+#### Fully-contained library and build environment
 
 - Code in __`TypeScript`__.
 - __Type-safe__ imports using `ESModule` syntax.
@@ -60,7 +83,7 @@ If these all sound like not very impressive things:
 1. I agree, and
 2. Go try yourself to write, iterate on, and debug reliable Scriptable scripts that interact with Shortcuts, and see how far you get without wanting to [fly](https://www.google.com/search?q=one-way+flights+SFO) to [Cupertino](https://maps.app.goo.gl/u4WEdXTrx97ewS2fA) and personally burn down the Appleplex or whatever the fuck it's called.
 
-## Usage
+## How to use
 
 ### Vocabulary
 There are two types of scripts.
