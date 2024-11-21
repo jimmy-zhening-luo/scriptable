@@ -10,6 +10,7 @@ Scriptable provides all the classes needed to interact with the above native iOS
 Fully-contained library and build environment to:
 
 - Code in TypeScript.
+- __Type-safe__ `importModule` via `ESModule` syntax.
 - Compile to efficient, strict JavaScript guaranteed to execute on Apple JavaScriptCore and to correctly interact with Scriptable global functions.
 - Use Scriptable bookmarks to pin filesystem roots for persistent storage and settings.
 - Import and extend an abstract Scriptable "app" that has terse, idiomatic methods to:
