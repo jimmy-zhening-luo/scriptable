@@ -7,19 +7,58 @@ Scriptable iOS/iPadOS lets users author JavaScript procedures invokable by Apple
 Scriptable provides all the classes needed to interact with the above native iOS features and with the user.
 
 ## What is `@jimbojet/scriptable`?
-Fully-contained library and build environment to:
+Fully-contained library and build environment:
 
-- Code in TypeScript.
-- __Type-safe__ `importModule` via `ESModule` syntax.
-- Compile to efficient, strict JavaScript guaranteed to execute on Apple JavaScriptCore and to correctly interact with Scriptable global functions.
-- Use Scriptable bookmarks to pin filesystem roots for persistent storage and settings.
-- Import and extend an abstract Scriptable "app" that has terse, idiomatic methods to:
-  - Accept input of an expected type from iOS/iPadOS Shortcuts.
-  - Read/write data and load settings for each app from its own sandboxed subdirectory.
-  - Return output of an expected type to iOS/iPadOS Shortcuts.
-  - Catch branded error stacks and correctly log, display, and notify in _all_ contexts (in-Scriptable-app from the launcher screen, in-Scriptable-app in the edit view, Force Push Scriptable icon shortcut, Share Sheet Scriptable script, Force Push Shortcuts app to run a Shortcut that runs a Scriptable app, Share Sheet Shortcut, in-Shortcuts-editor, in-Shortcuts-launcher screen, from Spotlight search as a Home Screen bookmark, from Spotlight search as a Scriptable result, from Home Screen as a Home Screen bookmark (nope i didnt stutter), from Spotlight search as a Shortcut result, from lock screen widget Shortcut, from lock screen widget Scriptable, from regular widget Shortcut, from lock screen widget Scriptable, from Control Center, from Action Button, from those weird force push buttons on the bottom left and bottom right of your lock screen) multiplied by (from Shortcuts URL scheme where the encapsulating Shortcut is in any of the contexts from the prior clause, from the Run Shortcut action inside a Shortcut where ditto) multiplied by (whether the "Run in Scriptable" toggle is on) multiplied by (whether the "Show when run" toggle is on). Wow, that was a mouthful, I almost forgot how great Apple products are, such a seamless, bug-free ecosystem, no wonder they don't need to respect user choice!
+- Code in __`TypeScript`__.
+- __Type-safe__ imports using `ESModule` syntax.
+  - Enjoy `VSCode` `Intellisense` auto-complete & auto-update-import.
+  - Build _will_ ___fail___ if you try to import a module from the wrong directory.
+- __Transpile__ to efficient, strict `JavaScript` guaranteed to execute on `Apple JavaScriptCore` (boooo) and to correctly interact with `Scriptable` globals.
+- __Automatically publish__ to package repos.
+  - On `push` by [default](./.github/workflows/PROD.main.yml), easily adaptable to on `tag` release or any other logic.
+  - To [`Azure Storage`](https://learn.microsoft.com/en-us/azure/storage/) by default, easily adaptable to any other package repo.
+  - Branch-specific deployment environments [`production`](./.github/workflows/PROD.main.yml), [`integration`](./.github/workflows/int.yml), and [`development`](./.github/workflows/dev.yml) by default, easily adaptable to any environment-selection logic of your choosing (e.g. by prerelease vs release `tag`s).
+- __Abstract class__ providing terse, idiomatic functions to write complex `iOS`/`iPadOS` `Shortcuts` or `Share Sheet` that:
+  - Safely interact with the file system:
+    - Just pin two `Scriptable` bookmarks for persistent storage and settings respectively.
+    - Thereafter, read/write data and load settings for each app from its own sandboxed subdirectory.
+  - Provides you the output you're expecting:
+    - We took `Scriptable`'s _bad_ input-coercion and handling and made it _slightly safer_.
+    - Return output of an expected type to iOS/iPadOS Shortcuts. We took `Apple`'s _low-key criminal_ handling of dictionaries and made it _half-usable_.
+  - Throw errors! OMG can you imagine actually getting useful, viewable, and parseable full error stacks in either Scriptable (only top error, insanely) or Shortcuts (can't see the error at all, also insanely)? Now it's no longer in your imagination, it's simply in your code. (GitHub Copilot actually wrote that sentence for me lmfao.) Catch branded error stacks and correctly log, display, and notify in _all_ contexts:
+    - (
+      - in-Scriptable-app from the launcher screen
+      - in-Scriptable-app in the edit view
+      - Force Push Scriptable icon shortcut
+      - Share Sheet Scriptable script
+      - Force Push Shortcuts app to run a Shortcut that runs a Scriptable app
+      - Share Sheet Shortcut
+      - in-Shortcuts-editor
+      - in-Shortcuts-launcher screen
+      - from Spotlight search as a Home Screen bookmark
+      - from Spotlight search as a Scriptable result
+      - from Home Screen as a Home Screen bookmark (nope i didnt stutter
+      - from Spotlight search as a Shortcut result
+      - from lock screen widget Shortcut
+      - from lock screen widget Scriptable
+      - from regular widget Shortcut
+      - from lock screen widget Scriptable
+      - from Control Center, from Action Button
+      - from those weird force push buttons on the bottom left and bottom right of your lock screen
+    - ) multiplied by (
+      - from Shortcuts URL scheme where the encapsulating Shortcut is in any of the contexts from the prior clause
+      - from the Run Shortcut action inside a Shortcut where ditto
+    - ) multiplied by (
+      - whether the "Run in Scriptable" toggle is on
+    - ) multiplied by (
+      - whether the "Show when run" toggle is on
+    - ).
+    - Wow, that was a mouthful, I almost forgot how great Apple products are, such a seamless, bug-free ecosystem, no wonder they don't need to respect user choice!
 
-If these all sound like not very impressive things, (1) I agree, and (2) go try yourself to write, iterate on, and debug reliable Scriptable scripts that interact with Shortcuts, and see how far you get without wanting to [fly](https://www.google.com/search?q=one-way+flights+SFO) to [Cupertino](https://maps.app.goo.gl/u4WEdXTrx97ewS2fA) and personally burn down the Appleplex or whatever the fuck it's called.
+If these all sound like not very impressive things:
+
+1. I agree, and
+2. Go try yourself to write, iterate on, and debug reliable Scriptable scripts that interact with Shortcuts, and see how far you get without wanting to [fly](https://www.google.com/search?q=one-way+flights+SFO) to [Cupertino](https://maps.app.goo.gl/u4WEdXTrx97ewS2fA) and personally burn down the Appleplex or whatever the fuck it's called.
 
 ## Usage
 
