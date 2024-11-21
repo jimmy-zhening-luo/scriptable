@@ -10,13 +10,15 @@ declare namespace Nullable {
       f0: Nullable<NonNullable<null | string>>;
       f1: Nullable<NonNullable<undefined | Null<string>>>;
       g: Nullable<"" | 5>;
+      // null:
+      y: Nullable<never>;
+      y0: Nullable<NonNullable<never>>;
       // Error:
       // z: Nullable<string | never> /* string | null */;
       // z0: Nullable<5 | NonNullable<never>> /* 5 | null */;
     };
     F: {
-      a: Nullable<never>;
-      b: Nullable<NonNullable<never>>;
+      a: never;
     };
   }>;
 }
