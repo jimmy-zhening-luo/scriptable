@@ -1,4 +1,4 @@
-declare interface SearchOutput {
+export interface SearchOutput {
   type: string;
   engine: Null<string>;
   question: string;

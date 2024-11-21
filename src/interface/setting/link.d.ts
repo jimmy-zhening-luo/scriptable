@@ -1,4 +1,4 @@
-declare interface LinkSetting {
+export interface LinkSetting {
   host: {
     www: readonly string[];
     swap: FieldTable;

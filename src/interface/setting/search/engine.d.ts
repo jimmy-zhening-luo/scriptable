@@ -1,4 +1,4 @@
-declare type SearchEngineSetting<
+export type SearchEngineSetting<
   Engine extends string,
   Flags extends string = never,
   Fields extends string = never,
@@ -8,5 +8,4 @@ declare type SearchEngineSetting<
   & Record<Engine, Action>
   & (literalful<Flags> extends never ? object : Flag<Flags>)
   & (literalful<Fields> extends never ? object : Field<never, Fields>)
-  & ExtraProperties
-;
+  & ExtraProperties;

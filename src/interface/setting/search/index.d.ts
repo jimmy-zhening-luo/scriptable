@@ -1,4 +1,6 @@
-declare interface SearchSetting {
+import type { SearchEngineSetting } from "./engine";
+
+export interface SearchSetting {
   tags: Field<
     | "query"
   >;

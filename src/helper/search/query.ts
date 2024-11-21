@@ -1,3 +1,5 @@
+import type { SearchSetting } from "../../interface/setting/search";
+
 export default function (
   string: string,
   engines: SearchSetting["engines"],
