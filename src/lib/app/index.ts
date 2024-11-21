@@ -72,7 +72,8 @@ export default abstract class App<
 
   public run(synthetic?: Input) {
     try {
-      this.synthetic = synthetic;
+      if (typeof synthetic !== "undefined")
+        this.synthetic = synthetic;
 
       return this.output(this.runtime());
     }
@@ -158,9 +159,9 @@ export default abstract class App<
     return new Error(title, { cause: body });
   }
 
-  protected abstract getInput(): undefined | Input;
+  protected abstract getInput(): Undef<Input>;
   protected abstract runtime(): Output;
   protected abstract output(runtime: Output): Output;
   private config?: Schema;
-  private synthetic?: undefined | Input;
+  private synthetic?: Input;
 }

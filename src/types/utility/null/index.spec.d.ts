@@ -7,11 +7,12 @@ declare namespace Null {
       T3: Null<string | null | undefined>;
       T4: Null<string | int | null>;
       T6: Null<NonNullable<undefined | string>>;
+      y: Null<never>;
       // Error:
       // z: Null<string | never> /* string | undefined */;
     };
     F: {
-      a: Null<never>;
+      a: never;
     };
   }>;
 }

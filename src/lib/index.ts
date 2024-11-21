@@ -2,13 +2,13 @@ import App from "./app";
 
 export default abstract class Shortcut<
   Input = never,
-  Output = never,
+  Output = null,
   Schema = never,
 > extends App<Input, Null<Output>, Schema> {
   protected getInput() {
     return this.stringInput === true
-      ? args.plainTexts[0] as unknown as undefined | Input
-      : args.shortcutParameter as undefined | Input;
+      ? args.plainTexts[0] as unknown as Undef<Input>
+      : args.shortcutParameter as Undef<Input>;
   }
 
   protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {

@@ -7,11 +7,12 @@ declare namespace Undef {
       T3: Undef<string | null | undefined>;
       T4: Undef<string | int | null>;
       T6: Undef<NonNullable<undefined | string>>;
+      y: Undef<never>;
       // Error:
       // z: Undef<string | never> /* string | undefined */;
     };
     F: {
-      a: Undef<never>;
+      a: never;
     };
   }>;
 }
