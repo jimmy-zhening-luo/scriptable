@@ -18,7 +18,7 @@
     - [Line 1](#line-1)
     - [Line 2](#line-2)
     - [Line 3](#line-3)
-    - [Line 4](#line-4)
+    - [Line 4 _(Optional)_](#line-4-optional)
 
 ## What is `Scriptable`?
 `Scriptable` for `iOS` and `iPadOS` lets users author JavaScript procedures invokable by `Apple` `Shortcuts`, `Share Sheet` or `Widgets`, useful for home and device automation.
@@ -33,7 +33,7 @@ Write type-safe, concise, continuously-deployed Scriptable apps.
 ### `Scriptable` Sucks
 Like most `iOS` tools, `Scriptable` is the best we've got but it's still bad:
 
-- Executes insanely slow even by `Apple JavaScriptCore` standards. Iterating an array, for example, is an order of magnitude slower in `Scriptable` than in `Shortcuts` using a native action.
+- Executes insanely slowly even by `Apple JavaScriptCore` standards. Iterating an array, for example, is an order of magnitude slower in `Scriptable` than in `Shortcuts` using a native action.
 - When invoking from `Shortcuts` (its entire appeal), its loading latency increases linearly with the total size of all `Scriptable` scripts on your device, even if (as a test) you load a script that simply returns `Hello World` and has no dependencies.
 - It doesn't have module loading, that's a lie. `importModule` should actually be titled `pasteMacro`, because it's actually copy/pasting the contents of the module into your script, which causes unexpected namespace collisions. Further, say you have three extensions of a base class, and you import all three extensions into your module. You now have hulking 10s of kilobytes ___triplicate___-prototype chain, exacerbating Scriptable's already total-size-dependent latency. Furthermore, unlike with a real `import`, it breaks the prototype chain, so for example an `Error` object created in one script will fail `instanceof Error` in another script.
 - There's no file system safety, you can just delete any non-system file, and `Scriptable` will happily, ___silently___ let you do it.
@@ -53,7 +53,7 @@ I wrote this project simply for myself so that I could make `Scriptable` usable,
 4. I wanted to gate said build and deployment on `mocha` `chai` tests for my scripts using mocked `Scriptable` globals.
 5. I wanted to interact with my file system in a somewhat sane manner, which `Scriptable` does not provide.
 6. I wanted to import modules from real locations using `ESModule` syntax, instead of whatever bad path I give to Scriptable's weird `importModule` dynamic (cough MACRO) loader.
-7. I wanted my scripts to be load and run in fewer than 500 milliseconds (SERIOUSLY, how bad is that? Fuck `Scriptable`, fuck all `Apple` developers, I think there's something about `Apple`'s general disrespect for and patronization of its users that persistently lowers the standards of both consumers and developers. Really, the Apple app ecosystem and Apple software itself is just absolutely, fucking, amateur hour.).
+7. I wanted my scripts to load and run in fewer than 500 milliseconds (SERIOUSLY, how bad is that? Fuck `Scriptable`, fuck all `Apple` developers, I think there's something about `Apple`'s general disrespect for and patronization of its users that persistently lowers the standards of both consumers and developers. Really, the Apple app ecosystem and Apple software itself is just absolutely, fucking, amateur hour.).
 
 #### Fully-contained library and build environment
 
@@ -85,17 +85,22 @@ I wrote this project simply for myself so that I could make `Scriptable` usable,
       - in-Shortcuts-launcher screen
       - from Spotlight search as a Home Screen bookmark
       - from Spotlight search as a Scriptable result
-      - from Home Screen as a Home Screen bookmark (nope i didnt stutter
+      - from Home Screen as a Home Screen bookmark (nope i didnt stutter)
       - from Spotlight search as a Shortcut result
       - from lock screen widget Shortcut
       - from lock screen widget Scriptable
       - from regular widget Shortcut
-      - from lock screen widget Scriptable
-      - from Control Center, from Action Button
+      - from Control Center as a Shortcut
+      - from Control Center as a Scriptable
       - from those weird force push buttons on the bottom left and bottom right of your lock screen
     - ) multiplied by (
-      - from Shortcuts URL scheme where the encapsulating Shortcut is in any of the contexts from the prior clause
+      - from Shortcuts URL scheme where the _encapsulating_ Shortcut is in any of the contexts from the prior clause
+      - from Shortcuts URL scheme where the _encapsulating_ _context_ is anywhere
+      - from Shortcuts URL scheme where the _encapsulated_ Shortcut is in any of the contexts from the prior clause
       - from the Run Shortcut action inside a Shortcut where ditto
+      - from _Scriptable_ URL scheme where the _encapsulating_ Shortcut is in any of the contexts from the prior clause
+      - from _Scriptable_ URL scheme where the _encapsulating_ _context_ is anywhere
+      - from Action button running a Shortcut where any of the above
     - ) multiplied by (
       - whether the "Run in Scriptable" toggle is on
     - ) multiplied by (
@@ -166,7 +171,7 @@ Line 3 specifies your `App`'s icon in Scriptable UI.
 - `$GLYPH` is a glyph from a [predefined list](#glyph).
 
 > [!IMPORTANT]
-> ___HUGE___ credit to __@nlawler1737__ for being the first (to my knowledge) to document the possible values for `$COLOR` and `$GLYPH`.
+> ___HUGE___ credit to [__@nlawler1737__](https://github.com/nlawler1737) for being the first (to my knowledge) to document the possible values for `$COLOR` and `$GLYPH`.
 
 ##### [`$COLOR`](https://github.com/nlawler1737/Scriptable/blob/main/Glyph%20%26%20Color%20Changer.js)
 
@@ -1015,12 +1020,15 @@ yin-yang
 
 </details>
 
-#### Line 4
-Line 4 specifies what type of input your `App` can receive from the `iOS` or `iPadOS` `Share Sheet`.
+#### Line 4 _(Optional)_
+Line 4 _(optionally)_ specifies what type of input your `App` can receive from the `iOS` or `iPadOS` `Share Sheet`.
 
 ```javascript
 // share-sheet-inputs: plain-text, url, file-url, image;
 ```
+
+- If Line 4 is ___provided___, your `App` will appear in `Share Sheet`.
+- If Line 4 is ___omitted___, your `App` will __NOT__ appear in `Share Sheet`.
 
 The possible types are:
 
@@ -1029,7 +1037,7 @@ The possible types are:
 - `file-url`
 - `image`
 
-... and they may be provided as a single type:
+... and they are provided as a single type:
 
 ```javascript
 // share-sheet-inputs: plain-text;
