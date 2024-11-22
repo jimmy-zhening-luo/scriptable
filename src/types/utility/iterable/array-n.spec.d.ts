@@ -1,8 +1,7 @@
 declare namespace ArrayN {
-  type Result = 0 | Test<{
+  export type Result = 0 | Test<{
     T: {
       T: ArrayN;
-
       //  T0: ArrayN<0>; // string[]
       //  T0a: ArrayN<-0>; // string[]
       T1: ArrayN<1>;

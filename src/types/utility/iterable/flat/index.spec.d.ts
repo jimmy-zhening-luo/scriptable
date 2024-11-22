@@ -1,5 +1,5 @@
 declare namespace Flat {
-  type Result = 0 | Test<{
+  export type Result = 0 | Test<{
     T: {
       a: Flat<string[]>;
       a0: Flat<readonly string[]>;

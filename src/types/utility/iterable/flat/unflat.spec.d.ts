@@ -1,5 +1,5 @@
 declare namespace Unflat {
-  type Result = 0 | Test<{
+  export type Result = 0 | Test<{
     T: {
       a: Unflat;
       b: Unflat<number>;

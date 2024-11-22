@@ -1,5 +1,5 @@
 declare namespace Undefinable {
-  type Result = 0 | Test<{
+  export type Result = 0 | Test<{
     T: {
       a: true;
     };

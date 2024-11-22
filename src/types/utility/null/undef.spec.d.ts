@@ -1,5 +1,5 @@
 declare namespace Undef {
-  type Result = 0 | Test<{
+  export type Result = 0 | Test<{
     T: {
       T0: Undef<string>;
       T1: Undef<string | null>;

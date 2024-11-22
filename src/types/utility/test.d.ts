@@ -2,27 +2,16 @@ declare type Test<Suite extends {
   T: unknown;
   F: unknown;
 }> =
-& (Test.Check.True<Suite["T"]> extends Test.Remap.True<Suite["T"]>
-  ? true
-  : never)
-& (Test.Check.False<Suite["F"]> extends Test.Remap.False<Suite["F"]>
-  ? true
-  : never);
+& (Test.Check<true, Suite["T"]> extends Test.Remap<Suite["T"]> ? true : never)
+& (Test.Check<false, Suite["F"]> extends Test.Remap<Suite["F"]> ? true : never);
+
 declare namespace Test {
-  export namespace Remap {
-    export type True<Assertions> = {
-      [Case in keyof Assertions]: "PASS";
-    };
-    export type False<Assertions> = {
-      [Case in keyof Assertions]: "PASS";
-    };
-  }
-  export namespace Check {
-    export type True<Assertions> = {
-      [Case in keyof Assertions]: Assertions[Case] extends never ? "FAIL" : "PASS";
-    };
-    export type False<Assertions> = {
-      [Case in keyof Assertions]: Assertions[Case] extends never ? "PASS" : "FAIL";
-    };
-  }
+  export type Remap<Assertions> = {
+    [Case in keyof Assertions]: "PASS";
+  };
+  export type Check<Expect extends boolean, Assertions> = {
+    [Case in keyof Assertions]: Expect extends true
+      ? (Assertions[Case] extends never ? "FAIL" : "PASS")
+      : (Assertions[Case] extends never ? "PASS" : "FAIL");
+  };
 }

@@ -1,5 +1,5 @@
 declare namespace Nullable {
-  type Result = 0 | Test<{
+  export type Result = 0 | Test<{
     T: {
       a: Nullable<string>;
       a0: Nullable<string | null>;

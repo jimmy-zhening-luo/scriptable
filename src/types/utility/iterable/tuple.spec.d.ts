@@ -1,5 +1,5 @@
 declare namespace Tuple {
-  type Result = 0 | Test<{
+  export type Result = 0 | Test<{
     T: {
       T: Tuple;
       T0: Tuple<0>;

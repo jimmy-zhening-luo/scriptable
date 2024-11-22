@@ -1,5 +1,5 @@
 declare namespace It {
-  type Result = 0 | Test<{
+  export type Result = 0 | Test<{
     T: {
       T0: It<[]>;
       T1: It<[1, 1]>;
