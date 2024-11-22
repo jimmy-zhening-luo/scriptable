@@ -1,28 +1,33 @@
 declare namespace Truth {
   export type Result = 0 | Test<{
     T: {
-      T0: Truth<true>;
+      a: Truth<true>;
     };
     F: {
-      N0: Truth<never>;
-      N1: Truth<false>;
-      N1a: Truth<false | true>;
-      N1b: Truth<boolean>;
+      a: Truth<false>;
+      b: Truth<boolean>;
+      b0: Truth<true | false>;
+      y: Truth<never>;
       // Error:
-      // N2: True<true | 10>;
-      // N2a: True<true | object>;
-      // N2b: True<true | undefined>;
-      // N2c: True<true | null>;
-      // N2d: True<0>;
-      // N2e: True<1>;
-      // N2f: True<number>;
-      // N2g: True<"">;
-      // N2h: True<"true">;
-      // N2i: True<"foo">;
-      // N2j: True<null>;
-      // N2k: True<undefined>;
-      // N2l: True<[]>;
-      // N2m: True<object>;
+      // d: Truth<false | 0>;
+      // d0: Truth<false | 1>;
+      // d1: Truth<false | 2>;
+      // d2: Truth<true | 0>;
+      // d3: Truth<true | 1>;
+      // d4: Truth<true | 2>;
+      // N2a: Truth<true | object>;
+      // N2b: Truth<true | undefined>;
+      // N2c: Truth<true | null>;
+      // N2d: Truth<0>;
+      // N2e: Truth<1>;
+      // N2f: Truth<number>;
+      // N2g: Truth<"">;
+      // N2h: Truth<"true">;
+      // N2i: Truth<"foo">;
+      // N2j: Truth<null>;
+      // N2k: Truth<undefined>;
+      // N2l: Truth<[]>;
+      // N2m: Truth<object>;
     };
   }>;
 }

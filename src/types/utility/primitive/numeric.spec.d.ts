@@ -37,9 +37,9 @@ declare namespace Numeric {
       // z: Numeric<1 | number>;
       // z0: Numeric<1 | typeof Infinity>;
       // z1: Numeric<1 | typeof NaN>;
-      // z2: Numeric<"cool">;
+      // z2: Numeric<"foo">;
       // z3: Numeric<"NaN">;
-      // z4: Numeric<"5">;
+      // z4: Numeric<"1">;
       // z5: Numeric<string>;
       // z6: Numeric<boolean>;
       // z6a: Numeric<true>;
@@ -49,8 +49,8 @@ declare namespace Numeric {
       // z9: Numeric<void>;
       // z10: Numeric<object>;
       // z11: Numeric<[]>;
-      // z12: Numeric<5 | true>;
-      // z13: Numeric<() => 5>;
+      // z12: Numeric<1 | true>;
+      // z13: Numeric<() => 1>;
       // z14: Numeric<symbol>;
     };
   }>;

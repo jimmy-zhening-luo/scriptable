@@ -20,7 +20,7 @@ declare namespace literalful {
       // N5f: literalful<object>;
       // N5g: literalful<()=> "a">;
       // N5h: literalful<symbol>;
-      // N5i: literalful<"a" | 5>;
+      // N5i: literalful<"a" | 1>;
     };
   }>;
 }
