@@ -1043,7 +1043,7 @@ The possible types are:
 // share-sheet-inputs: plain-text;
 ```
 
-... or as a comma-and-space (`,`` `) separated list:
+... or as a comma-and-space (`,` ` `) separated list:
 
 ```javascript
 // share-sheet-inputs: plain-text, url, file-url, image;
