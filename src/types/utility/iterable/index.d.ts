@@ -1,3 +1,3 @@
-declare type It<A> = [A] extends [readonly unknown[]]
+declare type Arrayed<A> = [A] extends [readonly unknown[]]
   ? A
   : never;

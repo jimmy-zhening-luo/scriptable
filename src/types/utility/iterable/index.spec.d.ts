@@ -1,63 +1,69 @@
-declare namespace It {
+declare namespace Arrayed {
   export type Result = 0 | Test<{
     T: {
-      T0: It<[]>;
-      T1: It<[1, 1]>;
-      T2: It<string[]>;
-      T3: It<readonly []>;
-      T4: It<readonly [1, 1]>;
-      T5: It<readonly string[]>;
-      T6: It<[[]]>;
-      T7: It<string[] | int[]>;
-      T8: It<(string | int)[]>;
-      T9: It<
+      a0: Arrayed<[]>;
+      a1: Arrayed<[1, 1]>;
+      a2: Arrayed<string[]>;
+      a3: Arrayed<readonly []>;
+      a4: Arrayed<readonly [1, 1]>;
+      a5: Arrayed<readonly string[]>;
+      a6: Arrayed<[[]]>;
+      a7: Arrayed<string[] | int[]>;
+      a8: Arrayed<(string | int)[]>;
+      a9: Arrayed<
         | []
-        | [5, 10]
-        | string []
+        | [0, 1]
+        | [0, "foo"]
+        | string[]
+        | number[]
+        | (string | number)[]
         | readonly []
-        | readonly [5, 10]
+        | readonly [0, 1]
+        | readonly [0, "foo"]
         | readonly string[]
+        | readonly number[]
+        | readonly (string | number)[]
       >;
-      T10: It<[1?, ...string[]]>;
+      a10: Arrayed<[1?, ...string[]]>;
 
-      T11: It<[1] | [1, 2?]>;
+      a11: Arrayed<[1] | [1, 2?]>;
     };
     F: {
-      N0: It<"">;
-      N1: It<"test">;
-      N2: It<string>;
-      N3: It<boolean>;
-      N4: It<true>;
-      N5: It<false>;
-      N6: It<0>;
-      N7: It<1>;
-      N8: It<number>;
-      N9: It<null>;
-      N10: It<undefined>;
-      N11: It<unknown>;
-      N12: It<never>;
-      N13: It<void>;
-      N14: It<() => void>;
-      N15: It<(a: string) => []>;
-      N16: It<Record<string, unknown>>;
-      N17: It<Record<number, 5>>;
-      N18: It<stringful>;
-      N19: It<{ 0: string }>;
-      N20: It<{
+      a0: Arrayed<"">;
+      a1: Arrayed<"test">;
+      a2: Arrayed<string>;
+      a3: Arrayed<boolean>;
+      a4: Arrayed<true>;
+      a5: Arrayed<false>;
+      a6: Arrayed<0>;
+      a7: Arrayed<1>;
+      a8: Arrayed<number>;
+      a9: Arrayed<null>;
+      a10: Arrayed<undefined>;
+      a11: Arrayed<unknown>;
+      a12: Arrayed<never>;
+      a13: Arrayed<void>;
+      a14: Arrayed<() => void>;
+      a15: Arrayed<(a: string) => []>;
+      a16: Arrayed<Record<string, unknown>>;
+      a17: Arrayed<Record<number, 5>>;
+      a18: Arrayed<stringful>;
+      a19: Arrayed<{ 0: string }>;
+      a20: Arrayed<{
         0: string;
         length: 1;
       }>;
-      N21: It<symbol>;
-      N22: It<object>;
-      N23: It<
+      a21: Arrayed<symbol>;
+      a22: Arrayed<object>;
+      a23: Arrayed<
         | []
         | object
       >;
-      N24: It<
+      a24: Arrayed<
         | []
         | string
       >;
-      N25: It<
+      a25: Arrayed<
         | []
         | null
       >;

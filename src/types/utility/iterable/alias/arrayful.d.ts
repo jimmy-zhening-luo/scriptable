@@ -1,1 +1,1 @@
-declare type Arrayful<I = string> = ArrayN<1, I>;
+declare type Arrayful<Element = string> = ArrayN<1, Element>;

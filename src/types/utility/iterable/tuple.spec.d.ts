@@ -1,15 +1,15 @@
 declare namespace Tuple {
   export type Result = 0 | Test<{
     T: {
-      T: Tuple;
-      T0: Tuple<0>;
-      T0a: Tuple<1>;
-      T0b: Tuple<3>;
-      T1: Tuple<2, string | number>;
-      T2: Tuple<2 | 3>;
-      T3: Tuple<2 | 3, string | number>;
-      T4a: Tuple<0>;
-      T4b: Tuple<0 | 1>;
+      a: Tuple;
+      a0: Tuple<0>;
+      a0a: Tuple<1>;
+      a0b: Tuple<3>;
+      a1: Tuple<2, string | number>;
+      a2: Tuple<2 | 3>;
+      a3: Tuple<2 | 3, string | number>;
+      a4a: Tuple<0>;
+      a4b: Tuple<0 | 1>;
     };
     F: {
       a: Tuple<never>;
