@@ -5,7 +5,7 @@ const TEST = {
   OK: "https://www.example.com/path/to/foo?a=1&b=2&c=3#fragment",
   ERROR: "$%^&*",
   cases: {
-    throw: {
+    "throw": {
       empty: "",
       http: "https://",
       httpEmpty: "https:///",
