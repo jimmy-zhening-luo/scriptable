@@ -5,7 +5,7 @@ declare namespace ArrayN {
   > = ArrayN<Case> extends ArrayN<Max>
     ? ArrayN<Case> extends [string, ...ArrayN<Max>]
       ? never
-      : true
+      : ArrayN<Case>
     : never;
   export type Result = 0 | Test<{
     T: [
