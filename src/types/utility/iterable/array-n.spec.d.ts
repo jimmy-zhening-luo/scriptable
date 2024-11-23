@@ -56,8 +56,8 @@ declare namespace ArrayN {
       Bound<2 | -1.1>,
       Bound<2 | -1.00000>,
       Bound<2 | 9.999999999>,
-      unknown[] extends ArrayN<0, unknown> ? true : never,
-      (string | number)[] extends ArrayN<0, string | number> ? true : never,
+      unknown[] extends ArrayN<0, unknown> ? ArrayN<0, unknown> : never,
+      (string | number)[] extends ArrayN<0, string | number> ? ArrayN<0, string | number> : never,
 
       // Error:
       // Bound<-2.1 | number>,
@@ -70,7 +70,7 @@ declare namespace ArrayN {
       // Bound<2.0 | number>,
       // Bound<2.1 | number>,
       // Bound<2.1 | number>,
-      // unknown[] extends ArrayN<0, unknown | string> ? true : never,
+      // unknown[] extends ArrayN<0, unknown | string> ? ArrayN<0, unknown | string> : never,
     ];
     F: [
       ArrayN<never>,
