@@ -7,9 +7,8 @@ export default function (string: string) {
       query = "",
       fragment = "",
     } = (/^(?:(?<scheme>[^:/?#]+):)?(?:\/\/(?<host>[^/?#]*))?(?<path>[^?#]*)(?:\?(?<query>[^#]*))?(?:#(?<fragment>.*))?/u)
-      .exec(`${tryHttp ? "https" : ""}${string}`)
-      ?.groups
-      ?? {};
+      .exec(`${tryHttp ? "https://" : ""}${string}`)
+      ?.groups ?? {};
 
     return scheme === "" || tryHttp && host === "" && path === ""
       ? null
