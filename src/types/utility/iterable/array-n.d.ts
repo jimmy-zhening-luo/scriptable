@@ -1,4 +1,3 @@
-// WIP
 declare type ArrayN<N extends number = 0, Element = string> = [Element] extends [never]
   ? never
   : [N] extends [never]
