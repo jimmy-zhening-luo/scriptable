@@ -57,6 +57,7 @@ declare namespace ArrayN {
       // unknown[] extends ArrayN<0, unknown | string> ? true : never,
     ];
     F: [
+      ArrayN<never>,
       ArrayN<never, never>,
       ArrayN<number, never>,
       ArrayN<2.1, never>,
