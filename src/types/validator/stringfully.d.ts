@@ -1,1 +1,1 @@
-declare type stringfully<And extends string> = full<string, "stringful", And> & { 0: char };
+declare type stringfully<And> = full<string, "stringful", And> & { 0: char };
