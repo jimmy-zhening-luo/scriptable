@@ -1,6 +1,6 @@
 {
   "display": "@jimbojet/tsc",
-  "version": "5.6.9",
+  "version": "5.7.0",
   "$help": "https://www.typescriptlang.org/tsconfig/#quick-nav-Top%20Level",
   "$schema": "https://json.schemastore.org/tsconfig",
   "include": [
