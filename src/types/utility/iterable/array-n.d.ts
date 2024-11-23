@@ -2,9 +2,12 @@ declare type ArrayN<N extends number = 0, Element = string> = [Element] extends 
   ? never
   : [N] extends [never]
       ? never
-      : Extract<`${N}`, `-${string}` | `${string}.${string}`> extends never
-        ? ArrayN.Construct<N, Element>
-        : Element[];
+      : ArrayN.Construct<
+        Extract<`${N}`, `-${string}` | `${string}.${string}`> extends never
+          ? N
+          : 0,
+        Element
+      >;
 
 declare namespace ArrayN {
   export type Construct<
