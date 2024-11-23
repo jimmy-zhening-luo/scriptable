@@ -3,9 +3,7 @@ declare type ArrayN<N extends number = 0, Element = string> = [Element] extends 
   : [N] extends [never]
       ? never
       : Extract<`${N}`, `-${string}` | `${string}.${string}`> extends never
-        ? [0] extends [N]
-            ? Element[]
-            : ArrayN.Construct<N, Element>
+        ? ArrayN.Construct<N, Element>
         : Element[];
 
 declare namespace ArrayN {
