@@ -12,12 +12,26 @@ declare namespace ArrayN {
   export type Result = 0 | Test<{
     T: [
       ArrayN<3> extends [string, string, string, ...string[]]
-        ? ArrayN<3> extends [string, string, string, string, ...string[]]
-          ? never
-          : true
+        ? [string, string, string, ...string[]] extends ArrayN<3>
+            ? ArrayN<3> extends [string, string, string, string, ...string[]]
+              ? never
+              : ArrayN<3>
+            : never
         : never,
-      ArrayN<2> extends [string, string, ...string[]] ? ArrayN<2> extends ArrayN<3> ? never : true : never,
-      ArrayN<1> extends [string, ...string[]] ? ArrayN<1> extends ArrayN<2> ? never : true : never,
+      ArrayN<2> extends [string, string, ...string[]]
+        ? [string, string, ...string[]] extends ArrayN<2>
+            ? ArrayN<2> extends ArrayN<3>
+              ? never
+              : ArrayN<2>
+            : never
+        : never,
+      ArrayN<1> extends [string, ...string[]]
+        ? [string, ...string[]] extends ArrayN<1>
+            ? ArrayN<1> extends ArrayN<2>
+              ? never
+              : ArrayN<1>
+            : never
+        : never,
       Bound<1.0, 1>,
       Bound<0>,
       Bound<-0>,
