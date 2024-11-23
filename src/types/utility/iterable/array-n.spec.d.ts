@@ -3,9 +3,11 @@ declare namespace ArrayN {
     Case extends number,
     Max extends number = 0,
   > = ArrayN<Case> extends ArrayN<Max>
-    ? ArrayN<Case> extends [string, ...ArrayN<Max>]
-      ? never
-      : ArrayN<Case>
+    ? ArrayN<Max> extends ArrayN<Case>
+      ? ArrayN<Case> extends [string, ...ArrayN<Max>]
+        ? never
+        : ArrayN<Case>
+      : never
     : never;
   export type Result = 0 | Test<{
     T: [
