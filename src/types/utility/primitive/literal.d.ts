@@ -1,3 +1,5 @@
-declare type literal<S extends string> = string extends Exclude<S, object>
-  ? never
-  : Exclude<S, object>;
+declare type literal<S extends string> = Extract<S, object> extends never
+  ? string extends S
+    ? never
+    : S
+  : never;
