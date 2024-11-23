@@ -32,7 +32,14 @@ class Link extends Shortcut<
       return list[host]?.map(i => i.toLowerCase()) ?? [];
     }
 
-    const { setting, input = "" } = this,
+    const {
+      input = "",
+      setting: {
+        hosts,
+        queries,
+        fragments,
+      },
+    } = this,
     {
       scheme,
       host: parsedHost,
@@ -40,15 +47,15 @@ class Link extends Shortcut<
       query,
       fragment,
     } = url(input, true),
-    host = ((host: string) => (headless => setting.host.swap[headless] ?? headless)(!host.startsWith("www.") || setting.host.www.includes(host) ? host : host.slice(4)))(parsedHost) as typeof parsedHost,
-    includeQ = deindex(setting.query.include, host),
-    excludeQ = deindex(setting.query.exclude, host);
+    host = ((host: ReturnType<typeof url>["host"]) => (headless => hosts.swap[headless] ?? headless)(!host.startsWith("www.") || hosts.www.includes(host) ? host : host.slice(4) as typeof host))(parsedHost),
+    includeQ = deindex(queries.include, host),
+    excludeQ = deindex(queries.exclude, host);
 
     return compose({
       scheme,
       host,
       path: process(host, path),
-      query: setting.query.omit.includes(host)
+      query: queries.omit.includes(host)
         ? ""
         : includeQ.length > 0
           ? query
@@ -61,7 +68,7 @@ class Link extends Shortcut<
               .filter(p => !excludeQ.includes((p.split("=")[0] as string).toLowerCase()))
               .join("&")
             : query,
-      fragment: setting.fragment.trim.includes(host) ? "" : fragment,
+      fragment: fragments.trim.includes(host) ? "" : fragment,
     });
   }
 }
