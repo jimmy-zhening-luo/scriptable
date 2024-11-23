@@ -38,14 +38,14 @@ class Link extends Shortcut<
       return list[host]?.map(i => i.toLowerCase()) ?? [];
     }
 
-    const { setting } = this,
+    const { setting, input = "" } = this,
     {
       scheme,
       host: parsedHost,
       path,
       query,
       fragment,
-    } = url(this.inputString),
+    } = url(input),
     host = ((host: string) => (headless => setting.host.swap[headless] ?? headless)(!host.startsWith("www.") || setting.host.www.includes(host) ? host : host.slice(4)))(parsedHost),
     includeQ = deindex(setting.query.include, host),
     excludeQ = deindex(setting.query.exclude, host);
