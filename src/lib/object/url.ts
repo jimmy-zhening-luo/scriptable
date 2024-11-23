@@ -1,5 +1,8 @@
-export default function (string: string) {
-  function parse(string: string) {
+export default function (
+  string: string,
+  omitHttp = false,
+) {
+  function parse(string: string, omitHttp: boolean) {
     const {
       scheme = "",
       host = "",
@@ -7,12 +10,15 @@ export default function (string: string) {
       query = "",
       fragment = "",
     } = (/^(?:(?<scheme>[^:/?#]+):)?(?:\/\/(?<host>[^/?#]*))?(?<path>[^?#]*)(?:\?(?<query>[^#]*))?(?:#(?<fragment>.*))?/u)
-      .exec(string)?.groups ?? {};
+      .exec(string)?.groups ?? {},
+    http = ["https", "http"].includes(scheme);
 
-    return scheme === "" || ["https", "http"].includes(scheme) && (host === "" || !host.includes("."))
+    return scheme === "" || http && !host.includes(".")
       ? null
       : {
-          scheme: scheme.toLocaleLowerCase(),
+          scheme: http && omitHttp
+            ? "" 
+            : scheme.toLocaleLowerCase(),
           host: host.toLocaleLowerCase(),
           path,
           query,
@@ -20,7 +26,7 @@ export default function (string: string) {
         };
   }
 
-  const parts = parse(string) ?? parse(`https://${string}`);
+  const parts = parse(string, omitHttp) ?? parse(`https://${string}`, omitHttp);
 
   if (parts === null)
     throw new SyntaxError("Unparseable to URL", { cause: string });
