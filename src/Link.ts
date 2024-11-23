@@ -19,6 +19,8 @@ class Link extends Shortcut<
   string,
   LinkSetting
 > {
+  protected override stringInput = true;
+
   protected runtime() {
     function compose({
       scheme, host, path, query, fragment,
