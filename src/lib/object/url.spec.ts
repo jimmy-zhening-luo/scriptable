@@ -39,7 +39,7 @@ describe("Object: URL", function () {
     it("but not on valid URL input", function () {
       expect(() => url(TEST.OK))
         .does.not.throw();
-      expect(() => Object.values(TEST.cases.ok).map(u => url(u))
+      expect(() => Object.values(TEST.cases.ok).map(u => url(u)))
         .does.not.throw();
     });
   });
