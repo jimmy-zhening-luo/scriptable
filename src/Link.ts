@@ -48,13 +48,13 @@ class Link extends Shortcut<
       query,
       fragment,
     } = url(input, true),
-    host = ((host: string) => (headless => setting.host.swap[headless] ?? headless)(!host.startsWith("www.") || setting.host.www.includes(host) ? host : host.slice(4)))(parsedHost),
+    host = ((host: string) => (headless => setting.host.swap[headless] ?? headless)(!host.startsWith("www.") || setting.host.www.includes(host) ? host : host.slice(4)))(parsedHost) as typeof parsedHost,
     includeQ = deindex(setting.query.include, host),
     excludeQ = deindex(setting.query.exclude, host);
 
     return compose({
-      scheme as stringfully<"scheme || host">,
-      host as stringfully<"scheme || host">,
+      scheme,
+      host,
       path: process(host, path),
       query: setting.query.omit.includes(host)
         ? ""

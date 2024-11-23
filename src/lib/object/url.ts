@@ -16,10 +16,8 @@ export default function (
     return scheme === "" || http && !host.includes(".")
       ? null
       : {
-          scheme: http && omitHttp
-            ? "" 
-            : scheme.toLocaleLowerCase(),
-          host: host.toLocaleLowerCase(),
+          scheme: (http && omitHttp ? "" : scheme.toLocaleLowerCase()) as stringfully<"URL: scheme || host">,
+          host: host.toLocaleLowerCase() as stringfully<"URL: scheme || host">,
           path,
           query,
           fragment,
