@@ -8,11 +8,14 @@ const TEST = {
     throw: {
       empty: "",
       http: "https://",
+      httpEmpty: "https:///",
+      httpLocal: "https://localhost/",
+      local: "localhost/",
     },
     ok: {
       scheme: "scriptable://",
+      schemeEmpty: "scriptable:///",
       schemeHost: "scriptable://host",
-      schemeHostBlank: "scriptable:///",
       host: "example.com",
       hostPath: "example.com/path",
     },
@@ -28,15 +31,31 @@ describe("Object: URL", function () {
     });
   });
   describe("throws", function () {
-    it("on non-URL input", function () {
+    it("on nonsense", function () {
       expect(() => url(TEST.ERROR))
         .throws();
-      expect(() => url(TEST.cases.throw.empty))
-        .throws();
+    });
+    it("HTTP host-less", function () {
       expect(() => url(TEST.cases.throw.http))
         .throws();
     });
-    it("but not on valid URL input", function () {
+    it("HTTP empty host", function () {
+      expect(() => url(TEST.cases.throw.httpEmpty))
+        .throws();
+    });
+    it("HTTP localhost", function () {
+      expect(() => url(TEST.cases.throw.httpLocal))
+        .throws();
+    });
+    it("localhost", function () {
+      expect(() => url(TEST.cases.throw.local))
+        .throws();
+    });
+    it("and empty string", function () {
+      expect(() => url(TEST.cases.throw.empty))
+        .throws();
+    });
+    it("but not on valid URLs", function () {
       expect(() => url(TEST.OK))
         .does.not.throw();
       expect(() => Object.values(TEST.cases.ok).map(u => url(u)))
