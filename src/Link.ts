@@ -16,7 +16,7 @@ function process(host: string, path: string) {
 
 class Link extends Shortcut<
   string,
-  string,
+  stringful,
   LinkSetting
 > {
   protected override stringInput = true;
@@ -24,14 +24,16 @@ class Link extends Shortcut<
   protected runtime() {
     function compose({
       scheme, host, path, query, fragment,
-    }: Field<
-      | "scheme"
-      | "host"
+    }: Record<
+      | "scheme" 
+      | "host", 
+      stringfully<"scheme || host">
+    > & Field<
       | "path"
       | "query"
       | "fragment"
     >) {
-      return `${scheme}${scheme === "" ? "" : "://"}${host}${path === "/" ? "" : path}${query === "" ? "" : "?"}${query}${fragment === "" ? "" : "#"}${fragment}`;
+      return `${scheme}${scheme === "" ? "" : "://"}${host}${path === "/" ? "" : path}${query === "" ? "" : "?"}${query}${fragment === "" ? "" : "#"}${fragment}` as stringful;
     }
 
     function deindex(list: ListTable, host: string) {
@@ -45,14 +47,14 @@ class Link extends Shortcut<
       path,
       query,
       fragment,
-    } = url(input),
+    } = url(input, true),
     host = ((host: string) => (headless => setting.host.swap[headless] ?? headless)(!host.startsWith("www.") || setting.host.www.includes(host) ? host : host.slice(4)))(parsedHost),
     includeQ = deindex(setting.query.include, host),
     excludeQ = deindex(setting.query.exclude, host);
 
     return compose({
-      host,
-      scheme: ["http", "https"].includes(scheme) ? "" : scheme,
+      scheme as stringfully<"scheme || host">,
+      host as stringfully<"scheme || host">,
       path: process(host, path),
       query: setting.query.omit.includes(host)
         ? ""
