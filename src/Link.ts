@@ -24,15 +24,7 @@ class Link extends Shortcut<
   protected runtime() {
     function compose({
       scheme, host, path, query, fragment,
-    }: Record<
-      | "scheme" 
-      | "host", 
-      stringfully<"scheme || host">
-    > & Field<
-      | "path"
-      | "query"
-      | "fragment"
-    >) {
+    }: ReturnType<typeof url>) {
       return `${scheme}${scheme === "" ? "" : "://"}${host}${path === "/" ? "" : path}${query === "" ? "" : "?"}${query}${fragment === "" ? "" : "#"}${fragment}` as stringful;
     }
 
