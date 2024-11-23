@@ -45,5 +45,3 @@ declare namespace ArrayN {
     ];
   }>;
 }
-
-type j = ArrayN<2 | 1.5> extends [unknown, ...unknown[]] ? true : never;
