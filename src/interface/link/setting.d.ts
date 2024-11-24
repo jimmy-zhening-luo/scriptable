@@ -6,7 +6,7 @@ export interface LinkSetting {
     swap: Endomap<ReturnType<typeof url>["host"]>;
   };
   queries: {
-    omit: readonly ReturnType<typeof url>["host"][];
+    remove: readonly ReturnType<typeof url>["host"][];
   } & Record<
     | "include"
     | "exclude",

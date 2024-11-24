@@ -22,50 +22,42 @@ class Link extends Shortcut<
   protected override stringInput = true;
 
   protected runtime() {
-    function compose({
-      scheme, host, path, query, fragment,
-    }: ReturnType<typeof url>) {
-      return `${scheme}${scheme === "" ? "" : "://"}${host}${path === "/" ? "" : path}${query === "" ? "" : "?"}${query}${fragment === "" ? "" : "#"}${fragment}` as stringful;
-    }
-
-    function deindex(list: ListTable, host: string) {
-      return list[host]?.map(i => i.toLowerCase()) ?? [];
-    }
-
     const {
+      setting: { hosts, queries, fragments },
       input = "",
-      setting: {
-        hosts,
-        queries,
-        fragments,
-      },
     } = this,
     {
       scheme,
-      host: parsedHost,
+      host: _host,
       path,
       query,
       fragment,
     } = url(input, true),
-    host = ((host: ReturnType<typeof url>["host"]) => (headless => hosts.swap[headless] ?? headless)(!host.startsWith("www.") || hosts.www.includes(host) ? host : host.slice(4) as typeof host))(parsedHost),
-    includeQ = deindex(queries.include, host),
-    excludeQ = deindex(queries.exclude, host);
+    host = ((host: ReturnType<typeof url>["host"]) => (headless => hosts.swap[headless] ?? headless)(!host.startsWith("www.") || hosts.www.includes(host) ? host : host.slice(4) as typeof host))(_host),
+    [
+      include = null,
+      exclude = null,
+    ] = (["include", "exclude"] as const).map(group => queries[group][host]?.map(i => i.toLowerCase()));
 
-    return compose({
+    return (({
+      scheme, host, path, query, fragment,
+    }: ReturnType<typeof url>) => `${scheme}${scheme === "" ? "" : "://"}${host}${path === "/" ? "" : path}${query === "" ? "" : "?"}${query}${fragment === "" ? "" : "#"}${fragment}` as stringful)({
       scheme,
       host,
       path: process(host, path),
-      query: queries.omit.includes(host)
+      query: queries.remove.includes(host)
         ? ""
-        : includeQ.length > 0
+        : include !== null
           ? query
             .split("&")
-            .filter(p => includeQ.includes((p.split("=")[0] as string).toLowerCase()))
+            .map(pair => pair.split("="))
+            .filter(([key = ""]) => include.includes(key.toLowerCase()))
             .join("&")
-          : excludeQ.length > 0
+          : exclude !== null
             ? query
               .split("&")
-              .filter(p => !excludeQ.includes((p.split("=")[0] as string).toLowerCase()))
+              .map(pair => pair.split("="))
+              .filter(([key = ""]) => !exclude.includes(key.toLowerCase()))
               .join("&")
             : query,
       fragment: fragments.trim.includes(host) ? "" : fragment,
