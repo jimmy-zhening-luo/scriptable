@@ -43,7 +43,7 @@ export default class File<
     const read = this.read(true);
 
     if (read === "")
-      throw new ReferenceError("Unreadful file", { cause: this.path });
+      throw new ReferenceError("File is empty", { cause: this.path });
 
     return read as stringful;
   }
@@ -61,21 +61,23 @@ export default class File<
       | "append"
       | boolean = false,
   ) {
-    if (data === null)
+    const { path } = this;
+
+    if (!this.mutable)
+      throw new TypeError("Write readonly file", { cause: path });
+    else if (data === null)
       throw new TypeError("Write null data");
-    else if (!this.mutable)
-      throw new TypeError("Write readonly file", { cause: this.path });
-    else if (File.manager.isDirectory(this.path))
-      throw new ReferenceError("Write location is folder", { cause: this.path });
+    else if (File.manager.isDirectory(path))
+      throw new ReferenceError("Write path is folder", { cause: path });
     else if (this.exists) {
       if (overwrite === false)
-        throw new ReferenceError("File exists, overwrite false", { cause: this.path });
+        throw new ReferenceError("File exists, overwrite false", { cause: path });
     }
     else if (!File.manager.isDirectory(this.parent))
       File.manager.createDirectory(this.parent, true);
 
     File.manager.writeString(
-      this.path,
+      path,
       Array.isArray(data)
         ? `${data.reverse().join("\n")}\n${this.read()}`
         : typeof data === "object"
