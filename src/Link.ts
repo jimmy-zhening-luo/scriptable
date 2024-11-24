@@ -5,13 +5,13 @@ import type { LinkSetting } from "./interface/link";
 
 function process(host: ReturnType<typeof url>["host"], path: string) {
   const processors = {
-    "amazon.com": (path: string) => (([, pid = null]) => pid === null ? path : `/dp/${(pid.split("/") as Arrayful)[0]}`)(path.split("/dp/")),
-    "dropbox.com": (path: string) => !path.startsWith("/scl/fi/") ? path : (nodes => nodes.length < 4 ? path : nodes.slice(0, 4).join("/"))(path.split("/")),
-    "linkedin.com": (path: string) => path.startsWith("/mwlite/") ? path.slice(7) : path,
-    "reddit.com": (path: string) => (nodes => nodes.length < 6 || nodes[3] !== "comments" ? path : nodes.slice(0, nodes[5] === "comment" ? 7 : 5).join("/"))(path.split("/")),
-  } as const;
+    "amazon.com": path => (([, pid = null]) => pid === null ? path : `/dp/${(pid.split("/") as Arrayful)[0]}`)(path.split("/dp/")),
+    "dropbox.com": path => !path.startsWith("/scl/fi/") ? path : (nodes => nodes.length < 4 ? path : nodes.slice(0, 4).join("/"))(path.split("/")),
+    "linkedin.com": path => path.startsWith("/mwlite/") ? path.slice(7) : path,
+    "reddit.com": path => (nodes => nodes.length < 6 || nodes[3] !== "comments" ? path : nodes.slice(0, nodes[5] === "comment" ? 7 : 5).join("/"))(path.split("/")),
+  } satisfies Record<string, (path: string) => string> as Record<ReturnType<typeof url>["host"], (path: string) => string>;
 
-  return host in processors ? processors[host as keyof typeof processors](path) : path;
+  return processors[host]?.(path) ?? path;
 }
 
 class Link extends Shortcut<
