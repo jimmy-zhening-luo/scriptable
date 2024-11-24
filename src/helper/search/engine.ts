@@ -48,40 +48,52 @@ export default class SearchEngine<
     terms: readonly stringful[],
     question: string,
   ) {
+    function encode(
+      urls: readonly string[],
+      terms: readonly stringful[],
+      tag: stringful,
+      separator: string,
+      encodeComponent: boolean,
+      force: boolean,
+    ) {
+      const encodedQuery = terms
+        .map(term => term
+          .split("+")
+          .map(c => encodeComponent ? encodeURI(c) : encodeURIComponent(c))
+          .join("%2B"))
+        .join(separator),
+      U = urls.map(url => url.replace(tag as stringful, encodedQuery));
+  
+      return !force ? U : U.map(url => `data:text/html,<meta name="color-scheme" content="dark light" />
+        <meta http-equiv="Refresh" content="0; url=${url}" />`);
+    }
     const {
       type,
+      output,
       engine,
       urls,
-      output,
+      terms,
+      tag,
+      separator,
+      encodeComponent,
+      force,
     } = this;
 
     return {
       type,
+      output,
       engine: engine === "" ? key : engine,
       question,
       urls: urls === null
         ? urls
-        : this.encode(urls, terms),
-      output,
+        : encode(
+          urls,
+          terms,
+          tag as unknown as stringful,
+          separator,
+          encodeComponent,
+          force,
+        ),
     };
-  }
-
-  private encode(
-    urls: readonly string[],
-    terms: readonly stringful[],
-  ) {
-    const { tag, encodeComponent } = this,
-    encodedQuery = terms
-      .map(term => term
-        .split("+")
-        .map(c => encodeComponent ? encodeURI(c) : encodeURIComponent(c))
-        .join("%2B"))
-      .join(this.separator),
-    U = urls.map(url => url.replace(tag as stringful, encodedQuery));
-
-    return this.force
-      ? U.map(url => `data:text/html,<meta name="color-scheme" content="dark light" />
-      <meta http-equiv="Refresh" content="0; url=${url}" />`)
-      : U;
   }
 }
