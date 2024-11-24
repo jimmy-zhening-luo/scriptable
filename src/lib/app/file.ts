@@ -2,10 +2,10 @@ export default class File<
   FT extends string,
   Mutable extends boolean,
 > {
+  private static readonly manager = FileManager.iCloud();
   protected readonly path: string;
   protected readonly parent: string;
   protected readonly exists: boolean;
-  private readonly manager: FileManager;
 
   constructor(
     filetype: literalful<FT>,
@@ -18,12 +18,10 @@ export default class File<
       | "folder"
     >,
   ) {
-    this.manager = FileManager.iCloud();
-
-    if (!this.manager.bookmarkExists(filetype))
+    if (!File.manager.bookmarkExists(filetype))
       throw new ReferenceError(`No bookmark for ${filetype}`);
 
-    const root = this.manager.bookmarkedPath(filetype),
+    const root = File.manager.bookmarkedPath(filetype),
     subpath = `${folder}/${name}`
       .split("/")
       .filter(node => node !== "");
@@ -33,7 +31,7 @@ export default class File<
 
     this.path = `${root}/${subpath.join("/")}`;
     this.parent = `${root}/${subpath.slice(0, -1).join("/")}`;
-    this.exists = this.manager.fileExists(this.path);
+    this.exists = File.manager.fileExists(this.path);
   }
 
   public read(fail = false) {
@@ -44,7 +42,7 @@ export default class File<
       return "";
     }
 
-    return this.manager.readString(this.path);
+    return File.manager.readString(this.path);
   }
 
   public readful() {
@@ -73,16 +71,16 @@ export default class File<
       throw new TypeError("Write null data");
     else if (!this.mutable)
       throw new TypeError("Write readonly file", { cause: this.path });
-    else if (this.manager.isDirectory(this.path))
+    else if (File.manager.isDirectory(this.path))
       throw new ReferenceError("Write location is folder", { cause: this.path });
     else if (this.exists) {
       if (overwrite === false)
         throw new ReferenceError("File exists, overwrite false", { cause: this.path });
     }
-    else if (!this.manager.isDirectory(this.parent))
-      this.manager.createDirectory(this.parent, true);
+    else if (!File.manager.isDirectory(this.parent))
+      File.manager.createDirectory(this.parent, true);
 
-    this.manager.writeString(
+    File.manager.writeString(
       this.path,
       Array.isArray(data)
         ? `${data.reverse().join("\n")}\n${this.read()}`
@@ -101,6 +99,6 @@ export default class File<
       throw new TypeError("Cannot delete readonly file", { cause: this.path });
 
     if (this.exists)
-      this.manager.remove(this.path);
+      File.manager.remove(this.path);
   }
 }
