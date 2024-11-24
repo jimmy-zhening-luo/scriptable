@@ -1,6 +1,6 @@
 export default class File<
   FT extends string,
-  Mutable extends boolean,
+  Mutable extends boolean = false,
 > {
   private static readonly manager = FileManager.iCloud();
   protected readonly path: string;
@@ -10,13 +10,7 @@ export default class File<
   constructor(
     filetype: literalful<FT>,
     public readonly mutable: Mutable,
-    {
-      name,
-      folder = "",
-    }: Field<
-      "name",
-      | "folder"
-    >,
+    { name, folder = "" }: Field<"name", "folder">,
   ) {
     if (!File.manager.bookmarkExists(filetype))
       throw new ReferenceError(`No bookmark for ${filetype}`);

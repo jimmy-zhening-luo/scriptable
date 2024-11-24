@@ -23,7 +23,7 @@ export default abstract class App<
         throw new TypeError("Setting file is not JSON");
 
       return config satisfies object as Schema;
-    })(JSON.parse(new File<"Setting", false>("Setting", false, { name: `${this.app}.json` as stringful }).readful()) ?? null);
+    })(JSON.parse(new File<"Setting">("Setting", false, { name: `${this.app}.json` as stringful }).readful()) ?? null);
   }
 
   protected get input() {
@@ -70,15 +70,38 @@ export default abstract class App<
     );
   }
 
+  private static error(app: stringful, error: unknown) {
+    function cast(e: unknown) {
+      return typeof e === "object" && e !== null && "message" in e
+        ? e as Error
+        : JSON.stringify(e);
+    }
+
+    const errors = [cast(error)] as Arrayful<string | Error>;
+
+    while (typeof errors[0] !== "string" && "cause" in errors[0])
+      errors.unshift(cast(errors[0].cause));
+
+    const n = new Notification,
+    [title, body] = (([head, ...rest]) => [`${app}: ${head}`, rest.join("\n")])(errors.map(e => typeof e === "string" ? e : e.message) as Arrayful);
+
+    n.title = title;
+    n.body = body;
+    n.sound = "failure";
+    n.schedule().catch((e: unknown) => console.error(e));
+    console.error(`${title}\n${body}`);
+
+    return new Error(title, { cause: body });
+  }
+
   public run(synthetic?: Input) {
     try {
-      if (typeof synthetic !== "undefined")
-        this.synthetic = synthetic;
+      typeof synthetic === "undefined" || (this.synthetic = synthetic);
 
       return this.output(this.runtime());
     }
     catch (error) {
-      throw this.error(error);
+      throw App.error(this.app, error);
     }
     finally {
       Script.complete();
@@ -91,7 +114,7 @@ export default abstract class App<
         throw new TypeError("Setting file is not JSON");
 
       return config satisfies object as Subschema;
-    })(JSON.parse(new File<"Setting", false>("Setting", false, { name: `${this.app}/${App.stringful(subpath, "subsetting")}.json` as stringful }).readful()) ?? null);
+    })(JSON.parse(new File<"Setting">("Setting", false, { name: `${this.app}/${App.stringful(subpath, "subsetting")}.json` as stringful }).readful()) as unknown);
   }
 
   protected read(...[file]: Parameters<App<Input, Output, Schema>["storage"]>) {
@@ -114,14 +137,10 @@ export default abstract class App<
     this.storage(file).delete();
   }
 
-  private storage(file:
-    | string
-    | {
-      name?: string;
-      ext?: string;
-    } = {}) {
-    const {
-      name: basename = this.app,
+  private storage(file: string | Field<never, "name" | "ext"> = {}) {
+    const { app } = this,
+    {
+      name: basename = app,
       ext = "txt",
     } = typeof file === "object"
       ? file
@@ -132,31 +151,7 @@ export default abstract class App<
 
     const name = `${basename}.${ext}`;
 
-    return this.cache[name] ??= new File("Storage", true, { name, folder: this.app });
-  }
-
-  private error(error: unknown) {
-    function cast(e: unknown) {
-      return typeof e === "object" && e !== null && "message" in e
-        ? e as Error
-        : JSON.stringify(e);
-    }
-
-    const errors = [cast(error)] as Arrayful<string | Error>;
-
-    while (typeof errors[0] !== "string" && "cause" in errors[0])
-      errors.unshift(cast(errors[0].cause));
-
-    const n = new Notification,
-    [title, body] = (([head, ...rest]) => [`${this.app}: ${head}`, rest.join("\n")])(errors.map(e => typeof e === "string" ? e : e.message) as Arrayful);
-
-    n.title = title;
-    n.body = body;
-    n.sound = "failure";
-    n.schedule().catch((e: unknown) => console.error(e));
-    console.error(`${title}\n${body}`);
-
-    return new Error(title, { cause: body });
+    return this.cache[name] ??= new File("Storage", true, { name, folder: app });
   }
 
   protected abstract getInput(): Undef<Input>;
