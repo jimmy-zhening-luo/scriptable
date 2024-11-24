@@ -72,7 +72,6 @@ export default class SearchEngine<
       output,
       engine,
       urls,
-      terms,
       tag,
       separator,
       encodeComponent,
