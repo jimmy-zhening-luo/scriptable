@@ -62,11 +62,14 @@ export default class SearchEngine<
           .map(c => encodeComponent ? encodeURI(c) : encodeURIComponent(c))
           .join("%2B"))
         .join(separator),
-      U = urls.map(url => url.replace(tag as stringful, encodedQuery));
-  
-      return !force ? U : U.map(url => `data:text/html,<meta name="color-scheme" content="dark light" />
+      U = urls.map(url => url.replace(tag, encodedQuery));
+
+      return !force
+        ? U
+        : U.map(url => `data:text/html,<meta name="color-scheme" content="dark light" />
         <meta http-equiv="Refresh" content="0; url=${url}" />`);
     }
+
     const {
       type,
       output,
