@@ -3,7 +3,7 @@ import Shortcut from "./lib";
 import url from "./lib/object/url";
 import type { LinkSetting } from "./interface/link";
 
-function process(host: string, path: string) {
+function process(host: ReturnType<typeof url>["host"], path: string) {
   const processors = {
     "amazon.com": (path: string) => (([, pid = null]) => pid === null ? path : `/dp/${(pid.split("/") as Arrayful)[0]}`)(path.split("/dp/")),
     "dropbox.com": (path: string) => !path.startsWith("/scl/fi/") ? path : (nodes => nodes.length < 4 ? path : nodes.slice(0, 4).join("/"))(path.split("/")),
