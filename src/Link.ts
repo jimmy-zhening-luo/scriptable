@@ -33,7 +33,7 @@ class Link extends Shortcut<
       query,
       fragment,
     } = url(input, true),
-    host = ((host: ReturnType<typeof url>["host"]) => (headless => hosts.swap[headless] ?? headless)(!host.startsWith("www.") || hosts.www.includes(host) ? host : host.slice(4) as typeof host))(_host),
+    host = ((host: ReturnType<typeof url>["host"]) => (headless => hosts.swap[headless] ?? headless)(!host.startsWith("www.") || hosts.preserve.includes(host) ? host : host.slice(4) as typeof host))(_host),
     [
       include = null,
       exclude = null,

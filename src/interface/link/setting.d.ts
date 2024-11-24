@@ -2,7 +2,7 @@ import type url from "../../lib/object/url";
 
 export interface LinkSetting {
   hosts: {
-    www: readonly ReturnType<typeof url>["host"][];
+    preserve: readonly ReturnType<typeof url>["host"][];
     swap: Endomap<ReturnType<typeof url>["host"]>;
   };
   queries: {
