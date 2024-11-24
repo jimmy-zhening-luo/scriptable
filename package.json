@@ -1,7 +1,7 @@
 {
   "_schemaVersion": "22.11.0",
   "name": "type-scriptable",
-  "version": "22.1.5",
+  "version": "22.1.6",
   "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
   "keywords": [
     "scriptable",
