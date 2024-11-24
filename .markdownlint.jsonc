@@ -1,6 +1,6 @@
 {
-  // v0.36.1
-  // https://github.com/DavidAnson/markdownlint/blob/v0.36.1/doc/Rules.md
+  // v0.36.2
+  // DOC: https://github.com/DavidAnson/markdownlint/blob/v0.36.1/doc/Rules.md
   // "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.36.1/schema/markdownlint-config-schema.json",
   "heading-increment": true /* MD001 */,
   "heading-style": {
@@ -73,7 +73,7 @@
   } /* MD035 */,
   "no-emphasis-as-heading": false /* MD036 */,
   "no-space-in-emphasis": true /* MD037 */,
-  "no-space-in-code": true /* MD038 */,
+  "no-space-in-code": false /* MD038 */,
   "no-space-in-links": true /* MD039 */,
   "fenced-code-language": {
     "allowed_languages": [],
