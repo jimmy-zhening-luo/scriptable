@@ -25,7 +25,7 @@
   } /* MD010 */,
   "no-reversed-links": false /* MD011 */,
   "no-multiple-blanks": {
-    "maximum": 1,
+    "maximum": 1,cock
   } /* MD012 */,
   "line-length": false /* MD013 */,
   "commands-show-output": true /* MD014 */,
