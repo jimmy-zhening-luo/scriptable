@@ -1,5 +1,5 @@
 {
-  "_schemaVersion": "22.11.1",
+  "_schemaVersion": "22.11.2",
   "name": "type-scriptable",
   "version": "22.1.9",
   "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
@@ -74,8 +74,8 @@
     "li": "eslint --cache --fix",
     "lint": "npm run build",
     "lint:true": "run-os",
-    "lint:true:default": "run-s lint:scope:global:* \"lint:scope:$npm_package_config_language\"",
-    "lint:true:windows": "run-s lint:scope:global:* \"lint:scope:%npm_package_config_language%\"",
+    "lint:true:default": "run-p lint:scope:global:* \"lint:scope:$npm_package_config_language\"",
+    "lint:true:windows": "run-p lint:scope:global:* \"lint:scope:%npm_package_config_language%\"",
     "lint:false": "(npm run lint:true) || (echo \"Skipped linting (lint=false)\")",
     "lint:scope:global:configs": "npm run li -- {*,.github/**/*}.{json,jsonc,yml,yaml,js,cjs,mjs,ts,cts,mts}",
     "lint:scope:global:code": "npm run li -- {src,tests,static,typings}/**/*.{html,js,cjs,mjs,ts,cts,mts}",
