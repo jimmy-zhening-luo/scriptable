@@ -1,5 +1,5 @@
 export default class File<
-  FT extends string,
+  Filetype extends string,
   Mutable extends boolean = false,
 > {
   private static readonly manager = FileManager.iCloud();
@@ -8,7 +8,7 @@ export default class File<
   protected readonly exists: boolean;
 
   constructor(
-    filetype: literalful<FT>,
+    filetype: literalful<Filetype>,
     public readonly mutable: Mutable,
     { name, folder = "" }: Field<"name", "folder">,
   ) {
