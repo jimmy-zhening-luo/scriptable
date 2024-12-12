@@ -89,13 +89,13 @@ export default class SearchEngine<
       urls: urls === null
         ? urls
         : encode(
-          urls,
-          terms,
-          tag as unknown as stringful,
-          separator,
-          encodeComponent,
-          force,
-        ),
+            urls,
+            terms,
+            tag as unknown as stringful,
+            separator,
+            encodeComponent,
+            force,
+          ),
     };
   }
 }

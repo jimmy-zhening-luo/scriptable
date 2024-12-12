@@ -49,18 +49,18 @@ class Link extends Shortcut<
         ? ""
         : include !== null
           ? query
-            .split("&")
-            .map(term => term.split("=") as Arrayful)
-            .filter(([key]) => include.includes(key.toLowerCase()))
-            .map(tuple => tuple.join("="))
-            .join("&")
-          : exclude !== null
-            ? query
               .split("&")
               .map(term => term.split("=") as Arrayful)
-              .filter(([key]) => !exclude.includes(key.toLowerCase()))
+              .filter(([key]) => include.includes(key.toLowerCase()))
               .map(tuple => tuple.join("="))
               .join("&")
+          : exclude !== null
+            ? query
+                .split("&")
+                .map(term => term.split("=") as Arrayful)
+                .filter(([key]) => !exclude.includes(key.toLowerCase()))
+                .map(tuple => tuple.join("="))
+                .join("&")
             : query,
       fragment: fragments.trim.includes(host) ? "" : fragment,
     });
