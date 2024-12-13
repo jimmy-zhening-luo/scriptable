@@ -12,16 +12,19 @@ export default class File<
     public readonly mutable: Mutable,
     { name, folder = "" }: Field<"name", "folder">,
   ) {
-    if (!File.manager.bookmarkExists(filetype))
-      throw new ReferenceError(`No bookmark for ${filetype}`);
-
-    const root = File.manager.bookmarkedPath(filetype),
+    const root = File.manager.bookmarkExists(filetype)
+      ? File.manager.bookmarkedPath(filetype)
+      : mutable
+        ? `${File.manager.libraryDirectory()}/${filetype}`
+        : null,
     subpath = `${folder}/${name}`
       .split("/")
       .filter(node => node !== "");
 
-    if (subpath.length < 1)
-      throw new RangeError("No subpath");
+    if (root === null)
+      throw new ReferenceError(`No bookmark for immutable filetype ${filetype}`);
+    else if (subpath.length < 1)
+      throw new RangeError("Empty subpath");
 
     this.path = `${root}/${subpath.join("/")}`;
     this.parent = `${root}/${subpath.slice(0, -1).join("/")}`;
@@ -43,7 +46,7 @@ export default class File<
     const read = this.read(true);
 
     if (read === "")
-      throw new ReferenceError("File is empty", { cause: this.path });
+      throw new ReferenceError("Empty file", { cause: this.path });
 
     return read as stringful;
   }
@@ -64,14 +67,14 @@ export default class File<
     const { path } = this;
 
     if (!this.mutable)
-      throw new TypeError("Write readonly file", { cause: path });
+      throw new TypeError("Cannot write readonly file", { cause: path });
     else if (data === null)
-      throw new TypeError("Write null data");
+      throw new TypeError("Null write data");
     else if (File.manager.isDirectory(path))
-      throw new ReferenceError("Write path is folder", { cause: path });
+      throw new ReferenceError("Write target is folder", { cause: path });
     else if (this.exists) {
       if (overwrite === false)
-        throw new ReferenceError("File exists, overwrite false", { cause: path });
+        throw new ReferenceError("Cannot overwrite mutable file with `overwrite:false`", { cause: path });
     }
     else if (!File.manager.isDirectory(this.parent))
       File.manager.createDirectory(this.parent, true);
@@ -91,10 +94,12 @@ export default class File<
   }
 
   public delete() {
+    const { path } = this;
+
     if (!this.mutable)
-      throw new TypeError("Cannot delete readonly file", { cause: this.path });
+      throw new TypeError("Cannot delete readonly file", { cause: path });
 
     if (this.exists)
-      File.manager.remove(this.path);
+      File.manager.remove(path);
   }
 }
