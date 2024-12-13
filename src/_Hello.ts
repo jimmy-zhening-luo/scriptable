@@ -8,7 +8,13 @@ class _Hello extends Shortcut<
   { space?: string }
 > {
   protected runtime() {
-    const greeting = `${this.read("hi")}${_Hello.stringful(this.setting.space, "setting")}${this.read()}`;
+    const SALUTATION = "Hej",
+    salute = "salute";
+
+    if (this.read(salute) !== SALUTATION)
+      this.write(SALUTATION, true, salute);
+
+    const greeting = `${this.read(salute)}${_Hello.stringful(this.setting.space, "setting")}${this.read()}`;
 
     this.write(`World from ${date()}`);
 
