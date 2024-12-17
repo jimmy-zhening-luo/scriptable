@@ -26,6 +26,9 @@ jobs:
         with:
           node-version: 22
           check-latest: true
+      - name: Install Dependencies
+        id: ci
+        run: npm ci
       - name: Build/Pack Distro
         id: buildpack
         run: npm run deploy
