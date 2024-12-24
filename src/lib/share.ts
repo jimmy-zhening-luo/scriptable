@@ -14,7 +14,7 @@ export default abstract class Share<
   }
 
   protected output(runtime: ReturnType<Share<Output>["runtime"]>) {
-    log(runtime);
+    console.log(runtime);
 
     return runtime;
   }

@@ -12,7 +12,7 @@ export default abstract class Shortcut<
   }
 
   protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
-    log(runtime);
+    console.log(runtime);
     Script.setShortcutOutput(runtime);
 
     return runtime;
