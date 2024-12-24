@@ -60,7 +60,7 @@ export default abstract class App<
   }
 
   protected static stringfuls<T extends readonly string[]>(array: T, cause = "") {
-    if (array.length < 1 || !array.every((i): i is stringful => i !== ""))
+    if (array.length === 0 || !array.every((i): i is stringful => i !== ""))
       throw new TypeError(`Unstringful array: ${cause}`);
 
     return array as unknown as (
