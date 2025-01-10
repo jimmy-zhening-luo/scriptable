@@ -9,12 +9,12 @@ class FileLink extends Share<stringful> {
     const { input: files = [] } = this,
     links = FileLink
       .stringfuls(files, "Shared Files")
-      .map((path: stringful) => `shareddocuments://${encodeURI(path)}` as stringful) as ReturnType<typeof FileLink.stringfuls<typeof files>>,
-    response = (links satisfies Arrayful<stringful>).join("\n") as stringful;
+      .map((path: stringful) => `shareddocuments://${encodeURI(path)}` as stringful) as ReturnType<typeof FileLink.stringfuls<typeof files>>
+      .join("\n") as stringful;
 
-    Pasteboard.copyString(response);
+    Pasteboard.copyString(links);
 
-    return response;
+    return links;
   }
 }
 
