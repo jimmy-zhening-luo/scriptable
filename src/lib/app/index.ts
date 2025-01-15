@@ -77,7 +77,7 @@ export default abstract class App<
         : JSON.stringify(e);
     }
 
-    const errors = [cast(error)] as Arrayful<string | Error>;
+    const errors: Arrayful<string | Error> = [cast(error)];
 
     while (typeof errors[0] !== "string" && "cause" in errors[0])
       errors.unshift(cast(errors[0].cause));
