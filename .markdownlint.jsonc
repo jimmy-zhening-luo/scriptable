@@ -1,7 +1,7 @@
 {
-  // v0.36.2
-  // DOC: https://github.com/DavidAnson/markdownlint/blob/v0.36.1/doc/Rules.md
-  // "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.36.1/schema/markdownlint-config-schema.json",
+  // v0.37.0
+  // DOC: https://github.com/DavidAnson/markdownlint/blob/v0.37.4/doc/Rules.md
+  // "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.37.4/schema/markdownlint-config-schema.json",
   "heading-increment": true /* MD001 */,
   "heading-style": {
     "style": "atx",
@@ -97,7 +97,9 @@
   "strong-style": {
     "style": "underscore",
   } /* MD050 */,
-  "link-fragments": true /* MD051 */,
+  "link-fragments": {
+    "ignore_case": false /* @default: false */,
+  } /* MD051 */,
   "reference-links-images": {
     "shortcut_syntax": false,
   } /* MD052 */,
