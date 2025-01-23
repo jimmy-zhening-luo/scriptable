@@ -23,7 +23,7 @@ export default function (
             : scheme) as stringfully<"URL: scheme || host">,
           host: host.toLocaleLowerCase() as stringfully<"URL: scheme || host">,
           path,
-          query,
+          query: query.slice(1),
           fragment,
         };
   }

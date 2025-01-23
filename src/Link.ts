@@ -41,7 +41,7 @@ class Link extends Shortcut<
 
     return (({
       scheme, host, path, query, fragment,
-    }: ReturnType<typeof url>) => `${scheme}${scheme === "" ? "" : "://"}${host}${path === "/" ? "" : path}${query === "" ? "" : "?"}${query}${fragment === "" ? "" : "#"}${fragment}` as stringful)({
+    }: ReturnType<typeof url>) => `${scheme}${scheme === "" ? "" : "://"}${host}${path === "/" ? "" : path}${query === "" ? "" : "?"}${query}${fragment}` as stringful)({
       scheme,
       host,
       path: process(host, path),
