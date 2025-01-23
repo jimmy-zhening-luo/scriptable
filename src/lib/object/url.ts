@@ -11,12 +11,16 @@ export default function (
       fragment = "",
     } = (/^(?:(?<scheme>[^:/?#]+):)?(?:\/\/(?<host>[^/?#]*))?(?<path>[^?#]*)(?:\?(?<query>[^#]*))?(?:#(?<fragment>.*))?/u)
       .exec(string)?.groups ?? {},
-    http = ["https", "http"].includes(scheme);
+    http = ["https", "http"].includes(scheme.toLocaleLowerCase());
 
     return scheme === "" || http && !host.includes(".")
       ? null
       : {
-          scheme: (http && omitHttp ? "" : scheme.toLocaleLowerCase()) as stringfully<"URL: scheme || host">,
+          scheme: (http
+            ? omitHttp
+              ? ""
+              : "https"
+            : scheme) as stringfully<"URL: scheme || host">,
           host: host.toLocaleLowerCase() as stringfully<"URL: scheme || host">,
           path,
           query,
