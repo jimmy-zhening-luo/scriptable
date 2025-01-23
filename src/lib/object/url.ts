@@ -9,8 +9,7 @@ export default function (
       path = "",
       query = "",
       fragment = "",
-    } = (/^(?:(?<scheme>[^:/?#]+):)?(?:\/\/(?<host>[^/?#]*))?(?<path>[^?#]*)(?:\?(?<query>[^#]*))?(?:#(?<fragment>.*))?/u)
-      .exec(string)?.groups ?? {},
+    } = (/(?(DEFINE)(?<unsubx>[-~!$&'()*+,;=\.\w]|(?:%[a-fA-F\d]{2}))(?<pch>(?P>unsubx)|[:@])(?<qfch>(?P>pch)|[\/?]))^(?<scheme>\pL[-+\.\pL\d]+):\/\/(?<host>(?:(?P>unsubx)*(?::\d+)?))(?<path>(?:\/(?P>pch)*)*)(?<query>(?:\?(?P>qfch)*)|)(?<fragment>(?:#(?P>qfch)*)|)$/u).exec(string)?.groups ?? {},
     http = ["https", "http"].includes(scheme.toLocaleLowerCase());
 
     return scheme === "" || http && !host.includes(".")
