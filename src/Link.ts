@@ -23,8 +23,8 @@ class Link extends Shortcut<
 
   protected runtime() {
     const {
-      setting: { hosts, queries, fragments },
       input = "",
+      setting: { hosts, queries, fragments },
     } = this,
     {
       scheme,
