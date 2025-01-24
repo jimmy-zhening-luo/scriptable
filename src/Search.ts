@@ -70,7 +70,7 @@ class Search extends Shortcut<
             entry.encodeComponent,
           )
           : "shortcut" in entry
-            ? new Engine("shortcut", entry.shortcut, entry.output)
+            ? new Engine("shortcut", entry.shortcut, entry.notify)
             : new Engine("find", entry.find);
 
     this.write(recomposed);

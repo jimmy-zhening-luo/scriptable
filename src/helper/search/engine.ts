@@ -9,7 +9,7 @@ export default class SearchEngine<
   private readonly engine: Null<string>;
   private readonly urls: Null<readonly string[]>;
   private readonly tag: Null<stringful>;
-  private readonly output: Null<true>;
+  private readonly notify: Null<true>;
 
   constructor(
     protected readonly type: T,
@@ -29,16 +29,16 @@ export default class SearchEngine<
       engine: this.engine = null,
       urls: this.urls = null,
       tag: this.tag = null,
-      output: this.output,
+      notify: this.notify,
     } = web
       ? {
           urls: typeof engineOrUrls === "string" ? [engineOrUrls] : engineOrUrls as string[],
           tag: outputOrTag as stringful,
-          output: type === "api" ? true : null,
+          notify: type === "api" ? true : null,
         }
       : {
           engine: engineOrUrls as string,
-          output: (outputOrTag as boolean) || null,
+          notify: (outputOrTag as boolean) || null,
         }
     );
   }
@@ -72,7 +72,7 @@ export default class SearchEngine<
 
     const {
       type,
-      output,
+      notify,
       engine,
       urls,
       tag,
@@ -83,7 +83,7 @@ export default class SearchEngine<
 
     return {
       type,
-      output,
+      notify,
       engine: engine === "" ? key : engine,
       question,
       urls: urls === null

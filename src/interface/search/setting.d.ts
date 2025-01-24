@@ -20,7 +20,7 @@ export interface SearchSetting {
     | SearchEngineSetting<"find">
     | SearchEngineSetting<
       "shortcut",
-      | "output"
+      | "notify"
       | "select"
     >
     | SearchEngineSetting<

@@ -3,5 +3,5 @@ export interface SearchOutput {
   engine: Null<string>;
   question: string;
   urls: Null<readonly string[]>;
-  output: Null<true>;
+  notify: Null<true>;
 }
