@@ -108,7 +108,6 @@ Line 3 specifies your `App`'s icon in Scriptable UI.
 | `light-gray` | `hsl(235, 5%, 54%)` |
 | `gray` | `hsl(227, 6%, 44%)` |
 | `deep-gray` | `hsl(210, 8%, 30%)` |
-
 </details>
 
 ###### [`$GLYPH`](https://github.com/nlawler1737/Scriptable/blob/4ccf80b72ef5f15d4ed00b282988612bb9dbf4fc/iconGlyphCss.txt#L17)

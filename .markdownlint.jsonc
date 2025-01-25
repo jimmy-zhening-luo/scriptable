@@ -1,6 +1,8 @@
 {
-  // v0.37.0
-  // DOC: https://github.com/DavidAnson/markdownlint/blob/v0.37.4/doc/Rules.md
+  "$meta": {
+    "template": "0.37.2",
+    "rules": "https://github.com/DavidAnson/markdownlint/blob/v0.37.4/doc/Rules.md",
+  },
   // "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.37.4/schema/markdownlint-config-schema.json",
   "heading-increment": true /* MD001 */,
   "heading-style": {
@@ -43,7 +45,7 @@
   } /* MD024 */,
   "single-title": false /* MD025, single-h1 */,
   "no-trailing-punctuation": {
-    "punctuation": "" /* @DEFAULT: .,;:!。，；：！ */,
+    "punctuation": "" /* @default: .,;:!。，；：！ */,
   } /* MD026 */,
   "no-multiple-space-blockquote": true /* MD027 */,
   "no-blanks-blockquote": true /* MD028 */,
@@ -106,7 +108,7 @@
   "link-image-reference-definitions": {
     "ignored_definitions": [
       "//",
-    ] /* @DEFAULT: ["//"] */,
+    ] /* @default: ["//"] */,
   } /* MD053 */,
   "link-image-style": {
     "autolink": true,
