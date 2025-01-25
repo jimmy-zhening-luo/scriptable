@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import url from "./url";
+import Url from "./url";
 
 const TEST = {
   OK: "https://www.example.com/path/to/foo?a=1&b=2&c=3#fragment",
@@ -21,44 +21,44 @@ const TEST = {
     },
   },
 },
-parts = url(TEST.OK);
+parts = new Url(TEST.OK);
 
 describe("Object: URL", function () {
   describe("shape", function () {
-    it("is a function", function () {
+    it("is a constructor", function () {
       expect(url)
-        .a("function");
+        .a("constructor");
     });
   });
   describe("throws", function () {
     it("on nonsense", function () {
-      expect(() => url(TEST.ERROR))
+      expect(() => new Url(TEST.ERROR))
         .throws();
     });
     it("HTTP host-less", function () {
-      expect(() => url(TEST.cases.throw.http))
+      expect(() => new Url(TEST.cases.throw.http))
         .throws();
     });
     it("HTTP empty host", function () {
-      expect(() => url(TEST.cases.throw.httpEmpty))
+      expect(() => new Url(TEST.cases.throw.httpEmpty))
         .throws();
     });
     it("HTTP localhost", function () {
-      expect(() => url(TEST.cases.throw.httpLocal))
+      expect(() => new Url(TEST.cases.throw.httpLocal))
         .throws();
     });
     it("localhost", function () {
-      expect(() => url(TEST.cases.throw.local))
+      expect(() => new Url(TEST.cases.throw.local))
         .throws();
     });
     it("and empty string", function () {
-      expect(() => url(TEST.cases.throw.empty))
+      expect(() => new Url(TEST.cases.throw.empty))
         .throws();
     });
     it("but not on valid URLs", function () {
-      expect(() => url(TEST.OK))
+      expect(() => new Url(TEST.OK))
         .does.not.throw();
-      expect(() => Object.values(TEST.cases.ok).map(u => url(u)))
+      expect(() => Object.values(TEST.cases.ok).map(u => new Url(u)))
         .does.not.throw();
     });
   });
