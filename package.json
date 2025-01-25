@@ -1,29 +1,11 @@
 {
-  "_schemaVersion": "22.13.1",
+  "$template": "22.13.4",
   "name": "type-scriptable",
   "version": "23.0.0",
   "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
-  "keywords": [
-    "scriptable",
-    "ios",
-    "ipados",
-    "iphone",
-    "ipad",
-    "apple",
-    "shortcuts",
-    "widget",
-    "automation",
-    "typescript"
-  ],
   "repository": "github:jimmy-zhening-luo/scriptable",
-  "homepage": "https://github.com/jimmy-zhening-luo/scriptable#readme",
-  "bugs": "https://github.com/jimmy-zhening-luo/scriptable/issues",
   "license": "MIT",
   "private": true,
-  "publishConfig": {
-    "access": "public",
-    "tag": "next"
-  },
   "type": "module",
   "main": "",
   "types": "",
@@ -44,7 +26,7 @@
     "@types/mocha": "^10.0.10",
     "chai": "^5.1.2",
     "eslint": "~9.19.0",
-    "linted": "~24.4.0",
+    "linted": "~25.0.0",
     "mocha": "^11.1.0",
     "npm-run-all": "^4.1.5",
     "rexreplace": "^7.1.12",
@@ -116,10 +98,26 @@
     "deploy:sed:resolve:export": "rr \"export default \" \"module.exports = \" -L -I \"packed/**/*.js\"",
     "deploy:sed:delete:sourcemap": "rr \"^\\/\\/# sourceMappingURL=.+\\.map$\" \"\" -I -u \"packed/**/*.js\""
   },
+  "publishConfig": {
+    "access": "public",
+    "tag": "next"
+  },
   "mocha": {
     "spec": [
       "dist/**/*.spec.js"
     ]
   },
+  "keywords": [
+    "scriptable",
+    "ios",
+    "ipados",
+    "iphone",
+    "ipad",
+    "apple",
+    "shortcuts",
+    "widget",
+    "automation",
+    "typescript"
+  ],
   "author": "Jimmy Zhening Luo <1450044+jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
 }
