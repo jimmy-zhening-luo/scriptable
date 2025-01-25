@@ -9,7 +9,7 @@ function process(host: Url["host"], path: string) {
     "dropbox.com": path => !path.startsWith("/scl/fi/") ? path : (nodes => nodes.length < 4 ? path : nodes.slice(0, 4).join("/"))(path.split("/")),
     "linkedin.com": path => path.startsWith("/mwlite/") ? path.slice(7) : path,
     "reddit.com": path => (nodes => nodes.length < 6 || nodes[3] !== "comments" ? path : nodes.slice(0, nodes[5] === "comment" ? 7 : 5).join("/"))(path.split("/")),
-  } satisfies Record<string, (path: string) => string> as Url["host"], (path: string) => string>;
+  } satisfies Record<string, (path: string) => string> as Record<Url["host"], (path: string) => string>;
 
   return processors[host]?.(path) ?? path;
 }
