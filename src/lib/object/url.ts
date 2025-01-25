@@ -1,9 +1,9 @@
 export default class Url {
-  protected readonly scheme: stringfully<"URL: scheme || host">;
-  protected readonly host: stringfully<"URL: scheme || host">;
-  protected readonly path: string;
-  protected readonly query: string;
-  protected readonly fragment: string;
+  public readonly scheme: stringfully<"URL: scheme || host">;
+  public readonly host: stringfully<"URL: scheme || host">;
+  public readonly path: string;
+  public readonly query: string;
+  public readonly fragment: string;
 
   constructor(url: string) {
     const parts = Url.parse(url) ?? Url.parse(`https://${url}`);
