@@ -1,6 +1,6 @@
 // icon-color: light-gray; icon-glyph: link;
 import Shortcut from "./lib";
-import url from "./lib/object/url";
+import Url from "./lib/object/url";
 import type { LinkSetting } from "./interface/link";
 
 function process(host: ReturnType<typeof url>["host"], path: string) {
@@ -32,7 +32,7 @@ class Link extends Shortcut<
       path,
       query,
       fragment,
-    } = url(input),
+    } = new Url(input),
     host = ((host: ReturnType<typeof url>["host"]) => (headless => hosts.swap[headless] ?? headless)(!host.startsWith("www.") || hosts.preserve.includes(host) ? host : host.slice(4) as typeof host))(_host),
     [
       include = null,
