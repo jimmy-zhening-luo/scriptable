@@ -1,21 +1,21 @@
-import type url from "../../lib/object/url";
+import type Url from "../../lib/object/url";
 
 export interface LinkSetting {
   hosts: {
-    preserve: readonly ReturnType<typeof url>["host"][];
-    swap: Endomap<ReturnType<typeof url>["host"]>;
+    preserve: readonly Url["host"][];
+    swap: Endomap<Url["host"]>;
   };
   queries: {
-    remove: readonly ReturnType<typeof url>["host"][];
+    remove: readonly Url["host"][];
   } & Record<
     | "include"
     | "exclude",
     Record<
-      ReturnType<typeof url>["host"],
+      Url["host"],
       readonly string[]
     >
   >;
   fragments: {
-    trim: readonly ReturnType<typeof url>["host"][];
+    trim: readonly Url["host"][];
   };
 }
