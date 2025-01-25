@@ -26,7 +26,7 @@ parts = new Url(TEST.OK);
 describe("Object: URL", function () {
   describe("shape", function () {
     it("is a constructor", function () {
-      expect(url)
+      expect(Url)
         .a("constructor");
     });
   });
