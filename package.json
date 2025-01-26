@@ -1,19 +1,11 @@
 {
-  "$template": "22.13.4",
+  "$template": "22.13.5",
   "name": "type-scriptable",
   "version": "23.1.0",
   "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
   "repository": "github:jimmy-zhening-luo/scriptable",
   "license": "MIT",
   "private": true,
-  "type": "module",
-  "main": "",
-  "types": "",
-  "config": {
-    "language": "ts",
-    "rewrite": "true",
-    "lint": "true"
-  },
   "engineStrict": true,
   "engines": {
     "node": ">=22.13.1",
@@ -26,13 +18,21 @@
     "@types/mocha": "^10.0.10",
     "chai": "^5.1.2",
     "eslint": "~9.19.0",
-    "linted": "~25.0.0",
+    "linted": "~25.0.1",
     "mocha": "^11.1.0",
     "npm-run-all": "^4.1.5",
     "rexreplace": "^7.1.12",
     "run-script-os": "^1.1.6",
     "ts-add-js-extension": "^1.6.5",
     "typescript": "^5.7.3"
+  },
+  "type": "module",
+  "main": "",
+  "types": "",
+  "config": {
+    "language": "ts",
+    "rewrite": "true",
+    "lint": "true"
   },
   "scripts": {
     "build": "run-os",
