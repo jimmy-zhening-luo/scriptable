@@ -13,28 +13,30 @@ class Search extends Shortcut<
 
   protected runtime() {
     const {
-      tags: { query: tag },
-      engines,
-      alias,
-      reserved: {
-        selector,
-        operators,
+      input: _input = "",
+      setting: {
+        tags: { query: _tag },
+        engines,
+        alias,
+        reserved: {
+          selector,
+          operators,
+        },
+        defaults: {
+          math,
+          translate,
+          fallback,
+        },
       },
-      defaults: {
-        math,
-        translate,
-        fallback,
-      },
-    } = this.setting,
-    { input = "" } = this,
-    string = input === "" ? this.read() : input,
+    } = this,
+    input = _input === "" ? this.read() : _input,
     {
       key,
       terms,
       question,
       recomposed,
     } = Query(
-      string,
+      input,
       engines,
       alias,
       ...Search.stringfuls([
@@ -50,13 +52,13 @@ class Search extends Shortcut<
       ? new Engine(
         "browser",
         entry,
-        tag as stringful,
+        Search.stringful(_tag),
       )
       : "url" in entry
         ? new Engine(
           "browser",
           entry.url,
-          tag as stringful,
+          Search.stringful(_tag),
           entry.separator,
           entry.encodeComponent,
           entry.force,
@@ -65,7 +67,7 @@ class Search extends Shortcut<
           ? new Engine(
             "api",
             entry.api,
-            tag as stringful,
+            Search.stringful(_tag),
             entry.separator,
             entry.encodeComponent,
           )
