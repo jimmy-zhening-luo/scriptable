@@ -70,6 +70,13 @@ export default abstract class App<
     );
   }
 
+  protected static char(string = "", cause = "") {
+    if (string.length !== 1)
+      throw new TypeError(`"${string}" is non-char (length: ${string.length})`, { cause });
+
+    return string as char;
+  }
+
   private static error(app: stringful, error: unknown) {
     function cast(e: unknown) {
       return typeof e === "object" && e !== null && "message" in e
