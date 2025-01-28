@@ -39,8 +39,8 @@ class Search extends Shortcut<
       input,
       engines,
       alias,
+      Search.char(selector),
       ...Search.stringfuls([
-        selector,
         operators,
         math,
         translate,

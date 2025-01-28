@@ -4,7 +4,7 @@ export default function (
   input: string,
   engines: SearchSetting["engines"],
   alias: FieldTable,
-  SELECTOR: stringful,
+  SELECTOR: char,
   OPERATORS: stringful,
   MATH: stringful,
   TRANSLATE: stringful,
@@ -59,7 +59,7 @@ export default function (
 
   function select(
     tokens: Readonly<Arrayful<stringful>>,
-    SELECTOR: stringful,
+    SELECTOR: char,
     TRANSLATE: stringful,
   ) {
     const [head, ...rest] = tokens,
