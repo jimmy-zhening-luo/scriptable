@@ -1,7 +1,7 @@
 import type { SearchSetting } from "../../interface/search";
 
 export default function (
-  string: string,
+  input: string,
   engines: SearchSetting["engines"],
   alias: FieldTable,
   SELECTOR: stringful,
@@ -98,7 +98,7 @@ export default function (
   const [_K, ..._terms] = select(
     operate(
       tokenize(
-        string,
+        input,
         FALLBACK,
       ),
       OPERATORS,
