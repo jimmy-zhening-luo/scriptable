@@ -17,6 +17,7 @@ export interface SearchSetting {
   alias: FieldTable;
   engines: Table<
     | Unflat<string, true>
+    | Record<string, never>
     | SearchEngineSetting<"find">
     | SearchEngineSetting<
       "shortcut",
