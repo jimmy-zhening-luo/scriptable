@@ -24,6 +24,7 @@ class Search extends Shortcut<
         },
         defaults: {
           math,
+          chat,
           translate,
           fallback,
         },
@@ -43,6 +44,7 @@ class Search extends Shortcut<
       ...Search.stringfuls([
         operators,
         math,
+        chat,
         translate,
       ] as const),
       Search.stringfuls(fallback),

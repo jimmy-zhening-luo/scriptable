@@ -10,6 +10,7 @@ export interface SearchSetting {
   >;
   defaults: Field<
     | "math"
+    | "chat"
     | "translate"
   > & {
     fallback: Triad;

@@ -7,6 +7,7 @@ export default function (
   SELECTOR: char,
   OPERATORS: stringful,
   MATH: stringful,
+  CHAT: stringful,
   TRANSLATE: stringful,
   FALLBACK: Triad<stringful>,
 ) {
@@ -116,7 +117,7 @@ export default function (
     : _key in alias
       ? { key: alias[_key] as stringful }
       : {
-          key: FALLBACK.at(-1) as stringful,
+          key: CHAT,
           terms: [_K, ..._terms] as const,
         },
   question = terms.join(" "),
