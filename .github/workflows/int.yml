@@ -1,18 +1,15 @@
 name: Azure Publish (int)
-
 on:
   push:
     branches:
       - int
-
 jobs:
   publish-int:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
+    name: Build/Publish (int)
     environment:
       name: int
       url: https://${{ vars.AZ_ACCOUNT }}.blob.core.windows.net/${{ vars.AZ_CONTAINER }}/${{ vars.PACKAGE }}.zip
-    name: Build/Publish (int)
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         id: checkout

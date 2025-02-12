@@ -1,18 +1,15 @@
 name: Azure Publish (PROD.main)
-
 on:
   push:
     branches:
       - main
-
 jobs:
   publish-prod-main:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
+    name: Build/Publish (PROD.main)
     environment:
       name: PROD.main
       url: https://${{ vars.AZ_ACCOUNT }}.blob.core.windows.net/${{ vars.AZ_CONTAINER }}/${{ vars.PACKAGE }}.zip
-    name: Build/Publish (PROD.main)
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         id: checkout
