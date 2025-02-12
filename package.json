@@ -1,5 +1,5 @@
 {
-  "$template": "22.13.10",
+  "$template": "22.14.0",
   "name": "type-scriptable",
   "version": "23.4.12",
   "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
@@ -8,7 +8,7 @@
   "private": true,
   "engineStrict": true,
   "engines": {
-    "node": ">=22.13.1",
+    "node": ">=22.14.0",
     "npm": ">=10.9.0"
   },
   "peerDependenciesMeta": {},
@@ -17,8 +17,8 @@
     "@types/chai": "^5.0.1",
     "@types/mocha": "^10.0.10",
     "chai": "^5.1.2",
-    "eslint": "~9.20.0",
-    "linted": "~27.2.0",
+    "eslint": "~9.20.1",
+    "linted": "~27.2.1",
     "mocha": "^11.1.0",
     "npm-run-all": "^4.1.5",
     "rexreplace": "^7.1.12",
