@@ -4,21 +4,21 @@ import date from "./lib/object/date";
 
 class _Hello extends Shortcut<
   never,
-  string,
-  { space?: string }
+  stringful,
+  { readonly space?: string }
 > {
   protected runtime() {
-    const SALUTATION = "Hej",
-    salute = "salute";
+    const { setting: { space } } = this,
+    ini = "salute";
 
-    if (this.read(salute) !== SALUTATION)
-      this.write(SALUTATION, true, salute);
+    this.write("Hej", true, ini);
+    this.write(`World, on ${date()}`);
 
-    const greeting = `${this.read(salute)}${_Hello.stringful(this.setting.space, "setting")}${this.read()}`;
-
-    this.write(`World from ${date()}`);
-
-    return greeting;
+    return ([
+      this.readful(ini),
+      _Hello.stringful(space, "setting"),
+      this.readful(),
+    ] as const satisfies Triad<stringful>).join("") as stringful;
   }
 }
 
