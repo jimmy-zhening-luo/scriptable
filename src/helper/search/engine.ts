@@ -46,7 +46,7 @@ export default class SearchEngine<
   public resolve(
     key: stringful,
     terms: readonly stringful[],
-    question: string,
+    question: Null<string>,
   ) {
     function encode(
       urls: readonly string[],

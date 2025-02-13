@@ -120,8 +120,16 @@ export default function (
           key: CHAT,
           terms: [_K, ..._terms] as const,
         },
-  question = terms.join(" "),
-  recomposed = `${key} ${question}`;
+  termString = terms.join(" "),
+  {
+    question = null,
+    recomposed = key,
+  } = termString === ""
+    ? {}
+    : {
+        question: termString,
+        recomposed: `${key} ${termString}`,
+      };
 
   return {
     key,
