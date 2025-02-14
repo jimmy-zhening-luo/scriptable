@@ -37,7 +37,7 @@ export default class Url {
       .map(pair => pair.join("="))
       .join("&");
   }
-  
+
   public getParam(param: string) {
     return this.queryMap.get(param as stringful) ?? null;
   }
