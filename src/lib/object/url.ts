@@ -26,8 +26,8 @@ export default class Url {
     this.queryMap = new Map<stringful, string>(
       query
         .split("&")
-        .map(pair => pair.split("=") as Readonly<Arrayful>)
-        .filter((pair): pair is readonly [stringful, ...string[]] => pair[0] !== "")
+        .map(pair => pair.split("=") as Arrayful)
+        .filter((pair): pair is [stringful, ...string[]] => pair[0] !== "")
         .map(([param, ...value]) => [param as stringful, value.join("=")] as const),
     );
   }
