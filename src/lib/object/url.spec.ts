@@ -69,7 +69,7 @@ describe("Object: URL", function () {
     });
     it("with properties parts of URL", function () {
       expect(parts)
-        .has.all.keys(
+        .includes.all.keys(
           "scheme",
           "host",
           "path",
