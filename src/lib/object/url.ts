@@ -2,23 +2,49 @@ export default class Url {
   public readonly scheme: stringfully<"URL: scheme || host">;
   public readonly host: stringfully<"URL: scheme || host">;
   public readonly path: string;
-  public readonly query: string;
   public readonly fragment: string;
+  private readonly queryMap: Map<stringful, string>;
 
   constructor(url: string) {
-    const parts = Url.parse(url) ?? Url.parse(`https://${url}`);
+    const {
+      scheme,
+      host,
+      path,
+      query,
+      fragment,
+    } = this.parse(url) ?? this.parse(`https://${url}`);
 
     if (parts === null)
       throw new SyntaxError("Unparseable to URL", { cause: url });
 
-    this.scheme = parts.scheme;
-    this.host = parts.host;
-    this.path = parts.path;
-    this.query = parts.query;
-    this.fragment = parts.fragment;
+    this.scheme = scheme;
+    this.host = host;
+    this.path = path;
+    this.fragment = fragment;
+    this.queryMap = new Map<stringful, string>(
+      query
+        .split("&")
+        .map(pair => pair.split("=") as Arrayful)
+        .filter((pair): pair is readonly [stringful, ...string[]] => pair[0] !== "")
+        .map(([param, ...value]) => [param, value.join("=")] as const),
+    );
   }
 
-  private static parse(url: string) {
+  public get query() {
+    return queryMap.size === 0
+      ? ""
+      : [...queryMap.entries]
+  }
+  
+  public getParam(param: string) {
+    queryMap.get(param) ?? null;
+  }
+
+  public deleteParam(param: string) {
+    queryMap.delete(param);
+  }
+
+  private parse(url: string) {
     const {
       scheme = "",
       host = "",
@@ -36,7 +62,7 @@ export default class Url {
           host: host.toLocaleLowerCase() as stringfully<"URL: scheme || host">,
           path,
           query: query.slice(1),
-          fragment,
+          fragment: fragment.slice(1),
         };
   }
 }
