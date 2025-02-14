@@ -6,16 +6,18 @@ export default class Url {
   private readonly queryMap: Map<stringful, string>;
 
   constructor(url: string) {
+    const parts = this.parse(url) ?? this.parse(`https://${url}`);
+
+    if (parts === null)
+      throw new SyntaxError("Unparseable to URL", { cause: url });
+
     const {
       scheme,
       host,
       path,
       query,
       fragment,
-    } = this.parse(url) ?? this.parse(`https://${url}`);
-
-    if (parts === null)
-      throw new SyntaxError("Unparseable to URL", { cause: url });
+    } = parts;
 
     this.scheme = scheme;
     this.host = host;
