@@ -38,26 +38,7 @@ export default class Url {
     return [...this.queryMap.keys()];
   }
 
-  public getParam(param: string) {
-    return this.queryMap.get(param as stringful) ?? null;
-  }
-
-  public deleteParams(...params: string[]) {
-    for (const param of params)
-      this.queryMap.delete(param as stringful);
-  }
-
-  public keepParams(...params: string[]) {
-    const keep = new Set<stringful>(params as stringful[]);
-
-    this.deleteParams(...this.params.filter(param => !keep.has(param)));
-  }
-
-  public deleteQuery() {
-    this.queryMap.clear();
-  }
-
-  private parse(url: string) {
+  private static parse(url: string) {
     const {
       scheme = "",
       host = "",
@@ -77,5 +58,24 @@ export default class Url {
           query: query.slice(1),
           fragment: fragment.slice(1),
         };
+  }
+
+  public getParam(param: string) {
+    return this.queryMap.get(param as stringful) ?? null;
+  }
+
+  public deleteParams(...params: string[]) {
+    for (const param of params)
+      this.queryMap.delete(param as stringful);
+  }
+
+  public keepParams(...params: string[]) {
+    const keep = new Set<stringful>(params as stringful[]);
+
+    this.deleteParams(...this.params.filter(param => !keep.has(param)));
+  }
+
+  public deleteQuery() {
+    this.queryMap.clear();
   }
 }
