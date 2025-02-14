@@ -26,44 +26,37 @@ class Link extends Shortcut<
       input = "",
       setting: { hosts, queries, fragments },
     } = this,
-    {
-      scheme,
-      host: _host,
-      path,
-      query,
-      fragment,
-    } = new Url(input),
-    host = ((host: Url["host"]) => (headless => hosts.swap[headless] ?? headless)(!host.startsWith("www.") || hosts.preserve.includes(host) ? host : host.slice(4) as typeof host))(_host),
+    url = new Url(input),
+    host = ((host: Url["host"]) => (headless => hosts.swap[headless] ?? headless)(!host.startsWith("www.") || hosts.preserve.includes(host) ? host : host.slice(4) as typeof host))(url.host),
     [
       include = null,
       exclude = null,
-    ] = (["include", "exclude"] as const).map(group => queries[group][host]?.map(i => i.toLowerCase()));
+    ] = (["include", "exclude"] as const).map(group => queries[group][host]);
 
-    return (({
-      scheme, host, path, query, fragment,
-    }: Url) => `${scheme}${scheme === "" ? "" : "://"}${host}${path === "/" ? "" : path}${query === "" ? "" : "?"}${query}${fragment}` as stringful)({
+    if (queries.remove.includes(host))
+      url.deleteQuery();
+    else if (include !== null)
+      url.keepParams(...include);
+    else if (exclude !== null)
+      url.deleteParams(...exclude);
+
+    const {
+      scheme, path, query, fragment,
+    } = url;
+
+    return ((
+      scheme: Url["scheme"],
+      host: Url["host"],
+      path: string,
+      query: string,
+      fragment: string,
+    ) => `${scheme}://${host}${path}${query === "" ? "" : "?"}${query}${fragment === "" ? "" : "#"}${fragment}` as stringful)(
       scheme,
       host,
-      path: process(host, path),
-      query: queries.remove.includes(host)
-        ? ""
-        : include !== null
-          ? query
-              .split("&")
-              .map(term => term.split("=") as Arrayful)
-              .filter(([key]) => include.includes(key.toLowerCase()))
-              .map(tuple => tuple.join("="))
-              .join("&")
-          : exclude !== null
-            ? query
-                .split("&")
-                .map(term => term.split("=") as Arrayful)
-                .filter(([key]) => !exclude.includes(key.toLowerCase()))
-                .map(tuple => tuple.join("="))
-                .join("&")
-            : query,
-      fragment: fragments.trim.includes(host) ? "" : fragment,
-    });
+      process(host, path),
+      query,
+      fragments.trim.includes(host) ? "" : fragment,
+    );
   }
 }
 
