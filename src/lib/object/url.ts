@@ -12,11 +12,7 @@ export default class Url {
       throw new SyntaxError("Unparseable to URL", { cause: url });
 
     const {
-      scheme,
-      host,
-      path,
-      query,
-      fragment,
+      scheme, host, path, query, fragment,
     } = parts;
 
     this.scheme = scheme;
