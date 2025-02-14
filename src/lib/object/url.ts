@@ -50,7 +50,7 @@ export default class Url {
   public keepParams(...params: string[]) {
     const keep = new Set<stringful>(params as stringful[]);
 
-    this.deleteParams(this.params.filter(param => !keep.has(param)));
+    this.deleteParams(...this.params.filter(param => !keep.has(param)));
   }
 
   public deleteQuery() {
