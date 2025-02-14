@@ -39,11 +39,16 @@ export default class Url {
   }
   
   public getParam(param: string) {
-    this.queryMap.get(param as stringful) ?? null;
+    return this.queryMap.get(param as stringful) ?? null;
   }
 
-  public deleteParam(param: string) {
-    this.queryMap.delete(param as stringful);
+  public deleteParam(...params: string[]) {
+    for (const param of params)
+      this.queryMap.delete(param as stringful);
+  }
+
+  public deleteQuery() {
+    this.queryMap.clear();
   }
 
   private parse(url: string) {
