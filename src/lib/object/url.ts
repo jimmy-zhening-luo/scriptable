@@ -24,7 +24,7 @@ export default class Url {
         .split("&")
         .map(pair => pair.split("=") as Arrayful)
         .filter((pair): pair is [stringful, ...string[]] => pair[0] !== "")
-        .map(([param, ...value]) => [param as stringful, value.join("=")] as const),
+        .map(([param, ...value]) => [param, value.join("=")] as const),
     );
   }
 
