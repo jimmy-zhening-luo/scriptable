@@ -33,17 +33,17 @@ export default class Url {
   }
 
   public get query() {
-    return queryMap.size === 0
-      ? ""
-      : [...queryMap.entries]
+    return [...this.queryMap.entries]
+      .map(pair => pair.join("="))
+      .join("&");
   }
   
   public getParam(param: string) {
-    queryMap.get(param) ?? null;
+    this.queryMap.get(param) ?? null;
   }
 
   public deleteParam(param: string) {
-    queryMap.delete(param);
+    this.queryMap.delete(param);
   }
 
   private parse(url: string) {
