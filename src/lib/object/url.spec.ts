@@ -75,8 +75,8 @@ describe("Object: URL", function () {
         .an("object");
     });
     it("with properties parts of URL", function () {
-      expect(parts)
-        .includes.all.keys(...properties);
+      expect(properties.every(property => property in parts))
+        .ok;
     });
     it("which are all strings", function () {
       expect(properties.every(property => typeof parts[property] === "string"))
