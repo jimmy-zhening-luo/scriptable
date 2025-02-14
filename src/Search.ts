@@ -15,7 +15,7 @@ class Search extends Shortcut<
     const {
       input: _input = "",
       setting: {
-        tags: { query: _tag },
+        tags: { query: tag },
         engines,
         alias,
         reserved: {
@@ -54,13 +54,13 @@ class Search extends Shortcut<
       ? new Engine(
         "browser",
         entry,
-        Search.stringful(_tag),
+        Search.stringful(tag),
       )
       : "url" in entry
         ? new Engine(
           "browser",
           entry.url,
-          Search.stringful(_tag),
+          Search.stringful(tag),
           entry.separator,
           entry.encodeComponent,
           entry.force,
@@ -69,7 +69,7 @@ class Search extends Shortcut<
           ? new Engine(
             "api",
             entry.api,
-            Search.stringful(_tag),
+            Search.stringful(tag),
             entry.separator,
             entry.encodeComponent,
           )
