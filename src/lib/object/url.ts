@@ -33,7 +33,7 @@ export default class Url {
   }
 
   public get query() {
-    return [...this.queryMap.entries]
+    return [...this.queryMap.entries()]
       .map(pair => pair.join("="))
       .join("&");
   }
