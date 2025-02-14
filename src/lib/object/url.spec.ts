@@ -79,7 +79,7 @@ describe("Object: URL", function () {
         .includes.all.keys(...properties);
     });
     it("which are all strings", function () {
-      expect(properties.every(property => typeof part[property] === "string"))
+      expect(properties.every(property => typeof parts[property] === "string"))
         .ok;
     });
   });
