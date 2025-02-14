@@ -34,11 +34,15 @@ export default class Url {
       .join("&");
   }
 
+  public get params() {
+    return [...this.queryMap.keys()];
+  }
+
   public getParam(param: string) {
     return this.queryMap.get(param as stringful) ?? null;
   }
 
-  public deleteParam(...params: string[]) {
+  public deleteParams(...params: string[]) {
     for (const param of params)
       this.queryMap.delete(param as stringful);
   }
