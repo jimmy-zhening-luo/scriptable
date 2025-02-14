@@ -47,6 +47,12 @@ export default class Url {
       this.queryMap.delete(param as stringful);
   }
 
+  public keepParams(...params: string[]) {
+    const keep = new Set<stringful>(params as stringful[]);
+
+    this.deleteParams(this.params.filter(param => !keep.has(param)));
+  }
+
   public deleteQuery() {
     this.queryMap.clear();
   }
