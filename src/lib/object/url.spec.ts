@@ -21,7 +21,14 @@ const TEST = {
     },
   },
 },
-parts = new Url(TEST.OK);
+parts = new Url(TEST.OK),
+properties = [
+  "scheme",
+  "host",
+  "path",
+  "query",
+  "fragment",
+] as const;
 
 describe("Object: URL", function () {
   describe("shape", function () {
@@ -69,16 +76,10 @@ describe("Object: URL", function () {
     });
     it("with properties parts of URL", function () {
       expect(parts)
-        .includes.all.keys(
-          "scheme",
-          "host",
-          "path",
-          "query",
-          "fragment",
-        );
+        .includes.all.keys(...properties);
     });
     it("which are all strings", function () {
-      expect(Object.values(parts).every(part => typeof part === "string"))
+      expect(properties.every(property => typeof part[property] === "string"))
         .ok;
     });
   });
