@@ -1,22 +1,22 @@
 import type { SearchEngineSetting } from "./engine";
 
 export interface SearchSetting {
-  tags: Field<
+  readonly tags: Field<
     | "query"
   >;
-  reserved: Field<
+  readonly reserved: Field<
     | "selector"
     | "operators"
   >;
-  defaults: Field<
+  readonly defaults: Field<
     | "math"
     | "chat"
     | "translate"
   > & {
-    fallback: Triad;
+    readonly fallback: Triad;
   };
-  alias: FieldTable;
-  engines: Table<
+  readonly alias: FieldTable;
+  readonly engines: Table<
     | Unflat<string, true>
     | Record<string, never>
     | SearchEngineSetting<"find">
