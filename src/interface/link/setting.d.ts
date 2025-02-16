@@ -1,21 +1,21 @@
 import type Url from "../../lib/object/url";
 
 export interface LinkSetting {
-  hosts: {
-    preserve: readonly Url["host"][];
-    swap: Endomap<Url["host"]>;
+  readonly hosts: {
+    readonly www: readonly Url["host"][];
+    readonly canonical: Endomap<Url["host"]>;
   };
-  queries: {
-    remove: readonly Url["host"][];
-  } & Record<
+  readonly queries: {
+    readonly remove: readonly Url["host"][];
+  } & Readonly<Record<
     | "include"
     | "exclude",
     Record<
       Url["host"],
       readonly string[]
     >
-  >;
-  fragments: {
-    trim: readonly Url["host"][];
+  >>;
+  readonly fragments: {
+    readonly shave: readonly Url["host"][];
   };
 }

@@ -27,7 +27,7 @@ class Link extends Shortcut<
       setting: { hosts, queries, fragments },
     } = this,
     url = new Url(input),
-    host = ((host: Url["host"]) => (headless => hosts.swap[headless] ?? headless)(!host.startsWith("www.") || hosts.preserve.includes(host) ? host : host.slice(4) as typeof host))(url.host),
+    host = ((host: Url["host"]) => (headless => hosts.canonical[headless] ?? headless)(!host.startsWith("www.") || hosts.www.includes(host) ? host : host.slice(4) as typeof host))(url.host),
     [
       include = null,
       exclude = null,
@@ -55,7 +55,7 @@ class Link extends Shortcut<
       host,
       process(host, path),
       query,
-      fragments.trim.includes(host) ? "" : fragment,
+      fragments.shave.includes(host) ? "" : fragment,
     );
   }
 }
