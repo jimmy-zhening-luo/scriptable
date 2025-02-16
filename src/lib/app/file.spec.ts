@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { FakeFileManager } from "../object/fake/index.spec";
+import { FakeFileManager } from "../object/_fakes/index.spec";
 import type File from "./file";
 
 global.FileManager = FakeFileManager;

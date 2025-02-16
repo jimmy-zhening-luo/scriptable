@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { FakeDateFormatter } from "./fake/index.spec";
+import { FakeDateFormatter } from "./_fakes/index.spec";
 
 global.DateFormatter = FakeDateFormatter;
 

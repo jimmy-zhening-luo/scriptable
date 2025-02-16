@@ -3,7 +3,7 @@ import {
   FakeFileManager,
   FakeNotification,
   fakeArgs,
-} from "./object/fake/index.spec";
+} from "./object/_fakes/index.spec";
 
 global.FileManager = FakeFileManager;
 global.Notification = FakeNotification;
