@@ -1,2 +1,8 @@
-export type * from "./output";
-export type * from "./setting";
+export type { SearchSetting } from "./setting";
+export interface SearchOutput {
+  type: string;
+  engine: Null<string>;
+  question: Null<string>;
+  urls: Null<readonly string[]>;
+  notify: Null<true>;
+}
