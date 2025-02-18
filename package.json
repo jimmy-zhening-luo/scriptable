@@ -1,6 +1,6 @@
 {
   "$template": "22.14.1",
-  "name": "type-scriptable",
+  "name": "@scoping/scriptable",
   "version": "23.6.6",
   "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
   "repository": "github:jimmy-zhening-luo/scriptable",
