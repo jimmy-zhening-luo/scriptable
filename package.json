@@ -1,5 +1,5 @@
 {
-  "$template": "22.14.0",
+  "$template": "22.14.1",
   "name": "type-scriptable",
   "version": "23.6.6",
   "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
@@ -119,5 +119,5 @@
     "automation",
     "typescript"
   ],
-  "author": "Jimmy Zhening Luo <1450044+jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
+  "author": "Jimmy Zhening Luo <jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
 }
