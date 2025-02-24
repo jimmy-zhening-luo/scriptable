@@ -1,3 +1,5 @@
+import regex from "./regex";
+
 export default class Url {
   public readonly scheme: stringfully<"URL: scheme || host">;
   public readonly host: stringfully<"URL: scheme || host">;
@@ -45,8 +47,7 @@ export default class Url {
       path = "",
       query = "",
       fragment = "",
-    } = (/^(?<scheme>\p{L}[-+.\p{L}\d]+):\/\/(?<host>(?:(?:[-~!$&'()*+,;=.\w]|(?:%[a-fA-F\d]{2}))*(?::\d+)?))(?<path>(?:\/(?:(?:[-~!$&'()*+,;=.\w]|(?:%[a-fA-F\d]{2}))|[:@])*)*)(?<query>(?:\?(?:(?:(?:[-~!$&'()*+,;=.\w]|(?:%[a-fA-F\d]{2}))|[:@])|[/?])*)|)(?<fragment>(?:#(?:(?:(?:[-~!$&'()*+,;=.\w]|(?:%[a-fA-F\d]{2}))|[:@])|[/?])*)|)$/u)
-      .exec(url)?.groups ?? {},
+    } = regex.exec(url)?.groups ?? {},
     http = ["https", "http"].includes(scheme.toLocaleLowerCase());
 
     return scheme === "" || http && !host.includes(".")
