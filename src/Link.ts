@@ -32,7 +32,8 @@ class Link extends Shortcut<
     [
       include = null,
       exclude = null,
-    ] = (["include", "exclude"] as const).map(group => queries[group][host]);
+    ] = (["include", "exclude"] as const).map(group => queries[group][host]),
+    substitute = queries.substitute[host] ?? null;
 
     if (queries.remove.includes(host))
       url.deleteQuery();
@@ -40,6 +41,10 @@ class Link extends Shortcut<
       url.keepParams(...include);
     else if (exclude !== null)
       url.deleteParams(...exclude);
+
+    if (substitute !== null)
+      for (const [find, replace] of Object.entries(substitute))
+        url.replaceParam(find, replace);
 
     const {
       scheme, path, query, fragment,
