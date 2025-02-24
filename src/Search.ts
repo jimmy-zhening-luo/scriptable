@@ -2,7 +2,7 @@
 import Shortcut from "./lib";
 import Query from "./helper/search/query";
 import Engine from "./helper/search/engine";
-import type { SearchOutput, SearchSetting } from "./interface/_Search";
+import type { SearchOutput, SearchSetting } from "./interface/Search";
 
 class Search extends Shortcut<
   string,
