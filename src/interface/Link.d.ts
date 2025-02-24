@@ -5,16 +5,14 @@ export interface LinkSetting {
     readonly www: readonly Url["host"][];
     readonly canonical: Endomap<Url["host"]>;
   };
-  readonly queries: {
-    readonly remove: readonly Url["host"][];
-  } & Readonly<Record<
+  readonly queries: Readonly<Record<
     | "include"
     | "exclude",
-    Record<
-      Url["host"],
-      readonly string[]
-    >
-  >>;
+    Record<Url["host"], readonly stringful[]>
+  >> & {
+    readonly remove: readonly Url["host"][];
+    readonly substitute: Record<Url["host"], FieldTable>;
+  };
   readonly fragments: {
     readonly shave: readonly Url["host"][];
   };
