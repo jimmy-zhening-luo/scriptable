@@ -1,5 +1,5 @@
 {
-  "$template": "22.14.1",
+  "$template": "22.14.2-rc.0",
   "name": "@scoping/scriptable",
   "version": "23.8.0",
   "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
@@ -60,8 +60,8 @@
     "make:lint+true:default": "(run-s lint-) && (npm run --if-present lint-$npm_package_config_language)",
     "make:lint+true:windows": "(run-s lint-) && (npm run --if-present lint-%npm_package_config_language%)",
     "lint": "run-s build",
-    "lint-": "npm run linter -- {,src/**/,tests/**/,static/**/,typings/**/,public/**/,tools/**/,.github/**/,.vscode/**/}*.{js,cjs,mjs,ts,cts,mts,html,json,jsonc,code-snippets,yml,yaml}",
-    "lint-svelte": "npm run linter -- {,src/**/,tests/**/,static/**/,typings/**/,public/**/,tools/**/,.github/**/,.vscode/**/}*",
+    "lint-": "npm run linter -- \"{,src/**/,tests/**/,static/**/,typings/**/,public/**/,tools/**/,.github/**/,.vscode/**/}*.{js,cjs,mjs,ts,cts,mts,html,json,jsonc,code-snippets,yml,yaml}\"",
+    "lint-svelte": "npm run linter -- \"{,src/**/,tests/**/,static/**/,typings/**/,public/**/,tools/**/,.github/**/,.vscode/**/}*\"",
     "linter": "eslint --cache --fix",
     "pretest": "run-s build",
     "test": "run-os",
