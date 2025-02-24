@@ -1,4 +1,4 @@
-import type { SearchSetting } from "../../interface/search";
+import type { SearchSetting } from "../../interface/Search";
 
 export default function (
   input: string,

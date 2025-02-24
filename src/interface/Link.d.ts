@@ -1,4 +1,4 @@
-import type Url from "../../lib/object/url";
+import type Url from "../lib/object/url";
 
 export interface LinkSetting {
   readonly hosts: {
