@@ -76,13 +76,13 @@ export default class Url {
     this.deleteParams(...this.params.filter(param => !keep.has(param)));
   }
 
-  public replaceParam(find: string, replace: stringful) {
+  public replaceParam(find: string, replace: string) {
     const value = this.getParam(find);
 
     this.deleteParams(find);
 
     if (value !== null)
-      this.queryMap.set(replace, value);
+      this.queryMap.set(replace as stringful, value);
   }
 
   public deleteQuery() {
