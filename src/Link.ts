@@ -1,7 +1,7 @@
 // icon-color: light-gray; icon-glyph: link;
 import Shortcut from "./lib";
 import Url from "./lib/object/url";
-import type { LinkSetting } from "./interface/link";
+import type { LinkSetting } from "./interface/Link";
 
 function process(host: Url["host"], path: string) {
   const processors = {
