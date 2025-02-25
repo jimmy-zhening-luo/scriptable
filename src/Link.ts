@@ -6,6 +6,7 @@ import type { LinkSetting } from "./interface/Link";
 function process(host: Url["host"], path: string) {
   const processors = {
     "amazon.com": path => (([, pid = null]) => pid === null ? path : `/dp/${(pid.split("/") as Arrayful)[0]}`)(path.split("/dp/")),
+    "dhl.com": path.endsWith("/tracking.html") ? "/tracking.html" : path.startsWith("/orders/") && path.includes("/details/") ? `/tracking.html?tracking-id=${path.split("/")[4] ?? ""}`,
     "dropbox.com": path => !path.startsWith("/scl/fi/") ? path : (nodes => nodes.length < 4 ? path : nodes.slice(0, 4).join("/"))(path.split("/")),
     "linkedin.com": path => path.startsWith("/mwlite/") ? path.slice(7) : path,
     "reddit.com": path => (nodes => nodes.length < 6 || nodes[3] !== "comments" ? path : nodes.slice(0, nodes[5] === "comment" ? 7 : 5).join("/"))(path.split("/")),
