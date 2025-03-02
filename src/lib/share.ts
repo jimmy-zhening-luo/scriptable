@@ -17,7 +17,7 @@ export default abstract class Share<
     console.log(runtime);
 
     if (typeof runtime === "string")
-      Pasteboard.copy(output);
+      Pasteboard.copy(runtime);
 
     return runtime;
   }
