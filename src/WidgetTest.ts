@@ -1,2 +1,12 @@
 // icon-color: deep-purple; icon-glyph: layer-group;
-console.log("Hello World of Widgets");
+import Shortcut from "./lib";
+
+class WidgetTest extends Shortcut {
+  protected runtime() {
+    console.log("Hello placeholder");
+
+    return null;
+  }
+}
+
+new WidgetTest().run();
