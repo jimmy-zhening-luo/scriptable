@@ -1,7 +1,7 @@
 import App from "./app";
 
 export default abstract class Share<
-  Output = never,
+  Output extends string = never,
   Schema = never,
 > extends App<string[], Null<Output>, Schema> {
   protected readonly abstract type:
@@ -15,6 +15,9 @@ export default abstract class Share<
 
   protected output(runtime: ReturnType<Share<Output>["runtime"]>) {
     console.log(runtime);
+
+    if (typeof runtime === "string")
+      Pasteboard.copy(output);
 
     return runtime;
   }
