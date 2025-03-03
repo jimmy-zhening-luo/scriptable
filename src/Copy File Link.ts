@@ -2,14 +2,14 @@
 // share-sheet-inputs: file-url;
 import Share from "./lib/share";
 
-class FileLink extends Share<stringful> {
+class FileLink extends Share<string> {
   protected readonly type = "fileURLs";
 
   protected runtime() {
     return FileLink
-      .stringfuls(this.input ?? [], "Shared Files")
-      .map((path: stringful) => `shareddocuments://${encodeURI(path)}` as stringful)
-      .join("\n") as stringful;
+      .stringfuls(this.input ?? [], "Input filepaths")
+      .map(path => `shareddocuments://${encodeURI(path)}`)
+      .join("\n");
   }
 }
 
