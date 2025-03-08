@@ -1,5 +1,5 @@
 {
-  "$template": "22.14.7",
+  "$template": "22.14.9",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "@scoping/scriptable",
@@ -10,8 +10,8 @@
   "private": true,
   "engineStrict": true,
   "engines": {
-    "node": ">=22.14.0",
-    "npm": ">=10.9.2"
+    "node": ">=22.14.0 <23",
+    "npm": ">=11.2.0 <12"
   },
   "peerDependenciesMeta": {},
   "dependencies": {},

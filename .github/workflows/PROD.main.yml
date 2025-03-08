@@ -23,6 +23,9 @@ jobs:
         with:
           node-version: 22
           check-latest: true
+      - name: Update NPM
+        id: npm
+        run: npm i -g npm
       - name: Install Dependencies
         id: ci
         run: npm ci
