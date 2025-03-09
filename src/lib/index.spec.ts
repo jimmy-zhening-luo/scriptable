@@ -1,13 +1,13 @@
 import { expect } from "chai";
 import {
-  FakeFileManager,
-  FakeNotification,
-  fakeArgs,
-} from "./object/_fakes/index.spec";
+  SyntheticFileManager,
+  SyntheticNotification,
+  syntheticArgs,
+} from "./index.synthetic.spec";
 
-global.FileManager = FakeFileManager;
-global.Notification = FakeNotification;
-global.args = fakeArgs;
+global.FileManager = SyntheticFileManager;
+global.Notification = SyntheticNotification;
+global.args = syntheticArgs;
 
 import Shortcut from ".";
 
@@ -15,7 +15,7 @@ class FakeShortcut extends Shortcut<string, string> {
   protected override stringInput = true;
 
   protected runtime() {
-    const fake = "FAKE_OUTPUT";
+    const fake = "SYNTHETIC_SHORTCUT_OUTPUT";
 
     return fake;
   }

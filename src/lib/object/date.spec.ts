@@ -1,9 +1,11 @@
 import { expect } from "chai";
-import { FakeDateFormatter } from "./_fakes/index.spec";
+import { SyntheticDateFormatter } from "./date.synthetic.spec";
 
-global.DateFormatter = FakeDateFormatter;
+global.DateFormatter = SyntheticDateFormatter;
 
 import date from "./date";
+
+const SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING = "SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING";
 
 describe("Object: Date", function () {
   describe("shape", function () {
@@ -13,8 +15,8 @@ describe("Object: Date", function () {
     });
   });
   describe("output", function () {
-    it(`is a string  [Actual: ${date({ date: "NOT REAL FORMAT STRING" })}]`, function () {
-      expect(date({ date: "NOT REAL FORMAT STRING" }))
+    it(`is a string  [Actual: ${date({ date: SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING })}]`, function () {
+      expect(date({ date: SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING }))
         .a("string");
     });
   });

@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { FakeFileManager } from "../../object/_fakes/index.spec";
+import { SyntheticFileManager } from "./index.synthetic.spec";
 import type File from ".";
 
-global.FileManager = FakeFileManager;
+global.FileManager = SyntheticFileManager;
 
 const { "default": file } = await (
   import(".") as Promise<Record<"default", typeof File>>
@@ -17,7 +17,7 @@ const { "default": file } = await (
 
 console.log(`typeof file: ${typeof file}`);
 
-const storage = new file("FakeStorage", true, { name: "FAKE_FILE.txt", folder: "FAKE/SUB/DIRECTORY" });
+const storage = new file("SYNTHETIC_BOOKMARK_FILETYPE_STORAGE", true, { name: "SYNTHETIC_FILENAME.txt", folder: "SYNTHETIC_SUBFOLDER" });
 
 describe("File", function () {
   describe("shape", function () {

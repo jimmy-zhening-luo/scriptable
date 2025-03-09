@@ -1,14 +1,14 @@
-const FakeFileManager = class FakeFileManager {
+const SyntheticFileManager = class SyntheticFileManager {
   public static local() {
-    return new FakeFileManager();
+    return new SyntheticFileManager();
   }
 
   public static iCloud() {
-    return new FakeFileManager();
+    return new SyntheticFileManager();
   }
 
   public readString(filePath: string) {
-    const string = "FAKE DATA THAT WAS READ FROM FILE";
+    const string = "SYNTHETIC_FILEMANAGER_FILE_READ_DATA";
 
     console.log(`Read content "${string}" from path: ${filePath}`);
 
@@ -40,11 +40,11 @@ const FakeFileManager = class FakeFileManager {
   }
 
   public bookmarkedPath(bookmark: string) {
-    const FAKE_BOOKMARK_PATH = "root/FAKE/BOOKMARK/PATH";
+    const SYNTHETIC_BOOKMARKED_PATH = "SYNTHETIC_FILEMANAGER:SYNTHETIC_FILE_ROOT/SYNTHETIC_FILETYPE";
 
-    console.log(`Resolve bookmark "${bookmark}" to path: ${FAKE_BOOKMARK_PATH}`);
+    console.log(`Resolve bookmark "${bookmark}" to path: ${SYNTHETIC_BOOKMARKED_PATH}`);
 
-    return FAKE_BOOKMARK_PATH;
+    return SYNTHETIC_BOOKMARKED_PATH;
   }
 
   public bookmarkExists(bookmark: string) {
@@ -52,6 +52,6 @@ const FakeFileManager = class FakeFileManager {
 
     return true;
   }
-} as unknown as typeof FileManager;
+} as typeof FileManager;
 
-export { FakeFileManager };
+export { SyntheticFileManager };
