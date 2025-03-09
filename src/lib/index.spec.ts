@@ -11,20 +11,20 @@ global.args = syntheticArgs;
 
 import Shortcut from ".";
 
-class FakeShortcut extends Shortcut<string, string> {
+class SyntheticShortcut extends Shortcut<string, string> {
   protected override stringInput = true;
 
   protected runtime() {
-    const fake = "SYNTHETIC_SHORTCUT_OUTPUT";
+    const syntheticOutput = "SYNTHETIC_SHORTCUT_OUTPUT";
 
-    return fake;
+    return syntheticOutput;
   }
 }
 
 describe("Shortcut", function () {
   describe("shape", function () {
     it("is extensible", function () {
-      expect(new FakeShortcut)
+      expect(new SyntheticShortcut)
         .an("object");
     });
   });
