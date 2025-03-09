@@ -90,6 +90,31 @@ export default abstract class App<
     }
   }
 
+  protected char(string = "", cause = "") {
+    if (string.length !== 1)
+      throw new TypeError(`Non-char: ${cause}`);
+
+    return string as char;
+  }
+
+  protected stringful(string = "", cause = "") {
+    if (string === "")
+      throw new TypeError(`Unstringful: ${cause}`);
+
+    return string as stringful;
+  }
+
+  protected stringfuls<T extends readonly string[]>(array: T, cause = "") {
+    if (array.length === 0 || !array.every((i): i is stringful => i !== ""))
+      throw new TypeError(`Unstringful (or empty) array: ${cause}`);
+
+    return array as unknown as (
+      T extends readonly [string, ...string[]]
+        ? { [K in keyof T]: stringful; }
+        : Arrayful<stringful>
+    );
+  }
+
   protected subsetting<Subschema>(subpath: string): Subschema extends Subschema ? Subschema : never {
     return ((config: unknown): Subschema => {
       if (typeof config !== "object" || config === null)
@@ -134,31 +159,6 @@ export default abstract class App<
     const name = `${basename}.${ext}`;
 
     return this.cache[name] ??= new File("Storage", true, { name, folder: app });
-  }
-
-  protected char(string = "", cause = "") {
-    if (string.length !== 1)
-      throw new TypeError(`Non-char: ${cause}`);
-
-    return string as char;
-  }
-
-  protected stringful(string = "", cause = "") {
-    if (string === "")
-      throw new TypeError(`Unstringful: ${cause}`);
-
-    return string as stringful;
-  }
-
-  protected stringfuls<T extends readonly string[]>(array: T, cause = "") {
-    if (array.length === 0 || !array.every((i): i is stringful => i !== ""))
-      throw new TypeError(`Unstringful (or empty) array: ${cause}`);
-
-    return array as unknown as (
-      T extends readonly [string, ...string[]]
-        ? { [K in keyof T]: stringful; }
-        : Arrayful<stringful>
-    );
   }
 
   protected abstract getInput(): Undef<Input>;
