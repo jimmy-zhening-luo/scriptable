@@ -12,41 +12,53 @@ export default class File<
     public readonly mutable: Mutable,
     { name, folder = "" }: Field<"name", "folder">,
   ) {
-    const root = File.manager.bookmarkExists(filetype)
-      ? File.manager.bookmarkedPath(filetype)
-      : mutable
-        ? `${File.manager.libraryDirectory()}/${filetype}`
-        : null,
-    subpath = `${folder}/${name}`
-      .split("/")
-      .filter(node => node !== "");
+    try {
+      const root = File.manager.bookmarkExists(filetype)
+        ? File.manager.bookmarkedPath(filetype)
+        : mutable
+          ? `${File.manager.libraryDirectory()}/${filetype}`
+          : null,
+      subpath = `${folder}/${name}`
+        .split("/")
+        .filter(node => node !== "");
 
-    if (root === null)
-      throw new ReferenceError(`No bookmark for immutable filetype ${filetype}`);
-    else if (subpath.length < 1)
-      throw new RangeError("Empty subpath");
+      if (root === null)
+        throw new ReferenceError("Filetype root missing", { cause: { filetype } });
+      else if (subpath.length < 1)
+        throw new RangeError("File subpath empty", { cause: { folder, name } });
 
-    this.path = `${root}/${subpath.join("/")}`;
-    this.parent = `${root}/${subpath.slice(0, -1).join("/")}`;
-    this.exists = File.manager.fileExists(this.path);
+      this.path = `${root}/${subpath.join("/")}`;
+      this.parent = `${root}/${subpath.slice(0, -1).join("/")}`;
+      this.exists = File.manager.fileExists(this.path);
+    }
+    catch (e) {
+      throw new Error(`File handler rejected: '${filetype}/${folder}/${name}'`, { cause: e });
+    }
   }
 
   public read(fail = false) {
-    if (!this.exists) {
-      if (fail)
-        throw new ReferenceError("File not found", { cause: this.path });
+    const { path } = this;
 
-      return "";
+    try {
+      if (!this.exists) {
+        if (fail)
+          throw new ReferenceError("File does not exist");
+
+        return "";
+      }
+
+      return File.manager.readString(path);
     }
-
-    return File.manager.readString(this.path);
+    catch (e) {
+      throw new Error(`File read failed: '${path}'`, { cause: e });
+    }
   }
 
   public readful() {
     const read = this.read(true);
 
     if (read === "")
-      throw new ReferenceError("Empty file", { cause: this.path });
+      throw new ReferenceError("Unstringful file read", { cause: { path: this.path } });
 
     return read as stringful;
   }
@@ -66,40 +78,50 @@ export default class File<
   ) {
     const { path } = this;
 
-    if (!this.mutable)
-      throw new TypeError("Cannot write readonly file", { cause: path });
-    else if (data === null)
-      throw new TypeError("Null write data");
-    else if (File.manager.isDirectory(path))
-      throw new ReferenceError("Write target is folder", { cause: path });
-    else if (this.exists) {
-      if (overwrite === false)
-        throw new ReferenceError("Cannot overwrite mutable file with `overwrite:false`", { cause: path });
-    }
-    else if (!File.manager.isDirectory(this.parent))
-      File.manager.createDirectory(this.parent, true);
+    try {
+      if (!this.mutable)
+        throw new TypeError("Readonly file");
+      else if (data === null)
+        throw new TypeError("Null write data");
+      else if (File.manager.isDirectory(path))
+        throw new ReferenceError("Write target is folder");
+      else if (this.exists) {
+        if (overwrite === false)
+          throw new ReferenceError("Mutable file but overwrite:false");
+      }
+      else if (!File.manager.isDirectory(this.parent))
+        File.manager.createDirectory(this.parent, true);
 
-    File.manager.writeString(
-      path,
-      Array.isArray(data)
-        ? `${data.reverse().join("\n")}\n${this.read()}`
-        : typeof data === "object"
-          ? JSON.stringify(data)
-          : typeof overwrite !== "string"
-            ? String(data)
-            : overwrite === "line"
-              ? `${String(data)}\n${this.read()}`
-              : `${this.read()}${String(data)}`,
-    );
+      File.manager.writeString(
+        path,
+        Array.isArray(data)
+          ? `${data.reverse().join("\n")}\n${this.read()}`
+          : typeof data === "object"
+            ? JSON.stringify(data)
+            : typeof overwrite !== "string"
+              ? String(data)
+              : overwrite === "line"
+                ? `${String(data)}\n${this.read()}`
+                : `${this.read()}${String(data)}`,
+      );
+    }
+    catch (e) {
+      throw new Error(`File write failed: '${path}'`, { cause: e });
+    }
   }
 
   public delete() {
     const { path } = this;
 
-    if (!this.mutable)
-      throw new TypeError("Cannot delete readonly file", { cause: path });
+    try {
+      if (!this.mutable)
+        throw new TypeError("Readonly file");
 
-    if (this.exists)
-      File.manager.remove(path);
+      if (this.exists)
+        File.manager.remove(path);
+    }
+    catch (e) {
+      throw new Error(`File deletion failed: '${path}'`, { cause: e });
+    }
   }
 }
