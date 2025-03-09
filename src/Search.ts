@@ -40,27 +40,27 @@ class Search extends Shortcut<
       input,
       engines,
       alias,
-      Search.char(selector),
-      ...Search.stringfuls([
+      this.char(selector),
+      ...this.stringfuls([
         operators,
         math,
         chat,
         translate,
       ] as const),
-      Search.stringfuls(fallback),
+      this.stringfuls(fallback),
     ),
     entry = engines[key] as typeof engines[string],
     engine = Array.isArray(entry) || typeof entry === "string"
       ? new Engine(
         "browser",
         entry,
-        Search.stringful(tag),
+        this.stringful(tag),
       )
       : "url" in entry
         ? new Engine(
           "browser",
           entry.url,
-          Search.stringful(tag),
+          this.stringful(tag),
           entry.separator,
           entry.encodeComponent,
           entry.force,
@@ -69,7 +69,7 @@ class Search extends Shortcut<
           ? new Engine(
             "api",
             entry.api,
-            Search.stringful(tag),
+            this.stringful(tag),
             entry.separator,
             entry.encodeComponent,
           )

@@ -12,7 +12,7 @@ export default abstract class App<
     const { name = "" } = this.constructor;
 
     if (name === "")
-      throw new EvalError("App has no name");
+      throw new TypeError("App constructor has no name");
 
     this.app = name as stringful;
   }
@@ -34,7 +34,7 @@ export default abstract class App<
     const { input = null } = this;
 
     if (input === null)
-      throw new TypeError("Null input");
+      throw new TypeError("Null app input");
 
     return input;
   }
@@ -43,38 +43,13 @@ export default abstract class App<
     const { input = "" } = this;
 
     if (typeof input !== "string" && typeof input !== "number")
-      throw new TypeError("Non-string input", { cause: input });
+      throw new TypeError("Non-string app input", { cause: input });
 
     return String(input);
   }
 
   protected get inputStringful() {
-    return App.stringful(this.inputString, "input");
-  }
-
-  protected static stringful(string = "", cause = "") {
-    if (string === "")
-      throw new TypeError(`Unstringful: ${cause}`);
-
-    return string as stringful;
-  }
-
-  protected static stringfuls<T extends readonly string[]>(array: T, cause = "") {
-    if (array.length === 0 || !array.every((i): i is stringful => i !== ""))
-      throw new TypeError(`Empty or unstringful array: ${cause}`);
-
-    return array as unknown as (
-      T extends readonly [string, ...string[]]
-        ? { [K in keyof T]: stringful; }
-        : Arrayful<stringful>
-    );
-  }
-
-  protected static char(string = "", cause = "") {
-    if (string.length !== 1)
-      throw new TypeError(`"${string}" is non-char (length: ${string.length})`, { cause });
-
-    return string as char;
+    return this.stringful(this.inputString, "input");
   }
 
   private static error(app: stringful, error: unknown) {
@@ -121,7 +96,7 @@ export default abstract class App<
         throw new TypeError("Setting file is not JSON");
 
       return config satisfies object as Subschema;
-    })(JSON.parse(new File<"Setting">("Setting", false, { name: `${this.app}/${App.stringful(subpath, "subsetting")}.json` as stringful }).readful()) as unknown);
+    })(JSON.parse(new File<"Setting">("Setting", false, { name: `${this.app}/${this.stringful(subpath, "subsetting")}.json` as stringful }).readful()) as unknown);
   }
 
   protected read(...[file]: Parameters<App<Input, Output, Schema>["storage"]>) {
@@ -154,11 +129,36 @@ export default abstract class App<
       : { name: file };
 
     if (basename === "" || ext === "")
-      throw new TypeError("Empty filename");
+      throw new TypeError("Empty storage filename");
 
     const name = `${basename}.${ext}`;
 
     return this.cache[name] ??= new File("Storage", true, { name, folder: app });
+  }
+
+  protected char(string = "", cause = "") {
+    if (string.length !== 1)
+      throw new TypeError(`Non-char: ${cause}`);
+
+    return string as char;
+  }
+
+  protected stringful(string = "", cause = "") {
+    if (string === "")
+      throw new TypeError(`Unstringful: ${cause}`);
+
+    return string as stringful;
+  }
+
+  protected stringfuls<T extends readonly string[]>(array: T, cause = "") {
+    if (array.length === 0 || !array.every((i): i is stringful => i !== ""))
+      throw new TypeError(`Unstringful (or empty) array: ${cause}`);
+
+    return array as unknown as (
+      T extends readonly [string, ...string[]]
+        ? { [K in keyof T]: stringful; }
+        : Arrayful<stringful>
+    );
   }
 
   protected abstract getInput(): Undef<Input>;

@@ -16,7 +16,7 @@ class _Hello extends Shortcut<
 
     return ([
       this.readful(ini),
-      _Hello.stringful(space, "setting"),
+      this.stringful(space, "setting"),
       this.readful(),
     ] as const satisfies Triad<stringful>).join("") as stringful;
   }

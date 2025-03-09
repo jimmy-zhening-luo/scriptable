@@ -6,7 +6,7 @@ class FileLink extends Share<string> {
   protected readonly type = "fileURLs";
 
   protected runtime() {
-    return FileLink
+    return this
       .stringfuls(this.input ?? [], "Input filepaths")
       .map(path => `shareddocuments://${encodeURI(path)}`)
       .join("\n");
