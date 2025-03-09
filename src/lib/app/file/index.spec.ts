@@ -1,11 +1,11 @@
 import { expect } from "chai";
-import { FakeFileManager } from "../object/_fakes/index.spec";
-import type File from "./file";
+import { FakeFileManager } from "../../object/_fakes/index.spec";
+import type File from ".";
 
 global.FileManager = FakeFileManager;
 
 const { "default": file } = await (
-  import("./file") as Promise<Record<"default", typeof File>>
+  import(".") as Promise<Record<"default", typeof File>>
 )
   .catch((e: unknown) => {
     throw new EvalError(
