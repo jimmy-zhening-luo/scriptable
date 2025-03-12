@@ -1,20 +1,19 @@
 ##########################################
 ########                          ########
 ########        .gitignore        ########
-########          v8.0.0          ########
+########          v8.1.0          ########
 ########                          ########
 ##########################################
 
 
 #region PROJECT
 
-
 #endregion
 
 
 
 #region FOLDER (.)
-# Build
+#part Build
 /dist/
 /build/
 /built/
@@ -23,51 +22,40 @@
 /pack/
 /packed/
 
-# Runtime
+#part Environment
 /in/
 /input/
 /out/
 /output/
-
 #endregion
 
 
 
 #region FOLDER (**/)
-# Dependency
+#part Dependency
 node_modules/
 
-# Build Artifact
+#part Build
 .svelte-kit/
 
-# Filesystem
+#part OS
 .Trash/
-
 #endregion
 
 
 
 #region FILE (.)
-# Example: /*.foo
-
-
+# /*.foo
 #endregion
 
 
 
 #region FILE (**/)
-# Runtime
-*.env
-*.env.*
-!.env.*example
-
-# Dependency
+#part Dependency
 .yarn-integrity
 
-# Build
+#part Build
 *.tgz
-
-# Build Artifact
 *.tsbuildinfo
 *.DS_Store
 *.vercel
@@ -75,11 +63,16 @@ node_modules/
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-# Cache
+#part Environment
+*.env
+*.env.*
+!.env.*example
+
+#part Cache
 *.eslintcache
 *.npm
 
-# Log
+#part Log
 log
 logs
 *.log
@@ -88,21 +81,18 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Filesystem
+#part OS
 *.icloud
-
 #endregion
+
 
 
 #region FOLDER/FILE (.)
-# Example: /dir/*.foo
-
-
+# /dir/*.foo
 #endregion
 
 #region FOLDER/FILE (**/)
-# IDE
+#part Environment
 .vscode/*
 !.vscode/*.code-snippets
-
 #endregion
