@@ -1,10 +1,9 @@
 ##########################################
 ########                          ########
 ########        .gitignore        ########
-########          v8.1.0          ########
+########          v8.2.0          ########
 ########                          ########
 ##########################################
-
 
 #region PROJECT
 
@@ -12,7 +11,8 @@
 
 
 
-#region FOLDER (.)
+
+#region ./DIRECTORY
 #part Build
 /dist/
 /build/
@@ -31,7 +31,8 @@
 
 
 
-#region FOLDER (**/)
+
+#region **/DIRECTORY
 #part Dependency
 node_modules/
 
@@ -44,13 +45,15 @@ node_modules/
 
 
 
-#region FILE (.)
+#region ./FILE
 # /*.foo
+# /path/*.foo
 #endregion
 
 
 
-#region FILE (**/)
+
+#region **/FILE
 #part Dependency
 .yarn-integrity
 
@@ -67,6 +70,8 @@ vite.config.ts.timestamp-*
 *.env
 *.env.*
 !.env.*example
+.vscode/*
+!.vscode/*.code-snippets
 
 #part Cache
 *.eslintcache
@@ -83,16 +88,4 @@ yarn-error.log*
 
 #part OS
 *.icloud
-#endregion
-
-
-
-#region FOLDER/FILE (.)
-# /dir/*.foo
-#endregion
-
-#region FOLDER/FILE (**/)
-#part Environment
-.vscode/*
-!.vscode/*.code-snippets
 #endregion
