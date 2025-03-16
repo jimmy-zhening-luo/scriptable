@@ -8,19 +8,24 @@ export default class Url {
   private readonly queryMap: Map<stringful, string>;
 
   constructor(url: string) {
-    const parts = Url.parse(url) ?? Url.parse(`https://${url}`);
+    const candidate = url.trim(),
+    parts = Url.parse(candidate) ?? Url.parse(`https://${candidate}`);
 
     if (parts === null)
       throw new SyntaxError("Unparseable to URL", { cause: url });
 
     const {
-      scheme, host, path, query, fragment,
+      scheme,
+      host,
+      path,
+      query,
+      fragment,
     } = parts;
 
     this.scheme = scheme;
     this.host = host;
     this.path = path;
-    this.fragment = fragment;
+    this.fragment = `${fragment === "" ? "" : "#"}${fragment}`;
     this.queryMap = new Map<stringful, string>(
       query
         .split("&")
@@ -31,23 +36,25 @@ export default class Url {
   }
 
   public get query() {
-    return [...this.queryMap.entries()]
+    const query = [...this.queryMap.entries()]
       .map(pair => pair.join("="))
       .join("&");
+
+    return `${query === "" ? "" : "?"}${query}`;
   }
 
   public get params() {
     return [...this.queryMap.keys()];
   }
 
-  private static parse(url: string) {
+  private static parse(candidate: string) {
     const {
       scheme = "",
       host = "",
       path = "",
       query = "",
       fragment = "",
-    } = regex.exec(url)?.groups ?? {},
+    } = regex.exec(candidate)?.groups ?? {},
     http = ["https", "http"].includes(scheme.toLocaleLowerCase());
 
     return scheme === "" || http && !host.includes(".")

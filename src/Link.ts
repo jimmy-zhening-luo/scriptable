@@ -48,7 +48,7 @@ class Link extends Shortcut<
       path: string,
       query: string,
       fragment: string,
-    ) => `${scheme}://${host}${path}${query === "" ? "" : "?"}${query}${fragment === "" ? "" : "#"}${fragment}` as stringful)(
+    ) => `${scheme}://${host}${path}${query}${fragment}` as stringful)(
       scheme,
       host,
       process(host, path),
