@@ -4,66 +4,77 @@ export default function (
   input: string,
   engines: SearchSetting["engines"],
   alias: FieldTable,
+  FALLBACK: Triad<stringful>,
   SELECTOR: char,
   OPERATORS: stringful,
   MATH: stringful,
-  CHAT: stringful,
   TRANSLATE: stringful,
-  FALLBACK: Triad<stringful>,
+  CHAT: stringful,
 ) {
-  function tokenize(
+  function select(
     input: string,
     FALLBACK: Triad<stringful>,
-  ) {
-    const tokens = input.split(" ").filter((token): token is stringful => token !== ""),
-    spaces = input.length - input.trimStart().length;
-
-    if (spaces > 0)
-      tokens.unshift(FALLBACK.at(Math.min(spaces, FALLBACK.length) - 1) as stringful);
-
-    if (tokens.length < 1)
-      throw new RangeError(`Query has no tokens\n[${input}]`);
-
-    return tokens as Arrayful<stringful>;
-  }
-
-  function operate(
-    tokens: Readonly<Arrayful<stringful>>,
+    SELECTOR: char,
     OPERATORS: stringful,
     MATH: stringful,
-  ) {
-    function unroll(head: stringful) {
-      const operation = (/(?<key>^:{0}[a-zA-Z]+)(?<operand>:{0}(?:(?:\d)|(?:-\d))(?:[-a-zA-Z\d]*$))/u).exec(head)
-        ?.groups;
-
-      return typeof operation === "undefined"
-        ? [head] as const
-        : [
-            operation["key"] as stringful,
-            operation["operand"] as stringful,
-          ] as const;
-    }
-
-    function numeric(char: char, operators = "") {
-      return char >= "0" && char <= "9" || operators.includes(char);
-    }
-
-    const [head, ...rest] = tokens;
-
-    return numeric(head[0], OPERATORS)
-      || head.length > 1
-      && head.startsWith(".")
-      && numeric(head[1] as char)
-      ? [MATH, ...tokens] as const
-      : [...unroll(head), ...rest] as const;
-  }
-
-  function select(
-    tokens: Readonly<Arrayful<stringful>>,
-    SELECTOR: char,
     TRANSLATE: stringful,
   ) {
-    const [head, ...rest] = tokens,
+    function operate(
+      input: string,
+      FALLBACK: Triad<stringful>,
+      OPERATORS: stringful,
+      MATH: stringful,
+    ) {
+      function tokenize(
+        input: string,
+        FALLBACK: Triad<stringful>,
+      ) {
+        const tokens = input.split(" ").filter((token): token is stringful => token !== ""),
+        spaces = input.length - input.trimStart().length;
+
+        if (spaces > 0)
+          tokens.unshift(FALLBACK.at(Math.min(spaces, FALLBACK.length) - 1) as stringful);
+
+        if (tokens.length < 1)
+          throw new RangeError(`Query has no tokens\n[${input}]`);
+
+        return tokens as Arrayful<stringful>;
+      }
+
+      function unroll(head: stringful) {
+        const operation = (/(?<key>^:{0}[a-zA-Z]+)(?<operand>:{0}(?:(?:\d)|(?:-\d))(?:[-a-zA-Z\d]*$))/u).exec(head)
+          ?.groups;
+
+        return typeof operation === "undefined"
+          ? [head] as const
+          : [
+              operation["key"] as stringful,
+              operation["operand"] as stringful,
+            ] as const;
+      }
+
+      function numeric(char: char, operators = "") {
+        return char >= "0" && char <= "9" || operators.includes(char);
+      }
+
+      const tokens = tokenize(input, FALLBACK),
+      [head, ...rest] = tokens;
+
+      return numeric(head[0], OPERATORS)
+        || head.length > 1
+        && head.startsWith(".")
+        && numeric(head[1] as char)
+        ? [MATH, ...tokens] as const
+        : [...unroll(head), ...rest] as const;
+    }
+
+    const tokens = operate(
+      input,
+      FALLBACK,
+      OPERATORS,
+      MATH,
+    ),
+    [head, ...rest] = tokens,
     { selector, index } = (([iSelector, iDot]) => iDot < 0 || iSelector >= 0 && iSelector < iDot
       ? { selector: SELECTOR, index: iSelector }
       : { selector: ".", index: iDot })(([SELECTOR, "."] satisfies Dyad).map(s => head.indexOf(s)) satisfies number[] as unknown as Dyad<number>);
@@ -97,15 +108,11 @@ export default function (
     throw new TypeError("Bad selector/operator");
 
   const [_K, ..._terms] = select(
-    operate(
-      tokenize(
-        input,
-        FALLBACK,
-      ),
-      OPERATORS,
-      MATH,
-    ),
+    input,
+    FALLBACK,
     SELECTOR,
+    OPERATORS,
+    MATH,
     TRANSLATE,
   ),
   _key = (_K satisfies stringful).toLowerCase() as stringful,

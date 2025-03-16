@@ -40,14 +40,14 @@ class Search extends Shortcut<
       input,
       engines,
       alias,
+      this.stringfuls(fallback),
       this.char(selector),
       ...this.stringfuls([
         operators,
         math,
-        chat,
         translate,
+        chat,
       ] as const),
-      this.stringfuls(fallback),
     ),
     entry = engines[key] as typeof engines[string],
     engine = Array.isArray(entry) || typeof entry === "string"
