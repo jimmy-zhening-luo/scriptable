@@ -1,4 +1,4 @@
-import type Url from "./lib/object/url";
+import type Url from "../lib/object/url";
 
 export default function (host: Url["host"], path: string) {
   const processors = {
