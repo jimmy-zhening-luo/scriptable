@@ -88,26 +88,26 @@ Line 3 specifies your `App`'s icon in Scriptable UI.
 <details>
 <summary>Colors (18)</summary>
 
-| Name | Color |
-| --- | --- |
-| `red` | `hsl(6, 68%, 55%)` |
-| `pink` | `hsl(343, 68%, 55%)` |
-| `purple` | `hsl(286, 54%, 47%)` |
+| Name          | Color                |
+| ------------- | -------------------- |
+| `red`         | `hsl(6, 68%, 55%)`   |
+| `pink`        | `hsl(343, 68%, 55%)` |
+| `purple`      | `hsl(286, 54%, 47%)` |
 | `deep-purple` | `hsl(260, 48%, 51%)` |
-| `deep-blue` | `hsl(234, 48%, 55%)` |
-| `blue` | `hsl(213, 75%, 61%)` |
-| `cyan` | `hsl(192, 55%, 59%)` |
-| `teal` | `hsl(172, 32%, 49%)` |
-| `deep-green` | `hsl(110, 40%, 55%)` |
-| `green` | `hsl(84, 45%, 58%)` |
-| `yellow` | `hsl(43, 77%, 62%)` |
-| `orange` | `hsl(32, 78%, 58%)` |
-| `light-brown` | `hsl(23, 37%, 48%)` |
-| `brown` | `hsl(19, 44%, 39%)` |
-| `deep-brown` | `hsl(27, 47%, 29%)` |
-| `light-gray` | `hsl(235, 5%, 54%)` |
-| `gray` | `hsl(227, 6%, 44%)` |
-| `deep-gray` | `hsl(210, 8%, 30%)` |
+| `deep-blue`   | `hsl(234, 48%, 55%)` |
+| `blue`        | `hsl(213, 75%, 61%)` |
+| `cyan`        | `hsl(192, 55%, 59%)` |
+| `teal`        | `hsl(172, 32%, 49%)` |
+| `deep-green`  | `hsl(110, 40%, 55%)` |
+| `green`       | `hsl(84, 45%, 58%)`  |
+| `yellow`      | `hsl(43, 77%, 62%)`  |
+| `orange`      | `hsl(32, 78%, 58%)`  |
+| `light-brown` | `hsl(23, 37%, 48%)`  |
+| `brown`       | `hsl(19, 44%, 39%)`  |
+| `deep-brown`  | `hsl(27, 47%, 29%)`  |
+| `light-gray`  | `hsl(235, 5%, 54%)`  |
+| `gray`        | `hsl(227, 6%, 44%)`  |
+| `deep-gray`   | `hsl(210, 8%, 30%)`  |
 </details>
 
 ###### [`$GLYPH`](https://github.com/nlawler1737/Scriptable/blob/4ccf80b72ef5f15d4ed00b282988612bb9dbf4fc/iconGlyphCss.txt#L17)
