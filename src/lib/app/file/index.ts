@@ -23,34 +23,32 @@ export default class File<
         .filter(node => node !== "");
 
       if (root === null)
-        throw new ReferenceError("Filetype root missing", { cause: { filetype } });
-      else if (subpath.length < 1)
-        throw new RangeError("File subpath empty", { cause: { folder, name } });
+        throw new ReferenceError("Missing filetype root", { cause: { filetype } });
+      else if (subpath.length === 0)
+        throw new SyntaxError("Empty file subpath", { cause: { folder, name } });
 
       this.path = `${root}/${subpath.join("/")}`;
       this.parent = `${root}/${subpath.slice(0, -1).join("/")}`;
       this.exists = File.manager.fileExists(this.path);
     }
     catch (e) {
-      throw new Error(`File handler rejected: '${filetype}/${folder}/${name}'`, { cause: e });
+      throw new Error("Failed to create file handler", { cause: new Error(`${filetype}/${folder}/${name}`, { cause: e }) });
     }
   }
 
   public read(fail = false) {
-    const { path } = this;
-
     try {
       if (!this.exists) {
         if (fail)
-          throw new ReferenceError("File does not exist");
+          throw new ReferenceError("Non-existent file");
 
         return "";
       }
 
-      return File.manager.readString(path);
+      return File.manager.readString(this.path);
     }
     catch (e) {
-      throw new Error(`File read failed: '${path}'`, { cause: e });
+      throw this.error(e, "read");
     }
   }
 
@@ -58,7 +56,7 @@ export default class File<
     const read = this.read(true);
 
     if (read === "")
-      throw new ReferenceError("Unstringful file read", { cause: { path: this.path } });
+      throw new RangeError("Unstringful file content", { cause: { path: this.path } });
 
     return read as stringful;
   }
@@ -76,21 +74,21 @@ export default class File<
       | "append"
       | boolean = false,
   ) {
-    const { path } = this;
+    const { path, parent } = this;
 
     try {
       if (!this.mutable)
-        throw new TypeError("Readonly file");
+        throw new ReferenceError("Readonly file");
       else if (data === null)
         throw new TypeError("Null write data");
       else if (File.manager.isDirectory(path))
         throw new ReferenceError("Write target is folder");
       else if (this.exists) {
         if (overwrite === false)
-          throw new ReferenceError("Mutable file but overwrite:false");
+          throw new ReferenceError("Mutable file but overwrite=false");
       }
-      else if (!File.manager.isDirectory(this.parent))
-        File.manager.createDirectory(this.parent, true);
+      else if (!File.manager.isDirectory(parent))
+        File.manager.createDirectory(parent, true);
 
       File.manager.writeString(
         path,
@@ -106,22 +104,32 @@ export default class File<
       );
     }
     catch (e) {
-      throw new Error(`File write failed: '${path}'`, { cause: e });
+      throw this.error(e, "write");
     }
   }
 
   public delete() {
-    const { path } = this;
-
     try {
       if (!this.mutable)
-        throw new TypeError("Readonly file");
+        throw new ReferenceError("Readonly file");
 
       if (this.exists)
-        File.manager.remove(path);
+        File.manager.remove(this.path);
     }
     catch (e) {
-      throw new Error(`File deletion failed: '${path}'`, { cause: e });
+      throw this.error(e, "delete");
     }
+  }
+
+  private error(e: unknown, verb: string) {
+    return new Error(
+      `Failed to ${verb} file`,
+      {
+        cause: new Error(
+          this.path,
+          { cause: e },
+        ),
+      },
+    );
   }
 }

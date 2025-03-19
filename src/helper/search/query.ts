@@ -36,7 +36,7 @@ export default function (
           tokens.unshift(FALLBACK.at(Math.min(spaces, FALLBACK.length) - 1) as stringful);
 
         if (tokens.length < 1)
-          throw new RangeError(`Query has no tokens\n[${input}]`);
+          throw new RangeError("Query has no tokens", { cause: input });
 
         return tokens as Arrayful<stringful>;
       }
@@ -105,7 +105,7 @@ export default function (
   }
 
   if (`${SELECTOR}${OPERATORS}`.includes("."))
-    throw new TypeError("Bad selector/operator");
+    throw new SyntaxError("Bad selector/operator");
 
   const [_K, ..._terms] = select(
     input,

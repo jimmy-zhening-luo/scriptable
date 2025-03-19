@@ -12,7 +12,7 @@ export default abstract class App<
     const { name = "" } = this.constructor;
 
     if (name === "")
-      throw new TypeError("App constructor has no name");
+      throw new EvalError("Nameless app constructor");
 
     this.app = name as stringful;
   }
@@ -20,7 +20,7 @@ export default abstract class App<
   protected get setting(): Schema extends Schema ? Schema : never {
     return this.config ??= ((config: unknown): Schema => {
       if (typeof config !== "object" || config === null)
-        throw new TypeError("Setting file is not JSON");
+        throw new SyntaxError("Non-JSON setting file");
 
       return config satisfies object as Schema;
     })(JSON.parse(new File<"Setting">("Setting", false, { name: `${this.app}.json` as stringful }).readful()) ?? null);
@@ -92,21 +92,21 @@ export default abstract class App<
 
   protected char(string = "", cause = "") {
     if (string.length !== 1)
-      throw new TypeError(`Non-char: ${cause}`);
+      throw new RangeError("Non-char string", { cause });
 
     return string as char;
   }
 
   protected stringful(string = "", cause = "") {
     if (string === "")
-      throw new TypeError(`Unstringful: ${cause}`);
+      throw new RangeError("Unstringful", { cause });
 
     return string as stringful;
   }
 
   protected stringfuls<T extends readonly string[]>(array: T, cause = "") {
     if (array.length === 0 || !array.every((i): i is stringful => i !== ""))
-      throw new TypeError(`Unstringful (or empty) array: ${cause}`);
+      throw new RangeError("Unstringful or empty array", { cause });
 
     return array as unknown as (
       T extends readonly [string, ...string[]]
@@ -118,7 +118,7 @@ export default abstract class App<
   protected subsetting<Subschema>(subpath: string): Subschema extends Subschema ? Subschema : never {
     return ((config: unknown): Subschema => {
       if (typeof config !== "object" || config === null)
-        throw new TypeError("Setting file is not JSON");
+        throw new SyntaxError("Non-JSON setting file");
 
       return config satisfies object as Subschema;
     })(JSON.parse(new File<"Setting">("Setting", false, { name: `${this.app}/${this.stringful(subpath, "subsetting")}.json` as stringful }).readful()) as unknown);
@@ -154,7 +154,7 @@ export default abstract class App<
       : { name: file };
 
     if (basename === "" || ext === "")
-      throw new TypeError("Empty storage filename");
+      throw new SyntaxError("Empty storage filename");
 
     const name = `${basename}.${ext}`;
 
