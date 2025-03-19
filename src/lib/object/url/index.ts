@@ -1,11 +1,11 @@
 import regex from "./regex";
 
 export default class Url {
-  public readonly scheme: stringfully<"URL: scheme || host">;
-  public readonly host: stringfully<"URL: scheme || host">;
-  public readonly path: string;
-  public readonly fragment: string;
-  private readonly queryMap: Map<stringful, string>;
+  public readonly scheme;
+  public readonly host;
+  public readonly path;
+  public readonly fragment;
+  private readonly queryMap;
 
   constructor(url: string) {
     const candidate = url.trim(),
@@ -60,8 +60,8 @@ export default class Url {
     return scheme === "" || http && !host.includes(".")
       ? null
       : {
-          scheme: (http ? "https" : scheme) as stringfully<"URL: scheme || host">,
-          host: host.toLocaleLowerCase() as stringfully<"URL: scheme || host">,
+          scheme: (http ? "https" : scheme) as stringfully<"Url[scheme|host]">,
+          host: host.toLocaleLowerCase() as stringfully<"Url[scheme|host]">,
           path,
           query: query.slice(1),
           fragment: fragment.slice(1),
