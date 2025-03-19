@@ -20,7 +20,7 @@
     "@types/mocha": "^10.0.10",
     "chai": "^5.2.0",
     "eslint": "~9.22.0",
-    "linted": "~28.10.0",
+    "linted": "~28.11.0",
     "mocha": "^11.1.0",
     "npm-run-all": "^4.1.5",
     "rexreplace": "^7.1.12",
