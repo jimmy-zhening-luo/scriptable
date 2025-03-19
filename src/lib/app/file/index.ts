@@ -3,9 +3,9 @@ export default class File<
   Mutable extends boolean = false,
 > {
   private static readonly manager = FileManager.iCloud();
-  protected readonly path: string;
-  protected readonly parent: string;
-  protected readonly exists: boolean;
+  protected readonly path;
+  protected readonly parent;
+  protected readonly exists;
 
   constructor(
     filetype: literalful<Filetype>,
