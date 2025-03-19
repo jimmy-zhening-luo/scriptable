@@ -10,7 +10,7 @@ export default abstract class Share<
     | "fileURLs";
 
   protected getInput() {
-    return args[this.type] as undefined | string[];
+    return args[this.type] as Undef<string[]>;
   }
 
   protected output(runtime: ReturnType<Share<Output>["runtime"]>) {
