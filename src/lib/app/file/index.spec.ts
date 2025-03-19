@@ -1,7 +1,8 @@
-import { expect } from "chai";
+import { should } from "chai";
 import { SyntheticFileManager } from "./index.synthetic.spec";
 import type File from ".";
 
+should();
 global.FileManager = SyntheticFileManager;
 
 const { "default": file } = await (
@@ -20,13 +21,15 @@ describe("File", function () {
 
   describe("shape", function () {
     it("is a constructor", function () {
-      expect(myFile)
-        .an("object");
+      myFile
+        .should.be.an("object");
     });
   });
   describe("instance", function () {
     it("is mutable", function () {
-      expect(myFile.mutable).a("boolean").true;
+      myFile.mutable
+        .should.be.a("boolean")
+        .true;
     });
   });
 });

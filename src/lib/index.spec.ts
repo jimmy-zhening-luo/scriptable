@@ -1,10 +1,11 @@
-import { expect } from "chai";
+import { expect, should } from "chai";
 import {
   SyntheticFileManager,
   SyntheticNotification,
   syntheticArgs,
 } from "./index.synthetic.spec";
 
+should();
 global.FileManager = SyntheticFileManager;
 global.Notification = SyntheticNotification;
 global.args = syntheticArgs;

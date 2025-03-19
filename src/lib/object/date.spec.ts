@@ -1,6 +1,7 @@
-import { expect } from "chai";
+import { should } from "chai";
 import { SyntheticDateFormatter } from "./date.synthetic.spec";
 
+should();
 global.DateFormatter = SyntheticDateFormatter;
 
 import date from "./date";
@@ -10,14 +11,14 @@ const SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING = "SYNTHETIC_OVERRIDE_PARAME
 describe("Object: Date", function () {
   describe("shape", function () {
     it("is a function", function () {
-      expect(date)
-        .a("function");
+      date
+        .should.be.a("function");
     });
   });
   describe("output", function () {
     it(`is stringful`, function () {
-      expect(date({ date: SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING }))
-        .a("string")
+      date({ date: SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING })
+        .should.be.a("string")
         .with.length.above(1);
     });
   });
