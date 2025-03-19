@@ -9,13 +9,13 @@ class _Hello extends Shortcut<
 > {
   protected runtime() {
     const { setting: { space } } = this,
-    ini = "salute";
+    path = "salute";
 
-    this.write("Hej", true, ini);
+    this.write("Hej", true, path);
     this.write(`World, on ${date()}`);
 
     return ([
-      this.readful(ini),
+      this.readful(path),
       this.stringful(space, "setting"),
       this.readful(),
     ] as const satisfies Triad<stringful>).join("") as stringful;
