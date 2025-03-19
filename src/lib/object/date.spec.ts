@@ -15,9 +15,10 @@ describe("Object: Date", function () {
     });
   });
   describe("output", function () {
-    it(`is a string  [Actual: ${date({ date: SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING })}]`, function () {
+    it(`is stringful`, function () {
       expect(date({ date: SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING }))
-        .a("string");
+        .a("string")
+        .with.length.above(1);
     });
   });
 });

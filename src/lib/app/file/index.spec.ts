@@ -9,21 +9,24 @@ const { "default": file } = await (
 )
   .catch((e: unknown) => {
     throw new EvalError(
-      `Mocha: Failed to dynamically load \`file\` from \`file.js\``,
+      "Mocha: failed to load `file` module",
       { cause: e },
     );
   })
-  .finally(() => console.log("`File` module successfully loaded from `file.js`"));
-
-console.log(`typeof file: ${typeof file}`);
-
-const storage = new file("SYNTHETIC_BOOKMARK_FILETYPE_STORAGE", true, { name: "SYNTHETIC_FILENAME.txt", folder: "SYNTHETIC_SUBFOLDER" });
+  .finally(() => console.log("Mocha: dynamically loaded `file` module"));
 
 describe("File", function () {
+  const myFile = new file("Storage", true, { name: "SYNTHETIC_FILENAME.txt", folder: "SYNTHETIC_SUBFOLDER" });
+
   describe("shape", function () {
     it("is a constructor", function () {
-      expect(storage)
+      expect(myFile)
         .an("object");
+    });
+  });
+  describe("instance", function () {
+    it("is mutable", function () {
+      expect(myFile.mutable).a("boolean").true;
     });
   });
 });
