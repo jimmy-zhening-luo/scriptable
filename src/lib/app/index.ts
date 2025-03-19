@@ -5,7 +5,7 @@ export default abstract class App<
   Output,
   Schema,
 > {
-  protected readonly app: stringful;
+  protected readonly app;
   private readonly cache: Record<string, File<"Storage", true>> = {};
 
   constructor() {
