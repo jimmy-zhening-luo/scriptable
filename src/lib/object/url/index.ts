@@ -12,7 +12,7 @@ export default class Url {
     parts = Url.parse(candidate) ?? Url.parse(`https://${candidate}`);
 
     if (parts === null)
-      throw new SyntaxError("Unparseable to URL", { cause: url });
+      throw new URIError("Unparseable to URL", { cause: url });
 
     const {
       scheme,
