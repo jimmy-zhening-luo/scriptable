@@ -7,12 +7,14 @@ export default class Url {
   public readonly fragment;
   private readonly queryMap;
 
-  constructor(url: string) {
-    const candidate = url.trim(),
-    parts = Url.parse(candidate) ?? Url.parse(`https://${candidate}`);
+  constructor(string: string) {
+    const parts = (
+      string => Url.parse(string)
+        ?? Url.parse(`https://${string}`)
+    )(string);
 
     if (parts === null)
-      throw new URIError("Unparseable to URL", { cause: url });
+      throw new URIError("Unparseable to URL", { cause: string });
 
     const {
       scheme,
@@ -25,13 +27,13 @@ export default class Url {
     this.scheme = scheme;
     this.host = host;
     this.path = path;
-    this.fragment = `${fragment === "" ? "" : "#"}${fragment}`;
-    this.queryMap = new Map<stringful, string>(
+    this.fragment = fragment === "" ? "" : `#${fragment}`;
+    this.queryMap = new Map<string, string>(
       query
         .split("&")
-        .map(pair => pair.split("=") as Arrayful)
-        .filter((pair): pair is [stringful, ...string[]] => pair[0] !== "")
-        .map(([param, ...value]) => [param, value.join("=")] as const),
+        .map(param => param.split("="))
+        .filter((param): param is [stringful, ...string[]] => param[0] !== "")
+        .map(([key, ...value]) => [key, value.join("=")]),
     );
   }
 
@@ -40,7 +42,7 @@ export default class Url {
       .map(pair => pair.join("="))
       .join("&");
 
-    return `${query === "" ? "" : "?"}${query}`;
+    return query === "" ? "" : `?${query}`;
   }
 
   public get params() {
@@ -55,7 +57,11 @@ export default class Url {
       query = "",
       fragment = "",
     } = regex.exec(candidate)?.groups ?? {},
-    http = ["https", "http"].includes(scheme.toLocaleLowerCase());
+    http = [
+      "https",
+      "http",
+    ]
+      .includes(scheme.toLocaleLowerCase());
 
     return scheme === "" || http && !host.includes(".")
       ? null
@@ -69,18 +75,21 @@ export default class Url {
   }
 
   public getParam(param: string) {
-    return this.queryMap.get(param as stringful) ?? null;
+    return this.queryMap.get(param);
   }
 
   public deleteParams(...params: string[]) {
     for (const param of params)
-      this.queryMap.delete(param as stringful);
+      this.queryMap.delete(param);
   }
 
   public keepParams(...params: string[]) {
-    const keep = new Set<stringful>(params as stringful[]);
+    const keep = new Set<string>(params);
 
-    this.deleteParams(...this.params.filter(param => !keep.has(param)));
+    this.deleteParams(
+      ...this.params
+        .filter(param => !keep.has(param)),
+    );
   }
 
   public replaceParam(find: string, replace: string) {
@@ -88,8 +97,8 @@ export default class Url {
 
     this.deleteParams(find);
 
-    if (value !== null)
-      this.queryMap.set(replace as stringful, value);
+    if (typeof value !== "undefined")
+      this.queryMap.set(replace, value);
   }
 
   public deleteQuery() {

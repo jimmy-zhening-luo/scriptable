@@ -1,38 +1,52 @@
-export default class File<
-  Filetype extends string,
-  Mutable extends boolean = false,
-> {
+export default class File<Type extends string> {
   private static readonly manager = FileManager.iCloud();
   protected readonly path;
   protected readonly parent;
   protected readonly exists;
 
   constructor(
-    filetype: literalful<Filetype>,
-    public readonly mutable: Mutable,
-    { name, folder = "" }: Field<"name", "folder">,
+    type: literalful<Type>,
+    {
+      name,
+      folder = "",
+    }: Field<"name", "folder">,
+    public readonly mutable = false,
   ) {
     try {
-      const root = File.manager.bookmarkExists(filetype)
-        ? File.manager.bookmarkedPath(filetype)
-        : mutable
-          ? `${File.manager.libraryDirectory()}/${filetype}`
-          : null,
-      subpath = `${folder}/${name}`
+      const bookmarked = File.manager.bookmarkExists(type),
+      rooted = bookmarked || mutable;
+
+      if (!rooted)
+        throw new ReferenceError("Missing filetype root", { cause: { type } });
+
+      const root = bookmarked
+        ? File.manager.bookmarkedPath(type)
+        : [
+            File.manager.libraryDirectory(),
+            type,
+          ]
+            .join("/"),
+      subpath = [
+        folder,
+        name,
+      ]
+        .join("/")
         .split("/")
         .filter(node => node !== "");
 
-      if (root === null)
-        throw new ReferenceError("Missing filetype root", { cause: { filetype } });
-      else if (subpath.length === 0)
+      if (subpath.length === 0)
         throw new SyntaxError("Empty file subpath", { cause: { folder, name } });
 
       this.path = `${root}/${subpath.join("/")}`;
-      this.parent = `${root}/${subpath.slice(0, -1).join("/")}`;
+      this.parent = `${root}/${
+        subpath
+          .slice(0, -1)
+          .join("/")
+      }`;
       this.exists = File.manager.fileExists(this.path);
     }
     catch (e) {
-      throw new Error("Failed to create file handler", { cause: new Error(`${filetype}/${folder}/${name}`, { cause: e }) });
+      throw new Error("Failed to create file handler", { cause: new Error(`${type}:${folder}/${name}`, { cause: e }) });
     }
   }
 
@@ -56,19 +70,19 @@ export default class File<
     const read = this.read(true);
 
     if (read === "")
-      throw new RangeError("Unstringful file content", { cause: { path: this.path } });
+      throw new TypeError("Unstringful file content", { cause: { path: this.path } });
 
     return read as stringful;
   }
 
   public write(
-    data:
-      | null
+    data: Null<
       | string
       | number
       | boolean
-      | (string | number | boolean)[]
-      | Record<string, unknown> = null,
+      | readonly (string | number | boolean)[]
+      | Readonly<Record<string, unknown>>
+    > = null,
     overwrite:
       | "line"
       | "append"
@@ -93,14 +107,28 @@ export default class File<
       File.manager.writeString(
         path,
         Array.isArray(data)
-          ? `${data.reverse().join("\n")}\n${this.read()}`
+          ? [
+              data
+                .reverse()
+                .join("\n"),
+              this.read(),
+            ]
+              .join("\n")
           : typeof data === "object"
             ? JSON.stringify(data)
             : typeof overwrite !== "string"
               ? String(data)
               : overwrite === "line"
-                ? `${String(data)}\n${this.read()}`
-                : `${this.read()}${String(data)}`,
+                ? [
+                    String(data),
+                    this.read(),
+                  ]
+                    .join("\n")
+                : [
+                    this.read(),
+                    String(data),
+                  ]
+                    .join(""),
       );
     }
     catch (e) {

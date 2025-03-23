@@ -2,11 +2,11 @@ export default function ({
   date = "MMMM d, y",
   time = "h:mm:ss a",
   separator = " ",
-  when = new Date,
+  on = new Date,
 } = {}) {
   const d = new DateFormatter;
 
-  d.dateFormat = `${date}${separator}${time}`;
+  d.dateFormat = [date, time].join(separator);
 
-  return d.string(when);
+  return d.string(on);
 }

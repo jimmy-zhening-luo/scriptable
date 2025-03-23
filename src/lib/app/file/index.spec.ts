@@ -17,7 +17,7 @@ const { "default": file } = await (
   .finally(() => console.log("Mocha: dynamically loaded `file` module"));
 
 describe("File", function () {
-  const myFile = new file("Storage", true, { name: "SYNTHETIC_FILENAME.txt", folder: "SYNTHETIC_SUBFOLDER" });
+  const myFile = new file("Storage", { name: "SYNTHETIC_FILENAME.txt", folder: "SYNTHETIC_SUBFOLDER" }, true);
 
   describe("shape", function () {
     it("is a constructor", function () {

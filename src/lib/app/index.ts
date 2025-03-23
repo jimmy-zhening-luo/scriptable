@@ -6,35 +6,57 @@ export default abstract class App<
   Schema,
 > {
   protected readonly app;
-  private readonly cache: Record<string, File<"Storage", true>> = {};
+  private readonly cache: Record<string, File<"Storage">> = {};
 
   constructor() {
-    const { name = "" } = this.constructor;
+    try {
+      const { name = "" } = this.constructor;
 
-    if (name === "")
-      throw new EvalError("Nameless app constructor");
+      if (name === "")
+        throw new EvalError("Nameless app constructor");
 
-    this.app = name as stringful;
+      this.app = name as stringful;
+    }
+    catch (e) {
+      throw new Error("Failed to instantiate app", { cause: e });
+    }
   }
 
-  protected get setting(): Schema extends Schema ? Schema : never {
-    return this.config ??= ((config: unknown): Schema => {
-      if (typeof config !== "object" || config === null)
-        throw new SyntaxError("Non-JSON setting file");
+  protected get setting() {
+    try {
+      return this.config ??= ((config: unknown): Schema => {
+        if (typeof config !== "object" || config === null)
+          throw new SyntaxError("Non-JSON setting file");
 
-      return config satisfies object as Schema;
-    })(JSON.parse(new File<"Setting">("Setting", false, { name: `${this.app}.json` as stringful }).readful()) ?? null);
+        return config as typeof config & Schema;
+      })(
+        JSON.parse(new File<"Setting">(
+          "Setting",
+          {
+            name: `${this.app}.json`,
+          },
+        ).readful()),
+      );
+    }
+    catch (e) {
+      throw new Error("Failed to read setting", { cause: e });
+    }
   }
 
   protected get input() {
-    return this.getInput() ?? this.synthetic ?? undefined;
+    try {
+      return this.getInput() ?? this.synthetic ?? undefined;
+    }
+    catch (e) {
+      throw new Error("Failed to get app input", { cause: e });
+    }
   }
 
   protected get inputful() {
-    const { input = null } = this;
+    const { input } = this;
 
-    if (input === null)
-      throw new TypeError("Null app input");
+    if (typeof input === "undefined")
+      throw new TypeError("Empty app input");
 
     return input;
   }
@@ -49,7 +71,7 @@ export default abstract class App<
   }
 
   protected get inputStringful() {
-    return this.stringful(this.inputString, "input");
+    return this.stringful(this.inputString, "Unstringful input");
   }
 
   private static error(app: stringful, error: unknown) {
@@ -65,15 +87,29 @@ export default abstract class App<
       errors.unshift(cast(errors[0].cause));
 
     const n = new Notification,
-    [title, body] = (([head, ...rest]) => [`${app}: ${head}`, rest.join("\n")])(errors.map(e => typeof e === "string" ? e : e.message) as Arrayful);
+    {
+      message,
+      cause,
+    } = (([top = "", ...stack]) => {
+      return {
+        message: `${app}: ${top}`,
+        cause: stack.join("\n"),
+      };
+    })(
+      errors.map(
+        error => typeof error === "string"
+          ? error
+          : error.message,
+      ),
+    );
 
-    n.title = title;
-    n.body = body;
+    n.title = message;
+    n.body = cause;
     n.sound = "failure";
-    n.schedule().catch((e: unknown) => console.error(e));
-    console.error(`${title}\n${body}`);
+    n.schedule().catch((error: unknown) => console.error(error));
+    console.error(`${message}\n${cause}`);
 
-    return new Error(title, { cause: body });
+    return new Error(message, { cause });
   }
 
   public run(synthetic?: Input) {
@@ -92,73 +128,73 @@ export default abstract class App<
 
   protected char(string = "", cause = "") {
     if (string.length !== 1)
-      throw new RangeError("Non-char string", { cause });
+      throw new TypeError("Not a char", { cause });
 
     return string as char;
   }
 
   protected stringful(string = "", cause = "") {
     if (string === "")
-      throw new RangeError("Unstringful", { cause });
+      throw new TypeError("Unstringful", { cause });
 
     return string as stringful;
   }
 
   protected stringfuls<T extends readonly string[]>(array: T, cause = "") {
-    if (array.length === 0 || !array.every((i): i is stringful => i !== ""))
-      throw new RangeError("Unstringful or empty array", { cause });
+    if (array.length === 0)
+      throw new RangeError("Empty unstringful array", { cause });
+    else if (!array.every((i): i is stringful => i !== ""))
+      throw new TypeError("Unstringful array", {
+        cause: {
+          cause,
+          array,
+        },
+      });
 
-    return array as unknown as (
+    return array satisfies readonly stringful[] as unknown as (
       T extends readonly [string, ...string[]]
         ? { [K in keyof T]: stringful; }
         : Arrayful<stringful>
     );
   }
 
-  protected subsetting<Subschema>(subpath: string): Subschema extends Subschema ? Subschema : never {
-    return ((config: unknown): Subschema => {
-      if (typeof config !== "object" || config === null)
-        throw new SyntaxError("Non-JSON setting file");
-
-      return config satisfies object as Subschema;
-    })(JSON.parse(new File<"Setting">("Setting", false, { name: `${this.app}/${this.stringful(subpath, "subsetting")}.json` as stringful }).readful()) as unknown);
+  protected read(...[filename]: Parameters<App<Input, Output, Schema>["storage"]>) {
+    return this.storage(filename).read();
   }
 
-  protected read(...[file]: Parameters<App<Input, Output, Schema>["storage"]>) {
-    return this.storage(file).read();
-  }
-
-  protected readful(...[file]: Parameters<App<Input, Output, Schema>["storage"]>) {
-    return this.storage(file).readful();
+  protected readful(...[filename]: Parameters<App<Input, Output, Schema>["storage"]>) {
+    return this.storage(filename).readful();
   }
 
   protected write(...[
     data,
     overwrite = true,
     file,
-  ]: [...Parameters<File<"Storage", true>["write"]>, ...Parameters<App<Input, Output, Schema>["storage"]>]) {
+  ]: [...Parameters<File<"Storage">["write"]>, ...Parameters<App<Input, Output, Schema>["storage"]>]) {
     this.storage(file).write(data, overwrite);
   }
 
-  protected delete(...[file]: Parameters<App<Input, Output, Schema>["storage"]>) {
-    this.storage(file).delete();
+  protected delete(...[filename]: Parameters<App<Input, Output, Schema>["storage"]>) {
+    this.storage(filename).delete();
   }
 
-  private storage(file: string | Field<never, "name" | "ext"> = {}) {
+  private storage(filename: string | Field<never, "name" | "ext"> = {}) {
     const { app } = this,
     {
-      name: basename = app,
+      name: base = app,
       ext = "txt",
-    } = typeof file === "object"
-      ? file
-      : { name: file };
+    } = typeof filename === "object"
+      ? filename
+      : { name: filename };
 
-    if (basename === "" || ext === "")
+    if (base === "")
       throw new SyntaxError("Empty storage filename");
+    else if (ext === "")
+      throw new SyntaxError("Empty storage file extension");
 
-    const name = `${basename}.${ext}`;
+    const name = `${base}.${ext}`;
 
-    return this.cache[name] ??= new File("Storage", true, { name, folder: app });
+    return this.cache[name] ??= new File("Storage", { name, folder: app }, true);
   }
 
   protected abstract getInput(): Undef<Input>;
