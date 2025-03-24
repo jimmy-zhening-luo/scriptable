@@ -14,7 +14,11 @@ class Link extends Shortcut<
   protected runtime() {
     const {
       input = "",
-      setting: { hosts, queries, fragments },
+      setting: {
+        hosts,
+        queries,
+        fragments,
+      },
     } = this,
     url = new Url(input),
     host = ((host: Url["host"]) => (headless => hosts.canonical[headless] ?? headless)(!host.startsWith("www.") || hosts.www.includes(host) ? host : host.slice(4) as typeof host))(url.host),

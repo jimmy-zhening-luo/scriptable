@@ -5,9 +5,7 @@ import type File from ".";
 should();
 global.FileManager = SyntheticFileManager;
 
-const { "default": file } = await (
-  import(".") as Promise<Record<"default", typeof File>>
-)
+const { "default": file } = await (import(".") as Promise<Record<"default", typeof File>>)
   .catch((e: unknown) => {
     throw new EvalError(
       "Mocha: failed to load `file` module",
