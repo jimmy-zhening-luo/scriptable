@@ -1,9 +1,7 @@
 {
-  "display": "@prototypic/tsconfig",
-  "version": "5.8.0",
+  "display": "tsc@5.8.1",
   "$schema": "https://json.schemastore.org/tsconfig",
   "$help": "https://www.typescriptlang.org/tsconfig/#quick-nav-Top%20Level",
-  // #region SCOPE
   "include": [
     "*.config.ts",
     "src/**/*.ts",
@@ -11,9 +9,8 @@
     "typings/**/*.d.ts",
   ],
   "exclude": [],
-  // #endregion
   "compilerOptions": {
-    // #region TYPE CHECKING
+    // #region Type Check
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "alwaysStrict": true,
@@ -34,9 +31,8 @@
     "strictPropertyInitialization": true,
     "useUnknownInCatchVariables": true,
     // #endregion
-    /*
-    */
-    // #region MODULES
+    //
+    // #region Modules
     "allowArbitraryExtensions": true,
     // "allowImportingTsExtensions": true,
     // "allowUmdGlobalAccess": true,
@@ -59,9 +55,8 @@
       /* {CONFIGURE} */
     ],
     // #endregion
-    /*
-    */
-    // #region EMIT
+    //
+    // #region Emit
     "declaration": true,
     "declarationDir": "dist",
     "declarationMap": true,
@@ -79,27 +74,24 @@
     "outDir": "dist",
     // "outFile": "./",
     // "preserveConstEnums": true,
-    "removeComments": false /* @OVERRIDE */,
+    "removeComments": true,
     "sourceMap": true,
     // "sourceRoot": "",
     // "stripInternal": true,
     // #endregion
-    /*
-    */
-    // #region JAVASCRIPT SUPPORT
+    //
+    // #region JS
     // "allowJs": true,
     // "checkJs": true,
     // "maxNodeModuleJsDepth": 1,
     // #endregion
-    /*
-    */
-    // #region EDITOR SUPPORT
+    //
+    // #region Editor
     // "disableSizeLimit": false,
     // "plugins": [],
     // #endregion
-    /*
-    */
-    // #region INTEROP CONSTRAINTS
+    //
+    // #region Interop
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -108,9 +100,8 @@
     // "preserveSymlinks": true,
     "verbatimModuleSyntax": true,
     // #endregion
-    /*
-    */
-    // #region LANGUAGE & ENVIRONMENT
+    //
+    //  #region Language
     // "emitDecoratorMetadata": true,
     // "experimentalDecorators": true,
     // "jsx": "preserve",
@@ -127,9 +118,8 @@
     "target": "es2022",
     // "useDefineForClassFields": true /* @default: target > es2022 : true; else : false*/,
     // #endregion
-    /*
-    */
-    // #region COMPILER DIAGNOSTICS
+    //
+    //  #region Diagnostic
     // "diagnostics": true,
     // "explainFiles": true,
     // "extendedDiagnostics": true,
@@ -139,9 +129,8 @@
     // "noCheck": true,
     // "traceResolution": true,
     // #endregion
-    /*
-    */
-    // #region PROJECTS
+    //
+    //  #region Project
     // "composite": true,
     // "disableReferencedProjectLoad": true,
     // "disableSolutionSearching": true,
@@ -149,16 +138,14 @@
     "incremental": true,
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     // #endregion
-    /*
-    */
-    // #region OUTPUT FORMATTING
+    //
+    //  #region Print
     // "noErrorTruncation": true,
     // "preserveWatchOutput": true,
     // "pretty": true,
     // #endregion
-    /*
-    */
-    // #region COMPLETENESS
+    //
+    // #region Completeness
     "skipLibCheck": false,
     // #endregion
   },

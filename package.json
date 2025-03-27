@@ -1,5 +1,5 @@
 {
-  "$template": "2214.0.0",
+  "$pkg": "2214.1.0",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "@scoping/scriptable",
@@ -20,7 +20,7 @@
     "@types/mocha": "^10.0.10",
     "chai": "^5.2.0",
     "eslint": "~9.23.0",
-    "linted": "~28.16.0",
+    "linted": "~28.16.2",
     "mocha": "^11.1.0",
     "npm-run-all": "^4.1.5",
     "rexreplace": "^7.1.12",
