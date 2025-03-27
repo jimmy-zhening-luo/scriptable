@@ -1,6 +1,6 @@
 {
   "$meta": {
-    "template": "0.37.2",
+    "template": "37.0.0",
     "rules": "https://github.com/DavidAnson/markdownlint/blob/v0.37.4/doc/Rules.md",
   },
   // "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.37.4/schema/markdownlint-config-schema.json",
