@@ -4,7 +4,7 @@ export default class Url {
   public readonly scheme;
   public readonly host;
   public readonly path;
-  public readonly fragment;
+  private _fragment;
   private readonly queryMap;
 
   constructor(string: string) {
@@ -27,7 +27,7 @@ export default class Url {
     this.scheme = scheme;
     this.host = host;
     this.path = path;
-    this.fragment = fragment === "" ? "" : `#${fragment}`;
+    this._fragment = fragment === "" ? "" : `#${fragment}`;
     this.queryMap = new Map<string, string>(
       query
         .split("&")
@@ -45,6 +45,10 @@ export default class Url {
     return query === "" ? "" : `?${query}`;
   }
 
+  public get fragment() {
+    return this._fragment;
+  }
+
   public get params() {
     return [...this.queryMap.keys()];
   }
@@ -57,11 +61,7 @@ export default class Url {
       query = "",
       fragment = "",
     } = regex.exec(candidate)?.groups ?? {},
-    http = [
-      "https",
-      "http",
-    ]
-      .includes(scheme.toLocaleLowerCase());
+    http = Url.isHttp(scheme);
 
     return scheme === "" || http && !host.includes(".")
       ? null
@@ -72,6 +72,14 @@ export default class Url {
           query: query.slice(1),
           fragment: fragment.slice(1),
         };
+  }
+
+  private static isHttp(scheme: string) {
+    return [
+      "https",
+      "http",
+    ]
+      .includes(scheme.toLocaleLowerCase());
   }
 
   public getParam(param: string) {
@@ -103,5 +111,9 @@ export default class Url {
 
   public deleteQuery() {
     this.queryMap.clear();
+  }
+
+  public deleteFragment() {
+    this._fragment = "";
   }
 }

@@ -39,6 +39,9 @@ class Link extends Shortcut<
       for (const [find, replace] of Object.entries(substitute))
         url.replaceParam(find, replace);
 
+    if (fragments.shave.includes(host))
+      url.deleteFragment();
+
     const {
       scheme,
       path,
@@ -57,7 +60,7 @@ class Link extends Shortcut<
       host,
       process(host, path),
       query,
-      fragments.shave.includes(host) ? "" : fragment,
+      fragment,
     );
   }
 }
