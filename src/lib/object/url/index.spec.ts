@@ -24,7 +24,6 @@ const TEST = {
   },
 },
 { OK } = TEST;
-
 describe("Object: URL", function () {
   const PROPERTIES = [
     "scheme",
