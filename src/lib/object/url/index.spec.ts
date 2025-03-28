@@ -33,7 +33,6 @@ describe("Object: URL", function () {
     "fragment",
   ] as const,
   parts = new Url(OK);
-
   describe("shape", function () {
     it("is a function", function () {
       expect(Url)
