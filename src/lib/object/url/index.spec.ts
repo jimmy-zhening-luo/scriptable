@@ -23,7 +23,7 @@ const TEST = {
     },
   },
 },
-OK = TEST.OK;
+{ OK } = TEST;
 
 describe("Object: URL", function () {
   const PROPERTIES = [
@@ -34,6 +34,7 @@ describe("Object: URL", function () {
     "fragment",
   ] as const,
   parts = new Url(OK);
+
   describe("shape", function () {
     it("is a function", function () {
       expect(Url)
