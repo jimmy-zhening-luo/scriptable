@@ -23,16 +23,17 @@ const TEST = {
     },
   },
 },
-parts = new Url(TEST.OK),
-properties = [
-  "scheme",
-  "host",
-  "path",
-  "query",
-  "fragment",
-] as const;
+OK = TEST.OK;
 
 describe("Object: URL", function () {
+  const PROPERTIES = [
+    "scheme",
+    "host",
+    "path",
+    "query",
+    "fragment",
+  ] as const,
+  parts = new Url(OK);
   describe("shape", function () {
     it("is a function", function () {
       expect(Url)
@@ -77,7 +78,7 @@ describe("Object: URL", function () {
         .an("object");
     });
     it("with properties parts of URL", function () {
-      expect(properties.every(property => property in parts))
+      expect(PROPERTIES.every(property => property in parts))
         .ok;
     });
     it("which are all strings", function () {
