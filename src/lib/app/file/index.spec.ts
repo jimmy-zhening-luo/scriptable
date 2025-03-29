@@ -15,18 +15,27 @@ const { "default": file } = await (import(".") as Promise<Record<"default", type
   .finally(() => console.log("Mocha: dynamically loaded `file` module"));
 
 describe("File", function () {
-  const myFile = new file("Storage", { name: "SYNTHETIC_FILENAME.txt", folder: "SYNTHETIC_SUBFOLDER" }, true);
+  const synthetic = new file(
+    "Storage",
+    {
+      name: "SYNTHETIC_FILENAME.txt",
+      folder: "SYNTHETIC_SUBFOLDER",
+    },
+    true,
+  );
 
   describe("shape", function () {
     it("is a constructor", function () {
-      myFile
-        .should.be.an("object");
+      synthetic
+        .should.be
+        .an("object");
     });
   });
   describe("instance", function () {
     it("is mutable", function () {
-      myFile.mutable
-        .should.be.a("boolean")
+      synthetic.mutable
+        .should.be
+        .a("boolean")
         .true;
     });
   });

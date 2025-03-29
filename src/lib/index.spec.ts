@@ -23,7 +23,8 @@ class ConcreteShortcut extends Shortcut<string, string> {
 describe("Shortcut", function () {
   describe("shape", function () {
     it("is extensible", function () {
-      expect(new ConcreteShortcut)
+      (new ConcreteShortcut)
+        .should.be
         .an("object");
     });
   });
