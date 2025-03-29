@@ -1,25 +1,25 @@
 {
-  "$pkg": "2214.1.0",
+  "$pkg": "2214.4.0",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "@scoping/scriptable",
   "version": "24.2.6",
-  "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
   "repository": "github:jimmy-zhening-luo/scriptable",
-  "license": "MIT",
   "private": true,
   "engineStrict": true,
   "engines": {
     "node": ">=22.14.0 <23",
     "npm": ">=11.2.0 <12"
   },
+  "type": "module",
   "peerDependenciesMeta": {},
+  "dependencies": {},
   "devDependencies": {
     "@types/chai": "^5.2.1",
     "@types/mocha": "^10.0.10",
     "chai": "^5.2.0",
     "eslint": "~9.23.0",
-    "linted": "28.17.1",
+    "linted": "~28.17.3",
     "mocha": "^11.1.0",
     "npm-run-all": "^4.1.5",
     "rexreplace": "^7.1.12",
@@ -27,7 +27,6 @@
     "ts-add-js-extension": "^1.6.5",
     "typescript": "^5.8.2"
   },
-  "type": "module",
   "main": "",
   "types": "",
   "config": {
@@ -98,14 +97,10 @@
     "deploy:sed:delete:sourcemap": "rr \"^\\/\\/# sourceMappingURL=.+\\.map$\" \"\" -I -u \"packed/**/*.js\""
   },
   "publishConfig": {
-    "access": "public",
     "tag": "next"
   },
-  "mocha": {
-    "spec": [
-      "dist/**/*.spec.js"
-    ]
-  },
+  "license": "MIT",
+  "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
   "keywords": [
     "scriptable",
     "ios",

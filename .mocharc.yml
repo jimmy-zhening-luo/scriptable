@@ -1,0 +1,15 @@
+# ##################
+# #   .mocharc   ###
+# #   1101.0.0   ###
+# ##################
+
+# https://mochajs.org/#configuration-format
+# https://mochajs.org/#command-line-usage
+
+spec:
+  - "dist/**/*.spec.js"
+extension:
+  - js
+  - cjs
+  - mjs
+color: true
