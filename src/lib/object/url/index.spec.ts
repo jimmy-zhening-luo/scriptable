@@ -2,7 +2,8 @@ import { expect, should } from "chai";
 import Url from ".";
 
 should();
-const TEST = {
+const
+TEST = {
   OK: "https://www.example.com/path/to/foo?a=1&b=2&c=3#fragment",
   ERROR: "$%^&*",
   cases: {
