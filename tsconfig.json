@@ -1,5 +1,5 @@
 {
-  "display": "tsc@508.0.0",
+  "display": "tsc@508.0.1",
   "$schema": "https://json.schemastore.org/tsconfig",
   "$help": "https://www.typescriptlang.org/tsconfig/#quick-nav-Top%20Level",
   "include": [
@@ -104,7 +104,7 @@
     "verbatimModuleSyntax": true,
     // #endregion
     //
-    //  #region Language
+    // #region Language
     // "emitDecoratorMetadata": true,
     // "experimentalDecorators": true,
     // "jsx": "preserve",
@@ -123,7 +123,7 @@
     // "useDefineForClassFields": true /* @default true if `target` > `es2022`, else false*/,
     // #endregion
     //
-    //  #region Diagnostic
+    // #region Diagnostic
     // "diagnostics": true,
     // "explainFiles": true,
     // "extendedDiagnostics": true,
@@ -134,7 +134,7 @@
     // "traceResolution": true,
     // #endregion
     //
-    //  #region Project
+    // #region Project
     // "composite": true,
     // "disableReferencedProjectLoad": true,
     // "disableSolutionSearching": true,
@@ -143,7 +143,7 @@
     // "tsBuildInfoFile": "",
     // #endregion
     //
-    //  #region Print
+    // #region Print
     // "noErrorTruncation": true,
     // "preserveWatchOutput": true,
     // "pretty": true,
