@@ -1,35 +1,35 @@
 {
-  "display": "tsc@5.8.1",
+  "display": "tsc@508.0.0",
   "$schema": "https://json.schemastore.org/tsconfig",
   "$help": "https://www.typescriptlang.org/tsconfig/#quick-nav-Top%20Level",
   "include": [
     "*.config.ts",
     "src/**/*.ts",
-    "tests/**/*.ts",
     "typings/**/*.d.ts",
   ],
   "exclude": [],
   "compilerOptions": {
-    // #region Type Check
+    // #region Typecheck
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    "alwaysStrict": true,
+    // "alwaysStrict": true /* @default true if `strict`, else false */,
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
+    // "noImplicitAny": true /* @default true if `strict`, else false */,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
+    // "noImplicitThis": true /* @default true if `strict`, else false */,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "strict": true,
-    "strictBindCallApply": true,
-    "strictFunctionTypes": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "useUnknownInCatchVariables": true,
+    "strict": true /* INFO:[CONTROLS] alwaysStrict | noImplicitAny | noImplicitThis | strict.* | useUnknownInCatchVariables */,
+    // "strictBindCallApply": true /* @default true if `strict`, else false */,
+    // "strictBuiltinIteratorReturn": true /* @default true if `strict`, else false */,
+    // "strictFunctionTypes": true /* @default true if `strict`, else false */,
+    // "strictNullChecks": true /* @default true if `strict`, else false */,
+    // "strictPropertyInitialization": true /* @default true if `strict`, else false */,
+    // "useUnknownInCatchVariables": true /* @default true if `strict`, else false */,
     // #endregion
     //
     // #region Modules
@@ -42,11 +42,13 @@
     "moduleResolution": "bundler",
     // "moduleSuffixes": [],
     // "noResolve": true,
+    // "noUncheckedSideEffectImports": true,
     // "paths": { "*": ["node_modules/*"] },
     // "resolveJsonModule": true,
     // "resolvePackageJsonExports": true,
     // "resolvePackageJsonImports": true,
-    "rootDir": "src",
+    "rewriteRelativeImportExtensions": true,
+    // "rootDir": "src",
     // "rootDirs": [],
     // "typeRoots": [],
     "types": [
@@ -58,7 +60,7 @@
     //
     // #region Emit
     "declaration": true,
-    "declarationDir": "dist",
+    // "declarationDir": "",
     "declarationMap": true,
     // "downlevelIteration": true,
     // "emitBOM": true,
@@ -74,7 +76,7 @@
     "outDir": "dist",
     // "outFile": "./",
     // "preserveConstEnums": true,
-    "removeComments": false /* @OVERRIDE */,
+    // "removeComments": true,
     "sourceMap": true,
     // "sourceRoot": "",
     // "stripInternal": true,
@@ -93,7 +95,8 @@
     //
     // #region Interop
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    // "erasableSyntaxOnly": true,
+    // "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     // "isolatedDeclarations": false,
     // "isolatedModules": true,
@@ -112,11 +115,12 @@
       "es2023",
       /* {CONFIGURE} */
     ],
+    // "libReplacement": true /* @default: true | INFO: in the future, @default may become false */,
     // "moduleDetection": "auto",
     // "noLib": true,
     // "reactNamespace": "",
     "target": "es2022",
-    // "useDefineForClassFields": true /* @default: target > es2022 : true; else : false*/,
+    // "useDefineForClassFields": true /* @default true if `target` > `es2022`, else false*/,
     // #endregion
     //
     //  #region Diagnostic
@@ -135,8 +139,8 @@
     // "disableReferencedProjectLoad": true,
     // "disableSolutionSearching": true,
     // "disableSourceOfProjectReferenceRedirect": true,
-    "incremental": true,
-    "tsBuildInfoFile": "dist/.tsbuildinfo",
+    "incremental": true /* @default true if `composite`, else false */,
+    // "tsBuildInfoFile": "",
     // #endregion
     //
     //  #region Print
@@ -145,8 +149,8 @@
     // "pretty": true,
     // #endregion
     //
-    // #region Completeness
-    "skipLibCheck": false,
+    // #region Complete
+    // "skipLibCheck": true,
     // #endregion
   },
 }
