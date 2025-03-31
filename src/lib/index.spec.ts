@@ -4,15 +4,23 @@ import {
   SyntheticNotification,
   syntheticArgs,
 } from "./index.synthetic.spec";
+import type Shortcut from ".";
 
 should();
 global.FileManager = SyntheticFileManager;
 global.Notification = SyntheticNotification;
 global.args = syntheticArgs;
 
-import Shortcut from ".";
+const { "default": shortcut } = await (import(".") as Promise<Record<"default", typeof Shortcut>>)
+  .catch((e: unknown) => {
+    throw new EvalError(
+      "Mocha: failed to load `shortcut` module",
+      { cause: e },
+    );
+  })
+  .finally(() => console.log("Mocha: dynamically loaded `shortcut` module"));
 
-class ConcreteShortcut extends Shortcut<string, string> {
+class ConcreteShortcut extends shortcut<string, string> {
   protected override stringInput = true;
 
   protected runtime() {
