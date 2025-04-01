@@ -1,6 +1,6 @@
 import * as Synthetics from "./synthetics";
 
-export function mochaGlobalTeardown() {
+export function mochaGlobalSetup() {
   try {
     console.log("Mocha: global setup hook begin");
     global.args = Synthetics.args;
