@@ -5,7 +5,8 @@ const file = global._File as typeof File;
 
 should();
 describe("File", function () {
-  const synthetic = new file(
+  const { _File: file } = global as { readonly _File: typeof File },
+  synthetic = new file(
     "Storage",
     {
       name: "SYNTHETIC_FILENAME.txt",
