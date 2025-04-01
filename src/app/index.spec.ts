@@ -1,11 +1,7 @@
 import { should } from "chai";
-import * as Synthetics from "../test/synthetics";
 import type Shortcut from ".";
 
 should();
-global.FileManager = Synthetics.FileManager;
-global.Notification = Synthetics.Notification;
-global.args = Synthetics.args;
 
 const { "default": shortcut } = await (import(".") as Promise<Record<"default", typeof Shortcut>>)
   .catch((e: unknown) => {
