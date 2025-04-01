@@ -1,11 +1,4 @@
-import { SyntheticDateFormatter } from "./date-formatter";
-import { SyntheticFileManager } from "./file-manager";
-import { SyntheticNotification } from "./notification";
-import { syntheticArgs } from "./args";
-
-export namespace Synthetics {
-  export type DateFormatter = SyntheticDateFormatter;
-  export type FileManager = SyntheticFileManager;
-  export type Notification = SyntheticNotification;
-  export type args = syntheticArgs;
-}
+export { SyntheticDateFormatter as DateFormatter } from "./date-formatter";
+export { SyntheticFileManager as FileManager } from "./file-manager";
+export { SyntheticNotification as Notification } from "./notification";
+export { syntheticArgs as args } from "./args";

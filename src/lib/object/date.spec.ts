@@ -1,5 +1,5 @@
 import { should } from "chai";
-import { Synthetics } from "../../test/synthetics";
+import * as Synthetics from "../../test/synthetics";
 
 should();
 global.DateFormatter = Synthetics.DateFormatter;
