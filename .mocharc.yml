@@ -7,7 +7,7 @@
 # https://mochajs.org/#command-line-usage
 
 require:
-  - "dist/test/hooks.js"
+  - dist/test/hooks.js
 spec:
   - "dist/**/*.spec.js"
 extension:
