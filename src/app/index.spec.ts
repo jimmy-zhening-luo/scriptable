@@ -1,6 +1,9 @@
 import { should } from "chai";
+import type Shortcut from ".";
 
-class ConcreteShortcut extends Shortcut<string, string> {
+const shortcut = _Shortcut as typeof Shortcut;
+
+class ConcreteShortcut extends shortcut<string, string> {
   protected override stringInput = true;
 
   protected runtime() {
