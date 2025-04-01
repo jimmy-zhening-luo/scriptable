@@ -3,7 +3,7 @@ import type File from ".";
 
 should();
 
-describe("File", function () {
+describe("File", async function () {
   const { "default": file } = await (import(".") as Promise<Record<"default", typeof File>>)
     .catch((e: unknown) => {
       throw new EvalError(
