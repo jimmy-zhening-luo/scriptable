@@ -1,9 +1,9 @@
 import { should } from "chai";
-import { SyntheticFileManager } from "../../../test/synthetics";
+import { Synthetics } from "../../../test/synthetics";
 import type File from ".";
 
 should();
-global.FileManager = SyntheticFileManager;
+global.FileManager = Synthetics.FileManager;
 
 const { "default": file } = await (import(".") as Promise<Record<"default", typeof File>>)
   .catch((e: unknown) => {
