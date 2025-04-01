@@ -3,13 +3,14 @@ import type File from ".";
 
 should();
 const { "default": file } = await (import(".") as Promise<Record<"default", typeof File>>)
+  .then(() => console.log("Mocha: dynamically loaded `file` module"))
   .catch((e: unknown) => {
     throw new EvalError(
       "Mocha: failed to load `file` module",
       { cause: e },
     );
   })
-  .finally(() => console.log("Mocha: dynamically loaded `file` module"));
+  .finally(() => console.log("Mocha: file: module loader executed"));
 
 describe("File", function () {
   const synthetic = new file(

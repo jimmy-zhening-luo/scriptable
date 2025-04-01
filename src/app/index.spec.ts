@@ -3,13 +3,14 @@ import type Shortcut from ".";
 
 should();
 const { "default": shortcut } = await (import(".") as Promise<Record<"default", typeof Shortcut>>)
+  .then(() => console.log("Mocha: dynamically loaded `shortcut` module"))
   .catch((e: unknown) => {
     throw new EvalError(
       "Mocha: failed to load `shortcut` module",
       { cause: e },
     );
   })
-  .finally(() => console.log("Mocha: dynamically loaded `shortcut` module"));
+  .finally(() => console.log("Mocha: shortcut: module loader executed"));
 
 class ConcreteShortcut extends shortcut<string, string> {
   protected override stringInput = true;
