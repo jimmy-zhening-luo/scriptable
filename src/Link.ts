@@ -1,8 +1,8 @@
 // icon-color: light-gray; icon-glyph: link;
 import Shortcut from "./app";
 import Url from "./app/lib/url";
-import process from "./helper/link";
-import type { LinkSetting } from "./interface/Link";
+import process from "./method/link";
+import type { LinkSetting } from "./types/Link";
 
 class Link extends Shortcut<
   string,
