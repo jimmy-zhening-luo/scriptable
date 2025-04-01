@@ -88,7 +88,7 @@
     "deploy:copy:default": "cp -r dist/* packed",
     "deploy:filter": "run-os",
     "deploy:filter:windows": "cmd /c \"(del /s /q packed\\*.tsbuildinfo packed\\*.d.ts packed\\*.map packed\\*.spec.js) & (rmdir /s /q packed\\test)\"",
-    "deploy:filter:default": "find packed -type f \\( -name \"*.tsbuildinfo\" -or -name \"*.d.ts\" -or -name \"*.map\" -or -name \"*.spec.js\"  \\) -delete",
+    "deploy:filter:default": "(find packed -type f \\( -name \"*.tsbuildinfo\" -or -name \"*.d.ts\" -or -name \"*.map\" -or -name \"*.spec.js\"  \\) -delete) && (rm -rf packed/test)",
     "deploy:sed": "run-s deploy:sed:**",
     "deploy:sed:prepend:app:header-strict": "rr \"^(\\/\\/ icon-color: [-a-z]+; icon-glyph: [-a-z]+;(?:\\s\\/\\/ share-sheet-inputs: [- ,a-z]+;)?)(.+)$\" \"// Variables used by Scriptable.\\n// These must be at the very top of the file. Do not edit.\\n€1\\n\\x22use strict\\x22;\\n€2\" -M -s -I -u \"packed/*.js\"",
     "deploy:sed:prepend:lib:strict": "rr \"^((?!\\/\\/ Variables used by Scriptable\\.\\s).+)$\" \"\\x22use strict\\x22;\\n€1\" -M -s -I -u \"packed/**/*.js\"",
