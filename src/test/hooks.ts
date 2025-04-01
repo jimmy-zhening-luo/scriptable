@@ -18,7 +18,7 @@ export async function mochaGlobalSetup() {
       })
       .finally(() => console.log("Mocha: File: module loader executed"));
 
-    global._File = _File;
+    global.File = _File;
     const { "default": _Shortcut } = await (import("../app") as Promise<Record<"default", typeof Shortcut>>)
       .catch((e: unknown) => {
         throw new EvalError(
@@ -28,7 +28,7 @@ export async function mochaGlobalSetup() {
       })
       .finally(() => console.log("Mocha: Shortcut: module loader executed"));
 
-    global._Shortcut = _Shortcut;
+    global.Shortcut = _Shortcut;
     console.log("Mocha: global setup hook end");
   }
   catch (e) {

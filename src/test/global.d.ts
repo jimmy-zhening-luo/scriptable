@@ -4,6 +4,6 @@ declare interface Global {
   FileManager: typeof FileManager;
   Notification: typeof Notification;
   args: typeof args;
-  _Shortcut: typeof Shortcut;
-  _File: typeof File;
+  Shortcut: typeof Shortcut;
+  File: typeof File;
 }
