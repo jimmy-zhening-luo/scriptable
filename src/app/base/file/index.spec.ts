@@ -12,7 +12,7 @@ const { "default": file } = await (import(".") as Promise<Record<"default", type
 
 should();
 describe("File", function () {
-  const synthetic = new File(
+  const synthetic = new file(
     "Storage",
     {
       name: "SYNTHETIC_FILENAME.txt",
