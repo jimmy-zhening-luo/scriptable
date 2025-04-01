@@ -1,6 +1,6 @@
 import { should } from "chai";
 
-class ConcreteShortcut extends _Shortcut<string, string> {
+class ConcreteShortcut extends Shortcut<string, string> {
   protected override stringInput = true;
 
   protected runtime() {

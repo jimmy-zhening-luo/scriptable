@@ -1,3 +1,6 @@
+import type Shortcut from "../app";
+import type File from "../app/base/file";
+
 declare const global: Global;
 declare interface Global {
   DateFormatter: typeof DateFormatter;

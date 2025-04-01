@@ -2,7 +2,7 @@ import { should } from "chai";
 
 should();
 describe("File", function () {
-  const synthetic = new _File(
+  const synthetic = new File(
     "Storage",
     {
       name: "SYNTHETIC_FILENAME.txt",
