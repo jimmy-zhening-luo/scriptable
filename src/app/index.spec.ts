@@ -2,7 +2,6 @@ import { should } from "chai";
 import type Shortcut from ".";
 
 should();
-
 const { "default": shortcut } = await (import(".") as Promise<Record<"default", typeof Shortcut>>)
   .catch((e: unknown) => {
     throw new EvalError(

@@ -1,10 +1,7 @@
 import { should } from "chai";
-import * as Synthetics from "../../../test/synthetics";
 import type File from ".";
 
 should();
-global.FileManager = Synthetics.FileManager;
-
 const { "default": file } = await (import(".") as Promise<Record<"default", typeof File>>)
   .catch((e: unknown) => {
     throw new EvalError(

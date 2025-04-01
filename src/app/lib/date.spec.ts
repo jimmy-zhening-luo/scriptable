@@ -1,11 +1,7 @@
 import { should } from "chai";
-import * as Synthetics from "../../test/synthetics";
-
-should();
-global.DateFormatter = Synthetics.DateFormatter;
-
 import date from "./date";
 
+should();
 const SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING = "SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING";
 
 describe("Object: Date", function () {
