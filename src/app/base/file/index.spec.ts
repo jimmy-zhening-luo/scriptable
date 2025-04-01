@@ -1,18 +1,8 @@
 import { should } from "chai";
-import type File from ".";
-
-const { "default": file } = await (import(".") as Promise<Record<"default", typeof File>>)
-  .catch((e: unknown) => {
-    throw new EvalError(
-      "Mocha: failed to load `file` module",
-      { cause: e },
-    );
-  })
-  .finally(() => console.log("Mocha: file: module loader executed"));
 
 should();
 describe("File", function () {
-  const synthetic = new file(
+  const synthetic = new _File(
     "Storage",
     {
       name: "SYNTHETIC_FILENAME.txt",
