@@ -1,7 +1,7 @@
 import { should } from "chai";
 import type Shortcut from ".";
 
-const shortcut = _Shortcut as typeof Shortcut;
+const shortcut = global._Shortcut as typeof Shortcut;
 
 class ConcreteShortcut extends shortcut<string, string> {
   protected override stringInput = true;
