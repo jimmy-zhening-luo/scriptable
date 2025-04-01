@@ -3,7 +3,7 @@ import type File from ".";
 
 should();
 describe("File", function () {
-  const file = _File as typeof File,
+  const file = global._File as typeof File,
   synthetic = new file(
     "Storage",
     {
