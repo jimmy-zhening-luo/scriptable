@@ -1,5 +1,5 @@
 // icon-color: blue; icon-glyph: search;
-import Shortcut from "./lib";
+import Shortcut from "./app";
 import Query from "./helper/search/query";
 import Engine from "./helper/search/engine";
 import type { SearchOutput, SearchSetting } from "./interface/Search";

@@ -1,6 +1,6 @@
 // icon-color: gray; icon-glyph: folder-open;
 // share-sheet-inputs: file-url;
-import Share from "./lib/share";
+import Share from "./app/share";
 
 class FileLink extends Share<string> {
   protected readonly type = "fileURLs";

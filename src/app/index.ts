@@ -1,4 +1,4 @@
-import App from "./app";
+import App from "./base";
 
 export default abstract class Shortcut<
   Input = never,
