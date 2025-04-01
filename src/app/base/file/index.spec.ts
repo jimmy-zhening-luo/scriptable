@@ -3,7 +3,6 @@ import type File from ".";
 
 should();
 const { "default": file } = await (import(".") as Promise<Record<"default", typeof File>>)
-  .then(() => console.log("Mocha: dynamically loaded `file` module"))
   .catch((e: unknown) => {
     throw new EvalError(
       "Mocha: failed to load `file` module",
