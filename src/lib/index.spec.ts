@@ -3,7 +3,7 @@ import {
   SyntheticFileManager,
   SyntheticNotification,
   syntheticArgs,
-} from "./index.synthetic.spec";
+} from "../test/synthetics";
 import type Shortcut from ".";
 
 should();

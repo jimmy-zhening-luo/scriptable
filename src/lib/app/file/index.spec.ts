@@ -1,5 +1,5 @@
 import { should } from "chai";
-import { SyntheticFileManager } from "./index.synthetic.spec";
+import { SyntheticFileManager } from "../../../test/synthetics";
 import type File from ".";
 
 should();

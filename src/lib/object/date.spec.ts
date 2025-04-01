@@ -1,5 +1,5 @@
 import { should } from "chai";
-import { SyntheticDateFormatter } from "./date.synthetic.spec";
+import { SyntheticDateFormatter } from "../../test/synthetics";
 
 should();
 global.DateFormatter = SyntheticDateFormatter;
