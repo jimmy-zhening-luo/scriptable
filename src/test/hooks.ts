@@ -6,5 +6,5 @@ export const mochaHooks = {
     global.Notification = Synthetics.Notification;
     global.args = Synthetics.args;
     global.DateFormatter = Synthetics.DateFormatter;
-  }
+  },
 };
