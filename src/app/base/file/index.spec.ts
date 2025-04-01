@@ -1,8 +1,6 @@
 import { should } from "chai";
 import type File from ".";
 
-const file = global._File as typeof File;
-
 should();
 describe("File", function () {
   const { _File: file } = global as { readonly _File: typeof File },
