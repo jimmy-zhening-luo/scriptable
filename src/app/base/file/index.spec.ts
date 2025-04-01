@@ -1,10 +1,11 @@
 import { should } from "chai";
 import type File from ".";
 
+const file = global._File as typeof File;
+
 should();
 describe("File", function () {
-  const file = global._File as typeof File,
-  synthetic = new file(
+  const synthetic = new file(
     "Storage",
     {
       name: "SYNTHETIC_FILENAME.txt",
