@@ -1,8 +1,6 @@
 {
-  "$meta": {
-    "template": "37.0.0",
-    "rules": "https://github.com/DavidAnson/markdownlint/blob/v0.37.4/doc/Rules.md",
-  },
+  "$md": "37.1.0",
+  "$help": "https://github.com/DavidAnson/markdownlint/blob/v0.37.4/doc/Rules.md",
   // "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.37.4/schema/markdownlint-config-schema.json",
   "heading-increment": true /* MD001 */,
   "heading-style": {

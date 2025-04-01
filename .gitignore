@@ -1,19 +1,12 @@
-##########################################
-########                          ########
-########        .gitignore        ########
-########          v8.2.0          ########
-########                          ########
-##########################################
+##############################
+####      .gitignore      ####
+####       v249.0.0       ####
+##############################
 
-#region PROJECT
+# https://git-scm.com/docs/gitignore
 
-#endregion
-
-
-
-
-#region ./DIRECTORY
-#part Build
+#region Root Dir
+# Build
 /dist/
 /build/
 /built/
@@ -21,8 +14,7 @@
 /bundled/
 /pack/
 /packed/
-
-#part Environment
+# Local
 /in/
 /input/
 /out/
@@ -30,54 +22,39 @@
 #endregion
 
 
-
-
-#region **/DIRECTORY
-#part Dependency
-node_modules/
-
-#part Build
+#region Dir
+# Build
 .svelte-kit/
-
-#part OS
+# Dependency
+node_modules/
+# System
 .Trash/
 #endregion
 
 
-
-#region ./FILE
-# /*.foo
-# /path/*.foo
+#region Root File
 #endregion
 
 
-
-
-#region **/FILE
-#part Dependency
-.yarn-integrity
-
-#part Build
+#region File
+# Build
+*.DS_Store
+*.output
 *.tgz
 *.tsbuildinfo
-*.DS_Store
 *.vercel
-*.output
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-
-#part Environment
+# Dependency
+.yarn-integrity
+# Local
 *.env
 *.env.*
-!.env.*example
-.vscode/*
-!.vscode/*.code-snippets
-
-#part Cache
+!*.env.*example
+.vscode/**
+!.vscode/**/*.code-snippets
 *.eslintcache
 *.npm
-
-#part Log
 log
 logs
 *.log
@@ -85,7 +62,11 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-#part OS
+# System
 *.icloud
+.blink*
+#endregion
+
+
+#region Override
 #endregion
