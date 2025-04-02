@@ -1,7 +1,10 @@
 {
-  "$md": "37.1.0",
-  "$help": "https://github.com/DavidAnson/markdownlint/blob/v0.37.4/doc/Rules.md",
+  // #region Meta
+  // "$md": "37.2.0",
+  // "$help": "https://github.com/DavidAnson/markdownlint/blob/v0.37.4/doc/Rules.md",
   // "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.37.4/schema/markdownlint-config-schema.json",
+  // #endregion
+  // #region Rules
   "heading-increment": true /* MD001 */,
   "heading-style": {
     "style": "atx",
@@ -121,4 +124,5 @@
   } /* MD055 */,
   "table-column-count": true /* MD056 */,
   "blanks-around-tables": false /* MD058 */,
+  // #endregion
 }
