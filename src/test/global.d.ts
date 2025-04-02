@@ -4,6 +4,14 @@ declare interface Global {
   FileManager: typeof FileManager;
   Notification: typeof Notification;
   args: typeof args;
-  _Shortcut: unknown;
-  _File: unknown;
+  MockConcreteShortcut: new () => unknown;
+  mockFile: unknown;
 }
+
+declare class MockConcreteShortcut {
+  protected runtime(): string;
+}
+
+declare const mockFile: {
+  readonly mutable: boolean;
+};
