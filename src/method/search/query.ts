@@ -49,9 +49,9 @@ export default function (
 
       return [
         ...numeric(head[0], OPERATORS)
-          || head.length > 1
-          && head.startsWith(".")
-          && numeric(head[1] as char)
+        || head.length > 1
+        && head.startsWith(".")
+        && numeric(head[1] as char)
           ? [MATH] as const
           : [] as const,
         head,
