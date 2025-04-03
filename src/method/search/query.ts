@@ -41,31 +41,22 @@ export default function (
         return tokens as Arrayful<stringful>;
       }
 
-      function unroll(head: stringful) {
-        const operation = (/(?<key>^:{0}[a-zA-Z]+)(?<operand>:{0}(?:(?:\d)|(?:-\d))(?:[-a-zA-Z\d]*$))/u).exec(head)
-          ?.groups;
-
-        return typeof operation === "undefined"
-          ? [head] as const
-          : [
-              operation["key"] as stringful,
-              operation["operand"] as stringful,
-            ] as const;
-      }
-
       function numeric(char: char, operators = "") {
         return char >= "0" && char <= "9" || operators.includes(char);
       }
 
-      const tokens = tokenize(input, FALLBACK),
-      [head, ...rest] = tokens;
+      const [head, ...rest] = tokenize(input, FALLBACK);
 
-      return numeric(head[0], OPERATORS)
-        || head.length > 1
-        && head.startsWith(".")
-        && numeric(head[1] as char)
-        ? [MATH, ...tokens] as const
-        : [...unroll(head), ...rest] as const;
+      return [
+        ...numeric(head[0], OPERATORS)
+          || head.length > 1
+          && head.startsWith(".")
+          && numeric(head[1] as char)
+          ? [MATH] as const
+          : [] as const,
+        head,
+        ...rest,
+      ] as const;
     }
 
     const tokens = operate(
