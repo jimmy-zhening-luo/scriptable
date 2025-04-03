@@ -90,11 +90,11 @@
     "deploy:filter:windows": "cmd /c \"(rmdir /s /q packed\\test) & (del /s /q packed\\*.tsbuildinfo packed\\*.d.ts packed\\*.map packed\\*.spec.js)\"",
     "deploy:filter:default": "(rm -rf packed/test) && (find packed -type f \\( -name \"*.tsbuildinfo\" -or -name \"*.d.ts\" -or -name \"*.map\" -or -name \"*.spec.js\"  \\) -delete)",
     "deploy:replace": "run-s deploy:replace:**",
-    "deploy:replace:prepend:app:header-strict": "rr \"^(\\/\\/ icon-color: [-a-z]+; icon-glyph: [-a-z]+;(?:\\s\\/\\/ share-sheet-inputs: [- ,a-z]+;)?)(.+)$\" \"// Variables used by Scriptable.\\n// These must be at the very top of the file. Do not edit.\\n€1\\n\\x22use strict\\x22;\\n€2\" -M -s -I -u \"packed/*.js\"",
-    "deploy:replace:prepend:lib:strict": "rr \"^((?!\\/\\/ Variables used by Scriptable\\.\\s).+)$\" \"\\x22use strict\\x22;\\n€1\" -M -s -I -u \"packed/**/*.js\"",
-    "deploy:replace:resolve:import": "rr \"import ([-_a-zA-Z0-9]+) from (.+);$\" \"const €1 = importModule(€2);\" -I -u \"packed/**/*.js\"",
-    "deploy:replace:resolve:export": "rr \"export default \" \"module.exports = \" -L -I \"packed/**/*.js\"",
-    "deploy:replace:delete:sourcemap": "rr \"^\\/\\/# sourceMappingURL=.+\\.map$\" \"\" -I -u \"packed/**/*.js\""
+    "deploy:replace:prepend:app:header+strict": "rr \"^(\\/\\/ icon-color: [-a-z]+; icon-glyph: [-a-z]+;(?:\\s\\/\\/ share-sheet-inputs: [- ,a-z]+;)?)(.+)$\" \"// Variables used by Scriptable.\\n// These must be at the very top of the file. Do not edit.\\n€1\\n\\x22use strict\\x22;\\n€2\" -I -u -G -M -s \"packed/*.js\" -B -H",
+    "deploy:replace:prepend:lib:strict": "rr \"^((?!\\/\\/ Variables used by Scriptable\\.\\s).+)$\" \"\\x22use strict\\x22;\\n€1\" -I -u -G -M -s \"packed/**/*.js\" -B -H",
+    "deploy:replace:resolve:import": "rr \"\\bimport ([\\w]+) from (.+);$\" \"const €1 = importModule(€2);\" -I -u \"packed/**/*.js\" -B -H",
+    "deploy:replace:resolve:export": "rr \"^(\\s*)export default \" \"€1module.exports = \" -I -u \"packed/**/*.js\" -B -H",
+    "deploy:replace:delete:sourcemap": "rr \"^\\/\\/# sourceMappingURL=.+\\.map$\" \"\" -I -u \"packed/**/*.js\" -B -H"
   },
   "publishConfig": {
     "tag": "next"
