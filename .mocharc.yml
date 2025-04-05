@@ -6,7 +6,7 @@
 # https://mochajs.org/#configuration-format
 # https://mochajs.org/#command-line-usage
 
-require: dist/test/hooks.js
+require: dist/_test/hooks.js
 spec:
   - "dist/**/*.spec.js"
 extension:
