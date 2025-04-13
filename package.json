@@ -59,7 +59,7 @@
     "postbuild": "echo \"Build complete.\"",
     "postbuild:lint:required:true": "npm run lint",
     "postbuild:lint:required:false": "(npm run lint) || (echo \"Linting (optional) skipped. Continuing...\")",
-    "lint": "eslint --cache --fix \"{.,{src,tests,static,typings,public,tools,.github,.vscode}/**}/*.{js,cjs,mjs,ts,cts,mts,svelte,html,css,json,jsonc,code-snippets,yml,yaml}\"",
+    "lint": "eslint --cache --fix \"{,{src,tests,static,typings,public,tools,.github,.vscode}/**/}*.{js,cjs,mjs,ts,cts,mts,svelte,html,css,json,jsonc,code-snippets,yml,yaml}\"",
     "lint:clean": "npm run clean:lint && npm run lint",
     "pretest": "npm run build",
     "test": "run-os",
