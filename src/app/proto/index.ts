@@ -141,8 +141,8 @@ export default abstract class App<
 
     return strings as unknown as (
       A extends readonly [string, ...string[]]
-        ? { [K in keyof A]: NonNullable<strings[number]>; }
-        : Arrayful<NonNullable<strings[number]>>
+        ? { [K in keyof A]: NonNullable<typeof strings[number]>; }
+        : Arrayful<NonNullable<typeof strings[number]>>
     );
   }
 
@@ -161,8 +161,8 @@ export default abstract class App<
 
     return strings as unknown as (
       A extends readonly [string, ...string[]]
-        ? { [K in keyof A]: NonNullable<strings[number]>; }
-        : Arrayful<NonNullable<strings[number]>>
+        ? { [K in keyof A]: NonNullable<typeof strings[number]>; }
+        : Arrayful<NonNullable<typeof strings[number]>>
     );
   }
 
