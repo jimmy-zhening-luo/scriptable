@@ -51,7 +51,7 @@ export default function (
       }
 
       const tokens = tokenize(input, FALLBACK),
-      [head = [char0, char1]] = tokens;
+      [[char0, char1]] = tokens;
 
       return [
         ...char0 >= "0"
