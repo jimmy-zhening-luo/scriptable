@@ -82,7 +82,7 @@ export default function (
         selector === "."
         && parts.length === 1
         && parts.at(0) === ""
-          ? terms.pop() ?? ""
+          ? terms.shift() ?? ""
           : parts.join(selector),
       ]
         .join("") as stringful;
