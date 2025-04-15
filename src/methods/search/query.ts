@@ -9,6 +9,7 @@ export default function (
   function select(
     input: string,
     SELECTORS: Arrayful<char>,
+    OPERATORS: stringful,
     FALLBACKS: Arrayful<stringful>,
   ) {
     function expand(
