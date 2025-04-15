@@ -1,33 +1,24 @@
-import type { SearchSetting } from "../../types/Search";
-
 export default function (
   input: string,
-  engines: SearchSetting["engines"],
-  alias: FieldTable,
-  FALLBACK: Triad<stringful>,
   SELECTORS: Arrayful<char>,
   OPERATORS: stringful,
-  MATH: stringful,
-  TRANSLATE: stringful,
-  CHAT: stringful,
+  FALLBACKS: Arrayful<stringful>,
+  alias: FieldTable,
+  engines: Set<string>,
 ) {
   function select(
     input: string,
-    FALLBACK: Triad<stringful>,
     SELECTORS: Arrayful<char>,
-    OPERATORS: stringful,
-    MATH: stringful,
-    TRANSLATE: stringful,
+    FALLBACKS: Arrayful<stringful>,
   ) {
     function expand(
       input: string,
-      FALLBACK: Triad<stringful>,
       OPERATORS: stringful,
-      MATH: stringful,
+      FALLBACKS: Arrayful<stringful>,
     ) {
       function tokenize(
         input: string,
-        FALLBACK: Triad<stringful>,
+        FALLBACKS: Arrayful<stringful>,
       ) {
         const tokens = input
           .split(" ")
@@ -36,10 +27,10 @@ export default function (
 
         if (spaces > 0)
           tokens.unshift(
-            FALLBACK.at(
+            FALLBACKS.at(
               Math.min(
                 spaces,
-                FALLBACK.length,
+                FALLBACKS.length,
               ) - 1,
             ) as stringful,
           );
@@ -50,7 +41,10 @@ export default function (
         return tokens as Arrayful<stringful>;
       }
 
-      const tokens = tokenize(input, FALLBACK),
+      const tokens = tokenize(
+        input,
+        FALLBACKS,
+      ),
       [[char0, char1]] = tokens;
 
       return [
@@ -59,7 +53,7 @@ export default function (
         || OPERATORS.includes(char0)
         || typeof char1 !== "undefined"
         && Number.isFinite(Number([char0, char1].join("")))
-          ? [MATH] as const
+          ? ["math" satisfies literalful<"math"> as stringful] as const
           : [] as const,
         ...tokens,
       ] as const;
@@ -71,9 +65,8 @@ export default function (
 
     const tokens = expand(
       input,
-      FALLBACK,
       OPERATORS,
-      MATH,
+      FALLBACKS,
     ),
     [head, ...terms] = tokens,
     selector = SELECTORS.find(selector => head.indexOf(selector) >= 0);
@@ -82,7 +75,7 @@ export default function (
       return tokens;
     else {
       const [newHead = "", ...parts] = head.split(selector),
-      key = newHead === "" ? TRANSLATE : newHead as stringful,
+      key = newHead === "" ? "translate" satisfies literalful<"translate"> as stringful : newHead as stringful,
       selection = [
         SELECTORS[0],
         selector === "."
@@ -103,22 +96,20 @@ export default function (
 
   const [_K, ..._terms] = select(
     input,
-    FALLBACK,
     SELECTORS,
     OPERATORS,
-    MATH,
-    TRANSLATE,
+    FALLBACKS,
   ),
   _key = (_K satisfies stringful).toLowerCase() as stringful,
   {
     key = _key,
     terms = [..._terms] as const,
-  } = _key in engines
+  } = engines.has(_key)
     ? {}
     : _key in alias
       ? { key: alias[_key] as stringful }
       : {
-          key: CHAT,
+          key: "chat" satisfies literalful<"chat"> as stringful,
           terms: [_K, ..._terms] as const,
         },
   termString = terms.join(" "),

@@ -15,19 +15,14 @@ class Search extends Shortcut<
     const {
       input: _input = "",
       setting: {
-        tags: { query: tag },
-        engines,
-        alias,
         reserved: {
+          tags: { query: tag },
           selectors,
           operators,
         },
-        defaults: {
-          math,
-          chat,
-          translate,
-          fallback,
-        },
+        fallbacks,
+        alias,
+        engines,
       },
     } = this,
     input = _input === "" ? this.read() : _input,
@@ -38,16 +33,11 @@ class Search extends Shortcut<
       recomposed,
     } = Query(
       input,
-      engines,
-      alias,
-      this.stringfuls(fallback),
       this.chars(selectors),
-      ...this.stringfuls([
-        operators,
-        math,
-        translate,
-        chat,
-      ] as const),
+      this.stringful(operators),
+      this.stringfuls(fallbacks),
+      alias,
+      new Set<string>(Object.keys(engines)),
     ),
     entry = engines[key] as typeof engines[string],
     engine = Array.isArray(entry) || typeof entry === "string"

@@ -1,20 +1,14 @@
 import type { SearchEngineSetting } from "./engine";
 
 export interface SearchSetting {
-  readonly tags: Field<
-    | "query"
-  >;
-  readonly reserved: Field<
-    | "selectors"
-    | "operators"
-  >;
-  readonly defaults: Field<
-    | "math"
-    | "chat"
-    | "translate"
-  > & {
-    readonly fallback: Triad;
+  readonly reserved: {
+    readonly tags: Field<
+      | "query"
+    >;
+    readonly selectors: string[];
+    readonly operators: string;
   };
+  readonly fallbacks: string[];
   readonly alias: FieldTable;
   readonly engines: Table<
     | Unflat<string, true>
