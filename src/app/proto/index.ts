@@ -139,10 +139,10 @@ export default abstract class App<
     else if (!strings.every((string): string is char => string.length === 1))
       throw new TypeError("Array has non-chars", { cause: { cause, strings } });
 
-    return strings satisfies readonly char[] as unknown as (
+    return strings as unknown as (
       A extends readonly [string, ...string[]]
-        ? { [K in keyof A]: char; }
-        : Arrayful<char>
+        ? { [K in keyof A]: NonNullable<strings[number]>; }
+        : Arrayful<NonNullable<strings[number]>>
     );
   }
 
@@ -159,10 +159,10 @@ export default abstract class App<
     else if (!strings.every((string): string is stringful => string !== ""))
       throw new TypeError("Array has unstringfuls", { cause: { cause, strings } });
 
-    return strings satisfies readonly stringful[] as unknown as (
+    return strings as unknown as (
       A extends readonly [string, ...string[]]
-        ? { [K in keyof A]: stringful; }
-        : Arrayful<stringful>
+        ? { [K in keyof A]: NonNullable<strings[number]>; }
+        : Arrayful<NonNullable<strings[number]>>
     );
   }
 
