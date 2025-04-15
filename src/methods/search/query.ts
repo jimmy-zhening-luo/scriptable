@@ -70,7 +70,7 @@ export default function (
       FALLBACKS,
     ),
     [head, ...terms] = tokens,
-    selector = SELECTORS.find(selector => head.indexOf(selector) >= 0);
+    selector = SELECTORS.find(selector => head.includes(selector));
 
     if (typeof selector === "undefined")
       return tokens;
