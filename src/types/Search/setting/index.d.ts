@@ -5,7 +5,7 @@ export interface SearchSetting {
     | "query"
   >;
   readonly reserved: Field<
-    | "selector"
+    | "selectors"
     | "operators"
   >;
   readonly defaults: Field<

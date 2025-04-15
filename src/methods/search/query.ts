@@ -5,7 +5,7 @@ export default function (
   engines: SearchSetting["engines"],
   alias: FieldTable,
   FALLBACK: Triad<stringful>,
-  SELECTOR: char,
+  SELECTORS: Arrayful<char>,
   OPERATORS: stringful,
   MATH: stringful,
   TRANSLATE: stringful,
@@ -14,12 +14,12 @@ export default function (
   function select(
     input: string,
     FALLBACK: Triad<stringful>,
-    SELECTOR: char,
+    SELECTORS: Arrayful<char>,
     OPERATORS: stringful,
     MATH: stringful,
     TRANSLATE: stringful,
   ) {
-    function operate(
+    function expand(
       input: string,
       FALLBACK: Triad<stringful>,
       OPERATORS: stringful,
@@ -29,79 +29,82 @@ export default function (
         input: string,
         FALLBACK: Triad<stringful>,
       ) {
-        const tokens = input.split(" ").filter((token): token is stringful => token !== ""),
+        const tokens = input
+          .split(" ")
+          .filter((token): token is stringful => token !== ""),
         spaces = input.length - input.trimStart().length;
 
         if (spaces > 0)
-          tokens.unshift(FALLBACK.at(Math.min(spaces, FALLBACK.length) - 1) as stringful);
+          tokens.unshift(
+            FALLBACK.at(
+              Math.min(
+                spaces,
+                FALLBACK.length,
+              ) - 1,
+            ) as stringful,
+          );
 
-        if (tokens.length < 1)
+        if (tokens.length === 0)
           throw new RangeError("Query has no tokens", { cause: input });
 
         return tokens as Arrayful<stringful>;
       }
 
-      function numeric(char: char, operators = "") {
-        return char >= "0" && char <= "9" || operators.includes(char);
-      }
-
-      const [head, ...rest] = tokenize(input, FALLBACK);
+      const tokens = tokenize(input, FALLBACK),
+      [head = [char0, char1]] = tokens;
 
       return [
-        ...numeric(head[0], OPERATORS)
-        || head.length > 1
-        && head.startsWith(".")
-        && numeric(head[1] as char)
+        ...char0 >= "0"
+        && char0 <= "9"
+        || OPERATORS.includes(char0)
+        || typeof char1 !== "undefined"
+        && Number.isFinite(Number([char0, char1].join("")))
           ? [MATH] as const
           : [] as const,
-        head,
-        ...rest,
+        ...tokens,
       ] as const;
     }
 
-    const tokens = operate(
+    for (const selector of SELECTORS)
+      if (OPERATORS.includes(selector))
+        throw new SyntaxError("Operators contain forbidden selector");
+
+    const tokens = expand(
       input,
       FALLBACK,
       OPERATORS,
       MATH,
     ),
-    [head, ...rest] = tokens,
-    { selector, index } = (([iSelector, iDot]) => iDot < 0 || iSelector >= 0 && iSelector < iDot
-      ? { selector: SELECTOR, index: iSelector }
-      : { selector: ".", index: iDot })(([SELECTOR, "."] satisfies Dyad).map(s => head.indexOf(s)) satisfies number[] as unknown as Dyad<number>);
+    [head, ...terms] = tokens,
+    selector = SELECTORS.find(selector => head.indexOf(selector) >= 0);
 
-    if (index < 0)
+    if (typeof selector === "undefined")
       return tokens;
     else {
-      const [pre, ...selected] = head.split(selector) satisfies string[] as unknown as readonly [stringful, ...string[]],
-      {
-        key = pre,
-        selection = selected.join(selector),
-        tail = rest,
-      } = pre === ""
-        ? { key: TRANSLATE }
-        : selected.length < 2 && (selected[0] as string) === ""
-          ? {
-              selection: rest[0] ?? "",
-              tail: rest.slice(1),
-            }
-          : {};
+      const [newHead = "", ...parts] = head.split(selector),
+      key = newHead === "" ? TRANSLATE : newHead as stringful,
+      selection = [
+        SELECTORS[0],
+        selector === "."
+        && parts.length === 1
+        && parts.at(0) === ""
+          ? terms.pop() ?? ""
+          : parts.join(selector),
+      ]
+        .join("") as stringful;
 
       return [
         key,
-        `${SELECTOR}${selection}` as stringful,
-        ...tail,
+        selection,
+        ...terms,
       ] as const;
     }
   }
 
-  if (`${SELECTOR}${OPERATORS}`.includes("."))
-    throw new SyntaxError("Bad selector/operator");
-
   const [_K, ..._terms] = select(
     input,
     FALLBACK,
-    SELECTOR,
+    SELECTORS,
     OPERATORS,
     MATH,
     TRANSLATE,
@@ -126,7 +129,11 @@ export default function (
     ? {}
     : {
         question: termString,
-        recomposed: `${key} ${termString}`,
+        recomposed: [
+          key,
+          termString,
+        ]
+          .join(" "),
       };
 
   return {

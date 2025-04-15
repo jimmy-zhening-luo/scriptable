@@ -19,7 +19,7 @@ class Search extends Shortcut<
         engines,
         alias,
         reserved: {
-          selector,
+          selectors,
           operators,
         },
         defaults: {
@@ -41,7 +41,7 @@ class Search extends Shortcut<
       engines,
       alias,
       this.stringfuls(fallback),
-      this.char(selector),
+      this.chars(selectors),
       ...this.stringfuls([
         operators,
         math,

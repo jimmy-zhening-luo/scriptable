@@ -128,9 +128,22 @@ export default abstract class App<
 
   protected char(string = "", cause = "") {
     if (string.length !== 1)
-      throw new TypeError("Not a char", { cause });
+      throw new TypeError("Non-char", { cause });
 
     return string as char;
+  }
+
+  protected chars<A extends readonly string[]>(strings: A, cause = "") {
+    if (strings.length === 0)
+      throw new RangeError("No chars", { cause });
+    else if (!strings.every((string): string is char => string.length === 1))
+      throw new TypeError("Array has non-chars", { cause: { cause, strings } });
+
+    return strings satisfies readonly char[] as unknown as (
+      A extends readonly [string, ...string[]]
+        ? { [K in keyof A]: char; }
+        : Arrayful<char>
+    );
   }
 
   protected stringful(string = "", cause = "") {
@@ -140,20 +153,15 @@ export default abstract class App<
     return string as stringful;
   }
 
-  protected stringfuls<T extends readonly string[]>(array: T, cause = "") {
-    if (array.length === 0)
-      throw new RangeError("Empty unstringful array", { cause });
-    else if (!array.every((i): i is stringful => i !== ""))
-      throw new TypeError("Unstringful array", {
-        cause: {
-          cause,
-          array,
-        },
-      });
+  protected stringfuls<A extends readonly string[]>(strings: A, cause = "") {
+    if (strings.length === 0)
+      throw new RangeError("No stringfuls", { cause });
+    else if (!strings.every((string): string is stringful => string !== ""))
+      throw new TypeError("Array has unstringfuls", { cause: { cause, strings } });
 
-    return array satisfies readonly stringful[] as unknown as (
-      T extends readonly [string, ...string[]]
-        ? { [K in keyof T]: stringful; }
+    return strings satisfies readonly stringful[] as unknown as (
+      A extends readonly [string, ...string[]]
+        ? { [K in keyof A]: stringful; }
         : Arrayful<stringful>
     );
   }
