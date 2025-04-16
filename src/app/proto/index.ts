@@ -52,20 +52,13 @@ export default abstract class App<
 
   protected get setting() {
     try {
-      return this.config ??= ((config: unknown): Schema => {
-        if (typeof config !== "object" || config === null)
-          throw new SyntaxError("Non-JSON setting file");
-
-        return config as typeof config & Schema;
-      })(
-        JSON.parse(
-          new File<"Setting">(
-            "Setting",
-            { file: `${this.app}.json` },
-          )
-            .readful(),
-        ),
-      );
+      return this.config ??= JSON.parse(
+        new File<"Setting">(
+          "Setting",
+          { file: `${this.app}.json` },
+        )
+          .readful(),
+      ) as Schema;
     }
     catch (e) {
       throw new Error("Failed to read setting", { cause: e });
