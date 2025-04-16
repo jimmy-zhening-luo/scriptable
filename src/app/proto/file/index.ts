@@ -13,15 +13,16 @@ export default class File<Filetype extends string> {
     public readonly mutable = false,
   ) {
     try {
-      const bookmarked = File.manager.bookmarkExists(filetype);
+      const { manager } = File,
+      bookmarked = manager.bookmarkExists(filetype);
 
       if (!bookmarked && !mutable)
         throw new ReferenceError("No file root found");
 
       const root = bookmarked
-        ? File.manager.bookmarkedPath(filetype)
+        ? manager.bookmarkedPath(filetype)
         : [
-            File.manager.libraryDirectory(),
+            manager.libraryDirectory(),
             filetype,
           ]
             .join("/"),
@@ -43,7 +44,7 @@ export default class File<Filetype extends string> {
         ...subpath.slice(0, -1),
       ]
         .join("/");
-      this.exists = File.manager.fileExists(this.path);
+      this.exists = manager.fileExists(this.path);
     }
     catch (e) {
       throw new Error(
@@ -96,23 +97,24 @@ export default class File<Filetype extends string> {
       | "append"
       | boolean = false,
   ) {
-    const { path, parent } = this;
-
     try {
+      const manager = File,
+      { path, parent } = this;
+
       if (!this.mutable)
         throw new ReferenceError("Readonly file");
       else if (data === null)
         throw new TypeError("Null write data");
-      else if (File.manager.isDirectory(path))
+      else if (manager.isDirectory(path))
         throw new ReferenceError("Write target is folder");
       else if (this.exists) {
         if (overwrite === false)
           throw new ReferenceError("Mutable file but overwrite=false");
       }
-      else if (!File.manager.isDirectory(parent))
-        File.manager.createDirectory(parent, true);
+      else if (!manager.isDirectory(parent))
+        manager.createDirectory(parent, true);
 
-      File.manager.writeString(
+      manager.writeString(
         path,
         Array.isArray(data)
           ? [
