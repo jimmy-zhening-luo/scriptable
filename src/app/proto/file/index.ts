@@ -112,7 +112,7 @@ export default class File<Filetype extends string> {
         throw new ReferenceError("Write target is folder");
       else if (this.exists) {
         if (overwrite === false)
-          throw new ReferenceError("Mutable file but overwrite=false");
+          throw new ReferenceError("Overwrite is false");
       }
       else if (!manager.isDirectory(parent))
         manager.createDirectory(parent, true);

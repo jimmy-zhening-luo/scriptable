@@ -32,7 +32,7 @@ export default abstract class App<
     const { input } = this;
 
     if (typeof input === "undefined")
-      throw new TypeError("Empty app input");
+      throw new TypeError("Null app input");
 
     return input;
   }
