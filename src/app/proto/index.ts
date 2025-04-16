@@ -22,27 +22,6 @@ export default abstract class App<
     }
   }
 
-  protected get setting() {
-    try {
-      return this.config ??= ((config: unknown): Schema => {
-        if (typeof config !== "object" || config === null)
-          throw new SyntaxError("Non-JSON setting file");
-
-        return config as typeof config & Schema;
-      })(
-        JSON.parse(new File<"Setting">(
-          "Setting",
-          {
-            name: `${this.app}.json`,
-          },
-        ).readful()),
-      );
-    }
-    catch (e) {
-      throw new Error("Failed to read setting", { cause: e });
-    }
-  }
-
   protected get input() {
     try {
       return this.getInput() ?? this.synthetic ?? undefined;
@@ -72,6 +51,27 @@ export default abstract class App<
 
   protected get inputStringful() {
     return this.stringful(this.inputString, "Unstringful input");
+  }
+
+  protected get setting() {
+    try {
+      return this.config ??= ((config: unknown): Schema => {
+        if (typeof config !== "object" || config === null)
+          throw new SyntaxError("Non-JSON setting file");
+
+        return config as typeof config & Schema;
+      })(
+        JSON.parse(new File<"Setting">(
+          "Setting",
+          {
+            name: `${this.app}.json`,
+          },
+        ).readful()),
+      );
+    }
+    catch (e) {
+      throw new Error("Failed to read setting", { cause: e });
+    }
   }
 
   private static error(app: stringful, error: unknown) {
