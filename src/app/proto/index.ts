@@ -10,12 +10,9 @@ export default abstract class App<
 
   constructor() {
     try {
-      const { name = "" } = this.constructor;
+      const { name: app = "" } = this.constructor;
 
-      if (name === "")
-        throw new EvalError("Nameless app constructor");
-
-      this.app = name as stringful;
+      this.app = this.stringful(app, "Anonymous app instance");
     }
     catch (e) {
       throw new Error("Failed to instantiate app", { cause: e });
