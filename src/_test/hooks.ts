@@ -22,7 +22,7 @@ export async function mochaGlobalSetup() {
     global.mockFile = new _File(
       "Storage",
       {
-        name: "SYNTHETIC_FILENAME.txt",
+        file: "SYNTHETIC_FILENAME.txt",
         folder: "SYNTHETIC_SUBFOLDER",
       },
       true,

@@ -58,12 +58,13 @@ export default abstract class App<
 
         return config as typeof config & Schema;
       })(
-        JSON.parse(new File<"Setting">(
-          "Setting",
-          {
-            name: `${this.app}.json`,
-          },
-        ).readful()),
+        JSON.parse(
+          new File<"Setting">(
+            "Setting",
+            { file: `${this.app}.json` },
+          )
+            .readful(),
+        ),
       );
     }
     catch (e) {
@@ -163,43 +164,45 @@ export default abstract class App<
     );
   }
 
-  protected read(...[filename]: Parameters<App<Input, Output, Schema>["storage"]>) {
-    return this.storage(filename).read();
+  protected read(...file: Parameters<App<Input, Output, Schema>["storage"]>) {
+    return this.storage(...file).read();
   }
 
-  protected readful(...[filename]: Parameters<App<Input, Output, Schema>["storage"]>) {
-    return this.storage(filename).readful();
+  protected readful(...file: Parameters<App<Input, Output, Schema>["storage"]>) {
+    return this.storage(...file).readful();
   }
 
   protected write(...[
     data,
     overwrite = true,
-    file,
+    ...file,
   ]: [...Parameters<File<"Storage">["write"]>, ...Parameters<App<Input, Output, Schema>["storage"]>]) {
-    this.storage(file).write(data, overwrite);
+    this.storage(...file).write(data, overwrite);
   }
 
-  protected delete(...[filename]: Parameters<App<Input, Output, Schema>["storage"]>) {
-    this.storage(filename).delete();
+  protected delete(...file: Parameters<App<Input, Output, Schema>["storage"]>) {
+    this.storage(...file).delete();
   }
 
-  private storage(filename: string | Field<never, "name" | "ext"> = {}) {
+  private storage(
+    name = "",
+    extension = "",
+  ) {
     const { app } = this,
-    {
-      name: base = app,
-      ext = "txt",
-    } = typeof filename === "object"
-      ? filename
-      : { name: filename };
+    file = [
+      name === "" ? app : name,
+      extension === "" ? "txt" : extension,
+    ]
+      .join(".");
 
-    if (base === "")
-      throw new SyntaxError("Empty storage filename");
-    else if (ext === "")
-      throw new SyntaxError("Empty storage file extension");
-
-    const name = `${base}.${ext}`;
-
-    return this.cache[name] ??= new File("Storage", { name, folder: app }, true);
+    return this.cache[file] ??= new File(
+      "Storage",
+      { 
+        file,
+        folder: app,
+      },
+      true,
+    );
   }
 
   protected abstract getInput(): Undef<Input>;

@@ -7,17 +7,16 @@ export default class File<Filetype extends string> {
   constructor(
     filetype: literalful<Filetype>,
     {
-      name,
+      file,
       folder = "",
-    }: Field<"name", "folder">,
+    }: Field<"file", "folder">,
     public readonly mutable = false,
   ) {
     try {
-      const bookmarked = File.manager.bookmarkExists(filetype),
-      rooted = bookmarked || mutable;
+      const bookmarked = File.manager.bookmarkExists(filetype);
 
-      if (!rooted)
-        throw new ReferenceError("Missing filetype root", { cause: { filetype } });
+      if (!bookmarked && !mutable)
+        throw new ReferenceError("No file root found");
 
       const root = bookmarked
         ? File.manager.bookmarkedPath(filetype)
@@ -26,27 +25,36 @@ export default class File<Filetype extends string> {
             filetype,
           ]
             .join("/"),
-      subpath = [
-        folder,
-        name,
-      ]
+      subpath = [folder, file]
         .join("/")
         .split("/")
         .filter(segment => segment !== "");
 
       if (subpath.length === 0)
-        throw new SyntaxError("Empty file subpath", { cause: { folder, name } });
+        throw new SyntaxError("No file subpath");
 
-      this.path = `${root}/${subpath.join("/")}`;
-      this.parent = `${root}/${
-        subpath
-          .slice(0, -1)
-          .join("/")
-      }`;
+      this.path = [
+        root,
+        ...subpath,
+      ]
+        .join("/");
+      this.parent = [
+        root,
+        ...subpath.slice(0, -1),
+      ]
+        .join("/");
       this.exists = File.manager.fileExists(this.path);
     }
     catch (e) {
-      throw new Error("Failed to create file handler", { cause: new Error(`${filetype}:${folder}/${name}`, { cause: e }) });
+      throw new Error(
+        "Failed to handle file",
+        { 
+          cause: new Error(
+            `${filetype}:${folder}/${file}`,
+            { cause: e },
+          ),
+        },
+      );
     }
   }
 
