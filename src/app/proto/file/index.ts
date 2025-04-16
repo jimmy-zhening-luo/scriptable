@@ -76,12 +76,15 @@ export default class File<Filetype extends string> {
   }
 
   public readful() {
-    const read = this.read(true);
+    const content = this.read(true);
 
-    if (read === "")
-      throw new TypeError("Unstringful file content", { cause: { path: this.path } });
+    if (content === "")
+      throw this.error(
+        new TypeError("Empty file"),
+        "readful",
+      );
 
-    return read as stringful;
+    return content as stringful;
   }
 
   public write(
