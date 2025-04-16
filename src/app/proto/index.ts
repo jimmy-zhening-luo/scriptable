@@ -53,7 +53,7 @@ export default abstract class App<
   protected get setting() {
     try {
       return this.config ??= JSON.parse(
-        new File<"Setting">(
+        new File(
           "Setting",
           { file: `${this.app}.json` },
         )
