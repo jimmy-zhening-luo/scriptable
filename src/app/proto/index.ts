@@ -175,7 +175,7 @@ export default abstract class App<
   protected write(...[
     data,
     overwrite = true,
-    ...file,
+    ...file
   ]: [...Parameters<File<"Storage">["write"]>, ...Parameters<App<Input, Output, Schema>["storage"]>]) {
     this.storage(...file).write(data, overwrite);
   }
