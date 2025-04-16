@@ -98,7 +98,7 @@ export default class File<Filetype extends string> {
       | boolean = false,
   ) {
     try {
-      const manager = File,
+      const { manager } = File,
       { path, parent } = this;
 
       if (!this.mutable)
