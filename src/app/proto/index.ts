@@ -197,7 +197,7 @@ export default abstract class App<
 
     return this.cache[file] ??= new File(
       "Storage",
-      { 
+      {
         file,
         folder: app,
       },

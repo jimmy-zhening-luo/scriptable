@@ -48,7 +48,7 @@ export default class File<Filetype extends string> {
     catch (e) {
       throw new Error(
         "Failed to handle file",
-        { 
+        {
           cause: new Error(
             `${filetype}:${folder}/${file}`,
             { cause: e },
