@@ -32,7 +32,7 @@ export default class File<Filetype extends string> {
       ]
         .join("/")
         .split("/")
-        .filter(node => node !== "");
+        .filter(segment => segment !== "");
 
       if (subpath.length === 0)
         throw new SyntaxError("Empty file subpath", { cause: { folder, name } });
