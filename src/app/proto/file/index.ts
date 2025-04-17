@@ -17,7 +17,7 @@ export default class File<Filetype extends string> {
       bookmarked = manager.bookmarkExists(filetype);
 
       if (!bookmarked && !mutable)
-        throw new ReferenceError("No file root found");
+        throw new ReferenceError("No file root");
 
       const root = bookmarked
         ? manager.bookmarkedPath(filetype)
@@ -88,7 +88,7 @@ export default class File<Filetype extends string> {
   }
 
   public write(
-    data: Null<
+    content: Null<
       | string
       | number
       | boolean
@@ -106,10 +106,10 @@ export default class File<Filetype extends string> {
 
       if (!this.mutable)
         throw new ReferenceError("Readonly file");
-      else if (data === null)
-        throw new TypeError("Null write data");
+      else if (content === null)
+        throw new TypeError("Null content");
       else if (manager.isDirectory(path))
-        throw new ReferenceError("Write target is folder");
+        throw new ReferenceError("Target is folder");
       else if (this.exists) {
         if (overwrite === false)
           throw new ReferenceError("Overwrite is false");
@@ -119,27 +119,27 @@ export default class File<Filetype extends string> {
 
       manager.writeString(
         path,
-        Array.isArray(data)
+        Array.isArray(content)
           ? [
-              data
+              content
                 .reverse()
                 .join("\n"),
               this.read(),
             ]
               .join("\n")
-          : typeof data === "object"
-            ? JSON.stringify(data)
+          : typeof content === "object"
+            ? JSON.stringify(content)
             : typeof overwrite !== "string"
-              ? String(data)
+              ? String(content)
               : overwrite === "line"
                 ? [
-                    String(data),
+                    String(content),
                     this.read(),
                   ]
                     .join("\n")
                 : [
                     this.read(),
-                    String(data),
+                    String(content),
                   ]
                     .join(""),
       );
