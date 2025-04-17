@@ -1,19 +1,34 @@
 import type Url from "../app/lib/url";
 
 export interface LinkSetting {
-  readonly hosts: {
-    readonly www: readonly Url["host"][];
-    readonly canonical: Endomap<Url["host"]>;
+  readonly allow: {
+    readonly host: {
+      readonly www: readonly Url["host"][];
+    };
+    readonly query: {
+      readonly all: readonly Url["host"][];
+      readonly except: Readonly<Record<
+        Url["host"],
+        readonly stringful[]
+      >>;
+    };
+    readonly fragment: readonly Url["host"][];
   };
-  readonly queries: Readonly<Record<
-    | "include"
-    | "exclude",
-    Record<Url["host"], readonly stringful[]>
-  >> & {
-    readonly remove: readonly Url["host"][];
-    readonly substitute: Record<Url["host"], FieldTable>;
+  readonly block: {
+    readonly query: {
+      readonly all: readonly Url["host"][];
+      readonly except: Readonly<Record<
+        Url["host"],
+        readonly stringful[]
+      >>;
+    };
+    readonly fragment: readonly Url["host"][];
   };
-  readonly fragments: {
-    readonly shave: readonly Url["host"][];
+  readonly replace: {
+    readonly host: Endomap<Url["host"]>;
+    readonly query: Readonly<
+      Record<Url["host"],
+      FieldTable
+    >>;
   };
 }

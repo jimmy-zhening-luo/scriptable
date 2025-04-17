@@ -15,31 +15,29 @@ class Link extends Shortcut<
     const {
       input = "",
       setting: {
-        hosts,
-        queries,
-        fragments,
+        allow,
+        block,
+        replace,
       },
     } = this,
     url = new Url(input),
-    host = ((host: Url["host"]) => (headless => hosts.canonical[headless] ?? headless)(!host.startsWith("www.") || hosts.www.includes(host) ? host : host.slice(4) as typeof host))(url.host),
-    [
-      include = null,
-      exclude = null,
-    ] = (["include", "exclude"] as const).map(group => queries[group][host]),
-    substitute = queries.substitute[host] ?? null;
+    host = ((host: Url["host"]) => (headless => replace.host[headless] ?? headless)(!host.startsWith("www.") || allow.host.www.includes(host) ? host : host.slice(4) as typeof host))(url.host),
+    include = block.query.except[host] ?? null,
+    exclude = allow.query.except[host] ?? null,
+    substitutes = replace.query[host] ?? null;
 
-    if (queries.remove.includes(host))
+    if (block.query.all.includes(host))
       url.deleteQuery();
     else if (include !== null)
       url.keepParams(...include);
     else if (exclude !== null)
       url.deleteParams(...exclude);
 
-    if (substitute !== null)
-      for (const [find, replace] of Object.entries(substitute))
+    if (substitutes !== null)
+      for (const [find, replace] of Object.entries(substitutes))
         url.replaceParam(find, replace);
 
-    if (fragments.shave.includes(host))
+    if (block.fragment.includes(host))
       url.deleteFragment();
 
     const {
