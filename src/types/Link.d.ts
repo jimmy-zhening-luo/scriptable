@@ -27,8 +27,9 @@ export interface LinkSetting {
   readonly replace: {
     readonly host: Endomap<Url["host"]>;
     readonly query: Readonly<
-      Record<Url["host"],
-      FieldTable
-    >>;
+      Record<
+        Url["host"],
+        FieldTable
+      >>;
   };
 }
