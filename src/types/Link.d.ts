@@ -5,15 +5,7 @@ export interface LinkSetting {
     readonly host: {
       readonly www: readonly Url["host"][];
     };
-    readonly query: {
-      readonly all: readonly Url["host"][];
-      readonly except: Readonly<Record<
-        Url["host"],
-        readonly stringful[]
-      >>;
-    };
-    readonly fragment: readonly Url["host"][];
-  };
+  } & LinkSetting["block"];
   readonly block: {
     readonly query: {
       readonly all: readonly Url["host"][];
@@ -26,10 +18,9 @@ export interface LinkSetting {
   };
   readonly replace: {
     readonly host: Endomap<Url["host"]>;
-    readonly query: Readonly<
-      Record<
-        Url["host"],
-        FieldTable
-      >>;
+    readonly query: Readonly<Record<
+      Url["host"],
+      FieldTable
+    >>;
   };
 }
