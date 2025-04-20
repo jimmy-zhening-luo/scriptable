@@ -2,7 +2,6 @@ export default class SearchEngine<
   T extends (
     | "api"
     | "browser"
-    | "find"
     | "shortcut"
   ),
 > {

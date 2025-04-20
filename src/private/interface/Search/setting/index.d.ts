@@ -13,7 +13,6 @@ export interface SearchSetting {
   readonly engines: Table<
     | Unflat<string, true>
     | Record<string, never>
-    | SearchEngineSetting<"find">
     | SearchEngineSetting<
       "shortcut",
       | "notify"

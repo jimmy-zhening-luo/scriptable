@@ -63,11 +63,9 @@ class Search extends Shortcut<
             entry.separator,
             entry.encodeComponent,
           )
-          : "find" in entry
-            ? new Engine("find", entry.find)
-            : "shortcut" in entry
-              ? new Engine("shortcut", entry.shortcut, entry.notify)
-              : new Engine("shortcut", "");
+          : "shortcut" in entry
+            ? new Engine("shortcut", entry.shortcut, entry.notify)
+            : new Engine("shortcut", "");
 
     this.write(recomposed);
 
