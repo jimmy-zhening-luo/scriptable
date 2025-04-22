@@ -45,7 +45,7 @@ export default class SearchEngine<
   public resolve(
     key: stringful,
     terms: readonly stringful[],
-    question: Null<string>,
+    question: Null<stringful>,
   ) {
     function encode(
       urls: readonly string[],
@@ -72,18 +72,20 @@ export default class SearchEngine<
     const {
       type,
       notify,
-      engine,
+      engine: _engine,
       urls,
       tag,
       separator,
       encodeComponent,
       force,
-    } = this;
+    } = this,
+    engine = _engine === ""
+      ? key
+      : _engine;
 
     return {
       type,
-      notify,
-      engine: engine === "" ? key : engine,
+      engine,
       question,
       urls: urls === null
         ? urls
@@ -95,6 +97,8 @@ export default class SearchEngine<
             encodeComponent,
             force,
           ),
+      notify,
+      label: question ?? engine ?? "",
     };
   }
 }

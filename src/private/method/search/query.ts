@@ -120,7 +120,7 @@ export default function (
   } = termString === ""
     ? {}
     : {
-        question: termString,
+        question: termString as stringful,
         recomposed: [
           key,
           termString,
