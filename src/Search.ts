@@ -16,7 +16,7 @@ class Search extends Shortcut<
       input: _input = "",
       setting: {
         reserved: {
-          tags: { query: tag },
+          tag,
           selectors,
           operators,
         },
