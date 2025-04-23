@@ -1,5 +1,5 @@
 export default function (
-  input: string,
+  query: string,
   SELECTORS: Arrayful<char>,
   OPERATORS: stringful,
   FALLBACKS: Arrayful<stringful>,
@@ -7,24 +7,24 @@ export default function (
   engines: Set<string>,
 ) {
   function select(
-    input: string,
+    query: string,
     SELECTORS: Arrayful<char>,
     OPERATORS: stringful,
     FALLBACKS: Arrayful<stringful>,
   ) {
     function expand(
-      input: string,
+      query: string,
       OPERATORS: stringful,
       FALLBACKS: Arrayful<stringful>,
     ) {
       function tokenize(
-        input: string,
+        query: string,
         FALLBACKS: Arrayful<stringful>,
       ) {
-        const tokens = input
+        const tokens = query
           .split(" ")
           .filter((token): token is stringful => token !== ""),
-        spaces = input.length - input.trimStart().length;
+        spaces = query.length - query.trimStart().length;
 
         if (spaces > 0)
           tokens.unshift(
@@ -37,13 +37,13 @@ export default function (
           );
 
         if (tokens.length === 0)
-          throw new RangeError("No query", { cause: input });
+          throw new RangeError("No query", { cause: query });
 
         return tokens as Arrayful<stringful>;
       }
 
       const tokens = tokenize(
-        input,
+        query,
         FALLBACKS,
       ),
       [[t00, t01]] = tokens;
@@ -65,7 +65,7 @@ export default function (
         throw new SyntaxError("Operators contain forbidden selector");
 
     const tokens = expand(
-      input,
+      query,
       OPERATORS,
       FALLBACKS,
     ),
@@ -96,7 +96,7 @@ export default function (
   }
 
   const [_K, ..._terms] = select(
-    input,
+    query,
     SELECTORS,
     OPERATORS,
     FALLBACKS,
