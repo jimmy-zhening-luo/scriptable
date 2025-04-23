@@ -46,14 +46,14 @@ export default function (
         input,
         FALLBACKS,
       ),
-      [[char0, char1]] = tokens;
+      [[t00, t01]] = tokens;
 
       return [
-        ...char0 >= "0"
-        && char0 <= "9"
-        || OPERATORS.includes(char0)
-        || typeof char1 !== "undefined"
-        && Number.isFinite(Number([char0, char1].join("")))
+        ...t00 >= "0"
+        && t00 <= "9"
+        || OPERATORS.includes(t00)
+        || typeof t01 !== "undefined"
+        && Number.isFinite(Number(`${t00}${t01}`))
           ? ["math" satisfies literalful<"math"> as stringful] as const
           : [] as const,
         ...tokens,
