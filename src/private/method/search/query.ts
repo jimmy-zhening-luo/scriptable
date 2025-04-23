@@ -54,7 +54,7 @@ export default function (
         || OPERATORS.includes(t00)
         || typeof t01 !== "undefined"
         && Number.isFinite(Number(`${t00}${t01}`))
-          ? ["math" satisfies literalful<"math"> as stringful] as const
+          ? ["math" as stringful] as const
           : [] as const,
         ...tokens,
       ] as const;
@@ -76,7 +76,7 @@ export default function (
       return tokens;
     else {
       const [newHead = "", ...parts] = head.split(selector),
-      key = newHead === "" ? "translate" satisfies literalful<"translate"> as stringful : newHead as stringful,
+      key = newHead === "" ? "translate" as stringful : newHead as stringful,
       selection = [
         SELECTORS[0],
         selector === "."
@@ -110,7 +110,7 @@ export default function (
     : _key in alias
       ? { key: alias[_key] as stringful }
       : {
-          key: "chat" satisfies literalful<"chat"> as stringful,
+          key: "chat" as stringful,
           terms: [_K, ..._terms] as const,
         },
   termString = terms.join(" "),
