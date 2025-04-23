@@ -13,26 +13,25 @@ class Search extends Shortcut<
 
   protected runtime() {
     const {
-      input: _input = "",
+      input: query = "",
       setting: {
-        reserved: {
-          tag,
-          selectors,
-          operators,
-        },
-        fallbacks,
         alias,
         engines,
+        fallbacks,
+        reserved: {
+          operators,
+          selectors,
+          tag,
+        },
       },
     } = this,
-    input = _input === "" ? this.read() : _input,
     {
       key,
       terms,
       question,
       recomposed,
     } = Query(
-      input,
+      query === "" ? this.read() : query,
       this.chars(selectors),
       this.stringful(operators),
       this.stringfuls(fallbacks),
