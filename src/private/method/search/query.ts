@@ -1,21 +1,21 @@
 export default function (
   query: string,
-  SELECTORS: Arrayful<char>,
-  OPERATORS: stringful,
-  FALLBACKS: Arrayful<stringful>,
   alias: FieldTable,
   engines: Set<string>,
+  FALLBACKS: Arrayful<stringful>,
+  OPERATORS: stringful,
+  SELECTORS: Arrayful<char>,
 ) {
   function select(
     query: string,
-    SELECTORS: Arrayful<char>,
-    OPERATORS: stringful,
     FALLBACKS: Arrayful<stringful>,
+    OPERATORS: stringful,
+    SELECTORS: Arrayful<char>,
   ) {
     function expand(
       query: string,
-      OPERATORS: stringful,
       FALLBACKS: Arrayful<stringful>,
+      OPERATORS: stringful,
     ) {
       function tokenize(
         query: string,
@@ -66,8 +66,8 @@ export default function (
 
     const tokens = expand(
       query,
-      OPERATORS,
       FALLBACKS,
+      OPERATORS,
     ),
     [head, ...terms] = tokens,
     selector = SELECTORS.find(selector => head.includes(selector));
@@ -97,9 +97,9 @@ export default function (
 
   const [_K, ..._terms] = select(
     query,
-    SELECTORS,
-    OPERATORS,
     FALLBACKS,
+    OPERATORS,
+    SELECTORS,
   ),
   _key = (_K satisfies stringful).toLowerCase() as stringful,
   {

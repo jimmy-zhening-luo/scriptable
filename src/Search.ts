@@ -32,11 +32,11 @@ class Search extends Shortcut<
       recomposed,
     } = Query(
       query === "" ? this.read() : query,
-      this.chars(selectors),
-      this.stringful(operators),
-      this.stringfuls(fallbacks),
       alias,
       new Set<string>(Object.keys(engines)),
+      this.stringfuls(fallbacks),
+      this.stringful(operators),
+      this.chars(selectors),
     ),
     entry = engines[key] as typeof engines[string],
     engine = Array.isArray(entry) || typeof entry === "string"
