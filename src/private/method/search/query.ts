@@ -37,7 +37,7 @@ export default function (
           );
 
         if (tokens.length === 0)
-          throw new RangeError("Query has no tokens", { cause: input });
+          throw new RangeError("No query", { cause: input });
 
         return tokens as Arrayful<stringful>;
       }
