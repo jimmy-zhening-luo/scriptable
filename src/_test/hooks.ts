@@ -1,5 +1,5 @@
 import * as Synthetics from "./synthetics";
-import type File from "../app/proto/file";
+import type File from "../app/base/file";
 import type Shortcut from "../app";
 
 export async function mochaGlobalSetup() {
@@ -10,7 +10,7 @@ export async function mochaGlobalSetup() {
     global.Notification = Synthetics.Notification;
     global.DateFormatter = Synthetics.DateFormatter;
 
-    const { "default": _File } = await (import("../app/proto/file") as Promise<Record<"default", typeof File>>)
+    const { "default": _File } = await (import("../app/base/file") as Promise<Record<"default", typeof File>>)
       .catch((e: unknown) => {
         throw new EvalError(
           "Mocha: File: Failed to load `File` module",

@@ -1,4 +1,4 @@
-import App from "./proto";
+import App from "./base";
 
 export default abstract class Share<
   Output extends string = never,
