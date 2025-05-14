@@ -1,7 +1,7 @@
-import { should } from "chai";
+import * as chai from "chai";
 import date from "./date";
 
-should();
+chai.should();
 const SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING = "SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING";
 
 describe("Object: Date", function () {

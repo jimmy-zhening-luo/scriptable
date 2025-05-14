@@ -1,6 +1,6 @@
-import { should } from "chai";
+import * as chai from "chai";
 
-should();
+chai.should();
 describe("Shortcut", function () {
   describe("shape", function () {
     it("is extensible", function () {

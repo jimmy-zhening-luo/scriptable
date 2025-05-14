@@ -1,6 +1,6 @@
-import { should } from "chai";
+import * as chai from "chai";
 
-should();
+chai.should();
 describe("File", function () {
   describe("shape", function () {
     it("is a constructor", function () {
