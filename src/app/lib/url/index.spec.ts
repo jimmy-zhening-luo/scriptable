@@ -1,8 +1,7 @@
-import * as chai from "chai";
+import "chai/register-should.js";
 import { expect } from "chai";
 import Url from ".";
 
-chai.should();
 const
 TEST = {
   OK: "https://www.example.com/path/to/foo?a=1&b=2&c=3#fragment",

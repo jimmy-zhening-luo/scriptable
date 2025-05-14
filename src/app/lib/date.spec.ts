@@ -1,7 +1,6 @@
-import * as chai from "chai";
+import "chai/register-should.js";
 import date from "./date";
 
-chai.should();
 const SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING = "SYNTHETIC_OVERRIDE_PARAMETER_DATEFORMATSTRING";
 
 describe("Object: Date", function () {

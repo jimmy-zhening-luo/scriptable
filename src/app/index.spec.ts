@@ -1,6 +1,5 @@
-import * as chai from "chai";
+import "chai/register-should.js";
 
-chai.should();
 describe("Shortcut", function () {
   describe("shape", function () {
     it("is extensible", function () {
