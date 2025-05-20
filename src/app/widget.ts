@@ -5,7 +5,7 @@ export default abstract class Widget<Schema = never> extends App<string, null, S
     return args.widgetParameter ?? "";
   }
 
-  protected output(runtime: ReturnType<Share<Output>["runtime"]>) {
+  protected output(runtime: ReturnType<Widget["runtime"]>) {
     return runtime;
   }
 }
