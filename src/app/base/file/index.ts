@@ -32,7 +32,7 @@ export default class File<Filetype extends string> {
         .filter(segment => segment !== "");
 
       if (subpath.length === 0)
-        throw new SyntaxError("No file subpath");
+        throw new SyntaxError("Empty file subpath");
 
       this.path = [
         root,
@@ -48,10 +48,10 @@ export default class File<Filetype extends string> {
     }
     catch (e) {
       throw new Error(
-        "Failed to handle file",
+        "Failed to create file handler",
         {
           cause: new Error(
-            `${filetype}:${folder}/${file}`,
+            `Filetype: '${filetype}', subpath: '${folder}/${file}'`,
             { cause: e },
           ),
         },
@@ -63,7 +63,7 @@ export default class File<Filetype extends string> {
     try {
       if (!this.exists) {
         if (fail)
-          throw new ReferenceError("Non-existent file");
+          throw new ReferenceError("File does not exist");
 
         return "";
       }
@@ -107,12 +107,12 @@ export default class File<Filetype extends string> {
       if (!this.mutable)
         throw new ReferenceError("Readonly file");
       else if (content === null)
-        throw new TypeError("Null content");
+        throw new TypeError("Null write-data");
       else if (manager.isDirectory(path))
-        throw new ReferenceError("Target is folder");
+        throw new ReferenceError("Write target is folder");
       else if (this.exists) {
         if (overwrite === false)
-          throw new ReferenceError("Overwrite is false");
+          throw new ReferenceError("File already exists, overwrite false");
       }
       else if (!manager.isDirectory(parent))
         manager.createDirectory(parent, true);
