@@ -4,10 +4,10 @@ export default abstract class Share<
   Output extends string = never,
   Schema = never,
 > extends IApp<
-  string[],
-  Null<Output>,
-  Schema
-> {
+    string[],
+    Null<Output>,
+    Schema
+  > {
   protected readonly abstract type:
     | "plainTexts"
     | "urls"

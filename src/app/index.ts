@@ -5,10 +5,10 @@ export default abstract class Shortcut<
   Output = null,
   Schema = never,
 > extends IApp<
-  Input,
-  Null<Output>,
-  Schema
-> {
+    Input,
+    Null<Output>,
+    Schema
+  > {
   protected getInput() {
     return this.stringInput === true
       ? args.plainTexts[0] as unknown as Undef<Input>

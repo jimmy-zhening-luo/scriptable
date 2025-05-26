@@ -3,10 +3,10 @@ import IApp from "./proto";
 export default abstract class Widget<
   Schema = never,
 > extends IApp<
-  string,
-  null,
-  Schema
-> {
+    string,
+    null,
+    Schema
+  > {
   protected readonly widget = new ListWidget();
 
   protected getInput() {
