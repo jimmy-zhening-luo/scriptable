@@ -3,7 +3,11 @@ import IApp from "./proto";
 export default abstract class Share<
   Output extends string = never,
   Schema = never,
-> extends IApp<string[], Null<Output>, Schema> {
+> extends IApp<
+  string[],
+  Null<Output>,
+  Schema
+> {
   protected readonly abstract type:
     | "plainTexts"
     | "urls"
@@ -13,7 +17,9 @@ export default abstract class Share<
     return args[this.type] as Undef<string[]>;
   }
 
-  protected output(runtime: ReturnType<Share<Output>["runtime"]>) {
+  protected output(
+    runtime: ReturnType<Share<Output>["runtime"]>,
+  ) {
     console.log(runtime);
 
     if (typeof runtime === "string")
