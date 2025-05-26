@@ -10,21 +10,30 @@ export default abstract class IApp<
 
   constructor() {
     try {
-      const { name: app = "" } = this.constructor;
-
-      this.app = this.stringful(app, "Anonymous app instance");
+      this.app = this.stringful(
+        this.constructor.name as string,
+        "Anonymous app instance",
+      );
     }
     catch (e) {
-      throw new Error("App construction failed", { cause: e });
+      throw new Error(
+        "App construction failed",
+        { cause: e },
+      );
     }
   }
 
   protected get input() {
     try {
-      return this.getInput() ?? this.synthetic ?? undefined;
+      return this.getInput()
+        ?? this.synthetic
+        ?? undefined;
     }
     catch (e) {
-      throw new Error("Failed to get app input", { cause: e });
+      throw new ReferenceError(
+        "Failed to get app input",
+        { cause: e },
+      );
     }
   }
 
@@ -32,7 +41,7 @@ export default abstract class IApp<
     const { input } = this;
 
     if (typeof input === "undefined")
-      throw new RangeError("No app input");
+      throw new RangeError("Undefined app input");
 
     return input;
   }
@@ -41,13 +50,19 @@ export default abstract class IApp<
     const { input = "" } = this;
 
     if (typeof input !== "string" && typeof input !== "number")
-      throw new TypeError("Non-string app input", { cause: input });
+      throw new TypeError(
+        "Non-string app input",
+        { cause: input },
+      );
 
     return String(input);
   }
 
   protected get inputStringful() {
-    return this.stringful(this.inputString, "Unstringful app input");
+    return this.stringful(
+      this.inputString,
+      "Unstringful app input",
+    );
   }
 
   protected get setting() {
@@ -55,30 +70,45 @@ export default abstract class IApp<
       return this.config ??= JSON.parse(
         new File(
           "Setting",
-          { file: `${this.app}.json` },
-        )
-          .readful(),
+          {
+            file: `${this.app}.json`,
+          },
+        ).readful(),
       ) as Schema;
     }
     catch (e) {
-      throw new Error("Failed to get app settings", { cause: e });
+      throw new ReferenceError(
+        "Failed to get app settings",
+        { cause: e },
+      );
     }
   }
 
-  private static error(app: stringful, error: unknown) {
+  private static error(
+    app: stringful,
+    error: unknown,
+  ) {
     function cast(e: unknown) {
-      return typeof e === "object" && e !== null && "message" in e
+      return typeof e === "object"
+      && e !== null
+      && "message" in e
         ? e as Error
         : JSON.stringify(e);
     }
 
     const errors: Arrayful<string | Error> = [cast(error)];
 
-    while (typeof errors[0] !== "string" && "cause" in errors[0])
-      errors.unshift(cast(errors[0].cause));
+    while (
+      typeof errors[0] !== "string"
+      && "cause" in errors[0]
+    )
+      errors.unshift(
+        cast(
+          errors[0].cause,
+        ),
+      );
 
-    const n = new Notification,
-    {
+    const {
       message,
       cause,
     } = (([top = "", ...stack]) => {
@@ -92,43 +122,79 @@ export default abstract class IApp<
           ? error
           : error.message,
       ),
-    );
+    ),
+    n = new Notification;
 
     n.title = message;
     n.body = cause;
     n.sound = "failure";
-    n.schedule().catch((error: unknown) => console.error(error));
-    console.error(`${message}\n${cause}`);
+    n
+      .schedule()
+      .catch((error: unknown) => console.error(error));
+    console.error(
+      [
+        message,
+        cause,
+      ].join("\n"),
+    );
 
-    return new Error(message, { cause });
+    return new Error(
+      message,
+      { cause },
+    );
   }
 
   public run(synthetic?: Input) {
     try {
       typeof synthetic === "undefined" || (this.synthetic = synthetic);
 
-      return this.output(this.runtime());
+      return this.output(
+        this.runtime(),
+      );
     }
     catch (error) {
-      throw IApp.error(this.app, error);
+      throw IApp.error(
+        this.app,
+        error,
+      );
     }
     finally {
       Script.complete();
     }
   }
 
-  protected char(string = "", cause = "") {
+  protected char(
+    string = "",
+    cause = "",
+  ) {
     if (string.length !== 1)
-      throw new TypeError("Non-char", { cause });
+      throw new TypeError(
+        "Non-char",
+        { cause },
+      );
 
     return string as char;
   }
 
-  protected chars<A extends readonly string[]>(strings: A, cause = "") {
+  protected chars<A extends readonly string[]>(
+    strings: A,
+    cause = "",
+  ) {
     if (strings.length === 0)
-      throw new RangeError("Array has no chars", { cause });
+      throw new RangeError(
+        "Array has no chars",
+        { cause },
+      );
     else if (!strings.every((string): string is char => string.length === 1))
-      throw new TypeError("Array contains non-char", { cause: { cause, strings } });
+      throw new TypeError(
+        "Array contains non-char",
+        {
+          cause: {
+            cause,
+            strings,
+          },
+        },
+      );
 
     return strings as unknown as (
       A extends readonly [string, ...string[]]
@@ -137,18 +203,38 @@ export default abstract class IApp<
     );
   }
 
-  protected stringful(string = "", cause = "") {
+  protected stringful(
+    string = "",
+    cause = "",
+  ) {
     if (string === "")
-      throw new TypeError("Unstringful", { cause });
+      throw new TypeError(
+        "Unstringful",
+        { cause },
+      );
 
     return string as stringful;
   }
 
-  protected stringfuls<A extends readonly string[]>(strings: A, cause = "") {
+  protected stringfuls<A extends readonly string[]>(
+    strings: A,
+    cause = "",
+  ) {
     if (strings.length === 0)
-      throw new RangeError("Array has no stringfuls", { cause });
+      throw new RangeError(
+        "Array has no stringfuls",
+        { cause },
+      );
     else if (!strings.every((string): string is stringful => string !== ""))
-      throw new TypeError("Array contains unstringful", { cause: { cause, strings } });
+      throw new TypeError(
+        "Array contains unstringful",
+        {
+          cause: {
+            cause,
+            strings,
+          },
+        },
+      );
 
     return strings as unknown as (
       A extends readonly [string, ...string[]]
@@ -158,11 +244,15 @@ export default abstract class IApp<
   }
 
   protected read(...file: Parameters<IApp<Input, Output, Schema>["storage"]>) {
-    return this.storage(...file).read();
+    return this
+      .storage(...file)
+      .read();
   }
 
   protected readful(...file: Parameters<IApp<Input, Output, Schema>["storage"]>) {
-    return this.storage(...file).readful();
+    return this
+      .storage(...file)
+      .readful();
   }
 
   protected write(...[
@@ -170,11 +260,18 @@ export default abstract class IApp<
     overwrite = true,
     ...file
   ]: [...Parameters<File<"Storage">["write"]>, ...Parameters<IApp<Input, Output, Schema>["storage"]>]) {
-    this.storage(...file).write(data, overwrite);
+    this
+      .storage(...file)
+      .write(
+        data,
+        overwrite,
+      );
   }
 
   protected delete(...file: Parameters<IApp<Input, Output, Schema>["storage"]>) {
-    this.storage(...file).delete();
+    this
+      .storage(...file)
+      .delete();
   }
 
   private storage(
@@ -185,8 +282,7 @@ export default abstract class IApp<
     file = [
       name === "" ? app : name,
       extension === "" ? "txt" : extension,
-    ]
-      .join(".");
+    ].join(".");
 
     return this.cache[file] ??= new File(
       "Storage",
