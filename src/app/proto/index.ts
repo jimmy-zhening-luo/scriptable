@@ -11,7 +11,7 @@ export default abstract class IApp<
   constructor() {
     try {
       this.app = this.stringful(
-        this.constructor.name as string,
+        this.constructor.name,
         "Anonymous app instance",
       );
     }
@@ -90,8 +90,8 @@ export default abstract class IApp<
   ) {
     function cast(e: unknown) {
       return typeof e === "object"
-      && e !== null
-      && "message" in e
+        && e !== null
+        && "message" in e
         ? e as Error
         : JSON.stringify(e);
     }
