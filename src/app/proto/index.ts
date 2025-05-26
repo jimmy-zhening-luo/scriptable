@@ -263,7 +263,7 @@ export default abstract class IApp<
     ...filename
   ]: [
     ...Parameters<File<"Storage">["write"]>,
-    ...Parameters<IApp<Input, Output, Schema>["storage"]>
+    ...Parameters<IApp<Input, Output, Schema>["storage"]>,
   ]) {
     this
       .storage(...filename)
@@ -290,8 +290,8 @@ export default abstract class IApp<
         ? this.app
         : name,
       extension === ""
-       ? "txt"
-       : extension,
+        ? "txt"
+        : extension,
     ].join(".");
 
     return this.cache[filename] ??= new File(

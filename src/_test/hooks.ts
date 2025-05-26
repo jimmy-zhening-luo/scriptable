@@ -8,7 +8,7 @@ export async function mochaGlobalSetup() {
     global.args = Synthetics.args;
     global.FileManager = Synthetics.FileManager;
     global.Notification = Synthetics.Notification;
-    global.DateFormatter = Synthetics.DateFormatter; 
+    global.DateFormatter = Synthetics.DateFormatter;
 
     const {
       "default": MockFile,
