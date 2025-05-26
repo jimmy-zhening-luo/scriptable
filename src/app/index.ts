@@ -1,10 +1,10 @@
-import App from "./base";
+import IApp from "./proto";
 
 export default abstract class Shortcut<
   Input = never,
   Output = null,
   Schema = never,
-> extends App<Input, Null<Output>, Schema> {
+> extends IApp<Input, Null<Output>, Schema> {
   protected getInput() {
     return this.stringInput === true
       ? args.plainTexts[0] as unknown as Undef<Input>

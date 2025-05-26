@@ -1,9 +1,9 @@
-import App from "./base";
+import IApp from "./proto";
 
 export default abstract class Share<
   Output extends string = never,
   Schema = never,
-> extends App<string[], Null<Output>, Schema> {
+> extends IApp<string[], Null<Output>, Schema> {
   protected readonly abstract type:
     | "plainTexts"
     | "urls"

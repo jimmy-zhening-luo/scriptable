@@ -1,6 +1,6 @@
 import File from "./file";
 
-export default abstract class App<
+export default abstract class IApp<
   Input,
   Output,
   Schema,
@@ -110,7 +110,7 @@ export default abstract class App<
       return this.output(this.runtime());
     }
     catch (error) {
-      throw App.error(this.app, error);
+      throw IApp.error(this.app, error);
     }
     finally {
       Script.complete();
@@ -157,11 +157,11 @@ export default abstract class App<
     );
   }
 
-  protected read(...file: Parameters<App<Input, Output, Schema>["storage"]>) {
+  protected read(...file: Parameters<IApp<Input, Output, Schema>["storage"]>) {
     return this.storage(...file).read();
   }
 
-  protected readful(...file: Parameters<App<Input, Output, Schema>["storage"]>) {
+  protected readful(...file: Parameters<IApp<Input, Output, Schema>["storage"]>) {
     return this.storage(...file).readful();
   }
 
@@ -169,11 +169,11 @@ export default abstract class App<
     data,
     overwrite = true,
     ...file
-  ]: [...Parameters<File<"Storage">["write"]>, ...Parameters<App<Input, Output, Schema>["storage"]>]) {
+  ]: [...Parameters<File<"Storage">["write"]>, ...Parameters<IApp<Input, Output, Schema>["storage"]>]) {
     this.storage(...file).write(data, overwrite);
   }
 
-  protected delete(...file: Parameters<App<Input, Output, Schema>["storage"]>) {
+  protected delete(...file: Parameters<IApp<Input, Output, Schema>["storage"]>) {
     this.storage(...file).delete();
   }
 
