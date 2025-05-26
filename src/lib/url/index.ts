@@ -38,8 +38,8 @@ export default class Url {
 
   public get schemeHost() {
     return [
-      scheme,
-      host,
+      this.scheme,
+      this.host,
     ].join("://") as stringful;
   }
 
