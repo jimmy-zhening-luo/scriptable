@@ -1,5 +1,5 @@
 export interface LinkSetting<HostString extends stringful> {
-  allow: LinkSetting["block"] & {
+  allow: LinkSetting<HostString>["block"] & {
     host: {
       www: readonly HostString[];
     };
