@@ -15,7 +15,7 @@ export default abstract class IApp<
       this.app = this.stringful(app, "Anonymous app instance");
     }
     catch (e) {
-      throw new Error("Failed to instantiate app", { cause: e });
+      throw new Error("App construction failed", { cause: e });
     }
   }
 
@@ -32,7 +32,7 @@ export default abstract class IApp<
     const { input } = this;
 
     if (typeof input === "undefined")
-      throw new TypeError("Null app input");
+      throw new RangeError("No app input");
 
     return input;
   }
@@ -47,7 +47,7 @@ export default abstract class IApp<
   }
 
   protected get inputStringful() {
-    return this.stringful(this.inputString, "Unstringful input");
+    return this.stringful(this.inputString, "Unstringful app input");
   }
 
   protected get setting() {
@@ -61,7 +61,7 @@ export default abstract class IApp<
       ) as Schema;
     }
     catch (e) {
-      throw new Error("Failed to read setting", { cause: e });
+      throw new Error("Failed to get app settings", { cause: e });
     }
   }
 
@@ -126,9 +126,9 @@ export default abstract class IApp<
 
   protected chars<A extends readonly string[]>(strings: A, cause = "") {
     if (strings.length === 0)
-      throw new RangeError("No chars", { cause });
+      throw new RangeError("Array has no chars", { cause });
     else if (!strings.every((string): string is char => string.length === 1))
-      throw new TypeError("Array has non-chars", { cause: { cause, strings } });
+      throw new TypeError("Array contains non-char", { cause: { cause, strings } });
 
     return strings as unknown as (
       A extends readonly [string, ...string[]]
@@ -146,9 +146,9 @@ export default abstract class IApp<
 
   protected stringfuls<A extends readonly string[]>(strings: A, cause = "") {
     if (strings.length === 0)
-      throw new RangeError("No stringfuls", { cause });
+      throw new RangeError("Array has no stringfuls", { cause });
     else if (!strings.every((string): string is stringful => string !== ""))
-      throw new TypeError("Array has unstringfuls", { cause: { cause, strings } });
+      throw new TypeError("Array contains unstringful", { cause: { cause, strings } });
 
     return strings as unknown as (
       A extends readonly [string, ...string[]]
