@@ -70,9 +70,7 @@ export default abstract class IApp<
       return this.config ??= JSON.parse(
         new File(
           "Setting",
-          {
-            file: `${this.app}.json`,
-          },
+          `${this.app}.json`,
         ).readful(),
       ) as Schema;
     }
@@ -243,34 +241,43 @@ export default abstract class IApp<
     );
   }
 
-  protected read(...file: Parameters<IApp<Input, Output, Schema>["storage"]>) {
+  protected read(
+    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
+  ) {
     return this
-      .storage(...file)
+      .storage(...filename)
       .read();
   }
 
-  protected readful(...file: Parameters<IApp<Input, Output, Schema>["storage"]>) {
+  protected readful(
+    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
+  ) {
     return this
-      .storage(...file)
+      .storage(...filename)
       .readful();
   }
 
   protected write(...[
     data,
     overwrite = true,
-    ...file
-  ]: [...Parameters<File<"Storage">["write"]>, ...Parameters<IApp<Input, Output, Schema>["storage"]>]) {
+    ...filename
+  ]: [
+    ...Parameters<File<"Storage">["write"]>,
+    ...Parameters<IApp<Input, Output, Schema>["storage"]>
+  ]) {
     this
-      .storage(...file)
+      .storage(...filename)
       .write(
         data,
         overwrite,
       );
   }
 
-  protected delete(...file: Parameters<IApp<Input, Output, Schema>["storage"]>) {
+  protected delete(
+    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
+  ) {
     this
-      .storage(...file)
+      .storage(...filename)
       .delete();
   }
 
@@ -278,18 +285,19 @@ export default abstract class IApp<
     name = "",
     extension = "",
   ) {
-    const { app } = this,
-    file = [
-      name === "" ? app : name,
-      extension === "" ? "txt" : extension,
+    const filename = [
+      name === ""
+        ? this.app
+        : name,
+      extension === ""
+       ? "txt"
+       : extension,
     ].join(".");
 
-    return this.cache[file] ??= new File(
+    return this.cache[filename] ??= new File(
       "Storage",
-      {
-        file,
-        folder: app,
-      },
+      filename,
+      this.app,
       true,
     );
   }

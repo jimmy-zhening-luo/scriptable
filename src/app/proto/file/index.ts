@@ -6,10 +6,8 @@ export default class File<Type extends string> {
 
   constructor(
     type: literalful<Type>,
-    {
-      file,
-      folder = "",
-    }: Field<"file", "folder">,
+    name: string,
+    subfolder = "",
     public readonly mutable = false,
   ) {
     try {
@@ -25,7 +23,7 @@ export default class File<Type extends string> {
             manager.libraryDirectory(),
             type,
           ].join("/"),
-      subpath = [folder, file]
+      subpath = [subfolder, name]
         .join("/")
         .split("/")
         .filter(segment => segment !== "");
@@ -45,7 +43,7 @@ export default class File<Type extends string> {
         "File handler construction failed",
         {
           cause: new Error(
-            `[Filetype: '${type}'] Subpath: '${folder}/${file}'`,
+            `[Filetype: '${type}'] Subpath: '${subfolder}/${name}'`,
             { cause: e },
           ),
         },
