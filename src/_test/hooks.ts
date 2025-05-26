@@ -8,36 +8,60 @@ export async function mochaGlobalSetup() {
     global.args = Synthetics.args;
     global.FileManager = Synthetics.FileManager;
     global.Notification = Synthetics.Notification;
-    global.DateFormatter = Synthetics.DateFormatter;
+    global.DateFormatter = Synthetics.DateFormatter; 
 
-    const { "default": _File } = await (import("../app/proto/file") as Promise<Record<"default", typeof File>>)
-      .catch((e: unknown) => {
-        throw new EvalError(
-          "Mocha: File: Failed to load `File` module",
-          { cause: e },
-        );
-      })
-      .finally(() => console.log("Mocha: File: Executed Module Loader"));
+    const {
+      "default": MockFile,
+    } = await (
+      import("../app/proto/file") as Promise<
+        Record<
+          "default",
+          typeof File
+        >
+      >
+    )
+      .catch(
+        (e: unknown) => {
+          throw new EvalError(
+            "Mocha: File: Failed to load `File` module",
+            { cause: e },
+          );
+        },
+      )
+      .finally(
+        () => console.log("Mocha: File: Executed Module Loader"),
+      );
 
-    global.mockFile = new _File(
+    global.mockFile = new MockFile(
       "Storage",
-      {
-        file: "SYNTHETIC_FILENAME.txt",
-        folder: "SYNTHETIC_SUBFOLDER",
-      },
+      "SYNTHETIC_FILENAME.txt",
+      "SYNTHETIC_SUBFOLDER",
       true,
     );
 
-    const { "default": _Shortcut } = await (import("../app") as Promise<Record<"default", typeof Shortcut>>)
-      .catch((e: unknown) => {
-        throw new EvalError(
-          "Mocha: Shortcut: Failed to load `Shortcut` module",
-          { cause: e },
-        );
-      })
-      .finally(() => console.log("Mocha: Shortcut: Executed Module Loader"));
+    const {
+      "default": MockShortcut,
+    } = await (
+      import("../app") as Promise<
+        Record<
+          "default",
+          typeof Shortcut
+        >
+      >
+    )
+      .catch(
+        (e: unknown) => {
+          throw new EvalError(
+            "Mocha: Shortcut: Failed to load `Shortcut` module",
+            { cause: e },
+          );
+        },
+      )
+      .finally(
+        () => console.log("Mocha: Shortcut: Executed Module Loader"),
+      );
 
-    global.MockConcreteShortcut = class MockConcreteShortcut extends _Shortcut<string, string> {
+    global.MockConcreteShortcut = class MockConcreteShortcut extends MockShortcut<string, string> {
       protected override stringInput = true;
 
       protected runtime() {
@@ -46,7 +70,10 @@ export async function mochaGlobalSetup() {
     };
     console.log("Mocha: END Global Setup");
   }
-  catch (e) {
-    throw new EvalError("Mocha: GLOBAL SETUP FAILURE", { cause: e });
+  catch (error) {
+    throw new EvalError(
+      "Mocha: GLOBAL SETUP FAILURE",
+      { cause: error },
+    );
   }
 }
