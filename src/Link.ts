@@ -24,12 +24,12 @@ class Link extends Shortcut<
           ?? headless
       )(
         !host.startsWith("www.")
-          || this
-            .setting
-            .allow
-            .host
-            .www
-            .includes(host)
+        || this
+          .setting
+          .allow
+          .host
+          .www
+          .includes(host)
           ? host
           : host.slice(4) as typeof host,
       )

@@ -10,7 +10,7 @@ export default class Url {
   constructor(string = "") {
     if (string === "")
       throw new URIError("Empty string cannot be URL");
-    
+
     const parts = Url.parse(string)
       ?? Url.parse(`https://${string}`);
 
