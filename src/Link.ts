@@ -1,6 +1,6 @@
 // icon-color: light-gray; icon-glyph: link;
 import Shortcut from "./app";
-import Url from "./app/lib/url";
+import Url from "./lib/url";
 import process from "./private/method/link";
 import type { LinkSetting } from "./private/interface/Link";
 
