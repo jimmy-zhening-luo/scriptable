@@ -1,11 +1,11 @@
-export default class File<Filetype extends string> {
+export default class File<Type extends string> {
   private static readonly manager = FileManager.iCloud();
   protected readonly path;
   protected readonly parent;
   protected readonly exists;
 
   constructor(
-    filetype: literalful<Filetype>,
+    type: literalful<Type>,
     {
       file,
       folder = "",
@@ -14,16 +14,16 @@ export default class File<Filetype extends string> {
   ) {
     try {
       const { manager } = File,
-      bookmarked = manager.bookmarkExists(filetype);
+      bookmarked = manager.bookmarkExists(type);
 
       if (!bookmarked && !mutable)
         throw new ReferenceError("Missing file root");
 
       const root = bookmarked
-        ? manager.bookmarkedPath(filetype)
+        ? manager.bookmarkedPath(type)
         : [
             manager.libraryDirectory(),
-            filetype,
+            type,
           ].join("/"),
       subpath = [folder, file]
         .join("/")
@@ -45,7 +45,7 @@ export default class File<Filetype extends string> {
         "File handler construction failed",
         {
           cause: new Error(
-            `[Filetype: '${filetype}''] Subpath: '${folder}/${file}'`,
+            `[Filetype: '${type}'] Subpath: '${folder}/${file}'`,
             { cause: e },
           ),
         },
