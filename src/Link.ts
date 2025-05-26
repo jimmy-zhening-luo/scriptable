@@ -65,7 +65,7 @@ class Link extends Shortcut<
           .setting
           .block
           .query
-          .except[host],
+          .except[host] as string[],
       );
     else if (
       host in this
@@ -93,7 +93,7 @@ class Link extends Shortcut<
           this
             .setting
             .replace
-            .query[host],
+            .query[host] as FieldTable,
         )
       )
         url.replaceParam(
