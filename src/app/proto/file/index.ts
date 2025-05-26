@@ -11,16 +11,15 @@ export default class File<Type extends string> {
     public readonly mutable = false,
   ) {
     try {
-      const { manager } = File,
-      bookmarked = manager.bookmarkExists(type);
+      const bookmarked = File.manager.bookmarkExists(type);
 
       if (!bookmarked && !mutable)
         throw new ReferenceError("Missing file root");
 
       const root = bookmarked
-        ? manager.bookmarkedPath(type)
+        ? File.manager.bookmarkedPath(type)
         : [
-            manager.libraryDirectory(),
+            File.manager.libraryDirectory(),
             type,
           ].join("/"),
       subpath = [subfolder, name]
@@ -36,7 +35,7 @@ export default class File<Type extends string> {
         root,
         ...subpath.slice(0, -1),
       ].join("/");
-      this.exists = manager.fileExists(this.path);
+      this.exists = File.manager.fileExists(this.path);
     }
     catch (e) {
       throw new Error(
@@ -93,27 +92,24 @@ export default class File<Type extends string> {
       | boolean = false,
   ) {
     try {
-      const { manager } = File,
-      {
-        path,
-        parent,
-      } = this;
-
       if (!this.mutable)
         throw new ReferenceError("Readonly file");
       else if (content === null)
         throw new TypeError("Null write-data");
-      else if (manager.isDirectory(path))
+      else if (File.manager.isDirectory(this.path))
         throw new ReferenceError("Write target is folder");
       else if (this.exists) {
         if (overwrite === false)
           throw new ReferenceError("File already exists, and overwrite:false");
       }
-      else if (!manager.isDirectory(parent))
-        manager.createDirectory(parent, true);
+      else if (!File.manager.isDirectory(this.parent))
+        File.manager.createDirectory(
+          this.parent,
+          true,
+        );
 
-      manager.writeString(
-        path,
+      File.manager.writeString(
+        this.path,
         Array.isArray(content)
           ? [
               content
@@ -154,7 +150,10 @@ export default class File<Type extends string> {
     }
   }
 
-  private error(e: unknown, verb: string) {
+  private error(
+    e: unknown,
+    verb: string,
+  ) {
     return new Error(
       `Failed to '${verb}' file`,
       {
