@@ -17,15 +17,14 @@ export default class File<Filetype extends string> {
       bookmarked = manager.bookmarkExists(filetype);
 
       if (!bookmarked && !mutable)
-        throw new ReferenceError("No file root");
+        throw new ReferenceError("Missing file root");
 
       const root = bookmarked
         ? manager.bookmarkedPath(filetype)
         : [
             manager.libraryDirectory(),
             filetype,
-          ]
-            .join("/"),
+          ].join("/"),
       subpath = [folder, file]
         .join("/")
         .split("/")
@@ -34,24 +33,19 @@ export default class File<Filetype extends string> {
       if (subpath.length === 0)
         throw new SyntaxError("Empty file subpath");
 
-      this.path = [
-        root,
-        ...subpath,
-      ]
-        .join("/");
+      this.path = [root, ...subpath].join("/");
       this.parent = [
         root,
         ...subpath.slice(0, -1),
-      ]
-        .join("/");
+      ].join("/");
       this.exists = manager.fileExists(this.path);
     }
     catch (e) {
       throw new Error(
-        "Failed to create file handler",
+        "File handler construction failed",
         {
           cause: new Error(
-            `Filetype: '${filetype}', subpath: '${folder}/${file}'`,
+            `[Filetype: '${filetype}''] Subpath: '${folder}/${file}'`,
             { cause: e },
           ),
         },
@@ -102,7 +96,10 @@ export default class File<Filetype extends string> {
   ) {
     try {
       const { manager } = File,
-      { path, parent } = this;
+      {
+        path,
+        parent,
+      } = this;
 
       if (!this.mutable)
         throw new ReferenceError("Readonly file");
@@ -112,7 +109,7 @@ export default class File<Filetype extends string> {
         throw new ReferenceError("Write target is folder");
       else if (this.exists) {
         if (overwrite === false)
-          throw new ReferenceError("File already exists, overwrite false");
+          throw new ReferenceError("File already exists, and overwrite:false");
       }
       else if (!manager.isDirectory(parent))
         manager.createDirectory(parent, true);
@@ -125,8 +122,7 @@ export default class File<Filetype extends string> {
                 .reverse()
                 .join("\n"),
               this.read(),
-            ]
-              .join("\n")
+            ].join("\n")
           : typeof content === "object"
             ? JSON.stringify(content)
             : typeof overwrite !== "string"
@@ -135,13 +131,11 @@ export default class File<Filetype extends string> {
                 ? [
                     String(content),
                     this.read(),
-                  ]
-                    .join("\n")
+                  ].join("\n")
                 : [
                     this.read(),
                     String(content),
-                  ]
-                    .join(""),
+                  ].join(""),
       );
     }
     catch (e) {
@@ -164,7 +158,7 @@ export default class File<Filetype extends string> {
 
   private error(e: unknown, verb: string) {
     return new Error(
-      `Failed to ${verb} file`,
+      `Failed to '${verb}' file`,
       {
         cause: new Error(
           this.path,
