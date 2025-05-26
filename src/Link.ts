@@ -6,60 +6,110 @@ import type { LinkSetting } from "./private/interface/Link";
 
 class Link extends Shortcut<
   string,
-  stringful,
-  LinkSetting
+  string,
+  LinkSetting<Url["host"]>
 > {
   protected override stringInput = true;
 
   protected runtime() {
-    const {
-      input = "",
-      setting: {
-        allow,
-        block,
-        replace,
-      },
-    } = this,
-    url = new Url(input),
-    host = ((host: Url["host"]) => (headless => replace.host[headless] ?? headless)(!host.startsWith("www.") || allow.host.www.includes(host) ? host : host.slice(4) as typeof host))(url.host),
-    include = block.query.except[host] ?? null,
-    exclude = allow.query.except[host] ?? null,
-    substitutes = replace.query[host] ?? null;
+    const url = new Url(
+      this.input as string,
+    ),
+    host = (
+      (host: Url["host"]) => (
+        headless => this
+          .setting
+          .replace
+          .host[headless]
+          ?? headless
+      )(
+        !host.startsWith("www.")
+          || this
+            .setting
+            .allow
+            .host
+            .www
+            .includes(host)
+          ? host
+          : host.slice(4) as typeof host,
+      )
+    )(url.host);
 
-    if (block.query.all.includes(host))
-      url.deleteQuery();
-    else if (include !== null)
-      url.keepParams(...include);
-    else if (exclude !== null)
-      url.deleteParams(...exclude);
+    if (
+      this
+        .setting
+        .block
+        .fragment
+        .includes(host)
+    )
+      url.dropFragment();
 
-    if (substitutes !== null)
-      for (const [find, replace] of Object.entries(substitutes))
-        url.replaceParam(find, replace);
+    if (
+      this
+        .setting
+        .block
+        .query
+        .all
+        .includes(host)
+    )
+      url.dropQuery();
+    else if (
+      host in this
+        .setting
+        .block
+        .query
+        .except
+    )
+      url.deleteParamsExcept(
+        ...this
+          .setting
+          .block
+          .query
+          .except[host],
+      );
+    else if (
+      host in this
+        .setting
+        .allow
+        .query
+        .except
+    )
+      url.deleteParams(
+        ...this
+          .setting
+          .allow
+          .query
+          .except[host],
+      );
 
-    if (block.fragment.includes(host))
-      url.deleteFragment();
+    if (
+      host in this
+        .setting
+        .replace
+        .query
+    )
+      for (
+        const [find, replace] of Object.entries(
+          this
+            .setting
+            .replace
+            .query[host],
+        )
+      )
+        url.replaceParam(
+          find,
+          replace,
+        );
 
-    const {
-      scheme,
-      path,
-      query,
-      fragment,
-    } = url;
-
-    return ((
-      scheme: Url["scheme"],
-      host: Url["host"],
-      path: string,
-      query: string,
-      fragment: string,
-    ) => `${scheme}://${host}${path}${query}${fragment}` as stringful)(
-      scheme,
-      host,
-      process(host, path),
-      query,
-      fragment,
-    );
+    return [
+      url.schemeHost,
+      process(
+        host,
+        url.path,
+      ),
+      url.query,
+      url.fragment,
+    ].join("");
   }
 }
 

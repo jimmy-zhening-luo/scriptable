@@ -7,42 +7,50 @@ export default class Url {
   private _fragment;
   private readonly queryMap;
 
-  constructor(string: string) {
-    const parts = (
-      string => Url.parse(string)
-        ?? Url.parse(`https://${string}`)
-    )(string);
+  constructor(string = "") {
+    if (string === "")
+      throw new URIError("Empty string cannot be URL");
+    
+    const parts = Url.parse(string)
+      ?? Url.parse(`https://${string}`);
 
     if (parts === null)
-      throw new URIError("Unparseable to URL", { cause: string });
+      throw new URIError(
+        "String unparsesble to URL",
+        { cause: string },
+      );
 
-    const {
+    this.scheme = parts.scheme;
+    this.host = parts.host;
+    this.path = parts.path;
+    this._fragment = parts.fragment === "#"
+      ? ""
+      : parts.fragment;
+    this.queryMap = new Map<string, string>(
+      parts
+        .query
+        .slice(1)
+        .split("&")
+        .map(param => param.split("=") as Arrayful)
+        .map(([name, ...value]) => [name, value.join("=")]),
+    );
+  }
+
+  public get schemeHost() {
+    return [
       scheme,
       host,
-      path,
-      query,
-      fragment,
-    } = parts;
-
-    this.scheme = scheme;
-    this.host = host;
-    this.path = path;
-    this._fragment = fragment === "" ? "" : `#${fragment}`;
-    this.queryMap = new Map<string, string>(
-      query
-        .split("&")
-        .map(param => param.split("="))
-        .filter((param): param is [stringful, ...string[]] => param[0] !== "")
-        .map(([key, ...value]) => [key, value.join("=")]),
-    );
+    ].join("://") as stringful;
   }
 
   public get query() {
     const query = [...this.queryMap.entries()]
-      .map(pair => pair.join("="))
+      .map(param => param.join("="))
       .join("&");
 
-    return query === "" ? "" : `?${query}`;
+    return query === ""
+      ? ""
+      : `?${query}`;
   }
 
   public get fragment() {
@@ -53,24 +61,29 @@ export default class Url {
     return [...this.queryMap.keys()];
   }
 
-  private static parse(candidate: string) {
+  private static parse(string: string) {
     const {
       scheme = "",
       host = "",
       path = "",
       query = "",
       fragment = "",
-    } = regex.exec(candidate)?.groups ?? {},
+    } = regex
+      .exec(string)
+      ?.groups
+      ?? {},
     http = Url.isHttp(scheme);
 
-    return scheme === "" || http && !host.includes(".")
+    return scheme === ""
+      || http
+      && !host.includes(".")
       ? null
       : {
-          scheme: (http ? "https" : scheme) as stringfully<"Url[scheme|host]">,
-          host: host.toLocaleLowerCase() as stringfully<"Url[scheme|host]">,
+          scheme: (http ? "https" : scheme) as stringfully<"Url[scheme]">,
+          host: host.toLocaleLowerCase() as stringfully<"Url[host]">,
           path,
-          query: query.slice(1),
-          fragment: fragment.slice(1),
+          query,
+          fragment,
         };
   }
 
@@ -78,42 +91,54 @@ export default class Url {
     return [
       "https",
       "http",
-    ]
-      .includes(scheme.toLocaleLowerCase());
+    ].includes(
+      scheme.toLocaleLowerCase(),
+    );
   }
 
   public getParam(param: string) {
     return this.queryMap.get(param);
   }
 
-  public deleteParams(...params: string[]) {
+  public deleteParams(
+    ...params: string[]
+  ) {
     for (const param of params)
       this.queryMap.delete(param);
   }
 
-  public keepParams(...params: string[]) {
-    const keep = new Set<string>(params);
+  public deleteParamsExcept(
+    ...params: string[]
+  ) {
+    const kept = new Set<string>(params);
 
     this.deleteParams(
-      ...this.params
-        .filter(param => !keep.has(param)),
+      ...this
+        .params
+        .filter(param => !kept.has(param)),
     );
   }
 
-  public replaceParam(find: string, replace: string) {
+  public replaceParam(
+    find: string,
+    replace: string,
+  ) {
     const value = this.getParam(find);
 
     this.deleteParams(find);
 
     if (typeof value !== "undefined")
-      this.queryMap.set(replace, value);
+      this.queryMap.set(
+        replace,
+        value,
+      );
   }
 
-  public deleteQuery() {
+  public dropQuery() {
     this.queryMap.clear();
   }
 
-  public deleteFragment() {
+  public dropFragment() {
     this._fragment = "";
   }
 }

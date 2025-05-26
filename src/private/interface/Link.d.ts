@@ -1,26 +1,24 @@
-import type Url from "../../lib/url";
-
-export interface LinkSetting {
-  readonly allow: {
-    readonly host: {
-      readonly www: readonly Url["host"][];
+export interface LinkSetting<HostString extends stringful> {
+  allow: LinkSetting["block"] & {
+    host: {
+      www: readonly HostString[];
     };
-  } & LinkSetting["block"];
-  readonly block: {
-    readonly query: {
-      readonly all: readonly Url["host"][];
-      readonly except: Readonly<Record<
-        Url["host"],
-        readonly stringful[]
-      >>;
-    };
-    readonly fragment: readonly Url["host"][];
   };
-  readonly replace: {
-    readonly host: Endomap<Url["host"]>;
-    readonly query: Readonly<Record<
-      Url["host"],
-      FieldTable
-    >>;
+  block: {
+    query: {
+      all: readonly HostString[];
+      except: ReadonlyRecord<
+        HostString,
+        readonly string[]
+      >;
+    };
+    fragment: readonly HostString[];
+  };
+  replace: {
+    host: Readonly<Endomap<HostString>>;
+    query: ReadonlyRecord<
+      HostString,
+      Readonly<FieldTable>
+    >;
   };
 }

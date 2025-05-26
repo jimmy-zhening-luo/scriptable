@@ -1,8 +1,14 @@
 import type { SearchEngineSetting } from "./engine";
 
 export interface SearchSetting {
-  readonly alias: FieldTable;
-  readonly engines: Table<
+  readonly reserved: {
+    readonly operators: string;
+    readonly selectors: readonly string[];
+    readonly tag: string;
+  };
+  readonly fallbacks: readonly string[];
+  readonly alias: Readonly<FieldTable>;
+  readonly engines: Readonly<Table<
     | Unflat<string, true>
     | SearchEngineSetting<
       "url",
@@ -25,11 +31,5 @@ export interface SearchSetting {
       | "notify"
       | "select"
     >
-  >;
-  readonly fallbacks: string[];
-  readonly reserved: {
-    readonly operators: string;
-    readonly selectors: string[];
-    readonly tag: string;
-  };
+  >>;
 }
