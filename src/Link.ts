@@ -79,7 +79,7 @@ class Link extends Shortcut<
           .setting
           .allow
           .query
-          .except[host],
+          .except[host] as string[],
       );
 
     if (
