@@ -30,7 +30,7 @@ class Link extends Shortcut<
           : host,
       )
     )(
-      url.host
+      url.host,
     );
 
     if (
