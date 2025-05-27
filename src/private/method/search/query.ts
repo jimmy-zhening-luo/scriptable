@@ -33,11 +33,14 @@ export default function (
                 spaces,
                 FALLBACKS.length,
               ) - 1,
-            ) as stringful,
+            )!,
           );
 
         if (tokens.length === 0)
-          throw new RangeError("No query", { cause: query });
+          throw new RangeError(
+            "No query",
+            { cause: query },
+          );
 
         return tokens as Arrayful<stringful>;
       }
@@ -53,7 +56,11 @@ export default function (
         && t00 <= "9"
         || OPERATORS.includes(t00)
         || typeof t01 !== "undefined"
-        && Number.isFinite(Number(`${t00}${t01}`))
+        && Number.isFinite(
+          Number(
+            `${t00}${t01}`,
+          ),
+        )
           ? ["math" as stringful] as const
           : [] as const,
         ...tokens,
@@ -70,22 +77,33 @@ export default function (
       OPERATORS,
     ),
     [head, ...terms] = tokens,
-    selector = SELECTORS.find(selector => head.includes(selector));
+    selector = SELECTORS
+      .find(
+        selector => head
+          .includes(
+            selector,
+          ),
+      );
 
     if (typeof selector === "undefined")
       return tokens;
     else {
-      const [newHead = "", ...parts] = head.split(selector),
-      key = newHead === "" ? "translate" as stringful : newHead as stringful,
+      const [newHead = "", ...parts] = head
+        .split(
+          selector,
+        ),
+      key = newHead === ""
+        ? "translate" as stringful
+        : newHead as stringful,
       selection = [
         SELECTORS[0],
         selector === "."
         && parts.length === 1
         && parts.at(0) === ""
-          ? terms.shift() ?? ""
+          ? terms.shift()
+            ?? ""
           : parts.join(selector),
-      ]
-        .join("") as stringful;
+      ].join("") as stringful;
 
       return [
         key,
@@ -101,14 +119,17 @@ export default function (
     OPERATORS,
     SELECTORS,
   ),
-  _key = (_K satisfies stringful).toLowerCase() as stringful,
+  _key = (_K satisfies stringful)
+    .toLowerCase() as stringful,
   {
     key = _key,
     terms = [..._terms] as const,
   } = engines.has(_key)
     ? {}
     : _key in alias
-      ? { key: alias[_key] as stringful }
+      ? {
+          key: alias[_key] as stringful,
+        }
       : {
           key: "chat" as stringful,
           terms: [_K, ..._terms] as const,
@@ -124,8 +145,7 @@ export default function (
         recomposed: [
           key,
           termString,
-        ]
-          .join(" "),
+        ].join(" "),
       };
 
   return {

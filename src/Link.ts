@@ -12,9 +12,7 @@ class Link extends Shortcut<
   protected override stringInput = true;
 
   protected runtime() {
-    const url = new Url(
-      this.input as string,
-    ),
+    const url = new Url(this.input!),
     host = (
       (host: Url["host"]) => (
         headless => this
@@ -65,7 +63,7 @@ class Link extends Shortcut<
           .setting
           .block
           .query
-          .except[host] as string[],
+          .except[host]!,
       );
     else if (
       host in this
@@ -79,7 +77,7 @@ class Link extends Shortcut<
           .setting
           .allow
           .query
-          .except[host] as string[],
+          .except[host]!,
       );
 
     if (
@@ -93,7 +91,7 @@ class Link extends Shortcut<
           this
             .setting
             .replace
-            .query[host] as FieldTable,
+            .query[host]!,
         )
       )
         url.replaceParam(

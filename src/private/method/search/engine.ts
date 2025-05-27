@@ -53,58 +53,46 @@ export default class SearchEngine<
       separator: string,
       force: boolean,
     ) {
-      const encodedQuery = terms
-        .map(
-          term => term
-            .split("+")
-            .map(c => encodeURI(c))
-            .join("%2B"),
-        )
-        .join(separator),
-      U = urls
+      const encodedUrls = urls
         .map(
           url => url
             .replace(
               tag,
-              encodedQuery,
+              terms
+                .map(
+                  term => term
+                    .split("+")
+                    .map(c => encodeURI(c))
+                    .join("%2B"),
+                )
+                .join(separator),
             ),
         );
 
       return !force
-        ? U
-        : U
-            .map(
-              url => `data:text/html,<meta http-equiv="refresh" content="0;url=${url}">`,
-            );
+        ? encodedUrls
+        : encodedUrls
+          .map(url => `data:text/html,<meta http-equiv="refresh" content="0;url=${url}">`);
     }
 
-    const {
-      type,
-      notify,
-      engine: _engine,
-      urls,
-      tag,
-      separator,
-      force,
-    } = this,
-    engine = _engine === ""
+    const engine = this.engine === ""
       ? key
-      : _engine;
+      : this.engine;
 
     return {
-      type,
+      type: this.type,
       engine,
       question,
-      urls: urls === null
-        ? urls
+      urls: this.urls === null
+        ? null
         : encode(
-            urls,
+            this.urls,
             terms,
-            tag as unknown as stringful,
-            separator,
-            force,
+            this.tag!,
+            this.separator,
+            this.force,
           ),
-      notify,
+      notify: this.notify,
       label: question
         ?? engine
         ?? "",
