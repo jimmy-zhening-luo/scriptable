@@ -67,8 +67,8 @@ export default class SearchEngine<
         ? U
         : U
           .map(
-            url => `data:text/html,<meta http-equiv="refresh" content="0;url=${url}">`
-        );
+            url => `data:text/html,<meta http-equiv="refresh" content="0;url=${url}">`,
+          );
     }
 
     const {
