@@ -11,6 +11,6 @@ export default function (host: Url["host"], path: string) {
   } satisfies Record<string, (path: string) => string> as Record<Url["host"], (path: string) => string>;
 
   return host in processors
-    ? processors[host]!.(path)
+    ? (processors[host]!)(path)
     : path;
 }
