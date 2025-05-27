@@ -89,13 +89,13 @@ export default class Url {
     return scheme === ""
       ? null
       : (
-        [
-          "https",
-          "http",
-        ].includes(scheme.toLocaleLowerCase())
-          ? "https"
-          : scheme
-      ) as stringfully<"URL:scheme">;
+          [
+            "https",
+            "http",
+          ].includes(scheme.toLocaleLowerCase())
+            ? "https"
+            : scheme
+        ) as stringfully<"URL:scheme">;
   }
 
   public getParam(param: string) {

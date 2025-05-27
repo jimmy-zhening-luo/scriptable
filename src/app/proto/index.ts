@@ -139,7 +139,7 @@ export default abstract class IApp<
   public run(synthetic?: Input) {
     try {
       typeof synthetic === "undefined"
-        || (this.synthetic = synthetic);
+      || (this.synthetic = synthetic);
 
       return this.output(
         this.runtime(),

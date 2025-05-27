@@ -9,7 +9,7 @@ class FileLink extends Share<string> {
     return this
       .stringfuls(
         this.input
-          ?? [],
+        ?? [],
         "No filepath to copy",
       )
       .map(
