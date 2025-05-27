@@ -65,8 +65,10 @@ export default class SearchEngine<
 
       return !force
         ? U
-        : U.map(url => `data:text/html,<meta name="color-scheme" content="dark light" />
-        <meta http-equiv="Refresh" content="0; url=${url}" />`);
+        : U
+          .map(
+            url => `data:text/html,<meta http-equiv="refresh" content="0;url=${url}">`
+        );
     }
 
     const {
