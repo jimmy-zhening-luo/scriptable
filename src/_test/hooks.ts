@@ -2,9 +2,11 @@ import * as Synthetics from "./synthetics";
 import type File from "../app/proto/file";
 import type Shortcut from "../app";
 
+type Import<T> = Promise<Record<"default", T>>;
+
 export async function mochaGlobalSetup() {
   try {
-    console.log("Mocha: BEGIN Global Setup");
+    console.log("Mocha hooks: BEGIN");
     global.args = Synthetics.args;
     global.FileManager = Synthetics.FileManager;
     global.Notification = Synthetics.Notification;
@@ -13,23 +15,18 @@ export async function mochaGlobalSetup() {
     const {
       "default": MockFile,
     } = await (
-      import("../app/proto/file") as Promise<
-        Record<
-          "default",
-          typeof File
-        >
-      >
+      import("../app/proto/file") as Import<typeof File>
     )
       .catch(
         (e: unknown) => {
-          throw new EvalError(
-            "Mocha: File: Failed to load `File` module",
+          throw new ReferenceError(
+            "Mocha hooks: failed to load `File` module",
             { cause: e },
           );
         },
       )
       .finally(
-        () => console.log("Mocha: File: Executed Module Loader"),
+        () => console.log("Mocha hooks: `File` module dynamically loaded"),
       );
 
     global.mockFile = new MockFile(
@@ -42,37 +39,35 @@ export async function mochaGlobalSetup() {
     const {
       "default": MockShortcut,
     } = await (
-      import("../app") as Promise<
-        Record<
-          "default",
-          typeof Shortcut
-        >
-      >
+      import("../app") as Import<typeof Shortcut>
     )
       .catch(
         (e: unknown) => {
-          throw new EvalError(
-            "Mocha: Shortcut: Failed to load `Shortcut` module",
+          throw new ReferenceError(
+            "Mocha hooks: failed to load `Shortcut` module",
             { cause: e },
           );
         },
       )
       .finally(
-        () => console.log("Mocha: Shortcut: Executed Module Loader"),
+        () => console.log("Mocha hooks: `Shortcut` module dynamically loaded"),
       );
 
-    global.MockConcreteShortcut = class MockConcreteShortcut extends MockShortcut<string, string> {
+    global.MockConcreteShortcut = class MockConcreteShortcut extends MockShortcut<
+      string,
+      string
+      > {
       protected override stringInput = true;
 
       protected runtime() {
         return "CONCRETE_SHORTCUT_OUTPUT";
       }
     };
-    console.log("Mocha: END Global Setup");
+    console.log("Mocha hooks: COMPLETED");
   }
   catch (error) {
     throw new EvalError(
-      "Mocha: GLOBAL SETUP FAILURE",
+      "Mocha hooks: FAILED",
       { cause: error },
     );
   }
