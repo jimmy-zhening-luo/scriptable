@@ -56,7 +56,7 @@ export async function mochaGlobalSetup() {
     global.MockConcreteShortcut = class MockConcreteShortcut extends MockShortcut<
       string,
       string
-      > {
+    > {
       protected override stringInput = true;
 
       protected runtime() {
