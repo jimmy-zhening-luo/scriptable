@@ -101,7 +101,7 @@ export default function (
         && parts.length === 1
         && parts.at(0) === ""
           ? terms.shift()
-            ?? ""
+          ?? ""
           : parts.join(selector),
       ].join("") as stringful;
 

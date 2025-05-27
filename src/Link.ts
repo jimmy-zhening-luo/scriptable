@@ -12,7 +12,7 @@ class Link extends Shortcut<
   protected override stringInput = true;
 
   protected runtime() {
-    const url = new Url(this.input!),
+    const url = new Url(this.input),
     host = (
       (host: Url["host"]) => (
         headless => this
