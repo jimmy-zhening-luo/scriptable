@@ -63,22 +63,21 @@ export default class Url {
 
   private static parse(string: string) {
     const {
-      scheme = "",
+      scheme: _scheme = "",
       host = "",
       path = "",
       query = "",
       fragment = "",
     } = regex.exec(string)?.groups
-      ?? {};
+      ?? {},
+    scheme = Url.normalizeScheme(_scheme);
 
-    return scheme === ""
+    return scheme === null
+      || scheme === "https"
+      && host === ""
       ? null
       : {
-          scheme: (
-            Url.isHttp(scheme)
-              ? "https"
-              : scheme
-          ) as stringfully<"URL:scheme">,
+          scheme,
           host: host.toLocaleLowerCase() as stringfully<"URL:host">,
           path,
           query,
@@ -86,13 +85,17 @@ export default class Url {
         };
   }
 
-  private static isHttp(scheme: string) {
-    return [
-      "https",
-      "http",
-    ].includes(
-      scheme.toLocaleLowerCase(),
-    );
+  private static normalizeScheme(scheme: string) {
+    return scheme === ""
+      ? null
+      : (
+        [
+          "https",
+          "http",
+        ].includes(scheme.toLocaleLowerCase())
+          ? "https"
+          : scheme
+      ) as stringfully<"URL:scheme">;
   }
 
   public getParam(param: string) {

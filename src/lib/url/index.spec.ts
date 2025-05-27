@@ -27,7 +27,7 @@ describe(
         it(
           "on nonsense",
           function () {
-            expect(() => new Url(TEST_URL.ERROR))
+            expect(() => new Url(TEST_URL.CASE.ERROR.nonsense))
               .throws();
           },
         );
@@ -42,20 +42,6 @@ describe(
           "HTTP empty host",
           function () {
             expect(() => new Url(TEST_URL.CASE.ERROR.httpEmpty))
-              .throws();
-          },
-        );
-        it(
-          "HTTP localhost",
-          function () {
-            expect(() => new Url(TEST_URL.CASE.ERROR.httpLocal))
-              .throws();
-          },
-        );
-        it(
-          "localhost",
-          function () {
-            expect(() => new Url(TEST_URL.CASE.ERROR.local))
               .throws();
           },
         );

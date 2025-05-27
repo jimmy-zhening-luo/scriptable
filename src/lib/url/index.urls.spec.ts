@@ -1,8 +1,9 @@
 export const TEST_URL = {
   OK: "https://www.example.com/path/to/foo?a=1&b=2&c=3#fragment",
-  ERROR: "$%^&*",
   CASE: {
     OK: {
+      httpLocal: "https://localhost/",
+      local: "localhost/",
       scheme: "scriptable://",
       schemeEmpty: "scriptable:///",
       schemeHost: "scriptable://host",
@@ -11,10 +12,9 @@ export const TEST_URL = {
     },
     ERROR: {
       empty: "",
+      nonsense: "$%^&*",
       http: "https://",
       httpEmpty: "https:///",
-      httpLocal: "https://localhost/",
-      local: "localhost/",
     },
   },
 };
