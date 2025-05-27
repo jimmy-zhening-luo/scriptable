@@ -68,19 +68,18 @@ export default class Url {
       path = "",
       query = "",
       fragment = "",
-    } = regex
-      .exec(string)
-      ?.groups
-      ?? {},
-    http = Url.isHttp(scheme);
+    } = regex.exec(string)?.groups
+      ?? {};
 
     return scheme === ""
-      || http
-      && !host.includes(".")
       ? null
       : {
-          scheme: (http ? "https" : scheme) as stringfully<"Url[scheme]">,
-          host: host.toLocaleLowerCase() as stringfully<"Url[host]">,
+          scheme: (
+            Url.isHttp(scheme)
+              ? "https"
+              : scheme
+          ) as stringfully<"URL:scheme">,
+          host: host.toLocaleLowerCase() as stringfully<"URL:host">,
           path,
           query,
           fragment,

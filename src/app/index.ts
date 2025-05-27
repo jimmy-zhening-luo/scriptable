@@ -15,9 +15,7 @@ export default abstract class Shortcut<
       : args.shortcutParameter as Undef<Input>;
   }
 
-  protected output(
-    runtime: ReturnType<Shortcut<Input, Output>["runtime"]>,
-  ) {
+  protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
     console.log(runtime);
     Script.setShortcutOutput(runtime);
 

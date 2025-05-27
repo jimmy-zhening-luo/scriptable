@@ -25,47 +25,26 @@ class Search extends Shortcut<
       input === ""
         ? this.read()
         : input,
-      this
-        .setting
-        .alias,
+      this.setting.alias,
       new Set<string>(
-        Object.keys(
-          this
-            .setting
-            .engines,
-        ),
+        Object.keys(this.setting.engines),
       ),
-      this.stringfuls(
-        this
-          .setting
-          .fallbacks,
-      ),
+      this.stringfuls(this.setting.fallbacks),
       this.stringful(
-        this
-          .setting
-          .reserved
-          .operators,
+        this.setting.reserved.operators,
       ),
       this.chars(
-        this
-          .setting
-          .reserved
-          .selectors,
+        this.setting.reserved.selectors,
       ),
     ),
-    entry = this
-      .setting
-      .engines[key]!,
+    entry = this.setting.engines[key]!,
     engine = Array.isArray(entry)
       || typeof entry === "string"
       ? new Engine(
         "browser",
         entry,
         this.stringful(
-          this
-            .setting
-            .reserved
-            .tag,
+          this.setting.reserved.tag,
         ),
       )
       : "url" in entry
@@ -73,10 +52,7 @@ class Search extends Shortcut<
           "browser",
           entry.url,
           this.stringful(
-            this
-              .setting
-              .reserved
-              .tag,
+            this.setting.reserved.tag,
           ),
           entry.separator,
           entry.force,

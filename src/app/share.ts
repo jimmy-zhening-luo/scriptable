@@ -8,18 +8,17 @@ export default abstract class Share<
     Null<Output>,
     Schema
   > {
-  protected readonly abstract type:
+  protected readonly abstract type: (
     | "plainTexts"
     | "urls"
-    | "fileURLs";
+    | "fileURLs"
+  );
 
   protected getInput() {
     return args[this.type] as Undef<string[]>;
   }
 
-  protected output(
-    runtime: ReturnType<Share<Output>["runtime"]>,
-  ) {
+  protected output(runtime: ReturnType<Share<Output>["runtime"]>) {
     console.log(runtime);
 
     if (typeof runtime === "string")

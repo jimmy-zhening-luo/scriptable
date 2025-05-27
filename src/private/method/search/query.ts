@@ -57,9 +57,7 @@ export default function (
         || OPERATORS.includes(t00)
         || typeof t01 !== "undefined"
         && Number.isFinite(
-          Number(
-            `${t00}${t01}`,
-          ),
+          Number(`${t00}${t01}`),
         )
           ? ["math" as stringful] as const
           : [] as const,
@@ -79,19 +77,14 @@ export default function (
     [head, ...terms] = tokens,
     selector = SELECTORS
       .find(
-        selector => head
-          .includes(
-            selector,
-          ),
+        selector => head.includes(selector),
       );
 
     if (typeof selector === "undefined")
       return tokens;
     else {
       const [newHead = "", ...parts] = head
-        .split(
-          selector,
-        ),
+        .split(selector),
       key = newHead === ""
         ? "translate" as stringful
         : newHead as stringful,

@@ -30,7 +30,10 @@ export default class File<Type extends string> {
       if (subpath.length === 0)
         throw new SyntaxError("Empty file subpath");
 
-      this.path = [root, ...subpath].join("/");
+      this.path = [
+        root,
+        ...subpath,
+      ].join("/");
       this.parent = [
         root,
         ...subpath.slice(0, -1),
@@ -150,10 +153,7 @@ export default class File<Type extends string> {
     }
   }
 
-  private error(
-    e: unknown,
-    verb: string,
-  ) {
+  private error(e: unknown, verb: string) {
     return new Error(
       `Failed to '${verb}' file`,
       {

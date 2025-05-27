@@ -15,15 +15,13 @@ class Link extends Shortcut<
     const url = new Url(this.input),
     host = (
       (host: Url["host"]) => (
-        headless => this
-          .setting
+        headless => this.setting
           .replace
           .host[headless]
           ?? headless
       )(
         !host.startsWith("www.")
-        || this
-          .setting
+        || this.setting
           .allow
           .host
           .www
@@ -34,8 +32,7 @@ class Link extends Shortcut<
     )(url.host);
 
     if (
-      this
-        .setting
+      this.setting
         .block
         .fragment
         .includes(host)
@@ -43,8 +40,7 @@ class Link extends Shortcut<
       url.dropFragment();
 
     if (
-      this
-        .setting
+      this.setting
         .block
         .query
         .all
@@ -52,59 +48,47 @@ class Link extends Shortcut<
     )
       url.dropQuery();
     else if (
-      host in this
-        .setting
+      host in this.setting
         .block
         .query
         .except
     )
       url.deleteParamsExcept(
-        ...this
-          .setting
+        ...this.setting
           .block
           .query
           .except[host]!,
       );
     else if (
-      host in this
-        .setting
+      host in this.setting
         .allow
         .query
         .except
     )
       url.deleteParams(
-        ...this
-          .setting
+        ...this.setting
           .allow
           .query
           .except[host]!,
       );
 
     if (
-      host in this
-        .setting
+      host in this.setting
         .replace
         .query
     )
       for (
         const [find, replace] of Object.entries(
-          this
-            .setting
+          this.setting
             .replace
             .query[host]!,
         )
       )
-        url.replaceParam(
-          find,
-          replace,
-        );
+        url.replaceParam(find, replace);
 
     return [
       url.schemeHost,
-      process(
-        host,
-        url.path,
-      ),
+      process(host, url.path),
       url.query,
       url.fragment,
     ].join("");

@@ -13,12 +13,8 @@ export default abstract class Widget<
     return args.widgetParameter as Undef<string>;
   }
 
-  protected output(
-    runtime: ReturnType<Widget["runtime"]>,
-  ) {
-    Script.setWidget(
-      this.widget,
-    );
+  protected output(runtime: ReturnType<Widget["runtime"]>) {
+    Script.setWidget(this.widget);
     console.log("Widget set");
 
     return runtime;

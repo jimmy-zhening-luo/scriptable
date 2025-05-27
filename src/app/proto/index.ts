@@ -6,7 +6,7 @@ export default abstract class IApp<
   Schema,
 > {
   protected readonly app;
-  private readonly cache: Record<string, File<"Storage">> = {};
+  private readonly cache: Table<File<"Storage">> = {};
 
   constructor() {
     try {
@@ -49,7 +49,10 @@ export default abstract class IApp<
   protected get inputString() {
     const { input = "" } = this;
 
-    if (typeof input !== "string" && typeof input !== "number")
+    if (
+      typeof input !== "string"
+      && typeof input !== "number"
+    )
       throw new TypeError(
         "Non-string app input",
         { cause: input },
@@ -82,16 +85,13 @@ export default abstract class IApp<
     }
   }
 
-  private static error(
-    app: stringful,
-    error: unknown,
-  ) {
-    function cast(e: unknown) {
-      return typeof e === "object"
-        && e !== null
-        && "message" in e
-        ? e as Error
-        : JSON.stringify(e);
+  private static error(app: stringful, error: unknown) {
+    function cast(error: unknown) {
+      return typeof error === "object"
+        && error !== null
+        && "message" in error
+        ? error as Error
+        : JSON.stringify(error);
     }
 
     const errors: Arrayful<string | Error> = [cast(error)];
@@ -119,50 +119,41 @@ export default abstract class IApp<
           : error.message,
       ),
     ),
-    n = new Notification;
+    notification = new Notification;
 
-    n.title = message;
-    n.body = cause;
-    n.sound = "failure";
-    n
+    notification.title = message;
+    notification.body = cause;
+    notification.sound = "failure";
+    notification
       .schedule()
-      .catch((error: unknown) => console.error(error));
+      .catch(
+        (error: unknown) => console.error(error),
+      );
     console.error(
-      [
-        message,
-        cause,
-      ].join("\n"),
+      [message, cause].join("\n"),
     );
 
-    return new Error(
-      message,
-      { cause },
-    );
+    return new Error(message, { cause });
   }
 
   public run(synthetic?: Input) {
     try {
-      typeof synthetic === "undefined" || (this.synthetic = synthetic);
+      typeof synthetic === "undefined"
+        || (this.synthetic = synthetic);
 
       return this.output(
         this.runtime(),
       );
     }
     catch (error) {
-      throw IApp.error(
-        this.app,
-        error,
-      );
+      throw IApp.error(this.app, error);
     }
     finally {
       Script.complete();
     }
   }
 
-  protected char(
-    string = "",
-    cause = "",
-  ) {
+  protected char(string = "", cause = "") {
     if (string.length !== 1)
       throw new TypeError(
         "Non-char",
@@ -172,10 +163,7 @@ export default abstract class IApp<
     return string as char;
   }
 
-  protected chars<A extends readonly string[]>(
-    strings: A,
-    cause = "",
-  ) {
+  protected chars<A extends readonly string[]>(strings: A, cause = "") {
     if (strings.length === 0)
       throw new RangeError(
         "Array has no chars",
@@ -199,10 +187,7 @@ export default abstract class IApp<
     );
   }
 
-  protected stringful(
-    string = "",
-    cause = "",
-  ) {
+  protected stringful(string = "", cause = "") {
     if (string === "")
       throw new TypeError(
         "Unstringful",
@@ -212,10 +197,7 @@ export default abstract class IApp<
     return string as stringful;
   }
 
-  protected stringfuls<A extends readonly string[]>(
-    strings: A,
-    cause = "",
-  ) {
+  protected stringfuls<A extends readonly string[]>(strings: A, cause = "") {
     if (strings.length === 0)
       throw new RangeError(
         "Array has no stringfuls",
@@ -255,14 +237,16 @@ export default abstract class IApp<
       .readful();
   }
 
-  protected write(...[
-    data,
-    overwrite = true,
-    ...filename
-  ]: [
-    ...Parameters<File<"Storage">["write"]>,
-    ...Parameters<IApp<Input, Output, Schema>["storage"]>,
-  ]) {
+  protected write(
+    ...[
+      data,
+      overwrite = true,
+      ...filename
+    ]: [
+      ...Parameters<File<"Storage">["write"]>,
+      ...Parameters<IApp<Input, Output, Schema>["storage"]>,
+    ]
+  ) {
     this
       .storage(...filename)
       .write(
@@ -279,10 +263,7 @@ export default abstract class IApp<
       .delete();
   }
 
-  private storage(
-    name = "",
-    extension = "",
-  ) {
+  private storage(name = "", extension = "") {
     const filename = [
       name === ""
         ? this.app
