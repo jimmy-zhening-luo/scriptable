@@ -20,16 +20,18 @@ class Link extends Shortcut<
           .host[headless]
           ?? headless
       )(
-        !host.startsWith("www.")
-        || this.setting
+        host.startsWith("www.")
+        && !this.setting
           .allow
           .host
           .www
           .includes(host)
-          ? host
-          : host.slice(4) as typeof host,
+          ? host.slice(4) as typeof host
+          : host,
       )
-    )(url.host);
+    )(
+      url.host
+    );
 
     if (
       this.setting

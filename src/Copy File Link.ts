@@ -8,12 +8,13 @@ class FileLink extends Share<string> {
   protected runtime() {
     return this
       .stringfuls(
-        this.input
-        ?? [],
+        this.input ?? [],
         "No filepath to copy",
       )
       .map(
-        path => `shareddocuments://${encodeURI(path)}`,
+        path => `shareddocuments://${
+          encodeURI(path)
+        }`,
       )
       .join("\n");
   }

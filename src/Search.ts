@@ -30,12 +30,8 @@ class Search extends Shortcut<
         Object.keys(this.setting.engines),
       ),
       this.stringfuls(this.setting.fallbacks),
-      this.stringful(
-        this.setting.reserved.operators,
-      ),
-      this.chars(
-        this.setting.reserved.selectors,
-      ),
+      this.stringful(this.setting.reserved.operators),
+      this.chars(this.setting.reserved.selectors),
     ),
     entry = this.setting.engines[key]!,
     engine = Array.isArray(entry)
@@ -43,17 +39,13 @@ class Search extends Shortcut<
       ? new Engine(
         "browser",
         entry,
-        this.stringful(
-          this.setting.reserved.tag,
-        ),
+        this.stringful(this.setting.reserved.tag),
       )
       : "url" in entry
         ? new Engine(
           "browser",
           entry.url,
-          this.stringful(
-            this.setting.reserved.tag,
-          ),
+          this.stringful(this.setting.reserved.tag),
           entry.separator,
           entry.force,
         )
