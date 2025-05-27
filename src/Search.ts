@@ -84,7 +84,7 @@ class Search extends Shortcut<
         : new Engine(
           "shortcut",
           (entry.shortcut as Undef<string>)
-            ?? "",
+          ?? "",
           entry.notify,
         );
 
