@@ -1,6 +1,5 @@
 export default class SearchEngine<
   T extends (
-    | "api"
     | "browser"
     | "shortcut"
   ),
@@ -17,27 +16,27 @@ export default class SearchEngine<
       : string,
     outputOrTag:
       | boolean
-      | (T extends ("browser" | "api") ? stringful : boolean) = false,
+      | (T extends "browser" ? stringful : boolean) = false,
     private readonly separator = "+",
-    private readonly encodeComponent = false,
     private readonly force = false,
   ) {
-    const web = type === "api" || type === "browser";
-
     ({
       engine: this.engine = null,
       urls: this.urls = null,
       tag: this.tag = null,
       notify: this.notify,
-    } = web
+    } = type === "browser"
       ? {
-          urls: typeof engineOrUrls === "string" ? [engineOrUrls] : engineOrUrls as string[],
+          urls: typeof engineOrUrls === "string"
+            ? [engineOrUrls]
+            : engineOrUrls as string[],
           tag: outputOrTag as stringful,
-          notify: type === "api" ? true : null,
+          notify: null,
         }
       : {
           engine: engineOrUrls as string,
-          notify: (outputOrTag as boolean) || null,
+          notify: (outputOrTag as boolean)
+            || null,
         }
     );
   }
@@ -52,16 +51,24 @@ export default class SearchEngine<
       terms: readonly stringful[],
       tag: stringful,
       separator: string,
-      encodeComponent: boolean,
       force: boolean,
     ) {
       const encodedQuery = terms
-        .map(term => term
-          .split("+")
-          .map(c => encodeComponent ? encodeURI(c) : encodeURIComponent(c))
-          .join("%2B"))
+        .map(
+          term => term
+            .split("+")
+            .map(c => encodeURI(c))
+            .join("%2B"),
+        )
         .join(separator),
-      U = urls.map(url => url.replace(tag, encodedQuery));
+      U = urls
+        .map(
+          url => url
+            .replace(
+              tag,
+              encodedQuery,
+            ),
+        );
 
       return !force
         ? U
@@ -78,7 +85,6 @@ export default class SearchEngine<
       urls,
       tag,
       separator,
-      encodeComponent,
       force,
     } = this,
     engine = _engine === ""
@@ -96,11 +102,12 @@ export default class SearchEngine<
             terms,
             tag as unknown as stringful,
             separator,
-            encodeComponent,
             force,
           ),
       notify,
-      label: question ?? engine ?? "",
+      label: question
+        ?? engine
+        ?? "",
     };
   }
 }

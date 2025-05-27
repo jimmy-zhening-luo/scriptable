@@ -12,24 +12,14 @@ export interface SearchSetting {
     | Unflat<string, true>
     | SearchEngineSetting<
       "url",
-      | "encodeComponent"
-      | "force"
-      | "inprivate",
+      | "force",
       never,
       Field<never, "separator">,
       Unflat
     >
     | SearchEngineSetting<
-      "api",
-      "encodeComponent",
-      never,
-      Field<never, "separator">
-    >
-    | Record<string, never>
-    | SearchEngineSetting<
       "shortcut",
       | "notify"
-      | "select"
     >
   >>;
 }
