@@ -565,7 +565,7 @@ declare class CalendarEvent {
 * Constructs an object that opens x-callback-url requests and waits for a response from the target app.
 * @see https://docs.scriptable.app/callbackurl/#-new-callbackurl
 */
-declare class CallbackURL<T extends string = string> {
+declare class CallbackURL {
   /**
    * _Open x-callback-url requests._
    *
@@ -573,7 +573,7 @@ declare class CallbackURL<T extends string = string> {
    * @param baseURL - Base URL of the request. This is usally something like my-app://x-callback-url/action
    * @see https://docs.scriptable.app/callbackurl/#-new-callbackurl
    */
-  constructor(baseURL: T);
+  constructor(baseURL: string);
 
   /**
    * _Construct CallbackURL._
@@ -594,11 +594,7 @@ declare class CallbackURL<T extends string = string> {
    * not invoke the callback.
    * @see https://docs.scriptable.app/callbackurl/#-open
    */
-  open(): Promise<
-    T extends `shortcuts://x-callback-url/${string}`
-      ? { result: string | number | boolean | null }
-      : Record<string, string | number | boolean | null>
-  >;
+  open(): Promise<Record<string, string>>;
 
   /**
    * _Creates the callback URL._
@@ -2485,14 +2481,14 @@ declare class FileManager {
    * @param path - File path to examine.
    * @see https://docs.scriptable.app/filemanager/#-fileexists
    */
-  fileExists<T extends string>(path: T): boolean;
+  fileExists(path: string): boolean;
 
   /**
    * _Checks if a path points to a directory._
    * @param path - Path to examine.
    * @see https://docs.scriptable.app/filemanager/#-isdirectory
    */
-  isDirectory<T extends string>(path: T): boolean;
+  isDirectory(path: string): boolean;
 
   /**
    * _Creates a directory at the specified path._
@@ -3750,9 +3746,9 @@ declare const module: {
 };
 
 declare namespace Notification {
-  interface Actions {
-    title: string;
-    url: string;
+  interface Action {
+    readonly title: string;
+    readonly url: string;
   }
 }
 
@@ -3795,7 +3791,7 @@ declare class Notification {
    * case the preferred content height is not guaranteed to be respected.
    * @see https://docs.scriptable.app/notification/#preferredcontentheight
    */
-  preferredContentHeight: number;
+  preferredContentHeight: number | null;
 
 /**
    * _Number to display in the app icon's badge._
@@ -3804,7 +3800,7 @@ declare class Notification {
    * badge unchanged. The default value is null.
    * @see https://docs.scriptable.app/notification/#badge
    */
-  badge: number;
+  badge: number | null;
 
 /**
    * _Identifier for grouping the notification._
@@ -3820,7 +3816,7 @@ declare class Notification {
    * Store any custom information for the notification. This can be accessed from the `Notification.opened` property when a script is run from a notification.
    * @see https://docs.scriptable.app/notification/#userinfo
    */
-  userInfo: Record<string, unknown>;
+  userInfo: Readonly<Record<string, unknown>>;
 
 /**
    * _Sound of the notification._
@@ -3849,7 +3845,8 @@ declare class Notification {
     | "failure"
     | "piano_error"
     | "piano_success"
-    | "popup";
+    | "popup"
+    | null;
 
 /**
    * _URL to open when notification is tapped._
@@ -3858,7 +3855,7 @@ declare class Notification {
    * URL.
    * @see https://docs.scriptable.app/notification/#openurl
    */
-  openURL: string;
+  openURL: string | null;
 
 /**
    * _Delivery date of the notification._
@@ -3870,7 +3867,7 @@ declare class Notification {
    * and `setWeeklyTrigger` functions.
    * @see https://docs.scriptable.app/notification/#deliverydate
    */
-  deliveryDate: Date;
+  readonly deliveryDate: Date | null;
 
 /**
    * _Next trigger date of the notification._
@@ -3881,7 +3878,7 @@ declare class Notification {
    * and `setWeeklyTrigger` functions.
    * @see https://docs.scriptable.app/notification/#nexttriggerdate
    */
-  nextTriggerDate: Date;
+  readonly nextTriggerDate: Date | null;
 
 /**
    * _Name of script to run in rich notification._
@@ -3890,7 +3887,7 @@ declare class Notification {
    * script to run it inside the notification.
    * @see https://docs.scriptable.app/notification/#scriptname
    */
-  scriptName: string;
+  scriptName: string | null;
 
 /**
    * _Actions added to the notification._
@@ -3905,7 +3902,7 @@ declare class Notification {
    * To add a notification, use `Notification.addAction`.
    * @see https://docs.scriptable.app/notification/#actions
    */
-  actions: Notification.Actions;
+  readonly actions: readonly Notification.Action[];
 
   /**
    * _Schedules and manages notifications._
@@ -7033,5 +7030,4 @@ declare function btoa(string: string): string;/**
 * @see https://docs.scriptable.app/importmodule
 */
 
-declare function importModule<T>(path: string): T;
-declare function importModule<T>(path: string): T;
+declare function importModule(path: string): unknown;

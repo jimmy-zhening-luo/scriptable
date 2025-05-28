@@ -8,9 +8,12 @@ export async function mochaGlobalSetup() {
   try {
     console.log("Mocha hooks: BEGIN");
     global.args = MockGlobals.args;
-    global.FileManager = MockGlobals.FileManager;
-    global.Notification = MockGlobals.Notification;
+    global.Data = MockGlobals.Data;
     global.DateFormatter = MockGlobals.DateFormatter;
+    global.FileManager = MockGlobals.FileManager;
+    global.Image = MockGlobals.Image;
+    global.Notification = MockGlobals.Notification;
+    global.Size = MockGlobals.Size;
 
     const {
       "default": MockFile,
