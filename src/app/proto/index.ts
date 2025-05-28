@@ -110,15 +110,31 @@ export default abstract class IApp<
       if (typeof synthetic !== "undefined")
         this.synthetic = synthetic;
 
-      return this.output(
-        this.runtime(),
-      );
+      const runtime = this.runtime();
+      
+      if (config.runsInApp)
+        this.dev(runtime);
+
+      return this.output(runtime);
     }
     catch (error) {
       throw IApp.error(this.app, error);
     }
     finally {
       Script.complete();
+    }
+  }
+
+  protected dev(runtime: Output) {
+    try {
+      console.log(runtime);
+      this.test(runtime);
+    }
+    catch (e) {
+      throw new EvalError(
+        "In-app dev mode failure",
+        { cause: e },
+      )
     }
   }
 
@@ -253,6 +269,7 @@ export default abstract class IApp<
   protected abstract getInput(): Undef<Input>;
   protected abstract runtime(): Output;
   protected abstract output(runtime: Output): Output;
+  protected abstract test(runtime: Output): void;
   private config?: Schema;
   private synthetic?: Input;
 }

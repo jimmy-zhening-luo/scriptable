@@ -19,11 +19,11 @@ export default abstract class Share<
   }
 
   protected output(runtime: ReturnType<Share<Output>["runtime"]>) {
-    console.log(runtime);
-
     if (typeof runtime === "string")
       Pasteboard.copy(runtime);
 
     return runtime;
   }
+
+  protected test(runtime: ReturnType<Share<Output>["runtime"]>) {}
 }

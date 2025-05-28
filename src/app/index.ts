@@ -18,11 +18,12 @@ export default abstract class Shortcut<
   }
 
   protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
-    console.log(runtime);
     Script.setShortcutOutput(runtime);
 
     return runtime;
   }
+
+  protected test(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {}
 
   protected stringInput?: (
     | false

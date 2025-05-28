@@ -15,8 +15,11 @@ export default abstract class Widget<
 
   protected output(runtime: ReturnType<Widget["runtime"]>) {
     Script.setWidget(this.widget);
-    console.log("Widget set");
 
     return runtime;
+  }
+
+  protected test(runtime: ReturnType<Widget["runtime"]>) {
+    this.widget.presentSmall();
   }
 }
