@@ -19,7 +19,17 @@ export default abstract class Widget<
     return runtime;
   }
 
-  protected test(runtime: ReturnType<Widget["runtime"]>) {
-    this.widget.presentSmall();
+  protected test() {
+    this
+      .widget
+      .presentSmall()
+      .catch(
+        (e: unknown) => {
+          throw new EvalError(
+            "Error presenting widget:",
+            { cause: e },
+          );
+        },
+      );
   }
 }
