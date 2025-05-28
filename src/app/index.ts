@@ -11,8 +11,10 @@ export default abstract class Shortcut<
   > {
   protected getInput() {
     return this.stringInput === true
-      ? args.plainTexts[0] as unknown as Undef<Input>
-      : args.shortcutParameter as Undef<Input>;
+      ? args.plainTexts[0] as Undef<Input>
+      : this.stringInput === "multi"
+        ? args.plainTexts as Undef<Input>
+        : args.shortcutParameter as Undef<Input>;
   }
 
   protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
@@ -22,7 +24,9 @@ export default abstract class Shortcut<
     return runtime;
   }
 
-  protected stringInput?: Input extends string
-    ? boolean
-    : never;
+  protected stringInput?: (
+    | false
+    | (Input extends string ? true : never)
+    | (Input extends readonly string[] ? "multi" : never)
+  );
 }
