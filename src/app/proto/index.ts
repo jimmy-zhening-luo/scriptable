@@ -26,7 +26,7 @@ export default abstract class IApp<
   protected get input() {
     try {
       return this.getInput()
-        ?? this.synthetic
+        ?? this.sideload
         ?? undefined;
     }
     catch (e) {
@@ -108,7 +108,7 @@ export default abstract class IApp<
   public run(input?: Input) {
     try {
       if (typeof input !== "undefined")
-        this.synthetic = synthetic;
+        this.sideload = sideload;
 
       const output = this.output(this.runtime());
 
@@ -271,5 +271,5 @@ export default abstract class IApp<
   protected abstract output(runtime: Output): Output;
   protected abstract test(runtime: Output): void;
   private config?: Schema;
-  private synthetic?: Input;
+  private sideload?: Input;
 }
