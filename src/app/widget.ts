@@ -14,6 +14,7 @@ export default abstract class Widget<
   }
 
   protected output(runtime: ReturnType<Widget["runtime"]>) {
+    this.widget.refreshAfterDate = new Date(Date.now() + 30000);
     Script.setWidget(this.widget);
 
     return runtime;
