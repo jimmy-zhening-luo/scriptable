@@ -1,18 +1,8 @@
-/*
-export * from "./args";
-export * from "./data";
-export * from "./date-formatter";
-export * from "./file-manager";
-export * from "./image";
-export * from "./notification";
-export * from "./size";
-
-*/
-
 declare const global: Global;
 declare interface Global {
   // #region Scriptable
   args: typeof args;
+  config: typeof config;
   Data: typeof Data;
   DateFormatter: typeof DateFormatter;
   FileManager: typeof FileManager;

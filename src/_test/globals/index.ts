@@ -1,4 +1,5 @@
 export * from "./args";
+export * from "./config";
 export * from "./data";
 export * from "./date-formatter";
 export * from "./file-manager";
