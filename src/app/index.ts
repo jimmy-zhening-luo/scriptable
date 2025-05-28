@@ -23,7 +23,9 @@ export default abstract class Shortcut<
     return runtime;
   }
 
-  protected test(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {}
+  protected test(): void {
+    return undefined;
+  }
 
   protected stringInput?: (
     | false

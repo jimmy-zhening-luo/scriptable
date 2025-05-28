@@ -25,5 +25,7 @@ export default abstract class Share<
     return runtime;
   }
 
-  protected test(runtime: ReturnType<Share<Output>["runtime"]>) {}
+  protected test(): void {
+    return undefined;
+  }
 }

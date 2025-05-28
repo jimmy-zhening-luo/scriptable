@@ -111,7 +111,7 @@ export default abstract class IApp<
         this.synthetic = synthetic;
 
       const runtime = this.runtime();
-      
+
       if (config.runsInApp)
         this.dev(runtime);
 
@@ -134,7 +134,7 @@ export default abstract class IApp<
       throw new EvalError(
         "In-app dev mode failure",
         { cause: e },
-      )
+      );
     }
   }
 
