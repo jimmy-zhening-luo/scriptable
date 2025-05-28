@@ -1,20 +1,20 @@
-const SyntheticFileManager = class SyntheticFileManager {
+const MockFileManager = class FileManager {
   public static local() {
-    return new SyntheticFileManager();
+    return new FileManager();
   }
 
   public static iCloud() {
-    return new SyntheticFileManager();
+    return new FileManager();
   }
 
   public readString(
     filePath: string,
   ) {
-    const SYNTHETIC_FILE_CONTENT = "SYNTHETIC_FILEMANAGER_FILE_READ_DATA";
+    const MOCK_FILE_CONTENT = "MOCK_FILEMANAGER_FILE_READ_DATA";
 
-    console.log(`Mocha: File Instance: Read content "${SYNTHETIC_FILE_CONTENT}" from '${filePath}'`);
+    console.log(`Mocha: File Instance: Read content "${MOCK_FILE_CONTENT}" from '${filePath}'`);
 
-    return SYNTHETIC_FILE_CONTENT;
+    return MOCK_FILE_CONTENT;
   }
 
   public writeString(
@@ -56,11 +56,11 @@ const SyntheticFileManager = class SyntheticFileManager {
   public bookmarkedPath(
     bookmark: string,
   ) {
-    const SYNTHETIC_BOOKMARKED_PATH = "SYNTHETIC_FILEMANAGER:SYNTHETIC_FILE_ROOT/SYNTHETIC_FILETYPE";
+    const MOCK_BOOKMARKED_PATH = "MOCK_FILEMANAGER:MOCK_FILE_ROOT/MOCK_FILETYPE";
 
-    console.log(`Mocha: File Instance: Resolved bookmark '${bookmark}' as '${SYNTHETIC_BOOKMARKED_PATH}'`);
+    console.log(`Mocha: File Instance: Resolved bookmark '${bookmark}' as '${MOCK_BOOKMARKED_PATH}'`);
 
-    return SYNTHETIC_BOOKMARKED_PATH;
+    return MOCK_BOOKMARKED_PATH;
   }
 
   public bookmarkExists(
@@ -72,4 +72,4 @@ const SyntheticFileManager = class SyntheticFileManager {
   }
 } as typeof FileManager;
 
-export { SyntheticFileManager };
+export { MockFileManager };

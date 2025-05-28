@@ -108,7 +108,7 @@ export default abstract class IApp<
   public run(input?: Input) {
     try {
       if (typeof input !== "undefined")
-        this.sideload = sideload;
+        this.sideload = input;
 
       const output = this.output(this.runtime());
 

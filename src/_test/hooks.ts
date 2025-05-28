@@ -1,16 +1,16 @@
-import * as Synthetics from "./synthetics";
+import * as MockGlobals from "./globals";
 import type File from "../app/proto/file";
 import type Shortcut from "../app";
 
-type Import<T> = Promise<Record<"default", T>>;
+type Import<Module> = Promise<Record<"default", Module>>;
 
 export async function mochaGlobalSetup() {
   try {
     console.log("Mocha hooks: BEGIN");
-    global.args = Synthetics.args;
-    global.FileManager = Synthetics.FileManager;
-    global.Notification = Synthetics.Notification;
-    global.DateFormatter = Synthetics.DateFormatter;
+    global.args = MockGlobals.args;
+    global.FileManager = MockGlobals.FileManager;
+    global.Notification = MockGlobals.Notification;
+    global.DateFormatter = MockGlobals.DateFormatter;
 
     const {
       "default": MockFile,
