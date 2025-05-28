@@ -8,14 +8,14 @@ export default abstract class Share<
     Null<Output>,
     Schema
   > {
-  protected readonly abstract type: (
+  protected readonly abstract shareInput: (
     | "plainTexts"
     | "urls"
     | "fileURLs"
   );
 
   protected getInput() {
-    return args[this.type] as Undef<string[]>;
+    return args[this.shareInput] as Undef<string[]>;
   }
 
   protected output(runtime: ReturnType<Share<Output>["runtime"]>) {

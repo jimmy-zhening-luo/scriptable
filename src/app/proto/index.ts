@@ -37,37 +37,6 @@ export default abstract class IApp<
     }
   }
 
-  protected get inputful() {
-    const { input } = this;
-
-    if (typeof input === "undefined")
-      throw new RangeError("Undefined app input");
-
-    return input;
-  }
-
-  protected get inputString() {
-    const { input = "" } = this;
-
-    if (
-      typeof input !== "string"
-      && typeof input !== "number"
-    )
-      throw new TypeError(
-        "Non-string app input",
-        { cause: input },
-      );
-
-    return String(input);
-  }
-
-  protected get inputStringful() {
-    return this.stringful(
-      this.inputString,
-      "Unstringful app input",
-    );
-  }
-
   protected get setting() {
     try {
       return this.config ??= JSON.parse(
