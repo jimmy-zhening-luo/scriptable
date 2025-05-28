@@ -105,17 +105,17 @@ export default abstract class IApp<
     return new Error(message, { cause });
   }
 
-  public run(synthetic?: Input) {
+  public run(input?: Input) {
     try {
-      if (typeof synthetic !== "undefined")
+      if (typeof input !== "undefined")
         this.synthetic = synthetic;
 
-      const runtime = this.runtime();
+      const output = this.output(this.runtime());
 
       if (config.runsInApp)
-        this.dev(runtime);
+        this.dev(output);
 
-      return this.output(runtime);
+      return output;
     }
     catch (error) {
       throw IApp.error(this.app, error);
