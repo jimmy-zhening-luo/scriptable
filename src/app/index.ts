@@ -17,8 +17,10 @@ export default abstract class Shortcut<
     return this.stringInput === true
       ? args.plainTexts[0] as Undef<Input>
       : this.stringInput === "multi"
-        ? args.plainTexts as Undef<Input>
-        : args.shortcutParameter as Undef<Input>;
+        ? args.plainTexts.length === 0
+          ? undefined
+          : args.plainTexts as Input
+        : (args.shortcutParameter ?? undefined) as Undef<Input>;
   }
 
   protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {

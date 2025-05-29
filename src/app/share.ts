@@ -19,7 +19,9 @@ export default abstract class Share<
   }
 
   protected getInput() {
-    return args[this.shareInputType] as Undef<string[]>;
+    return args[this.shareInputType].length === 0
+      ? undefined
+      : args[this.shareInputType];
   }
 
   protected output(runtime: ReturnType<Share<Output>["runtime"]>) {

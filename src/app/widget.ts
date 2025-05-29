@@ -21,7 +21,7 @@ export default abstract class Widget<
   }
 
   protected getInput() {
-    return args.widgetParameter as Undef<string>;
+    return (args.widgetParameter ?? undefined) as Undef<string>;
   }
 
   protected output(runtime: ReturnType<Widget["runtime"]>) {
