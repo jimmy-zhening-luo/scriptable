@@ -9,6 +9,17 @@ export default abstract class Widget<
   > {
   protected readonly widget = new ListWidget();
 
+  protected contextual() {
+    return config.runsInWidget
+      || config.runsInAccessoryWidget
+      || this.tapped();
+  }
+
+  protected tapped() {
+    return config.runsInApp
+      && typeof args.widgetParameter !== "undefined";
+  }
+
   protected getInput() {
     return args.widgetParameter as Undef<string>;
   }
@@ -20,7 +31,7 @@ export default abstract class Widget<
     return runtime;
   }
 
-  protected test() {
+  protected local() {
     this
       .widget
       .presentSmall()

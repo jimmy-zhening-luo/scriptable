@@ -23,6 +23,24 @@ export default abstract class IApp<
     }
   }
 
+  protected get context() {
+    try {
+      return (
+        this.contextual()
+          ? "production"
+          : config.runsInApp
+            ? "local"
+            : "unknown"
+      ) as const;
+    }
+    catch (e) {
+      throw new Error(
+        "Failed to get app execution context",
+        { cause: e },
+      );
+    }
+  }
+
   protected get input() {
     try {
       return this.getInput()
@@ -112,8 +130,8 @@ export default abstract class IApp<
 
       const output = this.output(this.runtime());
 
-      if (config.runsInApp)
-        this.dev(output);
+      if (this.context === "local")
+        this.runLocal(output);
 
       return output;
     }
@@ -125,14 +143,14 @@ export default abstract class IApp<
     }
   }
 
-  protected dev(runtime: Output) {
+  protected runLocal(runtime: Output) {
     try {
       console.log(runtime);
-      this.test(runtime);
+      this.local(runtime);
     }
     catch (e) {
       throw new EvalError(
-        "In-app dev mode failure",
+        "Local run failure",
         { cause: e },
       );
     }
@@ -266,10 +284,11 @@ export default abstract class IApp<
     );
   }
 
+  protected abstract contextual(): boolean;
   protected abstract getInput(): Undef<Input>;
   protected abstract runtime(): Output;
   protected abstract output(runtime: Output): Output;
-  protected abstract test(runtime: Output): void;
+  protected abstract local(runtime: Output): void;
   private config?: Schema;
   private sideload?: Input;
 }

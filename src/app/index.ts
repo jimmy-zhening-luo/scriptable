@@ -9,6 +9,10 @@ export default abstract class Shortcut<
     Null<Output>,
     Schema
   > {
+  protected contextual() {
+    return config.runsWithSiri;
+  }
+
   protected getInput() {
     return this.stringInput === true
       ? args.plainTexts[0] as Undef<Input>
@@ -23,7 +27,7 @@ export default abstract class Shortcut<
     return runtime;
   }
 
-  protected test(): void {
+  protected local(): void {
     return undefined;
   }
 

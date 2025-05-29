@@ -8,6 +8,10 @@ export default abstract class Share<
     Null<Output>,
     Schema
   > {
+  protected contextual() {
+    return config.runsInActionExtension;
+  }
+
   protected readonly abstract shareInput: (
     | "plainTexts"
     | "urls"
@@ -25,7 +29,7 @@ export default abstract class Share<
     return runtime;
   }
 
-  protected test(): void {
+  protected local(): void {
     return undefined;
   }
 }
