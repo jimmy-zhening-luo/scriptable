@@ -31,7 +31,8 @@ export default abstract class Shortcut<
             : args.plainTexts as Input
           : undefined
     )
-    ?? (args.shortcutParameter ?? undefined) as Undef<Input>;
+    ?? (args.shortcutParameter as Null<Input>)
+    ?? undefined;
   }
 
   protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
