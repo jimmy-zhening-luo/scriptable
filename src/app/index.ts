@@ -24,8 +24,8 @@ export default abstract class Shortcut<
       this.inputType === "multi"
         ? args.plainTexts.length === 0
           ? undefined
-          : args.plainTexts as Input
-        : args.plainTexts[0] as Undef<Input>
+          : args.plainTexts as Input & readonly string[]
+        : args.plainTexts[0] as Undef<Input & string>
     )
     ?? undefined;
   }
