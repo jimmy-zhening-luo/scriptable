@@ -7,12 +7,12 @@ export default abstract class Widget<
     null,
     Schema
   > {
+  protected readonly tapped = config.runsInApp
+      && typeof args.widgetParameter === "string";
+
   protected readonly contextual = config.runsInWidget
     || config.runsInAccessoryWidget
     || this.tapped;
-
-  protected readonly tapped = config.runsInApp
-      && typeof args.widgetParameter === "string";
 
   protected readonly widget = new ListWidget();
 
