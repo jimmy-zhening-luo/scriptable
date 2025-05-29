@@ -6,8 +6,8 @@ export default abstract class IApp<
   Schema,
 > {
   protected readonly app;
-  protected readonly abstract contextual: boolean;
   private readonly cache: Table<File<"Storage">> = {};
+  protected readonly abstract contextual: boolean;
 
   constructor() {
     try {
