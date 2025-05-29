@@ -61,8 +61,6 @@ export async function mochaGlobalSetup() {
       string,
       string
     > {
-      protected override stringInput = true;
-
       protected runtime() {
         return "CONCRETE_SHORTCUT_OUTPUT";
       }
