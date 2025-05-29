@@ -14,7 +14,7 @@ export default abstract class Shortcut<
     | "string"
     | (
       Input extends readonly string[]
-        ? "multi" 
+        ? "multi"
         : Input extends string
           ? never
           : "main"
@@ -31,7 +31,7 @@ export default abstract class Shortcut<
             : args.plainTexts as Input
           : undefined
     )
-      ?? (args.shortcutParameter ?? undefined) as Undef<Input>;
+    ?? (args.shortcutParameter ?? undefined) as Undef<Input>;
   }
 
   protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
