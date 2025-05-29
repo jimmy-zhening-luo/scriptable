@@ -25,7 +25,7 @@ export default abstract class Shortcut<
         ? args.plainTexts.length === 0
           ? undefined
           : args.plainTexts as Input
-        : args.plainTexts[0] as Undef<Input>;
+        : args.plainTexts[0] as Undef<Input>
     )
     ?? undefined;
   }
