@@ -1,7 +1,7 @@
 import IApp from "./proto";
 
 export default abstract class Shortcut<
-  Input = never,
+  Input extends Unflat = never,
   Output = null,
   Schema = never,
 > extends IApp<
@@ -15,23 +15,18 @@ export default abstract class Shortcut<
     | (
       Input extends readonly string[]
         ? "multi"
-        : Input extends string
-          ? never
-          : "main"
+        : never
     )
   ) = "string";
 
   protected getInput() {
     return (
-      this.inputType === "string"
-        ? args.plainTexts[0] as Undef<Input>
-        : this.inputType === "multi"
-          ? args.plainTexts.length === 0
-            ? undefined
-            : args.plainTexts as Input
-          : undefined
+      this.inputType === "multi"
+        ? args.plainTexts.length === 0
+          ? undefined
+          : args.plainTexts as Input
+        : args.plainTexts[0] as Undef<Input>;
     )
-    ?? (args.shortcutParameter as Null<Input>)
     ?? undefined;
   }
 
