@@ -12,9 +12,9 @@ class Search extends Shortcut<
   SearchOutput,
   SearchSetting
 > {
-  protected override stringInput = true;
-
   protected runtime() {
+    this.stringInput = true;
+
     const { input = "" } = this,
     {
       key,
