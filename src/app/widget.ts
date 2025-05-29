@@ -17,7 +17,7 @@ export default abstract class Widget<
 
   protected tapped() {
     return config.runsInApp
-      && typeof args.widgetParameter !== "undefined";
+      && typeof args.widgetParameter === "string";
   }
 
   protected getInput() {
