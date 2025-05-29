@@ -9,9 +9,7 @@ export default abstract class Shortcut<
     Null<Output>,
     Schema
   > {
-  protected contextual() {
-    return config.runsWithSiri;
-  }
+  protected readonly contextual = config.runsWithSiri;
 
   protected getInput() {
     return this.stringInput === true

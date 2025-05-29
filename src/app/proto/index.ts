@@ -6,6 +6,7 @@ export default abstract class IApp<
   Schema,
 > {
   protected readonly app;
+  protected readonly abstract contextual: boolean;
   private readonly cache: Table<File<"Storage">> = {};
 
   constructor() {
@@ -25,7 +26,7 @@ export default abstract class IApp<
 
   protected get context() {
     try {
-      return this.contextual()
+      return this.contextual
         ? "production" as const
         : config.runsInApp
           ? "local" as const
@@ -126,7 +127,9 @@ export default abstract class IApp<
       if (typeof input !== "undefined")
         this.sideload = input;
 
-      const output = this.output(this.runtime());
+      const output = this.output(
+        this.runtime(),
+      );
 
       if (this.context === "local")
         this.runLocal(output);
@@ -282,7 +285,6 @@ export default abstract class IApp<
     );
   }
 
-  protected abstract contextual(): boolean;
   protected abstract getInput(): Undef<Input>;
   protected abstract runtime(): Output;
   protected abstract output(runtime: Output): Output;
