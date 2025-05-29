@@ -8,15 +8,15 @@ export default abstract class Share<
     Null<Output>,
     Schema
   > {
-  protected contextual() {
-    return config.runsInActionExtension;
-  }
-
-  protected readonly abstract shareInput: (
+  protected readonly abstract shareInputType: (
     | "plainTexts"
     | "urls"
     | "fileURLs"
   );
+
+  protected contextual() {
+    return config.runsInActionExtension;
+  }
 
   protected getInput() {
     return args[this.shareInput] as Undef<string[]>;
