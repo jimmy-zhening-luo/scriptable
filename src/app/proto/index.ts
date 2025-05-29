@@ -25,13 +25,11 @@ export default abstract class IApp<
 
   protected get context() {
     try {
-      return (
-        this.contextual()
-          ? "production"
-          : config.runsInApp
-            ? "local"
-            : "unknown"
-      ) as const;
+      return this.contextual()
+        ? "production" as const
+        : config.runsInApp
+          ? "local" as const
+          : "unknown" as const;
     }
     catch (e) {
       throw new Error(
