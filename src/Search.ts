@@ -13,8 +13,6 @@ class Search extends Shortcut<
   SearchSetting
 > {
   protected runtime() {
-    this.stringInput = true;
-
     const { input = "" } = this,
     {
       key,

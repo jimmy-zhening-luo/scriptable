@@ -9,8 +9,6 @@ class Link extends Shortcut<
   string,
   LinkSetting<Url["host"]>
 > {
-  protected override stringInput = true;
-
   protected runtime() {
     const url = new Url(this.input),
     host = (
