@@ -5,7 +5,6 @@ export default abstract class IApp<
   Output,
   Schema,
 > {
-  private static readonly Datetime = new DateFormatter;
   protected readonly app;
   private readonly cache: Table<File<"Storage">> = {};
   protected readonly abstract contextual: boolean;
@@ -232,9 +231,10 @@ export default abstract class IApp<
       format = "MMMM d, y h:mm:ss a",
     } = {},
   ) {
-    IApp.Datetime.dateFormat = format;
+    this.dateFormatter ??= new DateFormatter;
+    this.dateFormatter.dateFormat = format;
 
-    return IApp.Datetime.string(date);
+    return this.dateFormatter.string(date);
   }
 
   protected read(
@@ -302,5 +302,6 @@ export default abstract class IApp<
   protected abstract output(runtime: Output): Output;
   protected abstract local(runtime: Output): void;
   private config?: Schema;
+  private dateFormatter?: DateFormatter;
   private sideload?: Input;
 }
