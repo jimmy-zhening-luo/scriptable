@@ -3,7 +3,7 @@ import Shortcut from "./app";
 
 class _Sandbox extends Shortcut {
   protected runtime() {
-    const foo = null;
+    let foo = null;
 
     return foo;
   }
