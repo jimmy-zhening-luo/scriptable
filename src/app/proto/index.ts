@@ -71,7 +71,10 @@ export default abstract class IApp<
     }
   }
 
-  private static error(app: stringful, error: unknown) {
+  private static Error(
+    app: stringful,
+    error: unknown,
+  ) {
     function cast(error: unknown) {
       return typeof error === "object"
         && error !== null
@@ -91,11 +94,11 @@ export default abstract class IApp<
       );
 
     const {
-      message,
+      top,
       cause,
     } = (([top = "", ...stack]) => {
       return {
-        message: `${app}: ${top}`,
+        top,
         cause: stack.join("\n"),
       };
     })(
@@ -107,25 +110,39 @@ export default abstract class IApp<
     ),
     notification = new Notification;
 
-    notification.title = message;
+    notification.title = app;
+    notification.subtitle = top;
     notification.body = cause;
     notification.sound = "failure";
     notification
       .schedule()
       .catch(
-        (error: unknown) => console.error(error),
+        (fatal: unknown) => {
+          console.error(fatal);
+
+          throw new EvalError(
+            "Failed to schedule notification",
+            { cause: fatal },
+          );
+        },
       );
     console.error(
-      [message, cause].join("\n"),
+      [
+        top,
+        cause,
+      ].join("\n"),
     );
 
-    return new Error(message, { cause });
+    return new Error(
+      top,
+      { cause },
+    );
   }
 
-  public run(input?: Input) {
+  public run(sideload?: Input) {
     try {
-      if (typeof input !== "undefined")
-        this.sideload = input;
+      if (typeof sideload !== "undefined")
+        this.sideload = sideload;
 
       const output = this.output(
         this.runtime(),
@@ -137,7 +154,7 @@ export default abstract class IApp<
       return output;
     }
     catch (error) {
-      throw IApp.error(this.app, error);
+      throw IApp.Error(this.app, error);
     }
     finally {
       Script.complete();
