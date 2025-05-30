@@ -19,6 +19,9 @@ export default abstract class Widget<
   }
 
   protected output(runtime: ReturnType<Widget["runtime"]>) {
+    if (this.tapped)
+      this.action();
+
     this.widget.refreshAfterDate = new Date(Date.now() + 30000);
     Script.setWidget(this.widget);
 
@@ -38,4 +41,6 @@ export default abstract class Widget<
         },
       );
   }
+
+  protected abstract action(): void;
 }

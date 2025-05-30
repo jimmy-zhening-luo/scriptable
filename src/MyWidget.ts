@@ -8,6 +8,12 @@ class MyWidget extends Widget {
 
     return null;
   }
+
+  protected action() {
+    this.widget.addText(`Tapped at `${
+      this.date({ format: "h:mm a" })
+    });
+  }
 }
 
 new MyWidget().run();

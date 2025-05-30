@@ -5,6 +5,7 @@ export default abstract class IApp<
   Output,
   Schema,
 > {
+  private static readonly Datetime = new DateFormatter;
   protected readonly app;
   private readonly cache: Table<File<"Storage">> = {};
   protected readonly abstract contextual: boolean;
@@ -223,6 +224,17 @@ export default abstract class IApp<
         ? { [K in keyof A]: NonNullable<typeof strings[number]>; }
         : Arrayful<NonNullable<typeof strings[number]>>
     );
+  }
+
+  protected date(
+    {
+      date = new Date,
+      format = "MMMM d, y h:mm:ss a",
+    } = {},
+  ) {
+    IApp.Datetime.dateFormat = format;
+
+    return IApp.Datetime.string(date);
   }
 
   protected read(
