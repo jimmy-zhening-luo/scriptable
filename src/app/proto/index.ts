@@ -302,6 +302,6 @@ export default abstract class IApp<
   protected abstract output(runtime: Output): Output;
   protected abstract local(runtime: Output): void;
   private config?: Schema;
-  private dateFormatter?: DateFormatter;
   private sideload?: Input;
+  private dateFormatter?: DateFormatter;
 }
