@@ -10,9 +10,9 @@ class MyWidget extends Widget {
   }
 
   protected action() {
-    this.widget.addText(`Tapped at `${
+    this.widget.addText(`Tapped at ${
       this.date({ format: "h:mm a" })
-    });
+    }`);
   }
 }
 
