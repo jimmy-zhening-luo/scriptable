@@ -16,9 +16,9 @@ export default abstract class Widget<
   protected readonly showLastRefresh: boolean = true;
   protected readonly widget = new ListWidget;
   private readonly FONTS = {
-    title: Font.semiboldSystemFont(12),
-    body: Font.systemFont(10),
-    footnote: Font.lightSystemFont(7),
+    title: Font.semiboldSystemFont(24),
+    body: Font.systemFont(16),
+    footnote: Font.lightSystemFont(10),
   } as const;
 
   constructor() {
