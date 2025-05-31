@@ -79,6 +79,7 @@ export default abstract class IApp<
       return typeof error === "object"
         && error !== null
         && "message" in error
+        && typeof error.message === "string"
         ? error as Error
         : JSON.stringify(error);
     }
