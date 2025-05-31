@@ -72,15 +72,16 @@ export default class SearchEngine<
 
       return typeof browserOptions === "undefined"
         ? action
-        : urls
+        : browserOptions
+            .urls
             .map(
               url => url.replace(
-                tag,
+                browserOptions.tag,
                 action,
               ),
             )
             .map(
-              url => force
+              url => browserOptions.force
                 ? `data:text/html,<meta http-equiv="refresh" content="0;url=${url}">`
                 : url,
             );
@@ -91,7 +92,7 @@ export default class SearchEngine<
       : this.engine,
     question = terms.length === 0
       ? null
-      : terms.join(" ") as stringful,
+      : terms.join(" ") as stringful;
 
     return {
       engine,
