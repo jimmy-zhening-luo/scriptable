@@ -19,6 +19,7 @@ export interface SearchSetting {
     >
     | SearchEngineSetting<
       "shortcut",
+      | "encode"
       | "notify"
     >
   >>;

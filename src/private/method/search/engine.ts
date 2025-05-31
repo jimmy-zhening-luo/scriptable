@@ -8,35 +8,40 @@ export default class SearchEngine<
   private readonly urls: Null<readonly string[]>;
   private readonly tag: Null<stringful>;
   private readonly notify: Null<true>;
+  private readonly force: boolean;
+  private readonly encode: boolean;
 
   constructor(
     protected readonly type: T,
     engineOrUrls: T extends "browser"
       ? Unflat
       : string,
-    outputOrTag:
+    notifyOrTag:
       | boolean
       | (T extends "browser" ? stringful : boolean) = false,
+    forceOrEncode = false,
     private readonly separator = "+",
-    private readonly force = false,
   ) {
     ({
       engine: this.engine = null,
       urls: this.urls = null,
       tag: this.tag = null,
-      notify: this.notify,
+      notify: this.notify = null,
+      force: this.force = false,
+      encode: this.encode = false,
     } = type === "browser"
       ? {
           urls: typeof engineOrUrls === "string"
             ? [engineOrUrls]
             : engineOrUrls as string[],
-          tag: outputOrTag as stringful,
-          notify: null,
+          tag: notifyOrTag as stringful,
+          force: forceOrEncode,
         }
       : {
           engine: engineOrUrls as string,
-          notify: (outputOrTag as boolean)
+          notify: (notifyOrTag as boolean)
             || null,
+          encode: forceOrEncode,
         }
     );
   }
@@ -44,58 +49,73 @@ export default class SearchEngine<
   public resolve(
     key: stringful,
     terms: readonly stringful[],
-    question: Null<stringful>,
   ) {
     function encode(
-      urls: readonly string[],
       terms: readonly stringful[],
-      tag: stringful,
       separator: string,
-      force: boolean,
+      browserOptions?: {
+        urls: readonly string[],
+        tag: stringful,
+        force: boolean,
+      },
     ) {
-      const encodedUrls = urls
+      const action = terms
         .map(
-          url => url
-            .replace(
-              tag,
-              terms
-                .map(
-                  term => term
-                    .split("+")
-                    .map(c => encodeURI(c))
-                    .join("%2B"),
-                )
-                .join(separator),
-            ),
-        );
+          term => term
+            .split("+")
+            .map(
+              c => encodeURI(c),
+            )
+            .join("%2B"),
+        )
+        .join(separator);
 
-      return !force
-        ? encodedUrls
-        : encodedUrls
-            .map(url => `data:text/html,<meta http-equiv="refresh" content="0;url=${url}">`);
+      return typeof browserOptions === "undefined"
+        ? action
+        : urls
+            .map(
+              url => url.replace(
+                tag,
+                action,
+              ),
+            )
+            .map(
+              url => force
+                ? `data:text/html,<meta http-equiv="refresh" content="0;url=${url}">`
+                : url,
+            );
     }
 
     const engine = this.engine === ""
       ? key
-      : this.engine;
+      : this.engine,
+    question = terms.length === 0
+      ? null
+      : terms.join(" "),
 
     return {
-      type: this.type,
       engine,
       question,
-      urls: this.urls === null
-        ? null
-        : encode(
-            this.urls,
+      action: this.type === "browser"
+        ? encode(
             terms,
-            this.tag!,
             this.separator,
-            this.force,
-          ),
+            {
+              urls: this.urls,
+              tag: this.tag!,
+              force: this.force,
+            },
+          )
+        : this.encode && question !== null
+          ? encode(
+              terms,
+              this.separator,
+            )
+          : question,
       notify: this.notify,
       label: question
         ?? engine
-        ?? "",
+        ?? this.type,
     };
   }
 }

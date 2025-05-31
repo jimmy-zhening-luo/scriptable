@@ -38,26 +38,36 @@ export default function (
 
         if (tokens.length === 0)
           throw new RangeError(
-            "No query",
-            { cause: query },
+            "Empty query",
+            { cause: { query } },
           );
 
-        return tokens as Arrayful<stringful>;
+        const [first, ...rest] = tokens;
+
+        return [
+          first as stringful,
+          ...rest,
+        ] as const;
       }
 
       const tokens = tokenize(
         query,
         FALLBACKS,
       ),
-      [[t00, t01]] = tokens;
+      [[token0_0, token0_1]] = tokens;
 
       return [
-        ...t00 >= "0"
-        && t00 <= "9"
-        || OPERATORS.includes(t00)
-        || typeof t01 !== "undefined"
+        ...token0_0 >= "0"
+        && token0_0 <= "9"
+        || OPERATORS.includes(token0_0)
+        || typeof token0_1 !== "undefined"
         && Number.isFinite(
-          Number(`${t00}${t01}`),
+          Number(
+            [
+              token0_0,
+              token0_1,
+            ].join(""),
+          ),
         )
           ? ["math" as stringful] as const
           : [] as const,
@@ -67,7 +77,7 @@ export default function (
 
     for (const selector of SELECTORS)
       if (OPERATORS.includes(selector))
-        throw new SyntaxError("Operators contain forbidden selector");
+        throw new SyntaxError("Operators include reserved selector");
 
     const tokens = expand(
       query,
@@ -106,45 +116,30 @@ export default function (
     }
   }
 
-  const [_K, ..._terms] = select(
+  const [Head, ...rest] = select(
     query,
     FALLBACKS,
     OPERATORS,
     SELECTORS,
   ),
-  _key = (_K satisfies stringful)
+  head = (Head satisfies stringful)
     .toLowerCase() as stringful,
   {
-    key = _key,
-    terms = [..._terms] as const,
-  } = engines.has(_key)
+    key = head,
+    terms = [...rest] as const,
+  } = engines.has(head)
     ? {}
-    : _key in alias
+    : head in alias && alias[head] !== ""
       ? {
-          key: alias[_key] as stringful,
+          key: alias[head] as stringful,
         }
       : {
           key: "chat" as stringful,
-          terms: [_K, ..._terms] as const,
-        },
-  termString = terms.join(" "),
-  {
-    question = null,
-    recomposed = key,
-  } = termString === ""
-    ? {}
-    : {
-        question: termString as stringful,
-        recomposed: [
-          key,
-          termString,
-        ].join(" "),
-      };
+          terms: [Head, ...rest] as const,
+        };
 
   return {
     key,
     terms,
-    question,
-    recomposed,
   };
 }

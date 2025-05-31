@@ -17,49 +17,82 @@ class Search extends Shortcut<
     {
       key,
       terms,
-      question,
       recomposed,
     } = Query(
       input === ""
         ? this.read()
         : input,
-      this.setting.alias,
+      this
+        .setting
+        .alias,
       new Set<string>(
-        Object.keys(this.setting.engines),
+        Object.keys(
+          this
+            .setting
+            .engines,
+        ),
       ),
-      this.stringfuls(this.setting.fallbacks),
-      this.stringful(this.setting.reserved.operators),
-      this.chars(this.setting.reserved.selectors),
+      this.stringfuls(
+        this
+          .setting
+          .fallbacks,
+      ),
+      this.stringful(
+        this
+          .setting
+          .reserved
+          .operators,
+      ),
+      this.chars(
+        this
+          .setting
+          .reserved
+          .selectors,
+      ),
     ),
-    entry = this.setting.engines[key]!,
+    entry = this
+      .setting
+      .engines[key]!,
     engine = Array.isArray(entry)
       || typeof entry === "string"
       ? new Engine(
         "browser",
         entry,
-        this.stringful(this.setting.reserved.tag),
+        this.stringful(
+          this
+            .setting
+            .reserved
+            .tag,
+        ),
       )
       : "url" in entry
         ? new Engine(
           "browser",
           entry.url,
-          this.stringful(this.setting.reserved.tag),
-          entry.separator,
+          this.stringful(
+            this
+              .setting
+              .reserved
+              .tag,
+          ),
           entry.force,
+          entry.separator,
         )
         : new Engine(
           "shortcut",
           (entry.shortcut as Undef<string>)
           ?? "",
           entry.notify,
+          entry.encode,
         );
 
-    this.write(recomposed);
+    this.write(
+      [key, ...terms].join(" "),
+    );
 
     return engine.resolve(
       key,
       terms,
-      question,
     );
   }
 }

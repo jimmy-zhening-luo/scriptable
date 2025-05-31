@@ -1,9 +1,11 @@
 export type { SearchSetting } from "./setting";
 export interface SearchOutput {
-  type: string;
   engine: Null<string>;
   question: Null<stringful>;
-  urls: Null<readonly string[]>;
+  action: (
+    | typeof SearchOutput["question"]
+    | readonly string[]
+  );
   notify: Null<true>;
-  label: string;
+  label: stringful;
 }
