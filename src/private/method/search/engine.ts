@@ -60,14 +60,7 @@ export default class SearchEngine<
       },
     ) {
       const action = terms
-        .map(
-          term => term
-            .split("+")
-            .map(
-              c => encodeURI(c),
-            )
-            .join("%2B"),
-        )
+        .map(term => encodeURIComponent(term))
         .join(separator);
 
       return typeof browserOptions === "undefined"
