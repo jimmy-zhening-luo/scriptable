@@ -71,7 +71,9 @@ export default class SearchEngine<
         .join(separator);
 
       return typeof browserOptions === "undefined"
-        ? action
+        ? action === ""
+          ? null
+          : action as stringful,
         : browserOptions
             .urls
             .map(
@@ -90,13 +92,12 @@ export default class SearchEngine<
     const engine = this.engine === ""
       ? key
       : this.engine,
-    question = terms.length === 0
+    query = terms.length === 0
       ? null
       : terms.join(" ") as stringful;
 
     return {
       engine,
-      question,
       action: this.type === "browser"
         ? encode(
             terms,
@@ -107,14 +108,14 @@ export default class SearchEngine<
               force: this.force,
             },
           )
-        : this.encode && question !== null
+        : this.encode
           ? encode(
               terms,
               this.separator,
             )
-          : question,
+          : query,
       notify: this.notify,
-      label: question
+      label: query
         ?? engine
         ?? this.type,
     };
