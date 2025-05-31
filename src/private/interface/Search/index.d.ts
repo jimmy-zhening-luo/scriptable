@@ -3,7 +3,7 @@ export interface SearchOutput {
   engine: Null<string>;
   question: Null<stringful>;
   action: (
-    | typeof SearchOutput["question"]
+    | SearchOutput["question"]
     | readonly string[]
   );
   notify: Null<true>;
