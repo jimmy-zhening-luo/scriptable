@@ -55,6 +55,7 @@
       "mocha",
       "chai",
       /* {CONFIGURE} */
+      "scriptable-ios", /* @OVERRIDE */
     ],
     // #endregion
     //

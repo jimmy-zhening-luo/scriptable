@@ -17,6 +17,7 @@
   "devDependencies": {
     "@types/chai": "^5.2.2",
     "@types/mocha": "^10.0.10",
+    "@types/scriptable-ios": "^1.7.8",
     "chai": "^5.2.0",
     "eslint": "~9.28.0",
     "linted": "~28.40.0",
