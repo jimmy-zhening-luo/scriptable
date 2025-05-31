@@ -54,9 +54,9 @@ export default class SearchEngine<
       terms: readonly stringful[],
       separator: string,
       browserOptions?: {
-        urls: readonly string[],
-        tag: stringful,
-        force: boolean,
+        urls: readonly string[];
+        tag: stringful;
+        force: boolean;
       },
     ) {
       const action = terms
