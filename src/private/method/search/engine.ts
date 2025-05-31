@@ -73,7 +73,7 @@ export default class SearchEngine<
       return typeof browserOptions === "undefined"
         ? action === ""
           ? null
-          : action as stringful,
+          : action as stringful
         : browserOptions
             .urls
             .map(
