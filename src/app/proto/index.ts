@@ -84,61 +84,62 @@ export default abstract class IApp<
         : JSON.stringify(error);
     }
 
-    const errors: Arrayful<string | Error> = [cast(error)];
+    const trace: Arrayful<string | Error> = [cast(error)];
 
     while (
-      typeof errors[0] !== "string"
-      && "cause" in errors[0]
+      typeof trace[0] !== "string"
+      && "cause" in trace[0]
     )
-      errors.unshift(
+      trace.unshift(
         cast(
-          errors[0]
+          trace[0]
             .cause,
         ),
       );
 
-    const {
-      top,
-      cause,
-    } = (([top = "", ...stack]) => {
-      return {
-        top,
-        cause: stack.join("\n"),
-      };
-    })(
-      errors.map(
+    const [failure = "", ...causes] = (
+      typeof trace[0] === "string"
+      && typeof trace[1] !== "undefined"
+        ? [
+            trace[1],
+            trace[0],
+            ...trace.slice(2),
+          ] as const
+        : [...trace] as const
+    )
+      .map(
         error => typeof error === "string"
           ? error
           : error.message,
       ),
-    ),
+    cause = causes.join("\n"),
     notification = new Notification;
 
     notification.title = app;
-    notification.subtitle = top;
+    notification.subtitle = failure;
     notification.body = cause;
     notification.sound = "failure";
     notification
       .schedule()
       .catch(
-        (fatal: unknown) => {
-          console.error(fatal);
+        (fatalError: unknown) => {
+          console.error(fatalError);
 
           throw new EvalError(
             "Failed to schedule notification",
-            { cause: fatal },
+            { cause: { fatalError } },
           );
         },
       );
     console.error(
       [
-        top,
+        failure,
         cause,
       ].join("\n"),
     );
 
     return new Error(
-      top,
+      failure,
       { cause },
     );
   }
