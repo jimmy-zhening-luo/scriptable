@@ -91,7 +91,7 @@ export default class SearchEngine<
       : this.engine,
     question = terms.length === 0
       ? null
-      : terms.join(" "),
+      : terms.join(" ") as stringful,
 
     return {
       engine,

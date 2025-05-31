@@ -17,7 +17,6 @@ class Search extends Shortcut<
     {
       key,
       terms,
-      recomposed,
     } = Query(
       input === ""
         ? this.read()
