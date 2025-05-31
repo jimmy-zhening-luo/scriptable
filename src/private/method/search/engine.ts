@@ -102,7 +102,7 @@ export default class SearchEngine<
             terms,
             this.separator,
             {
-              urls: this.urls,
+              urls: this.urls!,
               tag: this.tag!,
               force: this.force,
             },
