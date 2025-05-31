@@ -91,7 +91,10 @@ export default abstract class IApp<
       && "cause" in errors[0]
     )
       errors.unshift(
-        cast(errors[0].cause),
+        cast(
+          errors[0]
+            .cause,
+        ),
       );
 
     const {
