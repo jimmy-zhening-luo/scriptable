@@ -4,36 +4,55 @@ export default class Url {
   public readonly scheme;
   public readonly host;
   public readonly path;
+  private readonly _query;
   private _fragment;
-  private readonly queryMap;
 
   constructor(string = "") {
-    if (string === "")
-      throw new URIError("Empty string cannot be URL");
+    try {
+      if (string === "")
+        throw new URIError("Empty string cannot be an URL");
 
-    const parts = Url.parse(string)
-      ?? Url.parse(`https://${string}`);
+      const parts = Url.parse(string)
+        ?? Url.parse(`https://${string}`);
 
-    if (parts === null)
-      throw new URIError(
-        "String unparsesble to URL",
-        { cause: string },
+      if (parts === null)
+        throw new URIError(
+          "Not parseable to URL",
+          { cause: string },
+        );
+
+      this.scheme = parts.scheme;
+      this.host = parts.host;
+      this.path = parts.path;
+      this._query = new Map<string, Null<string>>(
+        parts.query === "?"
+          ? []
+          : parts
+            .query
+            .slice(1)
+            .split("&")
+            .map(
+              param => param.split("=") as Arrayful,
+            )
+            .map(
+              ([name, ...value]) => [
+                name,
+                value.length === 0
+                  ? null
+                  : value.join("="),
+              ],
+            ),
       );
-
-    this.scheme = parts.scheme;
-    this.host = parts.host;
-    this.path = parts.path;
-    this._fragment = parts.fragment === "#"
-      ? ""
-      : parts.fragment;
-    this.queryMap = new Map<string, string>(
-      parts
-        .query
-        .slice(1)
-        .split("&")
-        .map(param => param.split("=") as Arrayful)
-        .map(([name, ...value]) => [name, value.join("=")]),
-    );
+      this._fragment = parts.fragment === "#"
+        ? ""
+        : parts.fragment;
+    }
+    catch (e) {
+      throw new URIError(
+        "Failed to parse URL",
+        { cause: e },
+      );
+    }
   }
 
   public get schemeHost() {
@@ -44,8 +63,16 @@ export default class Url {
   }
 
   public get query() {
-    const query = [...this.queryMap.entries()]
-      .map(param => param.join("="))
+    const query = [
+      ...this
+        ._query
+        .entries(),
+    ]
+      .map(
+        ([name, value]) => value === null
+          ? name
+          : [name, value].join("="),
+      )
       .join("&");
 
     return query === ""
@@ -58,7 +85,7 @@ export default class Url {
   }
 
   public get params() {
-    return [...this.queryMap.keys()];
+    return [...this._query.keys()];
   }
 
   private static parse(string: string) {
@@ -66,8 +93,8 @@ export default class Url {
       scheme: _scheme = "",
       host = "",
       path = "",
-      query = "",
-      fragment = "",
+      query = "?",
+      fragment = "#",
     } = regex.exec(string)?.groups
       ?? {},
     scheme = Url.normalizeScheme(_scheme);
@@ -92,21 +119,23 @@ export default class Url {
           [
             "https",
             "http",
-          ].includes(scheme.toLocaleLowerCase())
+          ].includes(
+            scheme.toLocaleLowerCase(),
+          )
             ? "https"
             : scheme
         ) as stringfully<"URL:scheme">;
   }
 
-  public getParam(param: string) {
-    return this.queryMap.get(param);
+  public param(param: string) {
+    return this._query.get(param);
   }
 
   public deleteParams(
     ...params: string[]
   ) {
     for (const param of params)
-      this.queryMap.delete(param);
+      this._query.delete(param);
   }
 
   public deleteParamsExcept(
@@ -121,23 +150,23 @@ export default class Url {
     );
   }
 
-  public replaceParam(
+  public replaceParamName(
     find: string,
     replace: string,
   ) {
-    const value = this.getParam(find);
+    const value = this.param(find);
 
     this.deleteParams(find);
 
     if (typeof value !== "undefined")
-      this.queryMap.set(
+      this._query.set(
         replace,
         value,
       );
   }
 
   public dropQuery() {
-    this.queryMap.clear();
+    this._query.clear();
   }
 
   public dropFragment() {

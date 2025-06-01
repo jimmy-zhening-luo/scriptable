@@ -84,64 +84,73 @@ export default abstract class IApp<
         : JSON.stringify(error);
     }
 
-    const trace: Arrayful<string | Error> = [cast(error)];
+    try {
+      const trace: Arrayful<string | Error> = [cast(error)];
 
-    while (
-      typeof trace[0] !== "string"
-      && "cause" in trace[0]
-    )
-      trace.unshift(
-        cast(
-          trace[0]
-            .cause,
+      while (
+        typeof trace[0] !== "string"
+        && "cause" in trace[0]
+      )
+        trace.unshift(
+          cast(
+            trace[0].cause,
+          ),
+        );
+
+      const [failure = "", ...causes] = (
+        typeof trace[0] === "string"
+        && typeof trace[1] !== "undefined"
+          ? [
+              trace[1],
+              trace[0],
+              ...trace.slice(2),
+            ] as const
+          : [...trace] as const
+      )
+        .map(
+          error => typeof error === "string"
+            ? error
+            : error.message,
         ),
+      cause = causes.join("\n"),
+      notification = new Notification;
+
+      notification.title = app;
+      notification.subtitle = failure;
+      notification.body = cause;
+      notification.sound = "failure";
+      notification
+        .schedule()
+        .catch(
+          (systemError: unknown) => {
+            console.error(systemError);
+
+            throw new EvalError(
+              "Failed to schedule notification",
+              { cause: systemError },
+            );
+          },
+        );
+      console.error(
+        [
+          failure,
+          cause,
+        ].join("\n"),
       );
 
-    const [failure = "", ...causes] = (
-      typeof trace[0] === "string"
-      && typeof trace[1] !== "undefined"
-        ? [
-            trace[1],
-            trace[0],
-            ...trace.slice(2),
-          ] as const
-        : [...trace] as const
-    )
-      .map(
-        error => typeof error === "string"
-          ? error
-          : error.message,
-      ),
-    cause = causes.join("\n"),
-    notification = new Notification;
-
-    notification.title = app;
-    notification.subtitle = failure;
-    notification.body = cause;
-    notification.sound = "failure";
-    notification
-      .schedule()
-      .catch(
-        (fatalError: unknown) => {
-          console.error(fatalError);
-
-          throw new EvalError(
-            "Failed to schedule notification",
-            { cause: { fatalError } },
-          );
-        },
-      );
-    console.error(
-      [
+      return new Error(
         failure,
-        cause,
-      ].join("\n"),
-    );
+        { cause },
+      );
+    }
+    catch (crash) {
+      console.error(crash);
 
-    return new Error(
-      failure,
-      { cause },
-    );
+      throw new EvalError(
+        "Error handler crash",
+        { cause: crash },
+      );
+    }
   }
 
   public run(sideload?: Input) {

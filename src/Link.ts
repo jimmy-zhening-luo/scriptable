@@ -84,7 +84,7 @@ class Link extends Shortcut<
             .query[host]!,
         )
       )
-        url.replaceParam(find, replace);
+        url.replaceParamName(find, replace);
 
     return [
       url.schemeHost,
