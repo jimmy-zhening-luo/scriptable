@@ -77,7 +77,7 @@ export default class SearchEngine<
             )
             .map(
               url => browserOptions.force
-                ? `data:text/html,<meta http-equiv="refresh" content="0;url=${url}">`
+                ? `data:text/html,%3Cmeta%20http-equiv=%22refresh%22%20content=%220;url=${url}%22%3E`
                 : url,
             );
     }
