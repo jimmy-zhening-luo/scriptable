@@ -28,20 +28,20 @@ export default class Url {
         parts.query === "?"
           ? []
           : parts
-            .query
-            .slice(1)
-            .split("&")
-            .map(
-              param => param.split("=") as Arrayful,
-            )
-            .map(
-              ([name, ...value]) => [
-                name,
-                value.length === 0
-                  ? null
-                  : value.join("="),
-              ],
-            ),
+              .query
+              .slice(1)
+              .split("&")
+              .map(
+                param => param.split("=") as Arrayful,
+              )
+              .map(
+                ([name, ...value]) => [
+                  name,
+                  value.length === 0
+                    ? null
+                    : value.join("="),
+                ],
+              ),
       );
       this._fragment = parts.fragment === "#"
         ? ""
