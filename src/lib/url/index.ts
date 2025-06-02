@@ -141,12 +141,12 @@ export default class Url {
   public deleteParamsExcept(
     ...params: string[]
   ) {
-    const kept = new Set<string>(params);
+    const exceptions = new Set<string>(params);
 
     this.deleteParams(
       ...this
         .params
-        .filter(param => !kept.has(param)),
+        .filter(param => !exceptions.has(param)),
     );
   }
 
