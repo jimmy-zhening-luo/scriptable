@@ -31,7 +31,7 @@ export default function (
             .split(" ")
             .filter((token): token is stringful => token !== ""),
           spaces = query.length - query.trimStart().length;
-  
+
           if (spaces > 0)
             tokens.unshift(
               FALLBACKS.at(
@@ -41,27 +41,27 @@ export default function (
                 ) - 1,
               )!,
             );
-  
+
           if (tokens.length === 0)
             throw new RangeError(
               "Empty query",
               { cause: { query } },
             );
-  
+
           const [first, ...rest] = tokens;
-  
+
           return [
             first as stringful,
             ...rest,
           ] as const;
         }
-  
+
         const tokens = tokenize(
           query,
           FALLBACKS,
         ),
         [[token0_0, token0_1]] = tokens;
-  
+
         return [
           ...token0_0 >= "0"
           && token0_0 <= "9"
@@ -80,11 +80,11 @@ export default function (
           ...tokens,
         ] as const;
       }
-  
+
       for (const selector of SELECTORS)
         if (OPERATORS.includes(selector))
           throw new SyntaxError("Operators include reserved selector");
-  
+
       const tokens = expand(
         query,
         FALLBACKS,
@@ -95,7 +95,7 @@ export default function (
         .find(
           selector => head.includes(selector),
         );
-  
+
       if (typeof selector === "undefined")
         return tokens;
       else {
@@ -113,7 +113,7 @@ export default function (
             ?? ""
             : parts.join(selector),
         ].join("") as stringful;
-  
+
         return [
           key,
           selection,
