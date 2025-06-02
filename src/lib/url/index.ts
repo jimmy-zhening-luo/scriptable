@@ -100,7 +100,13 @@ export default class Url {
       path,
       query = "?",
       fragment = "#",
-    } = match.groups,
+    } = match.groups as {
+      scheme: stringfully<"URL:scheme">;
+      host: string;
+      path: string;
+      query?: string;
+      fragment?: string;
+    },
     scheme = Url.normalizeScheme(parsedScheme);
 
     return scheme === "https" && host === ""
@@ -114,17 +120,15 @@ export default class Url {
         };
   }
 
-  private static normalizeScheme(scheme: string) {
-    return (
-      [
-        "https",
-        "http",
-      ].includes(
-        scheme.toLocaleLowerCase(),
-      )
-        ? "https"
-        : scheme
-    ) as stringfully<"URL:scheme">;
+  private static normalizeScheme(scheme: stringfully<"URL:scheme">) {
+    return [
+      "https",
+      "http",
+    ].includes(
+      scheme.toLocaleLowerCase(),
+    )
+      ? "https" as stringfully<"URL:scheme">
+      : scheme;
   }
 
   public param(param: string) {
