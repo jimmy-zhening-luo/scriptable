@@ -137,7 +137,7 @@ export default function (
     SELECTORS,
   ),
   head = (Head satisfies stringful)
-    .toLowerCase() as stringful,
+    .toLocaleLowerCase() as stringful,
   {
     key = head,
     terms = [...rest] as const,
