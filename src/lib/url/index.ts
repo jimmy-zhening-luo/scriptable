@@ -90,7 +90,7 @@ export default class Url {
 
   private static parse(string: string) {
     const {
-      scheme: _scheme = "",
+      scheme: _scheme = null,
       host = "",
       path = "",
       query = "?",
@@ -112,8 +112,8 @@ export default class Url {
         };
   }
 
-  private static normalizeScheme(scheme: string) {
-    return scheme === ""
+  private static normalizeScheme(scheme: Null<string>) {
+    return scheme === null
       ? null
       : (
           [
