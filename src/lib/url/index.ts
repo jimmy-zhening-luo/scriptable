@@ -145,11 +145,16 @@ export default class Url {
   ) {
     const exceptions = new Set<string>(params);
 
-    this.deleteParams(
-      ...this
-        .params
-        .filter(param => !exceptions.has(param)),
-    );
+    if (exceptions.size === 0)
+      this._query.clear();
+    else
+      this.deleteParams(
+        ...this
+          .params
+          .filter(
+            param => !exceptions.has(param),
+          ),
+      );
   }
 
   public replaceParamName(
@@ -165,10 +170,6 @@ export default class Url {
         replace,
         value,
       );
-  }
-
-  public dropQuery() {
-    this._query.clear();
   }
 
   public dropFragment() {

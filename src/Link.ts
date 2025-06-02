@@ -13,17 +13,20 @@ class Link extends Shortcut<
     const url = new Url(this.input),
     host = (
       (host: Url["host"]) => (
-        headless => this.setting
+        headless => headless in this.setting
           .replace
-          .host[headless]
-          ?? headless
+          .host
+          ? this.setting
+            .replace
+            .host[headless]!
+          : headless
       )(
         host.startsWith("www.")
-        && !this.setting
-          .allow
-          .host
-          .www
-          .includes(host)
+        && !(
+          host in this.setting
+            .allow
+            .host
+        )
           ? host.slice(4) as typeof host
           : host,
       )
@@ -32,22 +35,13 @@ class Link extends Shortcut<
     );
 
     if (
-      this.setting
+      host in this.setting
         .block
         .fragment
-        .includes(host)
     )
       url.dropFragment();
 
     if (
-      this.setting
-        .block
-        .query
-        .all
-        .includes(host)
-    )
-      url.dropQuery();
-    else if (
       host in this.setting
         .block
         .query
