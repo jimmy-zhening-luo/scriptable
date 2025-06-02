@@ -31,6 +31,7 @@ export default class Url {
               .query
               .slice(1)
               .split("&")
+              .filter(param => param !== "")
               .map(
                 param => param.split("=") as Arrayful,
               )
@@ -63,21 +64,22 @@ export default class Url {
   }
 
   public get query() {
-    const query = [
-      ...this
-        ._query
-        .entries(),
-    ]
-      .map(
-        ([name, value]) => value === null
-          ? name
-          : [name, value].join("="),
-      )
-      .join("&");
-
-    return query === ""
+    return this._query.size === 0
       ? ""
-      : `?${query}`;
+      : [
+          "?",
+          [
+            ...this
+              ._query
+              .entries(),
+          ]
+            .map(
+              ([name, value]) => value === null
+                ? name
+                : [name, value].join("="),
+            )
+            .join("&"),
+        ].join("");
   }
 
   public get fragment() {
