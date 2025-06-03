@@ -11,38 +11,38 @@ export default class File<Type extends string> {
     public readonly mutable = false,
   ) {
     try {
-      const bookmarked = File.manager.bookmarkExists(type);
-
-      if (!bookmarked && !mutable)
-        throw new ReferenceError("Missing file root");
-
-      const root = bookmarked
+      const root = File.manager.bookmarkExists(type)
         ? File.manager.bookmarkedPath(type)
-        : [
-            File.manager.libraryDirectory(),
-            type,
-          ].join("/"),
-      subpath = [subfolder, name]
+        : mutable
+          ? [
+              File.manager.libraryDirectory(),
+              type,
+            ].join("/")
+          : null;
+
+      if (root === null)
+        throw new ReferenceError("No file root");
+
+      const subpath = [subfolder, name]
         .join("/")
         .split("/")
         .filter(segment => segment !== "");
 
       if (subpath.length === 0)
-        throw new SyntaxError("Empty file subpath");
+        throw new SyntaxError("No file subpath");
 
-      this.path = [
-        root,
-        ...subpath,
-      ].join("/");
-      this.parent = [
-        root,
-        ...subpath.slice(0, -1),
-      ].join("/");
+      const path = [root, ...subpath];
+
+      this.path = path
+        .join("/");
+      this.parent = path
+        .slice(0, -1)
+        .join("/");
       this.exists = File.manager.fileExists(this.path);
     }
     catch (e) {
       throw new Error(
-        "File handler construction failed",
+        "Failed to construct file handler",
         {
           cause: new Error(
             `[Filetype: '${type}'] Subpath: '${subfolder}/${name}'`,
@@ -87,7 +87,7 @@ export default class File<Type extends string> {
       | number
       | boolean
       | readonly (string | number | boolean)[]
-      | Readonly<Record<string, unknown>>
+      | ReadonlyRecord<string, unknown>
     > = null,
     overwrite:
       | "line"
@@ -115,9 +115,7 @@ export default class File<Type extends string> {
         this.path,
         Array.isArray(content)
           ? [
-              content
-                .reverse()
-                .join("\n"),
+              ...content.reverse(),
               this.read(),
             ].join("\n")
           : typeof content === "object"
