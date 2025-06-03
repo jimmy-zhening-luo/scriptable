@@ -235,12 +235,12 @@ export default abstract class IApp<
   protected stringfuls<A extends readonly string[]>(strings: A, cause = "") {
     if (strings.length === 0)
       throw new RangeError(
-        "Array has no stringfuls",
+        "Empty, unstringful array",
         { cause },
       );
     else if (!strings.every((string): string is stringful => string !== ""))
       throw new TypeError(
-        "Array contains unstringful",
+        "Unstringful array",
         { cause },
       );
 
