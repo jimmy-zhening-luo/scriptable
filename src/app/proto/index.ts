@@ -241,12 +241,7 @@ export default abstract class IApp<
     else if (!strings.every((string): string is stringful => string !== ""))
       throw new TypeError(
         "Array contains unstringful",
-        {
-          cause: {
-            cause,
-            strings,
-          },
-        },
+        { cause },
       );
 
     return strings as unknown as (
