@@ -71,7 +71,7 @@ export default abstract class Widget<
     this
       .widget
       .addText(text)
-      .font = this.FONTS[font];
+      .font = Widget.FONTS[font];
   }
   protected abstract action(): void;
 }
