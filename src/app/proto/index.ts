@@ -305,15 +305,16 @@ export default abstract class IApp<
       .delete();
   }
 
-  private storage(name = "", extension = "") {
+  private storage(
+    {
+      name = this.app,
+      extension = ".txt",
+    } = {},
+  ) {
     const filename = [
-      name === ""
-        ? this.app
-        : name,
-      extension === ""
-        ? "txt"
-        : extension,
-    ].join(".");
+      name,
+      extension,
+    ].join("");
 
     return this.cache[filename] ??= new File(
       "Storage",
