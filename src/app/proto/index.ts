@@ -230,40 +230,6 @@ export default abstract class IApp<
       .delete();
   }
 
-  protected char(string = "", cause = "") {
-    if (string.length !== 1)
-      throw new TypeError(
-        "Non-char",
-        { cause },
-      );
-
-    return string as char;
-  }
-
-  protected chars<A extends readonly string[]>(strings: A, cause = "") {
-    if (strings.length === 0)
-      throw new RangeError(
-        "Array has no chars",
-        { cause },
-      );
-    else if (!strings.every((string): string is char => string.length === 1))
-      throw new TypeError(
-        "Array contains non-char",
-        {
-          cause: {
-            cause,
-            strings,
-          },
-        },
-      );
-
-    return strings as unknown as (
-      A extends readonly [string, ...string[]]
-        ? { [K in keyof A]: NonNullable<typeof strings[number]>; }
-        : Arrayful<NonNullable<typeof strings[number]>>
-    );
-  }
-
   protected stringful(string = "", cause = "") {
     if (string === "")
       throw new TypeError(
