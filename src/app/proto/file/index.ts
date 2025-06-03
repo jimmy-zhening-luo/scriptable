@@ -115,7 +115,9 @@ export default class File<Type extends string> {
         this.path,
         Array.isArray(content)
           ? [
-              ...content.reverse(),
+              content
+                .reverse()
+                .join("\n"),
               this.read(),
             ].join("\n")
           : typeof content === "object"
