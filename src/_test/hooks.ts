@@ -1,8 +1,13 @@
 import * as MockGlobals from "./globals";
-import type File from "../app/proto/file";
+import type File from "../lib/file";
 import type Shortcut from "../app";
 
-type Import<Module> = Promise<Record<"default", Module>>;
+type Import<Module> = Promise<
+  ReadonlyRecord<
+    "default",
+    Module
+  >
+>;
 
 export async function mochaGlobalSetup() {
   try {
@@ -19,7 +24,7 @@ export async function mochaGlobalSetup() {
     const {
       "default": MockFile,
     } = await (
-      import("../app/proto/file") as Import<typeof File>
+      import("../lib/file") as Import<typeof File>
     )
       .catch(
         (e: unknown) => {
