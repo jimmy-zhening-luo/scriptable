@@ -7,6 +7,11 @@ export default abstract class Widget<
     void,
     Schema
   > {
+  private static readonly FONTS = {
+    title: Font.semiboldSystemFont(24),
+    body: Font.systemFont(16),
+    footnote: Font.lightSystemFont(10),
+  } as const;
   protected readonly tapped = config.runsInApp
     && typeof args.widgetParameter === "string";
   protected readonly contextual = config.runsInWidget
@@ -15,11 +20,6 @@ export default abstract class Widget<
   protected readonly title: string = this.app;
   protected readonly showLastRefresh: boolean = true;
   protected readonly widget = new ListWidget;
-  private readonly FONTS = {
-    title: Font.semiboldSystemFont(24),
-    body: Font.systemFont(16),
-    footnote: Font.lightSystemFont(10),
-  } as const;
 
   constructor() {
     super();
@@ -66,7 +66,7 @@ export default abstract class Widget<
 
   protected addText(
     text: string,
-    font: keyof typeof this.FONTS = "body",
+    font: keyof typeof Widget["FONTS"] = "body",
   ) {
     this
       .widget
