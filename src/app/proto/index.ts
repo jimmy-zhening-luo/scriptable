@@ -262,8 +262,8 @@ export default abstract class IApp<
       format = "MMMM d, y h:mm:ss a",
     } = {},
   ) {
-    this.dateFormatter ??= new DateFormatter;
-    this.dateFormatter.dateFormat = format;
+    (this.dateFormatter ??= new DateFormatter)
+      .dateFormat = format;
 
     return this.dateFormatter.string(date);
   }
