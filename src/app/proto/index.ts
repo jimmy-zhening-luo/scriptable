@@ -188,6 +188,48 @@ export default abstract class IApp<
     }
   }
 
+  protected read(
+    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
+  ) {
+    return this
+      .storage(...filename)
+      .read();
+  }
+
+  protected readful(
+    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
+  ) {
+    return this
+      .storage(...filename)
+      .readful();
+  }
+
+  protected write(
+    ...[
+      data,
+      overwrite = true,
+      ...filename
+    ]: [
+      ...Parameters<File<"Storage">["write"]>,
+      ...Parameters<IApp<Input, Output, Schema>["storage"]>,
+    ]
+  ) {
+    this
+      .storage(...filename)
+      .write(
+        data,
+        overwrite,
+      );
+  }
+
+  protected delete(
+    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
+  ) {
+    this
+      .storage(...filename)
+      .delete();
+  }
+
   protected char(string = "", cause = "") {
     if (string.length !== 1)
       throw new TypeError(
@@ -261,48 +303,6 @@ export default abstract class IApp<
       .dateFormat = format;
 
     return this.dateFormatter.string(date);
-  }
-
-  protected read(
-    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
-  ) {
-    return this
-      .storage(...filename)
-      .read();
-  }
-
-  protected readful(
-    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
-  ) {
-    return this
-      .storage(...filename)
-      .readful();
-  }
-
-  protected write(
-    ...[
-      data,
-      overwrite = true,
-      ...filename
-    ]: [
-      ...Parameters<File<"Storage">["write"]>,
-      ...Parameters<IApp<Input, Output, Schema>["storage"]>,
-    ]
-  ) {
-    this
-      .storage(...filename)
-      .write(
-        data,
-        overwrite,
-      );
-  }
-
-  protected delete(
-    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
-  ) {
-    this
-      .storage(...filename)
-      .delete();
   }
 
   private storage(
