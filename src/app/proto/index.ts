@@ -230,7 +230,10 @@ export default abstract class IApp<
       .delete();
   }
 
-  protected stringful(string = "", cause = "") {
+  protected stringful(
+    string = "",
+    cause = "",
+  ) {
     if (string === "")
       throw new TypeError(
         "Unstringful",
@@ -240,13 +243,20 @@ export default abstract class IApp<
     return string as stringful;
   }
 
-  protected stringfuls<A extends readonly string[]>(strings: A, cause = "") {
+  protected stringfuls<A extends readonly string[]>(
+    strings: A,
+    cause = "",
+  ) {
     if (strings.length === 0)
       throw new RangeError(
         "Empty, unstringful array",
         { cause },
       );
-    else if (!strings.every((string): string is stringful => string !== ""))
+    else if (
+      !strings.every(
+        (string): string is stringful => string !== "",
+      )
+    )
       throw new TypeError(
         "Unstringful array",
         { cause },
@@ -254,8 +264,51 @@ export default abstract class IApp<
 
     return strings as unknown as (
       A extends readonly [string, ...string[]]
-        ? { [K in keyof A]: NonNullable<typeof strings[number]>; }
-        : Arrayful<NonNullable<typeof strings[number]>>
+        ? {
+            readonly [K in keyof A]: typeof strings[number];
+          }
+        : Arrayful<typeof strings[number], true>
+    );
+  }
+
+  protected char(
+    string = "",
+    cause = "",
+  ) {
+    if (string.length !== 1)
+      throw new TypeError(
+        "Not a char",
+        { cause },
+      );
+
+    return string as stringful;
+  }
+
+  protected chars<A extends readonly string[]>(
+    strings: A,
+    cause = "",
+  ) {
+    if (strings.length === 0)
+      throw new RangeError(
+        "Empty, char-less array",
+        { cause },
+      );
+    else if (
+      !strings.every(
+        (string): string is char => string.length === 1,
+      )
+    )
+      throw new TypeError(
+        "Uncharful array",
+        { cause },
+      );
+
+    return strings as unknown as (
+      A extends readonly [string, ...string[]]
+        ? {
+            readonly [K in keyof A]: typeof strings[number];
+          }
+        : Arrayful<typeof strings[number], true>
     );
   }
 

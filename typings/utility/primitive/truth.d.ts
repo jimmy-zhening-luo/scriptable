@@ -1,4 +1,4 @@
-declare type Truth<B extends boolean> = Extract<B, object> extends never
+declare type Truth<B extends boolean> = Exclude<B, true> extends never
   ? boolean extends B
     ? never
     : B extends true

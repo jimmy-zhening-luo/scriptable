@@ -2,30 +2,30 @@ export default function (
   query: string,
   alias: FieldTable,
   engines: Set<string>,
-  FALLBACKS: Arrayful<stringful>,
+  FALLBACKS: Arrayful<stringful, true>,
   OPERATORS: stringful,
-  SELECTORS: Arrayful<char>,
+  SELECTORS: Arrayful<char, true>,
 ) {
   function parse(
     query: string,
-    FALLBACKS: Arrayful<stringful>,
+    FALLBACKS: Arrayful<stringful, true>,
     OPERATORS: stringful,
-    SELECTORS: Arrayful<char>,
+    SELECTORS: Arrayful<char, true>,
   ) {
     function select(
       query: string,
-      FALLBACKS: Arrayful<stringful>,
+      FALLBACKS: Arrayful<stringful, true>,
       OPERATORS: stringful,
-      SELECTORS: Arrayful<char>,
+      SELECTORS: Arrayful<char, true>,
     ) {
       function expand(
         query: string,
-        FALLBACKS: Arrayful<stringful>,
+        FALLBACKS: Arrayful<stringful, true>,
         OPERATORS: stringful,
       ) {
         function tokenize(
           query: string,
-          FALLBACKS: Arrayful<stringful>,
+          FALLBACKS: Arrayful<stringful, true>,
         ) {
           const tokens = query
             .split(" ")

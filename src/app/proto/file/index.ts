@@ -5,7 +5,7 @@ export default class File<Type extends string> {
   protected readonly exists;
 
   constructor(
-    type: literalful<Type>,
+    type: Literalful<Type>,
     name: string,
     subfolder = "",
     public readonly mutable = false,

@@ -1,3 +1,3 @@
-declare type literalful<S extends string> = "" extends literal<S>
+declare type Literalful<S extends string> = "" extends Literal<S>
   ? never
-  : literal<S>;
+  : Literal<S>;

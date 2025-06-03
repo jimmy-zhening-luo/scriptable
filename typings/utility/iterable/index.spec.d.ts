@@ -1,16 +1,16 @@
-declare namespace Arrayed {
+declare namespace IsArray {
   export type Result = 0 | Test<{
     T: [
-      Arrayed<[]>,
-      Arrayed<[1, 1]>,
-      Arrayed<string[]>,
-      Arrayed<readonly []>,
-      Arrayed<readonly [1, 1]>,
-      Arrayed<readonly string[]>,
-      Arrayed<[[]]>,
-      Arrayed<string[] | int[]>,
-      Arrayed<(string | int)[]>,
-      Arrayed<
+      IsArray<[]>,
+      IsArray<[1, 1]>,
+      IsArray<string[]>,
+      IsArray<readonly []>,
+      IsArray<readonly [1, 1]>,
+      IsArray<readonly string[]>,
+      IsArray<[[]]>,
+      IsArray<string[] | int[]>,
+      IsArray<(string | int)[]>,
+      IsArray<
         | []
         | [0, 1]
         | [0, "foo"]
@@ -24,35 +24,37 @@ declare namespace Arrayed {
         | readonly number[]
         | readonly (string | number)[]
       >,
-      Arrayed<[1?, ...string[]]>,
-      Arrayed<[1] | [1, 2?]>,
+      IsArray<[1?, ...string[]]>,
+      IsArray<[1] | [1, 2?]>,
+      IsArray<[] & object>,
+      IsArray<[] & { [full]: "array" }>,
     ];
     F: [
-      Arrayed<"">,
-      Arrayed<"test">,
-      Arrayed<string>,
-      Arrayed<boolean>,
-      Arrayed<true>,
-      Arrayed<false>,
-      Arrayed<0>,
-      Arrayed<1>,
-      Arrayed<number>,
-      Arrayed<null>,
-      Arrayed<undefined>,
-      Arrayed<unknown>,
-      Arrayed<never>,
-      Arrayed<void>,
-      Arrayed<() => void>,
-      Arrayed<(a: string) => []>,
-      Arrayed<Record<string, unknown>>,
-      Arrayed<Record<number, 5>>,
-      Arrayed<stringful>,
-      Arrayed<{ 0: string }>,
-      Arrayed<symbol>,
-      Arrayed<object>,
-      Arrayed<[] | object>,
-      Arrayed<[] | string>,
-      Arrayed<[] | null>,
+      IsArray<"">,
+      IsArray<"test">,
+      IsArray<string>,
+      IsArray<boolean>,
+      IsArray<true>,
+      IsArray<false>,
+      IsArray<0>,
+      IsArray<1>,
+      IsArray<number>,
+      IsArray<null>,
+      IsArray<undefined>,
+      IsArray<unknown>,
+      IsArray<never>,
+      IsArray<void>,
+      IsArray<() => void>,
+      IsArray<(a: string) => []>,
+      IsArray<Record<string, unknown>>,
+      IsArray<Record<number, 5>>,
+      IsArray<stringful>,
+      IsArray<{ 0: string }>,
+      IsArray<symbol>,
+      IsArray<object>,
+      IsArray<[] | object>,
+      IsArray<[] | string>,
+      IsArray<[] | null>,
     ];
   }>;
 }

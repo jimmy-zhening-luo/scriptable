@@ -6,7 +6,7 @@ export type SearchEngineSetting<
   Action = string,
 > = (
   & Record<Engine, Action>
-  & (literalful<Flags> extends never ? object : Flag<Flags>)
-  & (literalful<Fields> extends never ? object : Field<never, Fields>)
+  & (Literalful<Flags> extends never ? object : Flag<Flags>)
+  & (Literalful<Fields> extends never ? object : Field<never, Fields>)
   & ExtraProperties
 );
