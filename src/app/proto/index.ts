@@ -330,14 +330,9 @@ export default abstract class IApp<
       extension = ".txt",
     } = {},
   ) {
-    const filename = [
-      name,
-      extension,
-    ].join("");
-
-    return this.cache[filename] ??= new File(
+    return this.cache[`${name}${extension}`] ??= new File(
       "Storage",
-      filename,
+      `${name}${extension}`,
       this.app,
       true,
     );
