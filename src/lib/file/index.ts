@@ -45,7 +45,7 @@ export default class File<Type extends string> {
         "Failed to construct file handler",
         {
           cause: new Error(
-            `[Filetype: '${type}'] Subpath: '${subfolder}/${name}'`,
+            `<${type}> ${subfolder}/${name}`,
             { cause: e },
           ),
         },
@@ -116,7 +116,7 @@ export default class File<Type extends string> {
         Array.isArray(content)
           ? [
               content
-                .reverse()
+                .toReversed()
                 .join("\n"),
               this.read(),
             ].join("\n")
@@ -155,7 +155,7 @@ export default class File<Type extends string> {
 
   private error(e: unknown, verb: string) {
     return new Error(
-      `Failed to '${verb}' file`,
+      `Failed to ${verb} file`,
       {
         cause: new Error(
           this.path,

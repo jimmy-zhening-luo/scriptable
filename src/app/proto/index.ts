@@ -59,7 +59,10 @@ export default abstract class IApp<
       return this.config ??= JSON.parse(
         new File(
           "Setting",
-          `${this.app}.json`,
+          [
+            this.app,
+            "json",
+          ].join("."),
         ).readful(),
       ) as Schema;
     }
@@ -327,12 +330,16 @@ export default abstract class IApp<
   private storage(
     {
       name = this.app,
-      extension = ".txt",
+      extension = "txt",
     } = {},
   ) {
-    return this.cache[`${name}${extension}`] ??= new File(
+    const file = extension === ""
+      ? name
+      : [name, extension].join(".");
+
+    return this.cache[file] ??= new File(
       "Storage",
-      `${name}${extension}`,
+      file,
       this.app,
       true,
     );

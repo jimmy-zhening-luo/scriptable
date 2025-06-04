@@ -13,7 +13,12 @@ export default class Url {
         throw new URIError("Empty string cannot be an URL");
 
       const parts = Url.parse(string)
-        ?? Url.parse(`https://${string}`);
+        ?? Url.parse(
+          [
+            "https",
+            string,
+          ].join("://"),
+        );
 
       if (parts === null)
         throw new URIError(
