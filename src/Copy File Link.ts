@@ -13,7 +13,7 @@ class FileLink extends Share<string> {
       )
       .map(
         path => [
-          "shareddocuments"
+          "shareddocuments",
           encodeURI(path),
         ].join("://")
       )
