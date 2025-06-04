@@ -3,7 +3,9 @@
 import Share from "./app/share";
 
 class FileLink extends Share<string> {
-  protected readonly shareInputType = "fileURLs";
+  constructor() {
+    super("fileURLs");
+  }
 
   protected runtime() {
     return this

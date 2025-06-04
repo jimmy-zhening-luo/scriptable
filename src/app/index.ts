@@ -1,24 +1,24 @@
 import IApp from "./proto";
 
 export default abstract class Shortcut<
-  Input extends Unflat = never,
-  Output = null,
+  ShortcutInput extends Unflat = never,
+  ShortcutOutput = null,
   Setting = never,
 > extends IApp<
-    Input,
-    Null<Output>,
+    ShortcutInput,
+    Null<ShortcutOutput>,
     Setting
   > {
-  protected inputType: (
-    | "string"
-    | (
-      Input extends readonly string[]
-        ? "multi"
-        : never
-    )
-  ) = "string";
-
-  constructor() {
+  constructor(
+    protected inputType: (
+      | "string"
+      | (
+        ShortcutInput extends readonly string[]
+          ? "multi"
+          : never
+      )
+    ) = "string",
+  ) {
     super(
       config.runsWithSiri,
     );
@@ -29,16 +29,14 @@ export default abstract class Shortcut<
       this.inputType === "multi"
         ? args.plainTexts.length === 0
           ? undefined
-          : args.plainTexts as unknown as Input & readonly string[]
-        : args.plainTexts[0] as Undef<Input & string>
+          : args.plainTexts as unknown as ShortcutInput & readonly string[]
+        : args.plainTexts[0] as Undef<ShortcutInput & string>
     )
     ?? undefined;
   }
 
-  protected output(runtime: ReturnType<Shortcut<Input, Output>["runtime"]>) {
-    Script.setShortcutOutput(runtime);
-
-    return runtime;
+  protected output(output: ReturnType<Shortcut<ShortcutInput, ShortcutOutput>["runtime"]>) {
+    Script.setShortcutOutput(output);
   }
 
   protected local(): void {

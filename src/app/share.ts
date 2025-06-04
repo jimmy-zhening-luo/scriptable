@@ -1,20 +1,20 @@
 import IApp from "./proto";
 
 export default abstract class Share<
-  Output extends string = never,
+  ShareOutput extends string = never,
   Setting = never,
 > extends IApp<
-    string[],
-    Null<Output>,
+    readonly string[],
+    Null<ShareOutput>,
     Setting
   > {
-  protected readonly abstract shareInputType: (
-    | "plainTexts"
-    | "urls"
-    | "fileURLs"
-  );
-
-  constructor() {
+  constructor(
+    protected readonly shareInputType: (
+      | "plainTexts"
+      | "urls"
+      | "fileURLs"
+    ) = "plainTexts",
+  ) {
     super(
       config.runsInActionExtension,
     );
@@ -26,11 +26,9 @@ export default abstract class Share<
       : args[this.shareInputType];
   }
 
-  protected output(runtime: ReturnType<Share<Output>["runtime"]>) {
-    if (typeof runtime === "string")
-      Pasteboard.copy(runtime);
-
-    return runtime;
+  protected output(output: ReturnType<Share<ShareOutput>["runtime"]>) {
+    if (typeof output === "string")
+      Pasteboard.copy(output);
   }
 
   protected local(): void {

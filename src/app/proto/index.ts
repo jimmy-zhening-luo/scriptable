@@ -126,12 +126,12 @@ export default abstract class IApp<
       notification
         .schedule()
         .catch(
-          (systemError: unknown) => {
-            console.error(systemError);
+          (errorSystemNotify: unknown) => {
+            console.error(errorSystemNotify);
 
             throw new EvalError(
-              "Failed to schedule notification",
-              { cause: systemError },
+              "Unable to send iOS Notification",
+              { cause: errorSystemNotify },
             );
           },
         );
@@ -162,12 +162,30 @@ export default abstract class IApp<
       if (typeof sideload !== "undefined")
         this.sideload = sideload;
 
-      const output = this.output(
-        this.runtime(),
-      );
+      const output = this.runtime();
 
-      if (this.context === "local")
-        this.runLocal(output);
+      try {
+        this.output(output);
+      }
+      catch (errorSystemOutput) {
+        throw new Error(
+          "Unable to output to iOS",
+          { cause: errorSystemOutput },
+        );
+      }
+
+      if (this.context = "local") {
+        try {
+          console.log(output);
+          this.local(output);
+        }
+        catch (errorLocal) {
+          throw new EvalError(
+            "Local failure",
+            { cause: errorLocal },
+          );
+        }
+      }
 
       return output;
     }
@@ -176,19 +194,6 @@ export default abstract class IApp<
     }
     finally {
       Script.complete();
-    }
-  }
-
-  protected runLocal(runtime: Output) {
-    try {
-      console.log(runtime);
-      this.local(runtime);
-    }
-    catch (e) {
-      throw new EvalError(
-        "Local run failure",
-        { cause: e },
-      );
     }
   }
 
@@ -348,8 +353,8 @@ export default abstract class IApp<
 
   protected abstract getInput(): Undef<Input>;
   protected abstract runtime(): Output;
-  protected abstract output(runtime: Output): Output;
-  protected abstract local(runtime: Output): void;
+  protected abstract output(output: Output): void;
+  protected abstract local(output: Output): void;
   private config?: Setting;
   private sideload?: Input;
   private dateFormatter?: DateFormatter;

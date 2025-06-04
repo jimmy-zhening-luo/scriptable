@@ -13,11 +13,12 @@ export default abstract class Widget<
     footnote: Font.lightSystemFont(10),
   } as const;
   protected readonly tapped: boolean;
-  protected readonly title: string = this.app;
-  protected readonly showLastRefresh: boolean = true;
   protected readonly widget = new ListWidget;
 
-  constructor() {
+  constructor(
+    protected readonly title: string = this.app,
+    protected readonly showLastRefresh = true,
+  ) {
     const tapped = config.runsInApp
       && typeof args.widgetParameter === "string";
 
@@ -61,10 +62,10 @@ export default abstract class Widget<
       .widget
       .presentSmall()
       .catch(
-        (e: unknown) => {
+        (errorScriptableUI: unknown) => {
           throw new EvalError(
-            "Error presenting widget:",
-            { cause: e },
+            "Error presenting widget",
+            { cause: errorScriptableUI },
           );
         },
       );
