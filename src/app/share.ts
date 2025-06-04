@@ -9,7 +9,7 @@ export default abstract class Share<
     Setting
   > {
   constructor(
-    protected readonly shareInputType: (
+    private readonly shareInputType: (
       | "plainTexts"
       | "urls"
       | "fileURLs"

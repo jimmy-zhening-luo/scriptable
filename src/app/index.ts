@@ -10,7 +10,7 @@ export default abstract class Shortcut<
     Setting
   > {
   constructor(
-    protected inputType: (
+    private readonly inputType: (
       | "string"
       | (
         ShortcutInput extends readonly string[]
