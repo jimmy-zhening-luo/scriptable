@@ -129,7 +129,7 @@ export default class Url {
   public deleteParams(
     ...params: string[]
   ) {
-    for (const param of params)
+    for (const param of new Set<string>(params))
       this._query.delete(param);
   }
 
