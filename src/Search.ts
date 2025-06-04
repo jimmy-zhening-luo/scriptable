@@ -24,7 +24,7 @@ class Search extends Shortcut<
       this
         .setting
         .alias,
-      new Set<string>(
+      new Set(
         Object.keys(
           this
             .setting
@@ -42,11 +42,13 @@ class Search extends Shortcut<
           .reserved
           .operators,
       ),
-      this.chars(
-        this
-          .setting
-          .reserved
-          .selectors,
+      new Set(
+        this.chars(
+          this
+            .setting
+            .reserved
+            .selectors,
+        ),
       ),
     ),
     entry = this

@@ -1,22 +1,29 @@
+class QueryToken<T extends "key" | "selection"> {
+  constructor(
+    public readonly type: T,
+    public readonly token: stringful,
+  ) {}
+}
+
 export default function (
   query: string,
   alias: FieldTable,
   engines: Set<string>,
   FALLBACKS: Arrayful<stringful, true>,
   OPERATORS: stringful,
-  SELECTORS: Arrayful<char, true>,
+  SELECTORS: Set<char>,
 ) {
   function parse(
     query: string,
     FALLBACKS: Arrayful<stringful, true>,
     OPERATORS: stringful,
-    SELECTORS: Arrayful<char, true>,
+    SELECTORS: Set<char>,
   ) {
     function select(
       query: string,
       FALLBACKS: Arrayful<stringful, true>,
       OPERATORS: stringful,
-      SELECTORS: Arrayful<char, true>,
+      SELECTORS: Set<char>,
     ) {
       function expand(
         query: string,
@@ -27,102 +34,134 @@ export default function (
           query: string,
           FALLBACKS: Arrayful<stringful, true>,
         ) {
-          const tokens = query
-            .split(" ")
-            .filter((token): token is stringful => token !== ""),
-          spaces = query.length - query.trimStart().length;
+          function front(
+            query: string,
+            FALLBACKS: Arrayful<stringful, true>,
+          ) {
+            const spaces = query.length - query.trimStart().length;
 
-          if (spaces > 0)
-            tokens.unshift(
-              FALLBACKS.at(
-                Math.min(
-                  spaces,
-                  FALLBACKS.length,
-                ) - 1,
-              )!,
-            );
+            return spaces > 0
+              ? [
+                  new QueryToken(
+                    "key",
+                    FALLBACKS.at(spaces)
+                    ?? FALLBACKS.at(-1)!,
+                  ),
+                ] as const
+              : [] as const;
+          }
+
+          const tokens = [
+            ...front(query, FALLBACKS),
+            ...query
+              .split(" ")
+              .filter((token): token is stringful => token !== ""),
+          ] as const;
 
           if (tokens.length === 0)
-            throw new RangeError(
-              "Empty query",
-              { cause: { query } },
-            );
+            throw new RangeError("No search query");
 
           const [first, ...rest] = tokens;
 
-          return [
-            first as stringful,
-            ...rest,
-          ] as const;
+          return [first, ...rest] as const;
         }
 
         const tokens = tokenize(
           query,
           FALLBACKS,
         ),
-        [[token0_0, token0_1]] = tokens;
+        [first] = tokens;
 
-        return [
-          ...token0_0 >= "0"
-          && token0_0 <= "9"
-          || OPERATORS.includes(token0_0)
-          || typeof token0_1 !== "undefined"
-          && Number.isFinite(
-            Number(token0_0 + token0_1),
-          )
-            ? ["math" as stringful] as const
-            : [] as const,
-          ...tokens,
-        ] as const;
+        if (typeof first !== "string")
+          return tokens;
+        else {
+          const [first_0, first_1] = first;
+
+          return [
+            ...first_0 >= "0"
+            && first_0 <= "9"
+            || OPERATORS.includes(first_0)
+            || typeof first_1 !== "undefined"
+            && Number.isFinite(
+              Number(first_0 + first_1),
+            )
+              ? [
+                  new QueryToken(
+                    "key",
+                    "math" as stringful,
+                  ),
+                ] as const
+              : [] as const,
+            ...tokens,
+          ] as const;
+        }
       }
-
-      for (const selector of SELECTORS)
-        if (OPERATORS.includes(selector))
-          throw new SyntaxError("Operators include reserved selector");
 
       const tokens = expand(
         query,
         FALLBACKS,
         OPERATORS,
       ),
-      [head, ...terms] = tokens,
-      selector = SELECTORS
-        .find(
-          selector => head.includes(selector),
-        );
+      [head, ...terms] = tokens;
 
-      if (typeof selector === "undefined")
+      if (typeof head !== "string")
         return tokens;
       else {
-        const [newHead = "", ...parts] = head
-          .split(selector),
-        key = newHead === ""
-          ? "translate" as stringful
-          : newHead as stringful,
-        selection = (
-          SELECTORS[0]
-          + selector === "."
-          && parts.length === 1
-          && parts.at(0) === ""
-            ? terms.shift()
-            ?? ""
-            : parts.join(selector)
-        ) as stringful;
+        for (const selector of SELECTORS)
+          if (OPERATORS.includes(selector))
+            throw new SyntaxError("Operators include reserved selector");
 
-        return [
-          key,
-          selection,
-          ...terms,
-        ] as const;
+        const selector = [...SELECTORS]
+          .find(
+            selector => head.includes(
+              selector,
+            ),
+          );
+
+        if (typeof selector === "undefined")
+          return tokens;
+        else {
+          const [newHead = "", ...parts] = head
+            .split(selector),
+          key = newHead === ""
+            ? "translate" as stringful
+            : newHead as stringful,
+          selection = (
+            [...SELECTORS][0]!
+            + selector === "."
+            && parts.length === 1
+            && parts.at(0) === ""
+              ? terms.shift()
+              ?? ""
+              : parts.join(selector)
+          ) as stringful;
+
+          return [
+            new QueryToken("key", key),
+            new QueryToken("selection", selection),
+            ...terms,
+          ] as const;
+        }
       }
     }
 
-    return select(
+    const [key, ...terms] = select(
       query,
       FALLBACKS,
       OPERATORS,
       SELECTORS,
     );
+
+    return [
+      typeof key === "string"
+        ? key
+        : key.token,
+      ...terms.map(
+        term => typeof term === "string"
+          ? term
+          : term.token,
+      ),
+    ] as const;
   }
 
   const [Head, ...rest] = parse(
