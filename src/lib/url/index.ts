@@ -83,10 +83,6 @@ export default class Url {
     return this._fragment;
   }
 
-  public get params() {
-    return [...this._query.keys()];
-  }
-
   private static parse(string: string) {
     const match = regex.exec(string);
 
@@ -142,15 +138,17 @@ export default class Url {
   ) {
     const exceptions = new Set<string>(params);
 
-    if (exceptions.size === 0)
+    if (
+      exceptions.size === 0
+      || exceptions.isDisjointFrom(
+        this._query,
+      )
+    )
       this._query.clear();
     else
       this.deleteParams(
-        ...this
-          .params
-          .filter(
-            param => !exceptions.has(param),
-          ),
+        new Set<string>(...this._query)
+          .difference(exceptions),
       );
   }
 
