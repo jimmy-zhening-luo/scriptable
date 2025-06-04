@@ -17,7 +17,7 @@ export default abstract class Share<
   constructor() {
     super(
       config.runsInActionExtension,
-    )
+    );
   }
 
   protected getInput() {
