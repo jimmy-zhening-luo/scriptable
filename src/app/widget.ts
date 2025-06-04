@@ -40,14 +40,11 @@ export default abstract class Widget<
 
     if (this.showLastRefresh)
       this.addText(
-        [
-          "Latest",
-          this.date(
-            {
-              format: "h:mm a",
-            },
-          ),
-        ].join(": "),
+        "Latest: " + this.date(
+          {
+            format: "h:mm a",
+          },
+        ),
         "footnote",
       );
 

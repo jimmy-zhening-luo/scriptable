@@ -129,10 +129,7 @@ export default class File<Type extends string> {
                     String(content),
                     this.read(),
                   ].join("\n")
-                : [
-                    this.read(),
-                    String(content),
-                  ].join(""),
+                : (this.read() + String(content)),
       );
     }
     catch (e) {

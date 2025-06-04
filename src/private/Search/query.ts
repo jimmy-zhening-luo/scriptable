@@ -68,12 +68,7 @@ export default function (
           || OPERATORS.includes(token0_0)
           || typeof token0_1 !== "undefined"
           && Number.isFinite(
-            Number(
-              [
-                token0_0,
-                token0_1,
-              ].join(""),
-            ),
+            Number(token0_0 + token0_1),
           )
             ? ["math" as stringful] as const
             : [] as const,
@@ -104,15 +99,15 @@ export default function (
         key = newHead === ""
           ? "translate" as stringful
           : newHead as stringful,
-        selection = [
-          SELECTORS[0],
-          selector === "."
+        selection = (
+          SELECTORS[0]
+          + selector === "."
           && parts.length === 1
           && parts.at(0) === ""
             ? terms.shift()
             ?? ""
-            : parts.join(selector),
-        ].join("") as stringful;
+            : parts.join(selector)
+        ) as stringful;
 
         return [
           key,

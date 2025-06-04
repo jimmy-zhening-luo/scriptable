@@ -13,12 +13,7 @@ export default class Url {
         throw new URIError("Empty string cannot be an URL");
 
       const parts = Url.parse(string)
-        ?? Url.parse(
-          [
-            "https",
-            string,
-          ].join("://"),
-        );
+        ?? Url.parse("https://" + string);
 
       if (parts === null)
         throw new URIError(
@@ -71,20 +66,19 @@ export default class Url {
   public get query() {
     return this._query.size === 0
       ? ""
-      : [
-          "?",
-          [
-            ...this
-              ._query
-              .entries(),
-          ]
-            .map(
-              ([name, value]) => value === null
-                ? name
-                : [name, value].join("="),
-            )
-            .join("&"),
-        ].join("");
+      : (
+        "?" + [
+          ...this
+            ._query
+            .entries(),
+        ]
+          .map(
+            ([name, value]) => value === null
+              ? name
+              : [name, value].join("="),
+          )
+          .join("&")
+        );
   }
 
   public get fragment() {
