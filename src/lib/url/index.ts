@@ -66,19 +66,17 @@ export default class Url {
   public get query() {
     return this._query.size === 0
       ? ""
-      : (
-        "?" + [
-          ...this
-            ._query
-            .entries(),
-        ]
-          .map(
-            ([name, value]) => value === null
-              ? name
-              : [name, value].join("="),
-          )
-          .join("&")
-        );
+      : "?" + [
+        ...this
+          ._query
+          .entries(),
+      ]
+        .map(
+          ([name, value]) => value === null
+            ? name
+            : [name, value].join("="),
+        )
+        .join("&");
   }
 
   public get fragment() {
