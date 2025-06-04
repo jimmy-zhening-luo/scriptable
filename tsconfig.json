@@ -55,7 +55,7 @@
       "mocha",
       "chai",
       /* {CONFIGURE} */
-      "scriptable-ios", /* @OVERRIDE */
+      "scriptable-ios" /* @OVERRIDE */,
     ],
     // #endregion
     //
@@ -113,7 +113,7 @@
     // "jsxFragmentFactory": "",
     // "jsxImportSource": "",
     "lib": [
-      "es2023",
+      "es2024" /* @OVERRIDE */,
       /* {CONFIGURE} */
     ],
     // "libReplacement": true /* @default: true | INFO: in the future, @default may become false */,
