@@ -12,18 +12,21 @@ export default abstract class Widget<
     body: Font.systemFont(16),
     footnote: Font.lightSystemFont(10),
   } as const;
-  protected readonly tapped = config.runsInApp
-    && typeof args.widgetParameter === "string";
+  protected readonly tapped: boolean;
   protected readonly title: string = this.app;
   protected readonly showLastRefresh: boolean = true;
   protected readonly widget = new ListWidget;
 
   constructor() {
+    const tapped = config.runsInApp
+      && typeof args.widgetParameter === "string";
+
     super(
       config.runsInWidget
       || config.runsInAccessoryWidget
-      || this.tapped,
+      || tapped,
     );
+    this.tapped = tapped;
     this.addText(
       this.title,
       "title",
