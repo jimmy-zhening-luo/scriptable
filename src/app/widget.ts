@@ -12,12 +12,12 @@ export default abstract class Widget<
     body: Font.systemFont(16),
     footnote: Font.lightSystemFont(10),
   } as const;
-  protected readonly tapped: boolean;
   protected readonly widget = new ListWidget;
+  private readonly tapped: boolean;
 
   constructor(
-    protected readonly title: string = this.app,
-    protected readonly showLastRefresh = true,
+    title: Null<string> = null,
+    private readonly showLastRefresh = true,
   ) {
     const tapped = config.runsInApp
       && typeof args.widgetParameter === "string";
@@ -28,10 +28,12 @@ export default abstract class Widget<
       || tapped,
     );
     this.tapped = tapped;
-    this.addText(
-      this.title,
-      "title",
-    );
+    if (title !== "")
+      this.addText(
+        title
+          ?? this.app,
+        "title",
+      );
   }
 
   protected getInput() {
@@ -40,9 +42,6 @@ export default abstract class Widget<
   }
 
   protected output() {
-    if (this.tapped)
-      this.action();
-
     if (this.showLastRefresh)
       this.addText(
         "Latest: " + this.date(
@@ -55,6 +54,18 @@ export default abstract class Widget<
 
     this.widget.refreshAfterDate = new Date(Date.now() + 30000);
     Script.setWidget(this.widget);
+
+    if (this.tapped) {
+      try {
+        this.action();
+      }
+      catch (errorWidgetAction) {
+        throw new Error (
+          "UI",
+          { cause: errorWidgetAction },
+        );
+      }
+    }
   }
 
   protected local() {
@@ -80,5 +91,6 @@ export default abstract class Widget<
       .addText(text)
       .font = Widget.FONTS[font];
   }
+
   protected abstract action(): void;
 }
