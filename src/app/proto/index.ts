@@ -192,7 +192,7 @@ export default abstract class IApp<
   }
 
   protected read(
-    ...filename: Parameters<IApp<Input, Output, Setting>["storage"]>
+    ...filename: Parameters<IApp["storage"]>
   ) {
     return this
       .storage(...filename)
@@ -200,7 +200,7 @@ export default abstract class IApp<
   }
 
   protected readful(
-    ...filename: Parameters<IApp<Input, Output, Setting>["storage"]>
+    ...filename: Parameters<IApp["storage"]>
   ) {
     return this
       .storage(...filename)
@@ -214,7 +214,7 @@ export default abstract class IApp<
       ...filename
     ]: [
       ...Parameters<File<"Storage">["write"]>,
-      ...Parameters<IApp<Input, Output, Setting>["storage"]>,
+      ...Parameters<IApp["storage"]>,
     ]
   ) {
     this
@@ -226,7 +226,7 @@ export default abstract class IApp<
   }
 
   protected delete(
-    ...filename: Parameters<IApp<Input, Output, Setting>["storage"]>
+    ...filename: Parameters<IApp["storage"]>
   ) {
     this
       .storage(...filename)
