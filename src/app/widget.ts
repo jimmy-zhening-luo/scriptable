@@ -28,10 +28,11 @@ export default abstract class Widget<
       || tapped,
     );
     this.tapped = tapped;
+
     if (title !== "")
       this.addText(
         title
-          ?? this.app,
+        ?? this.app,
         "title",
       );
   }
@@ -55,17 +56,16 @@ export default abstract class Widget<
     this.widget.refreshAfterDate = new Date(Date.now() + 30000);
     Script.setWidget(this.widget);
 
-    if (this.tapped) {
+    if (this.tapped)
       try {
         this.action();
       }
       catch (errorWidgetAction) {
-        throw new Error (
+        throw new Error(
           "UI",
           { cause: errorWidgetAction },
         );
       }
-    }
   }
 
   protected local() {
