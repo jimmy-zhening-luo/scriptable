@@ -1,10 +1,3 @@
-class QueryToken<T extends "key" | "selection"> {
-  constructor(
-    public readonly type: T,
-    public readonly token: stringful,
-  ) {}
-}
-
 export default function (
   query: string,
   alias: FieldTable,
@@ -19,6 +12,13 @@ export default function (
     OPERATORS: stringful,
     SELECTORS: Set<char>,
   ) {
+    class QueryToken<T extends "key" | "selection"> {
+      constructor(
+        public readonly type: T,
+        public readonly token: stringful,
+      ) {}
+    }
+
     function select(
       query: string,
       FALLBACKS: Arrayful<stringful, true>,
@@ -173,10 +173,12 @@ export default function (
   head = (Head satisfies stringful)
     .toLocaleLowerCase() as stringful,
   {
-    key = head,
-    terms = [...rest] as const,
+    key,
+    terms = rest,
   } = engines.has(head)
-    ? {}
+    ? {
+        key: head,
+      }
     : head in alias && alias[head] !== ""
       ? {
           key: alias[head] as stringful,
@@ -189,5 +191,8 @@ export default function (
   return {
     key,
     terms,
+    query: terms.length === 0
+      ? null
+      : terms.join(" ") as stringful,
   };
 }

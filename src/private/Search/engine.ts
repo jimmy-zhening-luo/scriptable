@@ -49,6 +49,7 @@ export default class SearchEngine<
   public resolve(
     key: stringful,
     terms: readonly stringful[],
+    query: Null<stringful>,
   ) {
     function encode(
       terms: readonly stringful[],
@@ -84,10 +85,7 @@ export default class SearchEngine<
 
     const engine = this.engine === ""
       ? key
-      : this.engine,
-    query = terms.length === 0
-      ? null
-      : terms.join(" ") as stringful;
+      : this.engine;
 
     return {
       engine,
