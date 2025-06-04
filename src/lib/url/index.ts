@@ -115,7 +115,7 @@ export default class Url {
       ? "https" as stringfully<"URL:scheme">
       : parsedScheme;
 
-    return scheme === "https" && host === ""
+    return host === "" && scheme === "https"
       ? null
       : {
           scheme,
