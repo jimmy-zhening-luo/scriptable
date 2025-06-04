@@ -3,7 +3,7 @@ import File from "../../lib/file";
 export default abstract class IApp<
   Input,
   Output,
-  Schema,
+  Setting,
 > {
   protected readonly app;
   private readonly cache: Table<File<"Storage">> = {};
@@ -64,7 +64,7 @@ export default abstract class IApp<
             "json",
           ].join("."),
         ).readful(),
-      ) as Schema;
+      ) as Setting;
     }
     catch (e) {
       throw new ReferenceError(
@@ -192,7 +192,7 @@ export default abstract class IApp<
   }
 
   protected read(
-    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
+    ...filename: Parameters<IApp<Input, Output, Setting>["storage"]>
   ) {
     return this
       .storage(...filename)
@@ -200,7 +200,7 @@ export default abstract class IApp<
   }
 
   protected readful(
-    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
+    ...filename: Parameters<IApp<Input, Output, Setting>["storage"]>
   ) {
     return this
       .storage(...filename)
@@ -214,7 +214,7 @@ export default abstract class IApp<
       ...filename
     ]: [
       ...Parameters<File<"Storage">["write"]>,
-      ...Parameters<IApp<Input, Output, Schema>["storage"]>,
+      ...Parameters<IApp<Input, Output, Setting>["storage"]>,
     ]
   ) {
     this
@@ -226,7 +226,7 @@ export default abstract class IApp<
   }
 
   protected delete(
-    ...filename: Parameters<IApp<Input, Output, Schema>["storage"]>
+    ...filename: Parameters<IApp<Input, Output, Setting>["storage"]>
   ) {
     this
       .storage(...filename)
@@ -349,7 +349,7 @@ export default abstract class IApp<
   protected abstract runtime(): Output;
   protected abstract output(runtime: Output): Output;
   protected abstract local(runtime: Output): void;
-  private config?: Schema;
+  private config?: Setting;
   private sideload?: Input;
   private dateFormatter?: DateFormatter;
 }
