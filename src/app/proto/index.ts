@@ -1,9 +1,9 @@
 import File from "../../lib/file";
 
 export default abstract class IApp<
-  Input,
-  Output,
-  Setting,
+  Input = never,
+  Output = void,
+  Setting = never,
 > {
   protected readonly app;
   private readonly cache: Table<File<"Storage">> = {};
