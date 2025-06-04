@@ -1,3 +1,6 @@
+export type { SearchOutput } from "./output";
+export type { SearchSetting } from "./setting";
+
 export default function (
   query: string,
   alias: FieldTable,
@@ -12,7 +15,7 @@ export default function (
     OPERATORS: stringful,
     SELECTORS: Set<char>,
   ) {
-    class QueryToken<T extends "key" | "selection"> {
+    class SearchQueryToken<T extends "key" | "selection"> {
       constructor(
         public readonly type: T,
         public readonly token: stringful,
@@ -42,7 +45,7 @@ export default function (
 
             return spaces > 0
               ? [
-                  new QueryToken(
+                  new SearchQueryToken(
                     "key",
                     FALLBACKS.at(spaces)
                     ?? FALLBACKS.at(-1)!,
@@ -86,7 +89,7 @@ export default function (
               Number(first_0 + first_1),
             )
               ? [
-                  new QueryToken(
+                  new SearchQueryToken(
                     "key",
                     "math" as stringful,
                   ),
@@ -137,8 +140,8 @@ export default function (
           ) as stringful;
 
           return [
-            new QueryToken("key", key),
-            new QueryToken("selection", selection),
+            new SearchQueryToken("key", key),
+            new SearchQueryToken("selection", selection),
             ...terms,
           ] as const;
         }

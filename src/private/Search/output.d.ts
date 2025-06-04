@@ -1,4 +1,3 @@
-export type { SearchSetting } from "./setting";
 export interface SearchOutput {
   engine: Null<string>;
   action: (

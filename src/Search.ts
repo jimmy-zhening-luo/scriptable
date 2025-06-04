@@ -1,7 +1,7 @@
 // icon-color: blue; icon-glyph: search;
 import Shortcut from "./app";
-import Query from "./private/Search/query";
-import Engine from "./private/Search/engine";
+import SearchQuery from "./private/Search";
+import SearchEngine from "./private/Search/engine";
 import type {
   SearchOutput,
   SearchSetting,
@@ -18,7 +18,7 @@ class Search extends Shortcut<
       key,
       terms,
       query,
-    } = Query(
+    } = SearchQuery(
       input === ""
         ? this.read()
         : input,
@@ -57,7 +57,7 @@ class Search extends Shortcut<
       .engines[key]!,
     engine = Array.isArray(entry)
       || typeof entry === "string"
-      ? new Engine(
+      ? new SearchEngine(
         "browser",
         entry,
         this.stringful(
@@ -68,7 +68,7 @@ class Search extends Shortcut<
         ),
       )
       : "url" in entry
-        ? new Engine(
+        ? new SearchEngine(
           "browser",
           entry.url,
           this.stringful(
@@ -80,7 +80,7 @@ class Search extends Shortcut<
           entry.force,
           entry.separator,
         )
-        : new Engine(
+        : new SearchEngine(
           "shortcut",
           (entry.shortcut as Undef<string>)
           ?? "",
