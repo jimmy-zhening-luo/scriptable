@@ -174,7 +174,7 @@ export default abstract class IApp<
         );
       }
 
-      if (this.context = "local") {
+      if (this.context === "local") {
         try {
           console.log(output);
           this.local(output);
