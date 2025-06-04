@@ -3,11 +3,11 @@ import IApp from "./proto";
 export default abstract class Shortcut<
   Input extends Unflat = never,
   Output = null,
-  Schema = never,
+  Setting = never,
 > extends IApp<
     Input,
     Null<Output>,
-    Schema
+    Setting
   > {
   protected readonly contextual = config.runsWithSiri;
   protected inputType: (

@@ -1,11 +1,11 @@
 import IApp from "./proto";
 
 export default abstract class Widget<
-  Schema = never,
+  Setting = never,
 > extends IApp<
     string,
     void,
-    Schema
+    Setting
   > {
   private static readonly FONTS = {
     title: Font.semiboldSystemFont(24),

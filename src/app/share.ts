@@ -2,11 +2,11 @@ import IApp from "./proto";
 
 export default abstract class Share<
   Output extends string = never,
-  Schema = never,
+  Setting = never,
 > extends IApp<
     string[],
     Null<Output>,
-    Schema
+    Setting
   > {
   protected readonly contextual = config.runsInActionExtension;
   protected readonly abstract shareInputType: (
