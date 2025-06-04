@@ -15,7 +15,7 @@ class FileLink extends Share<string> {
         path => [
           "shareddocuments",
           encodeURI(path),
-        ].join("://")
+        ].join("://"),
       )
       .join("\n");
   }
