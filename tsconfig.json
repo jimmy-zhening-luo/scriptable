@@ -113,7 +113,7 @@
     // "jsxFragmentFactory": "",
     // "jsxImportSource": "",
     "lib": [
-      "es2024" /* @OVERRIDE */,
+      "esnext" /* @OVERRIDE */,
       /* {CONFIGURE} */
     ],
     // "libReplacement": true /* @default: true | INFO: in the future, @default may become false */,
