@@ -14,15 +14,16 @@ export default abstract class Widget<
   } as const;
   protected readonly tapped = config.runsInApp
     && typeof args.widgetParameter === "string";
-  protected readonly contextual = config.runsInWidget
-    || config.runsInAccessoryWidget
-    || this.tapped;
   protected readonly title: string = this.app;
   protected readonly showLastRefresh: boolean = true;
   protected readonly widget = new ListWidget;
 
   constructor() {
-    super();
+    super(
+      config.runsInWidget
+      || config.runsInAccessoryWidget
+      || this.tapped,
+    );
     this.addText(
       this.title,
       "title",

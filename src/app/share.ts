@@ -8,12 +8,17 @@ export default abstract class Share<
     Null<Output>,
     Setting
   > {
-  protected readonly contextual = config.runsInActionExtension;
   protected readonly abstract shareInputType: (
     | "plainTexts"
     | "urls"
     | "fileURLs"
   );
+
+  constructor() {
+    super(
+      config.runsInActionExtension,
+    )
+  }
 
   protected getInput() {
     return args[this.shareInputType].length === 0

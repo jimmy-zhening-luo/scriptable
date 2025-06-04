@@ -9,7 +9,6 @@ export default abstract class Shortcut<
     Null<Output>,
     Setting
   > {
-  protected readonly contextual = config.runsWithSiri;
   protected inputType: (
     | "string"
     | (
@@ -18,6 +17,12 @@ export default abstract class Shortcut<
         : never
     )
   ) = "string";
+
+  constructor() {
+    super(
+      config.runsWithSiri,
+    );
+  }
 
   protected getInput() {
     return (

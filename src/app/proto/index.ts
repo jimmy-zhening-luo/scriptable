@@ -7,9 +7,10 @@ export default abstract class IApp<
 > {
   protected readonly app;
   private readonly cache: Table<File<"Storage">> = {};
-  protected readonly abstract contextual: boolean;
 
-  constructor() {
+  constructor(
+    protected readonly contextual: boolean,
+  ) {
     try {
       this.app = this.stringful(
         this.constructor.name,
