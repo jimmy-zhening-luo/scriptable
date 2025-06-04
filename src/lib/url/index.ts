@@ -24,7 +24,7 @@ export default class Url {
       this.scheme = parts.scheme;
       this.host = parts.host;
       this.path = parts.path;
-      this._query = new Map<string, Null<string>>(
+      this._query = new Map(
         parts.query === "?"
           ? []
           : parts
@@ -129,14 +129,14 @@ export default class Url {
   public deleteParams(
     ...params: string[]
   ) {
-    for (const param of new Set<string>(params))
+    for (const param of new Set(params))
       this._query.delete(param);
   }
 
   public deleteParamsExcept(
     ...params: string[]
   ) {
-    const exceptions = new Set<string>(params);
+    const exceptions = new Set(params);
 
     if (
       exceptions.size === 0
@@ -147,7 +147,7 @@ export default class Url {
       this._query.clear();
     else
       this.deleteParams(
-        ...new Set<string>(...this._query.keys())
+        ...new Set(...this._query.keys())
           .difference(exceptions),
       );
   }
