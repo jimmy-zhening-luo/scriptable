@@ -1,7 +1,5 @@
 export type { SearchOutput } from "./output";
-export type { SearchSetting } from "./setting";
-
-export default function (
+export type { SearchSetting } from "./setting";export default function (
   query: string,
   alias: FieldTable,
   engines: Set<string>,
