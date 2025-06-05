@@ -46,7 +46,7 @@ export default function (
               ? [
                   new SearchQueryToken(
                     "key",
-                    FALLBACKS.at(spaces)
+                    FALLBACKS.at(spaces - 1)
                     ?? FALLBACKS.at(-1)!,
                   ),
                 ] as const
