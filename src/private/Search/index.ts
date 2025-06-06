@@ -47,7 +47,7 @@ export default function (
         this.consumes = selection === ""
           && selectors.match === ".";
         this.selection = [
-          canonical,
+          selectors.canonical,
           this.consumes
             ? next
             : selection
