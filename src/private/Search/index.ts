@@ -53,7 +53,7 @@ export default function (
           this.consumes
             ? next
             : selection,
-        ].join("");
+        ].join("") as stringful;
       }
     }
 
@@ -100,36 +100,35 @@ export default function (
 
           const [T0, ...Tn] = tokens;
 
-          return [T0, ...Tn] as const;
+          return [T0, ...Tn as stringful[]] as const;
         }
 
         const tokens = tokenize(
           query,
           FALLBACKS,
         ),
-        [T0] = tokens;
+        [T0, ...Tn] = tokens;
 
         if (typeof T0 !== "string")
           return tokens;
         else {
           const [t00, t01] = T0;
 
-          return [
-            ...t00 >= "0"
+          return t00 >= "0"
             && t00 <= "9"
             || OPERATORS.includes(t00)
             || typeof t01 !== "undefined"
             && !Number.isNaN(
               Number(t00 + t01),
             )
-              ? [
-                  new ReservedSearchQueryToken(
-                    "math",
-                  ),
-                ] as const
-              : [] as const,
-            ...tokens,
-          ] as const;
+            ? [
+                new ReservedSearchQueryToken(
+                  "math",
+                ),
+                T0,
+                ...Tn,
+              ] as const
+            : tokens;
         }
       }
 
