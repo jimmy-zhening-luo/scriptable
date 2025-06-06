@@ -201,7 +201,7 @@ export default function (
 
     const [
       Head,
-      ...terms,
+      ...terms
     ] = select(
       query,
       FALLBACKS,
