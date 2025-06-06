@@ -142,11 +142,12 @@ export default function (
         return tokens;
       else {
         const DOT = "." as char;
-        SELECTORS.delete(DOT);
-        SELECTORS.add(DOT),
-        selectors = [...SELECTORS] as Arrayful<char>;
 
-        const match = selectors.find(
+        SELECTORS.delete(DOT);
+        SELECTORS.add(DOT);
+
+        const selectors = [...SELECTORS] as Arrayful<char>,
+        match = selectors.find(
           selector => T0.includes(
             selector,
           ),
