@@ -148,7 +148,7 @@ export default function (
         SELECTORS.delete(DOT);
         SELECTORS.add(DOT);
 
-        const selectors = [...SELECTORS] as Arrayful<char>,
+        const selectors = [...SELECTORS],
         match = selectors.find(
           selector => T0.includes(
             selector,
@@ -158,7 +158,7 @@ export default function (
         if (typeof match === "undefined")
           return tokens;
         else {
-          const canonical = selectors[0],
+          const canonical = selectors[0]!,
           [
             key = "",
             ...selectionShards
