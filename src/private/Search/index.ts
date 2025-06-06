@@ -2,8 +2,8 @@ export type { SearchOutput } from "./output";
 export type { SearchSetting } from "./setting";
 export default function (
   query: string,
-  alias: FieldTable,
   engines: Set<string>,
+  alias: FieldTable,
   FALLBACKS: Arrayful<stringful, true>,
   OPERATORS: stringful,
   SELECTORS: Set<char>,
@@ -14,11 +14,45 @@ export default function (
     OPERATORS: stringful,
     SELECTORS: Set<char>,
   ) {
-    class SearchQueryToken<T extends "key" | "selection"> {
+    class KnownSearchQueryToken {
       constructor(
-        public readonly type: T,
-        public readonly token: stringful,
+        public readonly token: stringful;
       ) {}
+    }
+
+    class ReservedSearchQueryToken<
+      Token extends string,
+    > extends KnownSearchQueryToken {
+      constructor(
+        public readonly reserved: Literalful<Token>,
+      ) {
+        super(reserved as stringful);
+      }
+    }
+
+    class SearchQuerySelection {
+      public readonly consumes;
+      public readonly selection;
+
+      constructor(
+        public readonly key: stringful,
+        selectors: {
+          readonly canonical: stringful;
+          readonly match: stringful;
+        },
+        selection: string,
+        next: string,
+        public readonly deselect: stringful;
+      ) {
+        this.consumes = selection === ""
+          && selectors.match === ".";
+        this.selection = [
+          canonical,
+          this.consumes
+            ? next
+            : selection
+        ].join("");
+      }
     }
 
     function select(
@@ -36,17 +70,16 @@ export default function (
           query: string,
           FALLBACKS: Arrayful<stringful, true>,
         ) {
-          function front(
+          function fallback(
             query: string,
             FALLBACKS: Arrayful<stringful, true>,
           ) {
-            const spaces = query.length - query.trimStart().length;
+            const frontage = query.length - query.trimStart().length;
 
-            return spaces > 0
+            return frontage > 0
               ? [
-                  new SearchQueryToken(
-                    "key",
-                    FALLBACKS.at(spaces - 1)
+                  new KnownSearchQueryToken(
+                    FALLBACKS.at(frontage - 1)
                     ?? FALLBACKS.at(-1)!,
                   ),
                 ] as const
@@ -54,7 +87,7 @@ export default function (
           }
 
           const tokens = [
-            ...front(query, FALLBACKS),
+            ...fallback(query, FALLBACKS),
             ...query
               .split(" ")
               .filter((token): token is stringful => token !== ""),
@@ -63,34 +96,33 @@ export default function (
           if (tokens.length === 0)
             throw new RangeError("No search query");
 
-          const [first, ...rest] = tokens;
+          const [T0, ...Tn] = tokens;
 
-          return [first, ...rest] as const;
+          return [T0, ...Tn] as const;
         }
 
         const tokens = tokenize(
           query,
           FALLBACKS,
         ),
-        [first] = tokens;
+        [T0] = tokens;
 
-        if (typeof first !== "string")
+        if (typeof T0 !== "string")
           return tokens;
         else {
-          const [first_0, first_1] = first;
+          const [t00, t01] = T0;
 
           return [
-            ...first_0 >= "0"
-            && first_0 <= "9"
-            || OPERATORS.includes(first_0)
-            || typeof first_1 !== "undefined"
-            && Number.isFinite(
-              Number(first_0 + first_1),
+            ...t00 >= "0"
+            && t00 <= "9"
+            || OPERATORS.includes(t00)
+            || typeof t01 !== "undefined"
+            && !Number.isNaN(
+              Number(t00 + t01),
             )
               ? [
-                  new SearchQueryToken(
-                    "key",
-                    "math" as stringful,
+                  new ReservedSearchQueryToken(
+                    "math",
                   ),
                 ] as const
               : [] as const,
@@ -104,91 +136,132 @@ export default function (
         FALLBACKS,
         OPERATORS,
       ),
-      [head, ...terms] = tokens;
+      [T0, ...Tn] = tokens;
 
-      if (typeof head !== "string")
+      if (typeof T0 !== "string")
         return tokens;
       else {
-        for (const selector of SELECTORS)
-          if (OPERATORS.includes(selector))
-            throw new SyntaxError("Operators include reserved selector");
+        const DOT = "." as stringful;
+        SELECTORS.delete(DOT);
+        SELECTORS.add(DOT),
+        selectors = [...SELECTORS] as Arrayful<char>;
 
-        const selector = [...SELECTORS]
-          .find(
-            selector => head.includes(
-              selector,
-            ),
-          );
+        const match = selectors.find(
+          selector => T0.includes(
+            selector,
+          ),
+        );
 
-        if (typeof selector === "undefined")
+        if (typeof match === "undefined")
           return tokens;
         else {
-          const [newHead = "", ...parts] = head
-            .split(selector),
-          key = newHead === ""
-            ? "translate" as stringful
-            : newHead as stringful,
-          selection = (
-            [...SELECTORS][0]!
-            + selector === "."
-            && parts.length === 1
-            && parts.at(0) === ""
-              ? terms.shift()
-              ?? ""
-              : parts.join(selector)
-          ) as stringful;
+          const canonical = selectors[0],
+          [
+            key = "",
+            ...selectionShards,
+          ] = T0
+            .split(match),
+          selection = selectionShards
+            .join(match);
 
           return [
-            new SearchQueryToken("key", key),
-            new SearchQueryToken("selection", selection),
-            ...terms,
+            ...key === ""
+              ? [
+                  new ReservedSearchQueryToken(
+                    "translate",
+                  ),
+                  [
+                    canonical,
+                    selection === ""
+                    && match === DOT
+                      ? Tn.shift() ?? ""
+                      : selection,
+                  ].join("") as stringful,
+                ] as const
+              : [
+                  new SearchQuerySelection(
+                    key as stringful,
+                    {
+                      canonical,
+                      match,
+                    },
+                    selection,
+                    Tn.at(0) ?? "",
+                    T0,
+                  ),
+                ] as const,
+            ...Tn,
           ] as const;
         }
       }
     }
 
-    const [key, ...terms] = select(
+    const [
+      Head,
+      ...terms,
+    ] = select(
       query,
       FALLBACKS,
       OPERATORS,
       SELECTORS,
     );
 
-    return [
-      typeof key === "string"
-        ? key
-        : key.token,
-      ...terms.map(
-        term => typeof term === "string"
-          ? term
-          : term.token,
-      ),
-    ] as const;
+    if (
+      typeof Head !== "string"
+      && "token" in Head
+    )
+      return {
+        key: Head.token,
+        terms,
+      };
+    else {
+      const possibleKeyString = typeof Head === "string"
+        ? Head
+        : Head.key,
+      head = Head.toLocaleLowerCase() as stringful,  
+      key = engines.has(head)
+        ? head
+        : head in alias
+          && alias[head] !== ""
+          ? alias[head] as stringful
+          : null;
+
+
+      return key === null
+        ? {
+            key: "chat" as stringful,
+            terms: [
+              typeof Head === "string"
+                ? Head
+                : Head.deselect,
+              ...terms,
+            ],
+          }
+        : {
+            key,
+            terms: typeof Head === "string"
+              ? terms
+              : [
+                  Head.selection,
+                  ...Head.consumes
+                    ? terms.slice(1);
+                    : terms,
+                ],
+          };
+    }
   }
 
-  const [Head, ...rest] = parse(
+  const {
+    key,
+    terms,
+  } = parse(
     query,
+    engines: Set<string>,
+    alias: FieldTable,
     FALLBACKS,
     OPERATORS,
     SELECTORS,
-  ),
-  head = (Head satisfies stringful)
-    .toLocaleLowerCase() as stringful,
-  {
-    key,
-    terms = rest,
-  } = engines.has(head)
-    ? {
-        key: head,
-      }
-    : head in alias && alias[head] !== ""
-      ? {
-          key: alias[head] as stringful,
-        }
-      : {
-          key: "chat" as stringful,
-          terms: [Head, ...rest] as const,
-        };
+  );
 
   return {
     key,

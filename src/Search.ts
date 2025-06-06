@@ -22,9 +22,6 @@ class Search extends Shortcut<
       input === ""
         ? this.read()
         : input,
-      this
-        .setting
-        .alias,
       new Set(
         Object.keys(
           this
@@ -32,6 +29,9 @@ class Search extends Shortcut<
             .engines,
         ),
       ),
+      this
+        .setting
+        .alias,
       this.stringfuls(
         this
           .setting
