@@ -249,7 +249,7 @@ export default function (
               : [
                   Head.selection,
                   ...Head.consumes
-                    ? terms.slice(1);
+                    ? terms.slice(1)
                     : terms,
                 ],
           };
