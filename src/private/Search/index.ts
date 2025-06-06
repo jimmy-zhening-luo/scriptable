@@ -10,6 +10,8 @@ export default function (
 ) {
   function parse(
     query: string,
+    engines: Set<string>,
+    alias: FieldTable,
     FALLBACKS: Arrayful<stringful, true>,
     OPERATORS: stringful,
     SELECTORS: Set<char>,
