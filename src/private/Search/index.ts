@@ -141,7 +141,7 @@ export default function (
       if (typeof T0 !== "string")
         return tokens;
       else {
-        const DOT = "." as stringful;
+        const DOT = "." as char;
         SELECTORS.delete(DOT);
         SELECTORS.add(DOT),
         selectors = [...SELECTORS] as Arrayful<char>;
