@@ -259,8 +259,8 @@ export default function (
     terms,
   } = parse(
     query,
-    engines: Set<string>,
-    alias: FieldTable,
+    engines,
+    alias,
     FALLBACKS,
     OPERATORS,
     SELECTORS,
