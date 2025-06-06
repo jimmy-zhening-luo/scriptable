@@ -16,7 +16,7 @@ export default function (
   ) {
     class KnownSearchQueryToken {
       constructor(
-        public readonly token: stringful;
+        public readonly token: stringful,
       ) {}
     }
 
@@ -42,7 +42,7 @@ export default function (
         },
         selection: string,
         next: string,
-        public readonly deselect: stringful;
+        public readonly deselect: stringful,
       ) {
         this.consumes = selection === ""
           && selectors.match === ".";
