@@ -147,8 +147,9 @@ export default class Url {
       this._query.clear();
     else
       this.deleteParams(
-        ...new Set(this._query.keys())
-          .difference(exceptions),
+        ...exceptions
+          .intersection(this._query)
+          .symmetricDifference(this._query),
       );
   }
 
