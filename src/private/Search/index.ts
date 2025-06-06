@@ -26,7 +26,7 @@ export default function (
       constructor(
         public readonly reserved: Literalful<Token>,
       ) {
-        super(reserved as stringful);
+        super(reserved as unknown as stringful);
       }
     }
 
