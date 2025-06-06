@@ -216,10 +216,12 @@ export default function (
         terms,
       };
     else {
-      const possibleKeyString = typeof Head === "string"
-        ? Head
-        : Head.key,
-      head = Head.toLocaleLowerCase() as stringful,  
+      const head = (
+        typeof Head === "string"
+          ? Head
+          : Head.key
+      )
+        .toLocaleLowerCase() as stringful,
       key = engines.has(head)
         ? head
         : head in alias
