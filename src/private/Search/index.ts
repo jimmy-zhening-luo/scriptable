@@ -52,7 +52,7 @@ export default function (
           selectors.canonical,
           this.consumes
             ? next
-            : selection
+            : selection,
         ].join("");
       }
     }
@@ -230,7 +230,6 @@ export default function (
           && alias[head] !== ""
           ? alias[head] as stringful
           : null;
-
 
       return key === null
         ? {
