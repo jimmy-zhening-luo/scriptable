@@ -161,7 +161,7 @@ export default function (
           const canonical = selectors[0],
           [
             key = "",
-            ...selectionShards,
+            ...selectionShards
           ] = T0
             .split(match),
           selection = selectionShards
