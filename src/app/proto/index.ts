@@ -354,7 +354,7 @@ export default abstract class IApp<
   protected abstract runtime(): Output;
   protected abstract output(output: Output): void;
   protected abstract local(output: Output): void;
-  private config?: Setting;
   private sideload?: Input;
+  private config?: Setting;
   private dateFormatter?: DateFormatter;
 }
