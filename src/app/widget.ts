@@ -27,7 +27,7 @@ export default abstract class Widget<
       || config.runsInAccessoryWidget
       || tapped,
       args.widgetParameter as Null<string>
-        ?? undefined
+      ?? undefined,
     );
     this.tapped = tapped;
 
