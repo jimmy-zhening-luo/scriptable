@@ -10,7 +10,7 @@ export default abstract class Shortcut<
     Setting
   > {
   constructor(
-    private readonly inputType: (
+    inputType: (
       | "string"
       | (
         ShortcutInput extends readonly string[]
@@ -20,19 +20,17 @@ export default abstract class Shortcut<
     ) = "string",
   ) {
     super(
-      config.runsWithSiri,
+      config
+        .runsWithSiri,
+      (
+        inputType === "multi"
+          ? args.plainTexts.length === 0
+            ? undefined
+            : args.plainTexts as unknown as ShortcutInput & readonly string[]
+          : args.plainTexts[0] as Undef<ShortcutInput & string>
+      )
+      ?? undefined,
     );
-  }
-
-  protected getInput() {
-    return (
-      this.inputType === "multi"
-        ? args.plainTexts.length === 0
-          ? undefined
-          : args.plainTexts as unknown as ShortcutInput & readonly string[]
-        : args.plainTexts[0] as Undef<ShortcutInput & string>
-    )
-    ?? undefined;
   }
 
   protected output(output: ReturnType<Shortcut<ShortcutInput, ShortcutOutput>["runtime"]>) {

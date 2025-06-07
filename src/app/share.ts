@@ -9,21 +9,19 @@ export default abstract class Share<
     Setting
   > {
   constructor(
-    private readonly shareInputType: (
+    shareInputType: (
       | "plainTexts"
       | "urls"
       | "fileURLs"
     ) = "plainTexts",
   ) {
     super(
-      config.runsInActionExtension,
+      config
+        .runsInActionExtension,
+      args[shareInputType].length === 0
+        ? undefined
+        : args[shareInputType],
     );
-  }
-
-  protected getInput() {
-    return args[this.shareInputType].length === 0
-      ? undefined
-      : args[this.shareInputType];
   }
 
   protected output(output: ReturnType<Share<ShareOutput>["runtime"]>) {

@@ -26,6 +26,8 @@ export default abstract class Widget<
       config.runsInWidget
       || config.runsInAccessoryWidget
       || tapped,
+      args.widgetParameter as Null<string>
+        ?? undefined
     );
     this.tapped = tapped;
 
@@ -35,11 +37,6 @@ export default abstract class Widget<
         ?? this.app,
         "title",
       );
-  }
-
-  protected getInput() {
-    return args.widgetParameter as Null<string>
-      ?? undefined;
   }
 
   protected output() {

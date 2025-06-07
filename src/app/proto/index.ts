@@ -10,6 +10,7 @@ export default abstract class IApp<
 
   constructor(
     protected readonly contextual: boolean,
+    private readonly contextualInput: Undef<Input>,
   ) {
     try {
       this.app = this.stringful(
@@ -43,7 +44,7 @@ export default abstract class IApp<
 
   protected get input() {
     try {
-      return this.getInput()
+      return this.contextualInput
         ?? this.sideload
         ?? undefined;
     }
@@ -350,7 +351,6 @@ export default abstract class IApp<
     );
   }
 
-  protected abstract getInput(): Undef<Input>;
   protected abstract runtime(): Output;
   protected abstract output(output: Output): void;
   protected abstract local(output: Output): void;
