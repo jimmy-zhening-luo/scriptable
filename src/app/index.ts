@@ -14,7 +14,7 @@ export default abstract class Shortcut<
       | "string"
       | (
         ShortcutInput extends readonly string[]
-          ? "multi"
+          ? "array"
           : never
       )
     ) = "string",
@@ -22,7 +22,7 @@ export default abstract class Shortcut<
     super(
       config.runsWithSiri,
       (
-        inputType === "multi"
+        inputType === "array"
           ? args.plainTexts.length === 0
             ? undefined
             : args.plainTexts as unknown as ShortcutInput & readonly string[]
