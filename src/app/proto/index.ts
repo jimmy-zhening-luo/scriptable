@@ -6,17 +6,29 @@ export default abstract class IApp<
   Setting = never,
 > {
   protected readonly app;
+  protected readonly context: Flag<
+    never,
+    (
+      | "production"
+      | "local"
+    )
+  >;
   private readonly cache: Table<File<"Storage">> = {};
 
   constructor(
-    protected readonly contextual: boolean,
-    private readonly contextualInput: Undef<Input>,
+    production: boolean,
+    private readonly _input: Undef<Input>,
   ) {
     try {
       this.app = this.stringful(
         this.constructor.name,
         "Anonymous app instance",
       );
+      this.context = {
+        production,
+        local: !production
+          && config.runsInApp,
+      };
     }
     catch (e) {
       throw new Error(
@@ -26,25 +38,9 @@ export default abstract class IApp<
     }
   }
 
-  protected get context() {
-    try {
-      return this.contextual
-        ? "production" as const
-        : config.runsInApp
-          ? "local" as const
-          : "unknown" as const;
-    }
-    catch (e) {
-      throw new Error(
-        "Failed to get app execution context",
-        { cause: e },
-      );
-    }
-  }
-
   protected get input() {
     try {
-      return this.contextualInput
+      return this._input
         ?? this.sideload
         ?? undefined;
     }
@@ -175,7 +171,7 @@ export default abstract class IApp<
         );
       }
 
-      if (this.context === "local")
+      if (this.context.local)
         try {
           console.log(output);
           this.local(output);

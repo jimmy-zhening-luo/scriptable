@@ -16,8 +16,7 @@ export default abstract class Share<
     ) = "plainTexts",
   ) {
     super(
-      config
-        .runsInActionExtension,
+      config.runsInActionExtension,
       args[shareInputType].length === 0
         ? undefined
         : args[shareInputType],

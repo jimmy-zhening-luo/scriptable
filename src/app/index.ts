@@ -20,8 +20,7 @@ export default abstract class Shortcut<
     ) = "string",
   ) {
     super(
-      config
-        .runsWithSiri,
+      config.runsWithSiri,
       (
         inputType === "multi"
           ? args.plainTexts.length === 0
