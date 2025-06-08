@@ -16,8 +16,8 @@ export default abstract class IApp<
   private readonly cache: Table<File<"Storage">> = {};
 
   constructor(
-    production: boolean,
     private readonly _input: Undef<Input>,
+    production: boolean,
   ) {
     try {
       this.app = this.stringful(

@@ -23,11 +23,11 @@ export default abstract class Widget<
       && typeof args.widgetParameter === "string";
 
     super(
+      args.widgetParameter as Null<string>
+      ?? undefined,
       config.runsInWidget
       || config.runsInAccessoryWidget
       || tapped,
-      args.widgetParameter as Null<string>
-      ?? undefined,
     );
     this.tapped = tapped;
 

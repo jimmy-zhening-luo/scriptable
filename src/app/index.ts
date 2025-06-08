@@ -20,7 +20,6 @@ export default abstract class Shortcut<
     ) = "string",
   ) {
     super(
-      config.runsWithSiri,
       (
         inputType === "array"
           ? args.plainTexts.length === 0
@@ -29,6 +28,7 @@ export default abstract class Shortcut<
           : args.plainTexts[0] as Undef<ShortcutInput & string>
       )
       ?? undefined,
+      config.runsWithSiri,
     );
   }
 
