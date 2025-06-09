@@ -89,5 +89,22 @@ export default abstract class Widget<
       .font = Widget.FONTS[font];
   }
 
+  protected addClock() {
+    this
+      .widget
+      .addDate(
+        new Date(
+          new Date()
+            .setHours(
+              0,
+              0,
+              0,
+              0,
+            ),
+        ),
+      )
+      .applyTimerStyle();
+  }
+
   protected abstract action(): void;
 }
