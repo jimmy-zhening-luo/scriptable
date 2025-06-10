@@ -115,7 +115,7 @@ export default abstract class Widget<
               ? "midnight"
               : "noon"
           ]
-          .toDate(),
+            .toDate(),
         )
         .applyTimerStyle();
       stack
