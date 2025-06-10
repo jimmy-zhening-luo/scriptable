@@ -19,7 +19,7 @@ export default class Time {
       throw new Error(
         "Failed to construct Time",
         { cause: e },
-      )
+      );
     }
   }
 
