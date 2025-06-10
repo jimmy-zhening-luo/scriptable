@@ -52,7 +52,12 @@ export default abstract class Widget<
         "footnote",
       );
 
-    this.widget.refreshAfterDate = new Date(Date.now() + 30000);
+    this.widget.refreshAfterDate = new Time()
+      .in(
+        {
+          seconds: 30,
+        },
+      );
     Script.setWidget(this.widget);
 
     if (this.tapped)

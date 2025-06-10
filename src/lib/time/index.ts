@@ -58,30 +58,75 @@ export default class Time {
   }
 
   public at(
-    hours = 0,
-    minutes = 0,
-    seconds = 0,
-    milliseconds = 0,
+    hour = 0,
+    minute = 0,
+    second = 0,
+    millisecond = 0,
   ) {
     try {
       return new Time(
         this
           .toDate()
           .setHours(
-            hours,
-            minutes,
-            seconds,
-            milliseconds,
+            hour,
+            minute,
+            second,
+            millisecond,
           ),
       );
     }
     catch (e) {
       throw new RangeError(
-        "Failed to get date at time: " + [
-          hours,
-          minutes,
-          seconds,
-          milliseconds,
+        "Failed to get Time at: " + [
+          hour,
+          minute,
+          second,
+          millisecond,
+        ]
+          .map(number => String(number))
+          .join(":"),
+        { cause: e },
+      );
+    }
+  }
+
+  public ago(
+    {
+      hours = 0,
+      minutes = 0,
+      seconds = 0,
+    } = {},
+  ) {
+    return this.in(
+      {
+        hours: -hours,
+        minutes: -minutes,
+        seconds: -seconds,
+      },
+    );
+  }
+
+  public in(
+    {
+      hours = 0,
+      minutes = 0,
+      seconds = 0,
+    } = {},
+  ) {
+    try {
+      return new Time(
+        this.epoch
+          + seconds * 1000
+          + minutes * 60000
+          + hours * 3600000,
+      );
+    }
+    catch (e) {
+      throw new RangeError(
+        "Failed to get Time in: " + [
+          hour,
+          minute,
+          second,
         ]
           .map(number => String(number))
           .join(":"),
