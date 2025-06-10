@@ -148,7 +148,7 @@ export default class Time {
       },
     )
       .formatToParts()
-      .find(part => part.type === "timeZoneName")
+      .find(part => part.type === "timeZoneName")!
       .value
       .slice(3) satisfies string as unknown as Hexad<char>;
 

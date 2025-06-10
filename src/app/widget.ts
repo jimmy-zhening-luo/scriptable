@@ -117,8 +117,6 @@ export default abstract class Widget<
       ? new Time
       : new Time()
         .wall(timezone),
-    label = timezone
-      ?? "",
     stack = this
       .widget
       .addStack();
