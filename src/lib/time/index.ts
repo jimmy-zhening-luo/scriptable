@@ -156,7 +156,8 @@ export default class Time {
       .formatToParts()
       .find(part => part.type === "timeZoneName")!
       .value
-      .slice(3) satisfies string as unknown as Hexad<char>,
+      .slice(3) satisfies string as unknown as Hexad<char>;
+
     return Number(sign + "1") * (Number(H1 + H2) + Number(m1 + m2) / 60)
       + toUTC;
   }
