@@ -130,7 +130,7 @@ export default abstract class Widget<
       .addStack();
 
     if (ampm) {
-      const am = now.epoch - wallZ.epoch >= 43_200_000;
+      const am = now.epoch - wallZ.epoch < 43_200_000;
 
       stack
         .addDate(
