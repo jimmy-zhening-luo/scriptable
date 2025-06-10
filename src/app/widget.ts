@@ -154,13 +154,13 @@ export default abstract class Widget<
       );
   }
 
-  protected static readonly Font(
+  protected static Font(
     size = Widget.FONT_WEIGHT,
   ) {
     return Font.systemFont(size);
   }
 
-  protected static readonly getFont(
+  protected static getFont(
     font: WidgetFont,
   ) {
     return typeof font === "string"
