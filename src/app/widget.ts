@@ -113,10 +113,10 @@ export default abstract class Widget<
       );
     } = {},
   ) {
-    const clock = timezone === null
-      ? new Time
-      : new Time()
-          .wall(timezone),
+    const now = new Time,
+    clock = timezone === null
+      ? now
+      : now.wall(timezone),
     stack = this
       .widget
       .addStack();

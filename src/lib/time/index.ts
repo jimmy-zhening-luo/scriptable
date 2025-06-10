@@ -49,7 +49,7 @@ export default class Time {
   }
 
   public toDate() {
-    return new Date(this.date);
+    return new Date(this.epoch);
   }
 
   public at(
