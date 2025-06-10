@@ -96,7 +96,7 @@ export default abstract class Widget<
       .light(10),
     clock: Widget.Fonts
       .Rounded
-      .regular(14),
+      .regular(16),
     label: Widget.Fonts
       .Rounded
       .bold(12),
@@ -107,12 +107,12 @@ export default abstract class Widget<
   constructor(
     title: Null<string> = null,
     private readonly showLastRefresh = true,
-    spacing = 2,
+    spacing = 5,
     {
-      top = 2,
-      right = 2,
-      bottom = 2,
-      left = 2,
+      top = 12,
+      right = 12,
+      bottom = 12,
+      left = 12,
     } = {},
   ) {
     function size(size: number) {
@@ -279,7 +279,7 @@ export default abstract class Widget<
           .toDate(),
       ),
     column1 = clock
-      .addSpacer(5),
+      .addSpacer(12),
     complication = clock
       .addText(
         ampm
@@ -289,7 +289,7 @@ export default abstract class Widget<
           : "",
       ),
     column2 = clock
-      .addSpacer(5),
+      .addSpacer(12),
     annotation = clock
       .addText(label);
 
