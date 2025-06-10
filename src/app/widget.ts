@@ -102,8 +102,8 @@ export default abstract class Widget<
       ampm = true,
       timezone = null,
     }: {
-      ampm: boolean;
-      timezone: (
+      ampm?: boolean;
+      timezone?: (
         | null
         | "America/Los_Angeles"
         | "America/New_York"
