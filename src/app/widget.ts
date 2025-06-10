@@ -9,7 +9,6 @@ export default abstract class Widget<
     Setting
   > {
   protected static readonly Time = Time;
-
   private static readonly FONTS = {
     title: Font.semiboldSystemFont(24),
     body: Font.systemFont(16),
