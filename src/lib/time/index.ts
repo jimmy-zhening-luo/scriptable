@@ -5,7 +5,7 @@ export default class Time {
     date: (
       | Date
       | number
-    ) = new Date(),
+    ) = new Date,
   ) {
     try {
       this.date = typeof date === "number"

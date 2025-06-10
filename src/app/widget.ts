@@ -1,4 +1,5 @@
 import IApp from "./proto";
+import Time from "../lib/time";
 
 export default abstract class Widget<
   Setting = never,
@@ -7,6 +8,8 @@ export default abstract class Widget<
     void,
     Setting
   > {
+  protected static readonly Time = Time;
+
   private static readonly FONTS = {
     title: Font.semiboldSystemFont(24),
     body: Font.systemFont(16),
@@ -93,17 +96,24 @@ export default abstract class Widget<
     this
       .widget
       .addDate(
-        new Date(
-          new Date()
-            .setHours(
-              0,
-              0,
-              0,
-              0,
-            ),
-        ),
+        new Time()
+          .midnight
+          .toDate(),
       )
       .applyTimerStyle();
+  }
+
+  protected date(
+    {
+      date = new Date,
+      format = "MMMM d, y h:mm:ss a",
+    } = {},
+  ) {
+    const formatter = new DateFormatter;
+
+    formatter.dateFormat = format;
+
+    return formatter.string(date);
   }
 
   protected abstract action(): void;

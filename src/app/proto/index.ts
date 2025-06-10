@@ -317,18 +317,6 @@ export default abstract class IApp<
     );
   }
 
-  protected date(
-    {
-      date = new Date,
-      format = "MMMM d, y h:mm:ss a",
-    } = {},
-  ) {
-    (this.dateFormatter ??= new DateFormatter)
-      .dateFormat = format;
-
-    return this.dateFormatter.string(date);
-  }
-
   private storage(
     {
       name = this.app,
@@ -352,5 +340,4 @@ export default abstract class IApp<
   protected abstract local(output: Output): void;
   private sideload?: Input;
   private config?: Setting;
-  private dateFormatter?: DateFormatter;
 }
