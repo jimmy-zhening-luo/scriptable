@@ -130,5 +130,37 @@ export default class Time {
     );
   }
 
+  public wall(
+    timeZone: string,
+  ) {
+    const [
+      sign,
+      H1,
+      H2,
+      ,
+      m1,
+      m2,
+    ] = new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone,
+        timeZoneName: "longOffset",
+      },
+    )
+      .formatToParts()
+      .find(part => part.type === "timeZoneName")
+      .value
+      .slice(3) satisfies string as unknown as Hexad<char>;
+
+    return this.in(
+      {
+        hours: Number(sign + "1") * (Number(H1 + H2) + Number(m1 + m2) / 60)
+          - this
+            .date
+            .getTimezoneOffset() / -60,
+      },
+    );
+  }
+
   private _am?: boolean;
 }

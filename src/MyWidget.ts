@@ -4,6 +4,11 @@ import Widget from "./app/widget";
 class MyWidget extends Widget {
   protected runtime() {
     this.addClock();
+    this.addClock(
+      {
+        timezone: "Asia/Shanghai",
+      },
+    );
     this.addText(
       this.input
       ?? "No input",

@@ -98,19 +98,37 @@ export default abstract class Widget<
   }
 
   protected addClock(
-    ampm = true,
+    {
+      ampm = true,
+      timezone = null,
+    }: {
+      ampm: boolean;
+      timezone: (
+        | null
+        | "America/Los_Angeles"
+        | "America/New_York"
+        | "Europe/Zurich"
+        | "Asia/Shanghai"
+        | "Asia/Seoul"
+      );
+    } = {},
   ) {
-    const now = new Time(),
+    const clock = timezone === null
+      ? new Time
+      : new Time()
+        .wall(timezone),
+    label = timezone
+      ?? "",
     stack = this
       .widget
       .addStack();
 
     if (ampm) {
-      const { am } = now;
+      const { am } = clock;
 
       stack
         .addDate(
-          now[
+          clock[
             am
               ? "midnight"
               : "noon"
@@ -130,7 +148,7 @@ export default abstract class Widget<
     else
       stack
         .addDate(
-          now
+          clock
             .midnight
             .toDate(),
         )
