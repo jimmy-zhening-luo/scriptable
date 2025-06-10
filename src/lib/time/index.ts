@@ -1,18 +1,19 @@
 export default class Time {
-  public readonly epoch;
+  private readonly date;
 
   constructor(
-    private readonly date = new Date(),
+    date: (
+      | Date
+      | number
+    ) = new Date(),
   ) {
     try {
-      this.epoch = date.getTime();
+      this.date = typeof date === "number"
+        ? new Date(date)
+        : date;
 
-      if (
-        Number.isNaN(
-          this.epoch,
-        )
-      )
-        throw new TypeError("Invalid date");
+      if (Number.isNaN(this.epoch))
+        throw new RangeError("Invalid Date object");
     }
     catch (e) {
       throw new Error(
@@ -20,6 +21,12 @@ export default class Time {
         { cause: e },
       )
     }
+  }
+
+  public get epoch() {
+    return this
+      .date
+      .getTime();
   }
 
   public get timezone() {
