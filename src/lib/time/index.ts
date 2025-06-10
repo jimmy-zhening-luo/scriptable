@@ -38,10 +38,12 @@ export default class Time {
   }
 
   public get am() {
-    return this._am ??= this.epoch
-      < this
-        .noon
-        .epoch;
+    return this._am ??= (
+      this.epoch
+        < this
+          .noon
+          .epoch
+    );
   }
 
   public get pm() {
@@ -95,9 +97,9 @@ export default class Time {
     try {
       return new Time(
         this.epoch
-        + hours * 3600000
-        + minutes * 60000
-        + seconds * 1000,
+        + hours * 3_600_000
+        + minutes * 60_000
+        + seconds * 1_000,
       );
     }
     catch (e) {
@@ -133,12 +135,12 @@ export default class Time {
   public offset(
     timeZone: Null<string> = null,
   ) {
-    const toUTC = this
+    const fromUTC = this
       .date
-      .getTimezoneOffset() / 60;
+      .getTimezoneOffset() / -60;
 
     if (timeZone === null)
-      return toUTC;
+      return fromUTC;
 
     const [
       sign,
@@ -158,8 +160,7 @@ export default class Time {
       .value
       .slice(3) satisfies string as unknown as Hexad<char>;
 
-    return Number(sign + "1") * (Number(H1 + H2) + Number(m1 + m2) / 60)
-      + toUTC;
+    return fromUTC - Number(sign + "1") * (Number(H1 + H2) + Number(m1 + m2) / 60);
   }
 
   private _am?: boolean;
