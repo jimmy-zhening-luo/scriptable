@@ -1,8 +1,14 @@
-// icon-color: teal; icon-glyph: hand-point-up;
+// icon-color: orange; icon-glyph: clock;
 import Widget from "./app/widget";
 
-class MyWidget extends Widget {
+class Clock extends Widget {
   protected runtime() {
+    this.clock();
+    this.clock(
+      {
+        timezone: "Asia/Shanghai",
+      },
+    );
     this.field(
       this.input
       ?? "No input",
@@ -14,4 +20,4 @@ class MyWidget extends Widget {
   }
 }
 
-new MyWidget().run();
+new Clock().run();
