@@ -38,7 +38,10 @@ export default class Time {
   }
 
   public get am() {
-    return this.epoch < this.noon.epoch;
+    return this._am ??= this.epoch
+      < this
+        .noon
+        .epoch;
   }
 
   public get pm() {
@@ -46,9 +49,7 @@ export default class Time {
   }
 
   public toDate() {
-    return new Date(
-      this.date,
-    );
+    return new Date(this.date);
   }
 
   public at(
@@ -84,22 +85,6 @@ export default class Time {
     }
   }
 
-  public ago(
-    {
-      hours = 0,
-      minutes = 0,
-      seconds = 0,
-    } = {},
-  ) {
-    return this.in(
-      {
-        hours: -hours,
-        minutes: -minutes,
-        seconds: -seconds,
-      },
-    );
-  }
-
   public in(
     {
       hours = 0,
@@ -128,4 +113,22 @@ export default class Time {
       );
     }
   }
+
+  public ago(
+    {
+      hours = 0,
+      minutes = 0,
+      seconds = 0,
+    } = {},
+  ) {
+    return this.in(
+      {
+        hours: -hours,
+        minutes: -minutes,
+        seconds: -seconds,
+      },
+    );
+  }
+
+  private _am?: boolean;
 }
