@@ -1,4 +1,4 @@
-// icon-color: deep-green; icon-glyph: leaf;
+// icon-color: deep-green; icon-glyph: play;
 import Shortcut from "./app";
 
 class _Sandbox extends Shortcut {
