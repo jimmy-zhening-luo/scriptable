@@ -166,7 +166,7 @@ export default class Time {
           .midnight
           .epoch === this.midnight.epoch
           ? difference
-          : (difference - 24),
+          : difference - 24,
       },
     );
   }
