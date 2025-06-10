@@ -84,7 +84,7 @@ export default class Time {
           milliseconds,
         ]
           .map(number => String(number))
-          .join(":");
+          .join(":"),
         { cause: e },
       );
     }
