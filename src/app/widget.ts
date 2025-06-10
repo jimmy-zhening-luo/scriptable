@@ -262,11 +262,7 @@ export default abstract class Widget<
     offset = timezone === null
       ? 0
       : now.offset(timezone),
-    wallZ = now
-      .midnight
-      .in(
-        { hours: offset },
-      ),
+    wallZ = now.at(offset),
     am = now.epoch - wallZ.epoch < 43_200_000,
     clock = this
       .widget
