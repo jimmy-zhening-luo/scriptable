@@ -149,14 +149,24 @@ export default class Time {
       .formatToParts()
       .find(part => part.type === "timeZoneName")!
       .value
-      .slice(3) satisfies string as unknown as Hexad<char>;
+      .slice(3) satisfies string as unknown as Hexad<char>,
+    difference = Number(sign + "1") * (Number(H1 + H2) + Number(m1 + m2) / 60)
+      - this
+        .date
+        .getTimezoneOffset() / -60;
 
     return this.in(
       {
-        hours: Number(sign + "1") * (Number(H1 + H2) + Number(m1 + m2) / 60)
-          - this
-            .date
-            .getTimezoneOffset() / -60,
+        hours: this
+          .in(
+            {
+              hours: difference,
+            },
+          )
+          .midnight
+          .epoch === this.midnight.epoch
+          ? difference
+          : (difference - 24),
       },
     );
   }
