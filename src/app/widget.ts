@@ -147,7 +147,7 @@ export default abstract class Widget<
       );
 
     if (title !== "")
-      this.addText(
+      this.field(
         title
         ?? this.app,
         "title",
@@ -170,7 +170,7 @@ export default abstract class Widget<
 
   protected output() {
     if (this.showLastRefresh)
-      this.addText(
+      this.field(
         "Latest: " + new Time()
           .print(
             "h:mm a",
@@ -178,14 +178,16 @@ export default abstract class Widget<
         Widget.Style.footnote,
       );
 
-    this.widget.refreshAfterDate = new Time()
+    this
+      .widget
+      .refreshAfterDate = new Time()
       .in(
-        {
-          seconds: 30,
-        },
+        { seconds: 30 },
       )
       .toDate();
-    Script.setWidget(this.widget);
+    Script.setWidget(
+      this.widget,
+    );
 
     if (this.tapped)
       try {
