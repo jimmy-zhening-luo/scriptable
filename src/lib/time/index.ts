@@ -53,6 +53,27 @@ export default class Time {
     return new Date(this.epoch);
   }
 
+  public print(
+    format = "MMMM d, y h:mm:ss a",
+  ) {
+    try {
+    (this.printer ??= new DateFormatter)
+      .dateFormat = format;
+
+    return this
+      .printer
+      .string(
+        this.date,
+      );
+    }
+    catch(e) {
+      throw new SyntaxError(
+        "Failed to print Time to format: " + format,
+        { cause: e },
+      )
+    }
+  }
+
   public at(
     hour = 0,
     minute = 0,
@@ -163,4 +184,5 @@ export default class Time {
   }
 
   private _am?: boolean;
+  private printer?: DateFormatter;
 }
