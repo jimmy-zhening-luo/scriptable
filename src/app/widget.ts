@@ -181,10 +181,10 @@ export default abstract class Widget<
     this
       .widget
       .refreshAfterDate = new Time()
-      .in(
-        { seconds: 30 },
-      )
-      .toDate();
+        .in(
+          { seconds: 30 },
+        )
+        .toDate();
     Script.setWidget(
       this.widget,
     );
@@ -276,8 +276,8 @@ export default abstract class Widget<
         (
           ampm && !am
             ? wallZ.in(
-              { hours: 12 },
-            )
+                { hours: 12 },
+              )
             : wallZ
         )
           .toDate(),
