@@ -83,7 +83,7 @@ export default class Time {
           second,
           millisecond,
         ]
-          .map(number => String(number))
+          .map(unit => String(unit))
           .join(":"),
         { cause: e },
       );
@@ -116,19 +116,19 @@ export default class Time {
     try {
       return new Time(
         this.epoch
-          + seconds * 1000
+          + hours * 3600000
           + minutes * 60000
-          + hours * 3600000,
+          + seconds * 1000,
       );
     }
     catch (e) {
       throw new RangeError(
         "Failed to get Time in: " + [
-          hour,
-          minute,
-          second,
+          hours,
+          minutes,
+          seconds,
         ]
-          .map(number => String(number))
+          .map(unit => String(unit))
           .join(":"),
         { cause: e },
       );

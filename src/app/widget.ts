@@ -57,7 +57,8 @@ export default abstract class Widget<
         {
           seconds: 30,
         },
-      );
+      )
+      .toDate();
     Script.setWidget(this.widget);
 
     if (this.tapped)
