@@ -136,8 +136,7 @@ export default class Time {
     const [
       sign,
       H1,
-      H2,
-      ,
+      H2,,
       m1,
       m2,
     ] = new Intl.DateTimeFormat(

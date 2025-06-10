@@ -116,7 +116,7 @@ export default abstract class Widget<
     const clock = timezone === null
       ? new Time
       : new Time()
-        .wall(timezone),
+          .wall(timezone),
     stack = this
       .widget
       .addStack();
