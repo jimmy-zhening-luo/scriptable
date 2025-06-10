@@ -29,12 +29,6 @@ export default class Time {
       .getTime();
   }
 
-  public get timezone() {
-    return this
-      .date
-      .getTimezoneOffset() / 60;
-  }
-
   public get midnight() {
     return this.at(0);
   }
