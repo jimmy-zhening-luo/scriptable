@@ -97,15 +97,44 @@ export default abstract class Widget<
       .font = Widget.FONTS[font];
   }
 
-  protected addClock() {
-    this
+  protected addClock(
+    ampm = true,
+  ) {
+    const now = new Time(),
+    stack = this
       .widget
-      .addDate(
-        new Time()
-          .midnight
+      .addStack();
+
+    if (ampm) {
+      const { am } = now;
+
+      stack
+        .addDate(
+          now[
+            am
+              ? "midnight"
+              : "noon"
+          ]
           .toDate(),
-      )
-      .applyTimerStyle();
+        )
+        .applyTimerStyle();
+      stack
+        .addSpacer(5);
+      stack
+        .addText(
+          am
+            ? "AM"
+            : "PM",
+        );
+    }
+    else
+      stack
+        .addDate(
+          now
+            .midnight
+            .toDate(),
+        )
+        .applyTimerStyle();
   }
 
   protected date(
