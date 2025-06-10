@@ -130,9 +130,16 @@ export default class Time {
     );
   }
 
-  public wall(
-    timeZone: string,
+  public offset(
+    timeZone: Null<string> = null,
   ) {
+    const toUTC = this
+      .date
+      .getTimezoneOffset() / 60;
+
+    if (timeZone === null)
+      return toUTC;
+
     const [
       sign,
       H1,
@@ -150,25 +157,8 @@ export default class Time {
       .find(part => part.type === "timeZoneName")!
       .value
       .slice(3) satisfies string as unknown as Hexad<char>,
-    difference = Number(sign + "1") * (Number(H1 + H2) + Number(m1 + m2) / 60)
-      - this
-        .date
-        .getTimezoneOffset() / -60;
-
-    return this.in(
-      {
-        hours: this
-          .in(
-            {
-              hours: difference,
-            },
-          )
-          .midnight
-          .epoch === this.midnight.epoch
-          ? difference
-          : difference - 24,
-      },
-    );
+    return Number(sign + "1") * (Number(H1 + H2) + Number(m1 + m2) / 60)
+      + toUTC;
   }
 
   private _am?: boolean;

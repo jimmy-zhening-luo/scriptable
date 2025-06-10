@@ -114,19 +114,40 @@ export default abstract class Widget<
     } = {},
   ) {
     const now = new Time,
-    clock = timezone === null
-      ? now
-      : now.wall(timezone),
+    { midnight } = now,
+    offset = timezone === null
+      ? 0
+      : now.offset(timezone),
+    adjustedOffset = now
+      .in(
+        {
+          hours: offset,
+        },
+      )
+      .midnight
+      .epoch === midnight.epoch
+      ? offset
+      : offset - 24,
+    wall = now.in(
+      {
+        hours: adjustedOffset,
+      },
+    ),
+    wallZero = midnight.in(
+      {
+        hours: adjustedOffset,
+      },
+    ),
     stack = this
       .widget
       .addStack();
 
     if (ampm) {
-      const { am } = clock;
+      const { am } = wall;
 
       stack
         .addDate(
-          clock[
+          wallZero[
             am
               ? "midnight"
               : "noon"
@@ -146,9 +167,7 @@ export default abstract class Widget<
     else
       stack
         .addDate(
-          clock
-            .midnight
-            .toDate(),
+          wallZero.toDate(),
         )
         .applyTimerStyle();
   }
