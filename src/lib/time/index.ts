@@ -76,7 +76,7 @@ export default class Time {
       );
     }
     catch (e) {
-      throw new SyntaxError(
+      throw new RangeError(
         "Failed to get date at time: " + [
           hours,
           minutes,
