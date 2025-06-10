@@ -116,9 +116,9 @@ export default class Time {
     try {
       return new Time(
         this.epoch
-          + hours * 3600000
-          + minutes * 60000
-          + seconds * 1000,
+        + hours * 3600000
+        + minutes * 60000
+        + seconds * 1000,
       );
     }
     catch (e) {
