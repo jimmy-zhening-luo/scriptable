@@ -38,12 +38,11 @@ export default class Time {
   }
 
   public get am() {
-    return this._am ??= (
-      this.epoch
+    return this._am
+      ??= this.epoch
         < this
           .noon
-          .epoch
-    );
+          .epoch;
   }
 
   public get pm() {
