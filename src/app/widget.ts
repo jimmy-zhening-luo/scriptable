@@ -115,7 +115,7 @@ export default abstract class Widget<
       left = 2,
     } = {},
   ) {
-    function size(size: number) z{
+    function size(size: number) {
       return Number.isInteger(size)
         && size > 0
         ? size
