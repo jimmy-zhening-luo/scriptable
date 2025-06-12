@@ -1,12 +1,12 @@
 export type { SearchOutput } from "./output";
 export type { SearchSetting } from "./setting";
 export default function (
-query: string,
-engines: Set<string>,
-alias: FieldTable,
-FALLBACKS: Arrayful<stringful, true>,
-OPERATORS: stringful,
-SELECTORS: Set<char>,
+  query: string,
+  engines: Set<string>,
+  alias: FieldTable,
+  FALLBACKS: Arrayful<stringful, true>,
+  OPERATORS: stringful,
+  SELECTORS: Set<char>,
 ) {
   class KnownSearchQueryToken {
     constructor(
