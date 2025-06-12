@@ -93,7 +93,7 @@ export default class SearchEngine<
             .prepend
             .split(" ")
             .filter((term): term is stringful => term !== ""),
-          ...terms,
+          ...parsedTerms,
         ] as const,
     termstring = terms.join(" ");
 
