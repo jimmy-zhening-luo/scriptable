@@ -77,6 +77,7 @@ class Search extends Shortcut<
               .reserved
               .tag,
           ),
+          entry.prepend,
           entry.force,
           entry.separator,
         )
@@ -85,6 +86,7 @@ class Search extends Shortcut<
           (entry.shortcut as Undef<string>)
           ?? "",
           entry.notify,
+          entry.prepend,
           entry.encode,
         );
 

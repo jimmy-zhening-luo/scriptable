@@ -19,6 +19,7 @@ export default class SearchEngine<
     notifyOrTag:
       | boolean
       | (T extends "browser" ? stringful : boolean) = false,
+    private readonly prepend = "",
     forceOrEncode = false,
     private readonly separator = "+",
   ) {
@@ -85,13 +86,22 @@ export default class SearchEngine<
 
     const engine = this.engine === ""
       ? key
-      : this.engine;
+      : this.engine,
+    prependedTerms = this.prepend === ""
+      ? terms
+      : [
+          ...this
+            .prepend
+            .split(" ")
+            .filter(term => term !== ""),
+          ...terms,
+        ] as const;
 
     return {
       engine,
       action: this.type === "browser"
         ? encode(
-            terms,
+            prependedTerms,
             this.separator,
             {
               urls: this.urls!,
@@ -101,7 +111,7 @@ export default class SearchEngine<
           )
         : this.encode
           ? encode(
-              terms,
+              prependedTerms,
               this.separator,
             )
           : query,

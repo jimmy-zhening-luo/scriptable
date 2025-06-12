@@ -12,15 +12,20 @@ export interface SearchSetting {
     | Unflat<string, true>
     | SearchEngineSetting<
       "url",
-      | "force",
-      never,
-      Field<never, "separator">,
+      (
+        | "force"
+      ),
+      (
+        | "separator"
+      ),
       Unflat
     >
     | SearchEngineSetting<
       "shortcut",
-      | "encode"
-      | "notify"
+      (
+        | "encode"
+        | "notify"
+      )
     >
   >>;
 }
