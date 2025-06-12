@@ -1,11 +1,11 @@
 // icon-color: blue; icon-glyph: search;
-import Shortcut from "./app";
-import SearchQuery from "./private/Search";
-import SearchEngine from "./private/Search/engine";
+import Shortcut from "./core";
+import SearchQuery from "./apps/Search";
+import SearchEngine from "./apps/Search/engine";
 import type {
   SearchOutput,
   SearchSetting,
-} from "./private/Search";
+} from "./apps/Search";
 
 class Search extends Shortcut<
   string,

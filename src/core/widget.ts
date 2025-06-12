@@ -1,4 +1,4 @@
-import IApp from "./proto";
+import IApp from "./app";
 import Time from "../lib/time";
 
 type WidgetFont = (

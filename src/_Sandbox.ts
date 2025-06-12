@@ -1,5 +1,5 @@
 // icon-color: deep-green; icon-glyph: play;
-import Shortcut from "./app";
+import Shortcut from "./core";
 
 class _Sandbox extends Shortcut {
   protected runtime() {
