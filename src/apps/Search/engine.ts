@@ -64,23 +64,30 @@ export default class SearchEngine<
         .map(term => encodeURIComponent(term))
         .join(separator);
 
-      return typeof browserOptions === "undefined"
-        ? action === ""
+      if (typeof browserOptions === "undefined")
+        return action === ""
           ? null
-          : action as stringful
-        : browserOptions
-            .urls
-            .map(
-              url => url.replace(
-                browserOptions.tag,
-                action,
-              ),
-            )
-            .map(
-              url => browserOptions.force
-                ? `data:text/html,%3Cmeta%20http-equiv=%22refresh%22%20content=%220;url=${url}%22%3E`
-                : url,
-            );
+          : action as stringful;
+      else {
+        const queryfulUrls = browserOptions
+          .urls
+          .map(
+            url => url.replace(
+              browserOptions.tag,
+              action,
+            ),
+          )
+          .map(
+            url => browserOptions.force
+              ? `data:text/html,%3Cmeta%20http-equiv=%22refresh%22%20content=%220;url=${url}%22%3E`
+              : url,
+          );
+
+        if (!queryfulUrls.every((url): url is stringful => url !== ""))
+          throw new URIError("Empty Search URL");
+
+        return queryfulUrls;
+      }
     }
 
     const engine = this.engine === ""
@@ -95,7 +102,9 @@ export default class SearchEngine<
             .filter((term): term is stringful => term !== ""),
           ...parsedTerms,
         ] as const,
-    termstring = terms.join(" ");
+    querystring = terms.length === 0
+      ? null
+      : terms.join(" ") as stringful;
 
     return {
       engine,
@@ -114,11 +123,11 @@ export default class SearchEngine<
               terms,
               this.separator,
             )
-          : termstring,
+          : querystring,
       notify: this.notify,
-      label: termstring.length !== 0
-        ? termstring
-        : (engine ?? this.type),
+      label: querystring
+        ?? engine
+        ?? this.type,
     };
   }
 }

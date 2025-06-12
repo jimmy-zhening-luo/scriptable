@@ -3,7 +3,7 @@ export interface SearchOutput {
   action: (
     | null
     | stringful
-    | readonly string[]
+    | readonly stringful[]
   );
   notify: Null<true>;
   label: string;
