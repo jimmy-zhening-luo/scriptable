@@ -93,7 +93,7 @@ export default class SearchEngine<
           ...this
             .prepend
             .split(" ")
-            .filter(term => term !== ""),
+            .filter((term): term is stringful => term !== ""),
           ...terms,
         ] as const;
 
