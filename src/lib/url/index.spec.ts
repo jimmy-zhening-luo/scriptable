@@ -1,7 +1,7 @@
 import "chai/register-should.js";
 import { expect } from "chai";
 import Url from ".";
-import { TEST_URL } from "./index.urls.spec";
+import { TEST_URL } from "./index.cases.spec";
 
 describe(
   "Object: URL",
