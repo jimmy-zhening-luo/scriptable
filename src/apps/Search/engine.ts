@@ -49,8 +49,7 @@ export default class SearchEngine<
 
   public resolve(
     key: stringful,
-    terms: readonly stringful[],
-    query: Null<stringful>,
+    parsedTerms: readonly stringful[],
   ) {
     function encode(
       terms: readonly stringful[],
@@ -87,21 +86,22 @@ export default class SearchEngine<
     const engine = this.engine === ""
       ? key
       : this.engine,
-    prependedTerms = this.prepend === ""
-      ? terms
+    terms = this.prepend === ""
+      ? parsedTerms
       : [
           ...this
             .prepend
             .split(" ")
             .filter((term): term is stringful => term !== ""),
           ...terms,
-        ] as const;
+        ] as const,
+    termstring = terms.join(" ");
 
     return {
       engine,
       action: this.type === "browser"
         ? encode(
-            prependedTerms,
+            terms,
             this.separator,
             {
               urls: this.urls!,
@@ -111,14 +111,14 @@ export default class SearchEngine<
           )
         : this.encode
           ? encode(
-              prependedTerms,
+              terms,
               this.separator,
             )
-          : query,
+          : termstring,
       notify: this.notify,
-      label: query
-        ?? engine
-        ?? this.type,
+      label: termstring.length !== 0
+        ? termstring
+        : (engine ?? this.type),
     };
   }
 }

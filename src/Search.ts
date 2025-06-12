@@ -17,7 +17,6 @@ class Search extends Shortcut<
     {
       key,
       terms,
-      query,
     } = SearchQuery(
       input === ""
         ? this.read()
@@ -91,15 +90,12 @@ class Search extends Shortcut<
         );
 
     this.write(
-      query === null
-        ? key
-        : [key, query].join(" "),
+      [key, ...terms].join(" "),
     );
 
     return engine.resolve(
       key,
       terms,
-      query,
     );
   }
 }
