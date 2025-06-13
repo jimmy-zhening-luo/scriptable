@@ -89,9 +89,10 @@ class Search extends Shortcut<
           entry.encode,
         );
 
-    this.write(
-      [key, ...terms].join(" "),
-    );
+    if (!entry.noSave)
+      this.write(
+        [key, ...terms].join(" "),
+      );
 
     return engine.resolve(
       key,

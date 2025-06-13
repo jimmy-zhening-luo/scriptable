@@ -5,7 +5,10 @@ export type SearchEngineSetting<
   Action = string,
 > = (
   & ReadonlyRecord<Engine, Action>
-  & Readonly<Field<"prepend">>
+  & {
+    readonly prepend: string;
+    readonly noSave: boolean;
+  }
   & (Literalful<Flags> extends never ? object : Readonly<Flag<Flags>>)
   & (Literalful<Fields> extends never ? object : Readonly<Field<never, Fields>>)
 );
