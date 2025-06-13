@@ -8,55 +8,55 @@ export default function (
   OPERATORS: stringful,
   SELECTORS: Set<char>,
 ) {
-  class KnownSearchQueryToken {
-    constructor(
-      public readonly token: stringful,
-    ) {}
-  }
-
-  class ReservedSearchQueryToken<
-    Token extends string,
-  > extends KnownSearchQueryToken {
-    constructor(
-      public readonly reserved: Literalful<Token>,
-    ) {
-      super(
-        reserved as unknown as stringful,
-      );
-    }
-  }
-
-  class SearchQuerySelection {
-    public readonly consumes;
-    public readonly selection;
-
-    constructor(
-      public readonly key: stringful,
-      selectors: {
-        readonly canonical: stringful;
-        readonly match: stringful;
-      },
-      selection: string,
-      next: string,
-      public readonly deselect: stringful,
-    ) {
-      this.consumes = selection === ""
-        && selectors.match === ".";
-      this.selection = [
-        selectors.canonical,
-        this.consumes
-          ? next
-          : selection,
-      ].join("") as stringful;
-    }
-  }
-
   function select(
     query: string,
     FALLBACKS: Arrayful<stringful, true>,
     OPERATORS: stringful,
     SELECTORS: Set<char>,
   ) {
+    class KnownSearchQueryToken {
+      constructor(
+        public readonly token: stringful,
+      ) {}
+    }
+  
+    class ReservedSearchQueryToken<
+      Token extends string,
+    > extends KnownSearchQueryToken {
+      constructor(
+        public readonly reserved: Literalful<Token>,
+      ) {
+        super(
+          reserved as unknown as stringful,
+        );
+      }
+    }
+  
+    class SearchQuerySelection {
+      public readonly consumes;
+      public readonly selection;
+  
+      constructor(
+        public readonly key: stringful,
+        selectors: {
+          readonly canonical: stringful;
+          readonly match: stringful;
+        },
+        selection: string,
+        next: string,
+        public readonly deselect: stringful,
+      ) {
+        this.consumes = selection === ""
+          && selectors.match === ".";
+        this.selection = [
+          selectors.canonical,
+          this.consumes
+            ? next
+            : selection,
+        ].join("") as stringful;
+      }
+    }
+
     function expand(
       query: string,
       FALLBACKS: Arrayful<stringful, true>,
