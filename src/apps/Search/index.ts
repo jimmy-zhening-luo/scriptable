@@ -19,7 +19,7 @@ export default function (
         public readonly token: stringful,
       ) {}
     }
-  
+
     class ReservedSearchQueryToken<
       Token extends string,
     > extends KnownSearchQueryToken {
@@ -31,11 +31,11 @@ export default function (
         );
       }
     }
-  
+
     class SearchQuerySelection {
       public readonly consumes;
       public readonly selection;
-  
+
       constructor(
         public readonly key: stringful,
         selectors: {
