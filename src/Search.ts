@@ -54,8 +54,9 @@ class Search extends Shortcut<
     entry = this
       .setting
       .engines[key]!,
-    engine = Array.isArray(entry)
-      || typeof entry === "string"
+    deindexable = typeof entry !== "string"
+      && !Array.isArray(entry),
+    engine = !deindexable
       ? new SearchEngine(
         "browser",
         entry,
@@ -89,7 +90,10 @@ class Search extends Shortcut<
           entry.encode,
         );
 
-    if (!entry.noSave)
+    if (
+      deindexable 
+      && !entry.noSave
+    )
       this.write(
         [key, ...terms].join(" "),
       );
