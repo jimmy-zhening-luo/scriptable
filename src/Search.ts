@@ -91,7 +91,7 @@ class Search extends Shortcut<
         );
 
     if (
-      !deindexable 
+      !deindexable
       || !entry.noSave
     )
       this.write(
