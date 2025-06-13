@@ -126,15 +126,17 @@ export default function (
       }
     }
 
-    const tokens = expand(
+    const [T0, ...Tn] = expand(
       query,
       FALLBACKS,
       OPERATORS,
-    ),
-    [T0, ...Tn] = tokens;
+    );
 
     if (typeof T0 !== "string")
-      return tokens;
+      return {
+        Headword: T0,
+        tail: Tn,
+      };
     else {
       const DOT = "." as char;
 
@@ -149,7 +151,10 @@ export default function (
       );
 
       if (typeof match === "undefined")
-        return tokens;
+        return {
+          Headword: T0,
+          tail: Tn,
+        };
       else {
         const canonical = selectors[0]!,
         [
@@ -160,12 +165,12 @@ export default function (
         selection = selectionShards
           .join(match);
 
-        return [
-          ...key === ""
-            ? [
-                new ReservedSearchQueryToken(
-                  "translate",
-                ),
+        return key === ""
+          ? {
+              Headword: new ReservedSearchQueryToken(
+                "translate",
+              ),
+              tail: [
                 [
                   canonical,
                   selection === ""
@@ -173,29 +178,30 @@ export default function (
                     ? Tn.shift() ?? ""
                     : selection,
                 ].join("") as stringful,
-              ] as const
-            : [
-                new SearchQuerySelection(
-                  key as stringful,
-                  {
-                    canonical,
-                    match,
-                  },
-                  selection,
-                  Tn.at(0) ?? "",
-                  T0,
-                ),
+                ...Tn,
               ] as const,
-          ...Tn,
-        ] as const;
+            } as const
+          : {
+              Headword: new SearchQuerySelection(
+                key as stringful,
+                {
+                  canonical,
+                  match,
+                },
+                selection,
+                Tn.at(0) ?? "",
+                T0,
+              ),
+              tail: Tn,
+            } as const;
       }
     }
   }
 
-  const [
-    Head,
-    ...terms
-  ] = select(
+  const {
+    Headword,
+    tail,
+  } = select(
     query,
     FALLBACKS,
     OPERATORS,
@@ -203,46 +209,46 @@ export default function (
   );
 
   if (
-    typeof Head !== "string"
-    && "token" in Head
+    typeof Headword !== "string"
+    && "token" in Headword
   )
     return {
-      key: Head.token,
-      terms,
+      key: Headword.token,
+      terms: tail,
     };
   else {
-    const head = (
-      typeof Head === "string"
-        ? Head
-        : Head.key
+    const headword = (
+      typeof Headword === "string"
+        ? Headword
+        : Headword.key
     )
       .toLocaleLowerCase() as stringful,
-    key = engines.has(head)
-      ? head
-      : head in alias
-        && alias[head] !== ""
-        ? alias[head] as stringful
+    key = engines.has(headword)
+      ? headword
+      : headword in alias
+        && alias[headword] !== ""
+        ? alias[headword] as stringful
         : null;
 
     return key === null
       ? {
           key: "chat" as stringful,
           terms: [
-            typeof Head === "string"
-              ? Head
-              : Head.deselect,
-            ...terms,
+            typeof Headword === "string"
+              ? Headword
+              : Headword.deselect,
+            ...tail,
           ],
         }
       : {
           key,
-          terms: typeof Head === "string"
-            ? terms
+          terms: typeof Headword === "string"
+            ? tail
             : [
-                Head.selection,
-                ...Head.consumes
-                  ? terms.slice(1)
-                  : terms,
+                Headword.selection,
+                ...Headword.consumes
+                  ? tail.slice(1)
+                  : tail,
               ],
         };
   }
