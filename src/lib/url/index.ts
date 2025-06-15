@@ -101,25 +101,19 @@ export default class Url {
       path: string;
       query?: string;
       fragment?: string;
-    },
-    scheme = [
-      "https",
-      "http",
-    ].includes(
-      parsedScheme.toLocaleLowerCase(),
-    )
-      ? "https" as stringfully<"URL:scheme">
-      : parsedScheme;
+    };
 
-    return host === "" && scheme === "https"
-      ? null
-      : {
-          scheme,
-          host: host.toLocaleLowerCase() as stringfully<"URL:host">,
-          path,
-          query,
-          fragment,
-        };
+    return {
+      scheme: ["https", "http"].includes(
+        parsedScheme.toLocaleLowerCase(),
+      )
+        ? "https" as stringfully<"URL:scheme">
+        : parsedScheme,
+      host: host.toLocaleLowerCase() as stringfully<"URL:host">,
+      path,
+      query,
+      fragment,
+    };
   }
 
   public param(param: string) {
