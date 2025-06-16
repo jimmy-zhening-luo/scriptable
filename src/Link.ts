@@ -11,14 +11,14 @@ class Link extends Shortcut<
 > {
   protected runtime() {
     const url = new Url(this.input),
-    host = ((host: Url["host"]) => (
-      headless => headless in this.setting
+    host = (host: Url["host"]) => (
+      host in this.setting
         .replace
         .host
         ? this.setting
           .replace
-          .host[headless]!
-        : headless
+          .host[host]!
+        : host
     )(
       url.host,
     );
