@@ -14,10 +14,10 @@ class Link extends Shortcut<
     host = url.host in this.setting
       .replace
       .host
-        ? this.setting
-          .replace
-          .host[url.host]!
-        : url.host;
+      ? this.setting
+        .replace
+        .host[url.host]!
+      : url.host;
 
     if (
       host in this.setting
