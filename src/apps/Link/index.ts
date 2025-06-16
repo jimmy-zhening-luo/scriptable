@@ -1,6 +1,5 @@
 import type Url from "../../lib/url";
 
-export type * from "./setting";
 export default function (host: Url["host"], path: string) {
   const processors = {
     "amazon.com": path => (([, pid = null]) => pid === null ? path : "/dp/" + pid.split("/")[0]!)(path.split("/dp/")),
