@@ -4,8 +4,8 @@ export default class Url {
   public readonly scheme;
   public readonly host;
   public readonly path;
-  private readonly _query;
-  private _fragment;
+  public readonly query;
+  public readonly fragment;
 
   constructor(string = "") {
     try {
@@ -23,29 +23,8 @@ export default class Url {
       this.scheme = parts.scheme;
       this.host = parts.host;
       this.path = parts.path;
-      this._query = new Map(
-        parts.query === "?"
-          ? []
-          : parts
-              .query
-              .slice(1)
-              .split("&")
-              .filter(param => param !== "")
-              .map(
-                param => param.split("=") as Arrayful,
-              )
-              .map(
-                ([name, ...value]) => [
-                  name,
-                  value.length === 0
-                    ? null
-                    : value.join("="),
-                ],
-              ),
-      );
-      this._fragment = parts.fragment === "#"
-        ? ""
-        : parts.fragment;
+      this.query = parts.query;
+      this.fragment = parts.fragment;
     }
     catch (e) {
       throw new URIError(
@@ -53,33 +32,6 @@ export default class Url {
         { cause: e },
       );
     }
-  }
-
-  public get schemeHost() {
-    return [
-      this.scheme,
-      this.host,
-    ].join("://") as stringful;
-  }
-
-  public get query() {
-    return this._query.size === 0
-      ? ""
-      : "?" + [
-        ...this
-          ._query
-          .entries(),
-      ]
-        .map(
-          ([name, value]) => value === null
-            ? name
-            : [name, value].join("="),
-        )
-        .join("&");
-  }
-
-  public get fragment() {
-    return this._fragment;
   }
 
   private static parse(string: string) {
@@ -109,55 +61,5 @@ export default class Url {
       query,
       fragment,
     };
-  }
-
-  public param(param: string) {
-    return this._query.get(param);
-  }
-
-  public deleteParams(
-    ...params: string[]
-  ) {
-    for (const param of new Set(params))
-      this._query.delete(param);
-  }
-
-  public deleteParamsExcept(
-    ...params: string[]
-  ) {
-    const exceptions = new Set(params);
-
-    if (
-      exceptions.size === 0
-      || exceptions.isDisjointFrom(
-        this._query,
-      )
-    )
-      this._query.clear();
-    else
-      this.deleteParams(
-        ...exceptions
-          .intersection(this._query)
-          .symmetricDifference(this._query),
-      );
-  }
-
-  public replaceParamName(
-    find: string,
-    replace: string,
-  ) {
-    const value = this.param(find);
-
-    this.deleteParams(find);
-
-    if (typeof value !== "undefined")
-      this._query.set(
-        replace,
-        value,
-      );
-  }
-
-  public dropFragment() {
-    this._fragment = "";
   }
 }
