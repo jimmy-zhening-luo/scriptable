@@ -3,18 +3,18 @@ export const TEST_URL = {
   CASE: {
     OK: {
       httpLocal: "https://localhost/",
-      local: "localhost/",
       scheme: "scriptable://",
-      schemeEmpty: "scriptable:///",
       schemeHost: "scriptable://host",
-      host: "example.com",
-      hostPath: "example.com/path",
+      schemePath: "scriptable:///",
     },
     ERROR: {
       empty: "",
       nonsense: "$%^&*",
       http: "https://",
-      httpEmpty: "https:///",
+      httpPath: "https:///",
+      noScheme: "example.com",
+      noSchemePath: "example.com/path",
+      noSchemeLocal: "localhost/",
     },
   },
 };

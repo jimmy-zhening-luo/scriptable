@@ -22,6 +22,39 @@ describe(
       },
     );
     describe(
+      "succeeds",
+      function () {
+        it(
+          "on nonsense",
+          function () {
+            expect(() => new Url(TEST_URL.CASE.OK.httpLocal))
+              .does.not.throw();
+          },
+        );
+        it(
+          "HTTP host-less",
+          function () {
+            expect(() => new Url(TEST_URL.CASE.OK.scheme))
+              .does.not.throw();
+          },
+        );
+        it(
+          "HTTP empty host",
+          function () {
+            expect(() => new Url(TEST_URL.CASE.OK.schemeHost))
+              .does.not.throw();
+          },
+        );
+        it(
+          "and empty string",
+          function () {
+            expect(() => new Url(TEST_URL.CASE.OK.schemePath))
+              .does.not.throw();
+          },
+        );
+      },
+    );
+    describe(
       "throws",
       function () {
         it(
@@ -32,16 +65,37 @@ describe(
           },
         );
         it(
-          "HTTP host-less",
+          "HTTP no host",
           function () {
             expect(() => new Url(TEST_URL.CASE.ERROR.http))
               .throws();
           },
         );
         it(
-          "HTTP empty host",
+          "HTTP path but no host",
           function () {
-            expect(() => new Url(TEST_URL.CASE.ERROR.httpEmpty))
+            expect(() => new Url(TEST_URL.CASE.ERROR.httpPath))
+              .throws();
+          },
+        );
+        it(
+          "no scheme",
+          function () {
+            expect(() => new Url(TEST_URL.CASE.ERROR.noScheme))
+              .throws();
+          },
+        );
+        it(
+          "no scheme with path",
+          function () {
+            expect(() => new Url(TEST_URL.CASE.ERROR.noSchemePath))
+              .throws();
+          },
+        );
+        it(
+          "no scheme localhost",
+          function () {
+            expect(() => new Url(TEST_URL.CASE.ERROR.noSchemeLocal))
               .throws();
           },
         );
@@ -50,16 +104,6 @@ describe(
           function () {
             expect(() => new Url(TEST_URL.CASE.ERROR.empty))
               .throws();
-          },
-        );
-        it(
-          "but not on valid URLs",
-          function () {
-            expect(() => new Url(TEST_URL.OK))
-              .does.not.throw();
-            expect(() => Object.values(TEST_URL.CASE.OK)
-              .map(u => new Url(u)))
-              .does.not.throw();
           },
         );
       },
