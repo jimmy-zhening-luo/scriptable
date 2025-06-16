@@ -12,8 +12,7 @@ export default class Url {
       if (string === "")
         throw new URIError("Empty string cannot be an URL");
 
-      const parts = Url.parse(string)
-        ?? Url.parse("https://" + string);
+      const parts = Url.parse(string);
 
       if (parts === null)
         throw new URIError(
@@ -104,12 +103,8 @@ export default class Url {
     };
 
     return {
-      scheme: ["https", "http"].includes(
-        parsedScheme.toLocaleLowerCase(),
-      )
-        ? "https" as stringfully<"URL:scheme">
-        : parsedScheme,
-      host: host.toLocaleLowerCase() as stringfully<"URL:host">,
+      scheme,
+      host,
       path,
       query,
       fragment,

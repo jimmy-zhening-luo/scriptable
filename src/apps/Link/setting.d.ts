@@ -1,19 +1,20 @@
-export interface LinkSetting<HostString extends stringful> {
+export interface LinkSetting {
   allow: {
     query: {
-      except: ReadonlyRecord<HostString, readonly string[]>;
+      except: ReadonlyRecord<
+        string,
+        readonly string[]
+      >;
     };
   };
   block: {
-    query: LinkSetting<HostString>["allow"]["query"];
-    fragment: ReadonlyRecord<HostString, true>;
+    query: LinkSetting["allow"]["query"];
+    fragment: ReadonlyRecord<string, true>;
   };
   replace: {
-    host: Readonly<
-      Endomap<HostString>
-    >;
+    host: Readonly<FieldTable>;
     query: ReadonlyRecord<
-      HostString,
+      string,
       Readonly<FieldTable>
     >;
   };

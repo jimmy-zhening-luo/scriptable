@@ -7,7 +7,7 @@ import type { LinkSetting } from "./apps/Link";
 class Link extends Shortcut<
   string,
   string,
-  LinkSetting<Url["host"]>
+  LinkSetting
 > {
   protected runtime() {
     const url = new Url(this.input),
