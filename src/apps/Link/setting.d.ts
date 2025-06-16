@@ -1,11 +1,9 @@
 export interface LinkSetting {
   allow: {
-    query: {
-      except: ReadonlyRecord<
-        string,
-        readonly string[]
-      >;
-    };
+    query: ReadonlyRecord<
+      string,
+      readonly string[]
+    >;
   };
   block: {
     query: LinkSetting["allow"]["query"];

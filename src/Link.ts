@@ -30,25 +30,21 @@ class Link extends Shortcut<
       host in this.setting
         .block
         .query
-        .except
     )
       url.deleteParamsExcept(
         ...this.setting
           .block
-          .query
-          .except[host]!,
+          .query[host]!,
       );
     else if (
       host in this.setting
         .allow
         .query
-        .except
     )
       url.deleteParams(
         ...this.setting
           .allow
-          .query
-          .except[host]!,
+          .query[host]!,
       );
 
     if (
