@@ -1,6 +1,5 @@
 export interface LinkSetting<HostString extends stringful> {
   allow: {
-    host: ReadonlyRecord<HostString, true>;
     query: {
       except: ReadonlyRecord<HostString, readonly string[]>;
     };
