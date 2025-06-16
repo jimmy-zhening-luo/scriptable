@@ -89,7 +89,7 @@ export default class Url {
       return null;
 
     const {
-      scheme: parsedScheme,
+      scheme,
       host,
       path,
       query = "?",
