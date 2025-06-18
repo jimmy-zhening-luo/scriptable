@@ -97,7 +97,7 @@ export default abstract class IApp<
 
       const [failure = "", ...causes] = (
         typeof trace[0] === "string"
-        && typeof trace[1] !== "undefined"
+        && trace[1] !== undefined
           ? [
               trace[1],
               trace[0],
@@ -153,8 +153,8 @@ export default abstract class IApp<
   public run(sideload?: Input) {
     try {
       if (
-        typeof sideload !== "undefined"
-        && typeof this.input === "undefined"
+        sideload !== undefined
+        && this.input === undefined
       )
         this._input = sideload;
 

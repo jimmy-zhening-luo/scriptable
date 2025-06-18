@@ -64,7 +64,7 @@ export default class SearchEngine<
         .map(term => encodeURIComponent(term))
         .join(separator);
 
-      if (typeof browserOptions === "undefined")
+      if (browserOptions === undefined)
         return action === ""
           ? null
           : action as stringful;

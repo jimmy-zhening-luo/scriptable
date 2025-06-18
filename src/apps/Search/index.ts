@@ -111,7 +111,7 @@ export default function (
         return t00 >= "0"
           && t00 <= "9"
           || OPERATORS.includes(t00)
-          || typeof t01 !== "undefined"
+          || t01 !== undefined
           && !Number.isNaN(
             Number(t00 + t01),
           )
@@ -150,7 +150,7 @@ export default function (
         ),
       );
 
-      if (typeof match === "undefined")
+      if (match === undefined)
         return {
           Headword: T0,
           tail: Tn,
