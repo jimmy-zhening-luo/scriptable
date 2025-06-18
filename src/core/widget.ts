@@ -201,7 +201,7 @@ export default abstract class Widget<
       }
   }
 
-  protected local() {
+  protected inApp() {
     this
       .widget
       .presentSmall()

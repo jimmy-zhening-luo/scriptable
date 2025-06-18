@@ -16,7 +16,7 @@ export default abstract class IApp<
   private readonly cache: Table<File<"Storage">> = {};
 
   constructor(
-    private readonly _input: Undef<Input>,
+    private _input: Undef<Input>,
     production: boolean,
   ) {
     try {
@@ -41,7 +41,6 @@ export default abstract class IApp<
   protected get input() {
     try {
       return this._input
-        ?? this.sideload
         ?? undefined;
     }
     catch (e) {
@@ -153,8 +152,11 @@ export default abstract class IApp<
 
   public run(sideload?: Input) {
     try {
-      if (typeof sideload !== "undefined")
-        this.sideload = sideload;
+      if (
+        typeof sideload !== "undefined"
+        && typeof this.input === "undefined"
+      )
+        this._input = sideload;
 
       const output = this.runtime();
 
@@ -171,12 +173,12 @@ export default abstract class IApp<
       if (this.context.local)
         try {
           console.log(output);
-          this.local(output);
+          this.inApp(output);
         }
-        catch (errorLocal) {
+        catch (errorAppRuntime) {
           throw new EvalError(
-            "Local failure",
-            { cause: errorLocal },
+            "In-app runtime failure",
+            { cause: errorAppRuntime },
           );
         }
 
@@ -334,7 +336,6 @@ export default abstract class IApp<
 
   protected abstract runtime(): Output;
   protected abstract output(output: Output): void;
-  protected abstract local(output: Output): void;
-  private sideload?: Input;
+  protected abstract inApp(output: Output): void;
   private config?: Setting;
 }

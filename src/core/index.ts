@@ -36,7 +36,7 @@ export default abstract class Shortcut<
     Script.setShortcutOutput(output);
   }
 
-  protected local(): void {
+  protected inApp(): void {
     return undefined;
   }
 }

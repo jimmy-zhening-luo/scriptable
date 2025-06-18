@@ -28,7 +28,7 @@ export default abstract class Share<
       Pasteboard.copy(output);
   }
 
-  protected local(): void {
+  protected inApp(): void {
     return undefined;
   }
 }
