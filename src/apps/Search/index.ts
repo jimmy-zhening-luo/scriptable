@@ -131,7 +131,7 @@ export default function (
               char => DIGIT.has(char),
             )
           ? [
-              new ReservedSearchQueryKey("math"),
+              new ReservedSearchQueryKey("calc"),
               T0,
               ...Tn,
             ] as const
