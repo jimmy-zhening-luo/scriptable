@@ -9,6 +9,8 @@ jobs:
     environment:
       name: int
       url: https://${{ vars.AZ_ACCOUNT }}.blob.core.windows.net/${{ vars.AZ_CONTAINER }}/${{ vars.PACKAGE }}.zip
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
