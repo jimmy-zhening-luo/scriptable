@@ -36,12 +36,6 @@ class Search extends Shortcut<
           .setting
           .fallbacks,
       ),
-      this.stringful(
-        this
-          .setting
-          .reserved
-          .operators,
-      ),
       new Set(
         this.chars(
           this

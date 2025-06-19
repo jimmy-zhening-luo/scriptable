@@ -5,13 +5,11 @@ export default function (
   engines: Set<string>,
   alias: FieldTable,
   FALLBACKS: Arrayful<stringful, true>,
-  OPERATORS: stringful,
   SELECTORS: Set<char>,
 ) {
   function select(
     query: string,
     FALLBACKS: Arrayful<stringful, true>,
-    OPERATORS: stringful,
     SELECTORS: Set<char>,
   ) {
     class KnownSearchQueryToken {
@@ -60,7 +58,6 @@ export default function (
     function expand(
       query: string,
       FALLBACKS: Arrayful<stringful, true>,
-      OPERATORS: stringful,
     ) {
       function tokenize(
         query: string,
@@ -106,15 +103,36 @@ export default function (
       if (typeof T0 !== "string")
         return tokens;
       else {
-        const [t00, t01] = T0;
+        const [t00] = T0,
+        OPERATORS = {
+          digit: "0123456789",
+          leading: {
+            sign: "+-",
+            unit: "$€£¥",
+            dot: ".",
+            paren: "(",
+          },
+          rest: {
+            unit: "%°¢",
+            operator: "/*^!",
+            comma: ",",
+            paren: ")",
+          },
+        } as const,
+        DIGIT = OPERATORS.digit,
+        LEADING = OPERATORS.leading.sign
+          + OPERATORS.leading.unit
+          + OPERATORS.leading.dot
+          + OPERATORS.leading.paren,
+        digits = new Set(DIGIT),
+        leading = new Set(LEADING);
 
-        return t00 >= "0"
-          && t00 <= "9"
-          || OPERATORS.includes(t00)
-          || t01 !== undefined
-          && !Number.isNaN(
-            Number(t00 + t01),
-          )
+        return digits.has(t00)
+          || leading.has(t00)
+          && [...T0]
+            .some(
+              char => digits.has(char),
+            )
           ? [
               new ReservedSearchQueryToken(
                 "math",
@@ -129,7 +147,6 @@ export default function (
     const [T0, ...Tn] = expand(
       query,
       FALLBACKS,
-      OPERATORS,
     );
 
     if (typeof T0 !== "string")
@@ -204,7 +221,6 @@ export default function (
   } = select(
     query,
     FALLBACKS,
-    OPERATORS,
     SELECTORS,
   );
 

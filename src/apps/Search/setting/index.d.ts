@@ -2,7 +2,6 @@ import type { SearchEngineSetting } from "./engine";
 
 export interface SearchSetting {
   readonly reserved: {
-    readonly operators: string;
     readonly selectors: readonly string[];
     readonly tag: string;
   };
