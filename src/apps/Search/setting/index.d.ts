@@ -5,7 +5,6 @@ export interface SearchSetting {
     readonly selectors: readonly string[];
     readonly tag: string;
   };
-  readonly fallbacks: readonly string[];
   readonly alias: Readonly<FieldTable>;
   readonly engines: Readonly<Table<
     | Unflat<string, true>

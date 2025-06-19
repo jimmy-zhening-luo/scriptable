@@ -31,11 +31,6 @@ class Search extends Shortcut<
       this
         .setting
         .alias,
-      this.stringfuls(
-        this
-          .setting
-          .fallbacks,
-      ),
       new Set(
         this.chars(
           this

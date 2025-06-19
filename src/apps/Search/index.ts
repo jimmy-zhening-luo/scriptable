@@ -4,33 +4,24 @@ export default function (
   query: string,
   engines: Set<string>,
   alias: FieldTable,
-  FALLBACKS: Arrayful<stringful, true>,
   SELECTORS: Set<char>,
 ) {
   function select(
     query: string,
-    FALLBACKS: Arrayful<stringful, true>,
     SELECTORS: Set<char>,
   ) {
-    class KnownSearchQueryToken {
+    class ReservedSearchQueryKey<
+      Key extends string,
+    > {
+      public readonly key;
       constructor(
-        public readonly token: stringful,
-      ) {}
-    }
-
-    class ReservedSearchQueryToken<
-      Token extends string,
-    > extends KnownSearchQueryToken {
-      constructor(
-        public readonly reserved: Literalful<Token>,
+        key: Literalful<Key>,
       ) {
-        super(
-          reserved as unknown as stringful,
-        );
+        this.key = key as unknown as stringful;
       }
     }
 
-    class SearchQuerySelection {
+    class SearchQuerySelectionCandidate {
       public readonly consumes;
       public readonly selection;
 
@@ -55,32 +46,24 @@ export default function (
       }
     }
 
-    function expand(
-      query: string,
-      FALLBACKS: Arrayful<stringful, true>,
-    ) {
-      function tokenize(
-        query: string,
-        FALLBACKS: Arrayful<stringful, true>,
-      ) {
-        function fallback(
-          query: string,
-          FALLBACKS: Arrayful<stringful, true>,
-        ) {
+    function expand(query: string) {
+      function tokenize(query: string) {
+        function fallback(query: string) {
           const frontage = query.length - query.trimStart().length;
 
-          return frontage > 0
-            ? [
-                new KnownSearchQueryToken(
-                  FALLBACKS.at(frontage - 1)
-                  ?? FALLBACKS.at(-1)!,
+          return frontage === 0
+            ? [] as const
+            : [
+                new ReservedSearchQueryKey(
+                  frontage === 1
+                    ? "chat"
+                    : "translate",
                 ),
-              ] as const
-            : [] as const;
+              ] as const;
         }
 
         const tokens = [
-          ...fallback(query, FALLBACKS),
+          ...fallback(query),
           ...query
             .split(" ")
             .filter((token): token is stringful => token !== ""),
@@ -94,60 +77,67 @@ export default function (
         return [T0, ...Tn as stringful[]] as const;
       }
 
-      const tokens = tokenize(
-        query,
-        FALLBACKS,
-      ),
+      const OPERATORS = {
+        digit: "0123456789",
+        leading: {
+          sign: "+-",
+          unit: "$€£¥",
+          dot: ".",
+          paren: "(",
+        },
+        rest: {
+          unit: "%°¢",
+          operator: "/*^!",
+          comma: ",",
+          paren: ")",
+        },
+      } as const,
+      DIGIT = new Set(OPERATORS.digit),
+      LEADING = OPERATORS.leading.sign
+        + OPERATORS.leading.unit
+        + OPERATORS.leading.dot
+        + OPERATORS.leading.paren,
+      tokens = tokenize(query),
       [T0, ...Tn] = tokens;
 
-      if (typeof T0 !== "string")
-        return tokens;
-      else {
-        const [t00] = T0,
-        OPERATORS = {
-          digit: "0123456789",
-          leading: {
-            sign: "+-",
-            unit: "$€£¥",
-            dot: ".",
-            paren: "(",
-          },
-          rest: {
-            unit: "%°¢",
-            operator: "/*^!",
-            comma: ",",
-            paren: ")",
-          },
-        } as const,
-        DIGIT = OPERATORS.digit,
-        LEADING = OPERATORS.leading.sign
-          + OPERATORS.leading.unit
-          + OPERATORS.leading.dot
-          + OPERATORS.leading.paren,
-        digits = new Set(DIGIT),
-        leading = new Set(LEADING);
+      if (typeof T0 !== "string") {
+        const [T1] = Tn;
 
-        return digits.has(t00)
-          || leading.has(t00)
-          && [...(T0 as unknown as string[])]
+        if (
+          T0.key === "chat"
+          && T1 !== undefined
+          && (
+            DIGIT.has(T1[0])
+            || new Set(LEADING).has(T0[0])
+            && [...(T1.slice(1) as unknown as string[])]
+              .some(
+                char => DIGIT.has(char),
+              )
+          )
+        )
+          return [
+            new ReservedSearchQueryKey("math"),
+            ...Tn,
+          ] as const;
+        else
+          return tokens;
+      }
+      else
+        return DIGIT.has(T0[0])
+          || new Set(LEADING).has(T0[0])
+          && [...(T0.slice(1) as unknown as string[])]
             .some(
-              char => digits.has(char),
+              char => DIGIT.has(char),
             )
           ? [
-              new ReservedSearchQueryToken(
-                "math",
-              ),
+              new ReservedSearchQueryKey("math"),
               T0,
               ...Tn,
             ] as const
           : tokens;
-      }
     }
 
-    const [T0, ...Tn] = expand(
-      query,
-      FALLBACKS,
-    );
+    const [T0, ...Tn] = expand(query);
 
     if (typeof T0 !== "string")
       return {
@@ -184,9 +174,7 @@ export default function (
 
         return key === ""
           ? {
-              Headword: new ReservedSearchQueryToken(
-                "translate",
-              ),
+              Headword: new ReservedSearchQueryKey("translate"),
               tail: [
                 [
                   canonical,
@@ -199,7 +187,7 @@ export default function (
               ] as const,
             } as const
           : {
-              Headword: new SearchQuerySelection(
+              Headword: new SearchQuerySelectionCandidate(
                 key as stringful,
                 {
                   canonical,
@@ -220,16 +208,15 @@ export default function (
     tail,
   } = select(
     query,
-    FALLBACKS,
     SELECTORS,
   );
 
   if (
     typeof Headword !== "string"
-    && "token" in Headword
+    && !("selection" in Headword)
   )
     return {
-      key: Headword.token,
+      key: Headword.key,
       terms: tail,
     };
   else {
