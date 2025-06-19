@@ -129,7 +129,7 @@ export default function (
 
         return digits.has(t00)
           || leading.has(t00)
-          && [...T0]
+          && [...(T0 as unknown as string[])]
             .some(
               char => digits.has(char),
             )
