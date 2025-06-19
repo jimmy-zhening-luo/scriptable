@@ -108,7 +108,7 @@ export default function (
           && T1 !== undefined
           && (
             DIGIT.has(T1[0])
-            || new Set(LEADING).has(T0[0])
+            || new Set(LEADING).has(T1[0])
             && [...(T1.slice(1) as unknown as string[])]
               .some(
                 char => DIGIT.has(char),
