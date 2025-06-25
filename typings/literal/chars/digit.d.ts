@@ -1,4 +1,4 @@
-declare type digit =
+declare type digit = (
   | "0"
   | "1"
   | "2"
@@ -9,4 +9,4 @@ declare type digit =
   | "7"
   | "8"
   | "9"
-;
+);

@@ -1,4 +1,4 @@
-declare type upper =
+declare type upper = (
   | "A"
   | "B"
   | "C"
@@ -25,4 +25,4 @@ declare type upper =
   | "X"
   | "Y"
   | "Z"
-;
+);

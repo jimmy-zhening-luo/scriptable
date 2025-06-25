@@ -1,4 +1,4 @@
-declare type hexchar =
+declare type hexchar = (
   | digit
   | "A"
   | "B"
@@ -6,4 +6,4 @@ declare type hexchar =
   | "D"
   | "E"
   | "F"
-;
+);

@@ -22,9 +22,22 @@ declare namespace Recordful {
       Recordful<"foo", never>,
       Recordful<"foo", object>,
       Recordful<keyof { a: 5 }>,
-      Recordful<keyof { a: 1; b?: 2 }>,
-      Recordful<keyof { a: 1; b: 2 }>,
-      Recordful<keyof ({ a: 1; b: 2 } | { a: 1; b: 2; c: 2 })>,
+      Recordful<keyof {
+        a: 1;
+        b?: 2;
+      }>,
+      Recordful<keyof {
+        a: 1;
+        b: 2;
+      }>,
+      Recordful<keyof ({
+        a: 1;
+        b: 2;
+      } | {
+        a: 1;
+        b: 2;
+        c: 2;
+      })>,
 
       // Error:
       // Recordful<"foo", object | never>,

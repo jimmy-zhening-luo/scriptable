@@ -1,4 +1,4 @@
-declare type quatral =
+declare type quatral = (
   | ternary
   | 3
-;
+);

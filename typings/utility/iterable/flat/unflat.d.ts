@@ -3,8 +3,7 @@ declare type Unflat<
   Mutable extends boolean = false,
 > = [Element] extends [never]
   ? never
-  :
-    | Element
+  : | Element
     | (Truth<Mutable> extends never
       ? readonly Element[]
       : Element[]);

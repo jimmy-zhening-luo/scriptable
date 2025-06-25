@@ -1,4 +1,4 @@
-declare type base32 =
+declare type base32 = (
   | hexadecimal
   | 16
   | 17
@@ -16,4 +16,4 @@ declare type base32 =
   | 29
   | 30
   | 31
-;
+);

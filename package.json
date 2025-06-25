@@ -1,5 +1,5 @@
 {
-  "$pkg": "2216.0.2",
+  "$pkg": "2217.0.0",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "@scoping/scriptable",
@@ -8,7 +8,7 @@
   "private": true,
   "engineStrict": true,
   "engines": {
-    "node": ">=22.16.0",
+    "node": ">=22.17.0",
     "npm": ">=11.4.2 <12"
   },
   "type": "module",
@@ -20,8 +20,8 @@
     "@types/scriptable-ios": "^1.7.8",
     "chai": "^5.2.0",
     "eslint": "~9.29.0",
-    "linted": "~28.45.4",
-    "mocha": "^11.7.0",
+    "linted": "~28.46.0",
+    "mocha": "^11.7.1",
     "npm-run-all": "^4.1.5",
     "rexreplace": "^7.1.13",
     "run-script-os": "^1.1.6",

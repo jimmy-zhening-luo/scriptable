@@ -286,8 +286,14 @@ export class FileManager {
 
   public allFileBookmarks() {
     const MOCK_FILE_BOOKMARKS = [
-      { name: "My Bookmark", source: "host" },
-      { name: "Siri Bookmark", source: "siri_shortcuts" },
+      {
+        name: "My Bookmark",
+        source: "host",
+      },
+      {
+        name: "Siri Bookmark",
+        source: "siri_shortcuts",
+      },
     ];
 
     console.log(`Mocha: File Instance: Read all file bookmarks: ${JSON.stringify(MOCK_FILE_BOOKMARKS)}`);

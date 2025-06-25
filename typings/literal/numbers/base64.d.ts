@@ -1,4 +1,4 @@
-declare type base64 =
+declare type base64 = (
   | base32
   | 32
   | 33
@@ -32,4 +32,4 @@ declare type base64 =
   | 61
   | 62
   | 63
-;
+);

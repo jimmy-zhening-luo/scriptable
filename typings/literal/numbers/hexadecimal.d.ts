@@ -1,4 +1,4 @@
-declare type hexadecimal =
+declare type hexadecimal = (
   | decimal
   | 9
   | 10
@@ -7,4 +7,4 @@ declare type hexadecimal =
   | 13
   | 14
   | 15
-;
+);
