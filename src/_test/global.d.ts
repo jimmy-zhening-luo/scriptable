@@ -21,4 +21,4 @@ declare class MockConcreteShortcut {
   protected runtime(): string;
 }
 
-declare const mockFile: {};
+declare const mockFile: object;
