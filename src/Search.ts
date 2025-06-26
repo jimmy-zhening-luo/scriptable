@@ -1,7 +1,7 @@
 // icon-color: blue; icon-glyph: search;
 import Shortcut from "./core";
-import SearchQuery from "./apps/Search";
-import SearchEngine from "./apps/Search/engine";
+import parse from "./apps/Search";
+import resolve from "./apps/Search/resolve";
 import type {
   SearchOutput,
   SearchSetting,
@@ -17,7 +17,7 @@ class Search extends Shortcut<
     {
       key,
       terms,
-    } = SearchQuery(
+    } = parse(
       input === ""
         ? this.read()
         : input,
@@ -43,54 +43,57 @@ class Search extends Shortcut<
     entry = this
       .setting
       .engines[key]!,
-    deindexable = typeof entry !== "string"
-      && !Array.isArray(entry),
-    engine = !deindexable
-      ? new SearchEngine(
-        "browser",
-        entry,
-        this.stringful(
-          this
-            .setting
-            .reserved
-            .tag,
-        ),
-      )
-      : "url" in entry
-        ? new SearchEngine(
+    objectEntry = typeof entry !== "string"
+      && !Array.isArray(entry);
+
+    if (
+      !objectEntry
+      || !entry.noSave
+    )
+      this.write(
+        [key, ...terms]
+          .join(" "),
+      );
+
+    return !objectEntry
+      ? resolve(
+          key,
+          terms,
           "browser",
-          entry.url,
+          entry,
           this.stringful(
             this
               .setting
               .reserved
               .tag,
           ),
-          entry.prepend,
-          entry.force,
-          entry.separator,
         )
-        : new SearchEngine(
-          "shortcut",
-          (entry.shortcut as Undef<string>)
-          ?? "",
-          entry.notify,
-          entry.prepend,
-          entry.encode,
-        );
-
-    if (
-      !deindexable
-      || !entry.noSave
-    )
-      this.write(
-        [key, ...terms].join(" "),
-      );
-
-    return engine.resolve(
-      key,
-      terms,
-    );
+      : "url" in entry
+        ? resolve(
+            key,
+            terms,
+            "browser",
+            entry.url,
+            this.stringful(
+              this
+                .setting
+                .reserved
+                .tag,
+            ),
+            entry.prepend,
+            entry.force,
+            entry.separator,
+          )
+        : resolve(
+            key,
+            terms,
+            "shortcut",
+            (entry.shortcut as Undef<string>)
+            ?? "",
+            entry.notify,
+            entry.prepend,
+            entry.encode,
+          );
   }
 }
 
