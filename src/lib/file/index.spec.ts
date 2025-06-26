@@ -16,20 +16,5 @@ describe(
         );
       },
     );
-    describe(
-      "instance",
-      function () {
-        it(
-          "is mutable",
-          function () {
-            mockFile
-              .mutable
-              .should.be
-              .a("boolean")
-              .true;
-          },
-        );
-      },
-    );
   },
 );

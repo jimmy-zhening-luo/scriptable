@@ -1,14 +1,14 @@
 export default class File<Type extends string> {
   private static readonly manager = FileManager.iCloud();
-  protected readonly path;
-  protected readonly parent;
-  protected readonly exists;
+  private readonly path;
+  private readonly parent;
+  private readonly exists;
 
   constructor(
     type: Literalful<Type>,
     name: string,
     subfolder = "",
-    public readonly mutable = false,
+    private readonly mutable = false,
   ) {
     try {
       const root = File.manager.bookmarkExists(type)
@@ -31,13 +31,15 @@ export default class File<Type extends string> {
       if (subpath.length === 0)
         throw new SyntaxError("No file subpath");
 
-      const path = [root, ...subpath];
-
-      this.path = path
-        .join("/");
-      this.parent = path
-        .slice(0, -1)
-        .join("/");
+      this.path = [
+        root,
+        ...subpath,
+      ].join("/");
+      this.parent = [
+        root,
+        ...subpath
+          .slice(0, -1),
+      ].join("/");
       this.exists = File.manager.fileExists(this.path);
     }
     catch (e) {
@@ -65,7 +67,7 @@ export default class File<Type extends string> {
       return File.manager.readString(this.path);
     }
     catch (e) {
-      throw this.error(e, "read");
+      throw this.error("read", e);
     }
   }
 
@@ -74,8 +76,8 @@ export default class File<Type extends string> {
 
     if (content === "")
       throw this.error(
-        new TypeError("Empty file"),
         "readful",
+        new TypeError("Empty file"),
       );
 
     return content as stringful;
@@ -133,7 +135,7 @@ export default class File<Type extends string> {
       );
     }
     catch (e) {
-      throw this.error(e, "write");
+      throw this.error("write", e);
     }
   }
 
@@ -146,17 +148,20 @@ export default class File<Type extends string> {
         File.manager.remove(this.path);
     }
     catch (e) {
-      throw this.error(e, "delete");
+      throw this.error("delete", e);
     }
   }
 
-  private error(e: unknown, verb: string) {
+  private error(
+    verb: string,
+    error: unknown,
+  ) {
     return new Error(
       `Failed to ${verb} file`,
       {
         cause: new Error(
           this.path,
-          { cause: e },
+          { cause: error },
         ),
       },
     );

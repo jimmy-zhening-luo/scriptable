@@ -21,6 +21,4 @@ declare class MockConcreteShortcut {
   protected runtime(): string;
 }
 
-declare const mockFile: {
-  readonly mutable: boolean;
-};
+declare const mockFile: {};
