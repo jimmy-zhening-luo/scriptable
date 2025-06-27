@@ -5,7 +5,7 @@ export default function<
   ),
 >(
   key: stringful,
-  parsedTerms: readonly stringful[],
+  terms: readonly stringful[],
   type: EngineType,
   engineOrUrls: EngineType extends "browser"
     ? Unflat
@@ -79,23 +79,23 @@ export default function<
           || null,
         encode: forceOrEncode,
       },
-  terms = prepend === ""
-    ? parsedTerms
+  finalTerms = prepend === ""
+    ? terms
     : [
         ...prepend
           .split(" ")
           .filter((term): term is stringful => term !== ""),
-        ...parsedTerms,
+        ...terms,
       ] as const,
-  querystring = terms.length === 0
+  querystring = finalTerms.length === 0
     ? null
-    : terms.join(" ") as stringful;
+    : finalTerms.join(" ") as stringful;
 
   return {
     engine,
     action: type === "browser"
       ? transformQuery(
-          terms,
+          finalTerms,
           separator,
           {
             urls: urls!,
@@ -105,7 +105,7 @@ export default function<
         )
       : encode
         ? transformQuery(
-            terms,
+            finalTerms,
             separator,
           )
         : querystring,
