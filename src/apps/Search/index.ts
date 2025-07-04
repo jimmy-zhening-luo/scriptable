@@ -89,7 +89,7 @@ export default function (
         rest: {
           unit: "%°¢",
           operator: "/*^!",
-          comma: ",",
+          separators: ",:",
           paren: ")",
         },
       } as const,
@@ -104,6 +104,7 @@ export default function (
       if (typeof T0 !== "string") {
         const [T1] = Tn;
 
+        // BUG: Fails on -.5, -(.5), -((.5)), ...
         if (
           T0.key === "chat"
           && T1 !== undefined
