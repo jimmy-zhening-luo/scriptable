@@ -115,13 +115,6 @@ export default abstract class Widget<
       left = 12,
     } = {},
   ) {
-    function size(size: number) {
-      return Number.isInteger(size)
-        && size > 0
-        ? size
-        : 0;
-    }
-
     const tapped = config.runsInApp
       && typeof args.widgetParameter === "string";
 
@@ -136,14 +129,14 @@ export default abstract class Widget<
       .tapped = tapped;
     this
       .widget
-      .spacing = size(spacing);
+      .spacing = spacing;
     this
       .widget
       .setPadding(
-        size(top),
-        size(left),
-        size(bottom),
-        size(right),
+        top,
+        left,
+        bottom,
+        right,
       );
 
     if (title !== "")
