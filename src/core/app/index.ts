@@ -10,7 +10,7 @@ export default abstract class IApp<
     never,
     (
       | "production"
-      | "local"
+      | "test"
     )
   >;
   private readonly cache: Table<File<"Storage">> = {};
@@ -21,12 +21,14 @@ export default abstract class IApp<
   ) {
     try {
       this.app = this.stringful(
-        this.constructor.name,
+        this
+          .constructor
+          .name,
         "Anonymous app instance",
       );
       this.context = {
         production,
-        local: !production
+        test: !production
           && config.runsInApp,
       };
     }
@@ -176,10 +178,12 @@ export default abstract class IApp<
         );
       }
 
-      if (this.context.local)
+      if (this.context.test)
         try {
           console.log(output);
-          this.inApp(output);
+
+          if (this.test !== undefined)
+            this.test(output);
         }
         catch (errorAppRuntime) {
           throw new EvalError(
@@ -202,7 +206,9 @@ export default abstract class IApp<
     ...filename: Parameters<IApp["storage"]>
   ) {
     return this
-      .storage(...filename)
+      .storage(
+        ...filename,
+      )
       .read();
   }
 
@@ -210,7 +216,9 @@ export default abstract class IApp<
     ...filename: Parameters<IApp["storage"]>
   ) {
     return this
-      .storage(...filename)
+      .storage(
+        ...filename,
+      )
       .readful();
   }
 
@@ -225,7 +233,9 @@ export default abstract class IApp<
     ]
   ) {
     this
-      .storage(...filename)
+      .storage(
+        ...filename,
+      )
       .write(
         data,
         overwrite,
@@ -236,7 +246,9 @@ export default abstract class IApp<
     ...filename: Parameters<IApp["storage"]>
   ) {
     this
-      .storage(...filename)
+      .storage(
+        ...filename,
+      )
       .delete();
   }
 
@@ -263,9 +275,10 @@ export default abstract class IApp<
         { cause },
       );
     else if (
-      !strings.every(
-        (string): string is stringful => string !== "",
-      )
+      !strings
+        .every(
+          (string): string is stringful => string !== "",
+        )
     )
       throw new TypeError(
         "Unstringful array",
@@ -304,9 +317,10 @@ export default abstract class IApp<
         { cause },
       );
     else if (
-      !strings.every(
-        (string): string is char => string.length === 1,
-      )
+      !strings
+        .every(
+          (string): string is char => string.length === 1,
+        )
     )
       throw new TypeError(
         "Uncharful array",
@@ -330,7 +344,11 @@ export default abstract class IApp<
   ) {
     const file = extension === ""
       ? name
-      : [name, extension].join(".");
+      : [
+          name,
+          extension,
+        ]
+          .join(".");
 
     return this.cache[file] ??= new File(
       "Storage",
@@ -342,6 +360,6 @@ export default abstract class IApp<
 
   protected abstract runtime(): Output;
   protected abstract output(output: Output): void;
-  protected abstract inApp(output: Output): void;
+  protected test?: (output: Output) => void;
   private config?: Setting;
 }

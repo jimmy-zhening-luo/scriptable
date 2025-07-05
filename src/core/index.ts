@@ -35,8 +35,4 @@ export default abstract class Shortcut<
   protected output(output: ReturnType<Shortcut<ShortcutInput, ShortcutOutput>["runtime"]>) {
     Script.setShortcutOutput(output);
   }
-
-  protected inApp(): void {
-    return undefined;
-  }
 }

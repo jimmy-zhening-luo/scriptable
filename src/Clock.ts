@@ -14,10 +14,6 @@ class Clock extends Widget {
       ?? "No input",
     );
   }
-
-  protected action(): void {
-    return undefined;
-  }
 }
 
 new Clock().run();

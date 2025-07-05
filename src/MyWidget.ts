@@ -8,10 +8,6 @@ class MyWidget extends Widget {
       ?? "No input",
     );
   }
-
-  protected action(): void {
-    return undefined;
-  }
 }
 
 new MyWidget().run();

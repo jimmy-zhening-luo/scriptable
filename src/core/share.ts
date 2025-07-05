@@ -23,12 +23,13 @@ export default abstract class Share<
     );
   }
 
-  protected output(output: ReturnType<Share<ShareOutput>["runtime"]>) {
+  protected output(
+    output: ReturnType<Share<ShareOutput>["runtime"]>,
+  ) {
     if (typeof output === "string")
-      Pasteboard.copy(output);
-  }
-
-  protected inApp(): void {
-    return undefined;
+      Pasteboard
+        .copy(
+          output,
+        );
   }
 }

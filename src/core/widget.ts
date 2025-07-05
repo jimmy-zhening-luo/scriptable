@@ -1,10 +1,6 @@
 import IApp from "./app";
 import Time from "../lib/time";
-
-type WidgetFont = (
-  | keyof typeof Widget["Style"]
-  | Font
-);
+import Style from "../lib/ui/style";
 
 export default abstract class Widget<
   Setting = never,
@@ -13,120 +9,37 @@ export default abstract class Widget<
     void,
     Setting
   > {
-  protected static readonly Time = Time;
-  protected static readonly FONT_WEIGHT = 12;
-  protected static readonly Fonts = {
-    italic(size = Widget.FONT_WEIGHT) {
-      return Font.italicSystemFont(size);
-    },
-    bold(size = Widget.FONT_WEIGHT) {
-      return Font.boldSystemFont(size);
-    },
-    semibold(size = Widget.FONT_WEIGHT) {
-      return Font.semiboldSystemFont(size);
-    },
-    medium(size = Widget.FONT_WEIGHT) {
-      return Font.mediumSystemFont(size);
-    },
-    light(size = Widget.FONT_WEIGHT) {
-      return Font.lightSystemFont(size);
-    },
-    thin(size = Widget.FONT_WEIGHT) {
-      return Font.thinSystemFont(size);
-    },
-    Rounded: {
-      regular(size = Widget.FONT_WEIGHT) {
-        return Font.regularRoundedSystemFont(size);
-      },
-      bold(size = Widget.FONT_WEIGHT) {
-        return Font.boldRoundedSystemFont(size);
-      },
-      semibold(size = Widget.FONT_WEIGHT) {
-        return Font.semiboldRoundedSystemFont(size);
-      },
-      medium(size = Widget.FONT_WEIGHT) {
-        return Font.mediumRoundedSystemFont(size);
-      },
-      light(size = Widget.FONT_WEIGHT) {
-        return Font.lightRoundedSystemFont(size);
-      },
-      thin(size = Widget.FONT_WEIGHT) {
-        return Font.thinRoundedSystemFont(size);
-      },
-    },
-    Mono: {
-      regular(size = Widget.FONT_WEIGHT) {
-        return Font.regularMonospacedSystemFont(size);
-      },
-      bold(size = Widget.FONT_WEIGHT) {
-        return Font.boldMonospacedSystemFont(size);
-      },
-      semibold(size = Widget.FONT_WEIGHT) {
-        return Font.semiboldMonospacedSystemFont(size);
-      },
-      medium(size = Widget.FONT_WEIGHT) {
-        return Font.mediumMonospacedSystemFont(size);
-      },
-      light(size = Widget.FONT_WEIGHT) {
-        return Font.lightMonospacedSystemFont(size);
-      },
-      thin(size = Widget.FONT_WEIGHT) {
-        return Font.thinMonospacedSystemFont(size);
-      },
-    },
-  } as const;
-  protected static readonly Style = {
-    title: Widget.Fonts
-      .semibold(24),
-    heading: Widget.Fonts
-      .semibold(20),
-    subheading: Widget.Fonts
-      .semibold(16),
-    body: Widget.Font(),
-    italic: Widget.Fonts
-      .italic(),
-    bold: Widget.Fonts
-      .bold(),
-    semibold: Widget.Fonts
-      .semibold(),
-    mono: Widget.Fonts
-      .Mono
-      .regular(),
-    footnote: Widget.Fonts
-      .light(10),
-    clock: Widget.Fonts
-      .Rounded
-      .regular(16),
-    label: Widget.Fonts
-      .Rounded
-      .bold(12),
-  } as const;
   protected readonly widget = new ListWidget;
-  private readonly tapped: boolean;
+  protected readonly style;
+  private readonly tap: boolean;
 
   constructor(
     title: Null<string> = null,
     private readonly showLastRefresh = true,
+    private readonly weight = 12,
     spacing = 5,
     {
       top = 12,
-      right = 12,
+      trailing = 12,
       bottom = 12,
-      left = 12,
+      leading = 12,
     } = {},
   ) {
-    const tapped = config.runsInApp
+    const tap = config.runsInApp
       && typeof args.widgetParameter === "string";
 
     super(
       args.widgetParameter as Null<string>
       ?? undefined,
       config.runsInWidget
-      || config.runsInAccessoryWidget
-      || tapped,
+      || tap,
     );
     this
-      .tapped = tapped;
+      .tap = tap;
+    this
+      .style = new Style(
+        this.weight,
+      );
     this
       .widget
       .spacing = spacing;
@@ -134,42 +47,34 @@ export default abstract class Widget<
       .widget
       .setPadding(
         top,
-        left,
+        leading,
         bottom,
-        right,
+        trailing,
       );
 
     if (title !== "")
-      this.field(
-        title
-        ?? this.app,
-        "title",
-      );
-  }
-
-  protected static Font(
-    size = Widget.FONT_WEIGHT,
-  ) {
-    return Font.systemFont(size);
-  }
-
-  protected static getFont(
-    font: WidgetFont,
-  ) {
-    return typeof font === "string"
-      ? Widget.Style[font]
-      : font;
+      this
+        .field(
+          title
+          ?? this.app,
+          this
+            .style
+            .title(),
+        );
   }
 
   protected output() {
     if (this.showLastRefresh)
-      this.field(
-        "Latest: " + new Time()
-          .print(
-            "h:mm a",
-          ),
-        Widget.Style.footnote,
-      );
+      this
+        .field(
+          "Latest: " + new Time()
+            .print(
+              "h:mm a",
+            ),
+          this
+            .style
+            .footnote(),
+        );
 
     this
       .widget
@@ -179,22 +84,26 @@ export default abstract class Widget<
         )
         .toDate();
     Script.setWidget(
-      this.widget,
+      this
+        .widget,
     );
 
-    if (this.tapped)
+    if (
+      this.tap
+      && this.onTap !== undefined
+    )
       try {
-        this.action();
+        this.onTap();
       }
-      catch (errorWidgetAction) {
+      catch (errorWidgetTap) {
         throw new Error(
           "UI",
-          { cause: errorWidgetAction },
+          { cause: errorWidgetTap },
         );
       }
   }
 
-  protected inApp() {
+  protected override test = () => {
     this
       .widget
       .presentSmall()
@@ -206,7 +115,7 @@ export default abstract class Widget<
           );
         },
       );
-  }
+  };
 
   protected line(
     height: number,
@@ -218,13 +127,13 @@ export default abstract class Widget<
 
   protected field(
     text: string,
-    font: WidgetFont = "body",
+    font: Font = this.style.body(),
   ) {
     const field = this
       .widget
       .addText(text);
 
-    field.font = Widget.getFont(font);
+    field.font = font;
 
     return field;
   }
@@ -232,14 +141,29 @@ export default abstract class Widget<
   protected clock(
     {
       ampm = true,
-      fontTime = Widget.Style.clock,
-      fontLabel = Widget.Style.label,
+      fontTime = this
+        .style
+        .fonts
+        .rounded
+        .regular(
+          Math
+            .round(
+              this.weight * 1.5,
+            ),
+        ),
+      fontLabel = this
+        .style
+        .fonts
+        .rounded
+        .bold(
+          this.weight,
+        ),
       label = "",
       timezone = null,
     }: {
       ampm?: boolean;
-      fontTime?: WidgetFont;
-      fontLabel?: WidgetFont;
+      fontTime?: Font;
+      fontLabel?: Font;
       label?: string;
       timezone?: (
         | null
@@ -289,11 +213,11 @@ export default abstract class Widget<
     dial
       .applyTimerStyle();
     dial
-      .font = Widget.getFont(fontTime);
+      .font = fontTime;
     complication
-      .font = Widget.getFont(fontTime);
+      .font = fontTime;
     annotation
-      .font = Widget.getFont(fontLabel);
+      .font = fontLabel;
 
     return {
       clock,
@@ -307,5 +231,5 @@ export default abstract class Widget<
     } as const;
   }
 
-  protected abstract action(): void;
+  protected onTap?: () => void;
 }
