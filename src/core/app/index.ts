@@ -13,7 +13,7 @@ export default abstract class IApp<
       | "test"
     )
   >;
-  private readonly cache: Table<File<"Storage">> = {};
+  private readonly pool: Table<File<"Storage">> = {};
 
   constructor(
     private _input: Undef<Input>,
@@ -350,7 +350,7 @@ export default abstract class IApp<
         ]
           .join(".");
 
-    return this.cache[file] ??= new File(
+    return this.pool[file] ??= new File(
       "Storage",
       file,
       this.app,
