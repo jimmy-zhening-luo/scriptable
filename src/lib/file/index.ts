@@ -60,10 +60,6 @@ export default class File<Type extends string> {
     }
   }
 
-  public toString(fail?: boolean): string {
-    return this.read(fail) ?? "";
-  }
-
   public read(fail = false) {
     try {
       if (!this.exists) {
@@ -80,8 +76,12 @@ export default class File<Type extends string> {
     }
   }
 
-  public readful() {
-    const content = this.toString(true);
+  public readString(fail?: boolean): string {
+    return this.read(fail) ?? "";
+  }
+
+  public readStringful() {
+    const content = this.readString(true);
 
     if (content === "")
       throw this.error(
@@ -130,9 +130,9 @@ export default class File<Type extends string> {
             : overwrite === "line"
               ? [
                   String(content),
-                  String(this),
+                  this.readString(),
                 ].join("\n")
-              : String(this)
+              : this.readString()
                 + String(content),
       );
     }

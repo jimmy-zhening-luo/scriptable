@@ -60,7 +60,7 @@ export default abstract class IApp<
         new File(
           "Setting",
           this.app + ".json",
-        ).readful(),
+        ).readStringful(),
       ) as Setting;
     }
     catch (e) {
@@ -270,12 +270,10 @@ export default abstract class IApp<
   protected readString(
     ...filename: Parameters<IApp["storage"]>
   ) {
-    return String(
-      this
-        .storage(
-          ...filename,
-        ),
-    );
+    return this
+      .storage(
+        ...filename,
+      ).readString();
   }
 
   protected read(
@@ -295,7 +293,7 @@ export default abstract class IApp<
       .storage(
         ...filename,
       )
-      .readful();
+      .readStringful();
   }
 
   protected write(
