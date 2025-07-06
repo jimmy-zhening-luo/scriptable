@@ -202,6 +202,17 @@ export default abstract class IApp<
     }
   }
 
+  protected readString(
+    ...filename: Parameters<IApp["storage"]>
+  ) {
+    return String(
+      this
+        .storage(
+          ...filename,
+        ),
+    );
+  }
+
   protected read(
     ...filename: Parameters<IApp["storage"]>
   ) {

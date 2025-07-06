@@ -60,13 +60,17 @@ export default class File<Type extends string> {
     }
   }
 
+  public toString(fail?: boolean): string {
+    return this.read(fail) ?? "";
+  }
+
   public read(fail = false) {
     try {
       if (!this.exists) {
         if (fail)
-          throw new ReferenceError("File does not exist");
+          throw new ReferenceError("Non-existent file");
 
-        return "";
+        return undefined;
       }
 
       return File.manager.readString(this.path);
@@ -77,12 +81,12 @@ export default class File<Type extends string> {
   }
 
   public readful() {
-    const content = this.read(true);
+    const content = this.toString(true);
 
     if (content === "")
       throw this.error(
         "readful",
-        new TypeError("Empty file"),
+        new TypeError("Empty file content"),
       );
 
     return content as stringful;
@@ -93,7 +97,6 @@ export default class File<Type extends string> {
       | string
       | number
       | boolean
-      | readonly (string | number | boolean)[]
       | ReadonlyRecord<string, unknown>
     > = null,
     overwrite:
@@ -120,23 +123,17 @@ export default class File<Type extends string> {
 
       File.manager.writeString(
         this.path,
-        Array.isArray(content)
-          ? [
-              content
-                .toReversed()
-                .join("\n"),
-              this.read(),
-            ].join("\n")
-          : typeof content === "object"
-            ? JSON.stringify(content)
-            : typeof overwrite !== "string"
-              ? String(content)
-              : overwrite === "line"
-                ? [
-                    String(content),
-                    this.read(),
-                  ].join("\n")
-                : this.read() + String(content),
+        typeof content === "object"
+          ? JSON.stringify(content)
+          : typeof overwrite !== "string"
+            ? String(content)
+            : overwrite === "line"
+              ? [
+                  String(content),
+                  String(this),
+                ].join("\n")
+              : String(this)
+                + String(content),
       );
     }
     catch (e) {

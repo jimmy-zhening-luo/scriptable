@@ -19,7 +19,7 @@ class Search extends Shortcut<
       terms,
     } = parse(
       input === ""
-        ? this.read()
+        ? this.readString()
         : input,
       new Set(
         Object.keys(
