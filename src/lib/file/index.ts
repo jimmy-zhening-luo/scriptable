@@ -9,13 +9,18 @@ export default class File<Type extends string> {
     name: string,
     subfolder = "",
     private readonly mutable = false,
+    ephemeral = false,
   ) {
     try {
       const root = File.manager.bookmarkExists(type)
         ? File.manager.bookmarkedPath(type)
         : mutable
           ? [
-              File.manager.libraryDirectory(),
+              File.manager[
+                ephemeral
+                  ? "cacheDirectory"
+                  : "libraryDirectory"
+              ](),
               type,
             ].join("/")
           : null;
