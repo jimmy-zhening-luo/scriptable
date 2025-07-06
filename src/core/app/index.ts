@@ -14,6 +14,7 @@ export default abstract class IApp<
     )
   >;
   private readonly pool: Table<File<"Storage">> = {};
+  private changed = false;
 
   constructor(
     private _input: Undef<Input>,
@@ -64,7 +65,26 @@ export default abstract class IApp<
     }
     catch (e) {
       throw new ReferenceError(
-        "Failed to get app settings",
+        "Failed to load app settings",
+        { cause: e },
+      );
+    }
+  }
+
+  private get state() {
+    try {
+      return this.stateCache ??= JSON.parse(
+        (this.stateFile ??= new File(
+          "State",
+          this.app + ".json",
+          "",
+          true,
+        )).read() ?? "{}",
+      ) as Record<string, stringful>;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        "Failed to load app state",
         { cause: e },
       );
     }
@@ -168,6 +188,21 @@ export default abstract class IApp<
 
       const output = this.runtime();
 
+      if (this.changed)
+        try {
+          this.stateFile!
+            .write(
+              this.state,
+              true,
+            );
+        }
+        catch (errorStateWrite) {
+          throw new Error(
+            "Failed to save updated app state",
+            { cause: errorStateWrite },
+          );
+        }
+
       try {
         this.output(output);
       }
@@ -199,6 +234,36 @@ export default abstract class IApp<
     }
     finally {
       Script.complete();
+    }
+  }
+
+  protected get(
+    key: string,
+  ): Undef<stringful> {
+    try {
+      return this.state[key];
+    }
+    catch (e) {
+      throw new ReferenceError(
+        "Failed to get app state",
+        { cause: e },
+      );
+    }
+  }
+
+  protected set(
+    key: string,
+    value: stringful,
+  ) {
+    try {
+      this.state[key] = value;
+      this.changed = true;
+    }
+    catch (e) {
+      throw new ReferenceError(
+        "Failed to set app state",
+        { cause: e },
+      );
     }
   }
 
@@ -373,4 +438,6 @@ export default abstract class IApp<
   protected abstract output(output: Output): void;
   protected test?: (output: Output) => void;
   private config?: Setting;
+  private stateCache?: Record<string, stringful>;
+  private stateFile?: File<"State">;
 }
