@@ -1,11 +1,11 @@
 ##############################
 ####      .gitignore      ####
-####       v249.0.0       ####
+####       v250.0.1       ####
 ##############################
 
-# https://git-scm.com/docs/gitignore
+#DOC: https://git-scm.com/docs/gitignore
 
-#region Root Dir
+#region Folder (Root)
 # Build
 /dist/
 /build/
@@ -14,7 +14,7 @@
 /bundled/
 /pack/
 /packed/
-# Local
+# Env
 /in/
 /input/
 /out/
@@ -22,51 +22,40 @@
 #endregion
 
 
-#region Dir
+#region Folder
 # Build
 .svelte-kit/
-# Dependency
+# Install
 node_modules/
-# System
+# Env
+.vscode/**
+!.vscode/**/*.code-snippets
+# Apple Detritus
 .Trash/
 #endregion
 
 
-#region Root File
+#region File (Root)
 #endregion
 
 
 #region File
 # Build
-*.DS_Store
-*.output
-*.tgz
 *.tsbuildinfo
-*.vercel
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
-# Dependency
+# Install
 .yarn-integrity
-# Local
+# Env
 *.env
 *.env.*
-!*.env.*example
-.vscode/**
-!.vscode/**/*.code-snippets
+!*.env.example
 *.eslintcache
-*.npm
-log
-logs
 *.log
-*.logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-# System
+# Apple Detritus
+*.DS_Store
 *.icloud
 .blink*
 #endregion
 
 
-#region Override
+#region {CONFIGURE}
 #endregion
