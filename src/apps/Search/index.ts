@@ -80,63 +80,37 @@ export default function (
 
       const OPERATORS = {
         digit: "0123456789",
-        leading: {
-          sign: "+-",
-          unit: "$€£¥",
-          dot: ".",
-          paren: "(",
-        },
-        rest: {
-          unit: "%°¢",
-          operator: "/*^!",
-          separators: ",:",
-          paren: ")",
-        },
+        leading: [
+          "+-",
+          "$€£¥",
+          ".",
+          "(",
+        ]
+          .join(""),
+        rest: [
+          "%°¢",
+          "/*^!",
+          ",:",
+          ")",
+        ]
+          .join(""),
       } as const,
-      DIGIT = new Set(OPERATORS.digit),
-      LEADING = OPERATORS.leading.sign
-        + OPERATORS.leading.unit
-        + OPERATORS.leading.dot
-        + OPERATORS.leading.paren,
-      tokens = tokenize(query),
-      [T0, ...Tn] = tokens;
+      [T0, ...Tn] = tokenize(query);
 
-      if (typeof T0 !== "string") {
-        const [T1] = Tn;
-
-        // BUG: Fails on -.5, -(.5), -((.5)), ...
-        if (
-          T0.key === "chat"
-          && T1 !== undefined
-          && (
-            DIGIT.has(T1[0])
-            || new Set(LEADING).has(T1[0])
-            && [...(T1.slice(1) as unknown as string[])]
-              .some(
-                char => DIGIT.has(char),
-              )
+      return typeof T0 !== "string"
+        ? [T0, ...Tn] as const
+        : new Set(
+            OPERATORS.digit
+              + OPERATORS.leading,
+          ).has(
+            T0[0],
           )
-        )
-          return [
-            new ReservedSearchQueryKey("math"),
-            ...Tn,
-          ] as const;
-        else
-          return tokens;
-      }
-      else
-        return DIGIT.has(T0[0])
-          || new Set(LEADING).has(T0[0])
-          && [...(T0.slice(1) as unknown as string[])]
-            .some(
-              char => DIGIT.has(char),
-            )
           ? [
-              new ReservedSearchQueryKey("calc"),
+              new ReservedSearchQueryKey("math"),
               T0,
               ...Tn,
             ] as const
-          : tokens;
+          : [T0, ...Tn] as const;
     }
 
     const [T0, ...Tn] = expand(query);
