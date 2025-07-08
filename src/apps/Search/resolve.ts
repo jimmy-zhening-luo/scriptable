@@ -17,7 +17,7 @@ export default function<
   forceOrEncode = false,
   separator = "+",
 ) {
-  function transformQuery(
+  function encoder(
     terms: readonly stringful[],
     separator: string,
     browserOptions?: {
@@ -87,14 +87,14 @@ export default function<
           .filter((term): term is stringful => term !== ""),
         ...terms,
       ] as const,
-  querystring = finalTerms.length === 0
+  queryText = finalTerms.length === 0
     ? null
     : finalTerms.join(" ") as stringful;
 
   return {
     engine,
     action: type === "browser"
-      ? transformQuery(
+      ? encoder(
           finalTerms,
           separator,
           {
@@ -104,13 +104,13 @@ export default function<
           },
         )
       : encode
-        ? transformQuery(
+        ? encoder(
             finalTerms,
             separator,
           )
-        : querystring,
+        : queryText,
     notify,
-    label: querystring
+    label: queryText
       ?? engine
       ?? type,
   };

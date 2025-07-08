@@ -93,6 +93,7 @@ class Search extends Shortcut<
             entry.notify,
             entry.prepend,
             entry.encode,
+            entry.separator,
           );
   }
 }

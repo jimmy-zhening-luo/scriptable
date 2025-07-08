@@ -23,6 +23,9 @@ export interface SearchSetting {
       (
         | "encode"
         | "notify"
+      ),
+      (
+        | "separator"
       )
     >
   >>;
