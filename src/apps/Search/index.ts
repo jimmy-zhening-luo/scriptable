@@ -100,11 +100,11 @@ export default function (
       return typeof T0 !== "string"
         ? [T0, ...Tn] as const
         : new Set(
-            OPERATORS.digit
-              + OPERATORS.leading,
-          ).has(
-            T0[0],
-          )
+          OPERATORS.digit
+          + OPERATORS.leading,
+        ).has(
+          T0[0],
+        )
           ? [
               new ReservedSearchQueryKey("math"),
               T0,
