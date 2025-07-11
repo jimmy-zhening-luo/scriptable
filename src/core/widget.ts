@@ -188,10 +188,31 @@ export default abstract class Widget<
       ),
     offsetDestinationLocal = offsetUtcDestination
       - offsetUtcLocal,
-    midnightDestination = now
+    midnightLocal = now
       .at(
-        offsetDestinationLocal,
+        0
       ),
+    midnightDestinationLiteral = midnightLocal
+      .in(
+        {
+          hours: -offsetDestinationLocal,
+        },
+      ),
+    midnightDestination = (now.epoch - midnightDestinationLiteral.epoch) < 0
+      ? midnightDestinationLiteral
+        .in(
+          {
+            hours: -24,
+          },
+        )
+      : (now.epoch - midnightDestinationLiteral.epoch) >= 24
+        ? midnightDestinationLiteral
+          .in(
+            {
+              hours: 24,
+            },
+          )
+        : midnightDestinationLiteral,
     clock = this
       .widget
       .addStack(),
