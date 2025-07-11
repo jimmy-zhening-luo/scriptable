@@ -30,7 +30,7 @@ export default abstract class IApp<
       this.context = {
         production,
         test: !production
-          && settingCache.runsInApp,
+          && config.runsInApp,
       };
     }
     catch (e) {
