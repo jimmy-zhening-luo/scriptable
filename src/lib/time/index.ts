@@ -176,7 +176,11 @@ export default class Time {
       .value
       .slice(3) as unknown as Hexad<char>;
 
-    return fromUTC - Number(sign + "1") * (Number(H1 + H2) + Number(m1 + m2) / 60);
+    return Number(`${sign}1`)
+      * (
+        Number(`${H1}${H2}`)
+        + Number(`${m1}${m2}`) / 60
+      );
   }
 
   private printer?: DateFormatter;

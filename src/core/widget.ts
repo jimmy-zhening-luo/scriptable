@@ -176,9 +176,8 @@ export default abstract class Widget<
     } = {},
   ) {
     const now = new Time,
-    offset = timezone === null
-      ? 0
-      : now.offset(timezone),
+    gmtLocal = now.offset(null),
+    gmtDest = now.offset(timezone),
     wallZ = now.at(offset),
     am = now.epoch - wallZ.epoch < 43_200_000,
     clock = this
