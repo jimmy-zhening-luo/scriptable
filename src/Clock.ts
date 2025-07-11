@@ -6,7 +6,7 @@ class Clock extends Widget {
     this.clock();
     this.clock(
       {
-        name: "CN"
+        name: "CN",
         timezone: "Asia/Shanghai",
       },
     );
