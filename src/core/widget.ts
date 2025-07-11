@@ -175,6 +175,8 @@ export default abstract class Widget<
       );
     } = {},
   ) {
+    console.warn(`ampm:${ampm} unsupported`);
+
     const now = new Time,
     offsetUtcLocal = now
       .offset(
@@ -185,7 +187,7 @@ export default abstract class Widget<
         timezone,
       ),
     offsetDestinationLocal = offsetUtcDestination
-      - offsetUtc,
+      - offsetUtcLocal,
     midnightDestination = now
       .at(
         offsetDestinationLocal,
