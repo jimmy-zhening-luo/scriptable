@@ -225,7 +225,7 @@ export default abstract class Widget<
         ? {
             zero: sinceMidnightDestinationNormal < 3600000
               ? midnightDestinationNormal
-                  .in(
+                  .ago(
                     {
                       hours: 12,
                     },
@@ -237,7 +237,7 @@ export default abstract class Widget<
             zero: sinceMidnightDestinationNormal < 46800000
               ? midnightDestinationNormal
               : midnightDestinationNormal
-                  .ago(
+                  .in(
                     {
                       hours: 12,
                     },
