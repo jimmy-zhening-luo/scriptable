@@ -14,7 +14,7 @@ export default abstract class IApp<
     )
   >;
   private readonly pool: Table<File<"Storage">> = {};
-  private changed = false;
+  private stateChange = false;
 
   constructor(
     private _input: Undef<Input>,
@@ -188,7 +188,7 @@ export default abstract class IApp<
 
       const output = this.runtime();
 
-      if (this.changed)
+      if (this.stateChange)
         try {
           this.stateFile!
             .write(
@@ -257,7 +257,7 @@ export default abstract class IApp<
   ) {
     try {
       this.state[key] = value;
-      this.changed = true;
+      this.stateChange = true;
     }
     catch (e) {
       throw new ReferenceError(
