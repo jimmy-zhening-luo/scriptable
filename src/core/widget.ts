@@ -158,13 +158,13 @@ export default abstract class Widget<
         .bold(
           this.weight,
         ),
-      label = "",
+      name = "",
       timezone = null,
     }: {
       ampm?: boolean;
       fontTime?: Font;
       fontLabel?: Font;
-      label?: string;
+      name?: string;
       timezone?: (
         | null
         | "America/Los_Angeles"
@@ -176,45 +176,40 @@ export default abstract class Widget<
     } = {},
   ) {
     const now = new Time,
-    utcLocal = now.offset(null),
-    utcDest = now.offset(timezone),
-    localDest = utcDest - utcLocal,
-    wallZ = now.at(localDest),
-    am = now.epoch - wallZ.epoch < 43_200_000,
+    offsetUtcLocal = now
+      .offset(
+        null,
+      ),
+    offsetUtcDestination = now
+      .offset(
+        timezone,
+      ),
+    offsetDestinationLocal = offsetUtcDestination
+      - offsetUtc,
+    midnightDestination = now
+      .at(
+        offsetDestinationLocal,
+      ),
     clock = this
       .widget
       .addStack(),
     dial = clock
       .addDate(
-        (
-          ampm && !am
-            ? wallZ.in(
-                { hours: 12 },
-              )
-            : wallZ
-        )
+        midnightDestination
           .toDate(),
       ),
     column1 = clock
-      .addSpacer(12),
-    complication = clock
-      .addText(
-        ampm
-          ? am
-            ? "AM"
-            : "PM"
-          : "",
+      .addSpacer(
+        10,
       ),
-    column2 = clock
-      .addSpacer(12),
     annotation = clock
-      .addText(label);
+      .addText(
+        name,
+      );
 
     dial
       .applyTimerStyle();
     dial
-      .font = fontTime;
-    complication
       .font = fontTime;
     annotation
       .font = fontLabel;
@@ -224,8 +219,6 @@ export default abstract class Widget<
       parts: {
         dial,
         column1,
-        complication,
-        column2,
         annotation,
       },
     } as const;
