@@ -151,20 +151,11 @@ export default abstract class Widget<
               this.weight * 1.5,
             ),
         ),
-      fontLabel = this
-        .style
-        .fonts
-        .rounded
-        .bold(
-          this.weight,
-        ),
       name = "",
       timezone = null,
     }: {
       ampm?: boolean;
       fontTime?: Font;
-      fontLabel?: Font;
-      name?: string;
       timezone?: (
         | null
         | "America/Los_Angeles"
@@ -250,44 +241,37 @@ export default abstract class Widget<
         },
     clock = this
       .widget
-      .addStack(),
-    dial = clock
+      .addStack();
+
+    clock.centerAlignContent();
+
+    const dial = clock
       .addDate(
         zero
           .toDate(),
       ),
-    column1 = clock
+    column = clock
       .addSpacer(
         this.weight,
       ),
     complication = clock
       .addText(
         show,
-      ),
-    column2 = clock
-      .addSpacer(
-        this.weight,
-      ),
-    annotation = clock
-      .addText(
-        name,
       );
 
     dial
       .applyTimerStyle();
     dial
       .font = fontTime;
-    annotation
-      .font = fontLabel;
+    complication
+      .font = fontTime;
 
     return {
       clock,
       parts: {
         dial,
-        column1,
+        column,
         complication,
-        column2,
-        annotation,
       },
     } as const;
   }
