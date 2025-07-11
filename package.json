@@ -1,5 +1,5 @@
 {
-  "$pkg": "2217.1.0",
+  "$pkg": "2217.2.0",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "@scoping/scriptable",
@@ -32,7 +32,6 @@
   "types": "",
   "config": {
     "language": "ts",
-    "rewrite": "true",
     "lint": "true"
   },
   "scripts": {
@@ -51,10 +50,7 @@
     "build:windows": "run-s build:lang:%npm_package_config_language%:* postbuild:lint:required:%npm_package_config_lint%",
     "build:default": "run-s build:lang:$npm_package_config_language:* postbuild:lint:required:$npm_package_config_lint",
     "build:lang:ts:compile": "tsc",
-    "build:lang:ts:rewrite": "run-os",
-    "build:lang:ts:rewrite:windows": "npm run --if-present build:lang:ts:rewrite:do:%npm_package_config_rewrite%",
-    "build:lang:ts:rewrite:default": "npm run --if-present build:lang:ts:rewrite:do:$npm_package_config_rewrite",
-    "build:lang:ts:rewrite:do:true": "ts-add-js-extension --dir=dist",
+    "build:lang:ts:rewrite": "ts-add-js-extension --dir=dist",
     "build:lang:svelte:sync": "svelte-kit sync",
     "build:lang:svelte:check": "svelte-check --tsconfig ./tsconfig.json",
     "build:lang:svelte:compile": "vite build",
