@@ -283,7 +283,8 @@ export default abstract class IApp<
     return this
       .storage(
         ...filename,
-      ).readString();
+      )
+      .readString();
   }
 
   protected readStringful(
