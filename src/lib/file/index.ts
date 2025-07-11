@@ -85,7 +85,7 @@ export default class File<Type extends string> {
 
     if (content === "")
       throw this.error(
-        "readful",
+        "readStringful",
         new TypeError("Empty file content"),
       );
 

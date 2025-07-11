@@ -267,15 +267,6 @@ export default abstract class IApp<
     }
   }
 
-  protected readString(
-    ...filename: Parameters<IApp["storage"]>
-  ) {
-    return this
-      .storage(
-        ...filename,
-      ).readString();
-  }
-
   protected read(
     ...filename: Parameters<IApp["storage"]>
   ) {
@@ -286,7 +277,16 @@ export default abstract class IApp<
       .read();
   }
 
-  protected readful(
+  protected readString(
+    ...filename: Parameters<IApp["storage"]>
+  ) {
+    return this
+      .storage(
+        ...filename,
+      ).readString();
+  }
+
+  protected readStringful(
     ...filename: Parameters<IApp["storage"]>
   ) {
     return this
