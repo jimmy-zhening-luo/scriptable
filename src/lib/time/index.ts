@@ -38,11 +38,7 @@ export default class Time {
   }
 
   public get am() {
-    return this._am
-      ??= this.epoch
-        < this
-          .noon
-          .epoch;
+    return this.epoch < this.noon.epoch;
   }
 
   public get pm() {
@@ -178,11 +174,10 @@ export default class Time {
       .formatToParts()
       .find(part => part.type === "timeZoneName")!
       .value
-      .slice(3) satisfies string as unknown as Hexad<char>;
+      .slice(3) as unknown as Hexad<char>;
 
     return fromUTC - Number(sign + "1") * (Number(H1 + H2) + Number(m1 + m2) / 60);
   }
 
-  private _am?: boolean;
   private printer?: DateFormatter;
 }
