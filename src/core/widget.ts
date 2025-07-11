@@ -175,55 +175,98 @@ export default abstract class Widget<
       );
     } = {},
   ) {
-    console.warn(`ampm:${ampm} unsupported`);
-
     const now = new Time,
-    offsetUtcLocal = now
-      .offset(
-        null,
-      ),
-    offsetUtcDestination = now
+    offsetUTC = now
+      .offset(),
+    offsetUTCDestination = now
       .offset(
         timezone,
       ),
-    offsetDestinationLocal = offsetUtcDestination
-      - offsetUtcLocal,
-    midnightLocal = now
+    difference = offsetUTCDestination
+      - offsetUTC,
+    midnight = now
       .at(
         0,
       ),
-    midnightDestinationLiteral = midnightLocal
-      .in(
+    midnightDestination = midnight
+      .ago(
         {
-          hours: -offsetDestinationLocal,
+          hours: difference,
         },
       ),
-    midnightDestination = now.epoch - midnightDestinationLiteral.epoch < 0
-      ? midnightDestinationLiteral
-          .in(
+    sinceMidnightDestination = now
+      .since(
+        midnightDestination,
+      ),
+    midnightDestinationNormal = sinceMidnightDestination < 0
+      ? midnightDestination
+          .ago(
             {
-              hours: -24,
+              hours: 24,
             },
           )
-      : now.epoch - midnightDestinationLiteral.epoch >= 86400000
-        ? midnightDestinationLiteral
+      : sinceMidnightDestination >= 86400000
+        ? midnightDestination
             .in(
               {
                 hours: 24,
               },
             )
-        : midnightDestinationLiteral,
+        : midnightDestination,
+    sinceMidnightDestinationNormal = now
+      .since(
+        midnightDestinationNormal,
+      ),
+    {
+      zero,
+      show,
+    } = ampm
+      ? sinceMidnightDestinationNormal < 43200000
+        ? {
+            zero: sinceMidnightDestinationNormal < 3600000
+              ? midnightDestinationNormal
+                .in(
+                  {
+                    hours: 12,
+                  },
+                )
+              : midnightDestinationNormal,
+            show: "AM",
+          }
+        : {
+            zero: sinceMidnightDestinationNormal < 46800000
+              ? midnightDestinationNormal
+              : midnightDestinationNormal
+                .ago(
+                  {
+                    hours: 12,
+                  },
+                ),
+            show: "PM",
+          }
+      : {
+          zero: midnightDestinationNormal,
+          show: "",
+        },
     clock = this
       .widget
       .addStack(),
     dial = clock
       .addDate(
-        midnightDestination
+        zero
           .toDate(),
       ),
     column1 = clock
       .addSpacer(
-        10,
+        this.weight,
+      ),
+    complication = clock
+      .addText(
+        show,
+      ),
+    column2 = clock
+      .addSpacer(
+        this.weight,
       ),
     annotation = clock
       .addText(
@@ -242,6 +285,8 @@ export default abstract class Widget<
       parts: {
         dial,
         column1,
+        complication,
+        column2,
         annotation,
       },
     } as const;

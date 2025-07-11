@@ -37,12 +37,10 @@ export default class Time {
     return this.at(12);
   }
 
-  public get am() {
-    return this.epoch < this.noon.epoch;
-  }
-
-  public get pm() {
-    return !this.am;
+  public since(
+    time: Time,
+  ) {
+    return this.epoch - time.epoch;
   }
 
   public toDate() {
