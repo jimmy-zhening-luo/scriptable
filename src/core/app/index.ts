@@ -30,7 +30,7 @@ export default abstract class IApp<
       this.context = {
         production,
         test: !production
-          && config.runsInApp,
+          && settingCache.runsInApp,
       };
     }
     catch (e) {
@@ -56,7 +56,7 @@ export default abstract class IApp<
 
   protected get setting() {
     try {
-      return this.config ??= JSON.parse(
+      return this.settingCache ??= JSON.parse(
         new File(
           "Setting",
           this.app + ".json",
@@ -73,13 +73,18 @@ export default abstract class IApp<
 
   private get state() {
     try {
-      return this.stateCache ??= JSON.parse(
-        (this.stateFile ??= new File(
-          "State",
-          this.app + ".json",
-          "",
-          true,
-        )).read() ?? "{}",
+      return this.stateCache ??= (
+        JSON.parse(
+          (
+            this.stateFile ??= new File(
+              "State",
+              this.app + ".json",
+              "",
+              true,
+            )
+          )
+          .read() ?? null,
+        ) ?? {}
       ) as Record<string, stringful>;
     }
     catch (e) {
@@ -190,7 +195,8 @@ export default abstract class IApp<
 
       if (this.stateChange)
         try {
-          this.stateFile!
+          this
+            .stateFile!
             .write(
               this.state,
               true,
@@ -436,7 +442,7 @@ export default abstract class IApp<
   protected abstract runtime(): Output;
   protected abstract output(output: Output): void;
   protected test?: (output: Output) => void;
-  private config?: Setting;
-  private stateCache?: Record<string, stringful>;
   private stateFile?: File<"State">;
+  private stateCache?: Record<string, stringful>;
+  private settingCache?: Setting;
 }
