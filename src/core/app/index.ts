@@ -83,7 +83,7 @@ export default abstract class IApp<
               true,
             )
           )
-          .read() ?? "null",
+            .read() ?? "null",
         ) ?? {}
       ) as Record<string, stringful>;
     }
