@@ -205,7 +205,7 @@ export default abstract class Widget<
               hours: -24,
             },
           )
-      : now.epoch - midnightDestinationLiteral.epoch >= 24
+      : now.epoch - midnightDestinationLiteral.epoch >= 86400000
         ? midnightDestinationLiteral
             .in(
               {
