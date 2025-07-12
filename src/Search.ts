@@ -50,7 +50,7 @@ class Search extends Shortcut<
       !objectEntry
       || !entry.noSave
     )
-      this.write(
+      this.set(
         "history",
         [key, ...terms]
           .join(" "),
