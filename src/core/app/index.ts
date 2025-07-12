@@ -241,6 +241,16 @@ export default abstract class IApp<
       .delete();
   }
 
+  protected invalidateCache() {
+    new File(
+      "EphemeralState",
+      "",
+      this.app,
+      true,
+    )
+    .delete();
+  }
+
   protected read(
     ...filename: Parameters<IApp["storage"]>
   ) {
@@ -299,6 +309,16 @@ export default abstract class IApp<
         ...filename,
       )
       .delete();
+  }
+
+  protected clearStorage() {
+    new File(
+      "Storage",
+      "",
+      this.app,
+      true,
+    )
+    .delete();
   }
 
   protected stringful(
