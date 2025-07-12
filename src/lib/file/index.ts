@@ -70,9 +70,10 @@ export default class File<Class extends string> {
 
   public read(fail = false) {
     try {
-      if (this.exists)
+      if (this.exists) {
         if (this.type === "Folder")
           throw new TypeError("Filesystem object is Folder");
+      }
       else {
         if (fail)
           throw new ReferenceError("File does not exist");
