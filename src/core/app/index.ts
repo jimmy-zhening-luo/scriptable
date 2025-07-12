@@ -249,7 +249,7 @@ export default abstract class IApp<
       true,
       true,
     )
-    .delete();
+      .delete();
   }
 
   protected read(
@@ -319,7 +319,7 @@ export default abstract class IApp<
       this.app,
       true,
     )
-    .delete();
+      .delete();
   }
 
   protected stringful(
