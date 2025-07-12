@@ -1,19 +1,19 @@
-export default class File<Type extends string> {
+export default class File<Class extends string> {
   private static readonly manager = FileManager.iCloud();
   private readonly path;
   private readonly parent;
   private readonly exists;
 
   constructor(
-    type: Literalful<Type>,
+    Class: Literalful<Class>,
     name: string,
     subfolder = "",
     private readonly mutable = false,
     ephemeral = false,
   ) {
     try {
-      const root = File.manager.bookmarkExists(type)
-        ? File.manager.bookmarkedPath(type)
+      const root = File.manager.bookmarkExists(Class)
+        ? File.manager.bookmarkedPath(Class)
         : mutable
           ? [
               File.manager[
@@ -21,12 +21,12 @@ export default class File<Type extends string> {
                   ? "cacheDirectory"
                   : "libraryDirectory"
               ](),
-              type,
+              Class,
             ].join("/")
           : null;
 
       if (root === null)
-        throw new ReferenceError("No file root");
+        throw new ReferenceError("No directory root provided");
 
       const subpath = [subfolder, name]
         .join("/")
@@ -34,7 +34,7 @@ export default class File<Type extends string> {
         .filter(segment => segment !== "");
 
       if (subpath.length === 0)
-        throw new SyntaxError("No file subpath");
+        throw new ReferenceError("No file subpath provided");
 
       this.path = [
         root,
@@ -45,14 +45,16 @@ export default class File<Type extends string> {
         ...subpath
           .slice(0, -1),
       ].join("/");
-      this.exists = File.manager.fileExists(this.path);
+      this.exists = File.manager.fileExists(
+        this.path,
+      );
     }
     catch (e) {
       throw new Error(
-        "Failed to construct file handler",
+        "Failed to construct File handler",
         {
           cause: new Error(
-            `<${type}> ${subfolder}/${name}`,
+            `<${Class}> ${subfolder}/${name}`,
             { cause: e },
           ),
         },
