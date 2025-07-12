@@ -19,6 +19,9 @@ export default abstract class IApp<
   private readonly store: Table<
     File<"Storage">
   > = {};
+  private readonly streams: Table<
+    File<"Feed">
+  > = {};
 
   constructor(
     private _input: Undef<Input>,
@@ -322,6 +325,16 @@ export default abstract class IApp<
       .delete();
   }
 
+  protected feed(
+    path: string,
+  ) {
+    return this
+      .stream(
+        path,
+      )
+      .readString();
+  }
+
   protected stringful(
     string = "",
     cause = "",
@@ -437,6 +450,16 @@ export default abstract class IApp<
       file,
       this.app,
       true,
+    );
+  }
+
+  private stream(
+    path: string,
+  ) {
+    return this.streams[path] ??= new File(
+      "Feed",
+      path,
+      this.app,
     );
   }
 
