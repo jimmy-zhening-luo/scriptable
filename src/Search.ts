@@ -19,7 +19,7 @@ class Search extends Shortcut<
       terms,
     } = parse(
       input === ""
-        ? this.readString()
+        ? this.get("history")
         : input,
       new Set(
         Object.keys(
@@ -51,6 +51,7 @@ class Search extends Shortcut<
       || !entry.noSave
     )
       this.write(
+        "history",
         [key, ...terms]
           .join(" "),
       );
