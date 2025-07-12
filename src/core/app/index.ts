@@ -173,22 +173,6 @@ export default abstract class IApp<
 
       const output = this.runtime();
 
-      if (this.stateChange)
-        try {
-          this
-            .stateFile!
-            .write(
-              this.state,
-              true,
-            );
-        }
-        catch (errorStateWrite) {
-          throw new Error(
-            "Failed to save updated app state",
-            { cause: errorStateWrite },
-          );
-        }
-
       try {
         this.output(output);
       }
