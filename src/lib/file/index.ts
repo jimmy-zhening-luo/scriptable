@@ -1,5 +1,5 @@
 export default class File<Class extends string> {
-  private static readonly manager = FileManager.iCloud();
+  private static readonly manager = FileManager.local();
   private readonly path;
   private readonly parent;
   private readonly exists;
