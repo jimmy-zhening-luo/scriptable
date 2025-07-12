@@ -125,7 +125,7 @@ export default function (
         return {
           Head,
           tail,
-        };
+        } as const;
       else {
         const DOT = "." as char;
 
@@ -143,7 +143,7 @@ export default function (
           return {
             Head,
             tail,
-          };
+          } as const;
         else {
           const canonical = selectors[0]!,
           [
@@ -167,7 +167,7 @@ export default function (
                   ].join("") as stringful,
                   ...tail,
                 ],
-              }
+              } as const;
             : {
                 Head: new SearchQuerySelectionCandidate(
                   key as stringful,
@@ -180,7 +180,7 @@ export default function (
                   Head,
                 ),
                 tail,
-              };
+              } as const;
         }
       }
     }
