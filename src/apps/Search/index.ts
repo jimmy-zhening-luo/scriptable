@@ -197,7 +197,7 @@ export default function (
       return {
         Head,
         tail,
-      };
+      } as const;
     else {
       const operation = (/^(\W+)(\w+)$/u)
         .exec(
@@ -208,7 +208,7 @@ export default function (
         return {
           Head,
           tail,
-        };
+        } as const;
       else {
         const [
           key,
@@ -221,7 +221,7 @@ export default function (
             operand,
             ...tail,
           ],
-        };
+        } as const;
       }
     }
   }
