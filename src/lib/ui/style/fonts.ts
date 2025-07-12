@@ -10,8 +10,6 @@ export default class Fonts {
       .mediumRoundedSystemFont(size),
     light: (size = this.weight) => Font
       .lightRoundedSystemFont(size),
-    thin: (size = this.weight) => Font
-      .thinRoundedSystemFont(size),
   };
   public mono = {
     regular: (size = this.weight) => Font
@@ -24,8 +22,6 @@ export default class Fonts {
       .mediumMonospacedSystemFont(size),
     light: (size = this.weight) => Font
       .lightMonospacedSystemFont(size),
-    thin: (size = this.weight) => Font
-      .thinMonospacedSystemFont(size),
   };
 
   constructor(
@@ -54,9 +50,5 @@ export default class Fonts {
 
   public light(size = this.weight) {
     return Font.lightSystemFont(size);
-  }
-
-  public thin(size = this.weight) {
-    return Font.thinSystemFont(size);
   }
 }
