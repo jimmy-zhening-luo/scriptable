@@ -217,9 +217,10 @@ export default function (
         } as const;
       else {
         const [
+          ,
           key,
           operand,
-        ] = operation as unknown as Dyad<stringful>;
+        ] = operation as unknown as Triad<stringful>;
 
         return {
           Head: key,
