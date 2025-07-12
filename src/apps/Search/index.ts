@@ -167,7 +167,7 @@ export default function (
                   ].join("") as stringful,
                   ...tail,
                 ],
-              } as const;
+              } as const
             : {
                 Head: new SearchQuerySelectionCandidate(
                   key as stringful,
