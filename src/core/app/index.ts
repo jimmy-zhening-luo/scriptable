@@ -211,7 +211,7 @@ export default abstract class IApp<
     key: string,
   ) {
     return this
-      .cache(
+      .state(
         key,
       )
       .readString();
@@ -222,7 +222,7 @@ export default abstract class IApp<
     value: string,
   ) {
     this
-      .cache(
+      .state(
         key,
       )
       .write(
@@ -235,7 +235,7 @@ export default abstract class IApp<
     key: string,
   ) {
     return this
-      .cache(
+      .state(
         key,
       )
       .delete();
