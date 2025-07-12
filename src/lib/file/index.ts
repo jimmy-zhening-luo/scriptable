@@ -3,7 +3,7 @@ export default class File<Class extends string> {
   private readonly path;
   private readonly parent;
   private readonly exists;
-  private readonly type;
+  private readonly folder;
 
   constructor(
     Class: Literalful<Class>,
@@ -49,11 +49,9 @@ export default class File<Class extends string> {
       this.exists = File.manager.fileExists(
         this.path,
       );
-      this.type = File.manager.isDirectory(
+      this.folder = File.manager.isDirectory(
         this.path,
-      )
-        ? "Folder" as const
-        : "File" as const;
+      );
     }
     catch (e) {
       throw new Error(
@@ -71,7 +69,7 @@ export default class File<Class extends string> {
   public read(fail = false) {
     try {
       if (this.exists) {
-        if (this.type === "Folder")
+        if (this.folder)
           throw new TypeError("Filesystem object is Folder");
       }
       else {
@@ -118,7 +116,7 @@ export default class File<Class extends string> {
     try {
       if (!this.mutable)
         throw new TypeError("Readonly File");
-      else if (this.type === "Folder")
+      else if (this.folder)
         throw new TypeError("Filesystem object is Folder");
       else if (this.exists) {
         if (overwrite === false)
