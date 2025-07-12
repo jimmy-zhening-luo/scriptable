@@ -247,6 +247,7 @@ export default abstract class IApp<
       "",
       this.app,
       true,
+      true,
     )
     .delete();
   }
@@ -412,6 +413,7 @@ export default abstract class IApp<
       "EphemeralState",
       key,
       this.app,
+      true,
       true,
     );
   }
