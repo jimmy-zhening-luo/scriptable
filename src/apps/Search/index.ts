@@ -210,7 +210,7 @@ export default function (
       else if (!engines.has(key))
         throw ReferenceError(
           "Aliased engine does not exist",
-          { cause: { key } },
+          { cause: key },
         );
 
       return key as stringful;
