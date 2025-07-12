@@ -104,12 +104,11 @@ export default class File<Class extends string> {
   }
 
   public write(
-    content: Null<
+    content:
       | string
       | number
       | boolean
-      | ReadonlyRecord<string, unknown>
-    > = null,
+      | ReadonlyRecord<string, unknown>,
     overwrite:
       | "line"
       | "append"
@@ -117,15 +116,18 @@ export default class File<Class extends string> {
   ) {
     try {
       if (!this.mutable)
-      else if (content === null)
-        throw new TypeError("Null write-data");
-      else if (File.manager.isDirectory(this.path))
-        throw new ReferenceError("Write target is folder");
+        throw new TypeError("Readonly File");
+      else if (this.type === "Folder")
+        throw new TypeError("Filesystem object is Folder");
       else if (this.exists) {
         if (overwrite === false)
-          throw new ReferenceError("File already exists, and overwrite:false");
+          throw new ReferenceError("File already exists, but `overwrite:false`");
       }
-      else if (!File.manager.isDirectory(this.parent))
+      else if (
+        !File.manager.isDirectory(
+          this.parent,
+        )
+      )
         File.manager.createDirectory(
           this.parent,
           true,
@@ -157,7 +159,9 @@ export default class File<Class extends string> {
         throw new ReferenceError("Readonly File/Folder");
 
       if (this.exists)
-        File.manager.remove(this.path);
+        File.manager.remove(
+          this.path,
+        );
     }
     catch (e) {
       throw this.error("delete", e);
