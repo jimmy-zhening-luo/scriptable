@@ -6,175 +6,216 @@ export default function (
   alias: FieldTable,
   SELECTORS: Set<char>,
 ) {
-  function select(
+  function parse(
     query: string,
     SELECTORS: Set<char>,
   ) {
-    class ReservedSearchQueryKey<
-      Key extends string,
-    > {
-      public readonly key;
+    function select(
+      query: string,
+      SELECTORS: Set<char>,
+    ) {
+      class ReservedSearchQueryKey<
+        Key extends string,
+      > {
+        public readonly key;
 
-      constructor(
-        key: Literalful<Key>,
-      ) {
-        this.key = key as unknown as stringful;
+        constructor(
+          key: Literalful<Key>,
+        ) {
+          this.key = key as unknown as stringful;
+        }
       }
-    }
 
-    class SearchQuerySelectionCandidate {
-      public readonly consumes;
-      public readonly selection;
+      class SearchQuerySelectionCandidate {
+        public readonly consumes;
+        public readonly selection;
 
-      constructor(
-        public readonly key: stringful,
-        selectors: {
-          readonly canonical: stringful;
-          readonly match: stringful;
-        },
-        selection: string,
-        next: string,
-        public readonly deselect: stringful,
-      ) {
-        this.consumes = selection === ""
-          && selectors.match === ".";
-        this.selection = [
-          selectors.canonical,
-          this.consumes
-            ? next
-            : selection,
-        ].join("") as stringful;
+        constructor(
+          public readonly key: stringful,
+          selectors: {
+            readonly canonical: stringful;
+            readonly match: stringful;
+          },
+          selection: string,
+          next: string,
+          public readonly deselect: stringful,
+        ) {
+          this.consumes = selection === ""
+            && selectors.match === ".";
+          this.selection = [
+            selectors.canonical,
+            this.consumes
+              ? next
+              : selection,
+          ].join("") as stringful;
+        }
       }
-    }
 
-    function expand(query: string) {
-      function tokenize(query: string) {
-        function fallback(query: string) {
-          const frontage = query.length - query.trimStart().length;
+      function expand(query: string) {
+        function tokenize(query: string) {
+          function fallback(query: string) {
+            const frontage = query.length - query.trimStart().length;
 
-          return frontage === 0
-            ? [] as const
-            : [
-                new ReservedSearchQueryKey(
-                  frontage === 1
-                    ? "chat"
-                    : "translate",
-                ),
-              ] as const;
+            return frontage === 0
+              ? [] as const
+              : [
+                  new ReservedSearchQueryKey(
+                    frontage === 1
+                      ? "chat"
+                      : "translate",
+                  ),
+                ] as const;
+          }
+
+          const tokens = [
+            ...fallback(query),
+            ...query
+              .split(" ")
+              .filter((token): token is stringful => token !== ""),
+          ] as const;
+
+          if (tokens.length === 0)
+            throw new RangeError("Empty search query");
+
+          const [Head, ...tail] = tokens;
+
+          return {
+            Head,
+            tail: tail as stringful[],
+          } as const;
         }
 
-        const tokens = [
-          ...fallback(query),
-          ...query
-            .split(" ")
-            .filter((token): token is stringful => token !== ""),
-        ] as const;
+        const OPERATORS = {
+          digit: "0123456789",
+          leading: "+-$€£¥.(",
+          rest: "%°¢/*^!,:)",
+        } as const,
+        { 
+          Head,
+          tail,
+        } = tokenize(query);
 
-        if (tokens.length === 0)
-          throw new RangeError("No search query");
-
-        const [T0, ...Tn] = tokens;
-
-        return [T0, ...Tn as stringful[]] as const;
-      }
-
-      const OPERATORS = {
-        digit: "0123456789",
-        leading: [
-          "+-",
-          "$€£¥",
-          ".",
-          "(",
-        ]
-          .join(""),
-        rest: [
-          "%°¢",
-          "/*^!",
-          ",:",
-          ")",
-        ]
-          .join(""),
-      } as const,
-      [T0, ...Tn] = tokenize(query);
-
-      return typeof T0 !== "string"
-        ? [T0, ...Tn] as const
-        : new Set(
-          OPERATORS.digit
-          + OPERATORS.leading,
-        ).has(
-          T0[0],
-        )
-          ? [
-              new ReservedSearchQueryKey("math"),
-              T0,
-              ...Tn,
-            ] as const
-          : [T0, ...Tn] as const;
-    }
-
-    const [T0, ...Tn] = expand(query);
-
-    if (typeof T0 !== "string")
-      return {
-        Head: T0,
-        tail: Tn,
-      };
-    else {
-      const DOT = "." as char;
-
-      SELECTORS.delete(DOT);
-      SELECTORS.add(DOT);
-
-      const selectors = [...SELECTORS],
-      match = selectors.find(
-        selector => T0.includes(
-          selector,
-        ),
-      );
-
-      if (match === undefined)
-        return {
-          Head: T0,
-          tail: Tn,
-        };
-      else {
-        const canonical = selectors[0]!,
-        [
-          key = "",
-          ...selectionShards
-        ] = T0
-          .split(match),
-        selection = selectionShards
-          .join(match);
-
-        return key === ""
+        return typeof Head !== "string"
+          || !new Set(
+            OPERATORS.digit
+            + OPERATORS.leading,
+          ).has(Head[0])
           ? {
-              Head: new ReservedSearchQueryKey("translate"),
-              tail: [
-                [
-                  canonical,
-                  selection === ""
-                  && match === DOT
-                    ? Tn.shift() ?? ""
-                    : selection,
-                ].join("") as stringful,
-                ...Tn,
-              ] as const,
+              Head,
+              tail,
             } as const
           : {
-              Head: new SearchQuerySelectionCandidate(
-                key as stringful,
-                {
-                  canonical,
-                  match,
-                },
-                selection,
-                Tn.at(0) ?? "",
-                T0,
-              ),
-              tail: Tn,
+              Head: new ReservedSearchQueryKey("math"),
+              tail: [
+                Head,
+                ...tail,
+              ] as const,
             } as const;
+      }
+
+      const {
+        Head,
+        tail,
+      } = expand(query);
+
+      if (typeof Head !== "string")
+        return {
+          Head,
+          tail,
+        } as const;
+      else {
+        const DOT = "." as char;
+
+        SELECTORS.delete(DOT);
+        SELECTORS.add(DOT);
+
+        const selectors = [...SELECTORS],
+        match = selectors.find(
+          selector => Head.includes(
+            selector,
+          ),
+        );
+
+        if (match === undefined)
+          return {
+            Head,
+            tail,
+          } as const;
+        else {
+          const canonical = selectors[0]!,
+          [
+            key = "",
+            ...selectionShards
+          ] = Head
+            .split(match),
+          selection = selectionShards
+            .join(match);
+
+          return key === ""
+            ? {
+                Head: new ReservedSearchQueryKey("translate"),
+                tail: [
+                  [
+                    canonical,
+                    selection === ""
+                    && match === DOT
+                      ? tail.shift() ?? ""
+                      : selection,
+                  ].join("") as stringful,
+                  ...tail,
+                ] as const,
+              } as const
+            : {
+                Head: new SearchQuerySelectionCandidate(
+                  key as stringful,
+                  {
+                    canonical,
+                    match,
+                  },
+                  selection,
+                  tail.at(0) ?? "",
+                  Head,
+                ),
+                tail,
+              } as const;
+        }
+      }
+    }
+
+    const {
+      Head,
+      tail,
+    } = select(
+      query,
+      SELECTORS,
+    );
+
+    if (typeof Head !== "string")
+      return {
+        Head,
+        tail,
+      } as const;
+    else {
+      const operation = (/^(\W+)(\w+)$/u).exec();
+
+      if (operation === null)
+        return {
+          Head,
+          tail,
+        } as const;
+      else {
+        const [
+          key,
+          operand,
+        ] = operation as unknown as Tuple<stringful>;
+
+        return {
+          Head: key,
+          tail: [
+            operand,
+            ...tail,
+          ] as const,
+        } as const;
       }
     }
   }
@@ -182,7 +223,7 @@ export default function (
   const {
     Head,
     tail,
-  } = select(
+  } = parse(
     query,
     SELECTORS,
   );
