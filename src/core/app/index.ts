@@ -234,7 +234,7 @@ export default abstract class IApp<
   protected unset(
     key: string,
   ) {
-    return this
+    this
       .state(
         key,
       )
