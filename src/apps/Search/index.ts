@@ -77,7 +77,10 @@ export default function (
           if (tokens.length === 0)
             throw new RangeError("Empty search query");
 
-          const [Head, ...tail] = tokens;
+          const [
+            Head,
+            ...tail
+          ] = tokens;
 
           return {
             Head,
@@ -109,7 +112,7 @@ export default function (
               tail: [
                 Head,
                 ...tail,
-              ] as const,
+              ],
             } as const;
       }
 
@@ -163,7 +166,7 @@ export default function (
                       : selection,
                   ].join("") as stringful,
                   ...tail,
-                ] as const,
+                ],
               } as const
             : {
                 Head: new SearchQuerySelectionCandidate(
@@ -196,7 +199,8 @@ export default function (
         tail,
       } as const;
     else {
-      const operation = (/^(\W+)(\w+)$/u).exec();
+      const operation = (/^(\W+)(\w+)$/u)
+        .exec();
 
       if (operation === null)
         return {
@@ -214,7 +218,7 @@ export default function (
           tail: [
             operand,
             ...tail,
-          ] as const,
+          ],
         } as const;
       }
     }
