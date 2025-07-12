@@ -13,7 +13,7 @@ class Clock extends Widget {
     );
     this.line();
     this.field(
-      "Sunset: " + this.feed("sunset.txt"),
+      "Sunset: " + this.feed("sunset"),
     );
   }
 }

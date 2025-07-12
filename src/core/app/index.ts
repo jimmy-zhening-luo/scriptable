@@ -256,31 +256,31 @@ export default abstract class IApp<
   }
 
   protected read(
-    ...filename: Parameters<IApp["storage"]>
+    ...file: Parameters<IApp["storage"]>
   ) {
     return this
       .storage(
-        ...filename,
+        ...file,
       )
       .read();
   }
 
   protected readString(
-    ...filename: Parameters<IApp["storage"]>
+    ...file: Parameters<IApp["storage"]>
   ) {
     return this
       .storage(
-        ...filename,
+        ...file,
       )
       .readString();
   }
 
   protected readStringful(
-    ...filename: Parameters<IApp["storage"]>
+    ...file: Parameters<IApp["storage"]>
   ) {
     return this
       .storage(
-        ...filename,
+        ...file,
       )
       .readStringful();
   }
@@ -289,7 +289,7 @@ export default abstract class IApp<
     ...[
       data,
       overwrite = true,
-      ...filename
+      ...file
     ]: [
       ...Parameters<File<"Storage">["write"]>,
       ...Parameters<IApp["storage"]>,
@@ -297,7 +297,7 @@ export default abstract class IApp<
   ) {
     this
       .storage(
-        ...filename,
+        ...file,
       )
       .write(
         data,
@@ -306,11 +306,11 @@ export default abstract class IApp<
   }
 
   protected delete(
-    ...filename: Parameters<IApp["storage"]>
+    ...file: Parameters<IApp["storage"]>
   ) {
     this
       .storage(
-        ...filename,
+        ...file,
       )
       .delete();
   }
@@ -326,11 +326,11 @@ export default abstract class IApp<
   }
 
   protected feed(
-    path: string,
+    ...feed: Parameters<IApp["stream"]>
   ) {
     return this
       .stream(
-        path,
+        ...feed,
       )
       .readString();
   }
@@ -432,10 +432,8 @@ export default abstract class IApp<
   }
 
   private storage(
-    {
-      name = this.app,
-      extension = "txt",
-    } = {},
+    name = this.app,
+    extension = "txt",
   ) {
     const file = extension === ""
       ? name
@@ -454,11 +452,20 @@ export default abstract class IApp<
   }
 
   private stream(
-    path: string,
+    name: string,
+    extension = "txt",
   ) {
-    return this.streams[path] ??= new File(
+    const feed = extension === ""
+      ? name
+      : [
+          name,
+          extension,
+        ]
+          .join(".");
+
+    return this.streams[feed] ??= new File(
       "Feed",
-      path,
+      feed,
       this.app,
     );
   }
