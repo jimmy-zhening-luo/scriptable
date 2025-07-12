@@ -200,7 +200,9 @@ export default function (
       } as const;
     else {
       const operation = (/^(\W+)(\w+)$/u)
-        .exec();
+        .exec(
+          Head,
+        );
 
       if (operation === null)
         return {
