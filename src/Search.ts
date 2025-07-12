@@ -43,11 +43,11 @@ class Search extends Shortcut<
     entry = this
       .setting
       .engines[key]!,
-    objectEntry = typeof entry !== "string"
+    entryHasOption = typeof entry === "object"
       && !Array.isArray(entry);
 
     if (
-      !objectEntry
+      !entryHasOption
       || !entry.noSave
     )
       this.set(
@@ -56,7 +56,7 @@ class Search extends Shortcut<
           .join(" "),
       );
 
-    return !objectEntry
+    return !entryHasOption
       ? resolve(
           key,
           terms,
