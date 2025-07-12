@@ -80,7 +80,9 @@ export default abstract class Widget<
       .widget
       .refreshAfterDate = new Time()
         .in(
-          { seconds: 30 },
+          {
+            seconds: 30,
+          },
         )
         .toDate();
     Script.setWidget(
@@ -103,7 +105,7 @@ export default abstract class Widget<
       }
   }
 
-  protected override test = () => {
+  protected override test = function() {
     this
       .widget
       .presentSmall()
@@ -118,7 +120,7 @@ export default abstract class Widget<
   };
 
   protected line(
-    height: number,
+    height: number = this.weight,
   ) {
     return this
       .widget
@@ -141,7 +143,8 @@ export default abstract class Widget<
   protected clock(
     {
       ampm = true,
-      fontTime = this
+      timezone = null,
+      font = this
         .style
         .fonts
         .rounded
@@ -151,11 +154,8 @@ export default abstract class Widget<
               this.weight * 1.5,
             ),
         ),
-      name = "",
-      timezone = null,
     }: {
       ampm?: boolean;
-      fontTime?: Font;
       timezone?: (
         | null
         | "America/Los_Angeles"
@@ -164,6 +164,7 @@ export default abstract class Widget<
         | "Asia/Shanghai"
         | "Asia/Seoul"
       );
+      font?: Font;
     } = {},
   ) {
     const now = new Time,
@@ -262,9 +263,9 @@ export default abstract class Widget<
     dial
       .applyTimerStyle();
     dial
-      .font = fontTime;
+      .font = font;
     complication
-      .font = fontTime;
+      .font = font;
 
     return {
       clock,
