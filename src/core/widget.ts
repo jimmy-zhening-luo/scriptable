@@ -105,7 +105,7 @@ export default abstract class Widget<
       }
   }
 
-  protected override test = function() {
+  protected override test = () => {
     this
       .widget
       .presentSmall()
