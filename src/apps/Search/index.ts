@@ -92,7 +92,7 @@ export default function (
           digit: "0123456789",
           leading: "+-$€£¥.(",
           rest: "%°¢/*^!,:)",
-        } as const,
+        },
         { 
           Head,
           tail,
