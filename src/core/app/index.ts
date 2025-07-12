@@ -13,8 +13,12 @@ export default abstract class IApp<
       | "test"
     )
   >;
-  private readonly pool: Table<File<"Storage">> = {};
-  private stateChange = false;
+  private readonly cache: Table<
+    File<"EphemeralState">
+  > = {};
+  private readonly store: Table<
+    File<"Storage">
+  > = {};
 
   constructor(
     private _input: Undef<Input>,
@@ -56,7 +60,7 @@ export default abstract class IApp<
 
   protected get setting() {
     try {
-      return this.settingCache ??= JSON.parse(
+      return this.ini ??= JSON.parse(
         new File(
           "Setting",
           this.app + ".json",
@@ -66,30 +70,6 @@ export default abstract class IApp<
     catch (e) {
       throw new ReferenceError(
         "Failed to load app settings",
-        { cause: e },
-      );
-    }
-  }
-
-  private get state() {
-    try {
-      return this.stateCache ??= (
-        JSON.parse(
-          (
-            this.stateFile ??= new File(
-              "State",
-              this.app + ".json",
-              "",
-              true,
-            )
-          )
-            .read() ?? "null",
-        ) ?? {}
-      ) as Record<string, stringful>;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        "Failed to load app state",
         { cause: e },
       );
     }
@@ -245,32 +225,36 @@ export default abstract class IApp<
 
   protected get(
     key: string,
-  ): Undef<stringful> {
-    try {
-      return this.state[key];
-    }
-    catch (e) {
-      throw new ReferenceError(
-        "Failed to get app state",
-        { cause: e },
-      );
-    }
+  ) {
+    return this
+      .cache(
+        key,
+      )
+      .readString();
   }
 
   protected set(
     key: string,
-    value: stringful,
+    value: string,
   ) {
-    try {
-      this.state[key] = value;
-      this.stateChange = true;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        "Failed to set app state",
-        { cause: e },
+    this
+      .cache(
+        key,
+      )
+      .write(
+        value,
+        true,
       );
-    }
+  }
+
+  protected unset(
+    key: string,
+  ) {
+    return this
+      .cache(
+        key,
+      )
+      .delete();
   }
 
   protected read(
@@ -417,6 +401,17 @@ export default abstract class IApp<
     );
   }
 
+  private state(
+    key: string,
+  ) {
+    return this.cache[key] ??= new File(
+      "EphemeralState",
+      key,
+      this.app,
+      true,
+    );
+  }
+
   private storage(
     {
       name = this.app,
@@ -431,7 +426,7 @@ export default abstract class IApp<
         ]
           .join(".");
 
-    return this.pool[file] ??= new File(
+    return this.store[file] ??= new File(
       "Storage",
       file,
       this.app,
@@ -442,7 +437,5 @@ export default abstract class IApp<
   protected abstract runtime(): Output;
   protected abstract output(output: Output): void;
   protected test?: (output: Output) => void;
-  private stateFile?: File<"State">;
-  private stateCache?: Record<string, stringful>;
-  private settingCache?: Setting;
+  private ini?: Setting;
 }
