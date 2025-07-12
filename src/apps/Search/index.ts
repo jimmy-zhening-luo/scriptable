@@ -213,7 +213,7 @@ export default function (
         const [
           key,
           operand,
-        ] = (operation as unknown as Tuple<stringful>);
+        ] = operation as unknown as Dyad<stringful>;
 
         return {
           Head: key,
