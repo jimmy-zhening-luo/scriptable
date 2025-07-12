@@ -29,9 +29,10 @@ export default class File<Class extends string> {
       if (root === null)
         throw new ReferenceError("No directory root provided");
 
-      const subpath = [subfolder, name]
-        .join("/")
-        .split("/")
+      const subpath = [
+        ...subfolder.split("/"),
+        ...name.split("/"),
+      ]
         .filter(segment => segment !== "");
 
       if (subpath.length === 0)
