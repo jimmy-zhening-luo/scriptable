@@ -117,7 +117,7 @@ export default function (
 
     if (typeof T0 !== "string")
       return {
-        Headword: T0,
+        Head: T0,
         tail: Tn,
       };
     else {
@@ -135,7 +135,7 @@ export default function (
 
       if (match === undefined)
         return {
-          Headword: T0,
+          Head: T0,
           tail: Tn,
         };
       else {
@@ -150,7 +150,7 @@ export default function (
 
         return key === ""
           ? {
-              Headword: new ReservedSearchQueryKey("translate"),
+              Head: new ReservedSearchQueryKey("translate"),
               tail: [
                 [
                   canonical,
@@ -163,7 +163,7 @@ export default function (
               ] as const,
             } as const
           : {
-              Headword: new SearchQuerySelectionCandidate(
+              Head: new SearchQuerySelectionCandidate(
                 key as stringful,
                 {
                   canonical,
@@ -180,7 +180,7 @@ export default function (
   }
 
   const {
-    Headword,
+    Head,
     tail,
   } = select(
     query,
@@ -188,44 +188,66 @@ export default function (
   );
 
   if (
-    typeof Headword !== "string"
-    && !("selection" in Headword)
+    typeof Head !== "string"
+    && !("selection" in Head)
   )
     return {
-      key: Headword.key,
+      key: Head.key,
       terms: tail,
     };
   else {
-    const headword = (
-      typeof Headword === "string"
-        ? Headword
-        : Headword.key
+    function dealias(
+      engines: Set<string>,
+      key = "",
+    ) {
+      if (key === "")
+        throw TypeError(
+          "Engine key must be stringful",
+          {
+            cause: "Unstringful aliased engine",
+          },
+        );
+      else if (!engines.has(key))
+        throw ReferenceError(
+          "Aliased engine does not exist",
+          { cause: { key } },
+        );
+
+      return key as stringful;
+    }
+
+    const head = (
+      typeof Head === "string"
+        ? Head
+        : Head.key
     )
       .toLocaleLowerCase() as stringful,
-    key = engines.has(headword)
-      ? headword
-      : headword in alias
-        && alias[headword] !== ""
-        ? alias[headword] as stringful
+    key = engines.has(head)
+      ? head
+      : head in alias
+        ? dealias(
+            engines,
+            alias[head],
+          )
         : null;
 
     return key === null
       ? {
           key: "chat" as stringful,
           terms: [
-            typeof Headword === "string"
-              ? Headword
-              : Headword.deselect,
+            typeof Head === "string"
+              ? Head
+              : Head.deselect,
             ...tail,
           ],
         }
       : {
           key,
-          terms: typeof Headword === "string"
+          terms: typeof Head === "string"
             ? tail
             : [
-                Headword.selection,
-                ...Headword.consumes
+                Head.selection,
+                ...Head.consumes
                   ? tail.slice(1)
                   : tail,
               ],
