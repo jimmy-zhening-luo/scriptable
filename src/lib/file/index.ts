@@ -117,7 +117,6 @@ export default class File<Class extends string> {
   ) {
     try {
       if (!this.mutable)
-        throw new ReferenceError("Readonly file");
       else if (content === null)
         throw new TypeError("Null write-data");
       else if (File.manager.isDirectory(this.path))
@@ -155,7 +154,7 @@ export default class File<Class extends string> {
   public delete() {
     try {
       if (!this.mutable)
-        throw new ReferenceError("Readonly file");
+        throw new ReferenceError("Readonly File/Folder");
 
       if (this.exists)
         File.manager.remove(this.path);
