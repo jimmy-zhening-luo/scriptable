@@ -104,7 +104,7 @@ export default class File<Class extends string> {
   }
 
   public write(
-    content:
+    content?:
       | string
       | number
       | boolean
@@ -133,19 +133,21 @@ export default class File<Class extends string> {
           true,
         );
 
+      const buffer = content ?? "";
+
       File.manager.writeString(
         this.path,
-        typeof content === "object"
-          ? JSON.stringify(content)
+        typeof buffer === "object"
+          ? JSON.stringify(buffer)
           : typeof overwrite !== "string"
-            ? String(content)
+            ? String(buffer)
             : overwrite === "line"
               ? [
-                  String(content),
+                  String(buffer),
                   this.readString(),
                 ].join("\n")
               : this.readString()
-                + String(content),
+                + String(buffer),
       );
     }
     catch (e) {
