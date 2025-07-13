@@ -256,7 +256,7 @@ export default abstract class Widget<
     dial.font = font;
     dial.rightAlignText();
     dial.applyTimerStyle();
-    clock.addSpacer(null);
+    clock.addSpacer();
 
     const complication = clock
       .addText(period);
