@@ -211,7 +211,7 @@ export default abstract class Widget<
       ),
     {
       zero,
-      show,
+      period,
     } = ampm
       ? sinceMidnightDestinationNormal < 43200000
         ? {
@@ -223,7 +223,7 @@ export default abstract class Widget<
                     },
                   )
               : midnightDestinationNormal,
-            show: "AM",
+            period: "AM",
           }
         : {
             zero: sinceMidnightDestinationNormal < 46800000
@@ -234,45 +234,43 @@ export default abstract class Widget<
                       hours: 12,
                     },
                   ),
-            show: "PM",
+            period: "PM",
           }
       : {
           zero: midnightDestinationNormal,
-          show: "",
+          period: "",
         },
     clock = this
       .widget
       .addStack();
 
+    clock.spacing = 0;
     clock.centerAlignContent();
 
     const dial = clock
       .addDate(
         zero
           .toDate(),
-      ),
-    column = clock
-      .addSpacer(
-        this.weight,
-      ),
-    complication = clock
-      .addText(
-        show,
       );
 
-    dial
-      .applyTimerStyle();
-    dial
-      .font = font;
-    complication
-      .font = font;
+    dial.font = font;
+    dial.rightAlignText();
+    dial.applyTimerStyle();
+    clock.addSpacer(null);
+
+    const complication = clock
+      .addText(period);
+
+    complication.font = font;
+
+    const trailer = clock.addSpacer(42);
 
     return {
       clock,
       parts: {
         dial,
-        column,
         complication,
+        trailer,
       },
     } as const;
   }
