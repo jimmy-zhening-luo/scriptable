@@ -19,13 +19,15 @@ export default abstract class Shortcut<
       )
     ) = "single",
   ) {
+    const { plainTexts } = args;
+
     super(
       (
         inputType === "multi"
-          ? args.plainTexts.length === 0
+          ? plainTexts.length === 0
             ? undefined
-            : args.plainTexts as unknown as ShortcutInput & readonly string[]
-          : args.plainTexts[0] as Undef<ShortcutInput & string>
+            : plainTexts as unknown as string[] & ShortcutInput 
+          : plainTexts[0] as Undef<string & ShortcutInput>
       )
       ?? undefined,
       config
