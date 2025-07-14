@@ -11,7 +11,7 @@ export default abstract class Widget<
   > {
   protected readonly widget = new ListWidget;
   protected readonly style;
-  private readonly tap: boolean;
+  private readonly tapped: boolean;
 
   constructor(
     title: Null<string> = null,
@@ -25,21 +25,21 @@ export default abstract class Widget<
       leading = 12,
     } = {},
   ) {
-    const tap = config.runsInApp
-      && typeof args.widgetParameter === "string";
+    const input = args.widgetParameter as Null<string>,
+    tapped = config
+      .runsInApp
+        && typeof input === "string";
 
     super(
-      args.widgetParameter as Null<string>
-      ?? undefined,
-      config.runsInWidget
-      || tap,
+      input ?? undefined,
+      config
+        .runsInWidget
+        || tapped,
     );
-    this
-      .tap = tap;
-    this
-      .style = new Style(
-        this.weight,
-      );
+    this.tapped = tapped;
+    this.style = new Style(
+      this.weight,
+    );
     this
       .widget
       .spacing = spacing;
@@ -78,23 +78,23 @@ export default abstract class Widget<
     this
       .widget
       .refreshAfterDate = new Time()
-        .in(
-          {
-            seconds: 30,
-          },
-        )
+        .in({
+          seconds: 30,
+        })
         .toDate();
-    Script.setWidget(
-      this
-        .widget,
-    );
+    Script
+      .setWidget(
+        this
+          .widget,
+      );
 
     if (
-      this.tap
+      this.tapped
       && this.onTap !== undefined
     )
       try {
-        this.onTap();
+        this
+          .onTap();
       }
       catch (errorWidgetTap) {
         throw new Error(
@@ -123,7 +123,9 @@ export default abstract class Widget<
   ) {
     return this
       .widget
-      .addSpacer(height);
+      .addSpacer(
+        height,
+      );
   }
 
   protected field(
@@ -132,7 +134,9 @@ export default abstract class Widget<
   ) {
     const field = this
       .widget
-      .addText(text);
+      .addText(
+        text,
+      );
 
     field.font = font;
 
@@ -148,10 +152,9 @@ export default abstract class Widget<
         .fonts
         .rounded
         .regular(
-          Math
-            .round(
-              this.weight * 1.5,
-            ),
+          Math.round(
+            this.weight * 1.5,
+          ),
         ),
     }: {
       ampm?: boolean;
@@ -180,29 +183,23 @@ export default abstract class Widget<
         0,
       ),
     midnightDestination = midnight
-      .ago(
-        {
-          hours: difference,
-        },
-      ),
+      .ago({
+        hours: difference,
+      }),
     sinceMidnightDestination = now
       .since(
         midnightDestination,
       ),
     midnightDestinationNormal = sinceMidnightDestination < 0
       ? midnightDestination
-          .ago(
-            {
-              hours: 24,
-            },
-          )
+          .ago({
+            hours: 24,
+          })
       : sinceMidnightDestination >= 86400000
         ? midnightDestination
-            .in(
-              {
-                hours: 24,
-              },
-            )
+            .in({
+              hours: 24,
+            })
         : midnightDestination,
     sinceMidnightDestinationNormal = now
       .since(
@@ -216,11 +213,9 @@ export default abstract class Widget<
         ? {
             zero: sinceMidnightDestinationNormal < 3600000
               ? midnightDestinationNormal
-                  .ago(
-                    {
-                      hours: 12,
-                    },
-                  )
+                  .ago({
+                    hours: 12,
+                  }),
               : midnightDestinationNormal,
             period: "AM",
           }
@@ -228,11 +223,9 @@ export default abstract class Widget<
             zero: sinceMidnightDestinationNormal < 46800000
               ? midnightDestinationNormal
               : midnightDestinationNormal
-                  .in(
-                    {
-                      hours: 12,
-                    },
-                  ),
+                  .in({
+                    hours: 12,
+                  }),
             period: "PM",
           }
       : {
@@ -255,14 +248,20 @@ export default abstract class Widget<
     dial.font = font;
     dial.rightAlignText();
     dial.applyTimerStyle();
-    clock.addSpacer();
+    clock
+      .addSpacer();
 
     const complication = clock
-      .addText(period);
+      .addText(
+        period,
+      );
 
     complication.font = font;
 
-    const trailer = clock.addSpacer(42);
+    const trailer = clock
+      .addSpacer(
+        42,
+      );
 
     return {
       clock,
