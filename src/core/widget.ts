@@ -9,6 +9,7 @@ export default abstract class Widget<
     void,
     Setting
   > {
+  public static readonly Time = Time;
   protected readonly widget = new ListWidget;
   protected readonly style;
   private readonly tapped: boolean;
