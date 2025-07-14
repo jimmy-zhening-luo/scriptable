@@ -7,7 +7,7 @@ export interface SearchSetting {
   };
   readonly alias: Readonly<FieldTable>;
   readonly engines: Readonly<Table<
-    | Unflat<string, true>
+    | Unflat
     | ISearchEngineEntry<
       "url",
       (
