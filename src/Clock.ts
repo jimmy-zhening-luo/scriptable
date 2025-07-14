@@ -19,11 +19,15 @@ class Clock extends Widget {
           "sun",
           "json",
         ),
-      ),
+      ) as Record<
+        | "sunrise"
+        | "sunset",
+        FieldTable
+      >,
       today = new Widget
         .Time()
         .print("yyMMdd"),
-      sunset = sun.sunset[today];
+      sunset = sun.sunset[today] ?? "Unavailable";
 
       this.text(
         "Sunset: " + sunset,
