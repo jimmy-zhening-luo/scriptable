@@ -5,14 +5,14 @@ class Clock extends Widget {
   protected runtime() {
     this.clock();
     this.line(5);
-    this.field("China");
+    this.text("China");
     this.clock(
       {
         timezone: "Asia/Shanghai",
       },
     );
     this.line();
-    this.field(
+    this.text(
       "Sunset: " + this.feed("sunset"),
     );
   }

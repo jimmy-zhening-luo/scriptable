@@ -15,8 +15,11 @@ export default abstract class Widget<
 
   constructor(
     title: Null<string> = null,
-    private readonly showLastRefresh = false,
-    private readonly weight = 12,
+    private readonly mode:
+      | "calendar"
+      | "lock"
+      | "home" = "home",
+    weight = 12,
     spacing = 5,
     {
       top = 12,
@@ -39,43 +42,32 @@ export default abstract class Widget<
     );
     this.tapped = tapped;
     this.style = new Style(
-      this.weight,
+      weight,
     );
-    this
-      .widget
-      .spacing = spacing;
-    this
-      .widget
-      .setPadding(
-        top,
-        leading,
-        bottom,
-        trailing,
-      );
 
-    if (title !== "")
+    if (mode === "home") {
       this
-        .field(
-          title ?? this.app,
-          this
-            .style
-            .title(),
+        .widget
+        .spacing = spacing;
+      this
+        .widget
+        .setPadding(
+          top,
+          leading,
+          bottom,
+          trailing,
         );
+
+      if (title !== "")
+        this
+          .text(
+            title ?? this.app,
+            this.style.title(),
+          );
+    }
   }
 
   protected output() {
-    if (this.showLastRefresh)
-      this
-        .field(
-          "Latest: " + new Time()
-            .print(
-              "h:mm a",
-            ),
-          this
-            .style
-            .footnote(),
-        );
-
     this
       .widget
       .refreshAfterDate = new Time()
@@ -83,6 +75,12 @@ export default abstract class Widget<
           seconds: 30,
         })
         .toDate();
+
+    if (this.mode !== "home")
+      this
+        .widget
+        .useDefaultPadding();
+
     Script
       .setWidget(
         this
@@ -120,7 +118,7 @@ export default abstract class Widget<
   };
 
   protected line(
-    height: number = this.weight,
+    height = this.weight,
   ) {
     return this
       .widget
@@ -129,19 +127,19 @@ export default abstract class Widget<
       );
   }
 
-  protected field(
+  protected text(
     text: string,
-    font: Font = this.style.body(),
+    font = this.style.body(),
   ) {
-    const field = this
+    const text = this
       .widget
       .addText(
         text,
       );
 
-    field.font = font;
+    text.font = font;
 
-    return field;
+    return text;
   }
 
   protected clock(
@@ -272,6 +270,20 @@ export default abstract class Widget<
         trailer,
       },
     } as const;
+  }
+
+  protected lastRefresh(
+    label = "Latest: ",
+    font = this.style.footnote(),
+  ) {
+    return this
+      .text(
+        label + new Time()
+          .print(
+            "h:mm a",
+          ),
+        font,
+      );
   }
 
   protected onTap?: () => void;
