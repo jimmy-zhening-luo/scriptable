@@ -84,10 +84,10 @@ export default function (
             ...tail
           ] = tokens;
 
-          return [
+          return {
             Head,
-            ...tail as stringful[],
-          ] as const;
+            tail: tail as stringful[],
+          };
         }
 
         const OPERATORS = {
@@ -96,10 +96,10 @@ export default function (
           rest: "%°¢/*^!,:)",
         },
         tokens = tokenize(query),
-        [
+        {
           Head,
-          ...tail
-        ] = tokens;
+          tail,
+        } = tokens;
 
         return typeof Head === "string"
           && new Set(
@@ -109,28 +109,30 @@ export default function (
             .has(
               Head[0] as string,
             )
-          ? [
-              new ReservedSearchQueryKey("math"),
+          ? {
+              Head: new ReservedSearchQueryKey("math"),
+              tail: [
+                Head,
+                ...tail,
+              ],
+            }
+          : {
               Head,
-              ...tail,
-            ] as const
-          : [
-              Head,
-              ...tail,
-            ] as const;
+              tail,
+            };
       }
 
       const tokens = expand(query),
-      [
+      {
         Head,
-        ...tail
-      ] = tokens;
+        tail,
+      } = tokens;
 
       if (typeof Head !== "string")
-        return [
+        return {
           Head,
-          ...tail,
-        ] as const;
+          tail,
+        };
       else {
         const DOT = "." as char;
 
@@ -147,7 +149,10 @@ export default function (
           );
 
         if (match === undefined)
-          return tokens;
+          return {
+            Head,
+            tail,
+          };
         else {
           const canonical = selectors[0]!,
           [
@@ -163,20 +168,22 @@ export default function (
             );
 
           return key === ""
-            ? [
-                new ReservedSearchQueryKey("translate"),
-                [
-                  canonical,
-                  selection === ""
-                  && match === DOT
-                    ? tail.shift() ?? ""
-                    : selection,
-                ]
-                  .join("") as stringful,
-                ...tail as stringful[],
-              ] as const
-            : [
-                new SearchQuerySelectionCandidate(
+            ? {
+                Head: new ReservedSearchQueryKey("translate"),
+                tail: [
+                  [
+                    canonical,
+                    selection === ""
+                    && match === DOT
+                      ? tail.shift() ?? ""
+                      : selection,
+                  ]
+                    .join("") as stringful,
+                  ...tail,
+                ],
+              }
+            : {
+                Head: new SearchQuerySelectionCandidate(
                   key as stringful,
                   {
                     canonical,
@@ -186,25 +193,25 @@ export default function (
                   tail.at(0) ?? "",
                   Head,
                 ),
-                ...tail,
-              ] as const;
+                tail,
+              };
         }
       }
     }
 
-    const [
+    const {
       Head,
-      ...tail
-    ] = select(
+      tail,
+    } = select(
       query,
       SELECTORS,
     );
 
     if (typeof Head !== "string")
-      return [
+      return {
         Head,
-        ...tail,
-      ] as const;
+        tail,
+      };
     else {
       const operation = (/^(\W+)(\w+)$/u)
         .exec(
@@ -212,10 +219,10 @@ export default function (
         );
 
       if (operation === null)
-        return [
+        return {
           Head,
-          ...tail,
-        ] as const;
+          tail,
+        } as const;
       else {
         const [
           ,
@@ -223,19 +230,21 @@ export default function (
           operand,
         ] = operation as unknown as Triad<stringful>;
 
-        return [
-          key,
-          operand,
-          ...tail,
-        ] as const;
+        return {
+          Head: key,
+          tail: [
+            operand,
+            ...tail,
+          ],
+        };
       }
     }
   }
 
-  const [
+  const {
     Head,
-    ...tail
-  ] = parse(
+    tail,
+  } = parse(
     query,
     SELECTORS,
   );
