@@ -12,9 +12,29 @@ class Clock extends Widget {
       },
     );
     this.line();
-    this.text(
-      "Sunset: " + this.feed("sunset"),
-    );
+
+    try {
+      const sun = JSON.parse(
+        this.feed(
+          "sun",
+          "json",
+        ),
+      ),
+      today = new Widget
+        .Time()
+        .print("yyMMdd"),
+      sunset = sun.sunset[today];
+
+      this.text(
+        "Sunset: " + sunset,
+      );
+    }
+    catch (e) {
+      console.error("Unable to populate Sun data due to error: " + e);
+    }
+    finally {
+      console.warn("Continuing to show Widget sans Sun features");
+    }
   }
 }
 
