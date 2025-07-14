@@ -161,14 +161,7 @@ export default abstract class Widget<
         ),
     }: {
       ampm?: boolean;
-      timezone?: (
-        | null
-        | "America/Los_Angeles"
-        | "America/New_York"
-        | "Europe/Zurich"
-        | "Asia/Shanghai"
-        | "Asia/Seoul"
-      );
+      timezone?: Parameters<typeof Time.prototype.offset>[0];
       font?: Font;
     } = {},
   ) {

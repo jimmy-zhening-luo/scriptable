@@ -1,3 +1,5 @@
+import type { Timezone } from "./timezone";
+
 export default class Time {
   private readonly date;
 
@@ -147,7 +149,7 @@ export default class Time {
   }
 
   public offset(
-    timeZone: Null<string> = null,
+    timeZone: Null<Timezone> = null,
   ) {
     const fromUTC = this
       .date
