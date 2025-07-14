@@ -19,12 +19,7 @@ export default abstract class Widget<
       | "calendar"
       | "lock"
       | "home" = "home",
-    private readonly weight =
-    mode === "calendar"
-      ? 10
-      : mode === "lock"
-        ? 8
-        : 12,
+    private readonly weight = 12,
     spacing = 5,
     {
       top = 12,
@@ -145,8 +140,7 @@ export default abstract class Widget<
         text,
       );
 
-    if (this.mode !== "calendar")
-      textbox.font = font;
+    textbox.font = font;
 
     return textbox;
   }
@@ -253,9 +247,7 @@ export default abstract class Widget<
           .toDate(),
       );
 
-    if (this.mode !== "calendar")
-      dial.font = font;
-
+    dial.font = font;
     dial.rightAlignText();
     dial.applyTimerStyle();
     clock
@@ -266,8 +258,7 @@ export default abstract class Widget<
         period,
       );
 
-    if (this.mode !== "calendar")
-      complication.font = font;
+    complication.font = font;
 
     const trailer = clock
       .addSpacer(
