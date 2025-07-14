@@ -1,43 +1,5 @@
 export type { SearchOutput } from "./output";
 export type { SearchSetting } from "./setting";
-
-class ReservedSearchQueryKey<
-  Key extends string,
-> {
-  public readonly key;
-
-  constructor(
-    key: Literalful<Key>,
-  ) {
-    this.key = key as unknown as stringful;
-  }
-}
-
-class SearchQuerySelectionCandidate {
-  public readonly consumes;
-  public readonly selection;
-
-  constructor(
-    public readonly key: stringful,
-    selectors: {
-      readonly canonical: stringful;
-      readonly match: stringful;
-    },
-    selection: string,
-    next: string,
-    public readonly deselect: stringful,
-  ) {
-    this.consumes = selection === ""
-      && selectors.match === ".";
-    this.selection = [
-      selectors.canonical,
-      this.consumes
-        ? next
-        : selection,
-    ].join("") as stringful;
-  }
-}
-
 export default function (
   query: string,
   engines: Set<string>,
@@ -52,6 +14,45 @@ export default function (
       query: string,
       SELECTORS: Set<char>,
     ) {
+      class ReservedSearchQueryKey<
+        Engine extends
+        | "chat"
+        | "translate"
+        | "math",
+      > {
+        public readonly key;
+
+        constructor(public readonly engine: Engine) {
+          this.key = engine as stringful;
+        }
+      }
+
+      class SearchQuerySelectionCandidate {
+        public readonly consumes;
+        public readonly selection;
+
+        constructor(
+          public readonly key: stringful,
+          selectors: {
+            readonly canonical: stringful;
+            readonly match: stringful;
+          },
+          selection: string,
+          next: string,
+          public readonly deselect: stringful,
+        ) {
+          this.consumes = selection === ""
+            && selectors.match === ".";
+          this.selection = [
+            selectors.canonical,
+            this.consumes
+              ? next
+              : selection,
+          ]
+            .join("") as stringful;
+        }
+      }
+
       function expand(query: string) {
         function tokenize(query: string) {
           function fallback(query: string) {
@@ -94,39 +95,36 @@ export default function (
           leading: "+-$€£¥.(",
           rest: "%°¢/*^!,:)",
         },
+        tokens = tokenize(query),
         [
           Head,
           ...tail
-        ] = tokenize(query);
+        ] = tokens;
 
-        return typeof Head !== "string"
-          ? [
-              Head,
-              ...tail,
-            ] as const
-          : new Set(
+        return typeof Head === "string"
+          && new Set(
             OPERATORS.digit
             + OPERATORS.leading,
           )
             .has(
-              Head[0],
+              Head[0] as string,
             )
-            ? [
-                new ReservedSearchQueryKey("math"),
-                Head,
-                ...tail,
-              ] as const
-            : [
-                Head,
-                ...tail,
-              ] as const;
+          ? [
+              new ReservedSearchQueryKey("math"),
+              Head,
+              ...tail,
+            ] as const
+          : [
+              Head,
+              ...tail,
+            ] as const;
       }
 
-      const [
+      const tokens = expand(query),
+      [
         Head,
-        ...inferredTail
-      ] = expand(query),
-      tail = [...inferredTail];
+        ...tail
+      ] = tokens;
 
       if (typeof Head !== "string")
         return [
@@ -140,26 +138,29 @@ export default function (
         SELECTORS.add(DOT);
 
         const selectors = [...SELECTORS],
-        match = selectors.find(
-          selector => Head.includes(
-            selector,
-          ),
-        );
+        match = selectors
+          .find(
+            selector => Head
+              .includes(
+                selector,
+              ),
+          );
 
         if (match === undefined)
-          return [
-            Head,
-            ...tail,
-          ] as const;
+          return tokens;
         else {
           const canonical = selectors[0]!,
           [
             key = "",
             ...selectionShards
           ] = Head
-            .split(match),
+            .split(
+              match,
+            ),
           selection = selectionShards
-            .join(match);
+            .join(
+              match,
+            );
 
           return key === ""
             ? [
@@ -172,7 +173,7 @@ export default function (
                     : selection,
                 ]
                   .join("") as stringful,
-                ...tail,
+                ...tail as stringful[],
               ] as const
             : [
                 new SearchQuerySelectionCandidate(
@@ -237,18 +238,14 @@ export default function (
   ] = parse(
     query,
     SELECTORS,
-  ),
-  whyNoInfer = Head as (
-    | typeof Head
-    | SearchQuerySelectionCandidate
   );
 
   if (
-    typeof whyNoInfer !== "string"
-    && !("selection" in whyNoInfer)
+    typeof Head !== "string"
+    && !("selection" in Head)
   )
     return {
-      key: whyNoInfer.key,
+      key: Head.key,
       terms: tail,
     };
   else {
@@ -273,9 +270,9 @@ export default function (
     }
 
     const head = (
-      typeof whyNoInfer === "string"
-        ? whyNoInfer
-        : whyNoInfer.key
+      typeof Head === "string"
+        ? Head
+        : Head.key
     )
       .toLocaleLowerCase() as stringful,
     key = engines.has(head)
@@ -291,19 +288,19 @@ export default function (
       ? {
           key: "chat" as stringful,
           terms: [
-            typeof whyNoInfer === "string"
-              ? whyNoInfer
-              : whyNoInfer.deselect,
+            typeof Head === "string"
+              ? Head
+              : Head.deselect,
             ...tail,
           ],
         }
       : {
           key,
-          terms: typeof whyNoInfer === "string"
+          terms: typeof Head === "string"
             ? tail
             : [
-                whyNoInfer.selection,
-                ...whyNoInfer.consumes
+                Head.selection,
+                ...Head.consumes
                   ? tail.slice(1)
                   : tail,
               ],
