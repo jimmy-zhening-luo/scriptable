@@ -83,10 +83,10 @@ export default function (
             ...tail
           ] = tokens;
 
-          return {
+          return [
             Head,
-            tail: tail as stringful[],
-          } as const;
+            ...tail as stringful[],
+          ] as const;
         }
 
         const OPERATORS = {
@@ -94,44 +94,45 @@ export default function (
           leading: "+-$€£¥.(",
           rest: "%°¢/*^!,:)",
         },
-        {
+        [
           Head,
-          tail,
-        } = tokenize(query);
+          ...tail
+        ] = tokenize(query);
 
         return typeof Head !== "string"
-          ? {
+          ? [
               Head,
-              tail,
-            } as const
+              ...tail,
+            ] as const
           : new Set(
             OPERATORS.digit
             + OPERATORS.leading,
-          ).has(Head[0])
-            ? {
-                Head: new ReservedSearchQueryKey("math"),
-                tail: [
-                  Head,
-                  ...tail,
-                ],
-              } as const
-            : {
+          )
+          .has(
+            Head[0],
+          )
+            ? [
+                new ReservedSearchQueryKey("math"),
                 Head,
-                tail,
-              } as const;
+                ...tail,
+              ] as const
+            : [
+                Head,
+                ...tail,
+              ] as const;
       }
 
-      const {
+      const [
         Head,
-        tail: inferredTail,
-      } = expand(query),
+        ...inferredTail
+      ] = expand(query),
       tail = [...inferredTail];
 
       if (typeof Head !== "string")
-        return {
+        return [
           Head,
-          tail,
-        } as const;
+          ...tail,
+        ] as const;
       else {
         const DOT = "." as char;
 
@@ -146,10 +147,10 @@ export default function (
         );
 
         if (match === undefined)
-          return {
+          return [
             Head,
-            tail,
-          };
+            ...tail,
+          ] as const;
         else {
           const canonical = selectors[0]!,
           [
@@ -161,21 +162,20 @@ export default function (
             .join(match);
 
           return key === ""
-            ? {
-                Head: new ReservedSearchQueryKey("translate"),
-                tail: [
-                  [
-                    canonical,
-                    selection === ""
-                    && match === DOT
-                      ? tail.shift() ?? ""
-                      : selection,
-                  ].join("") as stringful,
-                  ...tail,
-                ],
-              } as const
-            : {
-                Head: new SearchQuerySelectionCandidate(
+            ? [
+                new ReservedSearchQueryKey("translate"),
+                [
+                  canonical,
+                  selection === ""
+                  && match === DOT
+                    ? tail.shift() ?? ""
+                    : selection,
+                ]
+                  .join("") as stringful,
+                ...tail,
+              ] as const
+            : [
+                new SearchQuerySelectionCandidate(
                   key as stringful,
                   {
                     canonical,
@@ -185,25 +185,25 @@ export default function (
                   tail.at(0) ?? "",
                   Head,
                 ),
-                tail,
-              } as const;
+                ...tail,
+              ] as const;
         }
       }
     }
 
-    const {
+    const [
       Head,
-      tail,
-    } = select(
+      ...tail
+    ] = select(
       query,
       SELECTORS,
     );
 
     if (typeof Head !== "string")
-      return {
+      return [
         Head,
-        tail,
-      } as const;
+        ...tail,
+      ] as const;
     else {
       const operation = (/^(\W+)(\w+)$/u)
         .exec(
@@ -211,10 +211,10 @@ export default function (
         );
 
       if (operation === null)
-        return {
+        return [
           Head,
-          tail,
-        } as const;
+          ...tail,
+        ] as const;
       else {
         const [
           ,
@@ -222,21 +222,19 @@ export default function (
           operand,
         ] = operation as unknown as Triad<stringful>;
 
-        return {
-          Head: key,
-          tail: [
-            operand,
-            ...tail,
-          ],
-        } as const;
+        return [
+          key,
+          operand,
+          ...tail,
+        ] as const;
       }
     }
   }
 
-  const {
+  const [
     Head,
-    tail,
-  } = parse(
+    ...tail
+  ] = parse(
     query,
     SELECTORS,
   ),
