@@ -18,7 +18,4 @@ class Clock extends Widget {
   }
 }
 
-new Clock(
-  null,
-  false,
-).run();
+new Clock().run();

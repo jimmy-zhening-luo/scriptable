@@ -15,7 +15,7 @@ export default abstract class Widget<
 
   constructor(
     title: Null<string> = null,
-    private readonly showLastRefresh = true,
+    private readonly showLastRefresh = false,
     private readonly weight = 12,
     spacing = 5,
     {
