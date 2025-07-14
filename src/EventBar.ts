@@ -6,7 +6,7 @@ class EventBar extends Widget {
     this.text(
       new Widget
         .Time()
-        .print("MMM")
+        .print("MMM"),
     );
   }
 }
