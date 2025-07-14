@@ -19,7 +19,8 @@ export default abstract class Share<
       args[shareInputType].length === 0
         ? undefined
         : args[shareInputType],
-      config.runsInActionExtension,
+      config
+        .runsInActionExtension,
     );
   }
 

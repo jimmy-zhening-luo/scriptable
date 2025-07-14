@@ -28,11 +28,17 @@ export default abstract class Shortcut<
           : args.plainTexts[0] as Undef<ShortcutInput & string>
       )
       ?? undefined,
-      config.runsWithSiri,
+      config
+        .runsWithSiri,
     );
   }
 
-  protected output(output: ReturnType<Shortcut<ShortcutInput, ShortcutOutput>["runtime"]>) {
-    Script.setShortcutOutput(output);
+  protected output(
+    output: ReturnType<Shortcut<ShortcutInput, ShortcutOutput>["runtime"]>,
+  ) {
+    Script
+      .setShortcutOutput(
+        output,
+      );
   }
 }

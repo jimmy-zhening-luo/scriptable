@@ -55,8 +55,7 @@ export default abstract class Widget<
     if (title !== "")
       this
         .field(
-          title
-          ?? this.app,
+          title ?? this.app,
           this
             .style
             .title(),
