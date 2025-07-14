@@ -3,7 +3,7 @@ import Widget from "./core/widget";
 
 class EventBar extends Widget {
   protected runtime() {
-    this.line();
+    this.text("Hi");
   }
 }
 

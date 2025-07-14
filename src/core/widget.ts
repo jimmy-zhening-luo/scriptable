@@ -19,7 +19,13 @@ export default abstract class Widget<
       | "calendar"
       | "lock"
       | "home" = "home",
-    weight = 12,
+    private readonly weight = (
+      mode === "calendar"
+        ? 10
+        : mode === "lock"
+          ? 8
+          : 12
+    ),
     spacing = 5,
     {
       top = 12,
@@ -76,11 +82,6 @@ export default abstract class Widget<
         })
         .toDate();
 
-    if (this.mode !== "home")
-      this
-        .widget
-        .useDefaultPadding();
-
     Script
       .setWidget(
         this
@@ -105,8 +106,13 @@ export default abstract class Widget<
 
   protected override test = () => {
     this
-      .widget
-      .presentSmall()
+      .widget[
+        this.mode === "calendar"
+          ? "presentAccessoryInline"
+          : this.mode === "lock"
+            ? "presentAccessoryCircular"
+            : "presentSmall"
+      ]()
       .catch(
         (errorScriptableUI: unknown) => {
           throw new EvalError(
@@ -120,6 +126,9 @@ export default abstract class Widget<
   protected line(
     height = this.weight,
   ) {
+    if (this.mode === "calendar")
+      throw new TypeError("Calendar Widget must be single-line");
+
     return this
       .widget
       .addSpacer(
@@ -137,7 +146,8 @@ export default abstract class Widget<
         text,
       );
 
-    text.font = font;
+    if (this.mode !== "calendar")
+      text.font = font;
 
     return text;
   }
@@ -244,7 +254,9 @@ export default abstract class Widget<
           .toDate(),
       );
 
-    dial.font = font;
+    if (this.mode !== "calendar")
+      dial.font = font;
+
     dial.rightAlignText();
     dial.applyTimerStyle();
     clock
@@ -255,7 +267,8 @@ export default abstract class Widget<
         period,
       );
 
-    complication.font = font;
+    if (this.mode !== "calendar")
+      complication.font = font;
 
     const trailer = clock
       .addSpacer(
@@ -276,6 +289,9 @@ export default abstract class Widget<
     label = "Latest: ",
     font = this.style.footnote(),
   ) {
+    if (this.mode !== "home")
+      throw new TypeError("Last refresh date can only be shown on Home Screen Widget");
+
     return this
       .text(
         label + new Time()
