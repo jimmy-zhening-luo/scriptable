@@ -36,7 +36,7 @@ class Clock extends Widget {
     catch (e) {
       console.error(
         "Unable to populate Sun data due to error: "
-          + String(e),
+        + String(e),
       );
     }
     finally {
