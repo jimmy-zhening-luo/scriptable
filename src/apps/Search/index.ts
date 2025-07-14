@@ -108,9 +108,9 @@ export default function (
             OPERATORS.digit
             + OPERATORS.leading,
           )
-          .has(
-            Head[0],
-          )
+            .has(
+              Head[0],
+            )
             ? [
                 new ReservedSearchQueryKey("math"),
                 Head,
