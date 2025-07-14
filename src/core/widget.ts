@@ -1,6 +1,6 @@
 import IApp from "./app";
 import Time from "../lib/time";
-import Style from "../lib/ui/style";
+import Style from "../lib/ui/typography";
 
 export default abstract class Widget<
   Setting = never,

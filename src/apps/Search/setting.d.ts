@@ -1,4 +1,4 @@
-import type { SearchEngineSetting } from "./engine";
+import type { ISearchEngineEntry } from "./engine";
 
 export interface SearchSetting {
   readonly reserved: {
@@ -8,7 +8,7 @@ export interface SearchSetting {
   readonly alias: Readonly<FieldTable>;
   readonly engines: Readonly<Table<
     | Unflat<string, true>
-    | SearchEngineSetting<
+    | ISearchEngineEntry<
       "url",
       (
         | "force"
@@ -18,7 +18,7 @@ export interface SearchSetting {
       ),
       Unflat
     >
-    | SearchEngineSetting<
+    | ISearchEngineEntry<
       "shortcut",
       (
         | "encode"

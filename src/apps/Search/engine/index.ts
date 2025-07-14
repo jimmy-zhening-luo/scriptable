@@ -1,3 +1,4 @@
+export type { ISearchEngineEntry } from "./entry";
 export default function<
   EngineType extends (
     | "browser"

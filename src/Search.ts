@@ -1,7 +1,7 @@
 // icon-color: blue; icon-glyph: search;
 import Shortcut from "./core";
 import parse from "./apps/Search";
-import resolve from "./apps/Search/resolve";
+import engine from "./apps/Search/engine";
 import type {
   SearchOutput,
   SearchSetting,
@@ -57,7 +57,7 @@ class Search extends Shortcut<
       );
 
     return !entryHasOption
-      ? resolve(
+      ? engine(
           key,
           terms,
           "browser",
@@ -70,7 +70,7 @@ class Search extends Shortcut<
           ),
         )
       : "url" in entry
-        ? resolve(
+        ? engine(
             key,
             terms,
             "browser",
@@ -85,7 +85,7 @@ class Search extends Shortcut<
             entry.force,
             entry.separator,
           )
-        : resolve(
+        : engine(
             key,
             terms,
             "shortcut",
