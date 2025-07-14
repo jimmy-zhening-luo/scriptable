@@ -1,6 +1,5 @@
 // icon-color: orange; icon-glyph: clock;
 import Widget from "./core/widget";
-import Time from "./lib/time";
 
 class Clock extends Widget {
   protected runtime() {
@@ -20,5 +19,7 @@ class Clock extends Widget {
 }
 
 new Clock(
-  new Time().print("EEEE d"),
+  new Clock
+    .Time()
+    .print("EEEE d"),
 ).run();
