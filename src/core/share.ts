@@ -15,10 +15,12 @@ export default abstract class Share<
       | "fileURLs"
     ) = "plainTexts",
   ) {
+    const { [shareInputType]: inputs } = args;
+
     super(
-      args[shareInputType].length === 0
+      inputs.length === 0
         ? undefined
-        : args[shareInputType],
+        : inputs,
       config
         .runsInActionExtension,
     );
