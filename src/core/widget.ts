@@ -140,16 +140,16 @@ export default abstract class Widget<
     text: string,
     font = this.style.body(),
   ) {
-    const text = this
+    const textbox = this
       .widget
       .addText(
         text,
       );
 
     if (this.mode !== "calendar")
-      text.font = font;
+      textbox.font = font;
 
-    return text;
+    return textbox;
   }
 
   protected clock(
