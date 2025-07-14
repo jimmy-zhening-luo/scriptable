@@ -29,7 +29,7 @@ export default abstract class Widget<
       .widgetParameter as Null<string>,
     tapped = config
       .runsInApp
-        && typeof input === "string";
+      && typeof input === "string";
 
     super(
       input,

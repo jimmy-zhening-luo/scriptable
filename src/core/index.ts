@@ -22,13 +22,12 @@ export default abstract class Shortcut<
     const { plainTexts } = args;
 
     super(
-      (
-        inputType === "multi"
-          ? plainTexts.length === 0
-            ? null
-            : plainTexts as unknown as string[] & ShortcutInput 
-          : plainTexts[0] as Undef<string & ShortcutInput>
-      ),
+
+      inputType === "multi"
+        ? plainTexts.length === 0
+          ? null
+          : plainTexts as unknown as string[] & ShortcutInput
+        : plainTexts[0] as Undef<string & ShortcutInput>,
       config
         .runsWithSiri,
     );
