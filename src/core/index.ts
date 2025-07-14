@@ -11,17 +11,17 @@ export default abstract class Shortcut<
   > {
   constructor(
     inputType: (
-      | "string"
+      | "single"
       | (
         ShortcutInput extends readonly string[]
-          ? "array"
+          ? "multi"
           : never
       )
-    ) = "string",
+    ) = "single",
   ) {
     super(
       (
-        inputType === "array"
+        inputType === "multi"
           ? args.plainTexts.length === 0
             ? undefined
             : args.plainTexts as unknown as ShortcutInput & readonly string[]
