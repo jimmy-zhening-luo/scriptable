@@ -19,13 +19,12 @@ export default abstract class Widget<
       | "calendar"
       | "lock"
       | "home" = "home",
-    private readonly weight = (
-      mode === "calendar"
-        ? 10
-        : mode === "lock"
-          ? 8
-          : 12
-    ),
+    private readonly weight =
+    mode === "calendar"
+      ? 10
+      : mode === "lock"
+        ? 8
+        : 12,
     spacing = 5,
     {
       top = 12,
