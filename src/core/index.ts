@@ -25,11 +25,10 @@ export default abstract class Shortcut<
       (
         inputType === "multi"
           ? plainTexts.length === 0
-            ? undefined
+            ? null
             : plainTexts as unknown as string[] & ShortcutInput 
           : plainTexts[0] as Undef<string & ShortcutInput>
-      )
-      ?? undefined,
+      ),
       config
         .runsWithSiri,
     );

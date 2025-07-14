@@ -25,13 +25,14 @@ export default abstract class Widget<
       leading = 12,
     } = {},
   ) {
-    const input = args.widgetParameter as Null<string>,
+    const input = args
+      .widgetParameter as Null<string>,
     tapped = config
       .runsInApp
         && typeof input === "string";
 
     super(
-      input ?? undefined,
+      input,
       config
         .runsInWidget
         || tapped,

@@ -19,7 +19,7 @@ export default abstract class Share<
 
     super(
       inputs.length === 0
-        ? undefined
+        ? null
         : inputs,
       config
         .runsInActionExtension,
