@@ -40,6 +40,12 @@ export default class Time {
   }
 
   public since(
+    time?: Time,
+  ) {
+    return this.epoch - (time ?? this).epoch;
+  }
+
+  public since(
     time: Time,
   ) {
     return this.epoch - time.epoch;

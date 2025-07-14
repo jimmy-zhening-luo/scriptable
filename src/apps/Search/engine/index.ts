@@ -111,8 +111,6 @@ export default function<
           )
         : queryText,
     notify,
-    label: queryText
-      ?? engine
-      ?? type,
+    label: queryText,
   };
 }

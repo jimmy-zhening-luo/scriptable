@@ -6,5 +6,5 @@ export interface SearchOutput {
     | readonly stringful[]
   );
   notify: Null<true>;
-  label: string;
+  label: Null<string>;
 }
