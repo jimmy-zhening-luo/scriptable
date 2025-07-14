@@ -11,7 +11,7 @@ class Clock extends Widget {
         timezone: "Asia/Shanghai",
       },
     );
-    this.line();  
+    this.line();
     this.text(
       "Sunset: " + this.feed("sunset"),
     );
