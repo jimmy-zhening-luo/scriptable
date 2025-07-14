@@ -3,11 +3,15 @@ import Widget from "./core/widget";
 
 class EventBar extends Widget {
   protected runtime() {
-    this.text("Hi");
+    this.text(
+      new Widget
+        .Time()
+        .print("MMM")
+    );
   }
 }
 
 new EventBar(
-  "",
+  null,
   "calendar",
 ).run();
