@@ -215,7 +215,7 @@ export default abstract class Widget<
               ? midnightDestinationNormal
                   .ago({
                     hours: 12,
-                  }),
+                  })
               : midnightDestinationNormal,
             period: "AM",
           }
