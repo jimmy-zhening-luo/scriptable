@@ -3,15 +3,19 @@ import Widget from "./core/widget";
 
 class Clock extends Widget {
   protected runtime() {
-    this.clock();
-    this.line(5);
+    this.text("Europe");
+    this.clock(
+      {
+        timezone: "Europe/Zurich",
+      },
+    );
     this.text("China");
     this.clock(
       {
         timezone: "Asia/Shanghai",
       },
     );
-    this.line();
+    this.line(5);
 
     try {
       const sun = JSON.parse(
@@ -46,5 +50,5 @@ class Clock extends Widget {
 new Clock(
   new Widget
     .Time()
-    .print("EEEE d"),
+    .print("E d"),
 ).run();
