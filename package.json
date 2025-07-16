@@ -20,6 +20,7 @@
     "chai": "^5.2.1",
     "eslint": "~9.31.0",
     "linted": "~30.3.0",
+    "markdownlint-cli2": "^0.18.1",
     "mocha": "^11.7.1",
     "npm-run-all": "^4.1.5",
     "rexreplace": "^7.1.13",
