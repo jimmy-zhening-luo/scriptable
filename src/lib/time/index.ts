@@ -4,10 +4,10 @@ export default class Time {
   private readonly date;
 
   constructor(
-    date: (
+    date:
       | Date
       | number
-    ) = new Date,
+    = new Date,
   ) {
     try {
       this.date = typeof date === "number"

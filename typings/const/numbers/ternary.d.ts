@@ -1,4 +1,4 @@
-declare type ternary = (
-  | binary
-  | 2
-);
+declare type ternary
+  = | binary
+    | 2
+    ;

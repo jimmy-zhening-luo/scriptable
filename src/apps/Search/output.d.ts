@@ -1,10 +1,10 @@
 export interface SearchOutput {
   engine: Null<string>;
-  action: (
+  action:
     | null
     | stringful
     | readonly stringful[]
-  );
+  ;
   notify: Null<true>;
   label: Null<string>;
 }

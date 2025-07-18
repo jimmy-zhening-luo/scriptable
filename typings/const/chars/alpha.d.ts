@@ -1,4 +1,4 @@
-declare type alpha = (
-  | lower
-  | upper
-);
+declare type alpha
+  = | lower
+    | upper
+    ;

@@ -1,9 +1,9 @@
-declare type hexchar = (
-  | digit
-  | "A"
-  | "B"
-  | "C"
-  | "D"
-  | "E"
-  | "F"
-);
+declare type hexchar
+  = | digit
+    | "A"
+    | "B"
+    | "C"
+    | "D"
+    | "E"
+    | "F"
+    ;

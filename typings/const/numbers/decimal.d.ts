@@ -1,5 +1,5 @@
-declare type decimal = (
-  | octal
-  | 8
-  | 9
-);
+declare type decimal
+  = | octal
+    | 8
+    | 9
+    ;

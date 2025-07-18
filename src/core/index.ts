@@ -10,14 +10,14 @@ export default abstract class Shortcut<
     Setting
   > {
   constructor(
-    inputType: (
+    inputType:
       | "single"
       | (
         ShortcutInput extends readonly string[]
           ? "multi"
           : never
       )
-    ) = "single",
+    = "single",
   ) {
     const { plainTexts } = args;
 

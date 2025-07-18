@@ -1,4 +1,4 @@
-declare type binary = (
-  | 0
-  | 1
-);
+declare type binary
+  = | 0
+    | 1
+    ;

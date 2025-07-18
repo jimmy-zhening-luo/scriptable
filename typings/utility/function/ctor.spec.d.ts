@@ -33,9 +33,9 @@ declare namespace Constructor {
       Constructor<typeof TestAbstractParent<"C"> & typeof TestChildA>,
       Constructor<typeof TestAbstractParent<"A" | "B"> | typeof TestChildA>,
       Constructor<typeof TestAbstractParent<"A" | "B"> & typeof TestChildA>,
-      Constructor<typeof TestAbstractParent<"A" | "B"> | (typeof TestChildA | typeof TestChildB)>,
+      Constructor<typeof TestAbstractParent<"A" | "B"> | typeof TestChildA | typeof TestChildB>,
       Constructor<typeof TestAbstractParent<"A" | "B"> & (typeof TestChildA | typeof TestChildB)>,
-      Constructor<(typeof TestAbstractParent<"A"> | typeof TestAbstractParent<"B">) | (typeof TestChildA | typeof TestChildB)>,
+      Constructor<typeof TestAbstractParent<"A"> | typeof TestAbstractParent<"B"> | typeof TestChildA | typeof TestChildB>,
       Constructor<typeof TestAbstractParent<"A" | "B"> & (typeof TestChildA | typeof TestChildB)>,
       Constructor<typeof TestClass & (typeof TestChildA | typeof TestChildB)>,
       // Error:
