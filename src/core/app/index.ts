@@ -95,12 +95,9 @@ export default abstract class IApp<
       typeof trace[0] !== "string"
       && "cause" in trace[0]
     )
-      trace
-        .unshift(
-          cast(
-            trace[0].cause,
-          ),
-        );
+      trace.unshift(
+        cast(trace[0].cause),
+      );
 
     const [failure = "", ...causes] = (
       typeof trace[0] === "string"
@@ -111,11 +108,12 @@ export default abstract class IApp<
             ...trace.slice(2),
           ] as const
         : [...trace] as const
-    ).map(
-      error => typeof error === "string"
-        ? error
-        : error.message,
-    ),
+    )
+      .map(
+        error => typeof error === "string"
+          ? error
+          : error.message,
+      ),
     cause = causes.join("\n"),
     notification = new Notification;
 
@@ -139,7 +137,8 @@ export default abstract class IApp<
       [
         failure,
         cause,
-      ].join("\n"),
+      ]
+        .join("\n"),
     );
 
     return new Error(
@@ -275,7 +274,7 @@ export default abstract class IApp<
     ...file: Parameters<IApp["storage"]>
   ) {
     this
-      .storage(...filepop)
+      .storage(...file)
       .delete();
   }
 
