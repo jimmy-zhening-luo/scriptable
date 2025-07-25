@@ -106,9 +106,7 @@ export default function (
             OPERATORS.digit
             + OPERATORS.leading,
           )
-            .has(
-              Head[0] as string,
-            )
+            .has(Head[0] as string)
           ? {
               Head: new ReservedSearchQueryKey("math"),
               tail: [
@@ -143,9 +141,7 @@ export default function (
         match = selectors
           .find(
             selector => Head
-              .includes(
-                selector,
-              ),
+              .includes(selector),
           );
 
         if (match === undefined)
@@ -158,14 +154,8 @@ export default function (
           [
             key = "",
             ...selectionShards
-          ] = Head
-            .split(
-              match,
-            ),
-          selection = selectionShards
-            .join(
-              match,
-            );
+          ] = Head.split(match),
+          selection = selectionShards.join(match);
 
           return key === ""
             ? {
@@ -214,9 +204,7 @@ export default function (
       };
     else {
       const operation = (/^(\W+)(\w+)$/u)
-        .exec(
-          Head,
-        );
+        .exec(Head);
 
       if (operation === null)
         return {

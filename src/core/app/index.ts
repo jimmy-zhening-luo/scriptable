@@ -49,16 +49,8 @@ export default abstract class IApp<
   }
 
   protected get input() {
-    try {
-      return this._input
-        ?? undefined;
-    }
-    catch (e) {
-      throw new ReferenceError(
-        "Failed to get app input",
-        { cause: e },
-      );
-    }
+    return this._input
+      ?? undefined;
   }
 
   protected get setting() {
@@ -97,73 +89,63 @@ export default abstract class IApp<
           : JSON.stringify(error);
     }
 
-    try {
-      const trace: Arrayful<string | Error> = [cast(error)];
+    const trace: Arrayful<string | Error> = [cast(error)];
 
-      while (
-        typeof trace[0] !== "string"
-        && "cause" in trace[0]
-      )
-        trace
-          .unshift(
-            cast(
-              trace[0].cause,
-            ),
-          );
-
-      const [failure = "", ...causes] = (
-        typeof trace[0] === "string"
-        && trace[1] !== undefined
-          ? [
-              trace[1],
-              trace[0],
-              ...trace.slice(2),
-            ] as const
-          : [...trace] as const
-      ).map(
-        error => typeof error === "string"
-          ? error
-          : error.message,
-      ),
-      cause = causes.join("\n"),
-      notification = new Notification;
-
-      notification.title = app;
-      notification.subtitle = failure;
-      notification.body = cause;
-      notification.sound = "failure";
-      notification
-        .schedule()
-        .catch(
-          (errorSystemNotify: unknown) => {
-            console.error(errorSystemNotify);
-
-            throw new EvalError(
-              "Unable to send iOS Notification",
-              { cause: errorSystemNotify },
-            );
-          },
+    while (
+      typeof trace[0] !== "string"
+      && "cause" in trace[0]
+    )
+      trace
+        .unshift(
+          cast(
+            trace[0].cause,
+          ),
         );
-      console.error(
-        [
-          failure,
-          cause,
-        ].join("\n"),
-      );
 
-      return new Error(
+    const [failure = "", ...causes] = (
+      typeof trace[0] === "string"
+      && trace[1] !== undefined
+        ? [
+            trace[1],
+            trace[0],
+            ...trace.slice(2),
+          ] as const
+        : [...trace] as const
+    ).map(
+      error => typeof error === "string"
+        ? error
+        : error.message,
+    ),
+    cause = causes.join("\n"),
+    notification = new Notification;
+
+    notification.title = app;
+    notification.subtitle = failure;
+    notification.body = cause;
+    notification.sound = "failure";
+    notification
+      .schedule()
+      .catch(
+        (errorSystemNotify: unknown) => {
+          console.error(errorSystemNotify);
+
+          throw new EvalError(
+            "Unable to send iOS error notification",
+            { cause: errorSystemNotify },
+          );
+        },
+      );
+    console.error(
+      [
         failure,
-        { cause },
-      );
-    }
-    catch (crash) {
-      console.error(crash);
+        cause,
+      ].join("\n"),
+    );
 
-      throw new EvalError(
-        "Error handler crash",
-        { cause: crash },
-      );
-    }
+    return new Error(
+      failure,
+      { cause },
+    );
   }
 
   public run(sideload?: Input) {
@@ -210,13 +192,9 @@ export default abstract class IApp<
     }
   }
 
-  protected get(
-    key: string,
-  ) {
+  protected get(key: string) {
     return this
-      .state(
-        key,
-      )
+      .state(key)
       .readString();
   }
 
@@ -234,13 +212,9 @@ export default abstract class IApp<
       );
   }
 
-  protected unset(
-    key: string,
-  ) {
+  protected unset(key: string) {
     this
-      .state(
-        key,
-      )
+      .state(key)
       .delete();
   }
 
@@ -259,9 +233,7 @@ export default abstract class IApp<
     ...file: Parameters<IApp["storage"]>
   ) {
     return this
-      .storage(
-        ...file,
-      )
+      .storage(...file)
       .read();
   }
 
@@ -269,9 +241,7 @@ export default abstract class IApp<
     ...file: Parameters<IApp["storage"]>
   ) {
     return this
-      .storage(
-        ...file,
-      )
+      .storage(...file)
       .readString();
   }
 
@@ -279,9 +249,7 @@ export default abstract class IApp<
     ...file: Parameters<IApp["storage"]>
   ) {
     return this
-      .storage(
-        ...file,
-      )
+      .storage(...file)
       .readStringful();
   }
 
@@ -296,9 +264,7 @@ export default abstract class IApp<
     ]
   ) {
     this
-      .storage(
-        ...file,
-      )
+      .storage(...file)
       .write(
         data,
         overwrite,
@@ -309,9 +275,7 @@ export default abstract class IApp<
     ...file: Parameters<IApp["storage"]>
   ) {
     this
-      .storage(
-        ...file,
-      )
+      .storage(...filepop)
       .delete();
   }
 
@@ -329,9 +293,7 @@ export default abstract class IApp<
     ...feed: Parameters<IApp["stream"]>
   ) {
     return this
-      .stream(
-        ...feed,
-      )
+      .stream(...feed)
       .readString();
   }
 
@@ -348,8 +310,8 @@ export default abstract class IApp<
     return string as stringful;
   }
 
-  protected stringfuls<A extends readonly string[]>(
-    strings: A,
+  protected stringfuls<Arraylike extends readonly string[]>(
+    strings: Arraylike,
     cause = "",
   ) {
     if (strings.length === 0)
@@ -369,9 +331,9 @@ export default abstract class IApp<
       );
 
     return strings as unknown as (
-      A extends readonly [string, ...string[]]
+      Arraylike extends readonly [string, ...string[]]
         ? {
-            readonly [K in keyof A]: typeof strings[number];
+            readonly [K in keyof Arraylike]: typeof strings[number];
           }
         : Arrayful<typeof strings[number], true>
     );
@@ -390,8 +352,8 @@ export default abstract class IApp<
     return string as stringful;
   }
 
-  protected chars<A extends readonly string[]>(
-    strings: A,
+  protected chars<Arraylike extends readonly string[]>(
+    strings: Arraylike,
     cause = "",
   ) {
     if (strings.length === 0)
@@ -411,9 +373,9 @@ export default abstract class IApp<
       );
 
     return strings as unknown as (
-      A extends readonly [string, ...string[]]
+      Arraylike extends readonly [string, ...string[]]
         ? {
-            readonly [K in keyof A]: typeof strings[number];
+            readonly [K in keyof Arraylike]: typeof strings[number];
           }
         : Arrayful<typeof strings[number], true>
     );

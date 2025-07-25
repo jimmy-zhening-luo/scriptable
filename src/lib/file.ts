@@ -123,11 +123,7 @@ export default class File<Class extends string> {
         if (overwrite === false)
           throw new ReferenceError("File already exists, but `overwrite:false`");
       }
-      else if (
-        !File.manager.isDirectory(
-          this.parent,
-        )
-      )
+      else if (!File.manager.isDirectory(this.parent))
         File.manager.createDirectory(
           this.parent,
           true,
@@ -145,7 +141,8 @@ export default class File<Class extends string> {
               ? [
                   String(buffer),
                   this.readString(),
-                ].join("\n")
+                ]
+                  .join("\n")
               : this.readString()
                 + String(buffer),
       );
@@ -161,9 +158,7 @@ export default class File<Class extends string> {
         throw new ReferenceError("Readonly File/Folder");
 
       if (this.exists)
-        File.manager.remove(
-          this.path,
-        );
+        File.manager.remove(this.path);
     }
     catch (e) {
       throw this.error("delete", e);

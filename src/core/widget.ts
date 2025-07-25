@@ -31,20 +31,16 @@ export default abstract class Widget<
   ) {
     const input = args
       .widgetParameter as Null<string>,
-    tapped = config
-      .runsInApp
+    tapped = config.runsInApp
       && typeof input === "string";
 
     super(
       input,
-      config
-        .runsInWidget
+      config.runsInWidget
         || tapped,
     );
     this.tapped = tapped;
-    this.style = new Style(
-      weight,
-    );
+    this.style = new Style(weight);
 
     if (mode === "home") {
       this
@@ -72,24 +68,17 @@ export default abstract class Widget<
     this
       .widget
       .refreshAfterDate = new Time()
-        .in({
-          seconds: 30,
-        })
+        .in({ seconds: 30 })
         .toDate();
 
-    Script
-      .setWidget(
-        this
-          .widget,
-      );
+    Script.setWidget(this.widget);
 
     if (
       this.tapped
       && this.onTap !== undefined
     )
       try {
-        this
-          .onTap();
+        this.onTap();
       }
       catch (errorWidgetTap) {
         throw new Error(
@@ -126,9 +115,7 @@ export default abstract class Widget<
 
     return this
       .widget
-      .addSpacer(
-        height,
-      );
+      .addSpacer(height);
   }
 
   protected text(
@@ -137,9 +124,7 @@ export default abstract class Widget<
   ) {
     const textbox = this
       .widget
-      .addText(
-        text,
-      );
+      .addText(text);
 
     textbox.font = font;
 
@@ -169,38 +154,24 @@ export default abstract class Widget<
     offsetUTC = now
       .offset(),
     offsetUTCDestination = now
-      .offset(
-        timezone,
-      ),
+      .offset(timezone),
     difference = offsetUTCDestination
       - offsetUTC,
     midnight = now
-      .at(
-        0,
-      ),
+      .at(0),
     midnightDestination = midnight
-      .ago({
-        hours: difference,
-      }),
+      .ago({ hours: difference }),
     sinceMidnightDestination = now
-      .since(
-        midnightDestination,
-      ),
+      .since(midnightDestination),
     midnightDestinationNormal = sinceMidnightDestination < 0
       ? midnightDestination
-          .ago({
-            hours: 24,
-          })
+          .ago({ hours: 24 })
       : sinceMidnightDestination >= 86400000
         ? midnightDestination
-            .in({
-              hours: 24,
-            })
+            .in({ hours: 24 })
         : midnightDestination,
     sinceMidnightDestinationNormal = now
-      .since(
-        midnightDestinationNormal,
-      ),
+      .since(midnightDestinationNormal),
     {
       zero,
       period,
@@ -209,9 +180,7 @@ export default abstract class Widget<
         ? {
             zero: sinceMidnightDestinationNormal < 3600000
               ? midnightDestinationNormal
-                  .ago({
-                    hours: 12,
-                  })
+                  .ago({ hours: 12 })
               : midnightDestinationNormal,
             period: "AM",
           }
@@ -219,9 +188,7 @@ export default abstract class Widget<
             zero: sinceMidnightDestinationNormal < 46800000
               ? midnightDestinationNormal
               : midnightDestinationNormal
-                  .in({
-                    hours: 12,
-                  }),
+                  .in({ hours: 12 }),
             period: "PM",
           }
       : {
@@ -236,10 +203,7 @@ export default abstract class Widget<
     clock.centerAlignContent();
 
     const dial = clock
-      .addDate(
-        zero
-          .toDate(),
-      );
+      .addDate(zero.toDate());
 
     dial.font = font;
     dial.rightAlignText();
@@ -248,16 +212,12 @@ export default abstract class Widget<
       .addSpacer();
 
     const complication = clock
-      .addText(
-        period,
-      );
+      .addText(period);
 
     complication.font = font;
 
     const trailer = clock
-      .addSpacer(
-        42,
-      );
+      .addSpacer(42);
 
     return {
       clock,
@@ -278,10 +238,7 @@ export default abstract class Widget<
 
     return this
       .text(
-        label + new Time()
-          .print(
-            "h:mm a",
-          ),
+        label + new Time().print("h:mm a"),
         font,
       );
   }

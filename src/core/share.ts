@@ -20,8 +20,7 @@ export default abstract class Share<
       inputs.length === 0
         ? null
         : inputs,
-      config
-        .runsInActionExtension,
+      config.runsInActionExtension,
     );
   }
 
@@ -29,9 +28,6 @@ export default abstract class Share<
     output: ReturnType<Share<ShareOutput>["runtime"]>,
   ) {
     if (typeof output === "string")
-      Pasteboard
-        .copy(
-          output,
-        );
+      Pasteboard.copy(output);
   }
 }

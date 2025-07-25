@@ -39,15 +39,11 @@ export default class Time {
     return this.at(12);
   }
 
-  public since(
-    time: Time,
-  ) {
+  public since(time: Time) {
     return this.epoch - time.epoch;
   }
 
-  public until(
-    time: Time,
-  ) {
+  public until(time: Time) {
     return time.epoch - this.epoch;
   }
 
@@ -58,22 +54,12 @@ export default class Time {
   public print(
     format = "MMMM d, y h:mm:ss a",
   ) {
-    try {
-      (this.printer ??= new DateFormatter)
-        .dateFormat = format;
+    (this.printer ??= new DateFormatter)
+      .dateFormat = format;
 
-      return this
-        .printer
-        .string(
-          this.date,
-        );
-    }
-    catch (e) {
-      throw new SyntaxError(
-        "Failed to print Time to format: " + format,
-        { cause: e },
-      );
-    }
+    return this
+      .printer
+      .string(this.date);
   }
 
   public at(
@@ -82,31 +68,16 @@ export default class Time {
     second = 0,
     millisecond = 0,
   ) {
-    try {
-      return new Time(
-        this
-          .toDate()
-          .setHours(
-            hour,
-            minute,
-            second,
-            millisecond,
-          ),
-      );
-    }
-    catch (e) {
-      throw new RangeError(
-        "Failed to get Time at: " + [
+    return new Time(
+      this
+        .toDate()
+        .setHours(
           hour,
           minute,
           second,
           millisecond,
-        ]
-          .map(unit => String(unit))
-          .join(":"),
-        { cause: e },
-      );
-    }
+        ),
+    );
   }
 
   public in(
@@ -116,26 +87,12 @@ export default class Time {
       seconds = 0,
     } = {},
   ) {
-    try {
-      return new Time(
-        this.epoch
-        + hours * 3_600_000
-        + minutes * 60_000
-        + seconds * 1_000,
-      );
-    }
-    catch (e) {
-      throw new RangeError(
-        "Failed to get Time in: " + [
-          hours,
-          minutes,
-          seconds,
-        ]
-          .map(unit => String(unit))
-          .join(":"),
-        { cause: e },
-      );
-    }
+    return new Time(
+      this.epoch
+      + hours * 3_600_000
+      + minutes * 60_000
+      + seconds * 1_000,
+    );
   }
 
   public ago(
@@ -145,13 +102,11 @@ export default class Time {
       seconds = 0,
     } = {},
   ) {
-    return this.in(
-      {
-        hours: -hours,
-        minutes: -minutes,
-        seconds: -seconds,
-      },
-    );
+    return this.in({
+      hours: -hours,
+      minutes: -minutes,
+      seconds: -seconds,
+    });
   }
 
   public offset(
