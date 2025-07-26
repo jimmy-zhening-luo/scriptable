@@ -78,11 +78,9 @@ export default class Time {
   }
 
   public in(
-    {
-      hours = 0,
-      minutes = 0,
-      seconds = 0,
-    } = {},
+    hours = 0,
+    minutes = 0,
+    seconds = 0,
   ) {
     return new Time(
       this.epoch
@@ -93,17 +91,15 @@ export default class Time {
   }
 
   public ago(
-    {
-      hours = 0,
-      minutes = 0,
-      seconds = 0,
-    } = {},
+    hours = 0,
+    minutes = 0,
+    seconds = 0,
   ) {
-    return this.in({
-      hours: -hours,
-      minutes: -minutes,
-      seconds: -seconds,
-    });
+    return this.in(
+      -hours,
+      -minutes,
+      -seconds,
+    );
   }
 
   public offset(timeZone: Null<Timezone> = null) {
@@ -128,15 +124,14 @@ export default class Time {
       },
     )
       .formatToParts()
-      .find(part => part.type === "timeZoneName")!
+      .find(
+        part => part.type === "timeZoneName",
+      )!
       .value
       .slice(3) as unknown as Hexad<char>;
 
     return Number(`${sign}1`)
-      * (
-        Number(H0 + H1)
-        + Number(m0 + m1) / 60
-      );
+      * (Number(H0 + H1) + Number(m0 + m1) / 60);
   }
 
   public print(format = "MMMM d, y h:mm:ss a") {
