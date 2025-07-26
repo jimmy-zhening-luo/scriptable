@@ -33,15 +33,6 @@ export default class Time {
     return new Date(this.epoch);
   }
 
-  public print(format = "MMMM d, y h:mm:ss a") {
-    (this.printer ??= new DateFormatter)
-      .dateFormat = format;
-
-    return this
-      .printer
-      .string(this.toDate());
-  }
-
   public at(
     hour = 0,
     minute = 0,
@@ -120,6 +111,15 @@ export default class Time {
         Number(`${H1}${H2}`)
         + Number(`${m1}${m2}`) / 60
       );
+  }
+
+  public print(format = "MMMM d, y h:mm:ss a") {
+    (this.printer ??= new DateFormatter)
+      .dateFormat = format;
+
+    return this
+      .printer
+      .string(this.toDate());
   }
 
   private printer?: DateFormatter;
