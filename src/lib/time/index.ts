@@ -49,6 +49,34 @@ export default class Time {
     );
   }
 
+  public past(
+    timeOrHour: number | string = 0,
+    minute = 0,
+    second = 0,
+  ) {
+    return this.epoch >= (
+      typeof timeOrHour === "number"
+        ? this
+          .at(
+            timeOrHour,
+            minute,
+            second,
+          )
+        : new Time(
+            new Date(
+              [
+                this
+                  .toDate()
+                  .toDateString(),
+                timeOrHour,
+              ]
+                .join(" "),
+            ),
+          )
+    )
+      .epoch;
+  }
+
   public in(
     {
       hours = 0,
