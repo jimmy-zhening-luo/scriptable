@@ -57,22 +57,22 @@ export default class Time {
     return this.epoch >= (
       typeof timeOrHour === "number"
         ? this
-          .at(
-            timeOrHour,
-            minute,
-            second,
-          )
+            .at(
+              timeOrHour,
+              minute,
+              second,
+            )
         : new Time(
-            new Date(
-              [
-                this
-                  .toDate()
-                  .toDateString(),
-                timeOrHour,
-              ]
-                .join(" "),
-            ),
-          )
+          new Date(
+            [
+              this
+                .toDate()
+                .toDateString(),
+              timeOrHour,
+            ]
+              .join(" "),
+          ),
+        )
     )
       .epoch;
   }
