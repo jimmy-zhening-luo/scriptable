@@ -23,7 +23,8 @@ export default class File<Class extends string> {
                   : "libraryDirectory"
               ](),
               Class,
-            ].join("/")
+            ]
+              .join("/")
           : null;
 
       if (root === null)
@@ -41,18 +42,15 @@ export default class File<Class extends string> {
       this.path = [
         root,
         ...subpath,
-      ].join("/");
+      ]
+        .join("/");
       this.parent = [
         root,
-        ...subpath
-          .slice(0, -1),
-      ].join("/");
-      this.exists = File.manager.fileExists(
-        this.path,
-      );
-      this.folder = File.manager.isDirectory(
-        this.path,
-      );
+        ...subpath.slice(0, -1),
+      ]
+        .join("/");
+      this.exists = File.manager.fileExists(this.path);
+      this.folder = File.manager.isDirectory(this.path);
     }
     catch (e) {
       throw new Error(
@@ -143,8 +141,7 @@ export default class File<Class extends string> {
                   this.readString(),
                 ]
                   .join("\n")
-              : this.readString()
-                + String(buffer),
+              : this.readString() + String(buffer),
       );
     }
     catch (e) {
@@ -153,16 +150,14 @@ export default class File<Class extends string> {
   }
 
   public delete() {
-    try {
-      if (!this.mutable)
-        throw new ReferenceError("Readonly File/Folder");
+    if (!this.mutable)
+      throw this.error(
+        "delete",
+        new ReferenceError("Readonly File/Folder")
+      );
 
-      if (this.exists)
-        File.manager.remove(this.path);
-    }
-    catch (e) {
-      throw this.error("delete", e);
-    }
+    if (this.exists)
+      File.manager.remove(this.path);
   }
 
   private error(

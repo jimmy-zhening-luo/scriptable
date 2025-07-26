@@ -12,7 +12,8 @@ export default abstract class Share<
     shareInputType:
       | "plainTexts"
       | "urls"
-      | "fileURLs" = "plainTexts",
+      | "fileURLs"
+    = "plainTexts",
   ) {
     const { [shareInputType]: inputs } = args;
 
@@ -24,9 +25,7 @@ export default abstract class Share<
     );
   }
 
-  protected output(
-    output: ReturnType<Share<ShareOutput>["runtime"]>,
-  ) {
+  protected output(output: ReturnType<Share<ShareOutput>["runtime"]>) {
     if (typeof output === "string")
       Pasteboard.copy(output);
   }

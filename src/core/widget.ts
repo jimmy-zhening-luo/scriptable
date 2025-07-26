@@ -19,7 +19,8 @@ export default abstract class Widget<
     private readonly mode:
       | "calendar"
       | "lock"
-      | "home" = "home",
+      | "home"
+    = "home",
     private readonly weight = 12,
     spacing = 5,
     {
@@ -29,38 +30,31 @@ export default abstract class Widget<
       leading = 12,
     } = {},
   ) {
-    const input = args
-      .widgetParameter as Null<string>,
+    const input = args.widgetParameter as Null<string>,
     tapped = config.runsInApp
       && typeof input === "string";
 
     super(
       input,
-      config.runsInWidget
-      || tapped,
+      config.runsInWidget || tapped,
     );
     this.tapped = tapped;
     this.style = new Style(weight);
 
     if (mode === "home") {
-      this
-        .widget
-        .spacing = spacing;
-      this
-        .widget
-        .setPadding(
-          top,
-          leading,
-          bottom,
-          trailing,
-        );
+      this.widget.spacing = spacing;
+      this.widget.setPadding(
+        top,
+        leading,
+        bottom,
+        trailing,
+      );
 
       if (title !== "")
-        this
-          .text(
-            title ?? this.app,
-            this.style.title(),
-          );
+        this.text(
+          title ?? this.app,
+          this.style.title(),
+        );
     }
   }
 
@@ -68,15 +62,12 @@ export default abstract class Widget<
     this
       .widget
       .refreshAfterDate = new Time()
-        .in({ seconds: 30 })
+        .in(0, 1)
         .toDate();
 
     Script.setWidget(this.widget);
 
-    if (
-      this.tapped
-      && this.onTap !== undefined
-    )
+    if (this.tapped && this.onTap !== undefined)
       try {
         this.onTap();
       }
@@ -107,24 +98,18 @@ export default abstract class Widget<
       );
   };
 
-  protected line(
-    height = this.weight,
-  ) {
+  protected line(height = this.weight) {
     if (this.mode === "calendar")
       throw new TypeError("Calendar Widget must be single-line");
 
-    return this
-      .widget
-      .addSpacer(height);
+    return this.widget.addSpacer(height);
   }
 
   protected text(
     text: string,
     font = this.style.body(),
   ) {
-    const textbox = this
-      .widget
-      .addText(text);
+    const textbox = this.widget.addText(text);
 
     textbox.font = font;
 
@@ -140,9 +125,7 @@ export default abstract class Widget<
         .fonts
         .rounded
         .regular(
-          Math.round(
-            this.weight * 1.5,
-          ),
+          Math.round(this.weight * 1.5),
         ),
     }: {
       ampm?: boolean;
@@ -157,18 +140,15 @@ export default abstract class Widget<
       .offset(timezone),
     difference = offsetUTCDestination
       - offsetUTC,
-    midnight = now
-      .at(0),
+    midnight = now.at(0),
     midnightDestination = midnight
-      .ago({ hours: difference }),
+      .ago(difference),
     sinceMidnightDestination = now
       .since(midnightDestination),
     midnightDestinationNormal = sinceMidnightDestination < 0
-      ? midnightDestination
-          .ago({ hours: 24 })
+      ? midnightDestination.ago(24)
       : sinceMidnightDestination >= 86400000
-        ? midnightDestination
-            .in({ hours: 24 })
+        ? midnightDestination.in(24)
         : midnightDestination,
     sinceMidnightDestinationNormal = now
       .since(midnightDestinationNormal),
@@ -179,45 +159,37 @@ export default abstract class Widget<
       ? sinceMidnightDestinationNormal < 43200000
         ? {
             zero: sinceMidnightDestinationNormal < 3600000
-              ? midnightDestinationNormal
-                  .ago({ hours: 12 })
+              ? midnightDestinationNormal.ago(12)
               : midnightDestinationNormal,
             period: "AM",
           }
         : {
             zero: sinceMidnightDestinationNormal < 46800000
               ? midnightDestinationNormal
-              : midnightDestinationNormal
-                  .in({ hours: 12 }),
+              : midnightDestinationNormal.in(12),
             period: "PM",
           }
       : {
           zero: midnightDestinationNormal,
           period: "",
         },
-    clock = this
-      .widget
-      .addStack();
+    clock = this.widget.addStack();
 
     clock.spacing = 0;
     clock.centerAlignContent();
 
-    const dial = clock
-      .addDate(zero.toDate());
+    const dial = clock.addDate(zero.toDate());
 
     dial.font = font;
     dial.rightAlignText();
     dial.applyTimerStyle();
-    clock
-      .addSpacer();
+    clock.addSpacer();
 
-    const complication = clock
-      .addText(period);
+    const complication = clock.addText(period);
 
     complication.font = font;
 
-    const trailer = clock
-      .addSpacer(42);
+    const trailer = clock.addSpacer(42);
 
     return {
       clock,
@@ -236,11 +208,10 @@ export default abstract class Widget<
     if (this.mode !== "home")
       throw new TypeError("Last refresh date can only be shown on Home Screen Widget");
 
-    return this
-      .text(
-        label + new Time().print("h:mm a"),
-        font,
-      );
+    return this.text(
+      label + new Time().print("h:mm a"),
+      font,
+    );
   }
 
   protected onTap?: () => void;

@@ -31,9 +31,7 @@ export default abstract class Shortcut<
     );
   }
 
-  protected output(
-    output: ReturnType<Shortcut<ShortcutInput, ShortcutOutput>["runtime"]>,
-  ) {
+  protected output(output: ReturnType<Shortcut<ShortcutInput, ShortcutOutput>["runtime"]>) {
     Script.setShortcutOutput(output);
   }
 }

@@ -8,10 +8,8 @@ export default abstract class IApp<
   protected readonly app;
   protected readonly context: Flag<
     never,
-    (
-      | "production"
-      | "test"
-    )
+    | "production"
+    | "test"
   >;
   private readonly cache: Table<
     File<"EphemeralState">
@@ -29,15 +27,12 @@ export default abstract class IApp<
   ) {
     try {
       this.app = this.stringful(
-        this
-          .constructor
-          .name,
+        this.constructor.name,
         "Anonymous app instance",
       );
       this.context = {
         production,
-        test: !production
-          && config.runsInApp,
+        test: !production && config.runsInApp,
       };
     }
     catch (e) {
@@ -49,8 +44,7 @@ export default abstract class IApp<
   }
 
   protected get input() {
-    return this._input
-      ?? undefined;
+    return this._input ?? undefined;
   }
 
   protected get setting() {
@@ -202,9 +196,7 @@ export default abstract class IApp<
     value: string,
   ) {
     this
-      .state(
-        key,
-      )
+      .state(key)
       .write(
         value,
         true,
@@ -319,10 +311,9 @@ export default abstract class IApp<
         { cause },
       );
     else if (
-      !strings
-        .every(
-          (string): string is stringful => string !== "",
-        )
+      !strings.every(
+        (string): string is stringful => string !== "",
+      )
     )
       throw new TypeError(
         "Unstringful array",
@@ -361,10 +352,9 @@ export default abstract class IApp<
         { cause },
       );
     else if (
-      !strings
-        .every(
-          (string): string is char => string.length === 1,
-        )
+      !strings.every(
+        (string): string is char => string.length === 1,
+      )
     )
       throw new TypeError(
         "Uncharful array",
@@ -380,9 +370,7 @@ export default abstract class IApp<
     );
   }
 
-  private state(
-    key: string,
-  ) {
+  private state(key: string) {
     return this.cache[key] ??= new File(
       "EphemeralState",
       key,
