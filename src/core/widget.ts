@@ -37,7 +37,7 @@ export default abstract class Widget<
     super(
       input,
       config.runsInWidget
-        || tapped,
+      || tapped,
     );
     this.tapped = tapped;
     this.style = new Style(weight);
