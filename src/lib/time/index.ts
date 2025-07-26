@@ -90,10 +90,10 @@ export default class Time {
 
     const [
       sign,
-      H1,
-      H2,,
+      H0,
+      H1,,
+      m0,
       m1,
-      m2,
     ] = new Intl.DateTimeFormat(
       "en-US",
       {
@@ -108,8 +108,8 @@ export default class Time {
 
     return Number(`${sign}1`)
       * (
-        Number(`${H1}${H2}`)
-        + Number(`${m1}${m2}`) / 60
+        Number(H0 + H1)
+        + Number(m0 + m1) / 60
       );
   }
 
