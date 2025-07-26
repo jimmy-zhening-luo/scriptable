@@ -153,7 +153,7 @@ export default class File<Class extends string> {
     if (!this.mutable)
       throw this.error(
         "delete",
-        new ReferenceError("Readonly File/Folder")
+        new ReferenceError("Readonly File/Folder"),
       );
 
     if (this.exists)
