@@ -1,29 +1,7 @@
 import type { Timezone } from "./timezone";
 
 export default class Time {
-  private readonly date;
-
-  constructor(
-    date:
-      | Date
-      | number
-    = new Date,
-  ) {
-    try {
-      this.date = typeof date === "number"
-        ? new Date(date)
-        : date;
-
-      if (Number.isNaN(this.epoch))
-        throw new RangeError("Invalid Date object");
-    }
-    catch (e) {
-      throw new Error(
-        "Failed to construct Time",
-        { cause: e },
-      );
-    }
-  }
+  constructor(private readonly date = new Date) {}
 
   public get epoch() {
     return this
@@ -51,9 +29,7 @@ export default class Time {
     return new Date(this.epoch);
   }
 
-  public print(
-    format = "MMMM d, y h:mm:ss a",
-  ) {
+  public print(format = "MMMM d, y h:mm:ss a") {
     (this.printer ??= new DateFormatter)
       .dateFormat = format;
 
@@ -88,10 +64,12 @@ export default class Time {
     } = {},
   ) {
     return new Time(
-      this.epoch
-      + hours * 3_600_000
-      + minutes * 60_000
-      + seconds * 1_000,
+      new Date(
+        this.epoch
+        + hours * 3_600_000
+        + minutes * 60_000
+        + seconds * 1_000,
+      ),
     );
   }
 
@@ -109,9 +87,7 @@ export default class Time {
     });
   }
 
-  public offset(
-    timeZone: Null<Timezone> = null,
-  ) {
+  public offset(timeZone: Null<Timezone> = null) {
     const fromUTC = this
       .date
       .getTimezoneOffset() / -60;
