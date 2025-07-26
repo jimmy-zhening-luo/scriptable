@@ -24,9 +24,7 @@ export default class Fonts {
       .lightMonospacedSystemFont(size),
   };
 
-  constructor(
-    public readonly weight: number,
-  ) {}
+  constructor(public readonly weight: number) {}
 
   public regular(size = this.weight) {
     return Font.systemFont(size);
