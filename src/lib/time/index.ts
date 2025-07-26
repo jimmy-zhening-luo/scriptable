@@ -37,7 +37,6 @@ export default class Time {
     hour = 0,
     minute = 0,
     second = 0,
-    millisecond = 0,
   ) {
     return new Time(
       this
@@ -46,7 +45,6 @@ export default class Time {
           hour,
           minute,
           second,
-          millisecond,
         ),
     );
   }
