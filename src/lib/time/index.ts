@@ -1,12 +1,16 @@
 import type { Timezone } from "./timezone";
 
 export default class Time {
-  constructor(private readonly date = new Date) {}
+  public readonly epoch;
 
-  public get epoch() {
-    return this
-      .date
-      .getTime();
+  constructor(date: number | Date = new Date) {
+    this.epoch = new Date(date).getTime();
+
+    if (!Number.isFinite(epoch))
+      throw new RangeError(
+        "Invalid timestamp",
+        { cause: date },
+      );
   }
 
   public get midnight() {
@@ -35,7 +39,7 @@ export default class Time {
 
     return this
       .printer
-      .string(this.date);
+      .string(this.toDate());
   }
 
   public at(
@@ -64,12 +68,10 @@ export default class Time {
     } = {},
   ) {
     return new Time(
-      new Date(
-        this.epoch
-        + hours * 3_600_000
-        + minutes * 60_000
-        + seconds * 1_000,
-      ),
+      this.epoch
+      + hours * 3_600_000
+      + minutes * 60_000
+      + seconds * 1_000,
     );
   }
 
@@ -89,7 +91,7 @@ export default class Time {
 
   public offset(timeZone: Null<Timezone> = null) {
     const fromUTC = this
-      .date
+      .toDate()
       .getTimezoneOffset() / -60;
 
     if (timeZone === null)
