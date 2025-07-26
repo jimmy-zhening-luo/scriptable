@@ -6,7 +6,7 @@ export default class Time {
   constructor(date: number | Date = new Date) {
     this.epoch = new Date(date).getTime();
 
-    if (!Number.isFinite(epoch))
+    if (!Number.isFinite(this.epoch))
       throw new RangeError(
         "Invalid timestamp",
         { cause: date },
