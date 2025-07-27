@@ -34,36 +34,20 @@ export default class Time {
   }
 
   public at(
-    hour = 0,
-    minute = 0,
-    second = 0,
-  ) {
-    return new Time(
-      this
-        .toDate()
-        .setHours(
-          hour,
-          minute,
-          second,
-        ),
-    );
-  }
-
-  public past(
     timeOrHour: number | string = 0,
     minute = 0,
     second = 0,
   ) {
-    return this.epoch >= (
+    return new Time(
       typeof timeOrHour === "number"
         ? this
-            .at(
-              timeOrHour,
-              minute,
-              second,
-            )
-        : new Time(
-          new Date(
+          .toDate()
+          .setHours(
+            timeOrHour,
+            minute,
+            second,
+          )
+        : new Date(
             [
               this
                 .toDate()
@@ -72,8 +56,12 @@ export default class Time {
             ]
               .join(" "),
           ),
-        )
-    )
+    );
+  }
+
+  public past(...time: Parameters<Time["at"]>) {
+    return this.epoch >= this
+      .at(...time)
       .epoch;
   }
 
