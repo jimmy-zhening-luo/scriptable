@@ -35,8 +35,8 @@ class Clock extends Widget {
         && sunset !== undefined
       )
         this.text(
-          now.epoch > now.at(sunrise).in(2).epoch
-          && now.epoch < now.at(sunset).in(2).epoch
+          now.epoch > now.at(sunrise).in(3).epoch
+          && now.epoch < now.at(sunset).in(1).epoch
             ? `Sunset: ${sunset}`
             : `Sunrise: ${sunrise}`,
         );
