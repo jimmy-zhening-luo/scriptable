@@ -282,7 +282,7 @@ export default function (
         : null;
 
     return key === null
-      ? tail.length === 0 && typeof Head === "string"
+      ? tail.length === 0
         ? {
             key: "null" as stringful,
             terms: [],
