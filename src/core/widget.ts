@@ -77,7 +77,7 @@ export default abstract class Widget<
       }
   }
 
-  protected override development() {
+  protected override development = () => {
     this
       .widget[
         this.mode === "calendar"
