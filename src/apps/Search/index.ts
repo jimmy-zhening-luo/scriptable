@@ -282,15 +282,20 @@ export default function (
         : null;
 
     return key === null
-      ? {
-          key: "chat" as stringful,
-          terms: [
-            typeof Head === "string"
-              ? Head
-              : Head.deselect,
-            ...tail,
-          ],
-        }
+      ? tail.length === 0 && typeof Head === "string"
+        ? {
+            key: "null" as stringful,
+            terms: [] as stringful[],
+          }
+        : {
+            key: "chat" as stringful,
+            terms: [
+              typeof Head === "string"
+                ? Head
+                : Head.deselect,
+              ...tail,
+            ],
+          }
       : {
           key,
           terms: typeof Head === "string"
