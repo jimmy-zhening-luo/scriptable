@@ -285,7 +285,7 @@ export default function (
       ? tail.length === 0 && typeof Head === "string"
         ? {
             key: "null" as stringful,
-            terms: [] as stringful[],
+            terms: [],
           }
         : {
             key: "chat" as stringful,
