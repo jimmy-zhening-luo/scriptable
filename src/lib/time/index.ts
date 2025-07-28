@@ -13,6 +13,14 @@ export default class Time {
       );
   }
 
+  public get midnight() {
+    return this.at(0);
+  }
+
+  public get noon() {
+    return this.at(12);
+  }
+
   public [Symbol.toPrimitive](hint: string) {
     return hint === "number"
       ? this.epoch
@@ -21,14 +29,6 @@ export default class Time {
 
   public toDate() {
     return new Date(this.epoch);
-  }
-
-  public get midnight() {
-    return this.at(0);
-  }
-
-  public get noon() {
-    return this.at(12);
   }
 
   public since(time: Time) {
