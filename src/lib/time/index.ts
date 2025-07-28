@@ -132,7 +132,7 @@ export default class Time {
   }
 
   public toDate() {
-    return new Date(this);
+    return new Date(this.epoch);
   }
 
   public [Symbol.toPrimitive](hint: string) {
