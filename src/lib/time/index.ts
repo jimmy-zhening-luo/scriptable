@@ -129,11 +129,11 @@ export default class Time {
         .value
         .slice(3) as unknown as Hexad<char>;
 
-      return fromUTC
-        - Number(`${sign}1`) * (
-          Number(H0 + H1)
-          + Number(m0 + m1) / 60
-        );
+      return fromUTC - Number(
+        `${sign}${
+          Number(H0 + H1) + Number(m0 + m1) / 60
+        }`,
+      );
     }
   }
 
