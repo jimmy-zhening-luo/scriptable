@@ -1,7 +1,7 @@
 import type { Timezone } from "./timezone";
 
 export default class Time {
-  public readonly epoch: number;
+  public readonly epoch;
 
   constructor(
     date:
