@@ -176,15 +176,13 @@ export default abstract class Widget<
     const dial = clock.addDate(zero.toDate());
 
     dial.font = font;
-    dial.rightAlignText();
     dial.applyTimerStyle();
-    clock.addSpacer();
 
     const complication = clock.addText(period);
 
     complication.font = font;
 
-    const trailer = clock.addSpacer(42);
+    const trailer = clock.addSpacer(this.weight * 4);
 
     return {
       clock,
