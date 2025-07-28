@@ -3,10 +3,6 @@
 import Share from "./core/share";
 
 class FileLink extends Share<string> {
-  constructor() {
-    super("fileURLs");
-  }
-
   protected runtime() {
     return this
       .stringfuls(
@@ -20,4 +16,4 @@ class FileLink extends Share<string> {
   }
 }
 
-new FileLink().run();
+new FileLink("fileURLs").run();
