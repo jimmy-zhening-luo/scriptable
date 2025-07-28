@@ -59,11 +59,9 @@ export default abstract class Widget<
   }
 
   protected output() {
-    this
-      .widget
-      .refreshAfterDate = new Time()
-        .in(0, 1)
-        .toDate();
+    this.widget.refreshAfterDate = new Time()
+      .in(0, 1)
+      .toDate();
 
     Script.setWidget(this.widget);
 
@@ -134,44 +132,41 @@ export default abstract class Widget<
     } = {},
   ) {
     const now = new Time,
-    offsetUTC = now
-      .offset(),
-    offsetUTCDestination = now
-      .offset(timezone),
-    difference = offsetUTCDestination
-      - offsetUTC,
-    midnight = now.at(0),
-    midnightDestination = midnight
-      .ago(difference),
-    sinceMidnightDestination = now
-      .since(midnightDestination),
-    midnightDestinationNormal = sinceMidnightDestination < 0
-      ? midnightDestination.ago(24)
-      : sinceMidnightDestination >= 86400000
-        ? midnightDestination.in(24)
-        : midnightDestination,
-    sinceMidnightDestinationNormal = now
-      .since(midnightDestinationNormal),
+    destinationMidnight = now
+      .midnight
+      .in(
+        now.offset(timezone),
+      ),
+    destinationZero = destinationMidnight.in(
+      now < destinationMidnight
+        ? -24
+        : now > destinationMidnight.in(24)
+          ? 24
+          : 0,
+    ),
     {
       zero,
-      period,
+      period = "",
     } = ampm
-      ? sinceMidnightDestinationNormal < 43200000
+      ? now < destinationZero.in(12)
         ? {
-            zero: sinceMidnightDestinationNormal < 3600000
-              ? midnightDestinationNormal.ago(12)
-              : midnightDestinationNormal,
+            zero: destinationZero.ago(
+              now < destinationZero.in(1)
+                ? 12
+                : 0,
+            ),
             period: "AM",
           }
         : {
-            zero: sinceMidnightDestinationNormal < 46800000
-              ? midnightDestinationNormal
-              : midnightDestinationNormal.in(12),
+            zero: destinationZero.in(
+              now < destinationZero.in(13)
+                ? 0
+                : 12,
+            ),
             period: "PM",
           }
       : {
-          zero: midnightDestinationNormal,
-          period: "",
+          zero: destinationZero,
         },
     clock = this.widget.addStack();
 

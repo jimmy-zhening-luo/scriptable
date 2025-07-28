@@ -102,33 +102,40 @@ export default class Time {
   }
 
   public offset(timeZone: Null<Timezone> = null) {
+    const fromUTC = this
+      .toDate()
+      .getTimezoneOffset() / -60;
+
     if (timeZone === null)
-      return this
-        .toDate()
-        .getTimezoneOffset() / -60;
-
-    const [
-      sign,
-      H0,
-      H1,,
-      m0,
-      m1,
-    ] = new Intl.DateTimeFormat(
-      "en-US",
-      {
-        timeZone,
-        timeZoneName: "longOffset",
-      },
-    )
-      .formatToParts()
-      .find(
-        part => part.type === "timeZoneName",
-      )!
-      .value
-      .slice(3) as unknown as Hexad<char>;
-
-    return Number(`${sign}1`)
-      * (Number(H0 + H1) + Number(m0 + m1) / 60);
+      return fromUTC;
+    else {
+      const [
+        sign,
+        H0,
+        H1,,
+        m0,
+        m1,
+      ] = new Intl.DateTimeFormat(
+        "en-US",
+        {
+          timeZone,
+          timeZoneName: "longOffset",
+        },
+      )
+        .formatToParts()
+        .find(
+          part => part.type === "timeZoneName",
+        )!
+        .value
+        .slice(3) as unknown as Hexad<char>;
+  
+      return fromUTC - (
+        Number(`${sign}1`) * (
+          Number(H0 + H1)
+          + Number(m0 + m1) / 60
+        )
+      );
+    }
   }
 
   public toDate() {

@@ -4,25 +4,16 @@ import Widget from "./core/widget";
 class Clock extends Widget {
   protected runtime() {
     this.text("Europe");
-    this.clock(
-      {
-        timezone: "Europe/Zurich",
-      },
-    );
+    this.clock({ timezone: "Europe/Zurich" });
     this.text("China");
-    this.clock(
-      {
-        timezone: "Asia/Shanghai",
-      },
-    );
+    this.clock({ timezone: "Asia/Shanghai" });
     this.line(5);
 
     try {
       const sun = JSON.parse(
         this.feed("sun", "json"),
       ) as Record<
-        | "sunrise"
-        | "sunset",
+        "sunrise" | "sunset",
         FieldTable
       >,
       now = new Widget.Time(),
@@ -52,7 +43,5 @@ class Clock extends Widget {
 }
 
 new Clock(
-  new Widget
-    .Time()
-    .print("E d"),
+  new Widget.Time().print("E d"),
 ).run();
