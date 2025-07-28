@@ -9,7 +9,7 @@ export default abstract class IApp<
   protected readonly context: Flag<
     never,
     | "production"
-    | "test"
+    | "development"
   >;
   private readonly cache: Table<
     File<"EphemeralState">
@@ -32,7 +32,7 @@ export default abstract class IApp<
       );
       this.context = {
         production,
-        test: !production && config.runsInApp,
+        development: !production && config.runsInApp,
       };
     }
     catch (e) {
@@ -161,12 +161,12 @@ export default abstract class IApp<
         );
       }
 
-      if (this.context.test)
+      if (this.context.development)
         try {
           console.log(output);
 
-          if (this.test !== undefined)
-            this.test(output);
+          if (this.development !== undefined)
+            this.development(output);
         }
         catch (errorAppRuntime) {
           throw new EvalError(
@@ -421,6 +421,6 @@ export default abstract class IApp<
 
   protected abstract runtime(): Output;
   protected abstract output(output: Output): void;
-  protected test?: (output: Output) => void;
+  protected development?: (output: Output) => void;
   private ini?: Setting;
 }
