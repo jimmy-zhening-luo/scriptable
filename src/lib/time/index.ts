@@ -41,21 +41,21 @@ export default class Time {
     return new Time(
       typeof timeOrHour === "number"
         ? this
-          .toDate()
-          .setHours(
-            timeOrHour,
-            minute,
-            second,
-          )
-        : new Date(
-            [
-              this
-                .toDate()
-                .toDateString(),
+            .toDate()
+            .setHours(
               timeOrHour,
-            ]
-              .join(" "),
-          ),
+              minute,
+              second,
+            )
+        : new Date(
+          [
+            this
+              .toDate()
+              .toDateString(),
+            timeOrHour,
+          ]
+            .join(" "),
+        ),
     );
   }
 
