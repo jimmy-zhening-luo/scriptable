@@ -3,14 +3,30 @@ import type { Timezone } from "./timezone";
 export default class Time {
   public readonly epoch;
 
-  constructor(date: number | Date = new Date) {
-    this.epoch = new Date(date).getTime();
+  constructor(
+    date:
+      | number
+      | string
+      | Date
+      | Time
+    = new Date,
+  ) {
+    if (
+      typeof date === "object"
+      && "epoch" in date
+    )
+      this.epoch = date.epoch;
+    else {
+      const epoch = new Date(date).getTime();
 
-    if (!Number.isFinite(this.epoch))
-      throw new RangeError(
-        "Invalid timestamp",
-        { cause: date },
-      );
+      if (!Number.isFinite(epoch))
+        throw new RangeError(
+          "Invalid timestamp",
+          { cause: date },
+        );
+
+      this.epoch = epoch;
+    }
   }
 
   public get midnight() {
@@ -21,54 +37,12 @@ export default class Time {
     return this.at(12);
   }
 
-  public [Symbol.toPrimitive](hint: string) {
-    return hint === "number"
-      ? this.epoch
-      : this.print();
-  }
-
-  public toDate() {
-    return new Date(this.epoch);
-  }
-
   public since(time: Time) {
-    return this.epoch - time.epoch;
+    return this - time;
   }
 
-  public until(time: Time) {
-    return time.epoch - this.epoch;
-  }
-
-  public at(
-    timeOrHour: number | string = 0,
-    minute = 0,
-    second = 0,
-  ) {
-    return new Time(
-      typeof timeOrHour === "number"
-        ? this
-            .toDate()
-            .setHours(
-              timeOrHour,
-              minute,
-              second,
-            )
-        : new Date(
-          [
-            this
-              .toDate()
-              .toDateString(),
-            timeOrHour,
-          ]
-            .join(" "),
-        ),
-    );
-  }
-
-  public past(...time: Parameters<Time["at"]>) {
-    return this.epoch >= this
-      .at(...time)
-      .epoch;
+  public until(...time: Parameters<Time["since"]>) {
+    return -this.since(...time);
   }
 
   public in(
@@ -77,7 +51,7 @@ export default class Time {
     seconds = 0,
   ) {
     return new Time(
-      this.epoch
+      this
       + hours * 3_600_000
       + minutes * 60_000
       + seconds * 1_000,
@@ -96,13 +70,42 @@ export default class Time {
     );
   }
 
-  public offset(timeZone: Null<Timezone> = null) {
-    const fromUTC = this
-      .toDate()
-      .getTimezoneOffset() / -60;
+  public at(
+    timeOrHour:
+      | number
+      | string
+    = 0,
+    minute = 0,
+    second = 0,
+  ) {
+    return new Time(
+      typeof timeOrHour === "number"
+        ? this
+            .toDate()
+            .setHours(
+              timeOrHour,
+              minute,
+              second,
+            )
+        : [
+            this
+              .toDate()
+              .toDateString(),
+            timeOrHour,
+          ]
+            .join(" "),
+    );
+  }
 
+  public past(...time: Parameters<Time["at"]>) {
+    return this > this.at(...time);
+  }
+
+  public offset(timeZone: Null<Timezone> = null) {
     if (timeZone === null)
-      return fromUTC;
+      return this
+        .toDate()
+        .getTimezoneOffset() / -60;
 
     const [
       sign,
@@ -126,6 +129,16 @@ export default class Time {
 
     return Number(`${sign}1`)
       * (Number(H0 + H1) + Number(m0 + m1) / 60);
+  }
+
+  public toDate() {
+    return new Date(this);
+  }
+
+  public [Symbol.toPrimitive](hint: string) {
+    return hint === "number"
+      ? this.epoch
+      : this.print();
   }
 
   public print(format = "MMMM d, y h:mm:ss a") {
