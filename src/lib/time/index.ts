@@ -13,6 +13,16 @@ export default class Time {
       );
   }
 
+  public [Symbol.toPrimitive](hint: string) {
+    return hint === "number"
+      ? this.epoch
+      : this.print();
+  }
+
+  public toDate() {
+    return new Date(this.epoch);
+  }
+
   public get midnight() {
     return this.at(0);
   }
@@ -27,10 +37,6 @@ export default class Time {
 
   public until(time: Time) {
     return time.epoch - this.epoch;
-  }
-
-  public toDate() {
-    return new Date(this.epoch);
   }
 
   public at(
