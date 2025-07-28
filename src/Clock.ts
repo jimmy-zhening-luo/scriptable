@@ -19,23 +19,27 @@ class Clock extends Widget {
 
     try {
       const sun = JSON.parse(
-        this.feed(
-          "sun",
-          "json",
-        ),
+        this.feed("sun", "json"),
       ) as Record<
         | "sunrise"
         | "sunset",
         FieldTable
       >,
-      today = new Widget
-        .Time()
-        .print("yyMMdd"),
-      sunset = sun.sunset[today] ?? "Unavailable";
+      now = new Widget.Time(),
+      today = now.print("yyMMdd"),
+      sunrise = sun.sunrise[today],
+      sunset = sun.sunset[today];
 
-      this.text(
-        "Sunset: " + sunset,
-      );
+      if (
+        sunrise !== undefined
+        && sunset !== undefined
+      )
+        this.text(
+          now.epoch > now.at(sunrise).in(2).epoch
+          && now.epoch < now.at(sunset).in(2).epoch
+            ? `Sunset: ${sunset}`
+            : `Sunrise: ${sunrise}`,
+        );
     }
     catch (e) {
       console.error(
