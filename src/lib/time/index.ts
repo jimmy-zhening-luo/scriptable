@@ -51,7 +51,7 @@ export default class Time {
     seconds = 0,
   ) {
     return new Time(
-      this
+      this.epoch
       + hours * 3_600_000
       + minutes * 60_000
       + seconds * 1_000,
