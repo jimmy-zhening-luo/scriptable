@@ -133,6 +133,8 @@ export default abstract class Widget<
       ampm?: boolean;
       timezone?: Parameters<typeof Time.prototype.offset>[0];
       font?: Font;
+      complicationFont?: Font;
+      spacing?: number;
     } = {},
   ) {
     const now = new Time,
