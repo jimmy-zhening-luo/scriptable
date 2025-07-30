@@ -96,7 +96,7 @@ export default abstract class Widget<
       );
   };
 
-  protected line(height = this.weight) {
+  protected line(height = 0) {
     if (this.mode === "calendar")
       throw new TypeError("Calendar Widget must be single-line");
 
