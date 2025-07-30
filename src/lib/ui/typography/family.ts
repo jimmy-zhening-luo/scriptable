@@ -17,8 +17,12 @@ export default class FontFamily<
       : Font[`regular${variant}SystemFont`](size);
   }
 
-  public italic(size?: number) {
-    return this.font("italic", size);
+  public italic(size = this.weight) {
+    const { variant } = this;
+
+    return variant === ""
+      ? Font.italicSystemFont(size)
+      : this.regular(size);
   }
 
   public bold(size?: number) {
@@ -39,7 +43,6 @@ export default class FontFamily<
   
   private font(
     style:
-      | "italic"
       | "bold"
       | "semibold"
       | "medium"
