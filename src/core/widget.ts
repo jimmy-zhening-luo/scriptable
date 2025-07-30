@@ -50,11 +50,15 @@ export default abstract class Widget<
         trailing,
       );
 
-      if (title !== "")
+      if (title !== "") {
         this.text(
           title ?? this.app,
           this.style.title(),
         );
+        this.line(
+          Math.round(weight / 6),
+        )
+      }
     }
   }
 

@@ -7,7 +7,7 @@ class Clock extends Widget {
     this.clock({ timezone: "Europe/Zurich" });
     this.text("China");
     this.clock({ timezone: "Asia/Shanghai" });
-    this.line(5);
+    this.line();
 
     try {
       const sun = JSON.parse(
