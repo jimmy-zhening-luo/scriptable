@@ -14,7 +14,7 @@ export default class FontFamily<
 
     return variant === ""
       ? Font.systemFont(size)
-      : Font[`regular${this.variant}Font`](size);
+      : Font[`regular${variant}Font`](size);
   }
 
   public italic(size?: number) {
