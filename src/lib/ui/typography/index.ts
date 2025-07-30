@@ -1,70 +1,53 @@
-import Fonts from "./fonts";
+import FontFamily from "./family";
 
 export default class Style {
-  public readonly fonts;
+  public readonly font;
+  public readonly round;
+  public readonly mono;
 
   constructor(weight: number) {
-    this.fonts = new Fonts(weight);
+    this.font = new FontFamily("", weight);
+    this.round = new FontFamily("Rounded", weight);
+    this.mono = new FontFamily("Monospaced", weight);
   }
 
   public title() {
-    return this
-      .fonts
-      .semibold(2 * this.fonts.weight);
+    return this.font.semibold(
+      2 * this.font.weight,
+    );
   }
 
   public heading() {
-    return this
-      .fonts
-      .semibold(
-        Math.round(5 / 3 * this.fonts.weight),
-      );
+    return this.font.semibold(
+      Math.round(5 / 3 * this.font.weight),
+    );
   }
 
   public subheading() {
-    return this
-      .fonts
-      .semibold(
-        Math.round(3 / 2 * this.fonts.weight),
-      );
+    return this.font.semibold(
+      Math.round(3 / 2 * this.font.weight),
+    );
   }
 
   public footnote() {
-    return this
-      .fonts
-      .light(
-        Math.round(5 / 6 * this.fonts.weight),
-      );
+    return this.font.light(
+      Math.round(5 / 6 * this.font.weight),
+    );
   }
 
   public body() {
-    return this
-      .fonts
-      .regular(this.fonts.weight);
+    return this.font.regular();
   }
 
   public italic() {
-    return this
-      .fonts
-      .italic(this.fonts.weight);
+    return this.font.italic();
   }
 
   public bold() {
-    return this
-      .fonts
-      .bold(this.fonts.weight);
+    return this.font.bold();
   }
 
   public semibold() {
-    return this
-      .fonts
-      .semibold(this.fonts.weight);
-  }
-
-  public mono() {
-    return this
-      .fonts
-      .mono
-      .regular(this.fonts.weight);
+    return this.font.semibold();
   }
 }

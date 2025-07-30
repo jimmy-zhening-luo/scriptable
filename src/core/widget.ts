@@ -120,8 +120,7 @@ export default abstract class Widget<
       timezone = null,
       font = this
         .style
-        .fonts
-        .rounded
+        .round
         .regular(
           Math.round(this.weight * 1.5),
         ),
