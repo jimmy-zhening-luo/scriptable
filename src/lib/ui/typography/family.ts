@@ -9,7 +9,7 @@ export default class FontFamily<
     public readonly weight: number,
   ) {}
 
-  public regular(size = this.number) {
+  public regular(size = this.weight) {
     return this.variant === ""
       ? Font.systemFont(size)
       : Font[`regular${this.variant}Font`](size);
