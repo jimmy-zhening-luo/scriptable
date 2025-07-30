@@ -1,8 +1,8 @@
 export default class FontFamily<
   Variant extends
-    | ""
-    | "Rounded"
-    | "Monospaced"
+  | ""
+  | "Rounded"
+  | "Monospaced",
 > {
   constructor(
     public readonly variant: Variant,
@@ -36,7 +36,7 @@ export default class FontFamily<
   public light(size?: number) {
     return this.font("light", size);
   }
-  
+
   private font(
     style:
       | "bold"
