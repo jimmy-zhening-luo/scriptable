@@ -57,7 +57,7 @@ export default abstract class Widget<
         );
         this.line(
           Math.round(weight / 6),
-        )
+        );
       }
     }
   }
