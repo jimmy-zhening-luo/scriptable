@@ -124,6 +124,11 @@ export default abstract class Widget<
         .regular(
           Math.round(this.weight * 1.5),
         ),
+      complicationFont = this
+        .style
+        .round
+        .semibold(),
+      spacing = this.weight * 4,
     }: {
       ampm?: boolean;
       timezone?: Parameters<typeof Time.prototype.offset>[0];
@@ -179,9 +184,9 @@ export default abstract class Widget<
 
     const complication = clock.addText(period);
 
-    complication.font = font;
+    complication.font = complicationFont;
 
-    const trailer = clock.addSpacer(this.weight * 4);
+    const trailer = clock.addSpacer(spacing);
 
     return {
       clock,
