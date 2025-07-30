@@ -10,7 +10,9 @@ export default class FontFamily<
   ) {}
 
   public regular(size = this.weight) {
-    return this.variant === ""
+    const { variant } = this;
+
+    return variant === ""
       ? Font.systemFont(size)
       : Font[`regular${this.variant}Font`](size);
   }
