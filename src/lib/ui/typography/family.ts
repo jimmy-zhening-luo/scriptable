@@ -10,17 +10,13 @@ export default class FontFamily<
   ) {}
 
   public regular(size = this.weight) {
-    const { variant } = this;
-
-    return variant === ""
+    return this.variant === ""
       ? Font.systemFont(size)
-      : Font[`regular${variant}SystemFont`](size);
+      : Font[`regular${this.variant}SystemFont`](size);
   }
 
   public italic(size = this.weight) {
-    const { variant } = this;
-
-    return variant === ""
+    return this.variant === ""
       ? Font.italicSystemFont(size)
       : this.regular(size);
   }
