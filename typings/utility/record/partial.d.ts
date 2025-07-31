@@ -1,7 +1,7 @@
-declare type ReadonlyRecord<
+declare type PartialRecord<
   Key extends
     | string
     | number
     | symbol,
   Value,
-> = Readonly<Record<Key, Value>>;
+> = Partial<Record<Key, Value>>;

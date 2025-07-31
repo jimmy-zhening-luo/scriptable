@@ -89,7 +89,7 @@ class Search extends Shortcut<
             key,
             terms,
             "shortcut",
-            (entry.shortcut as Undef<string>)
+            (entry.shortcut as Undefined<string>)
             ?? "",
             entry.notify,
             entry.prepend,

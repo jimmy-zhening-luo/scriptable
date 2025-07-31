@@ -9,5 +9,6 @@ export type ISearchEngineEntry<
      readonly prepend: string;
      readonly noSave: boolean;
    }
-   & (Literalful<Flags> extends never ? object : Readonly<Flag<Flags>>)
-   & (Literalful<Fields> extends never ? object : Readonly<Field<never, Fields>>);
+   & Readonly<Flag<Flags>>
+   & Readonly<Field<never, Fields>>
+   ;

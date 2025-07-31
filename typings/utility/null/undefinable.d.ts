@@ -1,1 +1,3 @@
-declare type Undefinable<T> = Undef<NonNullable<T>>;
+declare type Undefinable<T> = Undefined<
+  NonNullable<T>
+>;

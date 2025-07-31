@@ -22,7 +22,7 @@ export default abstract class IApp<
   > = {};
 
   constructor(
-    private _input: Nullish<Input>,
+    private _input: NullUndef<Input>,
     production: boolean,
   ) {
     try {

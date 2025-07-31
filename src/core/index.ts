@@ -26,7 +26,7 @@ export default abstract class Shortcut<
         ? plainTexts.length === 0
           ? null
           : plainTexts as unknown as string[] & ShortcutInput
-        : plainTexts[0] as Undef<string & ShortcutInput>,
+        : plainTexts[0] as Undefined<string & ShortcutInput>,
       config.runsWithSiri,
     );
   }

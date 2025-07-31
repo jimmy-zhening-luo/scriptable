@@ -1,5 +1,20 @@
-declare type Field<K extends string, OK extends string = never> = Property<K, OK, string>;
-declare type Flag<OK extends string, K extends string = never> = Property<K, OK, boolean>;
-declare type List<K extends string, OK extends string = never> = Property<K, OK, readonly string[]>;
-declare type Listish<K extends string, OK extends string = never> = Property<K, OK, Unflat>;
-declare type Scalar<K extends string, OK extends string = never> = Property<K, OK, number>;
+declare type Field<
+  Key extends string,
+  OptionalKey extends string = never,
+> = Property<Key, OptionalKey, string>;
+declare type Flag<
+  OptionalKey extends string,
+  Key extends string = never,
+> = Property<Key, OptionalKey, boolean>;
+declare type List<
+  Key extends string,
+  OptionalKey extends string = never,
+> = Property<Key, OptionalKey, readonly string[]>;
+declare type Listish<
+  Key extends string,
+  OptionalKey extends string = never,
+> = Property<Key, OptionalKey, Unflat>;
+declare type Scalar<
+  Key extends string,
+  OptionalKey extends string = never,
+> = Property<Key, OptionalKey, number>;
