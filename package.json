@@ -19,7 +19,7 @@
     "@types/scriptable-ios": "^1.7.8",
     "chai": "^5.2.1",
     "eslint": "~9.32.0",
-    "linted": "~30.6.2",
+    "linted": "~30.7.0",
     "mocha": "^11.7.1",
     "rexreplace": "^7.1.13",
     "ts-add-js-extension": "^1.6.6",
