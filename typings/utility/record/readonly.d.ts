@@ -1,7 +1,7 @@
 declare type ReadonlyRecord<
   Key extends
-    | string
-    | number
-    | symbol,
+  | string
+  | number
+  | symbol,
   Value,
 > = Readonly<Record<Key, Value>>;

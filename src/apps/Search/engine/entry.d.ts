@@ -10,5 +10,5 @@ export type ISearchEngineEntry<
      readonly noSave: boolean;
    }
    & Readonly<Flag<Flags>>
-   & Readonly<Field<never, Fields>>
-   ;
+   & Readonly<Field<never, Fields>>;
+

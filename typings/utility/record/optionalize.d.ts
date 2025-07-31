@@ -3,9 +3,9 @@ declare type Optionalize<
   OptionalKey extends keyof R,
 >
   = & {
-      readonly [Key in Exclude<keyof R, OptionalKey>]: R[Key];
-    }
-    & {
-      readonly [Key in OptionalKey]?: R[Key];
-    }
+    readonly [Key in Exclude<keyof R, OptionalKey>]: R[Key];
+  }
+  & {
+    readonly [Key in OptionalKey]?: R[Key];
+  }
     ;

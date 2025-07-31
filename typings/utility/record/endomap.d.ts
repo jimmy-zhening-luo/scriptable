@@ -1,6 +1,6 @@
 type Endomap<
   KeyValue extends
-    | string
-    | number
-    | symbol,
+  | string
+  | number
+  | symbol,
 > = Record<KeyValue, KeyValue>;
