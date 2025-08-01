@@ -6,7 +6,12 @@ class Guid extends Shortcut<
   string
 > {
   protected runtime() {
-    return UUID.string().toLocaleLowerCase();
+    const guid = UUID.string().toLocaleLowerCase();
+
+    if (!this.context.production)
+      Pasteboard.copy(guid)
+
+    return guid;
   }
 }
 
