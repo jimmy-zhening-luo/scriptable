@@ -9,7 +9,7 @@ class Guid extends Shortcut<
     const guid = UUID.string().toLocaleLowerCase();
 
     if (!this.context.production)
-      Pasteboard.copy(guid)
+      Pasteboard.copy(guid);
 
     return guid;
   }
