@@ -1,5 +1,5 @@
 {
-  "display": "tsc@508.0.1",
+  "display": "tsc@509.0.0",
   "$schema": "https://json.schemastore.org/tsconfig",
   "$help": "https://www.typescriptlang.org/tsconfig/#quick-nav-Top%20Level",
   "include": [
@@ -38,7 +38,7 @@
     // "allowUmdGlobalAccess": true,
     // "baseUrl": "./",
     // "customConditions": [],
-    "module": "es2022",
+    "module": "esnext",
     "moduleResolution": "bundler",
     // "moduleSuffixes": [],
     // "noResolve": true,
@@ -113,14 +113,14 @@
     // "jsxFragmentFactory": "",
     // "jsxImportSource": "",
     "lib": [
-      "esnext" /* @OVERRIDE */,
+      "esnext",
       /* {CONFIGURE} */
     ],
     // "libReplacement": true /* @default: true | INFO: in the future, @default may become false */,
     // "moduleDetection": "auto",
     // "noLib": true,
     // "reactNamespace": "",
-    "target": "es2022",
+    "target": "esnext",
     // "useDefineForClassFields": true /* @default true if `target` > `es2022`, else false*/,
     // #endregion
     //
