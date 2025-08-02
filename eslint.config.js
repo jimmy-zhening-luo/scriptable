@@ -8,7 +8,7 @@ export default linted(
     js: {
       rules: {
         "@stylistic/no-multiple-empty-lines": [
-          ON,
+          "error",
           {
             max: 1,
             maxEOF: 0,
