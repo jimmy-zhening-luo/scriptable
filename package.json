@@ -23,7 +23,7 @@
     "mocha": "^11.7.1",
     "rexreplace": "^7.1.13",
     "ts-add-js-extension": "^1.6.6",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "main": "",
   "types": "",
