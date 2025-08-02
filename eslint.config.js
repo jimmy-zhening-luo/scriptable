@@ -5,9 +5,9 @@ export default linted(
     "*": {
       ignores: ["typings/scriptable.d.ts"],
     },
-    js: {
+    yml: {
       rules: {
-        "@stylistic/no-multiple-empty-lines": [
+        "yml/no-multiple-empty-lines": [
           "error",
           {
             max: 1,
