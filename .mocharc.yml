@@ -13,4 +13,3 @@ extension:
   - cjs
   - mjs
 require: dist/_test/hooks.js # @OVERRIDE
-
