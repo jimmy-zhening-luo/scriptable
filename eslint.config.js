@@ -15,8 +15,7 @@ export default linted(
             maxBOF: 0,
           },
         ],
-      }
+      },
     },
   },
 );
-

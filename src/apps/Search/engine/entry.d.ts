@@ -11,4 +11,3 @@ export type ISearchEngineEntry<
    }
    & Readonly<Flag<Flags>>
    & Readonly<Field<never, Fields>>;
-
