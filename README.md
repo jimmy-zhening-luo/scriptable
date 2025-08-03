@@ -4,16 +4,16 @@
 - [What is `Scriptable`?](#what-is-scriptable)
 - [What is `type-scriptable`?](#what-is-type-scriptable)
 - [How to use](#how-to-use)
-  - [Vocabulary](#vocabulary)
-    - [`App`](#app)
-    - [`Library`](#library)
-  - [EASY: Write `Library` scripts](#easy-write-library-scripts)
-  - [NOT SO EASY: Write `App` scripts](#not-so-easy-write-app-scripts)
-    - [The Header ™](#the-header-)
-    - [Line 1](#line-1)
-    - [Line 2](#line-2)
-    - [Line 3](#line-3)
-    - [Line 4 _(Optional)_](#line-4-optional)
+    - [Vocabulary](#vocabulary)
+        - [`App`](#app)
+        - [`Library`](#library)
+    - [EASY: Write `Library` scripts](#easy-write-library-scripts)
+    - [NOT SO EASY: Write `App` scripts](#not-so-easy-write-app-scripts)
+        - [The Header ™](#the-header-)
+        - [Line 1](#line-1)
+        - [Line 2](#line-2)
+        - [Line 3](#line-3)
+        - [Line 4 _(Optional)_](#line-4-optional)
 
 ## What is `Scriptable`?
 `Scriptable` for `iOS` and `iPadOS` lets users author JavaScript procedures invokable by `Apple` `Shortcuts`, `Share Sheet` or `Widgets`, useful for home and device automation.
@@ -108,6 +108,7 @@ Line 3 specifies your `App`'s icon in Scriptable UI.
 | `light-gray`  | `hsl(235, 5%, 54%)`  |
 | `gray`        | `hsl(227, 6%, 44%)`  |
 | `deep-gray`   | `hsl(210, 8%, 30%)`  |
+
 </details>
 
 ###### [`$GLYPH`](https://github.com/nlawler1737/Scriptable/blob/4ccf80b72ef5f15d4ed00b282988612bb9dbf4fc/iconGlyphCss.txt#L17)
