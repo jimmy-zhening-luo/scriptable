@@ -1,5 +1,5 @@
 {
-  // #region v38.1.0
+  // #region v38.1.1
   "$schema": "https://gist.githubusercontent.com/jimmy-zhening-luo/e0d6b5715f0df18bc462f752520bd485/raw",
   "$help": {
     "link": "https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md",
@@ -19,7 +19,7 @@
     "strict": true,
   } /* MD009 */,
   "no-hard-tabs": {
-    "spaces_per_tab": 2,
+    "spaces_per_tab": 4,
     "ignore_code_languages": [],
   } /* MD010 */,
   "no-reversed-links": true /* MD011 */,
