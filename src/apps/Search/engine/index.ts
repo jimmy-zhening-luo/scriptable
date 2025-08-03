@@ -1,10 +1,5 @@
 export type { ISearchEngineEntry } from "./entry";
-export default function<
-  EngineType extends (
-    | "browser"
-    | "shortcut"
-  ),
->(
+export default function<EngineType extends "browser" | "shortcut">(
   key: stringful,
   terms: readonly stringful[],
   type: EngineType,

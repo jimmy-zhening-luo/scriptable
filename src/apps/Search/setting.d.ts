@@ -10,12 +10,8 @@ export interface SearchSetting {
     | Unflat<string, true>
     | ISearchEngineEntry<
       "url",
-      (
-        | "force"
-      ),
-      (
-        | "separator"
-      ),
+      "force",
+      "separator",
       Unflat
     >
     | ISearchEngineEntry<
@@ -24,9 +20,7 @@ export interface SearchSetting {
         | "encode"
         | "notify"
       ),
-      (
-        | "separator"
-      )
+      "separator"
     >
   >>;
 }

@@ -79,10 +79,7 @@ export default function (
           if (tokens.length === 0)
             throw new RangeError("Empty search query");
 
-          const [
-            Head,
-            ...tail
-          ] = tokens;
+          const [Head, ...tail] = tokens;
 
           return {
             Head,
@@ -109,10 +106,7 @@ export default function (
             .has(Head[0] as string)
           ? {
               Head: new ReservedSearchQueryKey("math"),
-              tail: [
-                Head,
-                ...tail,
-              ],
+              tail: [Head, ...tail],
             }
           : {
               Head,
@@ -138,11 +132,9 @@ export default function (
         SELECTORS.add(DOT);
 
         const selectors = [...SELECTORS],
-        match = selectors
-          .find(
-            selector => Head
-              .includes(selector),
-          );
+        match = selectors.find(
+          selector => Head.includes(selector),
+        );
 
         if (match === undefined)
           return {
@@ -220,10 +212,7 @@ export default function (
 
         return {
           Head: key,
-          tail: [
-            operand,
-            ...tail,
-          ],
+          tail: [operand, ...tail],
         };
       }
     }
@@ -253,9 +242,7 @@ export default function (
       if (key === "")
         throw TypeError(
           "Engine key must be stringful",
-          {
-            cause: "Unstringful aliased engine",
-          },
+          { cause: "Unstringful aliased engine" },
         );
       else if (!engines.has(key))
         throw ReferenceError(
