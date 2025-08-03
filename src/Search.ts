@@ -22,38 +22,23 @@ class Search extends Shortcut<
         ? this.get("history")
         : input,
       new Set(
-        Object.keys(
-          this
-            .setting
-            .engines,
-        ),
+        Object.keys(this.setting.engines),
       ),
-      this
-        .setting
-        .alias,
+      this.setting.alias,
       new Set(
         this.chars(
-          this
-            .setting
-            .reserved
-            .selectors,
+          this.setting.reserved.selectors,
         ),
       ),
     ),
-    entry = this
-      .setting
-      .engines[key]!,
+    entry = this.setting.engines[key]!,
     entryHasOption = typeof entry === "object"
       && !Array.isArray(entry);
 
-    if (
-      !entryHasOption
-      || !entry.noSave
-    )
+    if (!entryHasOption || !entry.noSave)
       this.set(
         "history",
-        [key, ...terms]
-          .join(" "),
+        [key, ...terms].join(" "),
       );
 
     return !entryHasOption
@@ -63,10 +48,7 @@ class Search extends Shortcut<
           "browser",
           entry,
           this.stringful(
-            this
-              .setting
-              .reserved
-              .tag,
+            this.setting.reserved.tag,
           ),
         )
       : "url" in entry
@@ -76,10 +58,7 @@ class Search extends Shortcut<
             "browser",
             entry.url,
             this.stringful(
-              this
-                .setting
-                .reserved
-                .tag,
+              this.setting.reserved.tag,
             ),
             entry.prepend,
             entry.force,
@@ -89,8 +68,7 @@ class Search extends Shortcut<
             key,
             terms,
             "shortcut",
-            (entry.shortcut as Undefined<string>)
-            ?? "",
+            (entry.shortcut as Undefined<string>) ?? "",
             entry.notify,
             entry.prepend,
             entry.encode,
