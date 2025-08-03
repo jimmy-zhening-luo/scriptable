@@ -38,9 +38,7 @@
     "siblings_only": true,
   } /* MD024 */,
   "single-title": false /* MD025, single-h1 */,
-  "no-trailing-punctuation": {
-    "punctuation": ",;:，；：-–—_" /* @default: .,;:!。，；：！ */,
-  } /* MD026 */,
+  "no-trailing-punctuation": false /* MD026 */,
   "no-multiple-space-blockquote": true /* MD027 */,
   "no-blanks-blockquote": true /* MD028 */,
   "ol-prefix": {
