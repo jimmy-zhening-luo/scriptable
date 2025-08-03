@@ -39,11 +39,7 @@ export default class File<Class extends string> {
       if (subpath.length === 0)
         throw new ReferenceError("No file subpath provided");
 
-      this.path = [
-        root,
-        ...subpath,
-      ]
-        .join("/");
+      this.path = [root, ...subpath].join("/");
       this.parent = [
         root,
         ...subpath.slice(0, -1),
