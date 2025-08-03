@@ -101,15 +101,18 @@ export default function (
             + OPERATORS.leading,
           )
             .has(Head[0] as string)
-          && (
-            Head.length > 1
-            || tail.length > 0
-          )
+            && (
+              Head.length > 1
+              || tail.length > 0
+            )
           ? {
               Head: new ReservedSearchQueryKey("math"),
               tail: [Head, ...tail],
             }
-          : { Head, tail };
+          : {
+              Head,
+              tail,
+            };
       }
 
       const tokens = expand(query),
@@ -117,12 +120,14 @@ export default function (
 
       if (
         typeof Head !== "string"
-        || (
-          Head.length === 1
-          && tail.length === 0
-        )
+        || Head.length === 1
+        && tail.length === 0
+
       )
-        return { Head, tail };
+        return {
+          Head,
+          tail,
+        };
       else {
         const DOT = "." as char;
 
@@ -135,7 +140,10 @@ export default function (
         );
 
         if (match === undefined)
-          return { Head, tail };
+          return {
+            Head,
+            tail,
+          };
         else {
           const canonical = selectors[0]!,
           [
@@ -182,13 +190,19 @@ export default function (
     );
 
     if (typeof Head !== "string")
-      return { Head, tail };
+      return {
+        Head,
+        tail,
+      };
     else {
       const operation = (/^(\W+)(\w+)$/u)
         .exec(Head);
 
       if (operation === null)
-        return { Head, tail } as const;
+        return {
+          Head,
+          tail,
+        } as const;
       else {
         const [
           ,
