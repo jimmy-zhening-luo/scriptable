@@ -1,5 +1,5 @@
 {
-  "$pkg": "2211.1.2",
+  "$pkg": "2211.1.3",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "@scoping/scriptable",
@@ -36,7 +36,6 @@
     "lint": "eslint --cache --fix \"{,{src,tests,static,typings,public,tools,.github,.vscode}/**/}*.{{,[cm]}[jt]s,svelte,html,css,json{,c},code-snippets,y{,a}ml}\"",
     "pretest": "npm run build",
     "test": "mocha",
-    "test:svelte": "",
     "prestart": "npm test",
     "start": "node .",
     "start:svelte": "vite preview --open",
