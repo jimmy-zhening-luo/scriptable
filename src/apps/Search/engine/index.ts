@@ -100,10 +100,7 @@ export default function<EngineType extends "browser" | "shortcut">(
           },
         )
       : encode
-        ? encoder(
-            finalTerms,
-            separator,
-          )
+        ? encoder(finalTerms, separator)
         : queryText,
     notify,
     label: queryText,

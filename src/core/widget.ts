@@ -2,9 +2,7 @@ import IApp from "./app";
 import Time from "../lib/time";
 import Style from "../lib/ui/typography";
 
-export default abstract class Widget<
-  Setting = never,
-> extends IApp<
+export default abstract class Widget<Setting = never> extends IApp<
     string,
     void,
     Setting
@@ -55,9 +53,7 @@ export default abstract class Widget<
           title ?? this.app,
           this.style.title(),
         );
-        this.line(
-          Math.round(weight / 6),
-        );
+        this.line(Math.round(weight / 6));
       }
     }
   }
@@ -73,10 +69,10 @@ export default abstract class Widget<
       try {
         this.onTap();
       }
-      catch (errorWidgetTap) {
+      catch (runtimeActionError) {
         throw new Error(
           "UI",
-          { cause: errorWidgetTap },
+          { cause: runtimeActionError },
         );
       }
   }
@@ -91,10 +87,10 @@ export default abstract class Widget<
             : "presentSmall"
       ]()
       .catch(
-        (errorScriptableUI: unknown) => {
+        (developmentError: unknown) => {
           throw new EvalError(
             "Error presenting widget",
-            { cause: errorScriptableUI },
+            { cause: developmentError },
           );
         },
       );
@@ -125,9 +121,7 @@ export default abstract class Widget<
       font = this
         .style
         .round
-        .regular(
-          Math.round(this.weight * 1.5),
-        ),
+        .regular(Math.round(this.weight * 1.5)),
       complicationFont = this
         .style
         .round
@@ -144,9 +138,7 @@ export default abstract class Widget<
     const now = new Time,
     destinationMidnight = now
       .midnight
-      .in(
-        now.offset(timezone),
-      ),
+      .in(now.offset(timezone)),
     destinationZero = destinationMidnight.in(
       now < destinationMidnight
         ? -24
@@ -154,10 +146,7 @@ export default abstract class Widget<
           ? 24
           : 0,
     ),
-    {
-      zero,
-      period = "",
-    } = ampm
+    { zero, period = "" } = ampm
       ? now < destinationZero.in(12)
         ? {
             zero: destinationZero.ago(
@@ -175,9 +164,7 @@ export default abstract class Widget<
             ),
             period: "PM",
           }
-      : {
-          zero: destinationZero,
-        },
+      : { zero: destinationZero },
     clock = this.widget.addStack();
 
     clock.spacing = 0;

@@ -32,7 +32,9 @@ export default abstract class IApp<
       );
       this.context = {
         production,
-        development: !production && config.runsInApp,
+        development:
+          !production
+          && config.runsInApp,
       };
     }
     catch (e) {
@@ -50,10 +52,8 @@ export default abstract class IApp<
   protected get setting() {
     try {
       return this.ini ??= JSON.parse(
-        new File(
-          "Setting",
-          this.app + ".json",
-        ).readStringful(),
+        new File("Setting", this.app + ".json")
+          .readStringful(),
       ) as Setting;
     }
     catch (e) {
@@ -89,9 +89,7 @@ export default abstract class IApp<
       typeof trace[0] !== "string"
       && "cause" in trace[0]
     )
-      trace.unshift(
-        cast(trace[0].cause),
-      );
+      trace.unshift(cast(trace[0].cause));
 
     const [failure = "", ...causes] = (
       typeof trace[0] === "string"
@@ -115,30 +113,19 @@ export default abstract class IApp<
     notification.subtitle = failure;
     notification.body = cause;
     notification.sound = "failure";
-    notification
-      .schedule()
-      .catch(
-        (errorSystemNotify: unknown) => {
-          console.error(errorSystemNotify);
+    notification.schedule().catch(
+      (systemError: unknown) => {
+        console.error(systemError);
 
-          throw new EvalError(
-            "Unable to send iOS error notification",
-            { cause: errorSystemNotify },
-          );
-        },
-      );
-    console.error(
-      [
-        failure,
-        cause,
-      ]
-        .join("\n"),
+        throw new EvalError(
+          "Failed to emit error in iOS Notification",
+          { cause: systemError },
+        );
+      },
     );
+    console.error([failure, cause].join("\n"));
 
-    return new Error(
-      failure,
-      { cause },
-    );
+    return new Error(failure, { cause });
   }
 
   public run(sideload?: Input) {
@@ -168,10 +155,10 @@ export default abstract class IApp<
           if (this.development !== undefined)
             this.development(output);
         }
-        catch (errorAppRuntime) {
+        catch (developmentError) {
           throw new EvalError(
-            "In-app runtime failure",
-            { cause: errorAppRuntime },
+            "Development runtime failure",
+            { cause: developmentError },
           );
         }
 
@@ -197,10 +184,7 @@ export default abstract class IApp<
   ) {
     this
       .state(key)
-      .write(
-        value,
-        true,
-      );
+      .write(value, true);
   }
 
   protected unset(key: string) {
@@ -220,25 +204,19 @@ export default abstract class IApp<
       .delete();
   }
 
-  protected read(
-    ...file: Parameters<IApp["storage"]>
-  ) {
+  protected read(...file: Parameters<IApp["storage"]>) {
     return this
       .storage(...file)
       .read();
   }
 
-  protected readString(
-    ...file: Parameters<IApp["storage"]>
-  ) {
+  protected readString(...file: Parameters<IApp["storage"]>) {
     return this
       .storage(...file)
       .readString();
   }
 
-  protected readStringful(
-    ...file: Parameters<IApp["storage"]>
-  ) {
+  protected readStringful(...file: Parameters<IApp["storage"]>) {
     return this
       .storage(...file)
       .readStringful();
@@ -256,15 +234,10 @@ export default abstract class IApp<
   ) {
     this
       .storage(...file)
-      .write(
-        data,
-        overwrite,
-      );
+      .write(data, overwrite);
   }
 
-  protected delete(
-    ...file: Parameters<IApp["storage"]>
-  ) {
+  protected delete(...file: Parameters<IApp["storage"]>) {
     this
       .storage(...file)
       .delete();
@@ -280,92 +253,48 @@ export default abstract class IApp<
       .delete();
   }
 
-  protected feed(
-    ...feed: Parameters<IApp["stream"]>
-  ) {
+  protected feed(...feed: Parameters<IApp["stream"]>) {
     return this
       .stream(...feed)
       .readString();
   }
 
-  protected stringful(
-    string = "",
-    cause = "",
-  ) {
+  protected stringful(string = "", cause = "") {
     if (string === "")
-      throw new TypeError(
-        "Unstringful",
-        { cause },
-      );
+      throw new TypeError("Non-stringful", { cause });
 
     return string as stringful;
   }
 
-  protected stringfuls<Arraylike extends readonly string[]>(
-    strings: Arraylike,
-    cause = "",
-  ) {
+  protected stringfuls<ArrayLike extends readonly string[]>(strings: ArrayLike, cause = "") {
     if (strings.length === 0)
-      throw new RangeError(
-        "Empty, unstringful array",
-        { cause },
-      );
-    else if (
-      !strings.every(
-        (string): string is stringful => string !== "",
-      )
-    )
-      throw new TypeError(
-        "Unstringful array",
-        { cause },
-      );
+      throw new RangeError("Empty stringful-array", { cause });
+    else if (!strings.every((string): string is stringful => string !== ""))
+      throw new TypeError("Stringful-array has empty strings", { cause });
 
     return strings as unknown as (
-      Arraylike extends readonly [string, ...string[]]
-        ? {
-            readonly [K in keyof Arraylike]: typeof strings[number];
-          }
+      ArrayLike extends readonly [string, ...string[]]
+        ? { readonly [Index in keyof ArrayLike]: typeof strings[number]; }
         : Arrayful<typeof strings[number], true>
     );
   }
 
-  protected char(
-    string = "",
-    cause = "",
-  ) {
+  protected char(string = "", cause = "") {
     if (string.length !== 1)
-      throw new TypeError(
-        "Not a char",
-        { cause },
-      );
+      throw new TypeError("Non-char", { cause });
 
     return string as stringful;
   }
 
-  protected chars<Arraylike extends readonly string[]>(
-    strings: Arraylike,
-    cause = "",
-  ) {
+  protected chars<ArrayLike extends readonly string[]>(strings: ArrayLike, cause = "") {
     if (strings.length === 0)
-      throw new RangeError(
-        "Empty, char-less array",
-        { cause },
-      );
-    else if (
-      !strings.every(
-        (string): string is char => string.length === 1,
-      )
-    )
-      throw new TypeError(
-        "Uncharful array",
-        { cause },
-      );
+      throw new RangeError("Empty char-array", { cause });
+    else if (!strings.every((string): string is char => string.length === 1))
+      throw new TypeError("Char-array has non-chars", { cause });
 
     return strings as unknown as (
-      Arraylike extends readonly [string, ...string[]]
-        ? {
-            readonly [K in keyof Arraylike]: typeof strings[number];
-          }
+      ArrayLike extends readonly [string, ...string[]]
+        ? { readonly [Index in keyof ArrayLike]: typeof strings[number]; }
         : Arrayful<typeof strings[number], true>
     );
   }
@@ -380,17 +309,10 @@ export default abstract class IApp<
     );
   }
 
-  private storage(
-    name = this.app,
-    extension = "txt",
-  ) {
+  private storage(name = this.app, extension = "txt") {
     const file = extension === ""
       ? name
-      : [
-          name,
-          extension,
-        ]
-          .join(".");
+      : [name, extension].join(".");
 
     return this.store[file] ??= new File(
       "Storage",
@@ -400,17 +322,10 @@ export default abstract class IApp<
     );
   }
 
-  private stream(
-    name: string,
-    extension = "txt",
-  ) {
+  private stream(name: string, extension = "txt") {
     const feed = extension === ""
       ? name
-      : [
-          name,
-          extension,
-        ]
-          .join(".");
+      : [name, extension].join(".");
 
     return this.streams[feed] ??= new File(
       "Feed",

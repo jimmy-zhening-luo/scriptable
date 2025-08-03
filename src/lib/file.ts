@@ -118,10 +118,7 @@ export default class File<Class extends string> {
           throw new ReferenceError("File already exists, but `overwrite:false`");
       }
       else if (!File.manager.isDirectory(this.parent))
-        File.manager.createDirectory(
-          this.parent,
-          true,
-        );
+        File.manager.createDirectory(this.parent, true);
 
       const buffer = content ?? "";
 
@@ -156,17 +153,11 @@ export default class File<Class extends string> {
       File.manager.remove(this.path);
   }
 
-  private error(
-    verb: string,
-    error: unknown,
-  ) {
+  private error(verb: string, error: unknown) {
     return new Error(
       `Failed to ${verb} file`,
       {
-        cause: new Error(
-          this.path,
-          { cause: error },
-        ),
+        cause: new Error(this.path, { cause: error }),
       },
     );
   }

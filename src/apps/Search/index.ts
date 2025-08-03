@@ -90,7 +90,6 @@ export default function (
         const OPERATORS = {
           digit: "0123456789",
           leading: "+-$€£¥.(",
-          rest: "%°¢/*^!,:)",
         },
         tokens = tokenize(query),
         { Head, tail } = tokens;
@@ -122,7 +121,6 @@ export default function (
         typeof Head !== "string"
         || Head.length === 1
         && tail.length === 0
-
       )
         return {
           Head,
@@ -184,10 +182,7 @@ export default function (
       }
     }
 
-    const { Head, tail } = select(
-      query,
-      SELECTORS,
-    );
+    const { Head, tail } = select(query, SELECTORS);
 
     if (typeof Head !== "string")
       return {
@@ -218,10 +213,7 @@ export default function (
     }
   }
 
-  const { Head, tail } = parse(
-    query,
-    SELECTORS,
-  );
+  const { Head, tail } = parse(query, SELECTORS);
 
   if (
     typeof Head !== "string"
@@ -259,10 +251,7 @@ export default function (
     key = engines.has(head)
       ? head
       : head in alias
-        ? dealias(
-            engines,
-            alias[head],
-          )
+        ? dealias(engines, alias[head])
         : null;
 
     return key === null

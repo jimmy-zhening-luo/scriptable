@@ -88,9 +88,7 @@ export default class Time {
               second,
             )
         : [
-            this
-              .toDate()
-              .toDateString(),
+            this.toDate().toDateString(),
             timeOrHour,
           ]
             .join(" "),
@@ -102,9 +100,7 @@ export default class Time {
   }
 
   public offset(timeZone: Null<Timezone> = null) {
-    const fromUTC = this
-      .toDate()
-      .getTimezoneOffset() / -60;
+    const fromUTC = this.toDate().getTimezoneOffset() / -60;
 
     if (timeZone === null)
       return fromUTC;
@@ -123,9 +119,7 @@ export default class Time {
         },
       )
         .formatToParts()
-        .find(
-          part => part.type === "timeZoneName",
-        )!
+        .find(part => part.type === "timeZoneName")!
         .value
         .slice(3) as unknown as Hexad<char>;
 
@@ -151,9 +145,7 @@ export default class Time {
     (this.printer ??= new DateFormatter)
       .dateFormat = format;
 
-    return this
-      .printer
-      .string(this.toDate());
+    return this.printer.string(this.toDate());
   }
 
   private printer?: DateFormatter;
