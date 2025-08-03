@@ -3,10 +3,10 @@ import Time from "../lib/time";
 import Style from "../lib/ui/typography";
 
 export default abstract class Widget<Setting = never> extends IApp<
-    string,
-    void,
-    Setting
-  > {
+  string,
+  void,
+  Setting
+> {
   public static readonly Time = Time;
   protected readonly widget = new ListWidget;
   protected readonly style;
