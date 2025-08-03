@@ -55,14 +55,14 @@ export default function (
 
       function expand(query: string) {
         function tokenize(query: string) {
-          function fallback(query: string) {
-            const frontage = query.length - query.trimStart().length;
+          function quick(query: string) {
+            const space = query.length - query.trimStart().length;
 
-            return frontage === 0
+            return space === 0
               ? [] as const
               : [
                   new ReservedSearchQueryKey(
-                    frontage === 1
+                    space === 1
                       ? "chat"
                       : "translate",
                   ),
@@ -70,7 +70,7 @@ export default function (
           }
 
           const tokens = [
-            ...fallback(query),
+            ...quick(query),
             ...query
               .split(" ")
               .filter((token): token is stringful => token !== ""),
@@ -93,10 +93,7 @@ export default function (
           rest: "%°¢/*^!,:)",
         },
         tokens = tokenize(query),
-        {
-          Head,
-          tail,
-        } = tokens;
+        { Head, tail } = tokens;
 
         return typeof Head === "string"
           && new Set(
@@ -104,27 +101,28 @@ export default function (
             + OPERATORS.leading,
           )
             .has(Head[0] as string)
+          && (
+            Head.length > 1
+            || tail.length > 0
+          )
           ? {
               Head: new ReservedSearchQueryKey("math"),
               tail: [Head, ...tail],
             }
-          : {
-              Head,
-              tail,
-            };
+          : { Head, tail };
       }
 
       const tokens = expand(query),
-      {
-        Head,
-        tail,
-      } = tokens;
+      { Head, tail } = tokens;
 
-      if (typeof Head !== "string")
-        return {
-          Head,
-          tail,
-        };
+      if (
+        typeof Head !== "string"
+        || (
+          Head.length === 1
+          && tail.length === 0
+        )
+      )
+        return { Head, tail };
       else {
         const DOT = "." as char;
 
@@ -137,10 +135,7 @@ export default function (
         );
 
         if (match === undefined)
-          return {
-            Head,
-            tail,
-          };
+          return { Head, tail };
         else {
           const canonical = selectors[0]!,
           [
@@ -181,28 +176,19 @@ export default function (
       }
     }
 
-    const {
-      Head,
-      tail,
-    } = select(
+    const { Head, tail } = select(
       query,
       SELECTORS,
     );
 
     if (typeof Head !== "string")
-      return {
-        Head,
-        tail,
-      };
+      return { Head, tail };
     else {
       const operation = (/^(\W+)(\w+)$/u)
         .exec(Head);
 
       if (operation === null)
-        return {
-          Head,
-          tail,
-        } as const;
+        return { Head, tail } as const;
       else {
         const [
           ,
@@ -218,10 +204,7 @@ export default function (
     }
   }
 
-  const {
-    Head,
-    tail,
-  } = parse(
+  const { Head, tail } = parse(
     query,
     SELECTORS,
   );
