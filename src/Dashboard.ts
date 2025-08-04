@@ -1,4 +1,4 @@
-// icon-color: yellow; icon-glyph: magic;
+// icon-color: teal; icon-glyph: info-circle;
 import Widget from "./core/widget";
 
 class Dashboard extends Widget {
