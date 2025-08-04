@@ -1,4 +1,4 @@
-// icon-color: cyan; icon-glyph: calendar-alt;
+// icon-color: pink; icon-glyph: calendar-alt;
 import Widget from "./core/widget";
 
 class EventBar extends Widget {
