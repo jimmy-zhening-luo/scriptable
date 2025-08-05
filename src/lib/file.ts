@@ -12,53 +12,46 @@ export default class File<Class extends string> {
     private readonly mutable = false,
     ephemeral = false,
   ) {
-    try {
-      const root = File.manager.bookmarkExists(Class)
-        ? File.manager.bookmarkedPath(Class)
-        : mutable
-          ? [
-              File.manager[
-                ephemeral
-                  ? "cacheDirectory"
-                  : "libraryDirectory"
-              ](),
-              Class,
-            ]
-              .join("/")
-          : null;
+    const root = File.manager.bookmarkExists(Class)
+      ? File.manager.bookmarkedPath(Class)
+      : mutable
+        ? [
+            File.manager[
+              ephemeral
+                ? "cacheDirectory"
+                : "libraryDirectory"
+            ](),
+            Class,
+          ]
+            .join("/")
+        : null;
 
-      if (root === null)
-        throw new ReferenceError("No directory root provided");
-
-      const subpath = [
-        ...subfolder.split("/"),
-        ...name.split("/"),
-      ]
-        .filter(segment => segment !== "");
-
-      if (subpath.length === 0)
-        throw new ReferenceError("No file subpath provided");
-
-      this.path = [root, ...subpath].join("/");
-      this.parent = [
-        root,
-        ...subpath.slice(0, -1),
-      ]
-        .join("/");
-      this.exists = File.manager.fileExists(this.path);
-      this.folder = File.manager.isDirectory(this.path);
-    }
-    catch (e) {
-      throw new Error(
-        "Failed to construct File handler",
-        {
-          cause: new Error(
-            `<${Class}> ${subfolder}/${name}`,
-            { cause: e },
-          ),
-        },
+    if (root === null)
+      throw new ReferenceError(
+        "No directory root provided",
+        { cause: `<${Class}> ${subfolder}/${name}` },
       );
-    }
+
+    const subpath = [
+      ...subfolder.split("/"),
+      ...name.split("/"),
+    ]
+      .filter(segment => segment !== "");
+
+    if (subpath.length === 0)
+      throw new ReferenceError(
+        "No file subpath provided",
+        { cause: `<${Class}> ${subfolder}/${name}` },
+      );
+
+    this.path = [root, ...subpath].join("/");
+    this.parent = [
+      root,
+      ...subpath.slice(0, -1),
+    ]
+      .join("/");
+    this.exists = File.manager.fileExists(this.path);
+    this.folder = File.manager.isDirectory(this.path);
   }
 
   public read(fail = false) {
