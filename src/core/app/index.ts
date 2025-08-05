@@ -25,24 +25,16 @@ export default abstract class IApp<
     private _input: NullUndef<Input>,
     production: boolean,
   ) {
-    try {
-      this.app = this.stringful(
-        this.constructor.name,
-        "Anonymous app instance",
-      );
-      this.context = {
-        production,
-        development:
-          !production
-          && config.runsInApp,
-      };
-    }
-    catch (e) {
-      throw new Error(
-        "App construction failed",
-        { cause: e },
-      );
-    }
+    this.app = this.stringful(
+      this.constructor.name,
+      "Anonymous app instance",
+    );
+    this.context = {
+      production,
+      development:
+        !production
+        && config.runsInApp,
+    };
   }
 
   protected get input() {
