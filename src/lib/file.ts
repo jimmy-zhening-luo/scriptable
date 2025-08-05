@@ -62,23 +62,24 @@ export default class File<Class extends string> {
   }
 
   public read(fail = false) {
-    try {
-      if (this.exists) {
-        if (this.folder)
-          throw new TypeError("Filesystem object is Folder");
-      }
-      else {
-        if (fail)
-          throw new ReferenceError("File does not exist");
-
-        return undefined;
-      }
-
-      return File.manager.readString(this.path);
+    if (this.exists) {
+      if (this.folder)
+        throw this.error(
+          "read",
+          new TypeError("Filesystem object is Folder"),
+        );
     }
-    catch (e) {
-      throw this.error("read", e);
+    else {
+      if (fail)
+        throw this.error(
+          "read",
+          new ReferenceError("File does not exist"),
+        );
+
+      return undefined;
     }
+
+    return File.manager.readString(this.path);
   }
 
   public readString(fail?: boolean): string {
@@ -108,38 +109,42 @@ export default class File<Class extends string> {
       | "append"
       | boolean = false,
   ) {
-    try {
-      if (!this.mutable)
-        throw new TypeError("Readonly File");
-      else if (this.folder)
-        throw new TypeError("Filesystem object is Folder");
-      else if (this.exists) {
-        if (overwrite === false)
-          throw new ReferenceError("File already exists, but `overwrite:false`");
-      }
-      else if (!File.manager.isDirectory(this.parent))
-        File.manager.createDirectory(this.parent, true);
-
-      const buffer = content ?? "";
-
-      File.manager.writeString(
-        this.path,
-        typeof buffer === "object"
-          ? JSON.stringify(buffer)
-          : typeof overwrite !== "string"
-            ? String(buffer)
-            : overwrite === "line"
-              ? [
-                  String(buffer),
-                  this.readString(),
-                ]
-                  .join("\n")
-              : this.readString() + String(buffer),
+    if (!this.mutable)
+      throw this.error(
+        "write",
+        new TypeError("Readonly File"),
       );
+    else if (this.folder)
+      throw this.error(
+        "write",
+        new TypeError("Filesystem object is Folder"),
+      );
+    else if (this.exists) {
+      if (overwrite === false)
+        throw this.error(
+          "write",
+          new ReferenceError("File already exists, but `overwrite:false`"),
+        );
     }
-    catch (e) {
-      throw this.error("write", e);
-    }
+    else if (!File.manager.isDirectory(this.parent))
+      File.manager.createDirectory(this.parent, true);
+
+    const buffer = content ?? "";
+
+    File.manager.writeString(
+      this.path,
+      typeof buffer === "object"
+        ? JSON.stringify(buffer)
+        : typeof overwrite !== "string"
+          ? String(buffer)
+          : overwrite === "line"
+            ? [
+                String(buffer),
+                this.readString(),
+              ]
+                .join("\n")
+            : this.readString() + String(buffer),
+    );
   }
 
   public delete() {
