@@ -10,8 +10,7 @@ class Dashboard extends Widget {
     else {
       const finish = (new Widget.Time)
         .at(this.input)
-        .in(8)
-        .toDate();
+        .in(8);
 
       if (new Widget.Time > finish)
         this.text("Done").centerAlignText();
@@ -23,7 +22,9 @@ class Dashboard extends Widget {
         timer.spacing = 0;
         timer.centerAlignContent();
     
-        const countdown = timer.addDate(finish);
+        const countdown = timer.addDate(
+          finish.toDate(),
+        );
 
         countdown.font = this.style.round.regular(16);
         countdown.centerAlignText();
