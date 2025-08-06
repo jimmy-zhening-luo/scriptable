@@ -5,6 +5,7 @@ class Clock extends Widget {
   protected runtime() {
     this.text("Europe");
     this.clock({ timezone: "Europe/Zurich" });
+    this.line();
     this.text("China");
     this.clock({ timezone: "Asia/Shanghai" });
     this.line();
