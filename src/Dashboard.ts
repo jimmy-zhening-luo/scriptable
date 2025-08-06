@@ -21,7 +21,7 @@ class Dashboard extends Widget {
 
         timer.spacing = 0;
         timer.centerAlignContent();
-    
+
         const countdown = timer.addDate(
           finish.toDate(),
         );
