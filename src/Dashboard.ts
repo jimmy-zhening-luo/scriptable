@@ -5,7 +5,7 @@ class Dashboard extends Widget {
   protected runtime() {
     this
       .text("Finish")
-      centerAlignText();
+      .centerAlignText();
 
     const timer = this.widget.addStack();
 
