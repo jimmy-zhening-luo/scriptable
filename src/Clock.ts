@@ -61,12 +61,14 @@ class Clock extends Widget {
         const { humidity } = await Weather();
 
         this.text(
-          (
+          [
             now > now.at(sunrise).in(3)
             && now < now.at(sunset).in(1)
-              ? `Sunset: ${sunset}`
-              : `Sunrise: ${sunrise}`
-          ) + ` | RH ${humidity}%`,
+              ? `🌘 ${sunset}`
+              : `☀️ ${sunrise}`,
+            "💧" + humidity,
+          ]
+            .join("    "),
         );
       }
     }
