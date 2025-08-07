@@ -9,4 +9,4 @@ class EventBar extends Widget {
   }
 }
 
-new EventBar(null, "calendar").run();
+void new EventBar(null, "calendar").run();

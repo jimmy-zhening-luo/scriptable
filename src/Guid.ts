@@ -15,4 +15,4 @@ class Guid extends Shortcut<
   }
 }
 
-new Guid().run();
+void new Guid().run();

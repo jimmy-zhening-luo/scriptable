@@ -34,4 +34,4 @@ class Dashboard extends Widget {
   }
 }
 
-new Dashboard("").run();
+void new Dashboard("").run();

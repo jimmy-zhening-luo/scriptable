@@ -43,6 +43,6 @@ class Clock extends Widget {
   }
 }
 
-new Clock(
+void new Clock(
   new Widget.Time().print("E d"),
 ).run();

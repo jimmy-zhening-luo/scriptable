@@ -77,4 +77,4 @@ class Search extends Shortcut<
   }
 }
 
-new Search().run();
+void new Search().run();
