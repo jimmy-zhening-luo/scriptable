@@ -2,7 +2,7 @@
 import Widget from "./core/widget";
 
 async function Weather() {
-  Location.setAccuracyToKilometer();
+  Location.setAccuracyToHundredMeters();
 
   const {
     latitude,
