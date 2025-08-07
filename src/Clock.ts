@@ -59,7 +59,7 @@ class Clock extends Widget {
       if (
         sunrise !== undefined
         && sunset !== undefined
-      ) {
+      )
         badges.push(
           now > now.at(sunrise).in(3)
           && now < now.at(sunset).in(1)
