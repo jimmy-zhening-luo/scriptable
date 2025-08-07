@@ -14,4 +14,4 @@ class FileLink extends Share<string> {
   }
 }
 
-new FileLink("fileURLs").run();
+void new FileLink("fileURLs").run();
