@@ -66,7 +66,7 @@ class Clock extends Widget {
             && now < now.at(sunset).in(1)
               ? `🌘 ${sunset}`
               : `☀️ ${sunrise}`,
-            `💧${humidity}`,
+            `💧${humidity}%`,
           ]
             .join("    "),
         );
