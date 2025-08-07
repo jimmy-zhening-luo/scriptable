@@ -68,16 +68,14 @@ async function Weather() {
     hourly: {
       dew_point_2m: [dew],
     },
-  } = await req.loadJSON() as Promise<
-    {
-      current: {
-        relative_humidity_2m: number;
-      };
-      hourly: {
-        dew_point_2m: readonly [number];
-      };
-    }
-  >;
+  } = await req.loadJSON() as {
+    current: {
+      relative_humidity_2m: number;
+    };
+    hourly: {
+      dew_point_2m: readonly [number];
+    };
+  };
 
   return {
     humidity,
