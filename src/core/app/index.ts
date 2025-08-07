@@ -110,7 +110,7 @@ export default abstract class IApp<
     notification.subtitle = failure;
     notification.body = cause;
     notification.sound = "failure";
-    notification.schedule();
+    void notification.schedule();
     console.error([failure, cause].join("\n"));
 
     return new Error(failure, { cause });
