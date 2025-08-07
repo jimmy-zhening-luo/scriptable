@@ -2,7 +2,7 @@
 import Widget from "./core/widget";
 
 class Clock extends Widget {
-  protected runtime() {
+  protected async runtime() {
     this.text("Europe");
     this.clock({ timezone: "Europe/Zurich" });
     this.line();
@@ -25,17 +25,22 @@ class Clock extends Widget {
       if (
         sunrise !== undefined
         && sunset !== undefined
-      )
+      ) {
+        const { humidity } = await Weather();
+
         this.text(
-          now > now.at(sunrise).in(3)
-          && now < now.at(sunset).in(1)
-            ? `Sunset: ${sunset}`
-            : `Sunrise: ${sunrise}`,
+          (
+            now > now.at(sunrise).in(3)
+            && now < now.at(sunset).in(1)
+              ? `Sunset: ${sunset}`
+              : `Sunrise: ${sunrise}`
+          ) + ` | RH ${humidity}%`,
         );
+      }
     }
     catch (e) {
       console.error(
-        "Unable to populate Sun data due to error: "
+        "Unable to populate Sun or Weather data: "
         + String(e),
       );
       console.warn("Continuing...");
@@ -43,6 +48,30 @@ class Clock extends Widget {
   }
 }
 
-void new Clock(
+await new Clock(
   new Widget.Time().print("E d"),
 ).run();
+
+async function Weather() {
+  Location.setAccuracyToKilometer();
+  const {
+    latitude,
+    longitude,
+  } = await Location.current(),
+  req = new Request(
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=relative_humidity_2m&hourly=dew_point_2m&forecast_hours=1&timezone=auto&temperature_unit=fahrenheit`,
+  ),
+  {
+    current: {
+      relative_humidity_2m: humidity,
+    },
+    hourly: {
+      dew_point_2m: [dew],
+    },
+  } = await req.loadJSON();
+
+  return {
+    humidity,
+    dew,
+  };
+}
