@@ -2,7 +2,7 @@
 import Widget from "./core/widget";
 
 async function Weather() {
-  Location.setAccuracyToHundredMeters();
+  Location.setAccuracyToTenMeters();
 
   const {
     latitude,
@@ -42,6 +42,8 @@ class Clock extends Widget {
     this.clock({ timezone: "Asia/Shanghai" });
     this.line();
 
+    const badges: string[] = [];
+
     try {
       const sun = JSON.parse(
         this.feed("sun", "json"),
@@ -58,30 +60,39 @@ class Clock extends Widget {
         sunrise !== undefined
         && sunset !== undefined
       ) {
-        const { humidity } = await Weather();
-
-        this.text(
-          [
-            now > now.at(sunrise).in(3)
-            && now < now.at(sunset).in(1)
-              ? `🌘 ${sunset}`
-              : `☀️ ${sunrise}`,
-            `💧${humidity}%`,
-          ]
-            .join("    "),
+        badges.push(
+          now > now.at(sunrise).in(3)
+          && now < now.at(sunset).in(1)
+            ? `🌘 ${sunset}`
+            : `☀️ ${sunrise}`,
         );
-      }
     }
     catch (e) {
       console.error(
-        "Unable to populate Sun or Weather data: "
+        "Failed to retrieve Sun feed: "
         + String(e),
       );
       console.warn("Continuing...");
     }
+
+    try {
+      const { humidity } = await Weather();
+
+      badges.push(`💧${humidity}%`);
+    }
+    catch (e) {
+      console.error(
+        "Failed to call Weather API: "
+        + String(e),
+      );
+      console.warn("Continuing...");
+    }
+
+    if (badges.length !== 0)
+      this.text(badges.join("    "));
   }
 }
 
 await new Clock(
-  new Widget.Time().print("E d"),
+  new Clock.Time().print("E d"),
 ).run();
