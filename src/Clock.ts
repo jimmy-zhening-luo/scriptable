@@ -48,12 +48,9 @@ class Clock extends Widget {
   }
 }
 
-await new Clock(
-  new Widget.Time().print("E d"),
-).run();
-
 async function Weather() {
   Location.setAccuracyToKilometer();
+
   const {
     latitude,
     longitude,
@@ -82,3 +79,7 @@ async function Weather() {
     dew,
   };
 }
+
+await new Clock(
+  new Widget.Time().print("E d"),
+).run();
