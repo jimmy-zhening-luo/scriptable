@@ -60,14 +60,7 @@ async function Weather() {
   } = await Location.current(),
   req = new Request(
     `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=relative_humidity_2m&hourly=dew_point_2m&forecast_hours=1&timezone=auto&temperature_unit=fahrenheit`,
-  ) as {
-    current: {
-      relative_humidity_2m: number;
-    };
-    hourly: {
-      dew_point_2m: readonly [number];
-    };
-  },
+  ),
   {
     current: {
       relative_humidity_2m: humidity,
@@ -75,7 +68,16 @@ async function Weather() {
     hourly: {
       dew_point_2m: [dew],
     },
-  } = await req.loadJSON();
+  } = await req.loadJSON() as Promise<
+    {
+      current: {
+        relative_humidity_2m: number;
+      };
+      hourly: {
+        dew_point_2m: readonly [number];
+      };
+    }
+  >;
 
   return {
     humidity,
