@@ -116,7 +116,7 @@ export default abstract class IApp<
     return new Error(failure, { cause });
   }
 
-  public run(sideload?: Input) {
+  public async run(sideload?: Input) {
     try {
       if (
         sideload !== undefined
@@ -124,7 +124,7 @@ export default abstract class IApp<
       )
         this._input = sideload;
 
-      const output = this.runtime();
+      const output = await this.runtime();
 
       try {
         this.output(output);
@@ -322,7 +322,7 @@ export default abstract class IApp<
     );
   }
 
-  protected abstract runtime(): Output;
+  protected abstract runtime(): Promise<Output>;
   protected abstract output(output: Output): void;
   protected development?: (output: Output) => void;
   private ini?: Setting;
