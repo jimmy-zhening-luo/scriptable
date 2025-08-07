@@ -105,16 +105,7 @@ export default abstract class IApp<
     notification.subtitle = failure;
     notification.body = cause;
     notification.sound = "failure";
-    notification.schedule().catch(
-      (systemError: unknown) => {
-        console.error(systemError);
-
-        throw new EvalError(
-          "Failed to emit error in iOS Notification",
-          { cause: systemError },
-        );
-      },
-    );
+    notification.schedule();
     console.error([failure, cause].join("\n"));
 
     return new Error(failure, { cause });
