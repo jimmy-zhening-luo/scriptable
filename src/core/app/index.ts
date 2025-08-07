@@ -322,7 +322,7 @@ export default abstract class IApp<
     );
   }
 
-  protected abstract runtime(): Promise<Output>;
+  protected abstract runtime(): Output | Promise<Output>;
   protected abstract output(output: Output): void;
   protected development?: (output: Output) => void;
   private ini?: Setting;
