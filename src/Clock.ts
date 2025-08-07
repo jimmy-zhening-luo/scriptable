@@ -1,6 +1,38 @@
 // icon-color: orange; icon-glyph: clock;
 import Widget from "./core/widget";
 
+async function Weather() {
+  Location.setAccuracyToKilometer();
+
+  const {
+    latitude,
+    longitude,
+  } = await Location.current(),
+  req = new Request(
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=relative_humidity_2m&hourly=dew_point_2m&forecast_hours=1&timezone=auto&temperature_unit=fahrenheit`,
+  ),
+  {
+    current: {
+      relative_humidity_2m: humidity,
+    },
+    hourly: {
+      dew_point_2m: [dew],
+    },
+  } = await req.loadJSON() as {
+    current: {
+      relative_humidity_2m: number;
+    };
+    hourly: {
+      dew_point_2m: readonly [number];
+    };
+  };
+
+  return {
+    humidity,
+    dew,
+  };
+}
+
 class Clock extends Widget {
   protected async runtime() {
     this.text("Europe");
@@ -46,38 +78,6 @@ class Clock extends Widget {
       console.warn("Continuing...");
     }
   }
-}
-
-async function Weather() {
-  Location.setAccuracyToKilometer();
-
-  const {
-    latitude,
-    longitude,
-  } = await Location.current(),
-  req = new Request(
-    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=relative_humidity_2m&hourly=dew_point_2m&forecast_hours=1&timezone=auto&temperature_unit=fahrenheit`,
-  ),
-  {
-    current: {
-      relative_humidity_2m: humidity,
-    },
-    hourly: {
-      dew_point_2m: [dew],
-    },
-  } = await req.loadJSON() as {
-    current: {
-      relative_humidity_2m: number;
-    };
-    hourly: {
-      dew_point_2m: readonly [number];
-    };
-  };
-
-  return {
-    humidity,
-    dew,
-  };
 }
 
 await new Clock(
