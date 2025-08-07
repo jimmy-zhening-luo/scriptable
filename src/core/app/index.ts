@@ -38,7 +38,7 @@ export default abstract class IApp<
       };
     }
     catch (e) {
-      throw IApp.Error("App", e);
+      throw IApp.Error("App" as stringful, e);
     }
   }
 
