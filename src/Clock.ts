@@ -8,35 +8,39 @@ async function Weather(API_KEY: string) {
     latitude,
     longitude,
   } = await Location.current(),
-  { Key: location = null } = new Request(
-    `https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${API_KEY}&q=${latitude},${longitude}`,
-  )
-    .loadJSON() as { Key?: string; };
+  weatherApi = new Request(
+    `https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${latitude}&lon=${longitude}`,
+  );
 
-  if (location === null)
-    throw new URIError("Failed to obtain location key from Weather API");
+  weatherApi.headers = {
+    "User-Agent": "iOS/Shortcuts"
+  };
 
-  const [weather] = await new Request(
-    `https://dataservice.accuweather.com/currentconditions/v1/${location}?apikey=${API_KEY}&details=true`,
-  )
-    .loadJSON() as readonly [
-      {
-        RelativeHumidity: number;
-        DewPoint: {
-          Imperial: {
-            Value: number;
+  const weather = await weatherApi.loadJSON() as {
+    properties: {
+      timeseries: readonly [
+        {
+          data: {
+            instant: {
+              details: {
+                relative_humidity: number;
+                dew_point_temperature: number;
+              };
+            };
           };
-        };
-      },
-    ],
+        }
+      ];
+    };
+  },
   {
-    RelativeHumidity: humidity,
-    DewPoint: {
-      Imperial: {
-        Value: dew,
-      },
-    },
-  } = weather;
+    relative_humidity: humidity,
+    dew_point_temperature: dew,
+  } = weather
+    .properties
+    .timeseries[0]
+    .data
+    .instant
+    .details;
 
   return {
     humidity,
