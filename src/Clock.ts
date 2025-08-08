@@ -79,7 +79,7 @@ class Clock extends Widget {
           now > now.at(sunrise).in(3)
           && now < now.at(sunset).in(1)
             ? `☾ ${sunset}`
-            : `☼ ${sunrise}`);
+            : `☼ ${sunrise}`,
         );
     }
     catch (e) {
