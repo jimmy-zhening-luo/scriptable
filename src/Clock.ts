@@ -43,8 +43,8 @@ async function Weather() {
     .details;
 
   return {
-    humidity,
-    dew,
+    humidity: Math.round(humidity),
+    dew: Math.round(dew * 9 / 5 + 32),
   };
 }
 
@@ -93,7 +93,7 @@ class Clock extends Widget {
     try {
       const { humidity } = await Weather();
 
-      badges.push(`💧${Math.round(humidity)}%`);
+      badges.push(`💧${humidity}%`);
     }
     catch (e) {
       console.error(
