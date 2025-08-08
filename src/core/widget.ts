@@ -54,7 +54,7 @@ export default abstract class Widget<Setting = never> extends IApp<
           bottom,
           trailing,
         );
-  
+
         if (title !== "") {
           this.text(
             title ?? this.app,
