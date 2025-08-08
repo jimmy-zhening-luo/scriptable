@@ -3,7 +3,7 @@ import Widget from "./core/widget";
 
 class Clock extends Widget {
   protected async runtime() {
-    this.url = "things:///show?id=today";
+    this.url = "readdle-spark://";
     this.text("Europe");
     this.clock({ timezone: "Europe/Zurich" });
     this.line();
