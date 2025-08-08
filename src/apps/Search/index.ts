@@ -256,9 +256,7 @@ export default function (
 
     return key === null
       ? {
-          key: tail.length === 0
-            ? "spotlight" as stringful
-            : "chat" as stringful,
+          key: "chat" as stringful,
           terms: [
             typeof Head === "string"
               ? Head
