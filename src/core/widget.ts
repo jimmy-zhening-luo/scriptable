@@ -71,7 +71,7 @@ export default abstract class Widget<Setting = never> extends IApp<
   }
 
   protected set url(url: Null<string>) {
-    this.widget.url = url;
+    this.widget.url = url!;
   }
 
   protected output() {
