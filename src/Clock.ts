@@ -78,8 +78,8 @@ class Clock extends Widget {
         badges.push(
           now > now.at(sunrise).in(3)
           && now < now.at(sunset).in(1)
-            ? `🌘 ${sunset}`
-            : `☀️ ${sunrise}`,
+            ? `☾ ${sunset}`
+            : `☼ ${sunrise}`);
         );
     }
     catch (e) {
@@ -91,9 +91,12 @@ class Clock extends Widget {
     }
 
     try {
-      const { humidity } = await Weather();
+      const {
+        humidity,
+        dew,
+      } = await Weather();
 
-      badges.push(`💧${humidity}%`);
+      badges.push(`⛆ ${humidity}% ${dew}°`);
     }
     catch (e) {
       console.error(
