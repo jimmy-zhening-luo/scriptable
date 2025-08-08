@@ -19,6 +19,7 @@ export default abstract class Widget<Setting = never> extends IApp<
       | "lock"
       | "home"
     = "home",
+    background: Null<string | Color> = null,
     private readonly weight = 12,
     {
       spacing = 5,
@@ -39,21 +40,28 @@ export default abstract class Widget<Setting = never> extends IApp<
     this.tapped = tapped;
     this.style = new Style(weight);
 
-    if (mode === "home") {
-      this.widget.spacing = spacing;
-      this.widget.setPadding(
-        top,
-        leading,
-        bottom,
-        trailing,
-      );
+    if (mode !== "calendar") {
+      if (background !== null)
+        this.widget.backgroundColor = typeof background === "string"
+          ? new Color(background)
+          : background;
 
-      if (title !== "") {
-        this.text(
-          title ?? this.app,
-          this.style.title(),
+      if (mode === "home") {
+        this.widget.spacing = spacing;
+        this.widget.setPadding(
+          top,
+          leading,
+          bottom,
+          trailing,
         );
-        this.line(Math.round(weight / 6));
+  
+        if (title !== "") {
+          this.text(
+            title ?? this.app,
+            this.style.title(),
+          );
+          this.line(Math.round(weight / 6));
+        }
       }
     }
   }
