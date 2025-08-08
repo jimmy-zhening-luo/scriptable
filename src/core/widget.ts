@@ -10,7 +10,7 @@ export default abstract class Widget<Setting = never> extends IApp<
   public static readonly Time = Time;
   protected readonly widget = new ListWidget;
   protected readonly style;
-  private readonly tapped: boolean;
+  private readonly tapped;
 
   constructor(
     title: Null<string> = null,
@@ -64,6 +64,14 @@ export default abstract class Widget<Setting = never> extends IApp<
         }
       }
     }
+  }
+
+  protected get url() {
+    return this.widget.url ?? null;
+  }
+
+  protected set url(url: string) {
+    this.widget.url = url;
   }
 
   protected output() {
