@@ -1,4 +1,4 @@
-import * as MockGlobals from "./globals";
+import * as Mock from "./globals";
 import type File from "../lib/file";
 import type Shortcut from "../core";
 
@@ -12,17 +12,17 @@ type Import<Module> = Promise<
 export async function mochaGlobalSetup() {
   try {
     console.log("Mocha hooks: BEGIN");
-    global.args = MockGlobals.args;
-    global.config = MockGlobals.config;
-    global.Data = MockGlobals.Data;
-    global.DateFormatter = MockGlobals.DateFormatter;
-    global.FileManager = MockGlobals.FileManager;
-    global.Image = MockGlobals.Image;
-    global.Notification = MockGlobals.Notification;
-    global.Size = MockGlobals.Size;
+    global.args = Mock.args;
+    global.config = Mock.config;
+    global.Data = Mock.Data;
+    global.DateFormatter = Mock.DateFormatter;
+    global.FileManager = Mock.FileManager;
+    global.Image = Mock.Image;
+    global.Notification = Mock.Notification;
+    global.Size = Mock.Size;
 
     const {
-      "default": MockFile,
+      "default": FileModule,
     } = await (
       import("../lib/file") as Import<typeof File>
     )
@@ -38,7 +38,7 @@ export async function mochaGlobalSetup() {
         () => console.log("Mocha hooks: `File` module dynamically loaded"),
       );
 
-    global.mockFile = new MockFile(
+    global.ambientFile = new FileModule(
       "Storage",
       "SYNTHETIC_FILENAME.txt",
       "SYNTHETIC_SUBFOLDER",
@@ -46,7 +46,7 @@ export async function mochaGlobalSetup() {
     );
 
     const {
-      "default": MockShortcut,
+      "default": ShortcutModule,
     } = await (
       import("../core") as Import<typeof Shortcut>
     )
@@ -62,7 +62,7 @@ export async function mochaGlobalSetup() {
         () => console.log("Mocha hooks: `Shortcut` module dynamically loaded"),
       );
 
-    global.MockConcreteShortcut = class MockConcreteShortcut extends MockShortcut<
+    global.ConcreteShortcut = class ConcreteShortcut extends ShortcutModule<
       string,
       string
     > {
