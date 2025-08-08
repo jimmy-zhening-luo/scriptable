@@ -13,7 +13,7 @@ async function Weather() {
   );
 
   weatherApi.headers = {
-    "User-Agent": "iOS/Shortcuts"
+    "User-Agent": "iOS/Shortcuts",
   };
 
   const weather = await weatherApi.loadJSON() as {
@@ -28,7 +28,7 @@ async function Weather() {
               };
             };
           };
-        }
+        },
       ];
     };
   },
