@@ -34,4 +34,8 @@ class Dashboard extends Widget {
   }
 }
 
-void new Dashboard("").run();
+void new Dashboard(
+  "",
+  "home",
+  Color.black(),
+).run();
