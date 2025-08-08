@@ -66,7 +66,7 @@ class Clock extends Widget {
 
   private async weather() {
     Location.setAccuracyToTenMeters();
-  
+
     const {
       latitude,
       longitude,
@@ -74,11 +74,11 @@ class Clock extends Widget {
     weatherApi = new Request(
       `https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${latitude}&lon=${longitude}`,
     );
-  
+
     weatherApi.headers = {
       "User-Agent": "iOS/Shortcuts",
     };
-  
+
     const weather = await weatherApi.loadJSON() as {
       properties: {
         timeseries: readonly [
@@ -104,7 +104,7 @@ class Clock extends Widget {
       .data
       .instant
       .details;
-  
+
     return {
       humidity: Math.round(humidity),
       dew: Math.round(dew * 9 / 5 + 32),
