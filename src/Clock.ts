@@ -1,7 +1,7 @@
 // icon-color: orange; icon-glyph: clock;
 import Widget from "./core/widget";
 
-async function Weather(API_KEY: string) {
+async function Weather() {
   Location.setAccuracyToTenMeters();
 
   const {
@@ -48,7 +48,7 @@ async function Weather(API_KEY: string) {
   };
 }
 
-class Clock extends Widget<Field<"api_key">> {
+class Clock extends Widget {
   protected async runtime() {
     this.text("Europe");
     this.clock({ timezone: "Europe/Zurich" });
@@ -91,9 +91,7 @@ class Clock extends Widget<Field<"api_key">> {
     }
 
     try {
-      const { humidity } = await Weather(
-        this.setting.api_key,
-      );
+      const { humidity } = await Weather();
 
       badges.push(`💧${humidity}%`);
     }
