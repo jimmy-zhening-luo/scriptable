@@ -93,7 +93,7 @@ class Clock extends Widget {
     try {
       const { humidity } = await Weather();
 
-      badges.push(`💧${humidity}%`);
+      badges.push(`💧${Math.round(humidity)}%`);
     }
     catch (e) {
       console.error(
