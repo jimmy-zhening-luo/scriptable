@@ -50,6 +50,7 @@ async function Weather() {
 
 class Clock extends Widget {
   protected async runtime() {
+    this.url = "things:///show?id=today";
     this.text("Europe");
     this.clock({ timezone: "Europe/Zurich" });
     this.line();
