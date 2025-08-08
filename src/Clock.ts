@@ -66,7 +66,7 @@ class Clock extends Widget {
         "sunrise" | "sunset",
         FieldTable
       >,
-      now = new Widget.Time(),
+      now = new Widget.Time,
       today = now.print("yyMMdd"),
       sunrise = sun.sunrise[today],
       sunset = sun.sunset[today];
@@ -112,5 +112,5 @@ class Clock extends Widget {
 }
 
 await new Clock(
-  new Clock.Time().print("E d"),
+  new Widget.Time().print("E d"),
 ).run();
