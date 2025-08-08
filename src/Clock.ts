@@ -1,31 +1,42 @@
 // icon-color: orange; icon-glyph: clock;
 import Widget from "./core/widget";
 
-async function Weather() {
+async function Weather(API_KEY: string) {
   Location.setAccuracyToTenMeters();
 
   const {
     latitude,
     longitude,
   } = await Location.current(),
-  req = new Request(
-    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=relative_humidity_2m&hourly=dew_point_2m&forecast_hours=1&timezone=auto&temperature_unit=fahrenheit`,
-  ),
+  { Key: location = null } = new Request(
+    `https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${API_KEY}&q=${latitude},${longitude}`,
+  )
+    .loadJSON() as { Key?: string; };
+
+  if (location === null)
+    throw new URIError("Failed to obtain location key from Weather API");
+
+  const [weather] = await new Request(
+    `https://dataservice.accuweather.com/currentconditions/v1/${location}?apikey=${API_KEY}&details=true`,
+  )
+    .loadJSON() as readonly [
+      {
+        RelativeHumidity: number;
+        DewPoint: {
+          Imperial: {
+            Value: number;
+          };
+        };
+      },
+    ],
   {
-    current: {
-      relative_humidity_2m: humidity,
+    RelativeHumidity: humidity,
+    DewPoint: {
+      Imperial: {
+        Value: dew,
+      },
     },
-    hourly: {
-      dew_point_2m: [dew],
-    },
-  } = await req.loadJSON() as {
-    current: {
-      relative_humidity_2m: number;
-    };
-    hourly: {
-      dew_point_2m: readonly [number];
-    };
-  };
+  } = weather;
 
   return {
     humidity,
@@ -33,7 +44,7 @@ async function Weather() {
   };
 }
 
-class Clock extends Widget {
+class Clock extends Widget<Field<"api_key">> {
   protected async runtime() {
     this.text("Europe");
     this.clock({ timezone: "Europe/Zurich" });
@@ -76,7 +87,9 @@ class Clock extends Widget {
     }
 
     try {
-      const { humidity } = await Weather();
+      const { humidity } = await Weather(
+        this.setting.api_key,
+      );
 
       badges.push(`💧${humidity}%`);
     }
