@@ -20,8 +20,8 @@ export default abstract class Widget<Setting = never> extends IApp<
       | "home"
     = "home",
     private readonly weight = 12,
-    spacing = 5,
     {
+      spacing = 5,
       top = 12,
       trailing = 12,
       bottom = 12,
