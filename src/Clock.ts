@@ -1,53 +1,6 @@
 // icon-color: orange; icon-glyph: clock;
 import Widget from "./core/widget";
 
-async function Weather() {
-  Location.setAccuracyToTenMeters();
-
-  const {
-    latitude,
-    longitude,
-  } = await Location.current(),
-  weatherApi = new Request(
-    `https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${latitude}&lon=${longitude}`,
-  );
-
-  weatherApi.headers = {
-    "User-Agent": "iOS/Shortcuts",
-  };
-
-  const weather = await weatherApi.loadJSON() as {
-    properties: {
-      timeseries: readonly [
-        {
-          data: {
-            instant: {
-              details: {
-                relative_humidity: number;
-                dew_point_temperature: number;
-              };
-            };
-          };
-        },
-      ];
-    };
-  },
-  {
-    relative_humidity: humidity,
-    dew_point_temperature: dew,
-  } = weather
-    .properties
-    .timeseries[0]
-    .data
-    .instant
-    .details;
-
-  return {
-    humidity: Math.round(humidity),
-    dew: Math.round(dew * 9 / 5 + 32),
-  };
-}
-
 class Clock extends Widget {
   protected async runtime() {
     this.url = "things:///show?id=today";
@@ -95,7 +48,7 @@ class Clock extends Widget {
       const {
         humidity,
         dew,
-      } = await Weather();
+      } = await this.weather();
 
       badges.push(`⛆ ${humidity}% ${dew}°`);
     }
@@ -109,6 +62,53 @@ class Clock extends Widget {
 
     if (badges.length !== 0)
       this.text(badges.join("    "));
+  }
+
+  private async weather() {
+    Location.setAccuracyToTenMeters();
+  
+    const {
+      latitude,
+      longitude,
+    } = await Location.current(),
+    weatherApi = new Request(
+      `https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${latitude}&lon=${longitude}`,
+    );
+  
+    weatherApi.headers = {
+      "User-Agent": "iOS/Shortcuts",
+    };
+  
+    const weather = await weatherApi.loadJSON() as {
+      properties: {
+        timeseries: readonly [
+          {
+            data: {
+              instant: {
+                details: {
+                  relative_humidity: number;
+                  dew_point_temperature: number;
+                };
+              };
+            };
+          },
+        ];
+      };
+    },
+    {
+      relative_humidity: humidity,
+      dew_point_temperature: dew,
+    } = weather
+      .properties
+      .timeseries[0]
+      .data
+      .instant
+      .details;
+  
+    return {
+      humidity: Math.round(humidity),
+      dew: Math.round(dew * 9 / 5 + 32),
+    };
   }
 }
 
