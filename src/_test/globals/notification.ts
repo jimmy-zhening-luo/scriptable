@@ -8,7 +8,6 @@ export class Notification {
   public threadIdentifier = "MOCK_ALERT_THREAD_IDENTIFIER";
   public userInfo: Record<string, unknown> = {
     key: "MOCK_ALERT_USER_INFO",
-
   };
   public sound = "piano_success" as const;
   public openURL = "https://example.com/MOCK_ALERT_OPEN_URL";

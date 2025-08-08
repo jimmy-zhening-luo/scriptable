@@ -9,7 +9,7 @@ describe(
         it(
           "is extensible",
           function () {
-            new MockConcreteShortcut()
+            new ConcreteShortcut()
               .should.be
               .an("object");
           },

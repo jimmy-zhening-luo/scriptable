@@ -9,7 +9,7 @@ describe(
         it(
           "is a constructor",
           function () {
-            mockFile
+            ambientFile
               .should.be
               .an("object");
           },

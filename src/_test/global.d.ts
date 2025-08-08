@@ -1,6 +1,5 @@
 declare const global: Global;
 declare interface Global {
-  // #region Scriptable
   args: typeof args;
   config: typeof config;
   Data: typeof Data;
@@ -9,16 +8,15 @@ declare interface Global {
   Image: typeof Image;
   Notification: typeof Notification;
   Size: typeof Size;
-  // #endregion
 
-  // #region App
-  MockConcreteShortcut: new () => unknown;
-  mockFile: unknown;
+  // #region Library
+  ConcreteShortcut: new () => unknown;
+  ambientFile: unknown;
   // #endregion
 }
 
-declare class MockConcreteShortcut {
+declare class ConcreteShortcut {
   protected runtime(): string;
 }
 
-declare const mockFile: object;
+declare const ambientFile: object;
