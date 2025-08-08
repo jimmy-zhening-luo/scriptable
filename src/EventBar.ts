@@ -27,7 +27,7 @@ class EventBar extends Widget {
       this.text(
         [
           new Widget
-            .Time(next.startDate)
+            .Time(nextEvent.startDate)
             .print("h:mma"),
           nextEvent.title,
         ]
