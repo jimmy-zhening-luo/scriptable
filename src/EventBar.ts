@@ -32,7 +32,7 @@ class EventBar extends Widget {
             .replace("A", " ᴀ"),
           nextEvent.title,
         ]
-          .join("  "),
+          .join("  "),
       );
   }
 }
