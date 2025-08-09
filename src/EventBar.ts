@@ -27,12 +27,12 @@ class EventBar extends Widget {
           new Widget
             .Time(nextEvent.startDate)
             .print("h:mma")
-            .replace("M", "ᴍ")
-            .replace("P", " ᴘ")
-            .replace("A", " ᴀ"),
+            .replace("M", "\u1D0D")
+            .replace("P", "\u200A\u1D18")
+            .replace("A", "\u200A\u1D00"),
           nextEvent.title,
         ]
-          .join("  "),
+          .join(" \u2006"),
       );
   }
 }

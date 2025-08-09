@@ -6,7 +6,7 @@ class Dashboard extends Widget {
     const { input } = this;
 
     if (typeof input !== "string" || input === "")
-      this.text("—").centerAlignText();
+      this.text("\u2014").centerAlignText();
     else {
       const end = new Widget
         .Time()
