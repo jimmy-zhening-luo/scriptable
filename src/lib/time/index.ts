@@ -38,7 +38,7 @@ export default class Time {
   }
 
   public since(time: Time) {
-    return this - time as number;
+    return this.epoch - time.epoch;
   }
 
   public until(...time: Parameters<Time["since"]>) {
