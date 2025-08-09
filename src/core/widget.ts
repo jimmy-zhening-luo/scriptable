@@ -2,6 +2,8 @@ import IApp from "./app";
 import Time from "../lib/time";
 import Style from "../lib/ui/typography";
 
+const DEFAULT_FACTOR = 12;
+
 export default abstract class Widget<Setting = never> extends IApp<
   string,
   void,
@@ -10,6 +12,7 @@ export default abstract class Widget<Setting = never> extends IApp<
   public static readonly Time = Time;
   protected readonly widget = new ListWidget;
   protected readonly style;
+  private readonly weight;
   private readonly tapped;
 
   constructor(
@@ -20,13 +23,13 @@ export default abstract class Widget<Setting = never> extends IApp<
       | "home"
     = "home",
     background: Null<string | Color> = null,
-    private readonly weight = 12,
     {
-      spacing = 5,
-      top = 12,
-      trailing = 12,
-      bottom = 12,
-      leading = 12,
+      weight = DEFAULT_FACTOR,
+      spacing = Math.round(weight / 4),
+      top = DEFAULT_FACTOR,
+      trailing = DEFAULT_FACTOR,
+      bottom = DEFAULT_FACTOR,
+      leading = DEFAULT_FACTOR,
     } = {},
   ) {
     const input = args.widgetParameter as Null<string>,
@@ -38,7 +41,8 @@ export default abstract class Widget<Setting = never> extends IApp<
       config.runsInWidget || tapped,
     );
     this.tapped = tapped;
-    this.style = new Style(weight);
+    this.weight = Math.round(weight);
+    this.style = new Style(this.weight);
 
     if (mode !== "calendar") {
       if (background !== null)
