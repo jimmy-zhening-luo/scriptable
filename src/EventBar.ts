@@ -28,8 +28,8 @@ class EventBar extends Widget {
             .Time(nextEvent.startDate)
             .print("h:mma")
             .replace("M", "ᴍ")
-            .replace("P", " ᴘ")
-            .replace("A", " ᴀ"),
+            .replace("P", " ᴘ")
+            .replace("A", " ᴀ"),
           nextEvent.title,
         ]
           .join("  "),
