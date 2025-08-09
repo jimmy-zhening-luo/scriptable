@@ -138,7 +138,7 @@ export default class Time {
   public [Symbol.toPrimitive](hint: string) {
     return hint === "string"
       ? this.print()
-      : epoch;
+      : this.epoch;
   }
 
   public print(format = "MMMM d, y h:mm:ss a") {
