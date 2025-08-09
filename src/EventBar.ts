@@ -3,8 +3,6 @@ import Widget from "./core/widget";
 
 class EventBar extends Widget {
   protected async runtime() {
-    this.url = "https://calendar.google.com/calendar/u/0/r/3day/" + new Widget.Time().print("yyyy/MM/dd");
-
     const calendar = await Calendar.defaultForEvents(),
     events = await CalendarEvent.between(
       new Widget
@@ -36,4 +34,10 @@ class EventBar extends Widget {
   }
 }
 
-await new EventBar(null, "calendar").run();
+await new EventBar(
+  null,
+  "calendar",
+  {
+    url: "https://calendar.google.com/calendar/u/0/r/3day/" + new Widget.Time().print("yyyy/MM/dd"),
+  },
+).run();

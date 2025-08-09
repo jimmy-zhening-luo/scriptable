@@ -3,7 +3,6 @@ import Widget from "./core/widget";
 
 class Clock extends Widget {
   protected async runtime() {
-    this.url = "readdle-spark://";
     this.text("Europe");
     this.clock({ timezone: "Europe/Zurich" });
     this.line();
@@ -116,6 +115,7 @@ await new Clock(
   new Widget.Time().print("E d"),
   "home",
   {
+    url: "readdle-spark://",
     background: Color.black(),
   },
 ).run();

@@ -3,8 +3,6 @@ import Widget from "./core/widget";
 
 class Dashboard extends Widget {
   protected runtime() {
-    this.url = "things:///show?id=today";
-
     const { input } = this;
 
     if (typeof input !== "string" || input === "")
@@ -41,6 +39,7 @@ void new Dashboard(
   "",
   "home",
   {
+    url: "things:///show?id=today",
     background: Color.black(),
   },
 ).run();
