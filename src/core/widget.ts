@@ -22,7 +22,13 @@ export default abstract class Widget<Setting = never> extends IApp<
       | "lock"
       | "home"
     = "home",
-    background: Null<string | Color> = null,
+    {
+      background = null,
+      url = null,
+    }: {
+      background: Null<string | Color>;
+      url: Null<string>;
+    } = {},
     {
       weight = DEFAULT_FACTOR,
       spacing = Math.round(weight / 4),
@@ -43,6 +49,7 @@ export default abstract class Widget<Setting = never> extends IApp<
     this.tapped = tapped;
     this.weight = Math.round(weight);
     this.style = new Style(this.weight);
+    this.url = url;
 
     if (mode !== "calendar") {
       if (background !== null)
