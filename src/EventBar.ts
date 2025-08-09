@@ -20,7 +20,7 @@ class EventBar extends Widget {
     );
 
     if (nextEvent === null)
-      this.text("✓");
+      this.text("\u2713");
     else
       this.text(
         [
