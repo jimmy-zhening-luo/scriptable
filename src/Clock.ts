@@ -8,7 +8,7 @@ class Clock extends Widget {
     this.line();
     this.text("China");
     this.clock({ timezone: "Asia/Shanghai" });
-    this.line();
+    this.line(4);
 
     const badges: string[] = [];
 
