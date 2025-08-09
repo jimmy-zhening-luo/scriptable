@@ -52,6 +52,7 @@
     // "rootDirs": [],
     // "typeRoots": [],
     "types": [
+      "mocha",
       "chai",
       /* {CONFIGURE} */
       "scriptable-ios" /* @OVERRIDE */,
