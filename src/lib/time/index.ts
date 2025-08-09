@@ -71,25 +71,22 @@ export default class Time {
   }
 
   public at(
-    timeOrHour:
-      | number
-      | string
-    = 0,
+    time: number | string = 0,
     minute = 0,
     second = 0,
   ) {
     return new Time(
-      typeof timeOrHour === "number"
+      typeof time === "number"
         ? this
             .toDate()
             .setHours(
-              timeOrHour,
+              time,
               minute,
               second,
             )
         : [
             this.toDate().toDateString(),
-            timeOrHour,
+            time,
           ]
             .join(" "),
     );
