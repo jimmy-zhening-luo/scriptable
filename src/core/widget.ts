@@ -26,8 +26,8 @@ export default abstract class Widget<Setting = never> extends IApp<
       background = null,
       url = null,
     }: {
-      background: Null<string | Color>;
-      url: Null<string>;
+      background?: Null<string | Color>;
+      url?: Null<string>;
     } = {},
     {
       weight = DEFAULT_FACTOR,
