@@ -20,7 +20,7 @@ class EventBar extends Widget {
     );
 
     if (nextEvent === null)
-      this.text("No events");
+      this.text("✓");
     else
       this.text(
         [
