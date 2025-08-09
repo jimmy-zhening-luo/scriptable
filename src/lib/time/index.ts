@@ -38,7 +38,7 @@ export default class Time {
   }
 
   public since(time: Time) {
-    return this as number - time as number;
+    return this - time as number;
   }
 
   public until(...time: Parameters<Time["since"]>) {
