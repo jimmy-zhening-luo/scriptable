@@ -2,7 +2,6 @@ export default class FontFamily<
   Variant extends
   | ""
   | "Rounded"
-  | "Monospaced",
 > {
   constructor(
     public readonly variant: Variant,

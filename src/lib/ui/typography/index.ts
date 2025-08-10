@@ -3,12 +3,10 @@ import FontFamily from "./family";
 export default class Style {
   public readonly font;
   public readonly round;
-  public readonly mono;
 
   constructor(weight: number) {
     this.font = new FontFamily("", weight);
     this.round = new FontFamily("Rounded", weight);
-    this.mono = new FontFamily("Monospaced", weight);
   }
 
   public title() {
