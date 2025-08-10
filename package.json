@@ -1,5 +1,5 @@
 {
-  "$pkg": "2211.2.0",
+  "$pkg": "2211.2.1",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "@scoping/scriptable",
@@ -18,15 +18,12 @@
     "@types/mocha": "^10.0.10",
     "@types/scriptable-ios": "^1.7.8",
     "chai": "^5.2.1",
-    "eslint": "~9.33.0",
-    "linted": "~30.11.0",
+    "linted": "~30.11.1",
     "mocha": "^11.7.1",
     "rexreplace": "^7.1.13",
     "ts-add-js-extension": "^1.6.6",
     "typescript": "^5.9.2"
   },
-  "main": "",
-  "types": "",
   "scripts": {
     "clean": "cmd --% /c \"(if exist dist rmdir /s /q dist) & (if exist build rmdir /s /q build) & (if exist .svelte-kit rmdir /s /q .svelte-kit) & (if exist .eslintcache del /f /q .eslintcache)\" || rm -rf dist build .svelte-kit .eslintcache",
     "prebuild": "npm run clean",
@@ -35,7 +32,7 @@
     "build:ts": "tsc && ts-add-js-extension --dir=dist",
     "build:svelte": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && vite build",
     "postbuild": "npm run lint || echo \"Lint failed. Continuing...\"",
-    "lint": "eslint --cache --fix -- ",
+    "lint": "eslint --cache --fix",
     "pretest": "npm run build",
     "test": "npm run --if-present test:mocha",
     "test:mocha": "mocha",
