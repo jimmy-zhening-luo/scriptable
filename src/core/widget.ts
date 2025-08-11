@@ -113,7 +113,7 @@ export default abstract class Widget<Setting = never> extends IApp<
             this.mode === "calendar"
               ? "Inline" as const
               : "Circular" as const
-          }`
+          }` as const
       }`
     ]();
 
