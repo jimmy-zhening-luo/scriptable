@@ -1,5 +1,6 @@
 import IApp from "./app";
 import Time from "../lib/time";
+import location from "../lib/location";
 import Style from "../lib/ui/typography";
 
 const DEFAULT_FACTOR = 12;
@@ -10,6 +11,7 @@ export default abstract class Widget<Setting = never> extends IApp<
   Setting
 > {
   public static readonly Time = Time;
+  public static readonly location = location;
   protected readonly widget = new ListWidget;
   protected readonly style;
   private readonly weight;
@@ -134,30 +136,6 @@ export default abstract class Widget<Setting = never> extends IApp<
     textbox.font = font;
 
     return textbox;
-  }
-
-  protected async location(
-    accuracy:
-      | 0
-      | 0.01
-      | 0.1
-      | 1
-      | 3 = 0.1,
-  ) {
-    const LocationAccuracy = {
-      0: "Best",
-      0.01: "TenMeters",
-      0.1: "HundredMeters",
-      1: "Kilometer",
-      3: "ThreeKilometers",
-    } as const;
-
-    if (accuracy !== 0)
-      Location[
-        `setAccuracyTo${LocationAccuracy[accuracy]}`
-      ]();
-
-    return Location.current();
   }
 
   protected clock(
