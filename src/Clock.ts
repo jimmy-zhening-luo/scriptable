@@ -3,11 +3,11 @@ import Widget from "./core/widget";
 
 class Clock extends Widget {
   protected async runtime() {
-    this.line(4);
-    this.clock("Europe/Zurich", "EU");
-    this.line(4);
-    this.clock("Asia/Shanghai", "CN");
-    this.line(16);
+    void this.line(4);
+    void this.clock("Europe/Zurich", "EU");
+    void this.line(4);
+    void this.clock("Asia/Shanghai", "CN");
+    void this.line(16);
 
     const badges: string[] = [];
 
@@ -59,7 +59,7 @@ class Clock extends Widget {
     }
 
     if (badges.length !== 0)
-      this.text(badges.join("    "));
+      void this.text(badges.join("    "));
   }
 
   private async weather() {

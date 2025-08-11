@@ -61,10 +61,7 @@ export default abstract class IApp<
     }
   }
 
-  private static Error(
-    app: stringful,
-    error: unknown,
-  ) {
+  private static Error(app: stringful, error: unknown) {
     function cast(error: unknown) {
       return typeof error === "object"
         && error !== null
@@ -127,7 +124,7 @@ export default abstract class IApp<
       const output = await this.runtime();
 
       try {
-        this.output(output);
+        void this.output(output);
       }
       catch (errorSystemOutput) {
         throw new Error(
@@ -141,7 +138,7 @@ export default abstract class IApp<
           console.log(output);
 
           if (this.development !== undefined)
-            this.development(output);
+            void this.development(output);
         }
         catch (developmentError) {
           throw new EvalError(
@@ -156,7 +153,7 @@ export default abstract class IApp<
       throw IApp.Error(this.app, error);
     }
     finally {
-      Script.complete();
+      void Script.complete();
     }
   }
 
@@ -170,26 +167,28 @@ export default abstract class IApp<
     key: string,
     value: string,
   ) {
-    this
+    void this
       .state(key)
       .write(value, true);
   }
 
   protected unset(key: string) {
-    this
+    void this
       .state(key)
       .delete();
   }
 
   protected invalidateCache() {
-    new File(
-      "EphemeralState",
-      "",
-      this.app,
-      true,
-      true,
-    )
-      .delete();
+    void (
+      new File(
+        "EphemeralState",
+        "",
+        this.app,
+        true,
+        true,
+      )
+        .delete()
+    );
   }
 
   protected read(...file: Parameters<IApp["storage"]>) {
@@ -220,25 +219,27 @@ export default abstract class IApp<
       ...Parameters<IApp["storage"]>,
     ]
   ) {
-    this
+    void this
       .storage(...file)
       .write(data, overwrite);
   }
 
   protected delete(...file: Parameters<IApp["storage"]>) {
-    this
+    void this
       .storage(...file)
       .delete();
   }
 
   protected clearStorage() {
-    new File(
-      "Storage",
-      "",
-      this.app,
-      true,
-    )
-      .delete();
+    void (
+      new File(
+        "Storage",
+        "",
+        this.app,
+        true,
+      )
+        .delete()
+    );
   }
 
   protected feed(...feed: Parameters<IApp["stream"]>) {

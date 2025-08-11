@@ -59,7 +59,7 @@ export default abstract class Widget<Setting = never> extends IApp<
 
       if (mode === "home") {
         this.widget.spacing = spacing;
-        this.widget.setPadding(
+        void this.widget.setPadding(
           top,
           leading,
           bottom,
@@ -67,11 +67,11 @@ export default abstract class Widget<Setting = never> extends IApp<
         );
 
         if (title !== "") {
-          this.text(
+          void this.text(
             title ?? this.app,
             this.style.title(),
           );
-          this.line(Math.round(weight / 6));
+          void this.line(Math.round(weight / 6));
         }
       }
     }
@@ -90,11 +90,11 @@ export default abstract class Widget<Setting = never> extends IApp<
       .in(0, 1)
       .toDate();
 
-    Script.setWidget(this.widget);
+    void Script.setWidget(this.widget);
 
     if (this.tapped && this.onTap !== undefined)
       try {
-        this.onTap();
+        void this.onTap();
       }
       catch (runtimeActionError) {
         throw new Error(
@@ -104,24 +104,18 @@ export default abstract class Widget<Setting = never> extends IApp<
       }
   }
 
-  protected override development = () => {
-    this
-      .widget[
-        this.mode === "calendar"
-          ? "presentAccessoryInline"
-          : this.mode === "lock"
-            ? "presentAccessoryCircular"
-            : "presentSmall"
-      ]()
-      .catch(
-        (developmentError: unknown) => {
-          throw new EvalError(
-            "Error presenting widget",
-            { cause: developmentError },
-          );
-        },
-      );
-  };
+  protected override development = () => void this
+    .widget[
+      `present${
+        this.mode === "home"
+          ? "Small"
+          : `Accessory${
+            this.mode === "calendar"
+              ? "Inline"
+              : "Circular"
+          }`
+      }`
+    ]();
 
   protected line(height = 0) {
     if (this.mode === "calendar")
@@ -158,7 +152,7 @@ export default abstract class Widget<Setting = never> extends IApp<
     } as const;
 
     if (accuracy !== 0)
-      Location[
+      void Location[
         `setAccuracyTo${LocationAccuracy[accuracy]}`
       ]();
 
@@ -203,12 +197,12 @@ export default abstract class Widget<Setting = never> extends IApp<
     clock = this.widget.addStack();
 
     clock.spacing = 0;
-    clock.centerAlignContent();
+    void clock.centerAlignContent();
     clock.addText(label).font = new Font(
       "Consolas",
       Math.round(this.weight * 1.1),
     );
-    clock.addSpacer(
+    void clock.addSpacer(
       Math.round(this.weight * 1.25),
     );
 
@@ -220,14 +214,14 @@ export default abstract class Widget<Setting = never> extends IApp<
       .regular(
         Math.round(this.weight * 1.5),
       );
-    dial.applyTimerStyle();
+    void dial.applyTimerStyle();
     clock.addText(period).font = this
       .style
       .round
       .semibold(
         Math.round(this.weight * 1.2),
       );
-    clock.addSpacer(
+    void clock.addSpacer(
       Math.round(this.weight * 1.75),
     );
   }

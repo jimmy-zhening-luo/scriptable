@@ -6,7 +6,7 @@ class Dashboard extends Widget {
     const { input } = this;
 
     if (typeof input !== "string" || input === "")
-      this.text("\u2713").centerAlignText();
+      void this.text("\u2713").centerAlignText();
     else {
       const end = new Widget
         .Time()
@@ -14,22 +14,22 @@ class Dashboard extends Widget {
         .in(8);
 
       if (new Widget.Time > end)
-        this.text("Done").centerAlignText();
+        void this.text("Done").centerAlignText();
       else {
-        this.text("Remaining").centerAlignText();
+        void this.text("Remaining").centerAlignText();
 
         const timer = this.widget.addStack();
 
         timer.spacing = 0;
-        timer.centerAlignContent();
+        void timer.centerAlignContent();
 
         const countdown = timer.addDate(
           end.toDate(),
         );
 
         countdown.font = this.style.round.regular(16);
-        countdown.centerAlignText();
-        countdown.applyTimerStyle();
+        void countdown.centerAlignText();
+        void countdown.applyTimerStyle();
       }
     }
   }

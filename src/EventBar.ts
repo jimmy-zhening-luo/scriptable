@@ -19,21 +19,20 @@ class EventBar extends Widget {
       event => !event.isAllDay,
     );
 
-    if (nextEvent === null)
-      this.text("\u2713");
-    else
-      this.text(
-        [
-          new Widget
-            .Time(nextEvent.startDate)
-            .print("h:mma")
-            .replace("M", "\u1D0D")
-            .replace("P", "\u200A\u1D18")
-            .replace("A", "\u200A\u1D00"),
-          nextEvent.title,
-        ]
-          .join(" \u2006"),
-      );
+    void this.text(
+      nextEvent === null
+        ? "\u2713"
+        : [
+            new Widget
+              .Time(nextEvent.startDate)
+              .print("h:mma")
+              .replace("M", "\u1D0D")
+              .replace("P", "\u200A\u1D18")
+              .replace("A", "\u200A\u1D00"),
+            nextEvent.title,
+          ]
+            .join(" \u2006"),
+    );
   }
 }
 

@@ -120,11 +120,11 @@ export default class File<Class extends string> {
         );
     }
     else if (!File.manager.isDirectory(this.parent))
-      File.manager.createDirectory(this.parent, true);
+      void File.manager.createDirectory(this.parent, true);
 
     const buffer = content ?? "";
 
-    File.manager.writeString(
+    void File.manager.writeString(
       this.path,
       typeof buffer === "object"
         ? JSON.stringify(buffer)
@@ -148,7 +148,7 @@ export default class File<Class extends string> {
       );
 
     if (this.exists)
-      File.manager.remove(this.path);
+      void File.manager.remove(this.path);
   }
 
   private error(verb: string, error: unknown) {
