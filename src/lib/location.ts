@@ -20,4 +20,4 @@ export default async function location(
     ]();
 
   return Location.current();
-};
+}
