@@ -129,8 +129,8 @@ export default function (
       else {
         const DOT = "." as char;
 
-        SELECTORS.delete(DOT);
-        SELECTORS.add(DOT);
+        void SELECTORS.delete(DOT);
+        void SELECTORS.add(DOT);
 
         const selectors = [...SELECTORS],
         match = selectors.find(
