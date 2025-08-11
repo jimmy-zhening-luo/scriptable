@@ -205,10 +205,12 @@ export default abstract class Widget<Setting = never> extends IApp<
     clock.spacing = 0;
     clock.centerAlignContent();
     clock.addText(label).font = new Font(
-      "Menlo",
-      this.weight,
+      "Consolas",
+      Math.round(this.weight * 1.1),
     );
-    clock.addSpacer(this.weight * 2);
+    clock.addSpacer(
+      Math.round(this.weight * 1.25),
+    );
 
     const dial = clock.addDate(zero.toDate());
 
@@ -222,10 +224,12 @@ export default abstract class Widget<Setting = never> extends IApp<
     clock.addText(period).font = this
       .style
       .round
-      .regular(
+      .semibold(
         Math.round(this.weight * 1.2),
       );
-    clock.addSpacer(this.weight);
+    clock.addSpacer(
+      Math.round(this.weight * 1.75),
+    );
   }
 
   protected lastRefresh(
