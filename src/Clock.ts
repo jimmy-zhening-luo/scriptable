@@ -62,12 +62,7 @@ class Clock extends Widget {
   }
 
   private async weather() {
-    Location.setAccuracyToTenMeters();
-
-    const {
-      latitude,
-      longitude,
-    } = await Location.current(),
+    const { latitude, longitude } = await this.location(0.01),
     weatherApi = new Request(
       `https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${latitude}&lon=${longitude}`,
     );
