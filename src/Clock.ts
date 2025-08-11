@@ -3,11 +3,9 @@ import Widget from "./core/widget";
 
 class Clock extends Widget {
   protected async runtime() {
-    this.text("Europe");
-    this.clock({ timezone: "Europe/Zurich" });
+    this.clock("Europe/Zurich", "EU");
     this.line();
-    this.text("China");
-    this.clock({ timezone: "Asia/Shanghai" });
+    this.clock("Asia/Shanghai", "CN");
     this.line(4);
 
     const badges: string[] = [];

@@ -142,25 +142,9 @@ export default abstract class Widget<Setting = never> extends IApp<
   }
 
   protected clock(
-    {
-      ampm = true,
-      timezone = null,
-      font = this
-        .style
-        .round
-        .regular(Math.round(this.weight * 1.5)),
-      complicationFont = this
-        .style
-        .round
-        .semibold(),
-      spacing = this.weight * 4,
-    }: {
-      ampm?: boolean;
-      timezone?: Parameters<typeof Time.prototype.offset>[0];
-      font?: Font;
-      complicationFont?: Font;
-      spacing?: number;
-    } = {},
+    timezone: Null<string> = null,
+    label = "--",
+    ampm = true,
   ) {
     const now = new Time,
     destinationMidnight = now
@@ -196,26 +180,28 @@ export default abstract class Widget<Setting = never> extends IApp<
 
     clock.spacing = 0;
     clock.centerAlignContent();
+    clock.addText(label).font = new Font(
+      "Menlo",
+      this.weight,
+    );
+    clock.addSpacer(this.weight * 2);
 
     const dial = clock.addDate(zero.toDate());
 
-    dial.font = font;
+    dial.font = this
+      .style
+      .round
+      .regular(
+        Math.round(this.weight * 1.5),
+      );
     dial.applyTimerStyle();
-
-    const complication = clock.addText(period);
-
-    complication.font = complicationFont;
-
-    const trailer = clock.addSpacer(spacing);
-
-    return {
-      clock,
-      parts: {
-        dial,
-        complication,
-        trailer,
-      },
-    } as const;
+    clock.addText(period).font = this
+      .style
+      .round
+      .regular(
+        Math.round(this.weight * 1.2),
+      );
+    clock.addSpacer(this.weight);
   }
 
   protected lastRefresh(
