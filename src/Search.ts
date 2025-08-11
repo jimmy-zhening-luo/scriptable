@@ -14,10 +14,7 @@ class Search extends Shortcut<
 > {
   protected runtime() {
     const { input = "" } = this,
-    {
-      key,
-      terms,
-    } = parse(
+    { key, terms } = parse(
       input === ""
         ? this.get("history")
         : input,
@@ -47,9 +44,7 @@ class Search extends Shortcut<
           terms,
           "browser",
           entry,
-          this.stringful(
-            this.setting.reserved.tag,
-          ),
+          this.stringful(this.setting.reserved.tag),
         )
       : "url" in entry
         ? engine(
@@ -57,9 +52,7 @@ class Search extends Shortcut<
             terms,
             "browser",
             entry.url,
-            this.stringful(
-              this.setting.reserved.tag,
-            ),
+            this.stringful(this.setting.reserved.tag),
             entry.prepend,
             entry.force,
             entry.separator,
