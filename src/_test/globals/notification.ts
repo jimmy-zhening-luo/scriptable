@@ -81,7 +81,7 @@ export class Notification {
   }
 
   public addAction(title: string, url: string, destructive = false) {
-    this.actions.push(
+    void this.actions.push(
       {
         title,
         url,

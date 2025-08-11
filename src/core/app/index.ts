@@ -83,7 +83,7 @@ export default abstract class IApp<
       typeof trace[0] !== "string"
       && "cause" in trace[0]
     )
-      trace.unshift(cast(trace[0].cause));
+      void trace.unshift(cast(trace[0].cause));
 
     const [failure = "", ...causes] = (
       typeof trace[0] === "string"
