@@ -149,13 +149,13 @@ export default abstract class Widget<Setting = never> extends IApp<
       | 1
       | 3 = 0.1,
   ) {
-    enum LocationAccuracy {
-      Best = 0,
-      Kilometer = 1,
-      TenMeters = 0.01,
-      HundredMeters = 0.1,
-      ThreeKilometers = 3,
-    }
+    const LocationAccuracy = {
+      0: "Best",
+      0.01: "TenMeters",
+      0.1: "HundredMeters",
+      1: "Kilometer",
+      3: "ThreeKilometers",
+    } as const;
 
     if (accuracy !== 0)
       Location[
