@@ -105,7 +105,7 @@ export default abstract class Widget<Setting = never> extends IApp<
   }
 
   protected override development = () => {
-    this.widget[
+    void this.widget[
       `present${
         this.mode === "home"
           ? "Small" as const
