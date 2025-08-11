@@ -108,11 +108,11 @@ export default abstract class Widget<Setting = never> extends IApp<
     .widget[
       `present${
         this.mode === "home"
-          ? "Small"
+          ? "Small" as const
           : `Accessory${
             this.mode === "calendar"
-              ? "Inline"
-              : "Circular"
+              ? "Inline" as const
+              : "Circular" as const
           }`
       }`
     ]();
