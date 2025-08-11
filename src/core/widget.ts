@@ -142,7 +142,7 @@ export default abstract class Widget<Setting = never> extends IApp<
   }
 
   protected clock(
-    timezone: Null<string> = null,
+    timezone: Parameters<typeof Time.prototype.offset>[0] = null,
     label = "--",
     ampm = true,
   ) {
