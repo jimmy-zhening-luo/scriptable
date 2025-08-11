@@ -59,7 +59,7 @@ export default abstract class Widget<Setting = never> extends IApp<
 
       if (mode === "home") {
         this.widget.spacing = spacing;
-        void this.widget.setPadding(
+        this.widget.setPadding(
           top,
           leading,
           bottom,
@@ -90,11 +90,11 @@ export default abstract class Widget<Setting = never> extends IApp<
       .in(0, 1)
       .toDate();
 
-    void Script.setWidget(this.widget);
+    Script.setWidget(this.widget);
 
     if (this.tapped && this.onTap !== undefined)
       try {
-        void this.onTap();
+        this.onTap();
       }
       catch (runtimeActionError) {
         throw new Error(
@@ -116,7 +116,7 @@ export default abstract class Widget<Setting = never> extends IApp<
           }` as const
       }`
     ]();
-  }
+  };
 
   protected line(height = 0) {
     if (this.mode === "calendar")
@@ -153,7 +153,7 @@ export default abstract class Widget<Setting = never> extends IApp<
     } as const;
 
     if (accuracy !== 0)
-      void Location[
+      Location[
         `setAccuracyTo${LocationAccuracy[accuracy]}`
       ]();
 
@@ -198,7 +198,7 @@ export default abstract class Widget<Setting = never> extends IApp<
     clock = this.widget.addStack();
 
     clock.spacing = 0;
-    void clock.centerAlignContent();
+    clock.centerAlignContent();
     clock.addText(label).font = new Font(
       "Consolas",
       Math.round(this.weight * 1.1),
@@ -215,7 +215,7 @@ export default abstract class Widget<Setting = never> extends IApp<
       .regular(
         Math.round(this.weight * 1.5),
       );
-    void dial.applyTimerStyle();
+    dial.applyTimerStyle();
     clock.addText(period).font = this
       .style
       .round

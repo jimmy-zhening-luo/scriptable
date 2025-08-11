@@ -4,9 +4,9 @@ import Widget from "./core/widget";
 class Clock extends Widget {
   protected async runtime() {
     void this.line(4);
-    void this.clock("Europe/Zurich", "EU");
+    this.clock("Europe/Zurich", "EU");
     void this.line(4);
-    void this.clock("Asia/Shanghai", "CN");
+    this.clock("Asia/Shanghai", "CN");
     void this.line(16);
 
     const badges: string[] = [];

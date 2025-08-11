@@ -27,6 +27,6 @@ export default abstract class Share<
 
   protected output(output: ReturnType<Share<ShareOutput>["runtime"]>) {
     if (typeof output === "string")
-      void Pasteboard.copy(output);
+      Pasteboard.copy(output);
   }
 }

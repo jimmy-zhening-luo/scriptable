@@ -124,7 +124,7 @@ export default abstract class IApp<
       const output = await this.runtime();
 
       try {
-        void this.output(output);
+        this.output(output);
       }
       catch (errorSystemOutput) {
         throw new Error(
@@ -138,7 +138,7 @@ export default abstract class IApp<
           console.log(output);
 
           if (this.development !== undefined)
-            void this.development(output);
+            this.development(output);
         }
         catch (developmentError) {
           throw new EvalError(
@@ -153,7 +153,7 @@ export default abstract class IApp<
       throw IApp.Error(this.app, error);
     }
     finally {
-      void Script.complete();
+      Script.complete();
     }
   }
 
@@ -167,28 +167,26 @@ export default abstract class IApp<
     key: string,
     value: string,
   ) {
-    void this
+    this
       .state(key)
       .write(value, true);
   }
 
   protected unset(key: string) {
-    void this
+    this
       .state(key)
       .delete();
   }
 
   protected invalidateCache() {
-    void (
-      new File(
-        "EphemeralState",
-        "",
-        this.app,
-        true,
-        true,
-      )
-        .delete()
-    );
+    new File(
+      "EphemeralState",
+      "",
+      this.app,
+      true,
+      true,
+    )
+      .delete();
   }
 
   protected read(...file: Parameters<IApp["storage"]>) {
@@ -219,27 +217,25 @@ export default abstract class IApp<
       ...Parameters<IApp["storage"]>,
     ]
   ) {
-    void this
+    this
       .storage(...file)
       .write(data, overwrite);
   }
 
   protected delete(...file: Parameters<IApp["storage"]>) {
-    void this
+    this
       .storage(...file)
       .delete();
   }
 
   protected clearStorage() {
-    void (
-      new File(
-        "Storage",
-        "",
-        this.app,
-        true,
-      )
-        .delete()
-    );
+    new File(
+      "Storage",
+      "",
+      this.app,
+      true,
+    )
+      .delete();
   }
 
   protected feed(...feed: Parameters<IApp["stream"]>) {
