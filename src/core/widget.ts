@@ -104,8 +104,8 @@ export default abstract class Widget<Setting = never> extends IApp<
       }
   }
 
-  protected override development = () => void this
-    .widget[
+  protected override development = () => {
+    this.widget[
       `present${
         this.mode === "home"
           ? "Small" as const
@@ -116,6 +116,7 @@ export default abstract class Widget<Setting = never> extends IApp<
           }` as const
       }`
     ]();
+  }
 
   protected line(height = 0) {
     if (this.mode === "calendar")
