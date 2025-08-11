@@ -141,6 +141,30 @@ export default abstract class Widget<Setting = never> extends IApp<
     return textbox;
   }
 
+  protected async location(
+    accuracy:
+      | 0
+      | 0.01
+      | 0.1
+      | 1
+      | 3 = 0.1,
+  ) {
+    enum LocationAccuracy {
+      Best,
+      Kilometer,
+      TenMeters = 0.01,
+      HundredMeters = 0.1,
+      ThreeKilometers = 3,
+    }
+
+    if (accuracy !== 0)
+      Location[
+        `setAccuracyTo${LocationAccuracy[accuracy]}`
+      ]();
+
+    return Location.current();
+  }
+
   protected clock(
     timezone: Parameters<typeof Time.prototype.offset>[0] = null,
     label = "--",
