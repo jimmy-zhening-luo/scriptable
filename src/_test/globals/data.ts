@@ -30,7 +30,7 @@ export class Data {
   }
 
   public static fromBytes(bytes: readonly number[]): Data {
-    console.log(`Mock Data.fromBytes(${bytes})`);
+    console.log(`Mock Data.fromBytes(${bytes.join(", ")})`);
 
     return new Data();
   }
@@ -54,7 +54,7 @@ export class Data {
   public getBytes(): number[] {
     const MOCK_DATA_BYTES = [1, 2];
 
-    console.log(`Mock Data.getBytes(): ${MOCK_DATA_BYTES}`);
+    console.log(`Mock Data.getBytes(): ${MOCK_DATA_BYTES.join(", ")}`);
 
     return MOCK_DATA_BYTES;
   }
