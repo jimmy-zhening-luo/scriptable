@@ -29,7 +29,7 @@ class Search extends Shortcut<
       alias,
       new Set(this.chars(reserved.selectors)),
     ),
-    entry = engines[key] ?? engines["null"],
+    entry = engines[key] ?? engines["null"]!,
     entryOption = typeof entry === "object"
       && !Array.isArray(entry);
 
