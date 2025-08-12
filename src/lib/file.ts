@@ -105,18 +105,18 @@ export default class File<Class extends string> {
     if (!this.mutable)
       throw this.error(
         "write",
-        new TypeError("Readonly File"),
+        new TypeError("Readonly file"),
       );
     else if (this.folder)
       throw this.error(
         "write",
-        new TypeError("Filesystem object is Folder"),
+        new TypeError("Path already exists and is folder"),
       );
     else if (this.exists) {
       if (overwrite === false)
         throw this.error(
           "write",
-          new ReferenceError("File already exists, but `overwrite:false`"),
+          new ReferenceError("Path already exists, overwrite false"),
         );
     }
     else if (!File.manager.isDirectory(this.parent))
@@ -144,7 +144,7 @@ export default class File<Class extends string> {
     if (!this.mutable)
       throw this.error(
         "delete",
-        new ReferenceError("Readonly File/Folder"),
+        new ReferenceError("Readonly file/folder"),
       );
 
     if (this.exists)
