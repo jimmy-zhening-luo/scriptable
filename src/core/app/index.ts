@@ -17,7 +17,7 @@ export default abstract class IApp<
   private readonly store: Table<
     File<"Storage">
   > = {};
-  private readonly streams: Table<
+  private readonly feeds: Table<
     File<"Feed">
   > = {};
 
@@ -48,7 +48,7 @@ export default abstract class IApp<
 
   protected get setting() {
     try {
-      return this.ini ??= JSON.parse(
+      return this.loadedSetting ??= JSON.parse(
         new File("Setting", this.app + ".json")
           .readStringful(),
       ) as Setting;
@@ -238,9 +238,9 @@ export default abstract class IApp<
       .delete();
   }
 
-  protected feed(...feed: Parameters<IApp["stream"]>) {
+  protected stream(...feed: Parameters<IApp["feed"]>) {
     return this
-      .stream(...feed)
+      .feed(...feed)
       .readString();
   }
 
@@ -307,12 +307,12 @@ export default abstract class IApp<
     );
   }
 
-  private stream(name: string, extension = "txt") {
+  private feed(name: string, extension = "txt") {
     const feed = extension === ""
       ? name
       : [name, extension].join(".");
 
-    return this.streams[feed] ??= new File(
+    return this.feeds[feed] ??= new File(
       "Feed",
       feed,
       this.app,
@@ -322,5 +322,5 @@ export default abstract class IApp<
   protected abstract runtime(): Output | Promise<Output>;
   protected abstract output(output: Output): void;
   protected development?: (output: Output) => void;
-  private ini?: Setting;
+  private loadedSetting?: Setting;
 }
