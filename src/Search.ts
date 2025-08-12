@@ -13,38 +13,39 @@ class Search extends Shortcut<
   SearchSetting
 > {
   protected runtime() {
-    const { input = "" } = this,
+    const {
+      setting: {
+        alias,
+        engines,
+        reserved,
+      },
+      input = "",
+    } = this,
     { key, terms } = parse(
       input === ""
         ? this.get("history")
         : input,
-      new Set(
-        Object.keys(this.setting.engines),
-      ),
-      this.setting.alias,
-      new Set(
-        this.chars(
-          this.setting.reserved.selectors,
-        ),
-      ),
+      new Set(Object.keys(engines)),
+      alias,
+      new Set(this.chars(reserved.selectors)),
     ),
-    entry = this.setting.engines[key]!,
-    entryHasOption = typeof entry === "object"
+    entry = engines[key]!,
+    entryOption = typeof entry === "object"
       && !Array.isArray(entry);
 
-    if (!entryHasOption || !entry.noSave)
+    if (!entryOption || !entry.noSave)
       this.set(
         "history",
         [key, ...terms].join(" "),
       );
 
-    return !entryHasOption
+    return !entryOption
       ? engine(
           key,
           terms,
           "browser",
           entry,
-          this.stringful(this.setting.reserved.tag),
+          this.stringful(reserved.tag),
         )
       : "url" in entry
         ? engine(
@@ -52,7 +53,7 @@ class Search extends Shortcut<
             terms,
             "browser",
             entry.url,
-            this.stringful(this.setting.reserved.tag),
+            this.stringful(reserved.tag),
             entry.prepend,
             entry.force,
             entry.separator,
