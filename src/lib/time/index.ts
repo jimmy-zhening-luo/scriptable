@@ -37,14 +37,6 @@ export default class Time {
     return this.at(12);
   }
 
-  public since(time: Time) {
-    return this.epoch - time.epoch;
-  }
-
-  public until(...time: Parameters<Time["since"]>) {
-    return -this.since(...time);
-  }
-
   public in(
     hours = 0,
     minutes = 0,
@@ -90,10 +82,6 @@ export default class Time {
           ]
             .join(" "),
     );
-  }
-
-  public past(...time: Parameters<Time["at"]>) {
-    return this > this.at(...time);
   }
 
   public offset(timeZone: Null<Timezone> = null) {
