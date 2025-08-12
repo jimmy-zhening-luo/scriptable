@@ -13,7 +13,7 @@ class Clock extends Widget {
 
     try {
       const sun = JSON.parse(
-        this.feed("sun", "json"),
+        this.stream("sun", "json"),
       ) as Record<
         "sunrise" | "sunset",
         FieldTable
