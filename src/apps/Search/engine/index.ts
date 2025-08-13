@@ -17,8 +17,8 @@ export default function<EngineType extends "browser" | "shortcut">(
     terms: readonly stringful[],
     separator: string,
     browserOptions?: {
-      urls: Undef<readonly string[]>;
-      tag: Undef<stringful>;
+      urls: Undefined<readonly string[]>;
+      tag: Undefined<stringful>;
       force: boolean;
     },
   ) {
