@@ -305,7 +305,7 @@ export default abstract class IApp<
   }
 
   private storage(
-    name = this.app,
+    name: string = this.app,
     extension = "txt",
   ) {
     const file = extension === ""
