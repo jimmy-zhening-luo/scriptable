@@ -13,6 +13,18 @@ class Search extends Shortcut<
   SearchSetting
 > {
   protected runtime() {
+    function history(history: string) {
+      return history === ""
+        ? {
+            key: "null" as stringful,
+            terms: [],
+          }
+        : JSON.parse(history) as {
+          key: stringful;
+          terms: stringful[];
+        };
+    }
+
     const {
       setting: {
         alias,
@@ -21,14 +33,14 @@ class Search extends Shortcut<
       },
       input = "",
     } = this,
-    { key, terms } = parse(
-      input === ""
-        ? this.get("history")
-        : input,
-      new Set(Object.keys(engines)),
-      alias,
-      new Set(this.chars(reserved.selectors)),
-    ),
+    { key, terms } = input === ""
+      ? history(this.get("history"))
+      : parse(
+        input,
+        new Set(Object.keys(engines)),
+        alias,
+        new Set(this.chars(reserved.selectors)),
+      ),
     entry = engines[key] ?? engines["null"]!,
     entryOption = typeof entry === "object"
       && !Array.isArray(entry);
@@ -36,7 +48,12 @@ class Search extends Shortcut<
     if (!entryOption || !entry.noSave)
       this.set(
         "history",
-        [key, ...terms].join(" "),
+        JSON.stringify(
+          {
+            key,
+            terms,
+          },
+        ),
       );
 
     return !entryOption
