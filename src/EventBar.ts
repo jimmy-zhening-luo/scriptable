@@ -6,8 +6,8 @@ class EventBar extends Widget {
     const calendar = await Calendar.defaultForEvents(),
     now = new Widget.Time,
     events = await CalendarEvent.between(
-      new now.ago(0.5).toDate(),
-      new now.in(24.5).toDate(),
+      now.ago(0.5).toDate(),
+      now.in(24.5).toDate(),
       [calendar],
     ),
     [upcoming] = events.filter(
