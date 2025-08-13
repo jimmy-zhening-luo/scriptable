@@ -59,17 +59,17 @@ class Search extends Shortcut<
 
     return !entryOption
       ? engine(
+          "browser",
           key,
           terms,
-          "browser",
           entry,
           this.stringful(tag),
         )
       : "url" in entry
         ? engine(
+            "browser",
             key,
             terms,
-            "browser",
             entry.url,
             this.stringful(tag),
             entry.prepend,
@@ -77,9 +77,9 @@ class Search extends Shortcut<
             entry.separator,
           )
         : engine(
+            "shortcut",
             key,
             terms,
-            "shortcut",
             (entry.shortcut as Undefined<string>) ?? "",
             entry.notify,
             entry.prepend,
