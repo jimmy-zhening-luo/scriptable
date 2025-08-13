@@ -29,7 +29,10 @@ class Search extends Shortcut<
       setting: {
         alias,
         engines,
-        reserved,
+        reserved: {
+          selectors,
+          tag,
+        },
       },
       input = "",
     } = this,
@@ -39,7 +42,7 @@ class Search extends Shortcut<
           input,
           new Set(Object.keys(engines)),
           alias,
-          new Set(reserved.selectors satisfies string as unknown as char[]),
+          new Set(selectors satisfies string as unknown as char[]),
         ),
     { [key]: entry = engines["null"]! } = engines,
     entryOption = typeof entry === "object"
@@ -62,7 +65,7 @@ class Search extends Shortcut<
           terms,
           "browser",
           entry,
-          this.stringful(reserved.tag),
+          this.stringful(tag),
         )
       : "url" in entry
         ? engine(
@@ -70,7 +73,7 @@ class Search extends Shortcut<
             terms,
             "browser",
             entry.url,
-            this.stringful(reserved.tag),
+            this.stringful(tag),
             entry.prepend,
             entry.force,
             entry.separator,
