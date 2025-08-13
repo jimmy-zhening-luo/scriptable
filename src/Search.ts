@@ -51,12 +51,10 @@ class Search extends Shortcut<
     if (!entryOption || !entry.noSave)
       this.set(
         "history",
-        JSON.stringify(
-          {
-            key,
-            terms,
-          },
-        ),
+        JSON.stringify({
+          key,
+          terms,
+        }),
       );
 
     return !entryOption
