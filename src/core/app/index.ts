@@ -214,10 +214,8 @@ export default abstract class IApp<
   }
 
   protected write(
-    ...[
-      data,
-      overwrite = true,
-    ]: Parameters<File<"Storage">["write"]>,
+    data: Parameters<File<"Storage">["write"]>[0],
+    overwrite: Parameters<File<"Storage">["write"]>[1] = true,
     name?: string,
     extension?: string,
   ) {
