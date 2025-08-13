@@ -1,8 +1,8 @@
 export type { ISearchEngineEntry } from "./entry";
 export default function<
   Engine extends
-    | "browser"
-    | "shortcut",
+  | "browser"
+  | "shortcut",
 >(
   type: Engine,
   key: stringful,
