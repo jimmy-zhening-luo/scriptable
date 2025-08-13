@@ -1,10 +1,10 @@
 import type { ISearchEngineEntry } from "./engine";
 
 export interface SearchSetting {
-  readonly reserved: {
-    readonly selectors: readonly string[];
-    readonly tag: string;
-  };
+  readonly reserved: Field<
+    | "selectors"
+    | "tag"
+  >;
   readonly alias: Readonly<FieldTable>;
   readonly engines: Readonly<Table<
     | Unflat<string, true>

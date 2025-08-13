@@ -39,7 +39,7 @@ class Search extends Shortcut<
           input,
           new Set(Object.keys(engines)),
           alias,
-          new Set(this.chars(reserved.selectors)),
+          new Set(reserved.selectors),
         ),
     entry = engines[key] ?? engines["null"]!,
     entryOption = typeof entry === "object"
