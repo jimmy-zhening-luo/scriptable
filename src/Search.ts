@@ -36,11 +36,11 @@ class Search extends Shortcut<
     { key, terms } = input === ""
       ? history(this.get("history"))
       : parse(
-        input,
-        new Set(Object.keys(engines)),
-        alias,
-        new Set(this.chars(reserved.selectors)),
-      ),
+          input,
+          new Set(Object.keys(engines)),
+          alias,
+          new Set(this.chars(reserved.selectors)),
+        ),
     entry = engines[key] ?? engines["null"]!,
     entryOption = typeof entry === "object"
       && !Array.isArray(entry);
