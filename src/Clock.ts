@@ -15,7 +15,8 @@ class Clock extends Widget {
       const sun = JSON.parse(
         this.stream("sun", "json"),
       ) as Record<
-        "sunrise" | "sunset",
+        | "sunrise"
+        | "sunset",
         FieldTable
       >,
       now = new Widget.Time,
@@ -78,10 +79,10 @@ class Clock extends Widget {
           {
             data: {
               instant: {
-                details: {
-                  relative_humidity: number;
-                  dew_point_temperature: number;
-                };
+                details: Scalar<
+                  | "relative_humidity"
+                  | "dew_point_temperature"
+                >;
               };
             };
           },
@@ -89,8 +90,8 @@ class Clock extends Widget {
       };
     },
     {
-      relative_humidity: humidity,
-      dew_point_temperature: dew,
+      relative_humidity,
+      dew_point_temperature,
     } = weather
       .properties
       .timeseries[0]
@@ -99,8 +100,8 @@ class Clock extends Widget {
       .details;
 
     return {
-      humidity: Math.round(humidity),
-      dew: Math.round(dew * 9 / 5 + 32),
+      humidity: Math.round(relative_humidity),
+      dew: Math.round(dew_point_temperature * 9 / 5 + 32),
     };
   }
 }

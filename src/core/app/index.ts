@@ -25,21 +25,15 @@ export default abstract class IApp<
     private _input: NullUndef<Input>,
     production: boolean,
   ) {
-    try {
-      this.app = this.stringful(
-        this.constructor.name,
-        "Anonymous app instance",
-      );
-      this.context = {
-        production,
-        development:
-          !production
-          && config.runsInApp,
-      };
-    }
-    catch (e) {
-      throw IApp.Error("App" as stringful, e);
-    }
+    this.app = this.stringful(
+      this.constructor.name,
+      "Anonymous app instance",
+    );
+    this.context = {
+      production,
+      development: !production
+        && config.runsInApp,
+    };
   }
 
   protected get input() {
@@ -48,8 +42,11 @@ export default abstract class IApp<
 
   protected get setting() {
     try {
-      return this.loadedSetting ??= JSON.parse(
-        new File("Setting", this.app + ".json")
+      return this._setting ??= JSON.parse(
+        new File(
+          "Setting",
+          `${this.app}.json`,
+        )
           .readStringful(),
       ) as Setting;
     }
@@ -189,21 +186,30 @@ export default abstract class IApp<
       .delete();
   }
 
-  protected read(...file: Parameters<IApp["storage"]>) {
+  protected read(
+    name?: string,
+    extension?: string,
+  ) {
     return this
-      .storage(...file)
+      .storage(name, extension)
       .read();
   }
 
-  protected readString(...file: Parameters<IApp["storage"]>) {
+  protected readString(
+    name?: string,
+    extension?: string,
+  ) {
     return this
-      .storage(...file)
+      .storage(name, extension)
       .readString();
   }
 
-  protected readStringful(...file: Parameters<IApp["storage"]>) {
+  protected readStringful(
+    name?: string,
+    extension?: string,
+  ) {
     return this
-      .storage(...file)
+      .storage(name, extension)
       .readStringful();
   }
 
@@ -211,20 +217,21 @@ export default abstract class IApp<
     ...[
       data,
       overwrite = true,
-      ...file
-    ]: [
-      ...Parameters<File<"Storage">["write"]>,
-      ...Parameters<IApp["storage"]>,
-    ]
+    ]: Parameters<File<"Storage">["write"]>,
+    name?: string,
+    extension?: string,
   ) {
     this
-      .storage(...file)
+      .storage(name, extension)
       .write(data, overwrite);
   }
 
-  protected delete(...file: Parameters<IApp["storage"]>) {
+  protected delete(
+    name?: string,
+    extension?: string,
+  ) {
     this
-      .storage(...file)
+      .storage(name, extension)
       .delete();
   }
 
@@ -238,9 +245,12 @@ export default abstract class IApp<
       .delete();
   }
 
-  protected stream(...feed: Parameters<IApp["feed"]>) {
+  protected stream(
+    name: string,
+    extension?: string,
+  ) {
     return this
-      .feed(...feed)
+      .feed(name, extension)
       .readString();
   }
 
@@ -294,7 +304,10 @@ export default abstract class IApp<
     );
   }
 
-  private storage(name = this.app, extension = "txt") {
+  private storage(
+    name = this.app,
+    extension = "txt",
+  ) {
     const file = extension === ""
       ? name
       : [name, extension].join(".");
@@ -307,7 +320,10 @@ export default abstract class IApp<
     );
   }
 
-  private feed(name: string, extension = "txt") {
+  private feed(
+    name: string,
+    extension = "txt",
+  ) {
     const feed = extension === ""
       ? name
       : [name, extension].join(".");
@@ -322,5 +338,5 @@ export default abstract class IApp<
   protected abstract runtime(): Output | Promise<Output>;
   protected abstract output(output: Output): void;
   protected development?: (output: Output) => void;
-  private loadedSetting?: Setting;
+  private _setting?: Setting;
 }

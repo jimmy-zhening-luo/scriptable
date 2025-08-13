@@ -17,8 +17,8 @@ export default function<EngineType extends "browser" | "shortcut">(
     terms: readonly stringful[],
     separator: string,
     browserOptions?: {
-      urls: readonly string[];
-      tag: stringful;
+      urls: Undef<readonly string[]>;
+      tag: Undef<stringful>;
       force: boolean;
     },
   ) {
@@ -32,10 +32,10 @@ export default function<EngineType extends "browser" | "shortcut">(
         : action as stringful;
     else {
       const queryfulUrls = browserOptions
-        .urls
+        .urls!
         .map(
           url => url.replace(
-            browserOptions.tag,
+            browserOptions.tag!,
             action,
           ),
         )
@@ -94,8 +94,8 @@ export default function<EngineType extends "browser" | "shortcut">(
           finalTerms,
           separator,
           {
-            urls: urls!,
-            tag: tag!,
+            urls,
+            tag,
             force,
           },
         )

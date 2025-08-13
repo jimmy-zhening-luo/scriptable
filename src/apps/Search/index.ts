@@ -33,18 +33,22 @@ export default function (
 
         constructor(
           public readonly key: stringful,
-          selectors: {
-            readonly canonical: stringful;
-            readonly match: stringful;
-          },
+          {
+            canonical,
+            match,
+          }: Record<
+            | "canonical"
+            | "match",
+            stringful
+          >,
           selection: string,
           next: string,
           public readonly deselect: stringful,
         ) {
           this.consumes = selection === ""
-            && selectors.match === ".";
+            && match === ".";
           this.selection = [
-            selectors.canonical,
+            canonical,
             this.consumes
               ? next
               : selection,
@@ -55,7 +59,7 @@ export default function (
 
       function expand(query: string) {
         function tokenize(query: string) {
-          function quick(query: string) {
+          function hot(query: string) {
             const space = query.length - query.trimStart().length;
 
             return space === 0
@@ -70,7 +74,7 @@ export default function (
           }
 
           const tokens = [
-            ...quick(query),
+            ...hot(query),
             ...query
               .split(" ")
               .filter((token): token is stringful => token !== ""),
@@ -87,23 +91,11 @@ export default function (
           };
         }
 
-        const OPERATORS = {
-          digit: "0123456789",
-          leading: "+-$€£¥.(",
-        },
-        tokens = tokenize(query),
-        { Head, tail } = tokens;
+        const { Head, tail } = tokenize(query);
 
         return typeof Head === "string"
-          && new Set(
-            OPERATORS.digit
-            + OPERATORS.leading,
-          )
-            .has(Head[0] as string)
-            && (
-              Head.length > 1
-              || tail.length > 0
-            )
+          && new Set("0123456789+-$€£¥.(").has(Head[0] as string)
+          && (Head.length !== 1 || tail.length !== 0)
           ? {
               Head: new ReservedSearchQueryKey("math"),
               tail: [Head, ...tail],
@@ -114,23 +106,19 @@ export default function (
             };
       }
 
-      const tokens = expand(query),
-      { Head, tail } = tokens;
+      const { Head, tail } = expand(query);
 
       if (
         typeof Head !== "string"
-        || Head.length === 1
-        && tail.length === 0
+        || Head.length === 1 && tail.length === 0
       )
         return {
           Head,
           tail,
         };
       else {
-        const DOT = "." as char;
-
-        void SELECTORS.delete(DOT);
-        void SELECTORS.add(DOT);
+        void SELECTORS.delete("." as char);
+        void SELECTORS.add("." as char);
 
         const selectors = [...SELECTORS],
         match = selectors.find(
@@ -157,7 +145,7 @@ export default function (
                   [
                     canonical,
                     selection === ""
-                    && match === DOT
+                    && match === "."
                       ? tail.shift() ?? ""
                       : selection,
                   ]

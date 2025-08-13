@@ -4,32 +4,28 @@ import Widget from "./core/widget";
 class EventBar extends Widget {
   protected async runtime() {
     const calendar = await Calendar.defaultForEvents(),
+    now = new Widget.Time,
     events = await CalendarEvent.between(
-      new Widget
-        .Time()
-        .ago(0.5)
-        .toDate(),
-      new Widget
-        .Time()
-        .in(24.5)
-        .toDate(),
+      new now.ago(0.5).toDate(),
+      new now.in(24.5).toDate(),
       [calendar],
     ),
-    [nextEvent = null] = events.filter(
+    [upcoming] = events.filter(
       event => !event.isAllDay,
     );
 
     void this.text(
-      nextEvent === null
+      upcoming === undefined
         ? "\u2713"
         : [
             new Widget
-              .Time(nextEvent.startDate)
-              .print("h:mma")
+              .Time(upcoming.startDate)
+              .print("h:mm a")
+              .replace(" ", "\u200A")
               .replace("M", "\u1D0D")
-              .replace("P", "\u200A\u1D18")
-              .replace("A", "\u200A\u1D00"),
-            nextEvent.title,
+              .replace("P", "\u1D18")
+              .replace("A", "\u1D00"),
+            upcoming.title,
           ]
             .join(" \u2006"),
     );
