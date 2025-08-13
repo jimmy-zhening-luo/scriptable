@@ -45,7 +45,7 @@ export default abstract class IApp<
       return this._setting ??= JSON.parse(
         new File(
           "Setting",
-          `${this.app}.json`,
+          this.app + ".json",
         )
           .readStringful(),
       ) as Setting;
