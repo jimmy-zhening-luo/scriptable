@@ -1,5 +1,5 @@
 {
-  "display": "tsc@509.0.0",
+  "display": "tsc@509.1.0",
   "$schema": "https://json.schemastore.org/tsconfig",
   "$help": "https://www.typescriptlang.org/tsconfig/#quick-nav-Top%20Level",
   "include": [
@@ -7,43 +7,27 @@
     "src/**/*.ts",
     "typings/**/*.d.ts",
   ],
-  "exclude": [],
   "compilerOptions": {
-    // #region Typecheck
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    // "alwaysStrict": true /* @default true if `strict`, else false */,
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
-    // "noImplicitAny": true /* @default true if `strict`, else false */,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    // "noImplicitThis": true /* @default true if `strict`, else false */,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "strict": true /* INFO:[CONTROLS] alwaysStrict | noImplicitAny | noImplicitThis | strict.* | useUnknownInCatchVariables */,
-    // "strictBindCallApply": true /* @default true if `strict`, else false */,
-    // "strictBuiltinIteratorReturn": true /* @default true if `strict`, else false */,
-    // "strictFunctionTypes": true /* @default true if `strict`, else false */,
-    // "strictNullChecks": true /* @default true if `strict`, else false */,
-    // "strictPropertyInitialization": true /* @default true if `strict`, else false */,
-    // "useUnknownInCatchVariables": true /* @default true if `strict`, else false */,
-    // #endregion
-    //
-    // #region Modules
+    "strict": true,
     "allowArbitraryExtensions": true,
     // "allowImportingTsExtensions": true,
-    // "allowUmdGlobalAccess": true,
     // "baseUrl": "./",
-    // "customConditions": [],
     "module": "esnext",
     "moduleResolution": "bundler",
     // "moduleSuffixes": [],
     // "noResolve": true,
     // "noUncheckedSideEffectImports": true,
-    // "paths": { "*": ["node_modules/*"] },
+    // "paths": {},
     // "resolveJsonModule": true,
     // "resolvePackageJsonExports": true,
     // "resolvePackageJsonImports": true,
@@ -57,101 +41,36 @@
       /* {CONFIGURE} */
       "scriptable-ios" /* @OVERRIDE */,
     ],
-    // #endregion
-    //
-    // #region Emit
     "declaration": true,
     // "declarationDir": "",
     "declarationMap": true,
-    // "downlevelIteration": true,
-    // "emitBOM": true,
     // "emitDeclarationOnly": true,
-    // "importHelpers": true,
-    // "inlineSourceMap": true,
-    // "inlineSources": true,
-    // "mapRoot": "",
-    // "newLine": "crlf",
     // "noEmit": true,
-    // "noEmitHelpers": true,
     "noEmitOnError": true,
     "outDir": "dist",
     // "outFile": "./",
     // "preserveConstEnums": true,
-    // "removeComments": true,
+    // "removeComments": true /* @OVERRIDE */,
     "sourceMap": true,
-    // "sourceRoot": "",
-    // "stripInternal": true,
-    // #endregion
-    //
-    // #region JS
     // "allowJs": true,
     // "checkJs": true,
-    // "maxNodeModuleJsDepth": 1,
-    // #endregion
-    //
-    // #region Editor
-    // "disableSizeLimit": false,
-    // "plugins": [],
-    // #endregion
-    //
-    // #region Interop
     "allowSyntheticDefaultImports": true,
     // "erasableSyntaxOnly": true,
     // "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     // "isolatedDeclarations": false,
     // "isolatedModules": true,
-    // "preserveSymlinks": true,
     "verbatimModuleSyntax": true,
-    // #endregion
-    //
-    // #region Language
-    // "emitDecoratorMetadata": true,
-    // "experimentalDecorators": true,
-    // "jsx": "preserve",
-    // "jsxFactory": "",
-    // "jsxFragmentFactory": "",
-    // "jsxImportSource": "",
     "lib": [
       "esnext",
       /* {CONFIGURE} */
     ],
-    // "libReplacement": true /* @default: true | INFO: in the future, @default may become false */,
     // "moduleDetection": "auto",
-    // "noLib": true,
-    // "reactNamespace": "",
     "target": "esnext",
-    // "useDefineForClassFields": true /* @default true if `target` > `es2022`, else false*/,
-    // #endregion
-    //
-    // #region Diagnostic
-    // "diagnostics": true,
-    // "explainFiles": true,
-    // "extendedDiagnostics": true,
-    // "generateCpuProfile": "profile.cpuprofile",
-    // "listEmittedFiles": true,
-    // "listFiles": true,
-    // "noCheck": true,
-    // "traceResolution": true,
-    // #endregion
-    //
-    // #region Project
+    // "useDefineForClassFields": true,
     // "composite": true,
-    // "disableReferencedProjectLoad": true,
-    // "disableSolutionSearching": true,
-    // "disableSourceOfProjectReferenceRedirect": true,
-    "incremental": true /* @default true if `composite`, else false */,
+    "incremental": true,
     // "tsBuildInfoFile": "",
-    // #endregion
-    //
-    // #region Print
-    // "noErrorTruncation": true,
-    // "preserveWatchOutput": true,
-    // "pretty": true,
-    // #endregion
-    //
-    // #region Complete
     // "skipLibCheck": true,
-    // #endregion
   },
 }
