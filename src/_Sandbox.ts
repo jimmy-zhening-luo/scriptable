@@ -1,7 +1,7 @@
 // icon-color: deep-green; icon-glyph: play;
 import Shortcut from "./core";
 
-class _Sandbox extends Shortcut {
+class Sandbox extends Shortcut {
   protected runtime() {
     const foo = null;
 
@@ -9,4 +9,4 @@ class _Sandbox extends Shortcut {
   }
 }
 
-await new _Sandbox().run();
+await new Sandbox().run();
