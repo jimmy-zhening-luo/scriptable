@@ -6,7 +6,7 @@ class Sandtile extends Widget {
     const foo = null as unknown as Promise<null>,
     bar = await foo;
 
-    void this.text(bar as unknown as string);
+    void this.text(String(bar));
   }
 }
 
