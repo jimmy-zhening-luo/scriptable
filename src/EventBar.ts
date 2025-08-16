@@ -29,7 +29,7 @@ class EventBar extends Widget {
         ? "\u2713"
         : [
             ...nextToday === undefined
-              ? ["→"]
+              ? ["☾"]
               : [],
             [
               new Widget
@@ -43,7 +43,7 @@ class EventBar extends Widget {
             ]
               .join(" \u2006"),
           ]
-            .join(" "),
+            .join("\u2009"),
     );
   }
 }
