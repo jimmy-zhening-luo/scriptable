@@ -37,6 +37,10 @@ export default class Time {
     return this.at(12);
   }
 
+  public get eod() {
+    return this.at(23, 59, 59);
+  }
+
   public in(
     hours = 0,
     minutes = 0,

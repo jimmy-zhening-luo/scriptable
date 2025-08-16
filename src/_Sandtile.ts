@@ -3,10 +3,9 @@ import Widget from "./core/widget";
 
 class Sandtile extends Widget {
   protected async runtime() {
-    const foo = null as unknown as Promise<null>,
-    bar = await foo;
+    const foo = await (this.app as unknown as Promise<string>);
 
-    void this.text(String(bar));
+    void this.text(foo);
   }
 }
 
