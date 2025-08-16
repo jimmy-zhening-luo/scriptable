@@ -8,7 +8,7 @@
       "scriptable-app-shortcut",
     ],
     "body": [
-      "import ${1|Shortcut,Share,Widget|} from \"./core${2:/${3|share,widget|}\";",
+      "import ${1|Shortcut,Share,Widget|} from \"./core${2:/${3|share,widget|}}\";",
       "",
       "class ${4:$TM_FILENAME_BASE} extends $1 {",
       "  protected ${5:${6:async} }runtime() {",
