@@ -29,7 +29,7 @@ class EventBar extends Widget {
         ? "\u2713"
         : [
             ...nextToday === undefined
-              ? ["☾"]
+              ? ["\u263E"]
               : [],
             [
               new Widget
