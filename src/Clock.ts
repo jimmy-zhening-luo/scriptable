@@ -31,8 +31,8 @@ class Clock extends Widget {
         void badges.push(
           now > now.at(sunrise).in(3)
           && now < now.at(sunset).in(1)
-            ? `☾\u2009${sunset}`
-            : `☼ ${sunrise}`,
+            ? `\u263E\u2009${sunset}`
+            : `\u235C ${sunrise}`,
         );
     }
     catch (e) {
@@ -49,7 +49,7 @@ class Clock extends Widget {
         dew,
       } = await this.weather();
 
-      void badges.push(`⛆\u2006${humidity}% ${dew}°`);
+      void badges.push(`\u26C6\u2006${humidity}% ${dew}°`);
     }
     catch (e) {
       console.error(
