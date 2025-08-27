@@ -1,5 +1,5 @@
 name: Azure Publish (dev)
-on: { push: { branches: [&branch dev] } }
+on: { push: { branches: [dev] } }
 env:
   branch: dev
   environment: dev
