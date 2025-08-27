@@ -1,8 +1,8 @@
 name: Azure Publish (dev)
+on: { push: { branches: [&branch dev] } }
 env:
-  branch: &branch dev
+  branch: *branch
   environment: *branch
-on: { push: { branches: [*branch] } }
 jobs:
   publish-dev:
     name: Build/Publish (${{env.environment}})
