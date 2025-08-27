@@ -1,5 +1,5 @@
 name: Azure Publish (PROD.main)
-on: { push: { branches: [main] } }
+on: { push: { branches: [&branch main] } }
 jobs:
   publish-prod-main:
     name: Build/Publish (PROD.main)
@@ -20,14 +20,22 @@ jobs:
         id: ci
         run: npm ci
       - name: Build/Pack Distro
-        id: buildpack
+        id: build-pack
         run: npm run deploy
       - name: Zip Distro
         id: zip
-        run: zip -r ${{vars.PACKAGE}}.zip ${{vars.PACKAGE}}
+        run: zip
+          -r ${{vars.PACKAGE}}.zip
+          ${{vars.PACKAGE}}
       - name: Publish to Azure
         id: publish
         uses: Azure/cli@v2
         with:
           azcliversion: 2.61.0
-          inlineScript: az storage blob upload -c ${{vars.AZ_CONTAINER}} -f ${{vars.PACKAGE}}.zip -n ${{vars.PACKAGE}}.zip --overwrite true --account-name ${{vars.AZ_ACCOUNT}} --sas-token '${{secrets.AZ_CONTAINER_SAS_TOKEN}}'
+          inlineScript: az storage blob upload
+            -c ${{vars.AZ_CONTAINER}}
+            -f ${{vars.PACKAGE}}.zip
+            -n ${{vars.PACKAGE}}.zip
+            --overwrite true
+            --account-name ${{vars.AZ_ACCOUNT}}
+            --sas-token '${{secrets.AZ_CONTAINER_SAS_TOKEN}}'
