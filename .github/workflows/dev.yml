@@ -1,11 +1,11 @@
 env:
   branch: &branch dev
   environment: *branch
-name: Azure Publish ($environment)
+name: Azure Publish (${{env.environment}})
 on: { push: { branches: [*branch] } }
 jobs:
-  "publish-$environment":
-    name: Build/Publish ($environment)
+  "publish-${{env.environment}}":
+    name: Build/Publish (${{env.environment}})
     environment:
       name: *environment
       url: https://${{vars.AZ_ACCOUNT}}.blob.core.windows.net/${{vars.AZ_CONTAINER}}/${{vars.PACKAGE}}.zip
@@ -23,14 +23,22 @@ jobs:
         id: ci
         run: npm ci
       - name: Build/Pack Distro
-        id: buildpack
+        id: build-pack
         run: npm run deploy
       - name: Zip Distro
         id: zip
-        run: zip -r ${{vars.PACKAGE}}.zip ${{vars.PACKAGE}}
+        run: zip
+          -r ${{vars.PACKAGE}}.zip
+          ${{vars.PACKAGE}}
       - name: Publish to Azure
         id: publish
         uses: Azure/cli@v2
         with:
           azcliversion: 2.61.0
-          inlineScript: az storage blob upload -c ${{vars.AZ_CONTAINER}} -f ${{vars.PACKAGE}}.zip -n ${{vars.PACKAGE}}.zip --overwrite true --account-name ${{vars.AZ_ACCOUNT}} --sas-token '${{secrets.AZ_CONTAINER_SAS_TOKEN}}'
+          inlineScript: az storage blob upload
+            -c ${{vars.AZ_CONTAINER}}
+            -f ${{vars.PACKAGE}}.zip
+            -n ${{vars.PACKAGE}}.zip
+            --overwrite true
+            --account-name ${{vars.AZ_ACCOUNT}}
+            --sas-token '${{secrets.AZ_CONTAINER_SAS_TOKEN}}'
