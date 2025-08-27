@@ -8,4 +8,4 @@
 
 spec: [dist/**/*.spec.js]
 extension: [js]
-require: dist/_test/hooks.js #@OVERRIDE
+require: dist/_test/hooks.js # @OVERRIDE
