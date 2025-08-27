@@ -7,7 +7,7 @@ jobs:
   publish-dev:
     name: Build/Publish (dev)
     environment:
-      name: ${{env.environment}}
+      name: dev
       url: https://${{vars.AZ_ACCOUNT}}.blob.core.windows.net/${{vars.AZ_CONTAINER}}/${{vars.PACKAGE}}.zip
     permissions: { contents: read }
     runs-on: ubuntu-latest
