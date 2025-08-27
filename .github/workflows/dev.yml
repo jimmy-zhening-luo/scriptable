@@ -5,7 +5,7 @@ env:
   environment: dev
 jobs:
   publish-dev:
-    name: Build/Publish (${{env.environment}})
+    name: Build/Publish (dev)
     environment:
       name: ${{env.environment}}
       url: https://${{vars.AZ_ACCOUNT}}.blob.core.windows.net/${{vars.AZ_CONTAINER}}/${{vars.PACKAGE}}.zip
