@@ -1,13 +1,13 @@
 name: Azure Publish (${{env.environment}})
 env:
   branch: &branch dev
-  environment: &environment *branch
+  environment: *branch
 on: { push: { branches: [*branch] } }
 jobs:
   publish-dev:
     name: Build/Publish (${{env.environment}})
     environment:
-      name: *environment
+      name: ${{env.environment}}
       url: https://${{vars.AZ_ACCOUNT}}.blob.core.windows.net/${{vars.AZ_CONTAINER}}/${{vars.PACKAGE}}.zip
     permissions: { contents: read }
     runs-on: ubuntu-latest
