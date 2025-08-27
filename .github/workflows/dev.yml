@@ -4,7 +4,7 @@ env:
   environment: *branch
 on: { push: { branches: [*branch] } }
 jobs:
-  "publish-${{env.environment}}":
+  publish-${{env.environment}}:
     name: Build/Publish (${{env.environment}})
     environment:
       name: *environment
