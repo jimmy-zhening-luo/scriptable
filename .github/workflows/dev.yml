@@ -1,4 +1,4 @@
-name: Azure Publish (${{env.environment}})
+name: Azure Publish (dev)
 env:
   branch: &branch dev
   environment: *branch
