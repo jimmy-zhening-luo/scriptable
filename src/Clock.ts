@@ -29,10 +29,13 @@ class Clock extends Widget {
         && sunset !== undefined
       )
         void badges.push(
-          now > now.at(sunrise).in(3)
-          && now < now.at(sunset).in(1)
-            ? `\u263E\u2009${sunset}`
-            : `\u235C ${sunrise}`,
+          (
+            now > now.at(sunrise).in(3)
+            && now < now.at(sunset).in(1)
+              ? ["\u263E", sunset]
+              : ["\u235C ", sunrise]
+          )
+            .join("\u2009"),
         );
     }
     catch (e) {
@@ -49,7 +52,7 @@ class Clock extends Widget {
         dew,
       } = await this.weather();
 
-      void badges.push(`\u26C6\u2006${humidity}% ${dew}°`);
+      void badges.push(`\u224B\u2006${humidity}% ${dew}°`);
     }
     catch (e) {
       console.error(
