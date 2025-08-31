@@ -1,3 +1,4 @@
+--- # dev.yml
 name: Azure Publish (dev)
 on: { push: { branches: [&branch dev] } }
 jobs:
@@ -39,3 +40,5 @@ jobs:
             --overwrite true
             --account-name ${{vars.AZ_ACCOUNT}}
             --sas-token '${{secrets.AZ_CONTAINER_SAS_TOKEN}}'
+
+...
