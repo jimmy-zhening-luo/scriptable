@@ -85,7 +85,7 @@ export default class File<Class extends string> {
     if (content === "")
       throw this.error(
         "readStringful",
-        new TypeError("Empty file content"),
+        new TypeError("Empty file"),
       );
 
     return content as stringful;
@@ -110,13 +110,13 @@ export default class File<Class extends string> {
     else if (this.isFolder)
       throw this.error(
         "write",
-        new TypeError("Path already exists and is folder"),
+        new TypeError("Write target is Folder"),
       );
     else if (this.exists) {
       if (overwrite === false)
         throw this.error(
           "write",
-          new ReferenceError("Path already exists, overwrite false"),
+          new ReferenceError("File exists and overwrite:false"),
         );
     }
     else if (!File.manager.isDirectory(this.parent))
@@ -144,7 +144,7 @@ export default class File<Class extends string> {
     if (!this.mutable)
       throw this.error(
         "delete",
-        new ReferenceError("Readonly file/folder"),
+        new ReferenceError("Readonly filesystem object"),
       );
 
     if (this.exists)
