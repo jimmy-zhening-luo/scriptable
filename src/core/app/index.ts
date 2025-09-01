@@ -254,16 +254,16 @@ export default abstract class IApp<
 
   protected stringful(string = "", cause = "") {
     if (string === "")
-      throw new TypeError("Non-stringful", { cause });
+      throw new TypeError("Empty string", { cause });
 
     return string as stringful;
   }
 
   protected stringfuls<ArrayLike extends readonly string[]>(strings: ArrayLike, cause = "") {
     if (strings.length === 0)
-      throw new RangeError("Empty stringful-array", { cause });
+      throw new RangeError("Empty string array", { cause });
     else if (!strings.every((string): string is stringful => string !== ""))
-      throw new TypeError("Stringful-array has empty strings", { cause });
+      throw new TypeError("String array has empty strings", { cause });
 
     return strings as unknown as (
       ArrayLike extends readonly [string, ...string[]]
@@ -274,16 +274,21 @@ export default abstract class IApp<
 
   protected char(string = "", cause = "") {
     if (string.length !== 1)
-      throw new TypeError("Non-char", { cause });
+      throw new TypeError(
+        string.length === 0
+          ? "Empty char"
+          : "Char is too long",
+        { cause },
+      );
 
     return string as stringful;
   }
 
   protected chars<ArrayLike extends readonly string[]>(strings: ArrayLike, cause = "") {
     if (strings.length === 0)
-      throw new RangeError("Empty char-array", { cause });
+      throw new RangeError("Empty char array", { cause });
     else if (!strings.every((string): string is char => string.length === 1))
-      throw new TypeError("Char-array has non-chars", { cause });
+      throw new TypeError("Char array has non-chars", { cause });
 
     return strings as unknown as (
       ArrayLike extends readonly [string, ...string[]]
