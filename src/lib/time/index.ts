@@ -21,7 +21,7 @@ export default class Time {
 
       if (!Number.isFinite(epoch))
         throw new RangeError(
-          "Invalid timestamp",
+          "Invalid time",
           { cause: date },
         );
 
