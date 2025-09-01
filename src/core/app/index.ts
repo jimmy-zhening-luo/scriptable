@@ -275,7 +275,7 @@ export default abstract class IApp<
   protected char(string = "", cause = "") {
     if (string.length !== 1)
       throw new TypeError(
-        string.length === 0
+        string === ""
           ? "Empty char"
           : "Char is too long",
         { cause },
