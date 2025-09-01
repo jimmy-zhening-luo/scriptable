@@ -1,5 +1,5 @@
 {
-  "$pkg": "2211.2.1",
+  "$pkg": "2211.3.0",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "@scoping/scriptable",
@@ -27,8 +27,7 @@
   "scripts": {
     "clean": "cmd --% /c \"(if exist dist rmdir /s /q dist) & (if exist build rmdir /s /q build) & (if exist .svelte-kit rmdir /s /q .svelte-kit) & (if exist .eslintcache del /f /q .eslintcache)\" || rm -rf dist build .svelte-kit .eslintcache",
     "prebuild": "npm run clean",
-    "build": "cmd --% /c \"(if exist svelte.config.js (npm run build:svelte) else (npm run build:ts))\" || npm run build-unix",
-    "build-unix": "if [ -f svelte.config.js ]; then npm run build:svelte; else npm run build:ts; fi",
+    "build": "cmd /c \"(if exist svelte.config.js (npm run build:svelte) else (npm run build:ts))\" || bash -c 'if [ -f svelte.config.js ]; then npm run build:svelte; else npm run build:ts; fi'",
     "build:ts": "tsc && ts-add-js-extension --dir=dist",
     "build:svelte": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && vite build",
     "postbuild": "npm run lint || echo \"Lint failed. Continuing...\"",
@@ -37,8 +36,7 @@
     "test": "npm run --if-present test:mocha",
     "test:mocha": "mocha",
     "prestart": "npm test",
-    "start": "cmd --% /c \"(if exist svelte.config.js (npm run start:svelte) else (npm run start:ts))\" || npm run start-unix",
-    "start-unix": "if [ -f svelte.config.js ]; then npm run start:svelte; else npm run start:ts; fi",
+    "start": "cmd --% /c \"(if exist svelte.config.js (npm run start:svelte) else (npm run start:ts))\" || bash -c 'if [ -f svelte.config.js ]; then npm run start:svelte; else npm run start:ts; fi'",
     "start:ts": "node .",
     "start:svelte": "vite preview --open",
     "prepublishOnly": "npm test",
