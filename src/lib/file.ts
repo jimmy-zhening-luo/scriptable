@@ -3,7 +3,7 @@ export default class File<Class extends string> {
   private readonly path;
   private readonly parent;
   private readonly exists;
-  private readonly folder;
+  private readonly isFolder;
 
   constructor(
     Class: Literalful<Class>,
@@ -51,12 +51,12 @@ export default class File<Class extends string> {
     ]
       .join("/");
     this.exists = File.manager.fileExists(this.path);
-    this.folder = File.manager.isDirectory(this.path);
+    this.isFolder = File.manager.isDirectory(this.path);
   }
 
   public read(fail = false) {
     if (this.exists) {
-      if (this.folder)
+      if (this.isFolder)
         throw this.error(
           "read",
           new TypeError("Filesystem object is Folder"),
@@ -107,7 +107,7 @@ export default class File<Class extends string> {
         "write",
         new TypeError("Readonly file"),
       );
-    else if (this.folder)
+    else if (this.isFolder)
       throw this.error(
         "write",
         new TypeError("Path already exists and is folder"),
