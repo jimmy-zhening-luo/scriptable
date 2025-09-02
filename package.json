@@ -1,10 +1,24 @@
 {
-  "$pkg": "2211.3.0",
+  "$pkg": "2211.4.0",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "@scoping/scriptable",
   "version": "30.8.2",
   "repository": "github:jimmy-zhening-luo/scriptable",
+  "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
+  "keywords": [
+    "scriptable",
+    "ios",
+    "ipados",
+    "iphone",
+    "ipad",
+    "apple",
+    "shortcuts",
+    "widget",
+    "automation",
+    "typescript"
+  ],
+  "license": "MIT",
   "private": true,
   "engineStrict": true,
   "engines": {
@@ -18,7 +32,7 @@
     "@types/mocha": "^10.0.10",
     "@types/scriptable-ios": "^1.7.8",
     "chai": "^6.0.1",
-    "linted": "~30.18.0",
+    "linted": "~30.18.1",
     "mocha": "^11.7.2",
     "rexreplace": "^7.1.13",
     "ts-add-js-extension": "^1.6.6",
@@ -52,19 +66,5 @@
   "publishConfig": {
     "tag": "next"
   },
-  "license": "MIT",
-  "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
-  "keywords": [
-    "scriptable",
-    "ios",
-    "ipados",
-    "iphone",
-    "ipad",
-    "apple",
-    "shortcuts",
-    "widget",
-    "automation",
-    "typescript"
-  ],
   "author": "Jimmy Zhening Luo <jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
 }
