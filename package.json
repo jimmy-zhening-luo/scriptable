@@ -63,8 +63,5 @@
     "deploy:replace:resolve:export": "rr \"^(\\s*)export default \" \"€1module.exports = \" -I -u \"packed/**/*.js\" -B -H",
     "deploy:replace:delete:source": "rr \"^(.*)\\/\\/# sourceMappingURL=.+\\.map\\s*$\" \"€1\" -I -u -G -M -s \"packed/**/*.js\" -B -H"
   },
-  "publishConfig": {
-    "tag": "next"
-  },
   "author": "Jimmy Zhening Luo <jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
 }
