@@ -6,12 +6,12 @@ declare type Property<
   OptionalKey extends string,
   Value,
 >
-  = & Record<
-    Key,
-    Value
-  >
-  & PartialRecord<
-    OptionalKey,
-    Value
-  >
+= & Record<
+  Key,
+  Value
+>
+& PartialRecord<
+  OptionalKey,
+  Value
+>
     ;

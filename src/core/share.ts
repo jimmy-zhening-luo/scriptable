@@ -13,7 +13,7 @@ export default abstract class Share<
       | "plainTexts"
       | "urls"
       | "fileURLs"
-    = "plainTexts",
+      = "plainTexts",
   ) {
     const { [shareInputType]: inputs } = args;
 

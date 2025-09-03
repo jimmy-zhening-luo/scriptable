@@ -17,7 +17,7 @@ export default abstract class Shortcut<
           ? "multi"
           : never
       )
-    = "single",
+      = "single",
   ) {
     const { plainTexts } = args;
 

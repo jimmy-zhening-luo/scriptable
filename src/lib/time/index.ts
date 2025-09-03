@@ -9,7 +9,7 @@ export default class Time {
       | string
       | Date
       | Time
-    = new Date,
+      = new Date,
   ) {
     if (
       typeof date === "object"

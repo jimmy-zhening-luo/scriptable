@@ -6,7 +6,7 @@ declare type full<
   Of,
   And = "",
 >
-  = & Type
-    & { [full]: Of }
-    & ("" extends And ? Type : { [and]: And })
+= & Type
+  & { [full]: Of }
+  & ("" extends And ? Type : { [and]: And })
     ;

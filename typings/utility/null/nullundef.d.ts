@@ -1,5 +1,5 @@
 declare type NullUndef<T>
-  = | undefined
-    | null
-    | T
+= | undefined
+  | null
+  | T
     ;

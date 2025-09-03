@@ -23,7 +23,7 @@ export default abstract class Widget<Setting = never> extends IApp<
       | "calendar"
       | "lock"
       | "home"
-    = "home",
+      = "home",
     {
       background = null,
       url = null,
