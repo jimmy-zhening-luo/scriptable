@@ -1,4 +1,4 @@
-declare type Tuple<
+declare type NTuple<
   N extends number = 2,
   Element = string,
 > = [Element] extends [never]
@@ -8,10 +8,10 @@ declare type Tuple<
     : number extends N
       ? readonly Element[]
       : Extract<`${N}`, `-${string}` | `${string}.${string}`> extends never
-        ? Tuple.Construct<N, Element>
-        : Tuple.Construct<0, Element>;
+        ? NTuple.Construct<N, Element>
+        : NTuple.Construct<0, Element>;
 
-declare namespace Tuple {
+declare namespace NTuple {
   export type Construct<
     N extends number,
     Element,

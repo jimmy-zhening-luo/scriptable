@@ -1,119 +1,119 @@
-declare namespace Tuple {
+declare namespace NTuple {
   export type Bound<
     Case extends number,
     Reference,
-  > = Tuple<Case> extends Readonly<Reference>
-    ? Reference extends Tuple<Case>
-      ? string[] extends Tuple<Case>
-        ? Tuple<Case> extends readonly string[]
-          ? Tuple<Case>
+  > = NTuple<Case> extends Readonly<Reference>
+    ? Reference extends NTuple<Case>
+      ? string[] extends NTuple<Case>
+        ? NTuple<Case> extends readonly string[]
+          ? NTuple<Case>
           : never
-        : Tuple<Case>
+        : NTuple<Case>
       : never
     : never;
   export type Result = 0 | Test<{
     T: [
     // number: readonly string[]:
-      Tuple<number> extends readonly string[]
-        ? string[] extends Tuple<number>
-          ? Tuple<number>
+      NTuple<number> extends readonly string[]
+        ? string[] extends NTuple<number>
+          ? NTuple<number>
           : never
         : never,
       Bound<number, string[]>,
       Bound<number, readonly string[]>,
-      Bound<number, Tuple<number>>,
-      Bound<typeof NaN, Tuple<number>>,
-      Bound<typeof Infinity, Tuple<number>>,
+      Bound<number, NTuple<number>>,
+      Bound<typeof NaN, NTuple<number>>,
+      Bound<typeof Infinity, NTuple<number>>,
 
       // 0: readonly []:
-      Tuple<0> extends readonly []
-        ? [] extends Tuple<0>
-            ? string[] extends Tuple<0>
+      NTuple<0> extends readonly []
+        ? [] extends NTuple<0>
+            ? string[] extends NTuple<0>
               ? never
-              : Tuple<0>
+              : NTuple<0>
             : never
         : never,
       Bound<0, []>,
-      Bound<0, Tuple<0>>,
-      Bound<-0, Tuple<0>>,
-      Bound<-1, Tuple<0>>,
-      Bound<-1.00000, Tuple<0>>,
-      Bound<-2, Tuple<0>>,
-      Bound<-2.0, Tuple<0>>,
-      Bound<-2.1, Tuple<0>>,
-      Bound<9.999999999, Tuple<0>>,
-      Bound<-1.1 | 3.4, Tuple<0>>,
-      Bound<-1.1 | -3.4, Tuple<0>>,
-      Bound<-1 | 3.4, Tuple<0>>,
-      Bound<-1 | -3.4, Tuple<0>>,
+      Bound<0, NTuple<0>>,
+      Bound<-0, NTuple<0>>,
+      Bound<-1, NTuple<0>>,
+      Bound<-1.00000, NTuple<0>>,
+      Bound<-2, NTuple<0>>,
+      Bound<-2.0, NTuple<0>>,
+      Bound<-2.1, NTuple<0>>,
+      Bound<9.999999999, NTuple<0>>,
+      Bound<-1.1 | 3.4, NTuple<0>>,
+      Bound<-1.1 | -3.4, NTuple<0>>,
+      Bound<-1 | 3.4, NTuple<0>>,
+      Bound<-1 | -3.4, NTuple<0>>,
 
       // 1: readonly [string]:
-      Tuple<1> extends readonly [string]
-        ? [string] extends Tuple<1>
-            ? string[] extends Tuple<1>
+      NTuple<1> extends readonly [string]
+        ? [string] extends NTuple<1>
+            ? string[] extends NTuple<1>
               ? never
-              : Tuple<1>
+              : NTuple<1>
             : never
         : never,
       Bound<1, [string]>,
       Bound<1, readonly [string]>,
-      Bound<1, Tuple<1>>,
-      Bound<1.0, Tuple<1>>,
+      Bound<1, NTuple<1>>,
+      Bound<1.0, NTuple<1>>,
 
       // 2: readonly [string, string]:
       Bound<2, [string, string]>,
       Bound<2, readonly [string, string]>,
-      Bound<2, Tuple>,
+      Bound<2, NTuple>,
 
       // Combinations:
       Bound<0 | 1, [] | [string]>,
       Bound<0 | 1, readonly [] | readonly [string]>,
-      Bound<0 | 1, Tuple<0> | Tuple<1>>,
-      Bound<2 | 3, Tuple | Tuple<3>>,
-      Bound<2 | -1, Tuple | Tuple<0>>,
-      Bound<2 | 1.1, Tuple | Tuple<0>>,
-      Bound<2 | -1.1, Tuple | Tuple<0>>,
-      Bound<2 | -1.00000, Tuple | Tuple<0>>,
-      Bound<2 | 9.999999999, Tuple | Tuple<0>>,
+      Bound<0 | 1, NTuple<0> | NTuple<1>>,
+      Bound<2 | 3, NTuple | NTuple<3>>,
+      Bound<2 | -1, NTuple | NTuple<0>>,
+      Bound<2 | 1.1, NTuple | NTuple<0>>,
+      Bound<2 | -1.1, NTuple | NTuple<0>>,
+      Bound<2 | -1.00000, NTuple | NTuple<0>>,
+      Bound<2 | 9.999999999, NTuple | NTuple<0>>,
 
       // Types:
-      Tuple<2, unknown> extends readonly [unknown, unknown]
-        ? [unknown, unknown] extends Tuple<2, unknown>
-            ? Tuple<2, unknown>
+      NTuple<2, unknown> extends readonly [unknown, unknown]
+        ? [unknown, unknown] extends NTuple<2, unknown>
+            ? NTuple<2, unknown>
             : never
         : never,
-      Tuple<2, string | number> extends readonly [string | number, string | number]
-        ? [string | number, string | number] extends Tuple<2, string | number>
-            ? Tuple<2, string | number>
+      NTuple<2, string | number> extends readonly [string | number, string | number]
+        ? [string | number, string | number] extends NTuple<2, string | number>
+            ? NTuple<2, string | number>
             : never
         : never,
 
     // Error:
-    // Bound<-2.1 | number, Tuple<number>>,
-    // Bound<-2.0 | number, Tuple<number>>,
-    // Bound<-2 | number, Tuple<number>>,
-    // Bound<-1 | number, Tuple<number>>,
-    // Bound<0 | number, Tuple<number>>,
-    // Bound<1 | number, Tuple<number>>,
-    // Bound<2 | number, Tuple<number>>,
-    // Bound<2.0 | number, Tuple<number>>,
-    // Bound<2.1 | number, Tuple<number>>,
-    // Bound<2.1 | number, Tuple<number>>,
-    // Tuple<1, unknown | 0> extends readonly [unknown] ? [unknown] extends Tuple<1, unknown | 0> ? Tuple<1, unknown | 0> : never : never,
+    // Bound<-2.1 | number, NTuple<number>>,
+    // Bound<-2.0 | number, NTuple<number>>,
+    // Bound<-2 | number, NTuple<number>>,
+    // Bound<-1 | number, NTuple<number>>,
+    // Bound<0 | number, NTuple<number>>,
+    // Bound<1 | number, NTuple<number>>,
+    // Bound<2 | number, NTuple<number>>,
+    // Bound<2.0 | number, NTuple<number>>,
+    // Bound<2.1 | number, NTuple<number>>,
+    // Bound<2.1 | number, NTuple<number>>,
+    // NTuple<1, unknown | 0> extends readonly [unknown] ? [unknown] extends NTuple<1, unknown | 0> ? NTuple<1, unknown | 0> : never : never,
     ];
     F: [
-      Tuple<never>,
-      Tuple<never, never>,
-      Tuple<number, never>,
-      Tuple<2.1, never>,
-      Tuple<2.0, never>,
-      Tuple<2, never>,
-      Tuple<1, never>,
-      Tuple<0, never>,
-      Tuple<-1, never>,
-      Tuple<-2, never>,
-      Tuple<-2.0, never>,
-      Tuple<-2.1, never>,
+      NTuple<never>,
+      NTuple<never, never>,
+      NTuple<number, never>,
+      NTuple<2.1, never>,
+      NTuple<2.0, never>,
+      NTuple<2, never>,
+      NTuple<1, never>,
+      NTuple<0, never>,
+      NTuple<-1, never>,
+      NTuple<-2, never>,
+      NTuple<-2.0, never>,
+      NTuple<-2.1, never>,
     ];
   }>;
 }
