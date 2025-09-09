@@ -86,7 +86,11 @@ class Clock extends Widget<
       const {
         humidity,
         dew,
-      } = await this.weather();
+      } = await this.weather(
+        weather.api.userAgent,
+        weather.api.endpoint,
+        weather.api.query,
+      );
 
       void badges.push(`\u224B\u2006${humidity}% ${dew}°`);
     }
@@ -102,7 +106,15 @@ class Clock extends Widget<
       void this.text(badges.join("    "));
   }
 
-  private async weather() {
+  private async weather(
+    userAgent: string,
+    endpoint: string,
+    query: {
+      latitude: string;
+      longitude: string;
+      rest?: string;
+    },
+  ) {
     interface IWeather {
       properties: {
         timeseries: readonly [
@@ -139,11 +151,11 @@ class Clock extends Widget<
 
     const { latitude, longitude } = await Widget.location(0.01),
     weatherApi = new Request(
-      `${weather.api.endpoint}?${weather.api.query.latitude}=${latitude}&${weather.api.query.longitude}=${longitude}` + (weather.api.query.rest === undefined ? "" : `&${weather.api.query.rest}`),
+      `${endpoint}?${query.latitude}=${latitude}&${query.longitude}=${longitude}` + (query.rest === undefined ? "" : `&${query.rest}`),
     );
 
     weatherApi.headers = {
-      "User-Agent": weather.api.userAgent,
+      "User-Agent": userAgent,
     };
 
     const {
