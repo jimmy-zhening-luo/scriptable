@@ -191,7 +191,7 @@ export default function (
           ,
           key,
           operand,
-        ] = operation as unknown as Triad<stringful>;
+        ] = operation as unknown as Triple<stringful>;
 
         return {
           Head: key,

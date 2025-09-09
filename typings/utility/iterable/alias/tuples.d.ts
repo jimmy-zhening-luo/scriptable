@@ -1,6 +1,6 @@
-declare type Monad<Element = string> = NTuple<1, Element>;
-declare type Dyad<Element = string> = NTuple<2, Element>;
-declare type Triad<Element = string> = NTuple<3, Element>;
+declare type Single<Element = string> = NTuple<1, Element>;
+declare type Tuple<Element = string> = NTuple<2, Element>;
+declare type Triple<Element = string> = NTuple<3, Element>;
 declare type Quad<Element = string> = NTuple<4, Element>;
 declare type Pentad<Element = string> = NTuple<5, Element>;
 declare type Hexad<Element = string> = NTuple<6, Element>;
