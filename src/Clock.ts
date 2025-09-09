@@ -18,7 +18,7 @@ class Clock extends Widget<
           latitude: string;
           longitude: string;
           rest?: string;
-        }
+        };
       };
     };
   }
@@ -123,9 +123,7 @@ class Clock extends Widget<
           },
         ];
       };
-    }
-
-    function parseWeather(weather: IWeather) {
+    }    function parseWeather(weather: IWeather) {
       const {
         relative_humidity: humidity,
         dew_point_temperature: dew,
