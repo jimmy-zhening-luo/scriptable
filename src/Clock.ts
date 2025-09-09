@@ -1,19 +1,55 @@
 // icon-color: orange; icon-glyph: clock;
 import Widget from "./core/widget";
+import type Time from "./lib/time";
 
-class Clock extends Widget {
+class Clock extends Widget<
+  {
+    clocks: Tuple<{
+      timezone: Parameters<this["clock"]>[0];
+      label: string;
+    }>;
+    sun: {
+      stream: string;
+    };
+    weather: {
+      api: {
+        userAgent: string;
+        endpoint: string;
+        query: {
+          latitude: string;
+          longitude: string;
+          rest?: string;
+        }
+      };
+    };
+  }
+> {
   protected async runtime() {
+    const {
+      setting: {
+        clocks,
+        sun,
+        weather,
+      }
+    } = this;
+
     void this.line(4);
-    this.clock("Europe/Zurich", "EU");
+    this.clock(
+      clocks[0].timezone,
+      clocks[0].label,
+    );
     void this.line(4);
-    this.clock("Asia/Shanghai", "CN");
+    this.clock(
+      clocks[1].timezone,
+      clocks[1].label,
+    );
     void this.line(16);
 
     const badges: string[] = [];
 
     try {
       const sun = JSON.parse(
-        this.stream("sun", "json"),
+        this.stream(sun.stream, "json"),
       ) as Record<
         | "sunrise"
         | "sunset",
@@ -67,16 +103,7 @@ class Clock extends Widget {
   }
 
   private async weather() {
-    const { latitude, longitude } = await Widget.location(0.01),
-    weatherApi = new Request(
-      `https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${latitude}&lon=${longitude}`,
-    );
-
-    weatherApi.headers = {
-      "User-Agent": "iOS/Shortcuts",
-    };
-
-    const weather = await weatherApi.loadJSON() as {
+    interface IWeather {
       properties: {
         timeseries: readonly [
           {
@@ -91,20 +118,44 @@ class Clock extends Widget {
           },
         ];
       };
-    },
-    {
-      relative_humidity,
-      dew_point_temperature,
-    } = weather
-      .properties
-      .timeseries[0]
-      .data
-      .instant
-      .details;
+    }
+
+    function parseWeather(weather: IWeather) {
+      const {
+        relative_humidity: humidity,
+        dew_point_temperature: dew,
+      } = weather
+        .properties
+        .timeseries[0]
+        .data
+        .instant
+        .details;
+
+      return {
+        humidity,
+        dew,
+      };
+    }
+
+    const { latitude, longitude } = await Widget.location(0.01),
+    weatherApi = new Request(
+      `${weather.api.endpoint}?${weather.api.query.latitude}=${latitude}&${weather.api.query.longitude}=${longitude}` + (weather.api.query.rest === undefined ? "" : `&${weather.api.query.rest}`),
+    );
+
+    weatherApi.headers = {
+      "User-Agent": weather.api.userAgent,
+    };
+
+    const {
+      humidity,
+      dew,
+    } = parseWeather(
+      await weatherApi.loadJSON() as IWeather,
+    );
 
     return {
-      humidity: Math.round(relative_humidity),
-      dew: Math.round(dew_point_temperature * 9 / 5 + 32),
+      humidity: Math.round(humidity),
+      dew: Math.round(dew * 9 / 5 + 32),
     };
   }
 }
