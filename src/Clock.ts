@@ -1,11 +1,10 @@
 // icon-color: orange; icon-glyph: clock;
 import Widget from "./core/widget";
-import type Time from "./lib/time";
 
 class Clock extends Widget<
   {
     clocks: Tuple<{
-      timezone: Parameters<this["clock"]>[0];
+      timezone: Parameters<Widget["clock"]>[0];
       label: string;
     }>;
     sun: {
