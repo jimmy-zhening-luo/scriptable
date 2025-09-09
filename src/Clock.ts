@@ -25,23 +25,17 @@ class Clock extends Widget<
   }
 > {
   protected async runtime() {
-    const {
-      setting: {
-        clocks,
-        sun,
-        weather,
-      }
-    } = this;
+    const { setting } = this;
 
     void this.line(4);
     this.clock(
-      clocks[0].timezone,
-      clocks[0].label,
+      setting.clocks[0].timezone,
+      setting.clocks[0].label,
     );
     void this.line(4);
     this.clock(
-      clocks[1].timezone,
-      clocks[1].label,
+      setting.clocks[1].timezone,
+      setting.clocks[1].label,
     );
     void this.line(16);
 
@@ -49,7 +43,7 @@ class Clock extends Widget<
 
     try {
       const sun = JSON.parse(
-        this.stream(sun.stream, "json"),
+        this.stream(setting.sun.stream, "json"),
       ) as Record<
         | "sunrise"
         | "sunset",
@@ -87,9 +81,9 @@ class Clock extends Widget<
         humidity,
         dew,
       } = await this.weather(
-        weather.api.userAgent,
-        weather.api.endpoint,
-        weather.api.query,
+        setting.weather.api.userAgent,
+        setting.weather.api.endpoint,
+        setting.weather.api.query,
       );
 
       void badges.push(`\u224B\u2006${humidity}% ${dew}°`);
