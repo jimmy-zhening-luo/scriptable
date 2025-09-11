@@ -1,12 +1,12 @@
 import type { ISearchEngineEntry } from "./engine";
 
 export interface SearchSetting {
-  readonly reserved: Field<
+  reserved: Field<
     | "selectors"
     | "tag"
   >;
-  readonly alias: Readonly<FieldTable>;
-  readonly engines: Readonly<Table<
+  alias: FieldTable;
+  engines: Table<
     | Unflat<string, true>
     | ISearchEngineEntry<
       "url",
@@ -22,5 +22,5 @@ export interface SearchSetting {
       ),
       "separator"
     >
-  >>;
+  >;
 }
