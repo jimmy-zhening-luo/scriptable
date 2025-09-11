@@ -4,7 +4,7 @@ export default abstract class Share<
   ShareOutput extends string = never,
   Setting = never,
 > extends IApp<
-    readonly string[],
+    ArrayN<0>,
     Null<ShareOutput>,
     Setting
   > {

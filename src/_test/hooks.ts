@@ -3,7 +3,7 @@ import type File from "../lib/file";
 import type Shortcut from "../core";
 
 type Import<Module> = Promise<
-  ReadonlyRecord<
+  Record<
     "default",
     Module
   >

@@ -96,7 +96,7 @@ export default class File<Class extends string> {
       | string
       | number
       | boolean
-      | ReadonlyRecord<string, unknown>,
+      | Record<string, unknown>,
     overwrite:
       | "line"
       | "append"

@@ -104,7 +104,7 @@ class Clock extends Widget<
   ) {
     interface IWeather {
       properties: {
-        timeseries: readonly [
+        timeseries: Single<
           {
             data: {
               instant: {
@@ -115,7 +115,7 @@ class Clock extends Widget<
               };
             };
           },
-        ];
+        >;
       };
     }
     function parseWeather(weather: IWeather) {
