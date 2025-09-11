@@ -7,19 +7,12 @@ class Clock extends Widget<
       timezone: Parameters<Widget["clock"]>[0];
       label: string;
     }>;
-    sun: {
-      stream: string;
-    };
+    sun: Field<"stream">;
     weather: {
-      api: {
-        userAgent: string;
-        endpoint: string;
-        query: {
-          latitude: string;
-          longitude: string;
-          rest?: string;
-        };
-      };
+      api: Field<
+        | "userAgent"
+        | "url"
+      >;
     };
   }
 > {
@@ -42,7 +35,10 @@ class Clock extends Widget<
 
     try {
       const sun = JSON.parse(
-        this.stream(setting.sun.stream, "json"),
+        this.stream(
+          setting.sun.stream,
+          "json",
+        ),
       ) as Record<
         | "sunrise"
         | "sunset",
@@ -78,8 +74,7 @@ class Clock extends Widget<
         dew,
       } = await this.weather(
         setting.weather.api.userAgent,
-        setting.weather.api.endpoint,
-        setting.weather.api.query,
+        setting.weather.api.url,
       );
 
       void badges.push(`\u224B\u2006${humidity}% ${dew}°`);
@@ -95,12 +90,7 @@ class Clock extends Widget<
 
   private async weather(
     userAgent: string,
-    endpoint: string,
-    query: {
-      latitude: string;
-      longitude: string;
-      rest?: string;
-    },
+    url: string,
   ) {
     interface IWeather {
       properties: {
@@ -138,7 +128,9 @@ class Clock extends Widget<
       longitude,
     } = await Widget.location(0.01),
     weatherApi = new Request(
-      `${endpoint}?${query.latitude}=${latitude}&${query.longitude}=${longitude}` + (query.rest === undefined ? "" : `&${query.rest}`),
+      url
+        .replaceAll("%LAT", latitude)
+        .replaceAll("%LONG", longitude),
     );
 
     weatherApi.headers = {
