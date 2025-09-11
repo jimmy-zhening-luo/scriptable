@@ -104,18 +104,16 @@ class Clock extends Widget<
   ) {
     interface IWeather {
       properties: {
-        timeseries: Single<
-          {
-            data: {
-              instant: {
-                details: Scalar<
-                  | "relative_humidity"
-                  | "dew_point_temperature"
-                >;
-              };
+        timeseries: Single<{
+          data: {
+            instant: {
+              details: Scalar<
+                | "relative_humidity"
+                | "dew_point_temperature"
+              >;
             };
-          },
-        >;
+          };
+        }>;
       };
     }
     function parseWeather(weather: IWeather) {
