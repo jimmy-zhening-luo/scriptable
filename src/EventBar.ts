@@ -28,9 +28,9 @@ class EventBar extends Widget {
       upcoming === null
         ? "\u2713"
         : [
-            ...nextToday === undefined
-              ? ["\u263E"]
-              : [],
+            nextToday === undefined
+              ? "\u2005\u25D1 "
+              : "\u200A",
             [
               new Widget
                 .Time(upcoming.startDate)
@@ -41,9 +41,9 @@ class EventBar extends Widget {
                 .replace("A", "\u1D00"),
               upcoming.title,
             ]
-              .join(" \u2006"),
+              .join("\u2009 "),
           ]
-            .join("\u2009"),
+            .join(""),
     );
   }
 }
