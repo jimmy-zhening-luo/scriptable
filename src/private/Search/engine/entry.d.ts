@@ -1,10 +1,10 @@
 export type ISearchEngineEntry<
-  Engine extends string,
+  EngineType extends string,
   Flags extends string = never,
   Fields extends string = never,
   Action = string,
 >
-= & ReadonlyRecord<Engine, Action>
+= & ReadonlyRecord<EngineType, Action>
   & {
     readonly prepend: string;
     readonly noSave: boolean;
