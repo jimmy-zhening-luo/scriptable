@@ -68,10 +68,7 @@ class Clock extends Widget<
         );
     }
     catch (e) {
-      console.error(
-        "Failed to retrieve Sun feed: "
-        + String(e),
-      );
+      console.error(`Sun feed: ${String(e)}`);
       console.warn("Continuing...");
     }
 
