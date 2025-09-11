@@ -21,7 +21,7 @@ export default function<
     terms: readonly stringful[],
     separator: string,
     browserOptions?: {
-      urls: Null<ArrayN<0>>;
+      urls: Null<ArrayN>;
       tag: Null<stringful>;
       force: boolean;
     },

@@ -263,7 +263,7 @@ export default abstract class IApp<
   }
 
   protected stringfuls<
-    ArrayLike extends ArrayN<0>,
+    ArrayLike extends ArrayN,
   >(
     strings: ArrayLike,
     cause = "",
@@ -282,8 +282,8 @@ export default abstract class IApp<
     return strings as unknown as (
       ArrayLike extends Arrayful
         ? {
-          readonly [I in keyof ArrayLike]: Flat<typeof strings>;
-        }
+            readonly [I in keyof ArrayLike]: Flat<typeof strings>;
+          }
         : Arrayful<
           Flat<typeof strings>
         >
@@ -303,7 +303,7 @@ export default abstract class IApp<
   }
 
   protected chars<
-    ArrayLike extends ArrayN<0>,
+    ArrayLike extends ArrayN,
   >(
     strings: ArrayLike,
     cause = "",
@@ -322,8 +322,8 @@ export default abstract class IApp<
     return strings as unknown as (
       ArrayLike extends Arrayful
         ? {
-          readonly [I in keyof ArrayLike]: Flat<typeof strings>;
-        }
+            readonly [I in keyof ArrayLike]: Flat<typeof strings>;
+          }
         : Arrayful<
           Flat<typeof strings>
         >

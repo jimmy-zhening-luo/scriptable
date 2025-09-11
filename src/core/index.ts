@@ -13,7 +13,7 @@ export default abstract class Shortcut<
     inputType:
       | "single"
       | (
-        ShortcutInput extends ArrayN<0>
+        ShortcutInput extends ArrayN
           ? "multi"
           : never
       )
@@ -25,7 +25,7 @@ export default abstract class Shortcut<
       inputType === "multi"
         ? plainTexts.length === 0
           ? null
-          : plainTexts as unknown as ShortcutInput & ArrayN<0>
+          : plainTexts as unknown as ShortcutInput & ArrayN
         : plainTexts[0] as Undefined<ShortcutInput & string>,
       config.runsWithSiri,
     );
