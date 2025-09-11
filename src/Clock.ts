@@ -88,7 +88,7 @@ class Clock extends Widget<
       void badges.push(`\u224B\u2006${humidity}% ${dew}°`);
     }
     catch (e) {
-      console.error(`Weather API: ${e}`);
+      console.error(`Weather API: ${String(e)}`);
       console.warn("Continuing...");
     }
 
