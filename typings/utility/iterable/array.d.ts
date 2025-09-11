@@ -21,6 +21,20 @@ declare type ArrayN<
         >;
 
 declare namespace ArrayN {
+  export type Construct<
+    N extends number,
+    Element,
+    H extends readonly Element[] = readonly [],
+  > = H["length"] extends N
+    ? readonly [
+      ...H,
+      ...(readonly Element[]),
+    ]
+    : Construct<
+      N,
+      Element,
+      readonly [...H, Element]
+    >;
   export type ConstructMutable<
     N extends number,
     Element,
@@ -37,19 +51,5 @@ declare namespace ArrayN {
         ...H,
         Element,
       ]
-    >;
-  export type Construct<
-    N extends number,
-    Element,
-    H extends readonly Element[] = readonly [],
-  > = H["length"] extends N
-    ? readonly [
-      ...H,
-      ...(readonly Element[]),
-    ]
-    : Construct<
-      N,
-      Element,
-      readonly [...H, Element]
     >;
 }
