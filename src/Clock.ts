@@ -88,10 +88,7 @@ class Clock extends Widget<
       void badges.push(`\u224B\u2006${humidity}% ${dew}°`);
     }
     catch (e) {
-      console.error(
-        "Failed to call Weather API: "
-        + String(e),
-      );
+      console.error(`Weather API: ${e}`);
       console.warn("Continuing...");
     }
 
@@ -141,7 +138,10 @@ class Clock extends Widget<
       };
     }
 
-    const { latitude, longitude } = await Widget.location(0.01),
+    const {
+      latitude,
+      longitude,
+    } = await Widget.location(0.01),
     weatherApi = new Request(
       `${endpoint}?${query.latitude}=${latitude}&${query.longitude}=${longitude}` + (query.rest === undefined ? "" : `&${query.rest}`),
     );
