@@ -25,10 +25,10 @@ export default abstract class Widget<Setting = never> extends IApp<
       | "home"
       = "home",
     {
-      background = null,
+      background = Color.black(),
       url = null,
     }: {
-      background?: Null<string | Color>;
+      background?: Color;
       url?: Null<string>;
     } = {},
     {
@@ -54,10 +54,7 @@ export default abstract class Widget<Setting = never> extends IApp<
     this.url = url;
 
     if (mode !== "calendar") {
-      if (background !== null)
-        this.widget.backgroundColor = typeof background === "string"
-          ? new Color(background)
-          : background;
+      this.widget.backgroundColor = background;
 
       if (mode === "home") {
         this.widget.spacing = spacing;

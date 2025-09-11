@@ -9,10 +9,4 @@ class Sandtile extends Widget {
   }
 }
 
-await new Sandtile(
-  "Sandtile",
-  "home",
-  {
-    background: Color.black(),
-  },
-).run();
+await new Sandtile("Sandtile").run();

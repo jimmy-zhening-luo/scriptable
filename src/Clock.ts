@@ -123,7 +123,8 @@ class Clock extends Widget<
           },
         ];
       };
-    }    function parseWeather(weather: IWeather) {
+    }
+    function parseWeather(weather: IWeather) {
       const {
         relative_humidity: humidity,
         dew_point_temperature: dew,
@@ -168,6 +169,5 @@ await new Clock(
   "home",
   {
     url: "readdle-spark://",
-    background: Color.black(),
   },
 ).run();

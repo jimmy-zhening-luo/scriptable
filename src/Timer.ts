@@ -38,6 +38,5 @@ void new Dashboard(
   "home",
   {
     url: "things:///show?id=today",
-    background: Color.black(),
   },
 ).run();
