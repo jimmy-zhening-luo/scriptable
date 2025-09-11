@@ -129,8 +129,8 @@ class Clock extends Widget<
     } = await Widget.location(0.01),
     weatherApi = new Request(
       url
-        .replaceAll("%LAT", latitude)
-        .replaceAll("%LONG", longitude),
+        .replaceAll("%LAT", String(latitude))
+        .replaceAll("%LONG", String(longitude)),
     );
 
     weatherApi.headers = {
