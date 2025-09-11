@@ -4,32 +4,29 @@ declare namespace ArrayN {
     Max extends number = 0,
   > = ArrayN<Case> extends ArrayN<Max>
     ? ArrayN<Max> extends ArrayN<Case>
-      ? ArrayN<Case> extends [string, ...ArrayN<Max>]
+      ? ArrayN<Case> extends readonly [string, ...ArrayN<Max>]
         ? never
         : ArrayN<Case>
       : never
     : never;
   export type Result = 0 | Test<{
     T: [
-      ArrayN<3> extends [string, string, string, ...string[]]
+      ArrayN<3> extends readonly [string, string, string, ...readonly string[]]
         ? [string, string, string, ...string[]] extends ArrayN<3>
-            ? ArrayN<3> extends [string, string, string, string, ...string[]]
+            ? ArrayN<3> extends readonly [string, string, string, string, ...readonly string[]]
               ? never
-              : ArrayN<3>
+              : ArrayN<3> extends [string, string, string, ...readonly string[]]
+                ? never
+                : ArrayN<3>
             : never
         : never,
-      ArrayN<2> extends [string, string, ...string[]]
-        ? [string, string, ...string[]] extends ArrayN<2>
-            ? ArrayN<2> extends ArrayN<3>
-              ? never
-              : ArrayN<2>
-            : never
-        : never,
-      ArrayN<1> extends [string, ...string[]]
+      ArrayN<1> extends readonly [string, ...readonly string[]]
         ? [string, ...string[]] extends ArrayN<1>
-            ? ArrayN<1> extends ArrayN<2>
+            ? ArrayN<1> extends readonly [string, string, ...readonly string[]]
               ? never
-              : ArrayN<1>
+              : ArrayN<1> extends [string, ...readonly string[]]
+                ? never
+                : ArrayN<1>
             : never
         : never,
       Bound<1.0, 1>,
@@ -56,12 +53,12 @@ declare namespace ArrayN {
       Bound<2 | -1.1>,
       Bound<2 | -1.00000>,
       Bound<2 | 9.999999999>,
-      ArrayN<1, unknown> extends [unknown, ...unknown[]]
+      ArrayN<1, unknown> extends readonly [unknown, ...readonly unknown[]]
         ? [unknown, ...unknown[]] extends ArrayN<1, unknown>
             ? ArrayN<1, unknown>
             : never
         : never,
-      ArrayN<1, string | number> extends [string | number, ...(string | number)[]]
+      ArrayN<1, string | number> extends readonly [string | number, ...readonly (string | number)[]]
         ? [string | number, ...(string | number)[]] extends ArrayN<1, string | number>
             ? ArrayN<1, string | number>
             : never

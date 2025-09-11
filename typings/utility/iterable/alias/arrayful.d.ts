@@ -1,1 +1,4 @@
-declare type Arrayful<Element = string, Readonly extends boolean = false> = ArrayN<1, Element, Readonly>;
+declare type Arrayful<
+  Element = string,
+  Mutable extends boolean = false,
+> = ArrayN<1, Element, Mutable>;

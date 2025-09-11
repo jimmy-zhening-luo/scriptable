@@ -74,7 +74,7 @@ export default abstract class IApp<
           : JSON.stringify(error);
     }
 
-    const trace: Arrayful<string | Error> = [cast(error)];
+    const trace: Arrayful<string | Error, true> = [cast(error)];
 
     while (
       typeof trace[0] !== "string"
@@ -254,21 +254,39 @@ export default abstract class IApp<
 
   protected stringful(string = "", cause = "") {
     if (string === "")
-      throw new TypeError("Empty string", { cause });
+      throw new TypeError(
+        "Empty string",
+        { cause },
+      );
 
     return string as stringful;
   }
 
-  protected stringfuls<ArrayLike extends readonly string[]>(strings: ArrayLike, cause = "") {
+  protected stringfuls<
+    ArrayLike extends ArrayN<0>,
+  >(
+    strings: ArrayLike,
+    cause = "",
+  ) {
     if (strings.length === 0)
-      throw new RangeError("Empty string array", { cause });
+      throw new RangeError(
+        "Empty string array",
+        { cause },
+      );
     else if (!strings.every((string): string is stringful => string !== ""))
-      throw new TypeError("String array has empty strings", { cause });
+      throw new TypeError(
+        "String array has empty strings",
+        { cause },
+      );
 
     return strings as unknown as (
-      ArrayLike extends readonly [string, ...string[]]
-        ? { readonly [Index in keyof ArrayLike]: typeof strings[number]; }
-        : Arrayful<typeof strings[number], true>
+      ArrayLike extends Arrayful
+        ? {
+          readonly [I in keyof ArrayLike]: Flat<typeof strings>;
+        }
+        : Arrayful<
+          Flat<typeof strings>
+        >
     );
   }
 
@@ -284,16 +302,31 @@ export default abstract class IApp<
     return string as stringful;
   }
 
-  protected chars<ArrayLike extends readonly string[]>(strings: ArrayLike, cause = "") {
+  protected chars<
+    ArrayLike extends ArrayN<0>,
+  >(
+    strings: ArrayLike,
+    cause = "",
+  ) {
     if (strings.length === 0)
-      throw new RangeError("Empty char array", { cause });
+      throw new RangeError(
+        "Empty char array",
+        { cause },
+      );
     else if (!strings.every((string): string is char => string.length === 1))
-      throw new TypeError("Char array has non-chars", { cause });
+      throw new TypeError(
+        "Char array has non-chars",
+        { cause },
+      );
 
     return strings as unknown as (
-      ArrayLike extends readonly [string, ...string[]]
-        ? { readonly [Index in keyof ArrayLike]: typeof strings[number]; }
-        : Arrayful<typeof strings[number], true>
+      ArrayLike extends Arrayful
+        ? {
+          readonly [I in keyof ArrayLike]: Flat<typeof strings>;
+        }
+        : Arrayful<
+          Flat<typeof strings>
+        >
     );
   }
 

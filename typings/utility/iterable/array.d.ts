@@ -1,19 +1,19 @@
 declare type ArrayN<
   N extends number = 0,
   Element = string,
-  Readonly extends boolean = false,
+  Mutable extends boolean = false,
 > = [Element] extends [never]
   ? never
   : [N] extends [never]
       ? never
-      : Truth<Readonly> extends never
+      : Truth<Mutable> extends never
         ? ArrayN.Construct<
           Extract<`${N}`, `-${string}` | `${string}.${string}`> extends never
             ? N
             : 0,
           Element
         >
-        : ArrayN.ReadonlyConstruct<
+        : ArrayN.ConstructMutable<
           Extract<`${N}`, `-${string}` | `${string}.${string}`> extends never
             ? N
             : 0,
@@ -21,7 +21,7 @@ declare type ArrayN<
         >;
 
 declare namespace ArrayN {
-  export type Construct<
+  export type ConstructMutable<
     N extends number,
     Element,
     H extends Element[] = [],
@@ -30,7 +30,7 @@ declare namespace ArrayN {
         ...H,
         ...Element[],
       ]
-    : Construct<
+    : ConstructMutable<
       N,
       Element,
       [
@@ -38,7 +38,7 @@ declare namespace ArrayN {
         Element,
       ]
     >;
-  export type ReadonlyConstruct<
+  export type Construct<
     N extends number,
     Element,
     H extends readonly Element[] = readonly [],
@@ -47,7 +47,7 @@ declare namespace ArrayN {
       ...H,
       ...(readonly Element[]),
     ]
-    : ReadonlyConstruct<
+    : Construct<
       N,
       Element,
       readonly [...H, Element]
