@@ -4,30 +4,49 @@ import Widget from "./core/widget";
 class EventBar extends Widget {
   protected async runtime() {
     function print(
-      icon: string,
+      icon: Field<
+        "full",
+        "short"
+      >,
       event: CalendarEvent,
     ) {
-      const {
-        title,
-        startDate,
-      } = event,
-      printStart = new Widget
-        .Time(startDate)
-        .print("h:mm a")
-        .replace(" ", "\u200A")
-        .replace("M", "\u1D0D")
-        .replace("P", "\u1D18")
-        .replace("A", "\u1D00"),
-      printTitle = (icon.length + printStart.length + title.length) > 30
-        ? title.replaceAll(" ", "")
-        : title;
+      const { title } = event,
+      start = new Widget
+        .Time(event.startDate)
+        .print("h:mm a"),
+      shorten = (icon.full.length
+      + start.length
+      + title.length) > 30,
+      print = {
+        icon: shorten
+          ? "short" in icon
+            ? icon.short
+            : ""
+          : icon.long,
+        start: start
+          .replace("M", "\u1D0D")
+          .replace("P", "\u1D18")
+          .replace("A", "\u1D00")
+          .replace(
+            " ",
+            shorten
+              ? ""
+              : "\u200A",
+          ),
+        title: shorten
+          ? title.replaceAll(" ", "")
+          : title,
+        separator: shorten
+          ? "\u200A"
+          : "\u2009 ",
+      },
 
-      return icon
+      return print.icon
       + [
-        printStart,
-        printTitle,
+        print.start,
+        print.title,
       ]
-        .join("\u2009 ");
+        .join(print.separator);
     }
 
     const calendar = await Calendar.defaultForEvents(),
@@ -55,11 +74,16 @@ class EventBar extends Widget {
         ? firstTomorrow === undefined
           ? "\u2713"
           : print(
-              "\u2005\u25D1 ",
+              {
+                full: "\u2005\u25D1 ",
+                short: "\u200A",
+              },
               firstTomorrow,
             )
         : print(
-            "\u200A",
+            {
+              full: "\u200A",
+            }
             nextToday,
           ),
     );
