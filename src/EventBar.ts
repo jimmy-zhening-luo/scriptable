@@ -10,37 +10,72 @@ class EventBar extends Widget {
       >,
       event: CalendarEvent,
     ) {
+      const LENGTH_LIMIT = [
+        30,
+        28,
+        25,
+      ] as const;
+
+      enum PrintLength {
+        Shortest,
+        Shorter,
+        Short,
+        Full,
+      }
+
       const { title } = event,
       start = new Widget
         .Time(event.startDate)
         .print("h:mm a"),
-      shorten = icon.full.length
+      length = icon.full.length
         + start.length
-        + title.length > 28,
+        + title.length,
+      printLength = length > LENGTH_LIMIT[0]
+        ? PrintLength.Shortest
+        : length > LENGTH_LIMIT[1]
+          ? PrintLength.Shorter
+          : length > LENGTH_LIMIT[2]
+            ? PrintLength.Short
+            : PrintLength.Full,
       print = {
-        icon: shorten
+        icon: printLength < 3
           ? "short" in icon
             ? icon.short
             : ""
           : icon.full,
         start: start
-          .replace("M", "\u1D0D")
-          .replace("P", "\u1D18")
           .replace("A", "\u1D00")
+          .replace("P", "\u1D18")
+          .replace(
+            "M",
+            printLength < 3
+              ? ""
+              : "\u1D0D",
+          )
           .replace(
             " ",
-            shorten
+            printLength < 3
               ? ""
               : "\u200A",
           ),
-        title: shorten
+        title: printLength < 3
           ? title
-              .replaceAll(" ", "")
               .replaceAll("-", "")
-              .replaceAll("_", "")
+              .replaceAll(
+                " ",
+                printLength < 2
+                  ? printLength < 1
+                    ? ""
+                    : "\u200A"
+                  : "\u2009",
+              )
           : title,
-        separator: shorten
-          ? "\u200A"
+        separator: printLength < 3
+          ? printLength < 2
+            ? printLength < 1
+              ? ""
+              : "\u200A"
+            : "\u2009"
           : "\u2009 ",
       };
 
