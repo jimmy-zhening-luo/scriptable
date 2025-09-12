@@ -34,7 +34,10 @@ class EventBar extends Widget {
               : "\u200A",
           ),
         title: shorten
-          ? title.replaceAll(" ", "")
+          ? title
+            .replaceAll(" ", "")
+            .replaceAll("-", "")
+            .replaceAll("_", "")
           : title,
         separator: shorten
           ? "\u200A"
