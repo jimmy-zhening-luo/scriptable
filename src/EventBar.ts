@@ -18,10 +18,11 @@ class EventBar extends Widget {
         + start.length
         + title.length,
       LENGTH_LIMIT = [
-        36,
         34,
         32,
+        31,
         30,
+        28,
       ] as const,
       printLength = length > LENGTH_LIMIT[0]
         ? 0
@@ -33,7 +34,7 @@ class EventBar extends Widget {
               ? 3
               : 4,
       print = {
-        icon: printLength < 4
+        icon: printLength < 5
           ? "short" in icon
             ? icon.short
             : ""
@@ -43,38 +44,42 @@ class EventBar extends Widget {
           .replace("P", "\u1D18")
           .replace(
             "M",
-            printLength < 3
+            printLength < 4
               ? ""
               : "\u1D0D",
           )
           .replace(
             " ",
-            printLength < 4
+            printLength < 5
               ? ""
               : "\u200A",
           ),
-        title: printLength < 4
+        title: printLength < 5
           ? title
               .replaceAll("-", "")
               .replaceAll(
                 " ",
-                printLength < 3
-                  ? printLength < 2
-                    ? printLength < 1
-                      ? "\u200A"
+                printLength < 4
+                  ? printLength < 3
+                    ? printLength < 2
+                      ? printLength < 1
+                        ? ""
+                        : "\u200A"
                       : "\u2009"
                     : "\u2006"
                   : "\u2005",
               )
           : title,
-        separator: printLength < 4
-          ? printLength < 3
-            ? printLength < 2
-              ? printLength < 1
-                ? "\u200A"
+        separator: printLength < 5
+          ? printLength < 4
+            ? printLength < 3
+              ? printLength < 2
+                ? printLength < 2
+                  ? ""
+                  : "\u200A"
                 : "\u2009"
               : "\u2006"
-            : " "
+            : "\u2005"
           : "\u2009 ",
       };
 
@@ -113,7 +118,7 @@ class EventBar extends Widget {
           : print(
               {
                 full: "\u2005\u25D1 ",
-                "short": "\u25D1\u200A",
+                "short": "\u25D1",
               },
               firstTomorrow,
             )
