@@ -18,9 +18,10 @@ class EventBar extends Widget {
         + start.length
         + title.length,
       LENGTH_LIMIT = [
+        36,
+        34,
+        32,
         30,
-        28,
-        25,
       ] as const,
       printLength = length > LENGTH_LIMIT[0]
         ? 0
@@ -28,9 +29,11 @@ class EventBar extends Widget {
           ? 1
           : length > LENGTH_LIMIT[2]
             ? 2
-            : 3,
+            : length > LENGTH_LIMIT[3]
+              ? 3
+              : 4;
       print = {
-        icon: printLength < 3
+        icon: printLength < 4
           ? "short" in icon
             ? icon.short
             : ""
@@ -46,28 +49,32 @@ class EventBar extends Widget {
           )
           .replace(
             " ",
-            printLength < 3
+            printLength < 4
               ? ""
               : "\u200A",
           ),
-        title: printLength < 3
+        title: printLength < 4
           ? title
               .replaceAll("-", "")
               .replaceAll(
                 " ",
-                printLength < 2
-                  ? printLength < 1
-                    ? ""
-                    : "\u200A"
-                  : "\u2009",
+                printLength < 3
+                  ? printLength < 2
+                    ? printLength < 1
+                      ? "\u200A"
+                      : "\u2009"
+                    : "\u2006"
+                  : "\u2005",
               )
           : title,
-        separator: printLength < 3
-          ? printLength < 2
-            ? printLength < 1
-              ? ""
-              : "\u200A"
-            : "\u2009"
+        separator: printLength < 4
+          ? printLength < 3
+            ? printLength < 2
+              ? printLength < 1
+                ? "\u200A"
+                : "\u2009"
+              : "\u2006"
+            : " "
           : "\u2009 ",
       };
 
