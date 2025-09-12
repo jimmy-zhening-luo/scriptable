@@ -10,19 +10,6 @@ class EventBar extends Widget {
       >,
       event: CalendarEvent,
     ) {
-      const LENGTH_LIMIT = [
-        30,
-        28,
-        25,
-      ] as const;
-
-      enum PrintLength {
-        Shortest,
-        Shorter,
-        Short,
-        Full,
-      }
-
       const { title } = event,
       start = new Widget
         .Time(event.startDate)
@@ -30,13 +17,18 @@ class EventBar extends Widget {
       length = icon.full.length
         + start.length
         + title.length,
+      LENGTH_LIMIT = [
+        30,
+        28,
+        25,
+      ] as const,
       printLength = length > LENGTH_LIMIT[0]
-        ? PrintLength.Shortest
+        ? 0
         : length > LENGTH_LIMIT[1]
-          ? PrintLength.Shorter
+          ? 1
           : length > LENGTH_LIMIT[2]
-            ? PrintLength.Short
-            : PrintLength.Full,
+            ? 2
+            : 3,
       print = {
         icon: printLength < 3
           ? "short" in icon
