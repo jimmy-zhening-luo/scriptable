@@ -16,7 +16,7 @@ class EventBar extends Widget {
         .print("h:mm a"),
       shorten = icon.full.length
         + start.length
-        + title.length > 30,
+        + title.length > 28,
       print = {
         icon: shorten
           ? "short" in icon
