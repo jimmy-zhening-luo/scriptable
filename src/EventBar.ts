@@ -14,9 +14,9 @@ class EventBar extends Widget {
       start = new Widget
         .Time(event.startDate)
         .print("h:mm a"),
-      shorten = (icon.full.length
-      + start.length
-      + title.length) > 30,
+      shorten = icon.full.length
+        + start.length
+        + title.length > 30,
       print = {
         icon: shorten
           ? "short" in icon
@@ -42,11 +42,11 @@ class EventBar extends Widget {
       };
 
       return print.icon
-      + [
-        print.start,
-        print.title,
-      ]
-        .join(print.separator);
+        + [
+          print.start,
+          print.title,
+        ]
+          .join(print.separator);
     }
 
     const calendar = await Calendar.defaultForEvents(),
@@ -76,7 +76,7 @@ class EventBar extends Widget {
           : print(
               {
                 full: "\u2005\u25D1 ",
-                short: "\u200A",
+                "short": "\u200A",
               },
               firstTomorrow,
             )
