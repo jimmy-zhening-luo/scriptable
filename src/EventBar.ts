@@ -31,7 +31,7 @@ class EventBar extends Widget {
             ? 2
             : length > LENGTH_LIMIT[3]
               ? 3
-              : 4;
+              : 4,
       print = {
         icon: printLength < 4
           ? "short" in icon
