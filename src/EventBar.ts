@@ -20,9 +20,9 @@ class EventBar extends Widget {
       LENGTH_LIMIT = [
         34,
         32,
-        31,
         30,
-        28,
+        29,
+        27,
       ] as const,
       printLength = length > LENGTH_LIMIT[0]
         ? 0
