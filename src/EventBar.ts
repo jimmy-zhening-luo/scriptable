@@ -76,7 +76,7 @@ class EventBar extends Widget {
           : print(
               {
                 full: "\u2005\u25D1 ",
-                "short": "\u200A",
+                "short": "\u25D1\u200A",
               },
               firstTomorrow,
             )
