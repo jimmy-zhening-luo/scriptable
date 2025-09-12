@@ -1,10 +1,7 @@
 import type { ISearchEngineEntry } from "./engine";
 
 export interface SearchSetting {
-  reserved: Field<
-    | "selectors"
-    | "tag"
-  >;
+  reserved: Field<"selectors">;
   alias: FieldTable;
   engines: Table<
     | Unflat<string, true>

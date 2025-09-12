@@ -29,14 +29,14 @@ class Search extends Shortcut<
       setting: {
         alias,
         engines,
-        reserved: {
-          selectors,
-          tag,
-        },
+        reserved: { selectors },
       },
       input = "",
     } = this,
-    { key, terms } = input === ""
+    {
+      key,
+      terms,
+    } = input === ""
       ? history(this.get("history"))
       : parse(
           input,
@@ -57,13 +57,15 @@ class Search extends Shortcut<
         }),
       );
 
+    const TAG = "%s" as stringful;
+
     return !entryOption
       ? engine(
           "browser",
           key,
           terms,
           entry,
-          this.stringful(tag),
+          TAG,
         )
       : "url" in entry
         ? engine(
@@ -71,7 +73,7 @@ class Search extends Shortcut<
             key,
             terms,
             entry.url,
-            this.stringful(tag),
+            TAG,
             entry.prepend,
             entry.force,
             entry.separator,
