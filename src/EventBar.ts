@@ -3,6 +3,33 @@ import Widget from "./core/widget";
 
 class EventBar extends Widget {
   protected async runtime() {
+    function print(
+      icon: string,
+      event: CalendarEvent,
+    ) {
+      const {
+        title,
+        startDate,
+      } = event,
+      printStart = new Widget
+        .Time(startDate)
+        .print("h:mm a")
+        .replace(" ", "\u200A")
+        .replace("M", "\u1D0D")
+        .replace("P", "\u1D18")
+        .replace("A", "\u1D00"),
+      printTitle = (icon.length + printStart.length + title.length) > 30
+        ? title.replaceAll(" ", "")
+        : title;
+
+      return icon
+      + [
+        printStart,
+        printTitle,
+      ]
+        .join("\u2009 ");
+    }
+
     const calendar = await Calendar.defaultForEvents(),
     now = new Widget.Time,
     tomorrow = now.in(24).midnight,
@@ -21,29 +48,20 @@ class EventBar extends Widget {
     ),
     [firstTomorrow] = eventsTomorrow.filter(
       event => !event.isAllDay,
-    ),
-    upcoming = nextToday ?? firstTomorrow ?? null;
+    );
 
     void this.text(
-      upcoming === null
-        ? "\u2713"
-        : [
-            nextToday === undefined
-              ? "\u2005\u25D1 "
-              : "\u200A",
-            [
-              new Widget
-                .Time(upcoming.startDate)
-                .print("h:mm a")
-                .replace(" ", "\u200A")
-                .replace("M", "\u1D0D")
-                .replace("P", "\u1D18")
-                .replace("A", "\u1D00"),
-              upcoming.title,
-            ]
-              .join("\u2009 "),
-          ]
-            .join(""),
+      nextToday === undefined
+        ? firstTomorrow === undefined
+          ? "\u2713"
+          : print(
+              "\u2005\u25D1 ",
+              firstTomorrow,
+            )
+        : print(
+            "\u200A",
+            nextToday,
+          );
     );
   }
 }
