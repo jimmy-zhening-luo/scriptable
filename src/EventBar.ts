@@ -61,7 +61,7 @@ class EventBar extends Widget {
         : print(
             "\u200A",
             nextToday,
-          );
+          ),
     );
   }
 }
