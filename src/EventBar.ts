@@ -22,7 +22,7 @@ class EventBar extends Widget {
           ? "short" in icon
             ? icon.short
             : ""
-          : icon.long,
+          : icon.full,
         start: start
           .replace("M", "\u1D0D")
           .replace("P", "\u1D18")
@@ -39,7 +39,7 @@ class EventBar extends Widget {
         separator: shorten
           ? "\u200A"
           : "\u2009 ",
-      },
+      };
 
       return print.icon
       + [
