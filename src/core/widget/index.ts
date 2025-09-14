@@ -5,7 +5,9 @@ import Style from "../../lib/ui/typography";
 
 const DEFAULT_FACTOR = 12;
 
-export default abstract class Widget<Setting = never> extends IApp<
+export default abstract class Widget<
+  Setting = never,
+> extends IApp<
   string,
   void,
   Setting
