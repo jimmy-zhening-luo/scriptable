@@ -8,7 +8,7 @@ export default abstract class DateWidget<
   ) {
     super(
       null,
-      "calendar",
+      false,
       { url },
     );
   }

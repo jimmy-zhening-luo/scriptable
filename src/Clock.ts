@@ -153,7 +153,7 @@ class Clock extends Widget<
 
 await new Clock(
   new Widget.Time().print("E d"),
-  "home",
+  true,
   {
     url: "readdle-spark://",
   },

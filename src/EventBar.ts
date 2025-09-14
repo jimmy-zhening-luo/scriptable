@@ -1,7 +1,7 @@
 // icon-color: pink; icon-glyph: calendar-alt;
-import Widget from "./core/widget";
+import Widget from "./core/widget/date";
 
-class EventBar extends Widget {
+class EventBar extends DateWidget {
   protected async runtime() {
     function print(
       icon: Field<
@@ -135,9 +135,5 @@ class EventBar extends Widget {
 }
 
 await new EventBar(
-  null,
-  "calendar",
-  {
-    url: "https://calendar.google.com/calendar/u/0/r/3day/" + new Widget.Time().print("yyyy/MM/dd"),
-  },
+  "https://calendar.google.com/calendar/u/0/r/3day/" + new Widget.Time().print("yyyy/MM/dd"),
 ).run();

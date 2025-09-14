@@ -35,7 +35,7 @@ class Dashboard extends Widget {
 
 void new Dashboard(
   "",
-  "home",
+  true,
   {
     url: "things:///show?id=today",
   },

@@ -21,11 +21,7 @@ export default abstract class Widget<
 
   constructor(
     title: Null<string> = null,
-    private readonly mode:
-      | "calendar"
-      | "lock"
-      | "home"
-      = "home",
+    private readonly home = true,
     {
       background = Color.black(),
       url = null,
@@ -54,26 +50,23 @@ export default abstract class Widget<
     this.weight = Math.round(weight);
     this.style = new Style(this.weight);
     this.url = url;
+    this.widget.backgroundColor = background;
 
-    if (mode !== "calendar") {
-      this.widget.backgroundColor = background;
+    if (home) {
+      this.widget.spacing = spacing;
+      this.widget.setPadding(
+        top,
+        leading,
+        bottom,
+        trailing,
+      );
 
-      if (mode === "home") {
-        this.widget.spacing = spacing;
-        this.widget.setPadding(
-          top,
-          leading,
-          bottom,
-          trailing,
+      if (title !== "") {
+        void this.text(
+          title ?? this.app,
+          this.style.title(),
         );
-
-        if (title !== "") {
-          void this.text(
-            title ?? this.app,
-            this.style.title(),
-          );
-          void this.line(Math.round(weight / 6));
-        }
+        void this.line(Math.round(weight / 6));
       }
     }
   }
@@ -108,21 +101,14 @@ export default abstract class Widget<
   protected override development = () => {
     void this.widget[
       `present${
-        this.mode === "home"
+        this.home
           ? "Small" as const
-          : `Accessory${
-            this.mode === "calendar"
-              ? "Inline" as const
-              : "Circular" as const
-          }` as const
+          : "AccessoryCircular" as const
       }`
     ]();
   };
 
   protected line(height = 0) {
-    if (this.mode === "calendar")
-      throw new TypeError("Calendar Widget must be single-line");
-
     return this.widget.addSpacer(height);
   }
 
@@ -208,7 +194,7 @@ export default abstract class Widget<
     label = "Latest: ",
     font = this.style.footnote(),
   ) {
-    if (this.mode !== "home")
+    if (!this.home)
       throw new TypeError("Last refresh date can only be shown on Home Screen Widget");
 
     return this.text(
