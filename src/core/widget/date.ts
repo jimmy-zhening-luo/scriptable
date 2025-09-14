@@ -4,11 +4,10 @@ export default abstract class DateWidget<
   Setting = never,
 > extends Widget<Setting> {
   constructor(
-    title: Null<string> = null,
-    url: Null<string>,
+    url: Null<string> = null,
   ) {
     super(
-      title,
+      null,
       "calendar",
       { url },
     );
