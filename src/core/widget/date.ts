@@ -14,7 +14,7 @@ export default abstract class DateWidget<
   }
 
   protected override development = () => {
-    void this.widget.presentInline();
+    void this.widget.presentAccessoryInline();
   };
 
   protected override line(): never {
