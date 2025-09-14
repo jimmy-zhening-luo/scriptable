@@ -14,6 +14,7 @@ export default abstract class DateWidget<
   ) {
     super(
       title,
+      "calendar",
       { url },
     );
   }
