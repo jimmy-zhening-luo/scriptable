@@ -8,10 +8,10 @@ const DEFAULT_FACTOR = 12;
 export default abstract class Widget<
   Setting = never,
 > extends IApp<
-  string,
-  void,
-  Setting
-> {
+    string,
+    void,
+    Setting
+  > {
   public static readonly Time = Time;
   public static readonly location = location;
   protected readonly widget = new ListWidget;
