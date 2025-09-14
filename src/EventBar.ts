@@ -1,5 +1,5 @@
 // icon-color: pink; icon-glyph: calendar-alt;
-import Widget from "./core/widget/date";
+import DateWidget from "./core/widget/date";
 
 class EventBar extends DateWidget {
   protected async runtime() {
@@ -11,7 +11,7 @@ class EventBar extends DateWidget {
       event: CalendarEvent,
     ) {
       const { title } = event,
-      start = new Widget
+      start = new DateWidget
         .Time(event.startDate)
         .print("h:mm a"),
       length = icon.full.length
@@ -94,7 +94,7 @@ class EventBar extends DateWidget {
     }
 
     const calendar = await Calendar.defaultForEvents(),
-    now = new Widget.Time,
+    now = new DateWidget.Time,
     tomorrow = now.in(24).midnight,
     eventsRemaining = await CalendarEvent.between(
       now.ago(0.5).toDate(),
@@ -135,5 +135,5 @@ class EventBar extends DateWidget {
 }
 
 await new EventBar(
-  "https://calendar.google.com/calendar/u/0/r/3day/" + new Widget.Time().print("yyyy/MM/dd"),
+  "https://calendar.google.com/calendar/u/0/r/3day/" + new DateWidget.Time().print("yyyy/MM/dd"),
 ).run();
