@@ -47,9 +47,9 @@ export default abstract class Widget<
       config.runsInWidget || tapped,
     );
     this.tapped = tapped;
+    this.url = url;
     this.weight = Math.round(weight);
     this.style = new Style(this.weight);
-    this.url = url;
     this.widget.backgroundColor = background;
 
     if (home) {
