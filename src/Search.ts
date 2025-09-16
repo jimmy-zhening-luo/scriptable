@@ -22,6 +22,7 @@ class Search extends Shortcut<
         : JSON.parse(history) as {
           key: stringful;
           terms: stringful[];
+          selection?: string;
         };
     }
 

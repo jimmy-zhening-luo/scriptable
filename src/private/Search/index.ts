@@ -170,22 +170,19 @@ export default function (
       }
     }
 
-    const { Head, tail } = select(query, SELECTORS);
+    const { Head, tail } = select(
+      query,
+      SELECTORS,
+    );
 
     if (typeof Head !== "string")
-      return {
-        Head,
-        tail,
-      };
+      return { Head, tail };
     else {
       const operation = (/^(\W+)(\w+)$/u)
         .exec(Head);
 
       if (operation === null)
-        return {
-          Head,
-          tail,
-        } as const;
+        return { Head, tail };
       else {
         const [
           ,
@@ -201,7 +198,10 @@ export default function (
     }
   }
 
-  const { Head, tail } = parse(query, SELECTORS);
+  const { Head, tail } = parse(
+    query,
+    SELECTORS,
+  );
 
   if (
     typeof Head !== "string"
