@@ -176,13 +176,19 @@ export default function (
     );
 
     if (typeof Head !== "string")
-      return { Head, tail };
+      return {
+        Head,
+        tail,
+      };
     else {
       const operation = (/^(\W+)(\w+)$/u)
         .exec(Head);
 
       if (operation === null)
-        return { Head, tail };
+        return {
+          Head,
+          tail,
+        };
       else {
         const [
           ,
