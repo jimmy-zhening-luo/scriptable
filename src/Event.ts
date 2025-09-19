@@ -1,7 +1,7 @@
 // icon-color: pink; icon-glyph: calendar-alt;
 import DateWidget from "./core/widget/date";
 
-class EventBar extends DateWidget {
+class Event extends DateWidget {
   protected async runtime() {
     function print(
       icon: Field<
@@ -134,6 +134,6 @@ class EventBar extends DateWidget {
   }
 }
 
-await new EventBar(
+await new Event(
   "https://calendar.google.com/calendar/u/0/r/3day/" + new DateWidget.Time().print("yyyy/MM/dd"),
 ).run();
