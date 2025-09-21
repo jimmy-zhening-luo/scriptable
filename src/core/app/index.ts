@@ -170,16 +170,14 @@ export default abstract class IApp<
       .write(value, true);
   }
 
-  protected unset(key: string) {
+  protected unset(key = "") {
     this
       .cache(key)
       .delete();
   }
 
   protected clear() {
-    this
-      .cache("")
-      .delete();
+    this.unset();
   }
 
   protected read(
@@ -248,12 +246,10 @@ export default abstract class IApp<
   }
 
   protected deleteAll() {
-    this
-      .storage(
-        "",
-        "",
-      )
-      .delete();
+    this.delete(
+      "",
+      "",
+    );
     this.clear();
   }
 
