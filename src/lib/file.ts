@@ -2,6 +2,7 @@ export default class File<Class extends string> {
   private static readonly manager = FileManager.local();
   private readonly path;
   private readonly parent;
+  private readonly mutable;
   private readonly exists;
   private readonly isFolder;
 
@@ -9,47 +10,47 @@ export default class File<Class extends string> {
     Class: Literalful<Class>,
     name: string,
     subfolder = "",
-    private readonly mutable = false,
-    ephemeral = false,
+    {
+      hidden = false,
+      mutable = false,
+      temporary = false,
+    } = {},
   ) {
-    const root = File.manager.bookmarkExists(Class)
-      ? File.manager.bookmarkedPath(Class)
-      : mutable
-        ? [
-            File.manager[
-              ephemeral
-                ? "cacheDirectory"
-                : "libraryDirectory"
-            ](),
-            Class,
-          ]
-            .join("/")
-        : null;
-
-    if (root === null)
-      throw new ReferenceError(
-        "No directory root provided",
-        { cause: `<${Class}> ${subfolder}/${name}` },
+    if (hidden && !mutable)
+      throw new TypeError(
+        "Hidden file must be mutable",
+        { cause: Class },
       );
 
-    const subpath = [
+    const root = [
+      hidden
+        ? File.manager[
+            temporary
+              ? "cacheDirectory"
+              : "libraryDirectory"
+          ]()
+        : File.manager.bookmarkedPath("root"),
+      Class,
+    ],
+    subpath = [
       ...subfolder.split("/"),
       ...name.split("/"),
     ]
-      .filter(segment => segment !== "");
+      .filter(node => node !== "");
 
     if (subpath.length === 0)
       throw new ReferenceError(
-        "No file subpath provided",
+        "File has empty subpath",
         { cause: `<${Class}> ${subfolder}/${name}` },
       );
 
-    this.path = [root, ...subpath].join("/");
+    this.path = [...root, ...subpath].join("/");
     this.parent = [
-      root,
+      ...root,
       ...subpath.slice(0, -1),
     ]
       .join("/");
+    this.mutable = mutable;
     this.exists = File.manager.fileExists(this.path);
     this.isFolder = File.manager.isDirectory(this.path);
   }
@@ -59,7 +60,7 @@ export default class File<Class extends string> {
       if (this.isFolder)
         throw this.error(
           "read",
-          new TypeError("Filesystem object is Folder"),
+          new TypeError("Target is Folder"),
         );
     }
     else {
@@ -85,7 +86,7 @@ export default class File<Class extends string> {
     if (content === "")
       throw this.error(
         "readStringful",
-        new TypeError("Empty file"),
+        new TypeError("File is empty"),
       );
 
     return content as stringful;
@@ -105,12 +106,12 @@ export default class File<Class extends string> {
     if (!this.mutable)
       throw this.error(
         "write",
-        new TypeError("Readonly file"),
+        new TypeError("Readonly"),
       );
     else if (this.isFolder)
       throw this.error(
         "write",
-        new TypeError("Write target is Folder"),
+        new TypeError("Target is Folder"),
       );
     else if (this.exists) {
       if (overwrite === false)
@@ -144,7 +145,7 @@ export default class File<Class extends string> {
     if (!this.mutable)
       throw this.error(
         "delete",
-        new ReferenceError("Readonly filesystem object"),
+        new ReferenceError("Readonly"),
       );
 
     if (this.exists)

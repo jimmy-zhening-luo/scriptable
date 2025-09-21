@@ -16,7 +16,9 @@ export default async function location(
 
   if (accuracy !== 0)
     Location[
-      `setAccuracyTo${LocationAccuracy[accuracy]}`
+      `setAccuracyTo${
+        LocationAccuracy[accuracy]
+      }`
     ]();
 
   return Location.current();

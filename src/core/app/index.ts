@@ -11,13 +11,13 @@ export default abstract class IApp<
     | "production"
     | "development"
   >;
-  private readonly cache: Table<
-    File<"EphemeralState">
+  private readonly pool: Table<
+    File<"Cache">
   > = {};
   private readonly store: Table<
     File<"Storage">
   > = {};
-  private readonly feeds: Table<
+  private readonly stream: Table<
     File<"Feed">
   > = {};
 
@@ -46,6 +46,7 @@ export default abstract class IApp<
         new File(
           "Setting",
           this.app + ".json",
+          "",
         )
           .readStringful(),
       ) as Setting;
@@ -156,7 +157,7 @@ export default abstract class IApp<
 
   protected get(key: string) {
     return this
-      .state(key)
+      .cache(key)
       .readString();
   }
 
@@ -165,24 +166,19 @@ export default abstract class IApp<
     value: string,
   ) {
     this
-      .state(key)
+      .cache(key)
       .write(value, true);
   }
 
   protected unset(key: string) {
     this
-      .state(key)
+      .cache(key)
       .delete();
   }
 
-  protected invalidateCache() {
-    new File(
-      "EphemeralState",
-      "",
-      this.app,
-      true,
-      true,
-    )
+  protected clear() {
+    this
+      .cache("")
       .delete();
   }
 
@@ -191,7 +187,10 @@ export default abstract class IApp<
     extension?: string,
   ) {
     return this
-      .storage(name, extension)
+      .storage(
+        name,
+        extension,
+      )
       .read();
   }
 
@@ -200,7 +199,10 @@ export default abstract class IApp<
     extension?: string,
   ) {
     return this
-      .storage(name, extension)
+      .storage(
+        name,
+        extension,
+      )
       .readString();
   }
 
@@ -209,7 +211,10 @@ export default abstract class IApp<
     extension?: string,
   ) {
     return this
-      .storage(name, extension)
+      .storage(
+        name,
+        extension,
+      )
       .readStringful();
   }
 
@@ -220,8 +225,14 @@ export default abstract class IApp<
     extension?: string,
   ) {
     this
-      .storage(name, extension)
-      .write(data, overwrite);
+      .storage(
+        name,
+        extension,
+      )
+      .write(
+        data,
+        overwrite,
+      );
   }
 
   protected delete(
@@ -229,30 +240,39 @@ export default abstract class IApp<
     extension?: string,
   ) {
     this
-      .storage(name, extension)
+      .storage(
+        name,
+        extension,
+      )
       .delete();
   }
 
-  protected clearStorage() {
-    new File(
-      "Storage",
-      "",
-      this.app,
-      true,
-    )
+  protected deleteAll() {
+    this
+      .storage(
+        "",
+        "",
+      )
       .delete();
+    this.clear();
   }
 
-  protected stream(
+  protected subscribe(
     name: string,
     extension?: string,
   ) {
     return this
-      .feed(name, extension)
+      .feed(
+        name,
+        extension,
+      )
       .readString();
   }
 
-  protected stringful(string = "", cause = "") {
+  protected stringful(
+    string = "",
+    cause = "",
+  ) {
     if (string === "")
       throw new TypeError(
         "Empty string",
@@ -262,9 +282,7 @@ export default abstract class IApp<
     return string as stringful;
   }
 
-  protected stringfuls<
-    ArrayLike extends ArrayN,
-  >(
+  protected stringfuls<ArrayLike extends ArrayN>(
     strings: ArrayLike,
     cause = "",
   ) {
@@ -290,7 +308,10 @@ export default abstract class IApp<
     );
   }
 
-  protected char(string = "", cause = "") {
+  protected char(
+    string = "",
+    cause = "",
+  ) {
     if (string.length !== 1)
       throw new TypeError(
         string === ""
@@ -302,9 +323,7 @@ export default abstract class IApp<
     return string as stringful;
   }
 
-  protected chars<
-    ArrayLike extends ArrayN,
-  >(
+  protected chars<ArrayLike extends ArrayN>(
     strings: ArrayLike,
     cause = "",
   ) {
@@ -330,13 +349,16 @@ export default abstract class IApp<
     );
   }
 
-  private state(key: string) {
-    return this.cache[key] ??= new File(
-      "EphemeralState",
+  private cache(key: string) {
+    return this.pool[key] ??= new File(
+      "Cache",
       key,
       this.app,
-      true,
-      true,
+      {
+        hidden: true,
+        mutable: true,
+        temporary: true,
+      },
     );
   }
 
@@ -344,15 +366,18 @@ export default abstract class IApp<
     name: string = this.app,
     extension = "txt",
   ) {
-    const file = extension === ""
+    const filename = extension === ""
       ? name
       : [name, extension].join(".");
 
-    return this.store[file] ??= new File(
+    return this.store[filename] ??= new File(
       "Storage",
-      file,
+      filename,
       this.app,
-      true,
+      {
+        hidden: true,
+        mutable: true,
+      },
     );
   }
 
@@ -364,7 +389,7 @@ export default abstract class IApp<
       ? name
       : [name, extension].join(".");
 
-    return this.feeds[feed] ??= new File(
+    return this.stream[feed] ??= new File(
       "Feed",
       feed,
       this.app,

@@ -1,8 +1,6 @@
 import Widget from ".";
 
-export default abstract class DateWidget<
-  Setting = never,
-> extends Widget<Setting> {
+export default abstract class DateWidget<Setting = never> extends Widget<Setting> {
   constructor(
     url: Null<string> = null,
   ) {

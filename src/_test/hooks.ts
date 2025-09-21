@@ -42,7 +42,6 @@ export async function mochaGlobalSetup() {
       "Storage",
       "SYNTHETIC_FILENAME.txt",
       "SYNTHETIC_SUBFOLDER",
-      true,
     );
 
     const {

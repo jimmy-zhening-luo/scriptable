@@ -5,13 +5,11 @@ import Style from "../../lib/ui/typography";
 
 const DEFAULT_FACTOR = 12;
 
-export default abstract class Widget<
-  Setting = never,
-> extends IApp<
-    string,
-    void,
-    Setting
-  > {
+export default abstract class Widget<Setting = never> extends IApp<
+  string,
+  void,
+  Setting
+> {
   public static readonly Time = Time;
   public static readonly location = location;
   protected readonly widget = new ListWidget;

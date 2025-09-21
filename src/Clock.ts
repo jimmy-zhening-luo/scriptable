@@ -35,7 +35,7 @@ class Clock extends Widget<
 
     try {
       const sun = JSON.parse(
-        this.stream(
+        this.subscribe(
           setting.sun.stream,
           "json",
         ),
