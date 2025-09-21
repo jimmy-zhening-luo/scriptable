@@ -105,7 +105,7 @@ export default abstract class IApp<
     notification.body = cause;
     notification.sound = "failure";
     void notification.schedule();
-    console.error([failure, cause].join("\n"));
+    console.error(cause);
 
     return new Error(failure, { cause });
   }
