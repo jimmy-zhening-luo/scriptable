@@ -156,6 +156,7 @@ export default class File<Class extends string> {
                 .readString()
                 .concat(content as string),
     );
+    this.state = "File";
   }
 
   public delete() {
