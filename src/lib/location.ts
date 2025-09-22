@@ -36,5 +36,5 @@ export default async function location(
   return {
     latitude: latitude.toFixed(digits),
     longitude: longitude.toFixed(digits),
-  }
+  };
 }
