@@ -5,7 +5,6 @@ export default async function location(
     | 0.1
     | 1
     | 3 = 0.1,
-  asNumber = false,
 ) {
   const LocationAccuracy = {
     0: "Best",
@@ -38,6 +37,4 @@ export default async function location(
     latitude: latitude.toFixed(digits),
     longitude: longitude.toFixed(digits),
   }
-
-  return Location.current();
 }
