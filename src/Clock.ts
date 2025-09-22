@@ -135,11 +135,11 @@ class Clock extends Widget<
       url
         .replaceAll(
           "%LAT",
-          latitude.toFixed(3),
+          latitude,
         )
         .replaceAll(
           "%LONG",
-          longitude.toFixed(3),
+          longitude,
         ),
     );
 
