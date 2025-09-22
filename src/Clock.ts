@@ -130,16 +130,16 @@ class Clock extends Widget<
     const {
       latitude,
       longitude,
-    } = await Widget.location(0.01),
+    } = await Widget.location(),
     weatherApi = new Request(
       url
         .replaceAll(
           "%LAT",
-          latitude.toFixed(6),
+          latitude.toFixed(3),
         )
         .replaceAll(
           "%LONG",
-          longitude.toFixed(6),
+          longitude.toFixed(3),
         ),
     );
 
