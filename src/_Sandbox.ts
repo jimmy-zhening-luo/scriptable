@@ -2,7 +2,8 @@
 import Shortcut from "./core";
 
 class Sandbox extends Shortcut {
-  protected runtime() {
+  /* eslint-disable @typescript-eslint/require-await */
+  protected async runtime() {
     const foo = null;
 
     return foo;

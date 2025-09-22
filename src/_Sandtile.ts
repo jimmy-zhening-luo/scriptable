@@ -2,8 +2,9 @@
 import Widget from "./core/widget";
 
 class Sandtile extends Widget {
+  /* eslint-disable @typescript-eslint/require-await */
   protected async runtime() {
-    const foo = await (this.app as unknown as Promise<string>);
+    const foo = this.app;
 
     void this.text(foo);
   }
