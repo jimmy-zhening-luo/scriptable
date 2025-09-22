@@ -45,7 +45,7 @@ export default abstract class IApp<
       return this._setting ??= JSON.parse(
         new File(
           "Setting",
-          this.app + ".json",
+          this.app.concat(".json"),
           "",
         )
           .readStringful(),
@@ -364,7 +364,7 @@ export default abstract class IApp<
   ) {
     const filename = extension === ""
       ? name
-      : [name, extension].join(".");
+      : name.concat(".", extension);
 
     return this.store[filename] ??= new File(
       "Storage",
@@ -383,7 +383,7 @@ export default abstract class IApp<
   ) {
     const feed = extension === ""
       ? name
-      : [name, extension].join(".");
+      : name.concat(".", extension);
 
     return this.stream[feed] ??= new File(
       "Feed",

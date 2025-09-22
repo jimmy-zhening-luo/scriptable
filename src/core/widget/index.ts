@@ -196,7 +196,9 @@ export default abstract class Widget<Setting = never> extends IApp<
       throw new TypeError("Last refresh date can only be shown on Home Screen Widget");
 
     return this.text(
-      label + new Time().print("h:mm a"),
+      label.concat(
+        new Time().print("h:mm a"),
+      ),
       font,
     );
   }

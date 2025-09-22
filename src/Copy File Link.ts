@@ -9,7 +9,12 @@ class FileLink extends Share<string> {
         this.input ?? [],
         "No filepath to copy",
       )
-      .map(path => "shareddocuments://" + encodeURI(path))
+      .map(
+        path => "shareddocuments://"
+          .concat(
+            encodeURI(path),
+          ),
+      )
       .join("\n");
   }
 }

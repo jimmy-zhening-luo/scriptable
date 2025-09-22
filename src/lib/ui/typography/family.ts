@@ -11,7 +11,11 @@ export default class FontFamily<
   public regular(size = this.weight) {
     return this.variant === ""
       ? Font.systemFont(size)
-      : Font[`regular${this.variant}SystemFont`](size);
+      : Font[
+          `regular${
+            this.variant
+          }SystemFont`
+        ](size);
   }
 
   public italic(size = this.weight) {
@@ -44,6 +48,12 @@ export default class FontFamily<
       | "light",
     size = this.weight,
   ) {
-    return Font[`${style}${this.variant}SystemFont`](size);
+    return Font[
+      `${
+        style
+      }${
+        this.variant
+      }SystemFont`
+    ](size);
   }
 }

@@ -47,13 +47,11 @@ export default function (
         ) {
           this.consumes = selection === ""
             && match === ".";
-          this.selection = [
-            canonical,
+          this.selection = canonical.concat(
             this.consumes
               ? next
               : selection,
-          ]
-            .join("") as stringful;
+          ) as stringful;
         }
       }
 
@@ -142,14 +140,12 @@ export default function (
             ? {
                 Head: new ReservedSearchQueryKey("translate"),
                 tail: [
-                  [
-                    canonical,
+                  canonical.concat(
                     selection === ""
                     && match === "."
                       ? tail.shift() ?? ""
                       : selection,
-                  ]
-                    .join("") as stringful,
+                  ) as stringful,
                   ...tail,
                 ],
               }

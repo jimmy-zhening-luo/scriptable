@@ -36,7 +36,7 @@ class Event extends DateWidget {
                 ? 4
                 : 5,
       print = {
-        icon: printLength < 5
+        icon: printLength !== 5
           ? "short" in icon
             ? icon.short
             : ""
@@ -46,25 +46,26 @@ class Event extends DateWidget {
           .replace("P", "\u1D18")
           .replace(
             "M",
-            printLength < 4
+            printLength !== 5
+            && printLength !== 4
               ? ""
               : "\u1D0D",
           )
           .replace(
             " ",
-            printLength < 5
+            printLength !== 5
               ? ""
               : "\u200A",
           ),
-        title: printLength < 5
+        title: printLength !== 5
           ? title
               .replaceAll("-", "")
               .replaceAll(
                 " ",
-                printLength < 4
-                  ? printLength < 3
-                    ? printLength < 2
-                      ? printLength < 1
+                printLength !== 4
+                  ? printLength !== 3
+                    ? printLength !== 2
+                      ? printLength !== 1
                         ? ""
                         : "\u200A"
                       : "\u2009"
@@ -72,11 +73,11 @@ class Event extends DateWidget {
                   : "\u2005",
               )
           : title,
-        separator: printLength < 5
-          ? printLength < 4
-            ? printLength < 3
-              ? printLength < 2
-                ? printLength < 2
+        separator: printLength !== 5
+          ? printLength !== 4
+            ? printLength !== 3
+              ? printLength !== 2
+                ? printLength !== 1
                   ? ""
                   : "\u200A"
                 : "\u2009"
@@ -85,12 +86,11 @@ class Event extends DateWidget {
           : "\u2009 ",
       };
 
-      return print.icon
-        + [
-          print.start,
-          print.title,
-        ]
-          .join(print.separator);
+      return print.icon.concat(
+        print.start,
+        print.separator,
+        print.title,
+      );
     }
 
     const calendar = await Calendar.defaultForEvents(),
@@ -135,5 +135,10 @@ class Event extends DateWidget {
 }
 
 await new Event(
-  "https://calendar.google.com/calendar/u/0/r/3day/" + new DateWidget.Time().print("yyyy/MM/dd"),
+  "https://calendar.google.com/calendar/u/0/r/3day/"
+    .concat(
+      new DateWidget
+        .Time()
+        .print("yyyy/MM/dd"),
+    ),
 ).run();

@@ -64,7 +64,7 @@ class Clock extends Widget<
         );
     }
     catch (e) {
-      console.error(`Sun feed: ${String(e)}`);
+      console.error("Sun feed: ".concat(String(e)));
       console.warn("Continuing...");
     }
 
@@ -80,12 +80,16 @@ class Clock extends Widget<
       void badges.push(`\u224B\u2006${humidity}% ${dew}°`);
     }
     catch (e) {
-      console.error(`Weather API: ${String(e)}`);
+      console.error("Weather API: ".concat(String(e)));
       console.warn("Continuing...");
     }
 
     if (badges.length !== 0)
-      void this.text(badges.join("    "));
+      void this.text(
+        badges.join(
+          " ".repeat(4),
+        ),
+      );
   }
 
   private async weather(
@@ -129,8 +133,14 @@ class Clock extends Widget<
     } = await Widget.location(0.01),
     weatherApi = new Request(
       url
-        .replaceAll("%LAT", String(latitude))
-        .replaceAll("%LONG", String(longitude)),
+        .replaceAll(
+          "%LAT",
+          latitude.toFixed(6),
+        )
+        .replaceAll(
+          "%LONG",
+          longitude.toFixed(6),
+        ),
     );
 
     weatherApi.headers = {
@@ -145,8 +155,8 @@ class Clock extends Widget<
     );
 
     return {
-      humidity: Math.round(humidity),
-      dew: Math.round(dew * 9 / 5 + 32),
+      humidity: humidity.toFixed(0),
+      dew: (dew * 9 / 5 + 32).toFixed(0),
     };
   }
 }

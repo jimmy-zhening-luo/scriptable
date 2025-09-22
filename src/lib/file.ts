@@ -24,12 +24,17 @@ export default class File<Class extends string> {
 
     const root = [
       hidden
-        ? File.manager[
-            temporary
-              ? "cacheDirectory"
-              : "libraryDirectory"
-          ]()
-        : File.manager.bookmarkedPath("root"),
+        ? File
+            .manager[
+              `${
+                temporary
+                  ? "cache"
+                  : "library"
+              }Directory`
+            ]()
+        : File
+            .manager
+            .bookmarkedPath("root"),
       Class,
     ],
     subpath = [
@@ -41,10 +46,11 @@ export default class File<Class extends string> {
     if (subpath.length === 0)
       throw new ReferenceError(
         "File has empty subpath",
-        { cause: `<${Class}> ${subfolder}/${name}` },
+        { cause: `<${Class}>${subfolder}/${name}` },
       );
 
-    this.path = [...root, ...subpath].join("/");
+    this.path = [...root, ...subpath]
+      .join("/");
     this.parent = [
       ...root,
       ...subpath.slice(0, -1),
@@ -132,12 +138,14 @@ export default class File<Class extends string> {
         : typeof overwrite !== "string"
           ? String(buffer)
           : overwrite === "line"
-            ? [
-                String(buffer),
-                this.readString(),
-              ]
-                .join("\n")
-            : this.readString() + String(buffer),
+            ? String(buffer)
+                .concat(
+                  "\n",
+                  this.readString(),
+                )
+            : this
+                .readString()
+                .concat(buffer as string),
     );
   }
 

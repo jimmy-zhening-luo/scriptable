@@ -38,7 +38,11 @@ export default class Time {
   }
 
   public get eod() {
-    return this.at(23, 59, 59);
+    return this.at(
+      23,
+      59,
+      59,
+    );
   }
 
   public in(
@@ -80,11 +84,14 @@ export default class Time {
               minute,
               second,
             )
-        : [
-            this.toDate().toDateString(),
-            time,
-          ]
-            .join(" "),
+        : this
+            .toDate()
+            .toDateString()
+            .concat(
+              " ",
+              time,
+            ),
+
     );
   }
 
@@ -113,9 +120,14 @@ export default class Time {
         .slice(3) as unknown as Hexad<char>;
 
       return fromUTC - Number(
-        `${sign}${
-          Number(H0 + H1) + Number(m0 + m1) / 60
-        }`,
+        sign.concat(
+          (
+            Number(H0.concat(H1))
+            + Number(m0.concat(m1))
+            / 60
+          )
+            .toFixed(1),
+        ),
       );
     }
   }
