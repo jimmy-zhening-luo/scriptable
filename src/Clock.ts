@@ -77,7 +77,7 @@ class Clock extends Widget<
         setting.weather.api.url,
       );
 
-      void badges.push(`\u224B\u2006${humidity}% ${dew}°`);
+      void badges.push(`\u224B\u2006${humidity}% ${dew}\u00B0`);
     }
     catch (e) {
       console.error("Weather API: ".concat(String(e)));
