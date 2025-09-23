@@ -61,7 +61,7 @@
     "deploy:sed:prepend:strict": "rr \"^((?!\\/\\/ Variables used by Scriptable\\.\\s).+)$\" \"\\x22use strict\\x22;\\n€1\" -uI -GMs \"packed/**/*.js\" -BH",
     "deploy:sed:resolve:import": "rr \"\\bimport ([\\w]+) from (.+);$\" \"const €1 = importModule(€2);\" -uI \"packed/**/*.js\" -BH",
     "deploy:sed:resolve:export": "rr \"^(\\s*)export default \" \"€1module.exports = \" -uI \"packed/**/*.js\" -BH",
-    "deploy:sed:delete:source": "rr \"^(.*)\\/\\/# sourceMappingURL=.+\\.map\\s*$\" \"€1\" -uI -GMs \"packed/**/*.js\" -BH"
+    "deploy:sed:delete:source": "rr \"^(.*)\\n\\s*\\/\\/# sourceMappingURL=.+\\.map\\s*$\" \"€1\" -uI -GMs \"packed/**/*.js\" -BH"
   },
   "author": "Jimmy Zhening Luo <jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
 }
