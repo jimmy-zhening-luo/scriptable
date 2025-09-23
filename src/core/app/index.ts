@@ -1,4 +1,4 @@
-import File from "../lib/file";
+import File from "file";
 
 export default abstract class IApp<
   Input = never,

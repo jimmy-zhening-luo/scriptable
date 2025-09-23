@@ -1,5 +1,5 @@
 import * as Mock from "./globals";
-import type File from "../core/lib/file";
+import type File from "../core/app/file";
 import type Shortcut from "../core";
 
 type Import<Module> = Promise<
@@ -24,7 +24,7 @@ export async function mochaGlobalSetup() {
     const {
       "default": FileModule,
     } = await (
-      import("../core/lib/file") as Import<typeof File>
+      import("../core/app/file") as Import<typeof File>
     )
       .catch(
         (e: unknown) => {
