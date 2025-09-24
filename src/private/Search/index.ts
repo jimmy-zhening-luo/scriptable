@@ -212,6 +212,7 @@ export default function (
     return {
       key: Head.key,
       terms: tail,
+      parsed: true,
     };
   else {
     function dealias(
