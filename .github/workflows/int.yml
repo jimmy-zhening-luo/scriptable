@@ -19,7 +19,7 @@ jobs:
         with: { node-version: 22 }
       - name: Install Dependencies
         id: ci
-        run: npm ci
+        run: npm ci --loglevel=error --fund=false
       - name: Build/Pack Distro
         id: build-pack
         run: npm run deploy
