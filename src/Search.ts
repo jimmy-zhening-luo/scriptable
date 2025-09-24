@@ -18,6 +18,10 @@ class Search extends Shortcut<
         ? {
             key: "null" as stringful,
             terms: [],
+          } as {
+            key: stringful;
+            terms: stringful[];
+            parse?: boolean;
           }
         : JSON.parse(history) as ReturnType<typeof parse>;
     }
