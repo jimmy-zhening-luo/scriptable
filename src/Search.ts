@@ -19,11 +19,7 @@ class Search extends Shortcut<
             key: "null" as stringful,
             terms: [],
           }
-        : JSON.parse(history) as {
-          key: stringful;
-          terms: stringful[];
-          selection?: string;
-        };
+        : JSON.parse(history) as ReturnType<typeof parse>;
     }
 
     const {
