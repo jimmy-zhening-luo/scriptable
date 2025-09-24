@@ -244,28 +244,31 @@ export default function (
         ? dealias(engines, alias[head])
         : null;
 
-    return key === null
-      ? {
-          key: tail.length === 0
-            ? "null" as stringful
-            : "chat" as stringful,
-          terms: [
-            typeof Head === "string"
-              ? Head
-              : Head.deselect,
-            ...tail,
-          ],
-        }
-      : {
-          key,
-          terms: typeof Head === "string"
-            ? tail
-            : [
-                Head.selection,
-                ...Head.consumes
-                  ? tail.slice(1)
-                  : tail,
-              ],
-        };
+    return {
+      parsed: true,
+      ...key === null
+        ? {
+            key: tail.length === 0
+              ? "null" as stringful
+              : "chat" as stringful,
+            terms: [
+              typeof Head === "string"
+                ? Head
+                : Head.deselect,
+              ...tail,
+            ],
+          }
+        : {
+            key,
+            terms: typeof Head === "string"
+              ? tail
+              : [
+                  Head.selection,
+                  ...Head.consumes
+                    ? tail.slice(1)
+                    : tail,
+                ],
+          },
+    };
   }
 }

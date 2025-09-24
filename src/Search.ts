@@ -37,6 +37,7 @@ class Search extends Shortcut<
     {
       key,
       terms,
+      parsed = false,
     } = input === ""
       ? history(this.get("history"))
       : parse(
@@ -49,7 +50,7 @@ class Search extends Shortcut<
     entryOption = typeof entry === "object"
       && !Array.isArray(entry);
 
-    if (!entryOption || !entry.noSave)
+    if (parsed && (!entryOption || !entry.noSave))
       this.set(
         "history",
         JSON.stringify({
