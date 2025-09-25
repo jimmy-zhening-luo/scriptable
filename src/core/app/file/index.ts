@@ -24,7 +24,7 @@ export default class File<Class extends string> {
         Class.concat(": Hidden file must be mutable"),
       );
 
-    const root = [
+    const root = (
       hidden
         ? File
             .manager[
@@ -36,9 +36,12 @@ export default class File<Class extends string> {
             ]()
         : File
             .manager
-            .bookmarkedPath("root"),
-      Class,
-    ],
+            .bookmarkedPath("root")
+    )
+      .concat(
+        "/",
+        Class,
+      ),
     subpath = [
       ...subfolder.split("/"),
       ...name.split("/"),
@@ -51,12 +54,9 @@ export default class File<Class extends string> {
         Class.concat(": File has empty subpath"),
       );
 
-    this.path = [...root, ...subpath]
+    this.path = [root, ...subpath]
       .join("/");
-    this.parent = [
-      ...root,
-      ...subpath.slice(0, -1),
-    ]
+    this.parent = [root, ...subpath.slice(0, -1)]
       .join("/");
     this.mutable = mutable;
 
