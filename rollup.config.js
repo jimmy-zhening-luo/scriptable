@@ -18,10 +18,8 @@ export default {
   input: "./src/core/index.ts",
   output: {
     file: "./dist/core/index.js",
-    format: "cjs",
   },
   plugins: [
-    noShake(),
     nodeResolve({ extensions }),
     babel({
       extensions,
