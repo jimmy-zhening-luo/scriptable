@@ -1,7 +1,7 @@
 // icon-color: deep-green; icon-glyph: play-circle;
 import Widget from "./app/widget";
 
-await class Sandtile extends Widget {
+await new class Sandtile extends Widget {
   /* eslint-disable @typescript-eslint/require-await */
   protected async runtime() {
     const foo = this.app;
