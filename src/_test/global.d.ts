@@ -8,12 +8,5 @@ declare interface Global {
   Image: typeof Image;
   Notification: typeof Notification;
   Size: typeof Size;
-
-  // #region Library
-  ConcreteShortcut: new () => unknown;
   // #endregion
-}
-
-declare class ConcreteShortcut {
-  protected runtime(): string;
 }

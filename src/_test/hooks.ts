@@ -16,22 +16,6 @@ export async function mochaGlobalSetup() {
     global.Image = Mock.Image;
     global.Notification = Mock.Notification;
     global.Size = Mock.Size;
-
-    const {
-      "default": ShortcutModule,
-    } = await (import("../app") as Import<typeof Shortcut>)
-      .finally(
-        () => console.log("Mocha hooks: `Shortcut` module dynamically loaded"),
-      );
-
-    global.ConcreteShortcut = class ConcreteShortcut extends ShortcutModule<
-      string,
-      string
-    > {
-      protected runtime() {
-        return "CONCRETE_SHORTCUT_OUTPUT";
-      }
-    };
     console.log("Mocha hooks: COMPLETED");
   }
   catch (error) {
