@@ -1,6 +1,6 @@
 import * as Mock from "./globals";
 
-export async function mochaGlobalSetup() {
+export function mochaGlobalSetup() {
   try {
     console.log("Mocha hooks: BEGIN");
     global.args = Mock.args;
