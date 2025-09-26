@@ -47,9 +47,7 @@
   "scripts": {
     "clean": "cmd --% /c \"(if exist dist rmdir /s /q dist) & (if exist build rmdir /s /q build) & (if exist .svelte-kit rmdir /s /q .svelte-kit) & (if exist .eslintcache del /f /q .eslintcache)\" || rm -rf dist build .svelte-kit .eslintcache",
     "prebuild": "npm run clean",
-    "build": "cmd /c \"(if exist svelte.config.js (npm run build:svelte) else (npm run build:ts))\" || bash -c 'if [ -f svelte.config.js ]; then npm run build:svelte; else npm run build:ts; fi'",
-    "build:ts": "tsc && ts-add-js-extension --dir=dist",
-    "build:svelte": "svelte-kit sync && svelte-check && vite build",
+    "build": "tsc && ts-add-js-extension --dir=dist",
     "postbuild": "npm run lint || echo \"Lint failed. Continuing...\"",
     "lint": "eslint --cache --fix",
     "pretest": "npm run build",
