@@ -13,7 +13,7 @@ export async function mochaGlobalSetup() {
     global.Notification = Mock.Notification;
     global.Size = Mock.Size;
 
-    const ShortcutModule = await (import("../app") as Promise<typeof Shortcut>)
+    const ShortcutModule = await import("../app")
       .catch(
         (e: unknown) => {
           throw ReferenceError(
