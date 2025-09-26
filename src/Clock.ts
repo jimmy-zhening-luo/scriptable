@@ -1,5 +1,5 @@
 // icon-color: orange; icon-glyph: clock;
-import Widget from "./core/widget";
+import Widget from "./app/widget";
 
 class Clock extends Widget<
   {

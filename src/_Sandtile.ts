@@ -1,5 +1,5 @@
 // icon-color: deep-green; icon-glyph: play-circle;
-import Widget from "./core/widget";
+import Widget from "./app/widget";
 
 class Sandtile extends Widget {
   /* eslint-disable @typescript-eslint/require-await */

@@ -1,12 +1,8 @@
 import * as Mock from "./globals";
-import type File from "../core/app/file";
-import type Shortcut from "../core";
+import type Shortcut from "../app";
 
 type Import<Module> = Promise<
-  Record<
-    "default",
-    Module
-  >
+  Record<"default", Module>
 >;
 
 export async function mochaGlobalSetup() {
@@ -22,36 +18,11 @@ export async function mochaGlobalSetup() {
     global.Size = Mock.Size;
 
     const {
-      "default": FileModule,
-    } = await (
-      import("../core/app/file") as Import<typeof File>
-    )
-      .catch(
-        (e: unknown) => {
-          throw new ReferenceError(
-            "Mocha hooks: failed to load `File` module",
-            { cause: e },
-          );
-        },
-      )
-      .finally(
-        () => console.log("Mocha hooks: `File` module dynamically loaded"),
-      );
-
-    global.ambientFile = new FileModule(
-      "Storage",
-      "SYNTHETIC_FILENAME.txt",
-      "SYNTHETIC_SUBFOLDER",
-    );
-
-    const {
       "default": ShortcutModule,
-    } = await (
-      import("../core") as Import<typeof Shortcut>
-    )
+    } = await (import("../app") as Import<typeof Shortcut>)
       .catch(
         (e: unknown) => {
-          throw new ReferenceError(
+          throw ReferenceError(
             "Mocha hooks: failed to load `Shortcut` module",
             { cause: e },
           );
@@ -72,7 +43,7 @@ export async function mochaGlobalSetup() {
     console.log("Mocha hooks: COMPLETED");
   }
   catch (error) {
-    throw new EvalError(
+    throw EvalError(
       "Mocha hooks: FAILED",
       { cause: error },
     );

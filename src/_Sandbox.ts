@@ -1,5 +1,5 @@
 // icon-color: deep-green; icon-glyph: play;
-import Shortcut from "./core";
+import Shortcut from "./app";
 
 class Sandbox extends Shortcut {
   /* eslint-disable @typescript-eslint/require-await */

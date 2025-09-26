@@ -1,5 +1,5 @@
 // icon-color: teal; icon-glyph: hourglass-half;
-import Widget from "./core/widget";
+import Widget from "./app/widget";
 
 class Dashboard extends Widget {
   protected runtime() {

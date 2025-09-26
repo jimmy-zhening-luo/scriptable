@@ -1,4 +1,4 @@
-import IApp from "./app";
+import IApp from "../core";
 
 export default abstract class Share<
   ShareOutput extends string = never,

@@ -1,7 +1,7 @@
-import IApp from "../app";
-import Time from "../lib/time";
-import location from "../lib/location";
-import Style from "../lib/ui/typography";
+import IApp from "../../core";
+import Time from "../../lib/time";
+import location from "../../lib/location";
+import Style from "../../lib/ui/typography";
 
 const DEFAULT_FACTOR = 12;
 

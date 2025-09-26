@@ -11,12 +11,9 @@ declare interface Global {
 
   // #region Library
   ConcreteShortcut: new () => unknown;
-  ambientFile: unknown;
   // #endregion
 }
 
 declare class ConcreteShortcut {
   protected runtime(): string;
 }
-
-declare const ambientFile: object;

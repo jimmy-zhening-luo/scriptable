@@ -1,5 +1,5 @@
 // icon-color: gray; icon-glyph: fingerprint;
-import Shortcut from "./core";
+import Shortcut from "./app";
 
 class Guid extends Shortcut<never, string> {
   protected runtime() {

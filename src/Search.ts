@@ -1,5 +1,5 @@
 // icon-color: blue; icon-glyph: search;
-import Shortcut from "./core";
+import Shortcut from "./app";
 import parse from "./private/Search";
 import engine from "./private/Search/engine";
 import type {

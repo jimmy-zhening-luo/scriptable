@@ -1,5 +1,5 @@
 // icon-color: pink; icon-glyph: calendar-alt;
-import DateWidget from "./core/widget/date";
+import DateWidget from "./app/widget/date";
 
 class Event extends DateWidget {
   protected async runtime() {
