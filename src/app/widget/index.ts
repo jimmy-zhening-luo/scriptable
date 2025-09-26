@@ -1,5 +1,4 @@
-const IApp = require("../core");
-
+import * as IApp from "../../core";
 import Time from "../../lib/time";
 import location from "../../lib/location";
 import Style from "../../lib/ui/typography";

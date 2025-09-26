@@ -1,4 +1,4 @@
-const IApp = require("../core");
+import * as IApp from "../core";
 
 export default abstract class Shortcut<
   ShortcutInput extends Unflat = never,
