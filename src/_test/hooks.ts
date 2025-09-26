@@ -1,6 +1,10 @@
 import * as Mock from "./globals";
 import type Shortcut from "../app";
 
+type Import<Module> = Promise<
+  Record<"default", Module>
+>;
+
 export async function mochaGlobalSetup() {
   try {
     console.log("Mocha hooks: BEGIN");
@@ -13,7 +17,9 @@ export async function mochaGlobalSetup() {
     global.Notification = Mock.Notification;
     global.Size = Mock.Size;
 
-    const ShortcutModule = await import("../app")
+    const {
+      "default": ShortcutModule,
+    } = await (import("../app") as Import<typeof Shortcut>)
       .catch(
         (e: unknown) => {
           throw ReferenceError(
