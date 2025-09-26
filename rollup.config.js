@@ -8,7 +8,6 @@ export default {
   output: {
     file: "./dist/core/index.js",
     format: "cjs",
-    compact: true,
   },
   plugins: [
     nodeResolve({ extensions }),
