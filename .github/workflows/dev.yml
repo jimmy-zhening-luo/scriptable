@@ -26,6 +26,7 @@ jobs:
       - name: Zip Distro
         id: zip
         run: zip
+          -Zb
           -9
           -r ${{vars.PACKAGE}}.zip
           ${{vars.PACKAGE}}
