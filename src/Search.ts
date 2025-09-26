@@ -7,7 +7,7 @@ import type {
   SearchSetting,
 } from "./private/Search";
 
-class Search extends Shortcut<
+void new class Search extends Shortcut<
   string,
   SearchOutput,
   SearchSetting
@@ -88,6 +88,4 @@ class Search extends Shortcut<
             entry.separator,
           );
   }
-}
-
-void new Search().run();
+}().run();

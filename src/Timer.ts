@@ -1,7 +1,7 @@
 // icon-color: teal; icon-glyph: hourglass-half;
 import Widget from "./app/widget";
 
-class Dashboard extends Widget {
+void new class Timer extends Widget {
   protected runtime() {
     const { input } = this;
 
@@ -31,9 +31,7 @@ class Dashboard extends Widget {
       }
     }
   }
-}
-
-void new Dashboard(
+}(
   "",
   true,
   {

@@ -1,7 +1,7 @@
 // icon-color: gray; icon-glyph: fingerprint;
 import Shortcut from "./app";
 
-class Guid extends Shortcut<never, string> {
+void new class Guid extends Shortcut<never, string> {
   protected runtime() {
     const guid = UUID.string().toLocaleLowerCase();
 
@@ -10,6 +10,4 @@ class Guid extends Shortcut<never, string> {
 
     return guid;
   }
-}
-
-void new Guid().run();
+}().run();

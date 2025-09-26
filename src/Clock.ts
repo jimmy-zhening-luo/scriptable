@@ -1,7 +1,7 @@
 // icon-color: orange; icon-glyph: clock;
 import Widget from "./app/widget";
 
-class Clock extends Widget<
+await new class Clock extends Widget<
   {
     clocks: Tuple<{
       timezone: Parameters<Widget["clock"]>[0];
@@ -159,9 +159,7 @@ class Clock extends Widget<
       dew: (dew * 9 / 5 + 32).toFixed(0),
     };
   }
-}
-
-await new Clock(
+}(
   new Widget.Time().print("E d"),
   true,
   {

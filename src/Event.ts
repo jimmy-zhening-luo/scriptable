@@ -1,7 +1,7 @@
 // icon-color: pink; icon-glyph: calendar-alt;
 import DateWidget from "./app/widget/date";
 
-class Event extends DateWidget {
+await new class Event extends DateWidget {
   protected async runtime() {
     function print(
       icon: Field<
@@ -132,9 +132,7 @@ class Event extends DateWidget {
           ),
     );
   }
-}
-
-await new Event(
+}(
   "https://calendar.google.com/calendar/u/0/r/3day/"
     .concat(
       new DateWidget

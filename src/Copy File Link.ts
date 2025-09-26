@@ -2,7 +2,7 @@
 // share-sheet-inputs: file-url;
 import Share from "./app/share";
 
-class FileLink extends Share<string> {
+void new class FileLink extends Share<string> {
   protected runtime() {
     return this
       .stringfuls(
@@ -17,6 +17,4 @@ class FileLink extends Share<string> {
       )
       .join("\n");
   }
-}
-
-void new FileLink("fileURLs").run();
+}("fileURLs").run();
