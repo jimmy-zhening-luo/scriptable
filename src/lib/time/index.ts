@@ -20,7 +20,7 @@ export default class Time {
       const epoch = new Date(date).getTime();
 
       if (!Number.isFinite(epoch))
-        throw new RangeError(
+        throw RangeError(
           "Invalid time",
           { cause: date },
         );

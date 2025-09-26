@@ -50,7 +50,7 @@ export default function<
         );
 
       if (!queryfulUrls.every((url): url is stringful => url !== ""))
-        throw new URIError("Empty Search URL");
+        throw URIError("Empty Search URL");
 
       return queryfulUrls;
     }

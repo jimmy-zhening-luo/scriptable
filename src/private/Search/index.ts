@@ -79,7 +79,7 @@ export default function (
           ] as const;
 
           if (tokens.length === 0)
-            throw new RangeError("Empty search query");
+            throw RangeError("Empty search query");
 
           const [Head, ...tail] = tokens;
 

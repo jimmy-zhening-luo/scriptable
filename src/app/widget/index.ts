@@ -89,7 +89,7 @@ export default abstract class Widget<Setting = never> extends IApp<
         this.onTap();
       }
       catch (runtimeActionError) {
-        throw new Error(
+        throw Error(
           "UI",
           { cause: runtimeActionError },
         );
@@ -193,7 +193,7 @@ export default abstract class Widget<Setting = never> extends IApp<
     font = this.style.footnote(),
   ) {
     if (!this.home)
-      throw new TypeError("Last refresh date can only be shown on Home Screen Widget");
+      throw TypeError("Last refresh date can only be shown on Home Screen Widget");
 
     return this.text(
       label.concat(

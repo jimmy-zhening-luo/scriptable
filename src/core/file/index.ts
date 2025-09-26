@@ -179,15 +179,15 @@ export default class File<Class extends string> {
       | "Reference"
       | "Type" = "Type",
   ) {
-    return new Error(
+    return Error(
       `Failed to ${verb} file`,
       {
-        cause: new Error(
+        cause: Error(
           this.path,
           {
             cause: error === "Type"
-              ? new TypeError(message)
-              : new ReferenceError(message),
+              ? TypeError(message)
+              : ReferenceError(message),
           },
         ),
       },

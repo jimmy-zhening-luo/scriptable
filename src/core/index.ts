@@ -52,7 +52,7 @@ export default abstract class IApp<
       ) as Setting;
     }
     catch (e) {
-      throw new ReferenceError(
+      throw ReferenceError(
         "Failed to load app settings",
         { cause: e },
       );
@@ -108,7 +108,7 @@ export default abstract class IApp<
     void notification.schedule();
     console.error(cause);
 
-    return new Error(failure, { cause });
+    return Error(failure, { cause });
   }
 
   public async run(sideload?: Input) {
@@ -125,7 +125,7 @@ export default abstract class IApp<
         this.output(output);
       }
       catch (errorSystemOutput) {
-        throw new Error(
+        throw Error(
           "Unable to output to iOS",
           { cause: errorSystemOutput },
         );
@@ -139,7 +139,7 @@ export default abstract class IApp<
             this.development(output);
         }
         catch (developmentError) {
-          throw new EvalError(
+          throw EvalError(
             "Development runtime failure",
             { cause: developmentError },
           );
@@ -270,7 +270,7 @@ export default abstract class IApp<
     cause = "",
   ) {
     if (string === "")
-      throw new TypeError(
+      throw TypeError(
         "Empty string",
         { cause },
       );
@@ -283,12 +283,12 @@ export default abstract class IApp<
     cause = "",
   ) {
     if (strings.length === 0)
-      throw new RangeError(
+      throw RangeError(
         "Empty string array",
         { cause },
       );
     else if (!strings.every((string): string is stringful => string !== ""))
-      throw new TypeError(
+      throw TypeError(
         "String array has empty strings",
         { cause },
       );
@@ -309,7 +309,7 @@ export default abstract class IApp<
     cause = "",
   ) {
     if (string.length !== 1)
-      throw new TypeError(
+      throw TypeError(
         string === ""
           ? "Empty char"
           : "Char is too long",
@@ -324,12 +324,12 @@ export default abstract class IApp<
     cause = "",
   ) {
     if (strings.length === 0)
-      throw new RangeError(
+      throw RangeError(
         "Empty char array",
         { cause },
       );
     else if (!strings.every((string): string is char => string.length === 1))
-      throw new TypeError(
+      throw TypeError(
         "Char array has non-chars",
         { cause },
       );
