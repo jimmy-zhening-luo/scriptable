@@ -1,9 +1,4 @@
 import * as Mock from "./globals";
-import type Shortcut from "../app";
-
-type Import<Module> = Promise<
-  Record<"default", Module>
->;
 
 export async function mochaGlobalSetup() {
   try {
