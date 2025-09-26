@@ -7,6 +7,7 @@ export default {
   input: "./src/core/index.ts",
   output: {
     file: "./dist/core/index.js",
+    exports: "default",
   },
   plugins: [
     nodeResolve({ extensions }),
