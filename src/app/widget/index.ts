@@ -1,4 +1,4 @@
-import * as IApp from "../../core";
+import IApp from "../../core";
 import Time from "../../lib/time";
 import location from "../../lib/location";
 import Style from "../../lib/ui/typography";
