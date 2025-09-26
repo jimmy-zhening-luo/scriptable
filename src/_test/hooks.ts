@@ -20,14 +20,6 @@ export async function mochaGlobalSetup() {
     const {
       "default": ShortcutModule,
     } = await (import("../app") as Import<typeof Shortcut>)
-      .catch(
-        (e: unknown) => {
-          throw ReferenceError(
-            "Mocha hooks: failed to load `Shortcut` module",
-            { cause: e },
-          );
-        },
-      )
       .finally(
         () => console.log("Mocha hooks: `Shortcut` module dynamically loaded"),
       );
