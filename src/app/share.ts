@@ -1,4 +1,4 @@
-import IApp from "../core";
+const IApp = require("../core");
 
 export default abstract class Share<
   ShareOutput extends string = never,
