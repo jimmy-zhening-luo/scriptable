@@ -113,6 +113,16 @@ await new class Event extends DateWidget {
       event => !event.isAllDay,
     );
 
+    this.url = "https://calendar.google.com/calendar/u/0/r/3day/"
+      .concat(
+        (
+          nextToday === undefined
+            && firstTomorrow !== undefined
+            ? tomorrow
+            : now
+        )
+          .print("yyyy/MM/dd"),
+      );
     void this.text(
       nextToday === undefined
         ? firstTomorrow === undefined
@@ -132,11 +142,4 @@ await new class Event extends DateWidget {
           ),
     );
   }
-}(
-  "https://calendar.google.com/calendar/u/0/r/3day/"
-    .concat(
-      new DateWidget
-        .Time()
-        .print("yyyy/MM/dd"),
-    ),
-).run();
+}().run();
