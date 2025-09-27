@@ -117,7 +117,7 @@ await new class Event extends DateWidget {
       .concat(
         (
           nextToday === undefined
-            && firstTomorrow !== undefined
+          && firstTomorrow !== undefined
             ? tomorrow
             : now
         )
