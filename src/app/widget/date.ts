@@ -15,7 +15,7 @@ export default abstract class DateWidget<Setting = never> extends Widget<Setting
   };
 
   protected override text(text: string) {
-    void super.text(
+    return super.text(
       text,
       null,
     );
