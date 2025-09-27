@@ -4,9 +4,9 @@ import { babel } from "@rollup/plugin-babel";
 const extensions = [".ts"];
 
 export default {
-  input: "./src/core/index.ts",
+  input: "src/core/index.ts",
   output: {
-    dir: "./dist/core",
+    dir: "dist/core",
     format: "cjs",
     strict: false,
   },
