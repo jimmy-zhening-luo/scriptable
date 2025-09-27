@@ -6,7 +6,7 @@ const extensions = [".ts"];
 export default {
   input: "./src/core/index.ts",
   output: {
-    file: "./dist/core/index.js",
+    dir: "./dist/core",
     format: "cjs",
     strict: false,
   },
