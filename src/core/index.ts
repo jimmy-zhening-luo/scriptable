@@ -125,7 +125,7 @@ export default abstract class IApp<
         this.output(output);
       }
       catch (errorSystemOutput) {
-        throw Error(
+        throw TypeError(
           "Unable to output to iOS",
           { cause: errorSystemOutput },
         );

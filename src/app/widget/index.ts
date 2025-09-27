@@ -19,15 +19,9 @@ export default abstract class Widget<Setting = never> extends IApp<
 
   constructor(
     title: Null<string> = null,
-    private readonly home = true,
+    url: Null<string> = null,
     {
       background = Color.black(),
-      url = null,
-    }: {
-      background?: Color;
-      url?: Null<string>;
-    } = {},
-    {
       weight = DEFAULT_FACTOR,
       spacing = Math.round(weight / 4),
       top = DEFAULT_FACTOR,
@@ -35,6 +29,7 @@ export default abstract class Widget<Setting = never> extends IApp<
       bottom = DEFAULT_FACTOR,
       leading = DEFAULT_FACTOR,
     } = {},
+    private readonly home = true,
   ) {
     const input = args.widgetParameter as Null<string>,
     tapped = config.runsInApp
@@ -48,9 +43,12 @@ export default abstract class Widget<Setting = never> extends IApp<
     this.url = url;
     this.weight = Math.round(weight);
     this.style = new Style(this.weight);
-    this.widget.backgroundColor = background;
+    this.widget.refreshAfterDate = new Time()
+      .in(0, 0, 30)
+      .toDate();
 
     if (home) {
+      this.widget.backgroundColor = background;
       this.widget.spacing = spacing;
       this.widget.setPadding(
         top,
@@ -79,10 +77,6 @@ export default abstract class Widget<Setting = never> extends IApp<
   }
 
   protected output() {
-    this.widget.refreshAfterDate = new Time()
-      .in(0, 1)
-      .toDate();
-
     Script.setWidget(this.widget);
 
     if (this.tapped && this.onTap !== undefined)
@@ -107,19 +101,20 @@ export default abstract class Widget<Setting = never> extends IApp<
     ]();
   };
 
-  protected line(height = 0) {
-    return this.widget.addSpacer(height);
-  }
-
   protected text(
     text: string,
-    font = this.style.body(),
+    font: Null<Font> = this.style.body(),
   ) {
     const textbox = this.widget.addText(text);
 
-    textbox.font = font;
+    if (font !== null)
+      textbox.font = font;
 
     return textbox;
+  }
+
+  protected line(height = 0) {
+    return this.widget.addSpacer(height);
   }
 
   protected clock(

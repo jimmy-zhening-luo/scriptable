@@ -33,8 +33,5 @@ void new class Timer extends Widget {
   }
 }(
   "",
-  true,
-  {
-    url: "things:///show?id=today",
-  },
+  "things:///show?id=today",
 ).run();
