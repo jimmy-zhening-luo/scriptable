@@ -119,7 +119,7 @@ await new class Event extends DateWidget {
           ? "\u2713"
           : print(
               {
-                full: "\u2005\u00BB ",
+                full: "\u2005\u00BB\u2009",
                 "short": "\u00BB",
               },
               firstTomorrow,
