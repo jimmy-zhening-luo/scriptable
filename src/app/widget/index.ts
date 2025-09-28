@@ -1,111 +1,57 @@
-import IApp from "../../core";
-import Time from "../../lib/time";
-import location from "../../lib/location";
+import IWidget from "../iwidget";
 import Style from "../../lib/ui/typography";
 
-const DEFAULT_FACTOR = 12;
+const DEFAULT_WEIGHT = 12;
 
-export default abstract class Widget<Setting = never> extends IApp<
-  string,
-  void,
-  Setting
-> {
-  public static readonly Time = Time;
-  public static readonly location = location;
-  protected readonly widget = new ListWidget;
+export default abstract class Widget<Setting = never> extends IWidget<Setting> {
   protected readonly style;
   private readonly weight;
-  private readonly tapped;
 
   constructor(
-    title: Null<string> = null,
     url: Null<string> = null,
+    title: boolean | string = false,
     {
       background = Color.black(),
-      weight = DEFAULT_FACTOR,
+      weight = DEFAULT_WEIGHT,
       spacing = Math.round(weight / 4),
-      top = DEFAULT_FACTOR,
-      trailing = DEFAULT_FACTOR,
-      bottom = DEFAULT_FACTOR,
-      leading = DEFAULT_FACTOR,
+      top = DEFAULT_WEIGHT,
+      trailing = DEFAULT_WEIGHT,
+      bottom = DEFAULT_WEIGHT,
+      leading = DEFAULT_WEIGHT,
     } = {},
-    private readonly home = true,
   ) {
-    const input = args.widgetParameter as Null<string>,
-    tapped = config.runsInApp
-      && typeof input === "string";
-
-    super(
-      input,
-      config.runsInWidget || tapped,
-    );
-    this.tapped = tapped;
-    this.url = url;
+    super(url);
     this.weight = Math.round(weight);
     this.style = new Style(this.weight);
-    this.widget.refreshAfterDate = new Time()
-      .in(0, 0, 30)
-      .toDate();
+    this.widget.backgroundColor = background;
+    this.widget.spacing = spacing;
+    this.widget.setPadding(
+      top,
+      leading,
+      bottom,
+      trailing,
+    );
 
-    if (home) {
-      this.widget.backgroundColor = background;
-      this.widget.spacing = spacing;
-      this.widget.setPadding(
-        top,
-        leading,
-        bottom,
-        trailing,
+    if (title !== false) {
+      void this.text(
+        title === true
+          ? this.app
+          : title,
+        this.style.title(),
       );
-
-      if (title !== "") {
-        void this.text(
-          title ?? this.app,
-          this.style.title(),
-        );
-        void this.line(Math.round(weight / 6));
-      }
+      void this.line(Math.round(weight / 6));
     }
   }
 
-  protected get url() {
-    return this.widget.url as Null<string>;
-  }
-
-  protected set url(url: Null<string>) {
-    if (url !== null && url !== "")
-      this.widget.url = url;
-  }
-
-  protected output() {
-    Script.setWidget(this.widget);
-
-    if (this.tapped && this.onTap !== undefined)
-      try {
-        this.onTap();
-      }
-      catch (runtimeActionError) {
-        throw Error(
-          "UI",
-          { cause: runtimeActionError },
-        );
-      }
-  }
-
   protected override development = () => {
-    void this.widget[
-      `present${
-        this.home
-          ? "Small" as const
-          : "AccessoryCircular" as const
-      }`
-    ]();
+    void this.widget.presentSmall();
   };
 
-  protected text(
+  protected override text(
     text: string,
     font: Null<Font> = this.style.body(),
   ) {
-    const textbox = this.widget.addText(text);
+    const textbox = super.text(text);
 
     if (font !== null)
       textbox.font = font;
@@ -113,16 +59,12 @@ export default abstract class Widget<Setting = never> extends IApp<
     return textbox;
   }
 
-  protected line(height = 0) {
-    return this.widget.addSpacer(height);
-  }
-
   protected clock(
-    timezone: Parameters<typeof Time.prototype.offset>[0] = null,
+    timezone: Parameters<typeof Widget.Time.prototype.offset>[0] = null,
     label = "--",
     ampm = true,
   ) {
-    const now = new Time,
+    const now = new Widget.Time,
     destinationMidnight = now
       .midnight
       .in(now.offset(timezone)),
@@ -193,11 +135,9 @@ export default abstract class Widget<Setting = never> extends IApp<
 
     return this.text(
       label.concat(
-        new Time().print("h:mm a"),
+        new Widget.Time().print("h:mm a"),
       ),
       font,
     );
   }
-
-  protected onTap?: () => void;
 }

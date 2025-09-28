@@ -31,7 +31,4 @@ void new class Timer extends Widget {
       }
     }
   }
-}(
-  "",
-  "things:///show?id=today",
-).run();
+}("things:///show?id=today").run();
