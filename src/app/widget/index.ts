@@ -130,9 +130,6 @@ export default abstract class Widget<Setting = never> extends IWidget<Setting> {
     label = "Latest: ",
     font = this.style.footnote(),
   ) {
-    if (!this.home)
-      throw TypeError("Last refresh date can only be shown on Home Screen Widget");
-
     return this.text(
       label.concat(
         new Widget.Time().print("h:mm a"),
