@@ -49,7 +49,7 @@
     "clean": "cmd --% /c \"(if exist dist rmdir /s /q dist) & (if exist build rmdir /s /q build) & (if exist .svelte-kit rmdir /s /q .svelte-kit) & (if exist .eslintcache del /f /q .eslintcache)\" || rm -rf dist build .svelte-kit .eslintcache",
     "prebuild": "npm run clean",
     "build": "tsc && npm run build:hack && rollup --config && ts-add-js-extension --dir=dist --showprogress=false",
-    "build:hack": "cmd --% /c \"(rmdir /s /q dist/app) & (rmdir /s /q dist/lib)\" || rm -rf dist/app dist/core",
+    "build:hack": "cmd --% /c \"(rmdir /s /q dist\\app) & (rmdir /s /q dist\\lib)\" || rm -rf dist/app dist/core",
     "postbuild": "npm run lint || echo \"Lint failed. Continuing...\"",
     "lint": "eslint --cache --fix",
     "pretest": "npm run build",
