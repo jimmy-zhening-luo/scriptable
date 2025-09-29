@@ -4,16 +4,16 @@ import { babel } from "@rollup/plugin-babel";
 const extensions = [".ts"];
 
 export default {
-  input: [
-    "src/app/index.ts",
-    "src/app/share.ts",
-    "src/app/widget/index.ts",
-    "src/app/widget/date.ts",
-    "src/lib/location.ts",
-    "src/lib/time/index.ts",
-  ],
+  input: {
+    "app/index": "src/app/index.ts",
+    "app/share": "src/app/share.ts",
+    "app/widget/index": "src/app/widget/index.ts",
+    "app/widget/date": "src/app/widget/date.ts",
+    "lib/location": "src/lib/location.ts",
+    "lib/time": "src/lib/time/index.ts",
+  },
   output: {
-    dir: "dist/core",
+    dir: "dist",
     format: "cjs",
     strict: false,
   },
