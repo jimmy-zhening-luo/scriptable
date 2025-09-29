@@ -34,12 +34,15 @@ await new class Clock extends Widget<
     const badges: string[] = [];
 
     try {
-      const sun = JSON.parse(
-        this.subscribe(
-          setting.sun.stream,
-          "json",
-        ),
-      ) as Record<
+      const feed = this.subscribe(
+        setting.sun.stream,
+        "json",
+      );
+
+      if (feed === "")
+        throw ReferenceError("Sun feed missing");
+
+      const sun = JSON.parse(feed) as Record<
         | "sunrise"
         | "sunset",
         FieldTable
@@ -64,7 +67,7 @@ await new class Clock extends Widget<
         );
     }
     catch (e) {
-      console.error("Sun feed: ".concat(String(e)));
+      console.warn("Sun feed: ".concat(String(e)));
       console.warn("Continuing...");
     }
 
