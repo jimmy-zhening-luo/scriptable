@@ -1,5 +1,5 @@
 {
-  "$pkg": "2211.5.0",
+  "$pkg": "2211.5.1",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "@scoping/scriptable",
