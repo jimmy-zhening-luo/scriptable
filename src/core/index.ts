@@ -155,41 +155,6 @@ export default abstract class IApp<
     }
   }
 
-  protected key(key: string) {
-    const handle = this.handle(key);
-
-    return Keychain.contains(handle)
-      ? Keychain.get(handle)
-      : "";
-  }
-
-  protected rekey(
-    key: string,
-    value?:
-      | string
-      | number
-      | boolean
-      | Record<string, unknown>,
-  ) {
-    const string = typeof value === "object"
-      ? JSON.stringify(value)
-      : String(value);
-
-    Keychain.set(
-      this.handle(key),
-      string,
-    );
-
-    return string;
-  }
-
-  protected unkey(key: string) {
-    const handle = this.handle(key);
-
-    if (Keychain.contains(handle))
-      Keychain.remove(handle);
-  }
-
   protected get(key: string) {
     return this
       .cache(key)
@@ -378,15 +343,6 @@ export default abstract class IApp<
           Flat<typeof strings>
         >
     );
-  }
-
-  private handle(key: string) {
-    return [
-      "Scriptable",
-      this.app,
-      key,
-    ]
-      .join("/");
   }
 
   private cache(key: string) {
