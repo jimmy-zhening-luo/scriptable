@@ -6,17 +6,17 @@ void new class FileLink extends Share<string> {
   protected runtime() {
     return this.context.production
       ? this
-        .stringfuls(
-          this.input ?? [],
-          "No filepath to copy",
-        )
-        .map(
-          path => "shareddocuments://"
-            .concat(
-              encodeURI(path),
-            ),
-        )
-        .join("\n")
+          .stringfuls(
+            this.input ?? [],
+            "No filepath to copy",
+          )
+          .map(
+            path => "shareddocuments://"
+              .concat(
+                encodeURI(path),
+              ),
+          )
+          .join("\n")
       : "";
   }
 }("fileURLs").run();
