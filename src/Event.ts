@@ -1,6 +1,11 @@
 // icon-color: pink; icon-glyph: calendar-alt;
 import DateWidget from "./app/widget/date";
 
+const ICON = {
+  none: "\u{1D12A}",
+  tomorrow: "\u00BB",
+};
+
 await new class Event extends DateWidget {
   protected async runtime() {
     function print(
@@ -11,7 +16,7 @@ await new class Event extends DateWidget {
       event: CalendarEvent,
     ) {
       const { title } = event,
-      start = new DateWidget
+      start = new Event
         .Time(event.startDate)
         .print("h:mm a"),
       length = icon.full.length
@@ -94,7 +99,7 @@ await new class Event extends DateWidget {
     }
 
     const calendar = await Calendar.defaultForEvents(),
-    now = new DateWidget.Time,
+    now = new Event.Time,
     tomorrow = now.in(24).midnight,
     eventsRemaining = await CalendarEvent.between(
       now.ago(0.5).toDate(),
@@ -126,11 +131,11 @@ await new class Event extends DateWidget {
     void this.text(
       nextToday === undefined
         ? firstTomorrow === undefined
-          ? "\u2713"
+          ? ICON.none
           : print(
               {
-                full: "\u2005\u00BB\u200A",
-                "short": "\u00BB",
+                full: `\u2005${ICON.tomorrow}\u200A`,
+                "short": ICON.tomorrow,
               },
               firstTomorrow,
             )
