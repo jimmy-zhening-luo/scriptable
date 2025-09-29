@@ -67,7 +67,7 @@
     "deploy:sed:prepend:strict": "rr \"^((?!\\/\\/ Variables used by Scriptable\\.\\s).+)$\" \"\\x22use strict\\x22;\\n€1\" -uI -GMs \"packed/**/*.js\" -BHq",
     "deploy:sed:resolve:import": "rr \"\\bimport ([\\w]+) from (.+);$\" \"const €1 = importModule(€2);\" -uI \"packed/**/*.js\" -BHq",
     "deploy:sed:resolve:export": "rr \"^(\\s*)export default \" \"€1module.exports = \" -uI \"packed/**/*.js\" -BHq",
-    "deploy:sed:outdent": "rr \"    \" \"  \" -L \"packed/_*.js\" -BH",
+    "deploy:sed:outdent": "rr \"    \" \"  \" -L \"packed/_*.js\" -BHq",
     "deploy:sed:delete:ignore": "rr \"^\\s*\\/[*\\/]\\s*eslint-disable\\b.+$\\n\" \"\" -uI \"packed/*.js\" -BHq",
     "deploy:sed:delete:source": "rr \"^(.*)\\/\\/# sourceMappingURL=.+\\.map\\s*$\" \"€1\" -uI -GMs \"packed/**/*.js\" -BHq"
   },
