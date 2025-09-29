@@ -4,17 +4,19 @@ import Share from "./app/share";
 
 void new class FileLink extends Share<string> {
   protected runtime() {
-    return this
-      .stringfuls(
-        this.input ?? [],
-        "No filepath to copy",
-      )
-      .map(
-        path => "shareddocuments://"
-          .concat(
-            encodeURI(path),
-          ),
-      )
-      .join("\n");
+    return this.context.production
+      ? this
+        .stringfuls(
+          this.input ?? [],
+          "No filepath to copy",
+        )
+        .map(
+          path => "shareddocuments://"
+            .concat(
+              encodeURI(path),
+            ),
+        )
+        .join("\n")
+      : "";
   }
 }("fileURLs").run();
