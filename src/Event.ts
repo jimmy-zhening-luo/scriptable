@@ -100,18 +100,29 @@ await new class Event extends DateWidget {
 
     const calendar = await Calendar.defaultForEvents(),
     now = new Event.Time,
-    tomorrow = now.in(24).midnight,
-    eventsRemaining = await CalendarEvent.between(
-      now.ago(0.5).toDate(),
-      now.eod.toDate(),
+    eventsLaterToday = await CalendarEvent.between(
+      now
+        .ago(0.5)
+        .toDate(),
+      now
+        .eod
+        .toDate(),
       [calendar],
     ),
+    tomorrow = now
+      .in(24)
+      .midnight,
     eventsTomorrow = await CalendarEvent.between(
       tomorrow.toDate(),
-      tomorrow.eod.toDate(),
+      (
+        now < now.at(22)
+          ? now.in(26)
+          : tomorrow.eod
+      )
+        .toDate(),
       [calendar],
     ),
-    [nextToday] = eventsRemaining.filter(
+    [laterToday] = eventsLaterToday.filter(
       event => !event.isAllDay,
     ),
     [firstTomorrow] = eventsTomorrow.filter(
@@ -121,7 +132,7 @@ await new class Event extends DateWidget {
     this.url = "https://calendar.google.com/calendar/u/0/r/3day/"
       .concat(
         (
-          nextToday === undefined
+          laterToday === undefined
           && firstTomorrow !== undefined
             ? tomorrow
             : now
@@ -129,7 +140,7 @@ await new class Event extends DateWidget {
           .print("yyyy/MM/dd"),
       );
     void this.text(
-      nextToday === undefined
+      laterToday === undefined
         ? firstTomorrow === undefined
           ? ICON.none
           : print(
@@ -143,7 +154,7 @@ await new class Event extends DateWidget {
             {
               full: "\u200A",
             },
-            nextToday,
+            laterToday,
           ),
     );
   }
