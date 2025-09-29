@@ -1,4 +1,4 @@
-import IApp from "./core";
+import IApp from "../core";
 
 export default abstract class Shortcut<
   ShortcutInput extends Unflat = never,
