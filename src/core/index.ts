@@ -163,7 +163,7 @@ export default abstract class IApp<
 
   protected set(
     key: string,
-    value: string,
+    value: Parameters<File<"Cache">["write"]>[0],
   ) {
     this
       .cache(key)

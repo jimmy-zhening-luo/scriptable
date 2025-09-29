@@ -50,10 +50,10 @@ void new class Search extends Shortcut<
     if (parsed && (!entryOption || !entry.noSave))
       this.set(
         "history",
-        JSON.stringify({
+        {
           key,
           terms,
-        }),
+        },
       );
 
     const TAG = "%s" as stringful;
