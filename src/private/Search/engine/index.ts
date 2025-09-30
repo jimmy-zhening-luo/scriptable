@@ -45,7 +45,7 @@ export default function<
         )
         .map(
           url => browserOptions.force
-            ? `data:text/html,<meta http-equiv=refresh content=0;url=${url}>`
+            ? `data:text/html,<meta http-equiv=refresh content="0;url=${url}">`
             : url,
         );
 
