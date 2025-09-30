@@ -1,7 +1,7 @@
 import IApp from "../core";
 
 export default abstract class Shortcut<
-  ShortcutInput extends Unflat = never,
+  ShortcutInput = never,
   ShortcutOutput = null,
   Setting = never,
 > extends IApp<
@@ -9,24 +9,9 @@ export default abstract class Shortcut<
     Null<ShortcutOutput>,
     Setting
   > {
-  constructor(
-    inputType:
-      | "single"
-      | (
-        ShortcutInput extends ArrayN
-          ? "multi"
-          : never
-      )
-      = "single",
-  ) {
-    const { plainTexts } = args;
-
+  constructor() {
     super(
-      inputType === "multi"
-        ? plainTexts.length === 0
-          ? null
-          : plainTexts as unknown as ShortcutInput & ArrayN
-        : plainTexts[0] as Undefined<ShortcutInput & string>,
+      args.shortcutParameter as unknown as Null<ShortcutInput>,
       config.runsWithSiri,
     );
   }
