@@ -23,9 +23,7 @@ export default abstract class Shortcut<
 
     super(
       inputType === "multi"
-        ? plainTexts.length === 0
-          ? null
-          : plainTexts as unknown as ShortcutInput & ArrayN
+        ? plainTexts as unknown as ShortcutInput & readonly string[]
         : plainTexts[0] as Undefined<ShortcutInput & string>,
       config.runsWithSiri,
     );
