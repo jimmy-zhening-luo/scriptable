@@ -2,7 +2,7 @@
 import DateWidget from "./app/widget/date";
 
 const ICON = {
-  none: "\uD834\uDD2A",
+  none: "\uF8FF",
   tomorrow: "\u00BB",
 };
 
