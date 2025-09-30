@@ -99,7 +99,7 @@ export default abstract class Widget<Setting = never> extends IWidget<Setting> {
     clock.spacing = 0;
     clock.centerAlignContent();
     clock.addText(label).font = new Font(
-      "Consolas",
+      "Menlo",
       Math.round(this.weight * 1.1),
     );
     void clock.addSpacer(
