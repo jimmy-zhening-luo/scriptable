@@ -57,6 +57,19 @@ await new class Event extends DateWidget {
               : "\u1D0D",
           )
           .replace(
+            ":00",
+            printLength !== 5
+              ? ""
+              : ":00",
+          )
+          .replace(
+            ":",
+            printLength !== 5
+            && printLength !== 4
+              ? ""
+              : ":",
+          )
+          .replace(
             " ",
             printLength !== 5
               ? ""
