@@ -63,21 +63,19 @@ export default class File<Class extends string> {
   public read(fail = false) {
     if (this.state === "File")
       return File.manager.readString(this.path);
-    else if (this.state === null) {
-      if (fail)
-        throw this.error(
-          "read",
-          "File does not exist",
-          "Reference",
-        );
 
-      return undefined;
-    }
-    else
+    if (this.state === "Folder")
       throw this.error(
         "read",
         "Target is folder",
       );
+    else if (fail)
+      throw this.error(
+        "read",
+        ReferenceError("File does not exist"),
+      );
+
+    return undefined;
   }
 
   public readString(fail?: boolean) {
@@ -117,22 +115,21 @@ export default class File<Class extends string> {
       if (overwrite === false)
         throw this.error(
           "write",
-          "File exists, but overwrite mode false",
-          "Reference",
+          ReferenceError("File exists, but overwrite mode false"),
         );
     }
-    else if (this.state === null) {
+    else if (this.state === "Folder")
+      throw this.error(
+        "write",
+        "Target is folder",
+      );
+    else {
       if (!File.manager.isDirectory(this.parent))
         File.manager.createDirectory(
           this.parent,
           true,
         );
     }
-    else
-      throw this.error(
-        "write",
-        "Target is folder",
-      );
 
     File.manager.writeString(
       this.path,
@@ -168,10 +165,7 @@ export default class File<Class extends string> {
 
   private error(
     verb: string,
-    message: string,
-    error:
-      | "Reference"
-      | "Type" = "Type",
+    message: string | Error,
   ) {
     return Error(
       `Failed to ${verb} file`,
@@ -179,9 +173,9 @@ export default class File<Class extends string> {
         cause: Error(
           this.path,
           {
-            cause: error === "Type"
+            cause: typeof message === "string"
               ? TypeError(message)
-              : ReferenceError(message),
+              : message,
           },
         ),
       },
