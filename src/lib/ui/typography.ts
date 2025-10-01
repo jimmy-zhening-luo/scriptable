@@ -1,4 +1,4 @@
-export default class FontFamily<
+class FontFamily<
   Variant extends
   | ""
   | "Rounded",
@@ -55,5 +55,39 @@ export default class FontFamily<
         this.variant
       }SystemFont`
     ](size);
+  }
+}
+
+export default class Style {
+  public readonly body;
+  public readonly round;
+
+  constructor(weight: number) {
+    this.body = new FontFamily("", weight);
+    this.round = new FontFamily("Rounded", weight);
+  }
+
+  public title() {
+    return this.font.semibold(
+      2 * this.font.weight,
+    );
+  }
+
+  public heading() {
+    return this.font.semibold(
+      Math.round(5 / 3 * this.font.weight),
+    );
+  }
+
+  public subheading() {
+    return this.font.semibold(
+      Math.round(3 / 2 * this.font.weight),
+    );
+  }
+
+  public footnote() {
+    return this.font.light(
+      Math.round(5 / 6 * this.font.weight),
+    );
   }
 }
