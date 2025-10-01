@@ -123,13 +123,12 @@ export default class File<Class extends string> {
         "write",
         "Target is folder",
       );
-    else {
+    else
       if (!File.manager.isDirectory(this.parent))
         File.manager.createDirectory(
           this.parent,
           true,
         );
-    }
 
     File.manager.writeString(
       this.path,
