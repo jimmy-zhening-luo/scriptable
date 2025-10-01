@@ -68,25 +68,25 @@ export default class Style {
   }
 
   public title() {
-    return this.font.semibold(
+    return this.body.semibold(
       2 * this.weight,
     );
   }
 
   public heading() {
-    return this.font.semibold(
+    return this.body.semibold(
       Math.round(5 / 3 * this.weight),
     );
   }
 
   public subheading() {
-    return this.font.semibold(
+    return this.body.semibold(
       Math.round(3 / 2 * this.weight),
     );
   }
 
   public footnote() {
-    return this.font.light(
+    return this.body.light(
       Math.round(5 / 6 * this.weight),
     );
   }
