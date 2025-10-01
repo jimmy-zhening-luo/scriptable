@@ -69,7 +69,7 @@ export default class File<Class extends string> {
         "read",
         "Target is folder",
       );
-    else 
+    else
       if (fail)
         throw this.error(
           "read",
