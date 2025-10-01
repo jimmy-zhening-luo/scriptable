@@ -48,12 +48,6 @@ export default class File<Class extends string> {
     ]
       .filter(node => node !== "");
 
-    if (subpath.length === 0)
-      this.error(
-        "construct",
-        Class.concat(": File has empty subpath"),
-      );
-
     this.path = [root, ...subpath]
       .join("/");
     this.parent = [root, ...subpath.slice(0, -1)]
