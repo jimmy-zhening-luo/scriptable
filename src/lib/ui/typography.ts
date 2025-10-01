@@ -12,9 +12,7 @@ class FontFamily<
     return this.variant === ""
       ? Font.systemFont(size)
       : Font[
-          `regular${
-            this.variant
-          }SystemFont`
+          `regular${this.variant}SystemFont`
         ](size);
   }
 
