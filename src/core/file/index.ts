@@ -69,11 +69,12 @@ export default class File<Class extends string> {
         "read",
         "Target is folder",
       );
-    else if (fail)
-      throw this.error(
-        "read",
-        ReferenceError("File does not exist"),
-      );
+    else 
+      if (fail)
+        throw this.error(
+          "read",
+          ReferenceError("File does not exist"),
+        );
 
     return undefined;
   }
