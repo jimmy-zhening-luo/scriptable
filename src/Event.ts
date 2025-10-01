@@ -77,7 +77,7 @@ await new class Event extends DateWidget {
           ),
         title: printLength !== 5
           ? title
-              .replaceAll("-", "")
+              .replaceAll(/[\-_.,'"]/ug, "")
               .replaceAll(
                 " ",
                 printLength !== 4
