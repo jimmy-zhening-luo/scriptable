@@ -3,7 +3,7 @@ import DateWidget from "./app/widget/date";
 
 const ICON = {
   none: "\uF8FF",
-  tomorrow: "\u00BB",
+  tomorrow: "\u203A",
 };
 
 await new class Event extends DateWidget {
