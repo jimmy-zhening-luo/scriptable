@@ -1,7 +1,6 @@
 {
-  "display": "tsc@509.2.0",
+  "display": "tsc@509.2.1",
   "include": [
-    "*.config.ts",
     "src/**/*.ts",
     "typings/**/*.d.ts",
   ],
