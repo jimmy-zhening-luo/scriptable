@@ -1,7 +1,6 @@
 import type { ISearchEngine } from "./engine";
 
 export interface SearchSetting {
-  reserved: Field<"selectors">;
   alias: FieldTable;
   engines: Table<
     | Unflat<string, true>
@@ -20,4 +19,16 @@ export interface SearchSetting {
       "separator"
     >
   >;
+  reserved: {
+    keys: Record<
+      (
+        | "chat"
+        | "math"
+        | "skip"
+        | "translate"
+      ),
+      stringful
+    >;
+    selectors: string;
+  };
 }

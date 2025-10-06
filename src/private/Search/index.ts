@@ -4,6 +4,15 @@ export default function (
   query: string,
   engines: Set<string>,
   alias: FieldTable,
+  RESERVED: Record<
+    (
+      | "chat"
+      | "math"
+      | "skip"
+      | "translate"
+    ),
+    stringful
+  >,
   SELECTORS: Set<char>,
 ) {
   function parse(
@@ -54,7 +63,6 @@ export default function (
         constructor(
           public readonly key: stringful,
           public readonly selection: Null<SearchSelection> = null,
-          public readonly verified = false,
         ) {}
       }
 
@@ -65,13 +73,12 @@ export default function (
         | "translate",
       > extends SearchKey {
         constructor(
-          public readonly reserved: Reserved,
+          public readonly reserved: keyof typeof RESERVED,
           selection: Null<SearchSelection> = null,
         ) {
           super(
             reserved as stringful,
             selection,
-            true,
           );
         }
       }
@@ -217,13 +224,14 @@ export default function (
 
   if (
     typeof Head !== "string"
-    && "engine" in Head
+    && "reserved" in Head
   )
     return {
-      key: Head.engine as stringful,
-      terms: Head.selection === null
-        ? tail
-        : Head.selection.select(tail),
+      key: RESERVED[Head.reserved],
+      terms: Head
+        .selection
+        ?.select(tail)
+        ?? tail,
       parsed: true,
     };
   else {
@@ -232,10 +240,7 @@ export default function (
       key = "",
     ) {
       if (key === "")
-        throw TypeError(
-          "Engine key must be stringful",
-          { cause: "Unstringful aliased engine" },
-        );
+        throw TypeError("Aliased engine key is empty");
       else if (!engines.has(key))
         throw ReferenceError(
           "Aliased engine does not exist",
@@ -254,22 +259,28 @@ export default function (
     key = engines.has(head)
       ? head
       : head in alias
-        ? dealias(engines, alias[head])
+        ? dealias(
+          engines,
+          alias[head],
+        )
         : null;
 
     return {
       parsed: true,
       ...key === null
         ? {
-            key: tail.length === 0
-              ? "null" as stringful
-              : "chat" as stringful,
+            key: RESERVED[
+              tail.length === 0
+                ? "skip" as stringful
+                : "chat" as stringful
+            ],
             terms: [
               typeof Head === "string"
                 ? Head
-                : Head.selection === null
-                  ? Head.key
-                  : Head.selection.deselect,
+                : Head
+                  .selection
+                  ?.deselect
+                  ?? Head.key,
               ...tail,
             ],
           }

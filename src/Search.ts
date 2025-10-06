@@ -27,7 +27,10 @@ void new class Search extends Shortcut<
       setting: {
         alias,
         engines,
-        reserved: { selectors },
+        reserved: {
+          keys,
+          selectors,
+        },
       },
       input = "",
     } = this,
@@ -41,6 +44,7 @@ void new class Search extends Shortcut<
           input,
           new Set(Object.keys(engines)),
           alias,
+          keys,
           new Set(selectors satisfies string as unknown as char[]),
         ),
     { [key]: entry = engines["null"]! } = engines,
