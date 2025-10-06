@@ -112,7 +112,6 @@ export default function (
           tail,
         };
       else {
-        void SELECTORS.delete("." as char);
         void SELECTORS.add("." as char);
 
         const selectors = [...SELECTORS],
