@@ -14,25 +14,11 @@ export default function (
       query: string,
       SELECTORS: Set<char>,
     ) {
-      class ReservedSearchQueryKey<
-        Engine extends
-        | "chat"
-        | "translate"
-        | "math",
-      > {
-        public readonly key;
-
-        constructor(public readonly engine: Engine) {
-          this.key = engine as stringful;
-        }
-      }
-
-      class SearchQuerySelectionCandidate {
+      class SearchSelection {
         public readonly consumes;
         public readonly selection;
 
         constructor(
-          public readonly key: stringful,
           {
             canonical,
             match,
@@ -53,6 +39,41 @@ export default function (
               : selection,
           ) as stringful;
         }
+
+        public select(tail: stringful[]) {
+          return [
+            this.selection,
+            ...this.consumes
+              ? tail.slice(1)
+              : tail,
+          ];
+        }
+      }
+
+      class SearchKey {
+        constructor(
+          public readonly key: stringful,
+          public readonly selection: Null<SearchSelection> = null,
+          public readonly verified = false,
+        ) {}
+      }
+
+      class ReservedSearchKey<
+        Reserved extends
+        | "math"
+        | "chat"
+        | "translate",
+      > extends SearchKey {
+        constructor(
+          public readonly reserved: Reserved,
+          selection: Null<SearchSelection> = null,
+        ) {
+          super(
+            reserved as stringful,
+            selection,
+            true,
+          );
+        }
       }
 
       function expand(query: string) {
@@ -62,9 +83,9 @@ export default function (
             case 0:
               return [] as const;
             case 1:
-              return [new ReservedSearchQueryKey("chat")] as const;
+              return [new ReservedSearchKey("chat")] as const;
             default:
-              return [new ReservedSearchQueryKey("translate")] as const;
+              return [new ReservedSearchKey("translate")] as const;
             }
           }
 
@@ -92,7 +113,7 @@ export default function (
           && new Set("0123456789+-$€£¥.(").has(Head[0] as string)
           && (Head.length !== 1 || tail.length !== 0)
           ? {
-              Head: new ReservedSearchQueryKey("math"),
+              Head: new ReservedSearchKey("math"),
               tail: [Head, ...tail],
             }
           : {
@@ -129,34 +150,28 @@ export default function (
           const canonical = selectors[0]!,
           iSelector = Head.indexOf(match),
           key = Head.slice(0, iSelector),
-          selection = Head.slice(iSelector + 1);
+          selection = new SearchSelection(
+            {
+              canonical,
+              match,
+            },
+            Head.slice(iSelector + 1),
+            tail.at(0) ?? "",
+            Head,
+          );
 
-          return key === ""
-            ? {
-                Head: new ReservedSearchQueryKey("translate"),
-                tail: [
-                  canonical.concat(
-                    selection === ""
-                    && match === "."
-                      ? tail.shift() ?? ""
-                      : selection,
-                  ) as stringful,
-                  ...tail,
-                ],
-              }
-            : {
-                Head: new SearchQuerySelectionCandidate(
-                  key as stringful,
-                  {
-                    canonical,
-                    match,
-                  },
+          return {
+            Head: key === ""
+              ? new ReservedSearchKey(
+                  "translate",
                   selection,
-                  tail.at(0) ?? "",
-                  Head,
+                )
+              : new SearchKey(
+                  key as stringful,
+                  selection,
                 ),
-                tail,
-              };
+            tail,
+          };
         }
       }
     }
@@ -202,11 +217,13 @@ export default function (
 
   if (
     typeof Head !== "string"
-    && !("selection" in Head)
+    && "engine" in Head
   )
     return {
-      key: Head.key,
-      terms: tail,
+      key: Head.engine as stringful,
+      terms: Head.selection === null
+        ? tail
+        : Head.selection.select(tail),
       parsed: true,
     };
   else {
@@ -249,6 +266,7 @@ export default function (
               : "chat" as stringful,
             terms: [
               typeof Head === "string"
+                || Head.selection === null
                 ? Head
                 : Head.deselect,
               ...tail,
@@ -257,13 +275,9 @@ export default function (
         : {
             key,
             terms: typeof Head === "string"
+              || Head.selection === null
               ? tail
-              : [
-                  Head.selection,
-                  ...Head.consumes
-                    ? tail.slice(1)
-                    : tail,
-                ],
+              : Head.selection.select(tail),
           },
     };
   }
