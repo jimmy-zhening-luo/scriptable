@@ -268,7 +268,7 @@ export default function (
               typeof Head === "string"
                 || Head.selection === null
                 ? Head
-                : Head.deselect,
+                : Head.selection.deselect,
               ...tail,
             ],
           }
