@@ -255,9 +255,9 @@ export default function (
       ? head
       : head in alias
         ? dealias(
-          engines,
-          alias[head],
-        )
+            engines,
+            alias[head],
+          )
         : null;
 
     return {
