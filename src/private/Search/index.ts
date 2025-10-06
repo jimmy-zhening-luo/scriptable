@@ -57,7 +57,7 @@ export default function (
 
       function expand(query: string) {
         function tokenize(query: string) {
-          function hot(query: string) {
+          function hotkey(query: string) {
             switch (query.length - query.trimStart().length) {
             case 0:
               return [] as const;
@@ -69,7 +69,7 @@ export default function (
           }
 
           const tokens = [
-            ...hot(query),
+            ...hotkey(query),
             ...query
               .split(" ")
               .filter((token): token is stringful => token !== ""),
