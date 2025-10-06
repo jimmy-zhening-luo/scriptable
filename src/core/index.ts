@@ -359,7 +359,7 @@ export default abstract class IApp<
   }
 
   private storage(
-    file = this.app,
+    file: string = this.app,
     extension = "txt",
   ) {
     const record = extension === ""
