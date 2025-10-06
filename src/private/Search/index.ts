@@ -59,12 +59,12 @@ export default function (
         function tokenize(query: string) {
           function hot(query: string) {
             switch (query.length - query.trimStart().length) {
-              case 0:
-                return [] as const;
-              case 1:
-                return [new ReservedSearchQueryKey("chat")] as const;
-              default:
-                return [new ReservedSearchQueryKey("translate")] as const;
+            case 0:
+              return [] as const;
+            case 1:
+              return [new ReservedSearchQueryKey("chat")] as const;
+            default:
+              return [new ReservedSearchQueryKey("translate")] as const;
             }
           }
 
