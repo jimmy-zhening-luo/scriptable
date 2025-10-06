@@ -144,8 +144,6 @@ export default abstract class IApp<
             { cause: developmentError },
           );
         }
-
-      return output;
     }
     catch (error) {
       throw IApp.Error(this.app, error);
