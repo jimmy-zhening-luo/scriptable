@@ -66,12 +66,7 @@ export default function (
         ) {}
       }
 
-      class ReservedSearchKey<
-        Reserved extends
-        | "math"
-        | "chat"
-        | "translate",
-      > extends SearchKey {
+      class ReservedSearchKey extends SearchKey {
         constructor(
           public readonly reserved: keyof typeof RESERVED,
           selection: Null<SearchSelection> = null,
