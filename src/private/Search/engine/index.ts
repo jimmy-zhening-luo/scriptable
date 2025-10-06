@@ -1,4 +1,4 @@
-export type { ISearchEngineEntry } from "./entry";
+export type { ISearchEngine } from "./entry";
 export default function<
   Engine extends
   | "browser"

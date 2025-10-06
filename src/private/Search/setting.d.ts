@@ -1,17 +1,17 @@
-import type { ISearchEngineEntry } from "./engine";
+import type { ISearchEngine } from "./engine";
 
 export interface SearchSetting {
   reserved: Field<"selectors">;
   alias: FieldTable;
   engines: Table<
     | Unflat<string, true>
-    | ISearchEngineEntry<
+    | ISearchEngine<
       "url",
       "force",
       "separator",
       Unflat
     >
-    | ISearchEngineEntry<
+    | ISearchEngine<
       "shortcut",
       (
         | "encode"

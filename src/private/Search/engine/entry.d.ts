@@ -1,4 +1,4 @@
-export type ISearchEngineEntry<
+export type ISearchEngine<
   EngineType extends string,
   Flags extends string = never,
   Fields extends string = never,
