@@ -276,10 +276,9 @@ export default function (
         : {
             key,
             terms: typeof Head === "string"
-              ? Head
-              : Head.selection === null
-                ? Head.key
-                : Head.selection.select(tail),
+              || Head.selection === null
+              ? tail
+              : Head.selection.select(tail),
           },
     };
   }
