@@ -181,36 +181,36 @@ export default abstract class IApp<
   }
 
   protected read(
-    name?: string,
+    file?: string,
     extension?: string,
   ) {
     return this
       .storage(
-        name,
+        file,
         extension,
       )
       .read();
   }
 
   protected readString(
-    name?: string,
+    file?: string,
     extension?: string,
   ) {
     return this
       .storage(
-        name,
+        file,
         extension,
       )
       .readString();
   }
 
   protected readStringful(
-    name?: string,
+    file?: string,
     extension?: string,
   ) {
     return this
       .storage(
-        name,
+        file,
         extension,
       )
       .readStringful();
@@ -219,12 +219,12 @@ export default abstract class IApp<
   protected write(
     data: Parameters<File<"Storage">["write"]>[0],
     overwrite: Parameters<File<"Storage">["write"]>[1] = true,
-    name?: string,
+    file?: string,
     extension?: string,
   ) {
     this
       .storage(
-        name,
+        file,
         extension,
       )
       .write(
@@ -234,12 +234,12 @@ export default abstract class IApp<
   }
 
   protected delete(
-    name?: string,
+    file?: string,
     extension?: string,
   ) {
     this
       .storage(
-        name,
+        file,
         extension,
       )
       .delete();
@@ -254,12 +254,12 @@ export default abstract class IApp<
   }
 
   protected subscribe(
-    name: string,
+    file: string,
     extension?: string,
   ) {
     return this
       .feed(
-        name,
+        file,
         extension,
       )
       .readString();
@@ -359,16 +359,16 @@ export default abstract class IApp<
   }
 
   private storage(
-    name: string = this.app,
+    file = this.app,
     extension = "txt",
   ) {
-    const filename = extension === ""
-      ? name
-      : name.concat(".", extension);
+    const record = extension === ""
+      ? file
+      : file.concat(".", extension);
 
-    return this.store[filename] ??= new File(
+    return this.store[record] ??= new File(
       "Storage",
-      filename,
+      record,
       this.app,
       {
         hidden: true,
@@ -378,12 +378,12 @@ export default abstract class IApp<
   }
 
   private feed(
-    name: string,
+    file: string,
     extension = "txt",
   ) {
     const feed = extension === ""
-      ? name
-      : name.concat(".", extension);
+      ? file
+      : file.concat(".", extension);
 
     return this.stream[feed] ??= new File(
       "Feed",

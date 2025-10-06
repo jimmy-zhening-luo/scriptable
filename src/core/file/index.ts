@@ -10,8 +10,8 @@ export default class File<Class extends string> {
 
   constructor(
     Class: Literalful<Class>,
-    name: string,
-    subfolder = "",
+    file: string,
+    folder = "",
     {
       hidden = false,
       mutable = false,
@@ -43,8 +43,8 @@ export default class File<Class extends string> {
         Class,
       ),
     subpath = [
-      ...subfolder.split("/"),
-      ...name.split("/"),
+      ...folder.split("/"),
+      ...file.split("/"),
     ]
       .filter(node => node !== "");
 
