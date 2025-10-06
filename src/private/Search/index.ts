@@ -163,13 +163,13 @@ export default function (
           return {
             Head: key === ""
               ? new ReservedSearchKey(
-                  "translate",
-                  selection,
-                )
+                "translate",
+                selection,
+              )
               : new SearchKey(
-                  key as stringful,
-                  selection,
-                ),
+                key as stringful,
+                selection,
+              ),
             tail,
           };
         }
