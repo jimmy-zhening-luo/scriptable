@@ -267,7 +267,7 @@ export default abstract class IApp<
 
   protected stringful(
     string = "",
-    cause = "",
+    cause?: string,
   ) {
     if (string === "")
       throw TypeError(
@@ -280,7 +280,7 @@ export default abstract class IApp<
 
   protected stringfuls<ArrayLike extends ArrayN>(
     strings: ArrayLike,
-    cause = "",
+    cause?: string,
   ) {
     if (strings.length === 0)
       throw RangeError(
@@ -306,7 +306,7 @@ export default abstract class IApp<
 
   protected char(
     string = "",
-    cause = "",
+    cause?: string,
   ) {
     if (string.length !== 1)
       throw TypeError(
@@ -321,7 +321,7 @@ export default abstract class IApp<
 
   protected chars<ArrayLike extends ArrayN>(
     strings: ArrayLike,
-    cause = "",
+    cause?: string,
   ) {
     if (strings.length === 0)
       throw RangeError(
