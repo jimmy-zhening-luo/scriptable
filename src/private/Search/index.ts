@@ -266,8 +266,8 @@ export default function (
         ? {
             key: RESERVED[
               tail.length === 0
-                ? "skip" as stringful
-                : "chat" as stringful
+                ? "skip"
+                : "chat"
             ],
             terms: [
               typeof Head === "string"
