@@ -58,17 +58,14 @@ export default function (
       function expand(query: string) {
         function tokenize(query: string) {
           function hot(query: string) {
-            const space = query.length - query.trimStart().length;
-
-            return space === 0
-              ? [] as const
-              : [
-                  new ReservedSearchQueryKey(
-                    space === 1
-                      ? "chat"
-                      : "translate",
-                  ),
-                ] as const;
+            switch (query.length - query.trimStart().length) {
+              case 0:
+                return [] as const;
+              case 1:
+                return [new ReservedSearchQueryKey("chat")] as const;
+              default:
+                return [new ReservedSearchQueryKey("translate")] as const;
+            }
           }
 
           const tokens = [
