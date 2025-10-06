@@ -115,8 +115,9 @@ export default function (
         void SELECTORS.add("." as char);
 
         const selectors = [...SELECTORS],
+        HEAD = new Set(Head),
         match = selectors.find(
-          selector => Head.includes(selector),
+          selector => HEAD.has(selector),
         );
 
         if (match === undefined)
@@ -126,11 +127,9 @@ export default function (
           };
         else {
           const canonical = selectors[0]!,
-          [
-            key = "",
-            ...selectionShards
-          ] = Head.split(match),
-          selection = selectionShards.join(match);
+          iSelector = Head.indexOf(match),
+          key = Head.slice(0, iSelector),
+          selection = Head.slice(iSelector + 1);
 
           return key === ""
             ? {
