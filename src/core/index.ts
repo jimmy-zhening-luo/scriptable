@@ -121,16 +121,6 @@ export default abstract class IApp<
 
       const output = await this.runtime();
 
-      try {
-        this.output(output);
-      }
-      catch (errorSystemOutput) {
-        throw TypeError(
-          "Unable to output to iOS",
-          { cause: errorSystemOutput },
-        );
-      }
-
       if (this.context.development)
         try {
           console.log(output);
@@ -144,6 +134,16 @@ export default abstract class IApp<
             { cause: developmentError },
           );
         }
+
+      try {
+        this.output(output);
+      }
+      catch (errorSystemOutput) {
+        throw TypeError(
+          "Unable to output to iOS",
+          { cause: errorSystemOutput },
+        );
+      }
     }
     catch (error) {
       throw IApp.Error(this.app, error);
