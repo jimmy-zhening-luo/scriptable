@@ -266,18 +266,20 @@ export default function (
               : "chat" as stringful,
             terms: [
               typeof Head === "string"
-                || Head.selection === null
                 ? Head
-                : Head.selection.deselect,
+                : Head.selection === null
+                  ? Head.key
+                  : Head.selection.deselect,
               ...tail,
             ],
           }
         : {
             key,
             terms: typeof Head === "string"
-              || Head.selection === null
-              ? tail
-              : Head.selection.select(tail),
+              ? Head
+              : Head.selection === null
+                ? Head.key
+                : Head.selection.select(tail),
           },
     };
   }
