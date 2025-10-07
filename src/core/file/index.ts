@@ -26,31 +26,33 @@ export default class File<Class extends string> {
 
     const root = (
       hidden
-        ? File
-            .manager[
-              `${
-                temporary
-                  ? "cache"
-                  : "library"
-              }Directory`
-            ]()
-        : File
-            .manager
-            .bookmarkedPath("root")
+        ? File.manager[
+            `${
+              temporary
+                ? "cache"
+                : "library"
+            }Directory`
+          ]()
+        : File.manager.bookmarkedPath("root")
     )
       .concat(
         "/",
         Class,
       ),
-    subpath = [
-      ...folder.split("/"),
-      ...file.split("/"),
-    ]
-      .filter(node => node !== "");
+    subpath = folder
+      .split("/")
+      .concat(
+        file.split("/"),
+      )
+      .filter(
+        node => node !== "",
+      );
 
-    this.path = [root, ...subpath]
+    this.path = [root]
+      .concat(subpath)
       .join("/");
-    this.parent = [root, ...subpath.slice(0, -1)]
+    this.parent = [root]
+      .concat(subpath.slice(0, -1))
       .join("/");
     this.mutable = mutable;
 
