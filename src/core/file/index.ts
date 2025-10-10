@@ -51,8 +51,9 @@ export default class File<Class extends string> {
     this.path = [root]
       .concat(subpath)
       .join("/");
+    subpath.pop();
     this.parent = [root]
-      .concat(subpath.slice(0, -1))
+      .concat(subpath)
       .join("/");
     this.mutable = mutable;
 
