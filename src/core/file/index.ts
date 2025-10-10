@@ -46,15 +46,17 @@ export default class File<Class extends string> {
       )
       .filter(
         node => node !== "",
-      );
+      ),
+    leaf = subpath.pop();
 
-    this.path = [root]
-      .concat(subpath)
-      .join("/");
-    subpath.pop();
-    this.parent = [root]
-      .concat(subpath)
-      .join("/");
+    this.parent = root.concat(
+      "/",
+      subpath.join("/"),
+    );
+    this.path = this.parent.concat(
+      "/",
+      leaf,
+    );
     this.mutable = mutable;
 
     if (File.manager.fileExists(this.path))
