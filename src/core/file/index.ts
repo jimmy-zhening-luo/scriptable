@@ -53,10 +53,12 @@ export default class File<Class extends string> {
       "/",
       subpath.join("/"),
     );
-    this.path = this.parent.concat(
-      "/",
-      leaf,
-    );
+    this.path = leaf === undefined
+      ? this.parent
+      : this.parent.concat(
+          "/",
+          leaf,
+        );
     this.mutable = mutable;
 
     if (File.manager.fileExists(this.path))
