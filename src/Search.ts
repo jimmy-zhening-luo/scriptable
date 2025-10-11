@@ -13,12 +13,12 @@ void new class Search extends Shortcut<
   SearchSetting
 > {
   protected runtime() {
-    function history(history: string) {
-      return history === ""
+    function history(history: Undef<string>) {
+      return history === undefined
         ? {
             key: "null" as stringful,
             terms: [],
-            parsed: false,
+            history: true,
           }
         : JSON.parse(history) as ReturnType<typeof parse>;
     }
@@ -37,7 +37,7 @@ void new class Search extends Shortcut<
     {
       key,
       terms,
-      parsed = false,
+      history = false,
     } = input === ""
       ? history(this.get("history"))
       : parse(
@@ -47,22 +47,23 @@ void new class Search extends Shortcut<
           keys,
           new Set(selectors satisfies string as unknown as char[]),
         ),
-    { [key]: entry = engines["null"]! } = engines,
-    entryOption = typeof entry === "object"
+    { [key]: entry! } = engines,
+    options = typeof entry === "object"
       && !Array.isArray(entry);
 
-    if (parsed && (!entryOption || !entry.noSave))
+    if (!history && (!options || !entry.noSave))
       this.set(
         "history",
         {
           key,
           terms,
+          history: true,
         },
       );
 
     const TAG = "%s" as stringful;
 
-    return !entryOption
+    return !options
       ? engine(
           "browser",
           key,

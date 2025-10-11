@@ -227,7 +227,6 @@ export default function (
         .selection
         ?.select(tail)
         ?? tail,
-      parsed: true,
     };
   else {
     function dealias(
@@ -260,32 +259,29 @@ export default function (
           )
         : null;
 
-    return {
-      parsed: true,
-      ...key === null
-        ? {
-            key: RESERVED[
-              tail.length === 0
-                ? "skip"
-                : "chat"
-            ],
-            terms: [
-              typeof Head === "string"
-                ? Head
-                : Head
-                  .selection
-                  ?.deselect
-                  ?? Head.key,
-              ...tail,
-            ],
-          }
-        : {
-            key,
-            terms: typeof Head === "string"
-              || Head.selection === null
-              ? tail
-              : Head.selection.select(tail),
-          },
-    };
+    return key === null
+      ? {
+          key: RESERVED[
+            tail.length === 0
+              ? "skip"
+              : "chat"
+          ],
+          terms: [
+            typeof Head === "string"
+              ? Head
+              : Head
+                .selection
+                ?.deselect
+                ?? Head.key,
+            ...tail,
+          ],
+        }
+      : {
+          key,
+          terms: typeof Head === "string"
+            || Head.selection === null
+            ? tail
+            : Head.selection.select(tail),
+        };
   }
 }

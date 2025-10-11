@@ -156,7 +156,7 @@ export default abstract class IApp<
   protected get(key: string) {
     return this
       .cache(key)
-      .readString();
+      .read();
   }
 
   protected set(
