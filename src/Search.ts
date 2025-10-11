@@ -20,7 +20,9 @@ void new class Search extends Shortcut<
             terms: [],
             previous: true,
           }
-        : JSON.parse(history) as ReturnType<typeof parse>;
+        : JSON.parse(history) as ReturnType<typeof parse> & {
+          previous: boolean;
+        };
     }
 
     const {
@@ -41,14 +43,14 @@ void new class Search extends Shortcut<
     } = input === ""
       ? history(this.get("history"))
       : parse(
-          input,
-          new Set(Object.keys(engines)),
-          alias,
-          keys,
-          new Set(selectors satisfies string as unknown as char[]),
-        ) as ReturnType<typeof parse> & {
-          previous: boolean;
-        },
+        input,
+        new Set(Object.keys(engines)),
+        alias,
+        keys,
+        new Set(selectors satisfies string as unknown as char[]),
+      ) as ReturnType<typeof parse> & {
+        previous: boolean;
+      },
     entry = engines[key]!,
     options = typeof entry === "object"
       && !Array.isArray(entry);
