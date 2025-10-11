@@ -7,14 +7,18 @@ await new class Clock extends Widget<
       timezone: Parameters<Widget["clock"]>[0];
       label: string;
     }>;
-    sun: Field<"stream">;
-    weather: {
-      api: Field<
+  }
+  & Record<
+    | "sun"
+    | "weather",
+    Record<
+      "api",
+      Field<
         | "userAgent"
         | "url"
-      >;
-    };
-  }
+      >
+    >
+  >
 > {
   protected async runtime() {
     const { setting } = this;
@@ -31,45 +35,11 @@ await new class Clock extends Widget<
     );
     void this.line(16);
 
-    const badges: string[] = [];
-
-    try {
-      const feed = this.subscribe(
-        setting.sun.stream,
-        "json",
-      );
-
-      if (feed === "")
-        throw ReferenceError("Sun feed missing");
-
-      const sun = JSON.parse(feed) as Record<
-        | "sunrise"
-        | "sunset",
-        FieldTable
-      >,
-      now = new Widget.Time,
-      today = now.print("yyMMdd"),
-      sunrise = sun.sunrise[today],
-      sunset = sun.sunset[today];
-
-      if (
-        sunrise !== undefined
-        && sunset !== undefined
-      )
-        void badges.push(
-          (
-            now > now.at(sunrise).in(3)
-            && now < now.at(sunset).in(1)
-              ? ["\u263E", sunset]
-              : ["\u235C ", sunrise]
-          )
-            .join("\u2009"),
-        );
-    }
-    catch (e) {
-      console.warn("Sun feed: ".concat(String(e)));
-      console.warn("Continuing...");
-    }
+    const {
+      latitude,
+      longitude,
+    } = await Clock.location(),
+    badges: string[] = [];
 
     try {
       const {
@@ -78,6 +48,8 @@ await new class Clock extends Widget<
       } = await this.weather(
         setting.weather.api.userAgent,
         setting.weather.api.url,
+        latitude,
+        longitude,
       );
 
       void badges.push(`\u224B\u2006${humidity}% ${dew}\u00B0`);
@@ -95,9 +67,78 @@ await new class Clock extends Widget<
       );
   }
 
+  private async sun(
+    url: string,
+    latitude: string,
+    longitude: string,
+    date = new Clock.Time,
+  ) {
+    interface ISun {
+      results: {
+        sunrise: string;
+        sunset: string;
+      };
+    }
+    function parseSun(sun: ISun) {
+      const {
+        sunset,
+        sunrise,
+      } = sun
+        .results;
+
+      return {
+        sunset,
+        sunrise,
+      };
+    }
+
+    const sunApi = new Request(
+      url
+        .replaceAll(
+          "%LAT",
+          latitude,
+        )
+        .replaceAll(
+          "%LONG",
+          longitude,
+        )
+        .concat(
+          "&date=",
+          date.print("yyyy-MM-dd"),
+        ),
+    );
+
+    const {
+      sunrise,
+      sunset,
+    } = parseSun(
+      await sunApi.loadJSON() as ISun,
+    ),
+    dateString = date.print("MMMM dd, yyyy");
+
+    function sunTime(
+      dateString: string,
+      sun: string,
+    ) {
+      return new Clock.Time(
+        dateString.concat(
+          " ",
+          sun,
+        ),
+      );
+    }
+
+    return {
+      sunrise: sunTime(dateString, sunrise),
+      sunset: sunTime(dateString, sunset),
+    };
+  }
+
   private async weather(
     userAgent: string,
     url: string,
+    latitude: string,
+    longitude: string,
   ) {
     interface IWeather {
       properties: {
@@ -130,11 +171,7 @@ await new class Clock extends Widget<
       };
     }
 
-    const {
-      latitude,
-      longitude,
-    } = await Widget.location(),
-    weatherApi = new Request(
+    const weatherApi = new Request(
       url
         .replaceAll(
           "%LAT",
