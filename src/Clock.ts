@@ -61,8 +61,6 @@ await new class Clock extends Widget<
         )
           .join("\u2009"),
       );
-
-      void badges.push(`\u224B\u2006${humidity}% ${dew}\u00B0`);
     }
     catch (e) {
       console.error("Sun API: ".concat(String(e)));
