@@ -132,9 +132,9 @@ await new class Clock extends Widget<
           "&date=",
           date.print("yyyy-MM-dd"),
         ),
-    );
+    ),
 
-    const {
+    {
       sunrise,
       sunset,
     } = parseSun(
