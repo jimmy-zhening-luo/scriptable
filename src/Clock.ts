@@ -53,13 +53,13 @@ await new class Clock extends Widget<
       );
 
       function printSun(
-        time: Widget["Time"],
+        time: InstanceType<typeof Clock.Time>,
         badge: string,
       ) {
         return badge.concat(
           "\u2009",
           time.print("h:mm a"),
-        )
+        );
       }
 
       void badges.push(
