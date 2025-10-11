@@ -47,7 +47,7 @@ void new class Search extends Shortcut<
           keys,
           new Set(selectors satisfies string as unknown as char[]),
         ),
-    { [key]: entry! } = engines,
+    { [key]: entry as typeof engines[string] } = engines,
     options = typeof entry === "object"
       && !Array.isArray(entry);
 
