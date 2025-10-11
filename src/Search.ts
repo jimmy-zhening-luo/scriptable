@@ -13,7 +13,7 @@ void new class Search extends Shortcut<
   SearchSetting
 > {
   protected runtime() {
-    function history(history: Undef<string>) {
+    function history(history: Undefined<string>) {
       return history === undefined
         ? {
             key: "null" as stringful,
