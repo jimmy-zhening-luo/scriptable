@@ -53,7 +53,7 @@ await new class Clock extends Widget<
       );
 
       function printSun(
-        time: Time,
+        time: Clock.Time,
         badge: string,
       ) {
         return badge.concat(
