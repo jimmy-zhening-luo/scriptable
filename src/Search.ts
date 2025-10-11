@@ -51,7 +51,7 @@ void new class Search extends Shortcut<
     options = typeof entry === "object"
       && !Array.isArray(entry);
 
-    if (!history && (!options || !entry.noSave))
+    if (!previous && (!options || !entry.noSave))
       this.set(
         "history",
         {
