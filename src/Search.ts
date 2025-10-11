@@ -47,7 +47,7 @@ void new class Search extends Shortcut<
           keys,
           new Set(selectors satisfies string as unknown as char[]),
         ) as ReturnType<typeof parse> & {
-          previous?: boolean;
+          previous: boolean;
         },
     entry = engines[key]!,
     options = typeof entry === "object"
