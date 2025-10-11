@@ -42,6 +42,34 @@ await new class Clock extends Widget<
     badges: string[] = [];
 
     try {
+      const now = new Clock.Time,
+      {
+        sunset,
+        sunrise,
+      } = await this.weather(
+        setting.sun.api.url,
+        latitude,
+        longitude,
+      );
+
+      void badges.push(
+        (
+          now > sunrise.in(3)
+          && now < sunset.in(2)
+            ? ["\u263E", sunset.print("h:mm a")]
+            : ["\u235C ", sunrise.print("h:mm a")]
+        )
+          .join("\u2009"),
+      );
+
+      void badges.push(`\u224B\u2006${humidity}% ${dew}\u00B0`);
+    }
+    catch (e) {
+      console.error("Sun API: ".concat(String(e)));
+      console.warn("Continuing...");
+    }
+
+    try {
       const {
         humidity,
         dew,
@@ -113,24 +141,11 @@ await new class Clock extends Widget<
       sunset,
     } = parseSun(
       await sunApi.loadJSON() as ISun,
-    ),
-    dateString = date.print("MMMM dd, yyyy");
-
-    function sunTime(
-      dateString: string,
-      sun: string,
-    ) {
-      return new Clock.Time(
-        dateString.concat(
-          " ",
-          sun,
-        ),
-      );
-    }
+    );
 
     return {
-      sunrise: sunTime(dateString, sunrise),
-      sunset: sunTime(dateString, sunset),
+      sunrise: date.at(sunrise),
+      sunset: date.at(sunset),
     };
   }
 
