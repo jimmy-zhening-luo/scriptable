@@ -2,6 +2,10 @@ declare type Field<
   Key extends string,
   OptionalKey extends string = never,
 > = Property<Key, OptionalKey, string>;
+declare type Fieldful<
+  Key extends string,
+  OptionalKey extends string = never,
+> = Property<Key, OptionalKey, stringful>;
 declare type Flag<
   OptionalKey extends string,
   Key extends string = never,
