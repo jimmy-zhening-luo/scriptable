@@ -18,7 +18,7 @@ void new class Search extends Shortcut<
         ? {
             key: "null" as stringful,
             terms: [],
-            history: true,
+            previous: true,
           }
         : JSON.parse(history) as ReturnType<typeof parse>;
     }
@@ -37,7 +37,7 @@ void new class Search extends Shortcut<
     {
       key,
       terms,
-      history = false,
+      previous = false,
     } = input === ""
       ? history(this.get("history"))
       : parse(
@@ -57,7 +57,7 @@ void new class Search extends Shortcut<
         {
           key,
           terms,
-          history: true,
+          previous: true,
         },
       );
 
