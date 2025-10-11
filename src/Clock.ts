@@ -52,14 +52,21 @@ await new class Clock extends Widget<
         longitude,
       );
 
-      void badges.push(
-        (
-          now > sunrise.in(3)
-          && now < sunset.in(2)
-            ? ["\u263E", sunset.print("h:mm a")]
-            : ["\u235C ", sunrise.print("h:mm a")]
+      function printSun(
+        time: Time,
+        badge: string,
+      ) {
+        return badge.concat(
+          "\u2009",
+          time.print("h:mm a"),
         )
-          .join("\u2009"),
+      }
+
+      void badges.push(
+        now > sunrise.in(3)
+        && now < sunset.in(2)
+          ? printSun(sunset, "\u263E")
+          : printSun(sunrise, "\u235C "),
       );
     }
     catch (e) {
