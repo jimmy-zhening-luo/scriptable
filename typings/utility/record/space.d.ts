@@ -1,4 +1,4 @@
-type Endomap<
+type Space<
   KeyValue extends
   | string
   | number
