@@ -46,7 +46,7 @@ await new class Clock extends Widget<
       {
         sunset,
         sunrise,
-      } = await this.weather(
+      } = await this.sun(
         setting.sun.api.url,
         latitude,
         longitude,
