@@ -42,15 +42,33 @@ await new class Clock extends Widget<
     badges: string[] = [];
 
     try {
+      interface SunCache {
+        expiry: number;
+        offset: number;
+        sunrise: string;
+        sunset: string;
+      }
+
       const now = new Clock.Time,
+      cacheData = this.get("sun"),
+      cache = cacheData === undefined
+        ? null
+        : JSON.parse(cacheData) as SunCache,
       {
         sunset,
         sunrise,
-      } = await this.sun(
-        setting.sun.api.url,
-        latitude,
-        longitude,
-      );
+      } = cache === null
+        || now > cache.expiry
+        || now.offset() !== cache.offset
+        ? await this.sun(
+            setting.sun.api.url,
+            latitude,
+            longitude,
+          )
+        : {
+            sunrise: now.at(sunrise),
+            sunset: now.at(sunset),
+          };
 
       function printSun(
         time: InstanceType<typeof Clock.Time>,
@@ -146,6 +164,16 @@ await new class Clock extends Widget<
       sunset,
     } = parseSun(
       await sunApi.loadJSON() as ISun,
+    );
+
+    this.set(
+      "sun",
+      {
+        sunrise,
+        sunset,
+        expiry: date.in(24).midnight.epoch,
+        offset: date.offset(),
+      },
     );
 
     return {
