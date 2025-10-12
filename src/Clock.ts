@@ -1,6 +1,13 @@
 // icon-color: orange; icon-glyph: clock;
 import Widget from "./app/widget";
 
+interface SunCache {
+  expiry: number;
+  offset: number;
+  sunrise: string;
+  sunset: string;
+}
+
 await new class Clock extends Widget<
   {
     clocks: Tuple<{
@@ -42,23 +49,16 @@ await new class Clock extends Widget<
     badges: string[] = [];
 
     try {
-      interface SunCache {
-        expiry: number;
-        offset: number;
-        sunrise: string;
-        sunset: string;
-      }
-
       const now = new Clock.Time,
       cacheData = this.get("sun"),
       cache = cacheData === undefined
         ? null
-        : JSON.parse(cacheData) as SunCache,
+        : JSON.parse(cacheData) as ISunCache,
       {
         sunset,
         sunrise,
       } = cache === null
-        || now > cache.expiry
+        || now as unknown as number > cache.expiry
         || now.offset() !== cache.offset
         ? await this.sun(
             setting.sun.api.url,
@@ -173,7 +173,7 @@ await new class Clock extends Widget<
         sunset,
         expiry: date.in(24).midnight.epoch,
         offset: date.offset(),
-      },
+      } satisfies ISunCache,
     );
 
     return {
