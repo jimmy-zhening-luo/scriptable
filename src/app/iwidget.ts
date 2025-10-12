@@ -52,8 +52,8 @@ export default abstract class IWidget<Setting = never> extends IApp<
       }
   }
 
-  protected text(text: string) {
-    return this.widget.addText(text);
+  protected text(text: unknown) {
+    return this.widget.addText(String(text));
   }
 
   protected line(height = 0) {

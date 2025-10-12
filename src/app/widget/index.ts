@@ -48,7 +48,7 @@ export default abstract class Widget<Setting = never> extends IWidget<Setting> {
   };
 
   protected override text(
-    text: string,
+    text: unknown,
     font: Null<Font> = this.style.body.regular(),
   ) {
     const textbox = super.text(text);
