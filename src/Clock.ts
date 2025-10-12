@@ -1,7 +1,7 @@
 // icon-color: orange; icon-glyph: clock;
 import Widget from "./app/widget";
 
-interface SunCache {
+interface ISunCache {
   expiry: number;
   offset: number;
   sunrise: string;
