@@ -66,8 +66,8 @@ await new class Clock extends Widget<
             longitude,
           )
         : {
-            sunrise: now.at(sunrise),
-            sunset: now.at(sunset),
+            sunrise: now.at(cache.sunrise),
+            sunset: now.at(cache.sunset),
           };
 
       function printSun(
