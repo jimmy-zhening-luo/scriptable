@@ -137,7 +137,7 @@ await new class Clock extends Widget<
         )
         .concat(
           "&date=",
-          date.print("yyyy-MM-dd"),
+          date.print("y-MM-dd"),
         ),
     ),
 
