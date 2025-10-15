@@ -150,7 +150,7 @@ export default class Time {
       : this.epoch;
   }
 
-  public print(format = "MMMM d, y h:mm:ss a") {
+  public print(format = "MMM d, y 'at' h:mm:ss a") {
     (this.printer ??= new DateFormatter)
       .dateFormat = format;
 
