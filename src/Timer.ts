@@ -11,9 +11,9 @@ void new class Timer extends Widget {
       return data === undefined
         ? null
         : new Timer.Time(
-            (JSON.parse(data) as IWhen)
-              .when,
-          );
+          (JSON.parse(data) as IWhen)
+            .when,
+        );
     }
 
     const store = extract(
