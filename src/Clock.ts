@@ -171,7 +171,7 @@ await new class Clock extends Widget<
       {
         sunrise,
         sunset,
-        expiry: date.in(24).midnight.epoch,
+        expiry: date.tomorrow.epoch,
         offset: date.offset(),
       } satisfies ISunCache,
     );

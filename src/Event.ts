@@ -122,9 +122,7 @@ await new class Event extends DateWidget {
         .toDate(),
       [calendar],
     ),
-    tomorrow = now
-      .in(24)
-      .midnight,
+    { tomorrow } = now,
     eventsTomorrow = await CalendarEvent.between(
       tomorrow.toDate(),
       (
