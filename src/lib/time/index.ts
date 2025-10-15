@@ -50,7 +50,13 @@ export default class Time {
   }
 
   public get tomorrow() {
-    return this.in(24).midnight; // DST?
+    const date = this.toDate();
+
+    return new Time(
+      date.setDate(
+        date.getDate() + 1,
+      ),
+    );
   }
 
   public in(
