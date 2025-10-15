@@ -56,7 +56,8 @@ export default class Time {
       date.setDate(
         date.getDate() + 1,
       ),
-    );
+    )
+      .midnight;
   }
 
   public in(
