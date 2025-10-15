@@ -19,7 +19,7 @@ export default async function location(
     0.1: 3,
     1: 2,
     3: 2,
-  } as const;
+  };
 
   Location[
     `setAccuracyTo${
