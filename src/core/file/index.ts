@@ -1,12 +1,15 @@
+enum State {
+  None,
+  File,
+  Folder,
+}
+
 export default class File<Class extends string> {
   private static readonly manager = FileManager.local();
   private readonly path;
   private readonly parent;
   private readonly mutable;
-  private state: Null<
-    | "Folder"
-    | "File"
-  > = null;
+  private state: State = State.None;
 
   constructor(
     Class: Literalful<Class>,
@@ -63,25 +66,25 @@ export default class File<Class extends string> {
 
     if (File.manager.fileExists(this.path))
       this.state = File.manager.isDirectory(this.path)
-        ? "Folder"
-        : "File";
+        ? State.Folder
+        : State.File;
   }
 
   public read(fail = false) {
-    if (this.state === "File")
+    if (this.state === State.File)
       return File.manager.readString(this.path);
 
-    if (this.state === "Folder")
+    if (this.state === State.Folder)
       throw this.error(
         "read",
         "Target is folder",
       );
-    else
-      if (fail)
-        throw this.error(
-          "read",
-          ReferenceError("File does not exist"),
-        );
+
+    if (fail)
+      throw this.error(
+        "read",
+        ReferenceError("File does not exist"),
+      );
 
     return undefined;
   }
@@ -119,14 +122,14 @@ export default class File<Class extends string> {
         "Readonly",
       );
 
-    if (this.state === "File") {
+    if (this.state === State.File) {
       if (overwrite === false)
         throw this.error(
           "write",
           ReferenceError("File exists, but overwrite mode false"),
         );
     }
-    else if (this.state === "Folder")
+    else if (this.state === State.Folder)
       throw this.error(
         "write",
         "Target is folder",
@@ -142,7 +145,7 @@ export default class File<Class extends string> {
       this.path,
       typeof content === "object"
         ? JSON.stringify(content)
-        : typeof overwrite === "boolean" || this.state === null
+        : typeof overwrite === "boolean" || this.state === State.None
           ? String(content)
           : overwrite === "line"
             ? String(content)
@@ -154,7 +157,7 @@ export default class File<Class extends string> {
                 .readString()
                 .concat(content as string),
     );
-    this.state = "File";
+    this.state = State.File;
   }
 
   public delete() {
@@ -164,9 +167,9 @@ export default class File<Class extends string> {
         "Readonly",
       );
 
-    if (this.state !== null) {
+    if (this.state !== State.None) {
       File.manager.remove(this.path);
-      this.state = null;
+      this.state = State.None;
     }
   }
 
