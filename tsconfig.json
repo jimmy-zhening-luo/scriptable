@@ -40,7 +40,6 @@
     // "noEmit": true,
     "noEmitOnError": true,
     "outDir": "dist",
-    "preserveConstEnums": false,
     // "removeComments": true /* @OVERRIDE */,
     "sourceMap": true,
     // "allowJs": true,
