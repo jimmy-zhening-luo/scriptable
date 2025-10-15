@@ -46,7 +46,6 @@
     // "allowJs": true,
     // "checkJs": true,
     // "isolatedDeclarations": false,
-    "isolatedModules": true,
     // "verbatimModuleSyntax": true,
     "lib": [
       "esnext",
