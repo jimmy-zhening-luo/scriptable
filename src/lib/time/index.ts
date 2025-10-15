@@ -29,6 +29,10 @@ export default class Time {
     }
   }
 
+  public get today() {
+    return this.midnight.epoch === new Time().midnight.epoch;
+  }
+
   public get midnight() {
     return this.at(0);
   }
