@@ -46,6 +46,7 @@ export default class Time {
       23,
       59,
       59,
+      999,
     );
   }
 
