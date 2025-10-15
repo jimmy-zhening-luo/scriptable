@@ -1,4 +1,4 @@
-enum State {
+const enum State {
   None,
   File,
   Folder,
