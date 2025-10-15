@@ -45,6 +45,10 @@ export default class Time {
     );
   }
 
+  public get tomorrow() {
+    return this.in(24).midnight; // DST?
+  }
+
   public in(
     hours = 0,
     minutes = 0,
