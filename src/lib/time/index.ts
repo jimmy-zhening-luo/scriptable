@@ -63,12 +63,14 @@ export default class Time {
     hours = 0,
     minutes = 0,
     seconds = 0,
+    milliseconds = 0,
   ) {
     return new Time(
       this.epoch
       + hours * 3_600_000
       + minutes * 60_000
-      + seconds * 1_000,
+      + seconds * 1_000
+      + milliseconds,
     );
   }
 
@@ -76,11 +78,13 @@ export default class Time {
     hours = 0,
     minutes = 0,
     seconds = 0,
+    milliseconds = 0,
   ) {
     return this.in(
       -hours,
       -minutes,
       -seconds,
+      -milliseconds,
     );
   }
 
@@ -88,6 +92,7 @@ export default class Time {
     time: number | string = 0,
     minute = 0,
     second = 0,
+    millisecond = 0,
   ) {
     return new Time(
       typeof time === "number"
@@ -97,6 +102,7 @@ export default class Time {
               time,
               minute,
               second,
+              millisecond,
             )
         : this
             .toDate()
