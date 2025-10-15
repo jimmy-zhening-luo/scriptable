@@ -10,19 +10,19 @@ export default abstract class Shortcut<
     Setting
   > {
   constructor(
-    inputType:
-      | "single"
+    multi:
+      | false
       | (
         ShortcutInput extends ArrayN
-          ? "multi"
+          ? true
           : never
       )
-      = "single",
+      = false,
   ) {
     const { plainTexts } = args;
 
     super(
-      inputType === "multi"
+      multi
         ? plainTexts as unknown as ShortcutInput & readonly string[]
         : plainTexts[0] as Undefined<ShortcutInput & string>,
       config.runsWithSiri,
