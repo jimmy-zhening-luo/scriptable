@@ -9,13 +9,13 @@ export default abstract class Share<
     Setting
   > {
   constructor(
-    shareInputType:
+    inputType:
       | "plainTexts"
       | "urls"
       | "fileURLs"
       = "plainTexts",
   ) {
-    const { [shareInputType]: inputs } = args;
+    const { [inputType]: inputs } = args;
 
     super(
       inputs.length === 0
