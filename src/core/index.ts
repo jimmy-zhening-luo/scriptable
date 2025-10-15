@@ -260,7 +260,7 @@ export default abstract class IApp<
         file,
         extension,
       )
-      .readString();
+      .read();
   }
 
   protected stringful(
