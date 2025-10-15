@@ -17,16 +17,7 @@ export default class Time {
     )
       this.epoch = date.epoch;
     else {
-      const epoch = (
-        typeof date === "number"
-          ? new Date(date)
-          : date instanceof Date
-            ? date
-            : (this.printer ??= new DateFormatter)
-              .date(date)
-      )
-        ?.getTime()
-        ?? NaN;
+      const epoch = new Date(date).getTime();
 
       if (!Number.isFinite(epoch))
         throw RangeError(
