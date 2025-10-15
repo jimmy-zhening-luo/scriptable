@@ -11,7 +11,7 @@ void new class Timer extends Widget {
     if (
       time === null
       || time < now.midnight
-      || time >= now.tomorrow
+      || time > now
     )
       this.text("+").centerAlignText();
     else {
