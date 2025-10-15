@@ -25,11 +25,11 @@ void new class Timer extends Widget {
     {
       when = null,
       update = false,
-    } = store?.today
+    } = store?.today ?? false
       ? {
           when: store,
         }
-      : feed?.today
+      : feed?.today ?? false
         ? {
             when: feed,
             update: true,
