@@ -3,13 +3,19 @@ import Widget from "./app/widget";
 
 void new class Timer extends Widget {
   protected runtime() {
-    const { input } = this;
+    const feed = this.subscribe("when", "json"),
+    { when } = feed === undefined ? {} : JSON.parse(feed) as { when?: string },
+    time = when === undefined ? null : new Timer.Time(when),
+    now = new Timer.Time;
 
-    if (typeof input !== "string" || input === "")
+    if (
+      time === null
+      || time < now.midnight
+      || time >= now.tomorrow
+    )
       this.text("+").centerAlignText();
     else {
-      const now = new Widget.Time,
-      end = now.at(this.input).in(8);
+      const end = time.in(8);
 
       if (now > end)
         this.text("\u2713").centerAlignText();
