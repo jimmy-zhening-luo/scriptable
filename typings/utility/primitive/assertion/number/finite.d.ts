@@ -1,4 +1,4 @@
 declare const finite: unique symbol;
-declare type finite = numberful & {
+declare type finite = number & {
   [finite]: true;
 };
