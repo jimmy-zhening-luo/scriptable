@@ -12,11 +12,7 @@ export default abstract class Shortcut<
   constructor(
     multi:
       | false
-      | (
-        ShortcutInput extends ArrayN
-          ? true
-          : never
-      )
+      | (ShortcutInput extends ArrayN ? true : never)
       = false,
   ) {
     const { plainTexts } = args;
