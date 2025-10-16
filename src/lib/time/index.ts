@@ -110,7 +110,7 @@ export default class Time {
             .toDate()
             .toDateString()
             .concat(
-              " ",
+              " at ",
               time,
             ),
 
