@@ -3,6 +3,12 @@ const enum State {
   File,
   Folder,
 }
+enum Overwrite {
+  no,
+  yes,
+  append,
+  line,
+}
 
 export default class File<Class extends string> {
   private static readonly manager = FileManager.local();
@@ -111,10 +117,7 @@ export default class File<Class extends string> {
       | number
       | boolean
       | Record<string, unknown> = "",
-    overwrite:
-      | "line"
-      | "append"
-      | boolean = false,
+    overwrite: keyof typeof Overwrite = "no",
   ) {
     if (!this.mutable)
       throw this.error(
@@ -123,7 +126,7 @@ export default class File<Class extends string> {
       );
 
     if (this.state === State.File) {
-      if (overwrite === false)
+      if (Overwrite[overwrite] === Overwrite.no)
         throw this.error(
           "write",
           ReferenceError("File exists, but overwrite mode false"),
@@ -145,17 +148,17 @@ export default class File<Class extends string> {
       this.path,
       typeof content === "object"
         ? JSON.stringify(content)
-        : typeof overwrite === "boolean" || this.state === State.None
+        : Overwrite[overwrite] === Overwrite.yes || this.state === State.None
           ? String(content)
-          : overwrite === "line"
-            ? String(content)
+          : Overwrite[overwrite] === Overwrite.append
+            ? this
+                .readString()
+                .concat(content as string)
+            : String(content)
                 .concat(
                   "\n",
                   this.readString(),
-                )
-            : this
-                .readString()
-                .concat(content as string),
+                ),
     );
     this.state = State.File;
   }
