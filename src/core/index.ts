@@ -269,7 +269,7 @@ export default abstract class IApp<
   ) {
     if (string === "")
       throw TypeError(
-        "Empty string",
+        "Unstringful",
         { cause },
       );
 
@@ -282,12 +282,12 @@ export default abstract class IApp<
   ) {
     if (strings.length === 0)
       throw RangeError(
-        "Empty string array",
+        "Empty stringful array",
         { cause },
       );
     else if (!strings.every((string): string is stringful => string !== ""))
       throw TypeError(
-        "String array has empty strings",
+        "Stringful array contains unstringful",
         { cause },
       );
 
@@ -308,9 +308,7 @@ export default abstract class IApp<
   ) {
     if (string.length !== 1)
       throw TypeError(
-        string === ""
-          ? "Empty char"
-          : "many",
+        "Non-char string",
         { cause },
       );
 
@@ -329,7 +327,7 @@ export default abstract class IApp<
       );
     else if (!strings.every((string): string is char => string.length === 1))
       throw TypeError(
-        "Char array has non-chars",
+        "Char array contains non-chars",
         { cause },
       );
 
