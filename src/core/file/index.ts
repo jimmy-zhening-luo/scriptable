@@ -7,7 +7,7 @@ enum Overwrite {
   no,
   yes,
   append,
-  line,
+  push,
 }
 
 export default class File<Class extends string> {
