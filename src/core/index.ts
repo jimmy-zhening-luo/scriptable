@@ -310,7 +310,7 @@ export default abstract class IApp<
         { cause },
       );
 
-    return string as stringful;
+    return string as char;
   }
 
   protected chars<A extends ArrayN>(
