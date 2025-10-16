@@ -1,5 +1,1 @@
-declare type NullUndef<T>
-= | undefined
-  | null
-  | T
-    ;
+declare type Unnull<T> = undefined | null | T;
