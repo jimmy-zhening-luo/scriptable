@@ -33,13 +33,9 @@ export default class File<Class extends string> {
 
     const root = (
       hidden
-        ? File.manager[
-            `${
-              temporary
-                ? "cache"
-                : "library"
-            }Directory`
-          ]()
+        ? temporary
+          ? File.manager.cacheDirectory()
+          : File.manager.libraryDirectory()
         : File.manager.bookmarkedPath("root")
     )
       .concat(
