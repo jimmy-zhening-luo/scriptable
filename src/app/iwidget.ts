@@ -2,7 +2,7 @@ import IApp from "../core";
 import Time from "../lib/time";
 import location from "../lib/location";
 
-export default abstract class IWidget<Setting = never> extends IApp<
+export default abstract class IWidget<Setting> extends IApp<
   string,
   void,
   Setting
