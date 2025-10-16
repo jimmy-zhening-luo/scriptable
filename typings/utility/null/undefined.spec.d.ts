@@ -5,7 +5,7 @@ declare namespace Undefined {
       Undefined<string | null>,
       Undefined<string | undefined>,
       Undefined<string | null | undefined>,
-      Undefined<string | int | null>,
+      Undefined<string | integer | null>,
       Undefined<NonNullable<undefined | string>>,
       Undefined<never>,
       // Error:

@@ -5,7 +5,7 @@ declare namespace Null {
       Null<string | null>,
       Null<string | undefined>,
       Null<string | null | undefined>,
-      Null<string | int | null>,
+      Null<string | integer | null>,
       Null<NonNullable<undefined | string>>,
       Null<never>,
       // Error:

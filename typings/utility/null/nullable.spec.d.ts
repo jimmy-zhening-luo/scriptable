@@ -5,7 +5,7 @@ declare namespace Nullable {
       Nullable<string | null>,
       Nullable<string | undefined>,
       Nullable<string | null | undefined>,
-      Nullable<string | int | null>,
+      Nullable<string | integer | null>,
       Nullable<NonNullable<undefined | string>>,
       Nullable<NonNullable<null | string>>,
       Nullable<NonNullable<undefined | Null<string>>>,

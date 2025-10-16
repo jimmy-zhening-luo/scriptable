@@ -8,8 +8,8 @@ declare namespace IsArray {
       IsArray<readonly [1, 1]>,
       IsArray<readonly string[]>,
       IsArray<[[]]>,
-      IsArray<string[] | int[]>,
-      IsArray<(string | int)[]>,
+      IsArray<string[] | integer[]>,
+      IsArray<(string | integer)[]>,
       IsArray<
         | []
         | [0, 1]
