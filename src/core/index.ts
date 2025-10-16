@@ -315,7 +315,6 @@ export default abstract class IApp<
     return string as stringful;
   }
 
-  
   protected chars<A extends ArrayN>(
     strings: A,
     cause?: string,
