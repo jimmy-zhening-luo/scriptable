@@ -4,8 +4,6 @@ const enum State {
   Folder,
 }
 enum Overwrite {
-  no,
-  yes,
   append,
   push,
 }
@@ -117,7 +115,9 @@ export default class File<Class extends string> {
       | number
       | boolean
       | Record<string, unknown> = "",
-    overwrite: keyof typeof Overwrite = "no",
+    overwrite:
+      | boolean
+      | keyof typeof Overwrite = false,
   ) {
     if (!this.mutable)
       throw this.error(
@@ -126,7 +126,7 @@ export default class File<Class extends string> {
       );
 
     if (this.state === State.File) {
-      if (Overwrite[overwrite] === Overwrite.no)
+      if (overwrite === false)
         throw this.error(
           "write",
           ReferenceError("File exists, but overwrite mode false"),
@@ -148,7 +148,7 @@ export default class File<Class extends string> {
       this.path,
       typeof content === "object"
         ? JSON.stringify(content)
-        : Overwrite[overwrite] === Overwrite.yes || this.state === State.None
+        : typeof overwrite === "boolean" || this.state === State.None
           ? String(content)
           : Overwrite[overwrite] === Overwrite.append
             ? this

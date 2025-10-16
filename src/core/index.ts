@@ -165,7 +165,7 @@ export default abstract class IApp<
   ) {
     this
       .cache(key)
-      .write(value, "no");
+      .write(value, true);
   }
 
   protected unset(key = "") {
@@ -216,7 +216,7 @@ export default abstract class IApp<
 
   protected write(
     data: Parameters<File<"Storage">["write"]>[0],
-    overwrite: Parameters<File<"Storage">["write"]>[1] = "yes",
+    overwrite: Parameters<File<"Storage">["write"]>[1] = true,
     file?: string,
     extension?: string,
   ) {
