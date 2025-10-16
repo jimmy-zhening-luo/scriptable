@@ -296,9 +296,7 @@ export default abstract class IApp<
         ? {
             readonly [I in keyof A]: Flat<typeof strings>;
           }
-        : Arrayful<
-          Flat<typeof strings>
-        >
+        : Arrayful<Flat<typeof strings>>
     );
   }
 
@@ -335,9 +333,7 @@ export default abstract class IApp<
         ? {
             readonly [I in keyof A]: Flat<typeof strings>;
           }
-        : Arrayful<
-          Flat<typeof strings>
-        >
+        : Arrayful<Flat<typeof strings>>
     );
   }
 
