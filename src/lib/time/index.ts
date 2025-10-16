@@ -1,7 +1,7 @@
 import type { Timezone } from "./timezone";
 
 export default class Time {
-  public readonly epoch: number;
+  public readonly epoch: integerful;
 
   constructor(
     date:
@@ -17,15 +17,15 @@ export default class Time {
     )
       this.epoch = date.epoch;
     else {
-      const epoch = new Date(date).getTime();
+      const epoch = new Date(date).getTime() as integer;
 
-      if (!Number.isFinite(epoch))
+      if (Number.isNaN(epoch))
         throw RangeError(
           "Invalid time",
           { cause: date },
         );
 
-      this.epoch = epoch;
+      this.epoch = epoch as typeof epoch & numberful;
     }
   }
 
