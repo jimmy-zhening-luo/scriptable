@@ -118,7 +118,7 @@ export default class Time {
   }
 
   public offset(timeZone: Null<Timezone> = null) {
-    const fromUTC = this.toDate().getTimezoneOffset() / -60;
+    const fromUTC = this.toDate().getTimezoneOffset() / -60 as finiteful;
 
     if (timeZone === null)
       return fromUTC;
@@ -144,13 +144,13 @@ export default class Time {
       return fromUTC - Number(
         sign.concat(
           (
-            Number(H0.concat(H1))
-            + Number(m0.concat(m1))
-            / 60
+            Number(H0.concat(H1)) as integerful & polar
+            + Number(m0.concat(m1)) as integerful & polar
+            / 60 as integerful & polar<"+">
           )
             .toFixed(1),
         ),
-      );
+      ) as finiteful;
     }
   }
 
