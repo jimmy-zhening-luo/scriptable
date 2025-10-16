@@ -276,8 +276,8 @@ export default abstract class IApp<
     return string as stringful;
   }
 
-  protected stringfuls<ArrayLike extends ArrayN>(
-    strings: ArrayLike,
+  protected stringfuls<A extends ArrayN>(
+    strings: A,
     cause?: string,
   ) {
     if (strings.length === 0)
@@ -292,9 +292,9 @@ export default abstract class IApp<
       );
 
     return strings as unknown as (
-      ArrayLike extends Arrayful
+      A extends Arrayful
         ? {
-            readonly [I in keyof ArrayLike]: Flat<typeof strings>;
+            readonly [I in keyof A]: Flat<typeof strings>;
           }
         : Arrayful<
           Flat<typeof strings>
@@ -310,15 +310,16 @@ export default abstract class IApp<
       throw TypeError(
         string === ""
           ? "Empty char"
-          : "Char is too long",
+          : "many",
         { cause },
       );
 
     return string as stringful;
   }
 
-  protected chars<ArrayLike extends ArrayN>(
-    strings: ArrayLike,
+  
+  protected chars<A extends ArrayN>(
+    strings: A,
     cause?: string,
   ) {
     if (strings.length === 0)
@@ -333,9 +334,9 @@ export default abstract class IApp<
       );
 
     return strings as unknown as (
-      ArrayLike extends Arrayful
+      A extends Arrayful
         ? {
-            readonly [I in keyof ArrayLike]: Flat<typeof strings>;
+            readonly [I in keyof A]: Flat<typeof strings>;
           }
         : Arrayful<
           Flat<typeof strings>
