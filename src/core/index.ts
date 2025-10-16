@@ -1,9 +1,9 @@
 import File from "./file";
 
 export default abstract class IApp<
-  Input = never,
-  Output = void,
   Setting = never,
+  Output = void,
+  Input = never,
 > {
   protected readonly app;
   protected readonly context: Flag<
@@ -22,7 +22,7 @@ export default abstract class IApp<
   > = {};
 
   constructor(
-    private _input: NullUndef<Input>,
+    private _input: Unnull<Input>,
     production: boolean,
   ) {
     this.app = this.stringful(

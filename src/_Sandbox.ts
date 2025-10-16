@@ -2,8 +2,7 @@
 import Shortcut from "./app";
 
 await new class Sandbox extends Shortcut {
-  /* eslint-disable @typescript-eslint/require-await */
   protected async runtime() {
-    return null;
+    //
   }
 }().run();

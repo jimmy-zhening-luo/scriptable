@@ -1,5 +1,6 @@
 // icon-color: orange; icon-glyph: clock;
 import Widget from "./app/widget";
+import type { ClockSetting } from "./private/Clock";
 
 interface ISunCache {
   expiry: number;
@@ -8,25 +9,7 @@ interface ISunCache {
   sunset: string;
 }
 
-await new class Clock extends Widget<
-  {
-    clocks: Tuple<{
-      timezone: Parameters<Widget["clock"]>[0];
-      label: string;
-    }>;
-  }
-  & Record<
-    | "sun"
-    | "weather",
-    Record<
-      "api",
-      Field<
-        | "userAgent"
-        | "url"
-      >
-    >
-  >
-> {
+await new class Clock extends Widget<ClockSetting> {
   protected async runtime() {
     const { setting } = this;
 

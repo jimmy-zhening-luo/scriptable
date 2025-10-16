@@ -2,7 +2,7 @@
 // share-sheet-inputs: file-url;
 import Share from "./app/share";
 
-void new class FileLink extends Share<string> {
+void new class FileLink extends Share {
   protected runtime() {
     return this.context.production
       ? this

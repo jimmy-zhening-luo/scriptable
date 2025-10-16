@@ -64,10 +64,10 @@
     "deploy:sed": "npm run deploy:sed:prepend:header && npm run deploy:sed:prepend:strict && npm run deploy:sed:resolve:import && npm run deploy:sed:resolve:export && npm run deploy:sed:outdent && npm run deploy:sed:delete:ignore && npm run deploy:sed:delete:source",
     "deploy:sed:prepend:header": "rr \"^(\\/\\/ icon-color: [-a-z]+; icon-glyph: [-a-z]+;(?:\\s\\/\\/ share-sheet-inputs:(?: [-a-z]+,){0,3} [-a-z]+;)?)(.+)$\" \"// Variables used by Scriptable.\\n// These must be at the very top of the file. Do not edit.\\n€1\\n\\x22use strict\\x22;\\n€2\" -uI -GMs \"packed/*.js\" -BHq",
     "deploy:sed:prepend:strict": "rr \"^((?!\\/\\/ Variables used by Scriptable\\.\\s).+)$\" \"\\x22use strict\\x22;\\n€1\" -uI -GMs \"packed/**/*.js\" -BHq",
-    "deploy:sed:resolve:import": "rr \"\\bimport ([\\w]+) from (.+);$\" \"const €1 = importModule(€2);\" -uI \"packed/**/*.js\" -BHq",
-    "deploy:sed:resolve:export": "rr \"^(\\s*)export default \" \"€1module.exports = \" -uI \"packed/**/*.js\" -BHq",
+    "deploy:sed:resolve:import": "rr \"\\bimport[ \\t]+([\\w]+)[ \\t]+from[ \\t]+(\\S.*\\S)[ \\t]*;[ \\t]*$\" \"const €1 = importModule(€2);\" -uI \"packed/**/*.js\" -BHq",
+    "deploy:sed:resolve:export": "rr \"^([ \\t]*)export[ \\t]+default[ \\t]+\" \"€1module.exports = \" -uI \"packed/**/*.js\" -BHq",
     "deploy:sed:outdent": "rr \"    \" \"  \" -L \"packed/_*.js\" -BHq",
-    "deploy:sed:delete:ignore": "rr \"^\\s*\\/[*\\/]\\s*eslint-disable\\b.+$\\n\" \"\" -uI \"packed/*.js\" -BHq",
+    "deploy:sed:delete:ignore": "rr \"^[ \\t]*\\/[*\\/][ \\t]*eslint-disable\\b.+$\\n\" \"\" -uI \"packed/*.js\" -BHq",
     "deploy:sed:delete:source": "rr \"^(.*)\\/\\/# sourceMappingURL=.+\\.map\\s*$\" \"€1\" -uI -GMs \"packed/**/*.js\" -BHq"
   },
   "author": "Jimmy Zhening Luo <jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"

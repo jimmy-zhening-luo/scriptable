@@ -3,14 +3,14 @@ import Shortcut from "./app";
 import parse from "./private/Search";
 import engine from "./private/Search/engine";
 import type {
-  SearchOutput,
   SearchSetting,
+  SearchOutput,
 } from "./private/Search";
 
 void new class Search extends Shortcut<
-  string,
+  SearchSetting,
   SearchOutput,
-  SearchSetting
+  string
 > {
   protected runtime() {
     function history(history: Undefined<string>) {

@@ -3,9 +3,9 @@ import Time from "../lib/time";
 import location from "../lib/location";
 
 export default abstract class IWidget<Setting> extends IApp<
-  string,
+  Setting,
   void,
-  Setting
+  string
 > {
   public static readonly Time = Time;
   public static readonly location = location;

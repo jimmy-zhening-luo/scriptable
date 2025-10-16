@@ -1,17 +1,13 @@
 // icon-color: teal; icon-glyph: hourglass-half;
 import Widget from "./app/widget";
 
-interface IWhen {
-  when: string;
-}
-
 void new class Timer extends Widget {
   protected runtime() {
     function extract(data?: string) {
       return data === undefined
         ? null
         : new Timer.Time(
-          (JSON.parse(data) as IWhen)
+          (JSON.parse(data) as { when: string })
             .when,
         );
     }

@@ -1,13 +1,13 @@
 import IApp from "../core";
 
 export default abstract class Shortcut<
-  Input extends Unflat = never,
-  Output = null,
   Setting = never,
+  Output = void,
+  Input extends Unflat = never,
 > extends IApp<
-    Input,
-    Null<Output>,
-    Setting
+    Setting,
+    Void<Output>,
+    Input
   > {
   constructor(
     multi:
@@ -25,7 +25,7 @@ export default abstract class Shortcut<
     );
   }
 
-  protected output(output: ReturnType<Shortcut<Input, Output>["runtime"]>) {
-    Script.setShortcutOutput(output);
+  protected output(output: Void<Output>) {
+    Script.setShortcutOutput(output ?? null);
   }
 }
