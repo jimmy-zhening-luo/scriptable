@@ -1,31 +1,31 @@
 import IApp from "../core";
 
 export default abstract class Shortcut<
-  ShortcutInput extends Unflat = never,
-  ShortcutOutput = null,
+  Input extends Unflat = never,
+  Output = null,
   Setting = never,
 > extends IApp<
-    ShortcutInput,
-    Null<ShortcutOutput>,
+    Input,
+    Null<Output>,
     Setting
   > {
   constructor(
     multi:
       | false
-      | (ShortcutInput extends ArrayN ? true : never)
+      | (Input extends ArrayN ? true : never)
       = false,
   ) {
     const { plainTexts } = args;
 
     super(
       multi
-        ? plainTexts as unknown as ShortcutInput & readonly string[]
-        : plainTexts[0] as Undefined<ShortcutInput & string>,
+        ? plainTexts as unknown as Input & readonly string[]
+        : plainTexts[0] as Undefined<Input & string>,
       config.runsWithSiri,
     );
   }
 
-  protected output(output: ReturnType<Shortcut<ShortcutInput, ShortcutOutput>["runtime"]>) {
+  protected output(output: ReturnType<Shortcut<Input, Output>["runtime"]>) {
     Script.setShortcutOutput(output);
   }
 }

@@ -1,11 +1,11 @@
 import IApp from "../core";
 
 export default abstract class Share<
-  ShareOutput extends string = never,
+  Output extends string = never,
   Setting = never,
 > extends IApp<
     ArrayN,
-    Null<ShareOutput>,
+    Null<Output>,
     Setting
   > {
   constructor(
@@ -25,7 +25,7 @@ export default abstract class Share<
     );
   }
 
-  protected output(output: ReturnType<Share<ShareOutput>["runtime"]>) {
+  protected output(output: ReturnType<Share<Output>["runtime"]>) {
     if (typeof output === "string" && output !== "")
       Pasteboard.copy(output);
   }
