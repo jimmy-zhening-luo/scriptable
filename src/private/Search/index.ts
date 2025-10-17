@@ -113,7 +113,7 @@ export default function (
 
         return typeof Head === "string"
           && (Head.length !== 1 || tail.length !== 0)
-          && new Set("0123456789+-$€£¥.(").has(Head[0]!)
+          && new Set("0123456789+-$€£¥.(").has(Head[0])
           ? {
               Head: new ReservedSearchKey("math"),
               tail: [Head, ...tail],
