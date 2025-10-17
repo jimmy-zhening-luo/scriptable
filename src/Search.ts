@@ -81,8 +81,8 @@ void new class Search extends Shortcut<
             key,
             terms,
             entry.url,
-            TAG,
             entry.prepend,
+            TAG,
             entry.force,
             entry.separator,
           )
@@ -90,9 +90,9 @@ void new class Search extends Shortcut<
             "shortcut",
             key,
             terms,
-            (entry.shortcut as Undefined<string>) ?? "",
-            entry.notify,
+            entry.shortcut,
             entry.prepend,
+            entry.notify,
             entry.encode,
             entry.separator,
           );

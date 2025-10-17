@@ -9,11 +9,11 @@ export default function<
   terms: readonly stringful[],
   handler: Engine extends "browser"
     ? Unflat
-    : string,
+    : string = "",
+  prepend = "",
   notifyOrTag:
     | boolean
     | (Engine extends "browser" ? stringful : boolean) = false,
-  prepend = "",
   forceOrEncode = false,
   separator = "+",
 ) {
