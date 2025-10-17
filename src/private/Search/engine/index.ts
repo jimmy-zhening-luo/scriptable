@@ -7,7 +7,7 @@ export default function<
   type: Engine,
   key: stringful,
   terms: readonly stringful[],
-  engineOrUrls: Engine extends "browser"
+  handler: Engine extends "browser"
     ? Unflat
     : string,
   notifyOrTag:
@@ -65,16 +65,16 @@ export default function<
     encode = false,
   } = type === "browser"
     ? {
-        urls: typeof engineOrUrls === "string"
-          ? [engineOrUrls]
-          : engineOrUrls as string[],
+        urls: typeof handler === "string"
+          ? [handler]
+          : handler as string[],
         tag: notifyOrTag as stringful,
         force: forceOrEncode,
       }
     : {
-        engine: engineOrUrls === ""
+        engine: handler === ""
           ? key
-          : engineOrUrls as stringful,
+          : handler as stringful,
         notify: (notifyOrTag as boolean)
           || null,
         encode: forceOrEncode,
