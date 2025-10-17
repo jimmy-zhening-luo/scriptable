@@ -112,8 +112,8 @@ export default function (
         const { Head, tail } = tokenize(query);
 
         return typeof Head === "string"
-          && new Set("0123456789+-$€£¥.(").has(Head[0] as string)
           && (Head.length !== 1 || tail.length !== 0)
+          && new Set("0123456789+-$€£¥.(").has(Head[0]!)
           ? {
               Head: new ReservedSearchKey("math"),
               tail: [Head, ...tail],
