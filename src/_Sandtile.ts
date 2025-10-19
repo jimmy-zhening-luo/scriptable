@@ -2,7 +2,7 @@
 import Widget from "./app/widget";
 
 await new class Sandtile extends Widget {
-  /* eslint-disable @typescript-eslint/require-await */
+  /* eslint-disable ts/require-await */
   protected async runtime() {
     this.text(null);
   }
