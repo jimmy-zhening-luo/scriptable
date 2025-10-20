@@ -7,27 +7,21 @@ export interface SearchSetting {
     | ISearchEngine<
       "url",
       "force",
-      "separator",
-      Unflat
+      never,
+      Unflat<string, true>
     >
     | ISearchEngine<
       "shortcut",
-      (
-        | "encode"
-        | "notify"
-      ),
-      "separator"
+      | "encode"
+      | "notify"
     >
   >;
   reserved: {
-    keys: Record<
-      (
-        | "chat"
-        | "math"
-        | "skip"
-        | "translate"
-      ),
-      stringful
+    keys: Fieldful<
+      | "chat"
+      | "math"
+      | "skip"
+      | "translate"
     >;
     selectors: string;
   };

@@ -1,10 +1,6 @@
 export interface SearchOutput {
-  engine: Null<string>;
-  action:
-    | null
-    | stringful
-    | readonly stringful[]
-  ;
-  notify: Null<true>;
-  label: Null<string>;
+  app: Null<string>;
+  action: Null<Unflat<stringful>>;
+  notify?: Null<true>;
+  label?: Null<string>;
 }

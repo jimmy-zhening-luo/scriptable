@@ -1,7 +1,7 @@
 // icon-color: blue; icon-glyph: search;
 import Shortcut from "./app";
-import parse from "./private/Search";
-import engine from "./private/Search/engine";
+import Parser from "./private/Search";
+import Engine from "./private/Search/engine";
 import type {
   SearchSetting,
   SearchOutput,
@@ -13,15 +13,15 @@ void new class Search extends Shortcut<
   string
 > {
   protected runtime() {
-    function history(history: Undefined<string>) {
+    function history(history?: string) {
       return history === undefined
         ? {
             key: "null" as stringful,
             terms: [],
-            previous: true,
+            prior: true,
           }
-        : JSON.parse(history) as ReturnType<typeof parse> & {
-          previous: boolean;
+        : JSON.parse(history) as ReturnType<typeof Parser> & {
+          prior: boolean;
         };
     }
 
@@ -39,62 +39,34 @@ void new class Search extends Shortcut<
     {
       key,
       terms,
-      previous = false,
+      prior = false,
     } = input === ""
       ? history(this.get("history"))
-      : parse(
+      : Parser(
         input,
         new Set(Object.keys(engines)),
         alias,
         keys,
         new Set(selectors satisfies string as unknown as char[]),
       ) as ReturnType<typeof parse> & {
-        previous: boolean;
+        prior: boolean;
       },
-    entry = engines[key]!,
-    options = typeof entry === "object"
-      && !Array.isArray(entry);
-
-    if (!previous && (!options || !entry.noSave))
+    engine = Engine(
+      key,
+      terms,
+      engines[key]!,
+    );
+    
+    if (!prior && !engine.noSave)
       this.set(
         "history",
         {
           key,
           terms,
-          previous: true,
+          prior: true,
         },
       );
 
-    const TAG = "%s" as stringful;
-
-    return !options
-      ? engine(
-          "browser",
-          key,
-          terms,
-          entry,
-          TAG,
-        )
-      : "url" in entry
-        ? engine(
-            "browser",
-            key,
-            terms,
-            entry.url,
-            TAG,
-            entry.prepend,
-            entry.separator,
-            entry.force,
-          )
-        : engine(
-            "shortcut",
-            key,
-            terms,
-            entry.shortcut,
-            entry.notify,
-            entry.prepend,
-            entry.separator,
-            entry.encode,
-          );
+    return engine;
   }
 }().run();
