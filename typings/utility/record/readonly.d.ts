@@ -4,4 +4,9 @@ declare type ReadonlyRecord<
   | number
   | symbol,
   Value,
-> = Readonly<Record<Key, Value>>;
+> = Readonly<
+  Record<
+    Key,
+    Value
+  >
+>;

@@ -1,11 +1,13 @@
 declare type Optionalize<
-  R extends object,
-  OptionalKey extends keyof R,
+  Record extends object,
+  Optional extends keyof Record,
+> = Omit<
+  Record,
+  Optional
 >
-= & {
-  readonly [Key in Exclude<keyof R, OptionalKey>]: R[Key];
-}
-& {
-  readonly [Key in OptionalKey]?: R[Key];
-}
-    ;
+& Partial<
+  Pick<
+    Record,
+    Optional
+  >
+>;

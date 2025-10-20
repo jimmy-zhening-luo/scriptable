@@ -1,6 +1,9 @@
 type Space<
-  KeyValue extends
+  Key extends
   | string
   | number
   | symbol,
-> = Record<KeyValue, KeyValue>;
+> = Record<
+  Key,
+  Key
+>;

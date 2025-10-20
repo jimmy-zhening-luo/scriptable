@@ -4,4 +4,9 @@ declare type PartialRecord<
   | number
   | symbol,
   Value,
-> = Partial<Record<Key, Value>>;
+> = Partial<
+  Record<
+    Key,
+    Value
+  >
+>;

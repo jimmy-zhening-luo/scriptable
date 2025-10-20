@@ -3,7 +3,10 @@ declare type Property<
   | string
   | number
   | symbol,
-  OptionalKey extends string,
+  Optional extends
+  | string
+  | number
+  | symbol,
   Value,
 >
 = & Record<
@@ -11,7 +14,6 @@ declare type Property<
   Value
 >
 & PartialRecord<
-  OptionalKey,
+  Optional,
   Value
->
-    ;
+>;

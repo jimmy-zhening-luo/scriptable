@@ -6,44 +6,44 @@ declare namespace Optionalize {
       b0: "B" & keyof AB_C,
       b1: "C" & keyof AB_C,
       c: {
-        readonly A: number;
-        readonly B: number;
+        A: number;
+        B: number;
       } extends AB_C ? true : never,
       d: ABC extends AB_C ? true : never,
       d0: {
-        readonly A: number;
-        readonly B: number;
-        readonly C: number;
+        A: number;
+        B: number;
+        C: number;
       } extends AB_C ? true : never,
       d1: {
-        readonly A: number;
-        readonly B: number;
-        readonly C: number;
-        readonly D: number;
+        A: number;
+        B: number;
+        C: number;
+        D: number;
       } extends AB_C ? true : never,
       d2: {
-        readonly A: number;
-        readonly B: number;
-        readonly D: number;
+        A: number;
+        B: number;
+        D: number;
       } extends AB_C ? true : never,
     ];
     F: [
       "D" & keyof AB_C,
       c: {
-        readonly A: number;
+        A: number;
       } extends AB_C ? true : never,
       c0: {
-        readonly A: number;
-        readonly C: number;
+        A: number;
+        C: number;
       } extends AB_C ? true : never,
       c1: {
-        readonly B: number;
-        readonly C: number;
+        B: number;
+        C: number;
       } extends AB_C ? true : never,
       d: {
-        readonly B: number;
-        readonly C: number;
-        readonly D: number;
+        B: number;
+        C: number;
+        D: number;
       } extends AB_C ? true : never,
     ];
   }>;
