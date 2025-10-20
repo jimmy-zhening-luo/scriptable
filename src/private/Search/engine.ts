@@ -22,21 +22,21 @@ export default function (
         ? null
         : action as stringful;
     else {
-      const { url } = browser,
-      query = typeof url === "string"
-        ? url.replace("%s", action)
-        : url.map(
-          u => u.replace("%s", action),
-        );
+      const queries = (
+        typeof browser.url === "string"
+          ? [browser.url]
+          : browser.url
+      )
+        .map(url => url.replace("%s", action));
 
-      if (!query.every((u): u is stringful => u !== ""))
+      if (!queries.every((url): url is stringful => url !== ""))
         throw URIError("Empty Search URL");
 
       return browser.force === true
-        ? query.map(
-          u => `data:text/html,<meta http-equiv=refresh content="0;url=${u}">` as stringful,
+        ? queries.map(
+          url => `data:text/html,<meta http-equiv=refresh content="0;url=${url}">` as stringful,
         )
-        : query;
+        : queries;
     }
   }
 
