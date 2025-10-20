@@ -10,4 +10,3 @@ declare type ListishTable<
     Mutable
   >
 >;
-
