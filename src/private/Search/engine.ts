@@ -34,8 +34,8 @@ export default function (
 
       return browser.force === true
         ? queries.map(
-          url => `data:text/html,<meta http-equiv=refresh content="0;url=${url}">` as stringful,
-        )
+            url => `data:text/html,<meta http-equiv=refresh content="0;url=${url}">` as stringful,
+          )
         : queries;
     }
   }
@@ -48,10 +48,10 @@ export default function (
   termsFinal = engine.prepend === undefined
     ? terms
     : engine
-      .prepend
-      .split(" ")
-      .filter((term): term is stringful => term !== "")
-      .concat(terms);
+        .prepend
+        .split(" ")
+        .filter((term): term is stringful => term !== "")
+        .concat(terms);
 
   if ("url" in engine)
     return {
@@ -73,7 +73,7 @@ export default function (
       action: engine.encode === true
         ? encoder(termsFinal, separator)
         : query,
-      notify: engine.notify || null,
+      notify: engine.notify! || null,
       label: query,
       noSave: engine.noSave,
     };

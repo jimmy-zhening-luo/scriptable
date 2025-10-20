@@ -52,8 +52,8 @@ void new class Search extends Shortcut<
       terms,
       engines[key]!,
     );
-    
-    if (!prior && !engine.noSave)
+
+    if (!prior && engine.noSave !== true)
       this.set(
         "history",
         {
