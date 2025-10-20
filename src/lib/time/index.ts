@@ -122,7 +122,7 @@ export default class Time {
       .toDate()
       .getTimezoneOffset() / -60;
 
-    if (timeZone === null)
+    if (destination === null)
       return local;
     else {
       const intl = new Intl.DateTimeFormat(
