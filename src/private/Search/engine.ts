@@ -72,6 +72,7 @@ export default function (
         : query,
       notify: engine.notify || null,
       label: query,
+      noSave: engine.noSave,
     };
   }
 }

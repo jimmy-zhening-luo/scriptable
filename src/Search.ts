@@ -48,9 +48,7 @@ void new class Search extends Shortcut<
         alias,
         keys,
         new Set(selectors satisfies string as unknown as char[]),
-      ) as ReturnType<typeof parse> & {
-        prior: boolean;
-      },
+      ),
     engine = Engine(
       key,
       terms,
