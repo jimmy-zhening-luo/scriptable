@@ -81,20 +81,20 @@ void new class Search extends Shortcut<
             key,
             terms,
             entry.url,
-            entry.prepend,
             TAG,
-            entry.force,
+            entry.prepend,
             entry.separator,
+            entry.force,
           )
         : engine(
             "shortcut",
             key,
             terms,
             entry.shortcut,
-            entry.prepend,
             entry.notify,
-            entry.encode,
+            entry.prepend,
             entry.separator,
+            entry.encode,
           );
   }
 }().run();

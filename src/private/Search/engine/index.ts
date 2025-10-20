@@ -10,12 +10,12 @@ export default function<
   handler: Engine extends "browser"
     ? Unflat
     : string = "",
-  prepend = "",
   notifyOrTag:
     | boolean
     | (Engine extends "browser" ? stringful : boolean) = false,
-  forceOrEncode = false,
+  prepend = "",
   separator = "+",
+  forceOrEncode = false,
 ) {
   function encoder(
     terms: readonly stringful[],
