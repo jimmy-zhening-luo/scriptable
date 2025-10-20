@@ -7,11 +7,16 @@ interface IWeatherApi {
   };
 }
 
-export type ClockSetting = {
-  clocks: Tuple<{
-    timezone: Timezone;
-    label: string;
-  }>;
+export interface ClockSetting {
+  clock: {
+    font: string;
+    cities: Tuple<{
+      timezone: Timezone;
+      label: string;
+    }>;
+  };
+  sun: IWeatherApi;
+  weather: IWeatherApi;
 }
 & Record<
   | "sun"

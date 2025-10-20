@@ -15,14 +15,15 @@ await new class Clock extends Widget<ClockSetting> {
 
     void this.line(4);
     this.clock(
-      setting.clocks[0].timezone,
-      setting.clocks[0].label,
-      "Consolas"
+      setting.clock.cities[0].timezone,
+      setting.clock.cities[0].label,
+      setting.clock.font,
     );
     void this.line(4);
     this.clock(
-      setting.clocks[1].timezone,
-      setting.clocks[1].label,
+      setting.clock.cities[1].timezone,
+      setting.clock.cities[1].label,
+      setting.clock.font,
     );
     void this.line(16);
 
