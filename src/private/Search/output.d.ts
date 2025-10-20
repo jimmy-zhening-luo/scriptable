@@ -1,6 +1,6 @@
 export interface SearchOutput {
-  app: Null<string>;
   action: Null<Unflat<stringful>>;
+  app?: Null<string>;
   notify?: Null<true>;
   label?: Null<string>;
 }

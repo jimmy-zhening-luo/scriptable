@@ -55,7 +55,6 @@ export default function (
 
   if ("url" in engine)
     return {
-      app: "browser",
       action: encoder(
         termsFinal,
         separator,
