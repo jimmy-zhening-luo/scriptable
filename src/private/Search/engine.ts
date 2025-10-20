@@ -45,10 +45,11 @@ export default function (
   { separator = "+" } = engine,
   termsFinal = engine.prepend === undefined
     ? terms
-    : prepend
+    : engine
+      .prepend
       .split(" ")
       .filter((term): term is stringful => term !== "")
-      .join(terms);
+      .concat(terms);
 
   if ("url" in engine)
     return {
