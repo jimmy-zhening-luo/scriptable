@@ -47,7 +47,7 @@ export default abstract class Widget<Setting = never> extends IWidget<Setting> {
     void this.widget.presentSmall();
   };
 
- 
+  protected override text(
     text: unknown,
     font: Null<Font> = this.style.body.regular(),
   ) {
