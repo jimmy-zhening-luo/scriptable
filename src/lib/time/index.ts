@@ -1,5 +1,11 @@
 import type { Timezone } from "./timezone";
 
+const enum Unit {
+  Hour = 3_600_000,
+  Minute = 60_000,
+  Second = 1_000,
+}
+
 export default class Time {
   public readonly epoch: integerful;
 
@@ -69,9 +75,9 @@ export default class Time {
   ) {
     return new Time(
       this.epoch
-      + hours * 3_600_000
-      + minutes * 60_000
-      + seconds * 1_000
+      + hours * Unit.Hour
+      + minutes * Unit.Minute
+      + seconds * Unit.Second
       + milliseconds,
     );
   }
@@ -113,7 +119,6 @@ export default class Time {
               " at ",
               time,
             ),
-
     );
   }
 
