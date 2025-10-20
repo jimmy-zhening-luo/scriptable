@@ -123,7 +123,7 @@ export default class Time {
       .getTimezoneOffset() / -60;
 
     if (destination === null)
-      return local;
+      return local as finiteful;
     else {
       const intl = new Intl.DateTimeFormat(
         "en-US",
@@ -142,12 +142,12 @@ export default class Time {
         hours < 0
           ? hours - minutes
           : hours + minutes
-      );
+      ) as finiteful;
     }
   }
 
   public toDate() {
-    return new Date(this.epoch);
+    return new Date(this.epoch) as Dateful;
   }
 
   public [Symbol.toPrimitive](hint: string) {
