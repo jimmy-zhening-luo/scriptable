@@ -18,8 +18,3 @@ export interface ClockSetting {
   sun: IWeatherApi;
   weather: IWeatherApi;
 }
-& Record<
-  | "sun"
-  | "weather",
-  IWeatherApi
->;
