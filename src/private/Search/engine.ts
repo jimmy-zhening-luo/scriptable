@@ -9,7 +9,7 @@ export default function (
     terms: readonly stringful[],
     separator: string,
     browser?: {
-      url: string[];
+      url: Unflat<string, true>;
       force?: boolean;
     },
   ) {
@@ -22,9 +22,12 @@ export default function (
         ? null
         : action as stringful;
     else {
-      const query = browser
-        .url
-        .map(u => u.replace("%s", action));
+      const { url } = browser,
+      query = typeof url === "string"
+        ? url.replace("%s", action)
+        : url.map(
+          u => u.replace("%s", action),
+        );
 
       if (!query.every((u): u is stringful => u !== ""))
         throw URIError("Empty Search URL");
@@ -37,11 +40,10 @@ export default function (
     }
   }
 
-  const engine = typeof config === "string"
-    ? { url: [config] }
-    : Array.isArray(config)
-      ? { url: config }
-      : config,
+  const engine = typeof config === "object"
+    && !Array.isArray(config)
+    ? config
+    : { url: config },
   { separator = "+" } = engine,
   termsFinal = engine.prepend === undefined
     ? terms
