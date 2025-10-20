@@ -117,39 +117,31 @@ export default class Time {
     );
   }
 
-  public offset(timeZone: Null<Timezone> = null) {
-    const fromUTC = this.toDate().getTimezoneOffset() / -60;
+  public offset(destination: Null<Timezone> = null) {
+    const local = this
+      .toDate()
+      .getTimezoneOffset() / -60;
 
     if (timeZone === null)
-      return fromUTC;
+      return local;
     else {
-      const [
-        sign,
-        H0,
-        H1,,
-        m0,
-        m1,
-      ] = new Intl.DateTimeFormat(
+      const intl = new Intl.DateTimeFormat(
         "en-US",
         {
-          timeZone,
+          timeZone: destination,
           timeZoneName: "longOffset",
         },
       )
         .formatToParts()
         .find(part => part.type === "timeZoneName")!
-        .value
-        .slice(3) as unknown as Hexad<char>;
+        .value,
+      hours = Number(intl.slice(3, 6)),
+      minutes = Number(intl.slice(7, 9)) / 60;
 
-      return fromUTC - Number(
-        sign.concat(
-          (
-            Number(H0.concat(H1))
-            + Number(m0.concat(m1))
-            / 60
-          )
-            .toFixed(1),
-        ),
+      return local - (
+        hours < 0
+          ? hours - minutes
+          : hours + minutes
       );
     }
   }
