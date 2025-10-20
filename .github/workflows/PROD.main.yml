@@ -1,13 +1,13 @@
 --- # PROD.main.yml
 name: Azure Publish (PROD.main)
-on: { push: { branches: [&branch main] } }
+on: {push: {branches: [&branch main]} }
 jobs:
   publish-prod-main:
     name: Build/Publish (PROD.main)
     environment:
       name: PROD.main
       url: https://${{vars.AZ_ACCOUNT}}.blob.core.windows.net/${{vars.AZ_CONTAINER}}/${{vars.PACKAGE}}.zip
-    permissions: { contents: read }
+    permissions: {contents: read}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,7 +16,7 @@ jobs:
       - name: Install Node
         id: node
         uses: actions/setup-node@v4
-        with: { node-version: 22 }
+        with: {node-version: 22}
       - name: Install Dependencies
         id: ci
         run: npm ci --loglevel=error --fund=false
