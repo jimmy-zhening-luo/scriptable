@@ -17,6 +17,7 @@ await new class Clock extends Widget<ClockSetting> {
     this.clock(
       setting.clocks[0].timezone,
       setting.clocks[0].label,
+      "Consolas"
     );
     void this.line(4);
     this.clock(

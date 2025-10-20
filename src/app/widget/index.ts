@@ -47,7 +47,7 @@ export default abstract class Widget<Setting = never> extends IWidget<Setting> {
     void this.widget.presentSmall();
   };
 
-  protected override text(
+ 
     text: unknown,
     font: Null<Font> = this.style.body.regular(),
   ) {
@@ -62,6 +62,7 @@ export default abstract class Widget<Setting = never> extends IWidget<Setting> {
   protected clock(
     timezone: Parameters<typeof Widget.Time.prototype.offset>[0] = null,
     label = "--",
+    font = "Menlo",
     ampm = true,
   ) {
     const now = new Widget.Time,
@@ -99,7 +100,7 @@ export default abstract class Widget<Setting = never> extends IWidget<Setting> {
     clock.spacing = 0;
     clock.centerAlignContent();
     clock.addText(label).font = new Font(
-      "Menlo",
+      font,
       Math.round(this.weight * 1.1),
     );
     void clock.addSpacer(
