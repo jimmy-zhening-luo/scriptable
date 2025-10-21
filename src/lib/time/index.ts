@@ -127,7 +127,7 @@ export default class Time {
     date: ConstructorParameters<typeof Time>[0] = new Time,
     unit: keyof typeof Unit = "hour",
   ) {
-    const delta = this.epoch - new Time(date);
+    const delta = this.epoch - new Time(date).epoch;
 
     switch (unit) {
       case "hour":
