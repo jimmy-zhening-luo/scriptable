@@ -1,4 +1,4 @@
-export default async function location(
+export default async function (
   accuracy:
     | 0
     | 0.01
