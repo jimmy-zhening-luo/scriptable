@@ -56,7 +56,7 @@ class FontFamily<
   }
 }
 
-export default class Style {
+export default class {
   public readonly body;
   public readonly round;
 
