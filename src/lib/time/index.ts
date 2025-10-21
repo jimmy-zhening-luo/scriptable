@@ -1,9 +1,10 @@
 import type { Timezone } from "./timezone";
 
 const enum Unit {
-  Hour = 3_600_000,
-  Minute = 60_000,
-  Second = 1_000,
+  millisecond = 1,
+  second = 1_000,
+  minute = 60_000,
+  hour = 3_600_000,
 }
 
 export default class Time {
@@ -75,9 +76,9 @@ export default class Time {
   ) {
     return new Time(
       this.epoch
-      + hours * Unit.Hour
-      + minutes * Unit.Minute
-      + seconds * Unit.Second
+      + hours * Unit.hour
+      + minutes * Unit.minute
+      + seconds * Unit.second
       + milliseconds,
     );
   }
@@ -120,6 +121,24 @@ export default class Time {
               time,
             ),
     );
+  }
+
+  public since(
+    date: ConstructorParameters<typeof Time>[0] = new Time,
+    unit: keyof typeof Unit = "hour",
+  ) {
+    const delta = this.epoch - new Time(date);
+
+    switch (unit) {
+      case "hour":
+        return delta / Unit.hour;
+      case "minute":
+        return delta / Unit.hour;
+      case "second":
+        return delta / Unit.hour;
+      default:
+        return delta;
+    }
   }
 
   public offset(destination: Null<Timezone> = null) {
