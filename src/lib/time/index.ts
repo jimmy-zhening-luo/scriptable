@@ -133,9 +133,11 @@ export default class Time {
       case "hour":
         return delta / Unit.hour;
       case "minute":
-        return delta / Unit.hour;
+        return delta / Unit.minute;
       case "second":
-        return delta / Unit.hour;
+        return delta / Unit.second;
+      case "millisecond":
+        return delta;
       default:
         return delta;
     }
