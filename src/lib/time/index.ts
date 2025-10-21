@@ -130,16 +130,16 @@ export default class Time {
     const delta = this.epoch - new Time(date).epoch;
 
     switch (unit) {
-      case "hour":
-        return delta / Unit.hour;
-      case "minute":
-        return delta / Unit.minute;
-      case "second":
-        return delta / Unit.second;
-      case "millisecond":
-        return delta;
-      default:
-        return delta;
+    case "hour":
+      return delta / Unit.hour;
+    case "minute":
+      return delta / Unit.minute;
+    case "second":
+      return delta / Unit.second;
+    case "millisecond":
+      return delta;
+    default:
+      return delta;
     }
   }
 
