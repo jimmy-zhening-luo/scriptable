@@ -145,7 +145,7 @@ export default class Time {
     date?: Parameters<Time["since"]>[0],
     unit?: Parameters<Time["since"]>[1],
   ) {
-    return -since(date, unit);
+    return -this.since(date, unit);
   }
 
   public offset(destination: Null<Timezone> = null) {
