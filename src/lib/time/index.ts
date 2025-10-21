@@ -141,6 +141,13 @@ export default class Time {
     }
   }
 
+  public until(
+    date?: Parameters<Time["since"]>[0],
+    unit?: Parameters<Time["since"]>[1],
+  ) {
+    return -since(date, unit);
+  }
+
   public offset(destination: Null<Timezone> = null) {
     const local = this
       .toDate()
