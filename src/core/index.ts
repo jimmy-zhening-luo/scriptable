@@ -25,10 +25,12 @@ export default abstract class IApp<
     private _input: Unnull<Input>,
     production: boolean,
   ) {
-    this.app = this.stringful(
-      this.constructor.name,
-      "Anonymous app instance",
-    );
+    const { name } = this.constructor as Field<"name">;
+
+    if (name === "")
+      throw TypeError("Anonymous app instance");
+
+    this.app = name as stringful;
     this.context = {
       production,
       development: !production
@@ -153,29 +155,29 @@ export default abstract class IApp<
     }
   }
 
-  protected get(key: string) {
+  protected get(key?: string) {
     return this
       .cache(key)
       .read();
   }
 
   protected set(
-    key: string,
     value: Parameters<File<"Cache">["write"]>[0],
+    key?: string,
   ) {
     this
       .cache(key)
       .write(value, true);
   }
 
-  protected unset(key = "") {
+  protected unset(key?: string) {
     this
       .cache(key)
       .delete();
   }
 
   protected clear() {
-    this.unset();
+    this.unset("");
   }
 
   protected read(
@@ -337,7 +339,7 @@ export default abstract class IApp<
     );
   }
 
-  private cache(key: string) {
+  private cache(key = "cache") {
     return this.pool[key] ??= new File(
       "Cache",
       key,
@@ -356,7 +358,7 @@ export default abstract class IApp<
   ) {
     const record = extension === ""
       ? file
-      : file.concat(".", extension);
+      : [file, extension].join(".");
 
     return this.store[record] ??= new File(
       "Storage",
@@ -375,7 +377,7 @@ export default abstract class IApp<
   ) {
     const feed = extension === ""
       ? file
-      : file.concat(".", extension);
+      : [file, extension].join(".");
 
     return this.stream[feed] ??= new File(
       "Feed",

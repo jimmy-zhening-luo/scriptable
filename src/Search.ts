@@ -39,7 +39,7 @@ void new class Search extends Shortcut<
       terms,
       prior = false,
     } = input === ""
-      ? history(this.get("history"))
+      ? history(this.get())
       : Parser(
         input,
         new Set(Object.keys(engines)),
@@ -55,7 +55,6 @@ void new class Search extends Shortcut<
 
     if (!prior && engine.noSave !== true)
       this.set(
-        "history",
         {
           key,
           terms,

@@ -152,13 +152,13 @@ await new class Clock extends Widget<ClockSetting> {
     );
 
     this.set(
-      "sun",
       {
         sunrise,
         sunset,
         expiry: date.tomorrow.epoch,
         offset: date.offset(),
       } satisfies ISunCache,
+      "sun",
     );
 
     return {
