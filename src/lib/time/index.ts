@@ -170,10 +170,10 @@ export default class Time {
       hours = Number(intl.slice(3, 6)),
       minutes = Number(intl.slice(7, 9)) / 60;
 
-      return local - (
+      return local - hours - (
         hours < 0
-          ? hours - minutes
-          : hours + minutes
+          ? -minutes
+          : minutes
       ) as finiteful;
     }
   }
