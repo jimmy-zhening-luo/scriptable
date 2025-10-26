@@ -3,10 +3,6 @@ const enum State {
   File,
   Folder,
 }
-enum Overwrite {
-  append,
-  push,
-}
 
 export default class File<Class extends string> {
   private static readonly manager = FileManager.local();
@@ -46,13 +42,12 @@ export default class File<Class extends string> {
       ),
     leaf = subpath.pop();
 
-    this.parent = root
-      .concat(
-        "/",
-        Class,
-        "/",
-        subpath.join("/"),
-      );
+    this.parent = [
+      root,
+      Class,
+    ]
+      .concat(subpath)
+      .join("/"),
     this.path = leaf === undefined
       ? this.parent
       : this.parent.concat(
@@ -110,7 +105,8 @@ export default class File<Class extends string> {
       | Record<string, unknown> = "",
     overwrite:
       | boolean
-      | keyof typeof Overwrite = false,
+      | "append"
+      | "push" = false,
   ) {
     if (!this.mutable)
       throw this.error(
@@ -141,17 +137,17 @@ export default class File<Class extends string> {
       this.path,
       typeof content === "object"
         ? JSON.stringify(content)
-        : typeof overwrite === "boolean" || this.state === State.None
+        : overwrite === true || this.state === State.None
           ? String(content)
-          : Overwrite[overwrite] === Overwrite.append
-            ? this
-                .readString()
-                .concat(content as string)
-            : String(content)
+          : overwrite === "push"
+            ? String(content)
                 .concat(
                   "\n",
                   this.readString(),
-                ),
+                )
+            : this
+                .readString()
+                .concat(content as string);
     );
     this.state = State.File;
   }
