@@ -115,7 +115,7 @@ export default class Time {
             )
         : this
             .date()
-            .date()String()
+            .toDateString()
             .concat(
               " at ",
               time,
