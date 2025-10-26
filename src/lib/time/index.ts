@@ -58,7 +58,7 @@ export default class Time {
   }
 
   public get tomorrow() {
-    const date = this.toDate();
+    const date = this.date()();
 
     return new Time(
       date.setDate(
@@ -106,7 +106,7 @@ export default class Time {
     return new Time(
       typeof time === "number"
         ? this
-            .toDate()
+            .date()()
             .setHours(
               time,
               minute,
@@ -114,8 +114,8 @@ export default class Time {
               millisecond,
             )
         : this
-            .toDate()
-            .toDateString()
+            .date()()
+            .date()String()
             .concat(
               " at ",
               time,
@@ -151,7 +151,7 @@ export default class Time {
 
   public offset(destination: Null<Timezone> = null) {
     const local = this
-      .toDate()
+      .date()()
       .getTimezoneOffset() / -60;
 
     if (destination === null)
@@ -178,7 +178,7 @@ export default class Time {
     }
   }
 
-  public toDate() {
+  public date()() {
     return new Date(this.epoch) as Dateful;
   }
 
@@ -192,7 +192,7 @@ export default class Time {
     (this.printer ??= new DateFormatter)
       .dateFormat = format;
 
-    return this.printer.string(this.toDate());
+    return this.printer.string(this.date()());
   }
 
   private printer?: DateFormatter;
