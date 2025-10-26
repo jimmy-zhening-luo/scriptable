@@ -147,7 +147,7 @@ export default class File<Class extends string> {
                 )
             : this
                 .readString()
-                .concat(content as string);
+                .concat(content as string),
     );
     this.state = State.File;
   }
