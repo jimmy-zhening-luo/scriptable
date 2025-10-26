@@ -31,17 +31,11 @@ export default class File<Class extends string> {
         Class.concat(": Hidden file must be mutable"),
       );
 
-    const root = (
-      hidden
-        ? temporary
-          ? File.manager.cacheDirectory()
-          : File.manager.libraryDirectory()
-        : File.manager.bookmarkedPath("root")
-    )
-      .concat(
-        "/",
-        Class,
-      ),
+    const root = hidden
+      ? temporary
+        ? File.manager.cacheDirectory()
+        : File.manager.libraryDirectory()
+      : File.manager.bookmarkedPath("root"),
     subpath = folder
       .split("/")
       .concat(
@@ -52,10 +46,12 @@ export default class File<Class extends string> {
       ),
     leaf = subpath.pop();
 
-    this.parent = root.concat(
-      "/",
-      subpath.join("/"),
-    );
+    this.parent = [
+      root,
+      Class,
+    ]
+      .concat(subpath)
+      .join("/");
     this.path = leaf === undefined
       ? this.parent
       : this.parent.concat(
