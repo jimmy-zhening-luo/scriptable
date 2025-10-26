@@ -1,5 +1,61 @@
 export type { SearchOutput } from "./output";
 export type { SearchSetting } from "./setting";
+
+class SearchSelection {
+  public readonly consumes;
+  public readonly selection;
+
+  constructor(
+    {
+      canonical,
+      match,
+    }: Record<
+      | "canonical"
+      | "match",
+      stringful
+    >,
+    selection: string,
+    public readonly deselect: stringful,
+    next = "",
+  ) {
+    this.consumes = selection === ""
+      && match === ".";
+    this.selection = canonical.concat(
+      this.consumes
+        ? next
+        : selection,
+    ) as stringful;
+  }
+
+  public select(tail: stringful[]) {
+    return [
+      this.selection,
+      ...this.consumes
+        ? tail.slice(1)
+        : tail,
+    ];
+  }
+}
+
+class SearchKey {
+  constructor(
+    public readonly key: stringful,
+    public readonly selection?: SearchSelection,
+  ) {}
+}
+
+class ReservedSearchKey extends SearchKey {
+  constructor(
+    public readonly reserved: keyof typeof RESERVED,
+    selection?: SearchSelection,
+  ) {
+    super(
+      reserved as stringful,
+      selection,
+    );
+  }
+}
+
 export default function (
   query: string,
   engines: Set<string>,
@@ -13,110 +69,51 @@ export default function (
     ),
     stringful
   >,
-  SELECTORS: Set<char>,
+  selectors: string,
 ) {
   function parse(
     query: string,
-    SELECTORS: Set<char>,
+    selectors: string,
   ) {
     function select(
       query: string,
-      SELECTORS: Set<char>,
+      selectors: string,
     ) {
-      class SearchSelection {
-        public readonly consumes;
-        public readonly selection;
-
-        constructor(
-          {
-            canonical,
-            match,
-          }: Record<
-            | "canonical"
-            | "match",
-            stringful
-          >,
-          selection: string,
-          next: string,
-          public readonly deselect: stringful,
-        ) {
-          this.consumes = selection === ""
-            && match === ".";
-          this.selection = canonical.concat(
-            this.consumes
-              ? next
-              : selection,
-          ) as stringful;
-        }
-
-        public select(tail: stringful[]) {
-          return [
-            this.selection,
-            ...this.consumes
-              ? tail.slice(1)
-              : tail,
-          ];
-        }
-      }
-
-      class SearchKey {
-        constructor(
-          public readonly key: stringful,
-          public readonly selection: Null<SearchSelection> = null,
-        ) {}
-      }
-
-      class ReservedSearchKey extends SearchKey {
-        constructor(
-          public readonly reserved: keyof typeof RESERVED,
-          selection: Null<SearchSelection> = null,
-        ) {
-          super(
-            reserved as stringful,
-            selection,
-          );
-        }
-      }
-
       function expand(query: string) {
         function tokenize(query: string) {
           function hotkey(query: string) {
             switch (query.length - query.trimStart().length) {
             case 0:
-              return [] as const;
+              return null;
             case 1:
-              return [new ReservedSearchKey("chat")] as const;
+              return new ReservedSearchKey("chat");
             default:
-              return [new ReservedSearchKey("translate")] as const;
+              return new ReservedSearchKey("translate");
             }
           }
 
-          const tokens = [
-            ...hotkey(query),
-            ...query
-              .split(" ")
-              .filter((token): token is stringful => token !== ""),
-          ] as const;
-
-          if (tokens.length === 0)
-            throw RangeError("Empty search query");
-
-          const [Head, ...tail] = tokens;
+          const tail = query
+            .trim()
+            .split(" ")
+            .filter((token): token is stringful => token !== "");
 
           return {
-            Head,
-            tail: tail as stringful[],
+            Head: hotkey(query) ?? tail.pop(),
+            tail,
           };
         }
 
         const { Head, tail } = tokenize(query);
+
+        if (Head === undefined)
+          throw RangeError("No search query")
 
         return typeof Head === "string"
           && (Head.length !== 1 || tail.length !== 0)
           && new Set("0123456789+-$€£¥.(").has(Head[0])
           ? {
               Head: new ReservedSearchKey("math"),
-              tail: [Head, ...tail],
+              tail: [Head].concat(tail),
             }
           : {
               Head,
@@ -135,13 +132,15 @@ export default function (
           tail,
         };
       else {
-        void SELECTORS.add("." as char);
-
-        const selectors = [...SELECTORS],
-        HEAD = new Set(Head),
-        match = selectors.find(
-          selector => HEAD.has(selector),
-        );
+        const HEAD = new Set(Head),
+        SELECTORS = new Set(
+          selectors.concat("."),
+        ),
+        match = SELECTORS
+          .values()
+          .find(
+            selector => HEAD.has(selector),
+          );
 
         if (match === undefined)
           return {
@@ -149,17 +148,17 @@ export default function (
             tail,
           };
         else {
-          const canonical = selectors[0]!,
-          iSelector = Head.indexOf(match),
-          key = Head.slice(0, iSelector),
+          const [canonical = "."] = selectors;
+          i = Head.indexOf(match),
+          key = Head.slice(0, i),
           selection = new SearchSelection(
             {
               canonical,
               match,
             },
-            Head.slice(iSelector + 1),
-            tail.at(0) ?? "",
+            Head.slice(i + 1),
             Head,
+            tail[0],
           );
 
           return {
@@ -180,7 +179,7 @@ export default function (
 
     const { Head, tail } = select(
       query,
-      SELECTORS,
+      selectors,
     );
 
     if (typeof Head !== "string")
@@ -206,7 +205,7 @@ export default function (
 
         return {
           Head: key,
-          tail: [operand, ...tail],
+          tail: [operand].concat(tail),
         };
       }
     }

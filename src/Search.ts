@@ -45,7 +45,7 @@ void new class Search extends Shortcut<
         new Set(Object.keys(engines)),
         alias,
         keys,
-        new Set(selectors satisfies string as unknown as char[]),
+        selectors,
       ) as ReturnType<typeof Parser> & Flag<"prior">,
     engine = Engine(
       key,
