@@ -278,7 +278,7 @@ export default function (
       : {
           key,
           terms: typeof Head === "string"
-            || Head.selection === null
+            || Head.selection === undefined
             ? tail
             : Head.selection.select(tail),
         };
