@@ -128,7 +128,7 @@ export default class Time {
     unit: keyof typeof Unit = "hour",
   ) {
     const then = new Time(date),
-    delta = this.epoch - then.epoch;
+    delta = this - then;
 
     switch (unit) {
     case "hour":
