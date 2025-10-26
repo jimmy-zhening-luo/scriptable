@@ -6,11 +6,7 @@ export default abstract class IApp<
   Input = never,
 > {
   protected readonly app;
-  protected readonly context: Flag<
-    never,
-    | "production"
-    | "development"
-  >;
+  protected readonly context;
   private readonly pool: Table<
     File<"Cache">
   > = {};
@@ -25,10 +21,11 @@ export default abstract class IApp<
     private _input: Unnull<Input>,
     production: boolean,
   ) {
-    this.app = this.stringful(
-      this.constructor.name,
-      "Anonymous app instance",
-    );
+    this.app = this.constructor.name as stringful;
+
+    if (this.app === "")
+      throw TypeError("Anonymous app class");
+
     this.context = {
       production,
       development: !production
