@@ -25,12 +25,10 @@ export default abstract class IApp<
     private _input: Unnull<Input>,
     production: boolean,
   ) {
-    const { name } = this.constructor as Field<"name">;
-
-    if (name === "")
-      throw TypeError("Anonymous app instance");
-
-    this.app = name as stringful;
+    this.app = this.stringful(
+      this.constructor.name,
+      "Anonymous app instance",
+    )
     this.context = {
       production,
       development: !production
