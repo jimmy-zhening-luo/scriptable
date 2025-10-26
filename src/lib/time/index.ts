@@ -5,6 +5,7 @@ const enum Unit {
   second = 1e3,
   minute = 6e4,
   hour = 36e5,
+  day = 864e5,
 }
 
 export default class Time {
@@ -127,18 +128,27 @@ export default class Time {
     date: ConstructorParameters<typeof Time>[0] = new Time,
     unit: keyof typeof Unit = "hour",
   ) {
-    const then = new Time(date),
-    delta = this.epoch - then.epoch;
+    const then = new Time(date);
 
-    switch (unit) {
-    case "hour":
-      return delta / Unit.hour;
-    case "minute":
-      return delta / Unit.minute;
-    case "second":
-      return delta / Unit.second;
-    default:
-      return delta;
+    if (unit === "day")
+      return Math.round(
+        (
+          this.midnight.epoch - then.midnight.epoch
+        ) / Unit.day,
+      );
+    else {
+      const delta = this.epoch - then.epoch;
+
+      switch (unit) {
+      case "hour":
+        return delta / Unit.hour;
+      case "minute":
+        return delta / Unit.minute;
+      case "second":
+        return delta / Unit.second;
+      default:
+        return delta;
+      }
     }
   }
 
