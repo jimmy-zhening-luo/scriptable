@@ -30,7 +30,7 @@ export default class File<Class extends string> {
             folder,
             file,
           ]
-            .join("/");
+            .join("/"),
         },
       );
 
