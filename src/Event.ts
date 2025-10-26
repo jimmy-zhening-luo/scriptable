@@ -116,21 +116,21 @@ await new class Event extends DateWidget {
     eventsLaterToday = await CalendarEvent.between(
       now
         .ago(0.5)
-        .date()(),
+        .date(),
       now
         .eod
-        .date()(),
+        .date(),
       [calendar],
     ),
     { tomorrow } = now,
     eventsTomorrow = await CalendarEvent.between(
-      tomorrow.date()(),
+      tomorrow.date(),
       (
         now < now.at(22)
           ? now.in(26)
           : tomorrow.eod
       )
-        .date()(),
+        .date(),
       [calendar],
     ),
     [laterToday] = eventsLaterToday.filter(

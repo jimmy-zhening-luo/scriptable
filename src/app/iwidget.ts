@@ -25,7 +25,7 @@ export default abstract class IWidget<Setting> extends IApp<
     this.url = url;
     this.widget.refreshAfterDate = new Time()
       .in(0, 0, 30)
-      .date()();
+      .date();
   }
 
   protected get url() {

@@ -55,7 +55,7 @@ void new class Timer extends Widget {
         timer.centerAlignContent();
 
         const countdown = timer.addDate(
-          end.date()(),
+          end.date(),
         );
 
         countdown.font = this.style.round.regular(16);

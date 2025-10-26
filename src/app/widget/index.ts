@@ -107,7 +107,7 @@ export default abstract class Widget<Setting = never> extends IWidget<Setting> {
       Math.round(this.weight * 1.25),
     );
 
-    const dial = clock.addDate(zero.date()());
+    const dial = clock.addDate(zero.date());
 
     dial.font = this
       .style
