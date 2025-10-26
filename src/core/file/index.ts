@@ -22,9 +22,16 @@ export default class File<Class extends string> {
     } = {},
   ) {
     if (hidden && !mutable)
-      this.error(
-        "construct",
-        Class.concat(": Hidden file must be mutable"),
+      throw TypeError(
+        "Hidden file must be mutable",
+        {
+          cause: [
+            Class,
+            folder,
+            file,
+          ]
+            .join("/");
+        },
       );
 
     const root = hidden
@@ -75,7 +82,7 @@ export default class File<Class extends string> {
     if (fail)
       throw this.error(
         "read",
-        ReferenceError("File does not exist"),
+        "File does not exist",
       );
 
     return undefined;
@@ -118,7 +125,7 @@ export default class File<Class extends string> {
       if (overwrite === false)
         throw this.error(
           "write",
-          ReferenceError("File exists, but overwrite mode false"),
+          "File exists, but overwrite mode false",
         );
     }
     else if (this.state === State.Folder)
@@ -167,18 +174,14 @@ export default class File<Class extends string> {
 
   private error(
     verb: string,
-    message: string | Error,
+    cause: string | Error,
   ) {
     return Error(
       `Failed to ${verb} file`,
       {
-        cause: Error(
+        cause: ReferenceError(
           this.path,
-          {
-            cause: typeof message === "string"
-              ? TypeError(message)
-              : message,
-          },
+          { cause },
         ),
       },
     );
