@@ -47,7 +47,7 @@ export default class File<Class extends string> {
       Class,
     ]
       .concat(subpath)
-      .join("/"),
+      .join("/");
     this.path = leaf === undefined
       ? this.parent
       : this.parent.concat(
