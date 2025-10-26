@@ -2,9 +2,9 @@ import type { Timezone } from "./timezone";
 
 const enum Unit {
   millisecond = 1,
-  second = 1_000,
-  minute = 60_000,
-  hour = 3_600_000,
+  second = 1e3,
+  minute = 6e4,
+  hour = 36e5,
 }
 
 export default class Time {
@@ -127,7 +127,8 @@ export default class Time {
     date: ConstructorParameters<typeof Time>[0] = new Time,
     unit: keyof typeof Unit = "hour",
   ) {
-    const delta = this.epoch - new Time(date).epoch;
+    const then = new Time(date),
+    delta = this.epoch - then.epoch;
 
     switch (unit) {
     case "hour":
