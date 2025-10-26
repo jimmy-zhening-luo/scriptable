@@ -28,7 +28,7 @@ export default abstract class IApp<
     this.app = this.stringful(
       this.constructor.name,
       "Anonymous app instance",
-    )
+    );
     this.context = {
       production,
       development: !production
