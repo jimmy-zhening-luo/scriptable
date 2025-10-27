@@ -356,8 +356,8 @@ export default abstract class IApp<
       record,
       this.app,
       {
-        hidden: true,
         mutable: true,
+        hidden: true,
       },
     );
   }
