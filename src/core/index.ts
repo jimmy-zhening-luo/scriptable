@@ -208,7 +208,7 @@ export default abstract class IApp<
   }
 
   protected write(
-    data: Parameters<ReturnType<this["storage"]>["write"]>[0],
+    data: Parameters<typeof this.store[string]["write"]>[0],
     overwrite: Parameters<ReturnType<this["storage"]>["write"]>[1] = true,
     file?: string,
     extension?: string,
