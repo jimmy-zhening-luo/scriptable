@@ -153,7 +153,7 @@ export default abstract class IApp<
   }
 
   protected set(
-    value: Parameters<typeof this.cache[string]["write"]>[0],
+    value: Parameters<ReturnType<this["cache"]>["write"]>[0],
     key?: string,
   ) {
     this
@@ -208,8 +208,8 @@ export default abstract class IApp<
   }
 
   protected write(
-    data: Parameters<typeof this.storage[string]["write"]>[0],
-    overwrite: Parameters<typeof this.storage[string]["write"]>[1] = true,
+    data: Parameters<ReturnType<this["storage"]>["write"]>[0],
+    overwrite: Parameters<ReturnType<this["storage"]>["write"]>[1] = true,
     file?: string,
     extension?: string,
   ) {
