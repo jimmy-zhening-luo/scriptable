@@ -120,8 +120,8 @@ export default class File<
     if (Array.isArray(content)) {
       const rows = content.map(
         line => typeof line === "object"
-          ? JSON.stringify(content)
-          : String(content)
+          ? JSON.stringify(line)
+          : String(line)
       );
 
       if (
@@ -151,8 +151,8 @@ export default class File<
           || this.state === State.None
             ? String(content)
             : overwrite === "push"
-              ? content + "\n" + this.read()!
-              : this.read()! + content,
+              ? String(content) + "\n" + this.read()!
+              : this.read()! + String(content),
       );
 
     this.state = State.File;
