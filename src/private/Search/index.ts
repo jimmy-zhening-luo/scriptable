@@ -82,24 +82,18 @@ export default function (
     ) {
       function expand(query: string) {
         function tokenize(query: string) {
-          function hotkey(query: string) {
-            switch (query.length - query.trimStart().length) {
-            case 0:
-              return null;
-            case 1:
-              return new ReservedSearchKey("chat");
-            default:
-              return new ReservedSearchKey("translate");
-            }
-          }
-
-          const tail = query
+          const hotkeys = query.length - query.trimStart().length,
+          tail = query
             .trim()
             .split(" ")
             .filter((token): token is stringful => token !== "");
 
           return {
-            Head: hotkey(query) ?? tail.pop(),
+            Head: hotkeys === 0
+              ? tail.pop()
+              : hotkeys === 1
+                ? new ReservedSearchKey("chat")
+                : new ReservedSearchKey("translate"),
             tail,
           };
         }
