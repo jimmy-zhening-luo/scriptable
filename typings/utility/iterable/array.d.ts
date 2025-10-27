@@ -6,7 +6,7 @@ declare type ArrayN<
   ? never
   : [N] extends [never]
       ? never
-      : Truth<Mutable> extends never
+      : True<Mutable> extends never
         ? ArrayN.Construct<
           Extract<`${N}`, `-${string}` | `${string}.${string}`> extends never
             ? N

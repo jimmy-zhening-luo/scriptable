@@ -4,6 +4,6 @@ declare type Unflat<
 > = [Element] extends [never]
   ? never
   : | Element
-    | (Truth<Mutable> extends never
+    | (True<Mutable> extends never
       ? readonly Element[]
       : Element[]);
