@@ -91,7 +91,7 @@ export default class File<
       | boolean
       | "append"
       | "push" = false,
-  ): True<Mutable> extends never ? never : void {
+  ) {
     if (!this.mutable)
       throw this.error(
         "write",
@@ -126,20 +126,20 @@ export default class File<
 
       if (
         typeof overwrite === "string"
-        && this.state !== State.None
+        && this.state === State.File
       )
-        if (this.overwrite === "push")
-          rows[rows.length] = existing;
+        if (overwrite === "push")
+          rows[rows.length] = this.read()!;
         else {
           const existing = this.read()!;
-  
+
           if (existing !== "")
-            rows.unshift(existing)
+            rows.unshift(existing);
         }
 
       File.manager.writeString(
         this.path,
-        rows.join("\n");
+        rows.join("\n"),
       );
     }
     else
@@ -151,8 +151,8 @@ export default class File<
           || this.state === State.None
             ? String(content)
             : overwrite === "push"
-              ? content + "\n" + this.readString()
-              : this.readString() + content,
+              ? content + "\n" + this.read()!
+              : this.read()! + content,
       );
 
     this.state = State.File;
