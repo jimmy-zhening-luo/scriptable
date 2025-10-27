@@ -19,8 +19,8 @@ export default class File<
     file: string,
     folder: string,
     mutable: Mutable,
-    hidden: Truth<Mutable> | false = false,
-    temporary: Truth<Mutable> | false = false,
+    hidden: True<Mutable> | false = false,
+    temporary: True<Mutable> | false = false,
   ) {
     const root = hidden
       ? temporary
@@ -91,7 +91,7 @@ export default class File<
       | boolean
       | "append"
       | "push" = false,
-  ): Truth<Mutable> extends never  {
+  ): True<Mutable> extends never ? never : void {
     if (!this.mutable)
       throw this.error(
         "write",
