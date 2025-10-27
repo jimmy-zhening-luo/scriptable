@@ -1,4 +1,4 @@
-// icon-color: gray; icon-glyph: fingerprint;
+"gray fingerprint";
 import Shortcut from "./app";
 
 void new class Guid extends Shortcut<never, string> {

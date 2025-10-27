@@ -1,4 +1,4 @@
-// icon-color: pink; icon-glyph: calendar-alt;
+"pink calendar-alt";
 import DateWidget from "./app/widget/date";
 
 const ICON = {

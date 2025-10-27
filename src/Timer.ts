@@ -1,4 +1,4 @@
-// icon-color: teal; icon-glyph: hourglass-half;
+"teal hourglass-half";
 import Widget from "./app/widget";
 
 void new class Timer extends Widget {

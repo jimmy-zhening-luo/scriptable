@@ -1,5 +1,4 @@
-// icon-color: gray; icon-glyph: folder-open;
-// share-sheet-inputs: file-url;
+"gray folder-open // share-sheet-inputs: file-url;";
 import Share from "./app/share";
 
 void new class FileLink extends Share {

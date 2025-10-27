@@ -1,4 +1,4 @@
-// icon-color: blue; icon-glyph: search;
+"blue search";
 import Shortcut from "./app";
 import Parser from "./private/Search";
 import Engine from "./private/Search/engine";

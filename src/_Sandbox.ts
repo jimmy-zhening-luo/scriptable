@@ -1,4 +1,4 @@
-// icon-color: deep-green; icon-glyph: play;
+"deep-green play";
 import Shortcut from "./app";
 // import Time from "./lib/time";
 

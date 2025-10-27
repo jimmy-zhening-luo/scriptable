@@ -1,4 +1,4 @@
-// icon-color: orange; icon-glyph: clock;
+"orange clock";
 import Widget from "./app/widget";
 import type { ClockSetting } from "./private/Clock";
 
