@@ -1,5 +1,7 @@
 import File from "./file";
 
+type Drive<T extends string> = Table<File<T>>;
+
 export default abstract class IApp<
   Setting = never,
   Output = void,
@@ -7,15 +9,9 @@ export default abstract class IApp<
 > {
   protected readonly app;
   protected readonly context;
-  private readonly pool: Table<
-    File<"Cache">
-  > = {};
-  private readonly store: Table<
-    File<"Storage">
-  > = {};
-  private readonly stream: Table<
-    File<"Feed">
-  > = {};
+  private readonly pool: Drive<"Cache"> = {};
+  private readonly store: Drive<"Storage"> = {};
+  private readonly stream: Drive<"Feed"> = {};
 
   constructor(
     private _input: Unnull<Input>,
