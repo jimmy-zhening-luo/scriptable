@@ -6,6 +6,6 @@ declare type base64char
 
 declare type base64pad = "=";
 
-declare type base64paddedchar
+declare type base64charpad
 = | base64char
   | base64pad;

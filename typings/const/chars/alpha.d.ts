@@ -1,3 +1,3 @@
 declare type alpha
-= | lower
-  | upper;
+= | UPPER
+  | lower;

@@ -1,8 +1,10 @@
 declare type hexchar
 = | digit
-  | "A"
-  | "B"
-  | "C"
-  | "D"
-  | "E"
-  | "F";
+  | "a"
+  | "b"
+  | "c"
+  | "d"
+  | "e"
+  | "f";
+
+declare type HEXCHAR = Uppercase<hexchar>;
