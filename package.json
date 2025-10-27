@@ -61,14 +61,14 @@
     "deploy:copy": "cmd --% /c xcopy /e /k /h /i \"./dist\" \"packed\" || cp -r dist/* packed",
     "deploy:filter": "cmd /c \"(rmdir /s /q packed\\_test) & (del /s /q packed\\*.tsbuildinfo packed\\*.d.ts packed\\*.map packed\\*.spec.js)\" || npm run deploy:filter:default",
     "deploy:filter:default": "rm -rf packed/_test && find packed -type f \\( -name \"*.tsbuildinfo\" -or -name \"*.d.ts\" -or -name \"*.map\" -or -name \"*.spec.js\" \\) -delete",
-    "deploy:sed": "npm run deploy:sed:header && npm run deploy:sed:strict && npm run deploy:sed:resolve:import && npm run deploy:sed:resolve:export && npm run deploy:sed:outdent && npm run deploy:sed:newline && npm run deploy:sed:delete:newline && npm run deploy:sed:delete:source",
+    "deploy:sed": "npm run deploy:sed:header && npm run deploy:sed:strict && npm run deploy:sed:resolve:import && npm run deploy:sed:resolve:export && npm run deploy:sed:outdent && npm run deploy:sed:newline:header && npm run deploy:sed:newline:sandbox && npm run deploy:sed:delete:source",
     "deploy:sed:header": "rr \"^\\x22([-a-z]+) +([-a-z]+) *(|\\/\\/ share-sheet-inputs:(?: [-a-z]+,){0,3} [-a-z]+;)\\x22;\\s(.+)$\" \"// Variables used by Scriptable.\\n// These must be at the very top of the file. Do not edit.\\n// icon-color: €1, icon-glyph: €2;\\n€3\\n\\x22use strict\\x22;\\n€4\" -uI -GMs \"packed/*.js\" -BHq",
     "deploy:sed:strict": "rr \"^((?!\\/\\/ Variables used by Scriptable\\.\\s).+)$\" \"\\x22use strict\\x22;\\n€1\" -uI -GMs \"packed/**/*.js\" -BHq",
     "deploy:sed:resolve:import": "rr \"\\bimport[ \\t]+([\\w]+)[ \\t]+from[ \\t]+(\\S.*\\S)[ \\t]*;[ \\t]*$\" \"const €1 = importModule(€2);\" -uI \"packed/**/*.js\" -BHq",
     "deploy:sed:resolve:export": "rr \"^([ \\t]*)export[ \\t]+default[ \\t]+\" \"€1module.exports = \" -uI \"packed/**/*.js\" -BHq",
     "deploy:sed:outdent": "rr \"    \" \"  \" -L \"packed/{,app/**/,lib/**/,private/**/}*.js\" -BHq",
-    "deploy:sed:newline": "rr \"([ \\t]*)async runtime\\(\\) *\\{\\s*\\}\" \"€1async runtime() {\\n€1  \\n€1}\" -uI -GMs \"packed/*.js\" -BHq",
-    "deploy:sed:delete:newline": "rr \"^(\\/\\/ Variables used by Scriptable\\.\\s\\/\\/ These must be at the very top of the file. Do not edit.\\s(?:\\/\\/ [-:;, a-z]+\\s)+)\\s*\" \"€1\" -uI -GMs \"packed/**/*.js\" -BHq",
+    "deploy:sed:newline:header": "rr \"^(\\/\\/ Variables used by Scriptable\\.\\s\\/\\/ These must be at the very top of the file. Do not edit.\\s(?:\\/\\/ [-:;, a-z]+\\s)+)\\s*\" \"€1\\n\" -uI -GMs \"packed/**/*.js\" -BHq",
+    "deploy:sed:newline:sandbox": "rr \"([ \\t]*)async runtime\\(\\) *\\{\\s*\\}\" \"€1async runtime() {\\n€1  \\n€1}\" -uI -GMs \"packed/*.js\" -BHq",
     "deploy:sed:delete:source": "rr \"^(.*)\\/\\/# sourceMappingURL=.+\\.map\\s*$\" \"€1\" -uI -GMs \"packed/**/*.js\" -BHq"
   },
   "author": "Jimmy Zhening Luo <jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
