@@ -4,7 +4,7 @@ const enum State {
   Folder,
 }
 
-export default class File<Class extends string> {
+export default class File<T extends string> {
   private static readonly manager = FileManager.local();
   private readonly path;
   private readonly parent;
@@ -12,7 +12,7 @@ export default class File<Class extends string> {
   private state: State = State.None;
 
   constructor(
-    Class: Literalful<Class>,
+    type: Literalful<T>,
     file: string,
     folder = "",
     {
@@ -26,7 +26,7 @@ export default class File<Class extends string> {
         "Hidden file must be mutable",
         {
           cause: [
-            Class,
+            type,
             folder,
             file,
           ]
@@ -51,7 +51,7 @@ export default class File<Class extends string> {
 
     this.parent = [
       root,
-      Class,
+      type,
     ]
       .concat(subpath)
       .join("/");
