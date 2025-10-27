@@ -90,7 +90,7 @@ export default function (
 
           return {
             Head: hotkeys === 0
-              ? tail.pop()
+              ? tail.shift()
               : hotkeys === 1
                 ? new ReservedSearchKey("chat")
                 : new ReservedSearchKey("translate"),
