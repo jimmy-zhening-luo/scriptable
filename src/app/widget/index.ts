@@ -132,9 +132,7 @@ export default abstract class Widget<Setting = never> extends IWidget<Setting> {
     font = this.style.footnote(),
   ) {
     return this.text(
-      label.concat(
-        new Widget.Time().print("h:mm a"),
-      ),
+      label + new Widget.Time().print("h:mm a"),
       font,
     );
   }

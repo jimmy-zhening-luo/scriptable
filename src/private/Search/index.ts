@@ -20,10 +20,10 @@ class SearchSelection {
   ) {
     this.consumes = selection === ""
       && match === ".";
-    this.selection = canonical.concat(
+    this.selection = canonical + (
       this.consumes
         ? next
-        : selection,
+        : selection
     ) as stringful;
   }
 
@@ -128,7 +128,7 @@ export default function (
         };
       else {
         const HEAD = new Set(Head),
-        selectorful = selectors.concat(".") as stringful,
+        selectorful = selectors + "." as stringful,
         SELECTORS = new Set<char>(selectorful satisfies stringful as unknown as char[]),
         match = SELECTORS
           .values()

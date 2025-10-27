@@ -59,10 +59,7 @@ await new class Clock extends Widget<ClockSetting> {
         time: InstanceType<typeof Clock.Time>,
         badge: string,
       ) {
-        return badge.concat(
-          "\u2009",
-          time.print("h:mm a"),
-        );
+        return badge + "\u2009" + time.print("h:mm a");
       }
 
       void badges.push(
@@ -73,7 +70,7 @@ await new class Clock extends Widget<ClockSetting> {
       );
     }
     catch (e) {
-      console.error("Sun API: ".concat(String(e)));
+      console.error("Sun API: " + String(e));
       console.warn("Continuing...");
     }
 
@@ -91,7 +88,7 @@ await new class Clock extends Widget<ClockSetting> {
       void badges.push(`\u224B\u2006${humidity}% ${dew}\u00B0`);
     }
     catch (e) {
-      console.error("Weather API: ".concat(String(e)));
+      console.error("Weather API: " + String(e));
       console.warn("Continuing...");
     }
 
@@ -138,10 +135,7 @@ await new class Clock extends Widget<ClockSetting> {
           "%LONG",
           longitude,
         )
-        .concat(
-          "&date=",
-          date.print("y-MM-dd"),
-        ),
+        + "&date=" + date.print("y-MM-dd"),
     ),
 
     {

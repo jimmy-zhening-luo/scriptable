@@ -114,13 +114,9 @@ export default class Time {
               second,
               millisecond,
             )
-        : this
-            .date()
-            .toDateString()
-            .concat(
-              " at ",
-              time,
-            ),
+        : this.date().toDateString()
+          + " at "
+          + time,
     );
   }
 

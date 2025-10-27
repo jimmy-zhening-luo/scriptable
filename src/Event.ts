@@ -104,11 +104,10 @@ await new class Event extends DateWidget {
           : "\u2009 ",
       };
 
-      return print.icon.concat(
-        print.start,
-        print.separator,
-        print.title,
-      );
+      return print.icon
+        + print.start
+        + print.separator
+        + print.title;
     }
 
     const calendar = await Calendar.defaultForEvents(),
@@ -141,15 +140,13 @@ await new class Event extends DateWidget {
     );
 
     this.url = "https://calendar.google.com/calendar/u/0/r/3day/"
-      .concat(
-        (
+      + (
           laterToday === undefined
           && firstTomorrow !== undefined
             ? tomorrow
             : now
         )
-          .print("yyyy/MM/dd"),
-      );
+          .print("yyyy/MM/dd");
     void this.text(
       laterToday === undefined
         ? firstTomorrow === undefined

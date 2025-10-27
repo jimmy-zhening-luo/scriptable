@@ -10,10 +10,7 @@ void new class FileLink extends Share {
             "No filepath to copy",
           )
           .map(
-            path => "shareddocuments://"
-              .concat(
-                encodeURI(path),
-              ),
+            path => "shareddocuments://" + encodeURI(path),
           )
           .join("\n")
       : "";
