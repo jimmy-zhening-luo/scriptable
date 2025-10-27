@@ -5,5 +5,4 @@ declare type hexchar
   | "C"
   | "D"
   | "E"
-  | "F"
-    ;
+  | "F";

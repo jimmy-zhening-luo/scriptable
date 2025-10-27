@@ -1,4 +1,3 @@
 declare type ternary
 = | binary
-  | 2
-    ;
+  | 2;

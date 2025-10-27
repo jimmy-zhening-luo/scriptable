@@ -6,5 +6,4 @@ declare type hexadecimal
   | 12
   | 13
   | 14
-  | 15
-    ;
+  | 15;

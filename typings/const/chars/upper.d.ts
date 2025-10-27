@@ -24,5 +24,4 @@ declare type upper
   | "W"
   | "X"
   | "Y"
-  | "Z"
-    ;
+  | "Z";
