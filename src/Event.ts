@@ -6,6 +6,15 @@ const ICON = {
   tomorrow: "\u203A",
 };
 
+const enum Limit {
+  Unlimited,
+  Limited = 27,
+  Short = 29,
+  Shorter = 30,
+  Shortest = 32,
+  Truncate = 34,
+}
+
 await new class Event extends DateWidget {
   protected async runtime() {
     function print(
@@ -19,29 +28,22 @@ await new class Event extends DateWidget {
       start = new Event
         .Time(event.startDate)
         .print("h:mm a"),
-      length = icon.full.length
+      length: Limit = icon.full.length
         + start.length
         + title.length,
-      LENGTH_LIMIT = [
-        34,
-        32,
-        30,
-        29,
-        27,
-      ] as const,
-      printLength = length > LENGTH_LIMIT[0]
-        ? 0
-        : length > LENGTH_LIMIT[1]
-          ? 1
-          : length > LENGTH_LIMIT[2]
-            ? 2
-            : length > LENGTH_LIMIT[3]
-              ? 3
-              : length > LENGTH_LIMIT[4]
-                ? 4
-                : 5,
+      limit = length > Limit.Truncate
+        ? Limit.Truncate
+        : length > Limit.Shortest
+          ? Limit.Shortest
+          : length > Limit.Shorter
+            ? Limit.Shorter
+            : length > Limit.Short
+              ? Limit.Short
+              : length > Limit.Limited
+                ? Limit.Limited
+                : Limit.Unlimited,
       print = {
-        icon: printLength !== 5
+        icon: limit !== Limit.Unlimited
           ? "short" in icon
             ? icon.short
             : ""
@@ -51,39 +53,37 @@ await new class Event extends DateWidget {
           .replace("P", "\u1D18")
           .replace(
             "M",
-            printLength !== 5
-            && printLength !== 4
+            limit > Limit.Limited
               ? ""
               : "\u1D0D",
           )
           .replace(
             ":00",
-            printLength !== 5
+            limit !== Limit.Unlimited
               ? ""
               : ":00",
           )
           .replace(
             ":",
-            printLength !== 5
-            && printLength !== 4
+            limit > Limit.Limited
               ? ""
               : ":",
           )
           .replace(
             " ",
-            printLength !== 5
+            limit !== Limit.Unlimited
               ? ""
               : "\u200A",
           ),
-        title: printLength !== 5
+        title: limit !== Limit.Unlimited
           ? title
               .replaceAll(/[\-_.,'"]/ug, "")
               .replaceAll(
                 " ",
-                printLength !== 4
-                  ? printLength !== 3
-                    ? printLength !== 2
-                      ? printLength !== 1
+                limit !== Limit.Limited
+                  ? limit !== Limit.Short
+                    ? limit !== Limit.Shorter
+                      ? limit !== Limit.Shortest
                         ? ""
                         : "\u200A"
                       : "\u2009"
@@ -91,11 +91,11 @@ await new class Event extends DateWidget {
                   : "\u2005",
               )
           : title,
-        separator: printLength !== 5
-          ? printLength !== 4
-            ? printLength !== 3
-              ? printLength !== 2
-                ? printLength !== 1
+        separator: limit !== Limit.Unlimited
+          ? limit !== Limit.Limited
+            ? limit !== Limit.Short
+              ? limit !== Limit.Shorter
+                ? limit !== Limit.Shortest
                   ? ""
                   : "\u200A"
                 : "\u2009"
