@@ -9,7 +9,7 @@ export default class File<T extends string> {
   private readonly path;
   private readonly parent;
   private readonly mutable;
-  private state: State = State.None;
+  private state;
 
   constructor(
     type: Literalful<T>,
@@ -62,11 +62,11 @@ export default class File<T extends string> {
           leaf,
         );
     this.mutable = mutable;
-
-    if (File.manager.fileExists(this.path))
-      this.state = File.manager.isDirectory(this.path)
+    this.state = File.manager.fileExists(this.path)
+      ? File.manager.isDirectory(this.path)
         ? State.Folder
-        : State.File;
+        : State.File
+      : State.None;
   }
 
   public read(fail = false) {
