@@ -1,5 +1,5 @@
 export type { SearchOutput } from "./output";
-export type { SearchSetting } from "./setting";
+import type { SearchSetting } from "./setting";
 
 class SearchSelection {
   public readonly consumes;
@@ -46,7 +46,7 @@ class SearchKey {
 
 class ReservedSearchKey extends SearchKey {
   constructor(
-    public readonly reserved: keyof typeof RESERVED,
+    public readonly reserved: keyof SearchSetting["reserved"]["keys"],
     selection?: SearchSelection,
   ) {
     super(
@@ -56,6 +56,7 @@ class ReservedSearchKey extends SearchKey {
   }
 }
 
+export type { SearchSetting };
 export default function (
   query: string,
   engines: Set<string>,
@@ -106,7 +107,7 @@ export default function (
         const { Head, tail } = tokenize(query);
 
         if (Head === undefined)
-          throw RangeError("No search query")
+          throw RangeError("No search query");
 
         return typeof Head === "string"
           && (Head.length !== 1 || tail.length !== 0)
@@ -133,9 +134,8 @@ export default function (
         };
       else {
         const HEAD = new Set(Head),
-        SELECTORS = new Set(
-          selectors.concat("."),
-        ),
+        selectorful = selectors.concat(".") as stringful,
+        SELECTORS = new Set<char>(selectorful satisfies stringful as unknown as char[]),
         match = SELECTORS
           .values()
           .find(
@@ -148,7 +148,7 @@ export default function (
             tail,
           };
         else {
-          const [canonical = "."] = selectors;
+          const canonical = selectorful[0],
           i = Head.indexOf(match),
           key = Head.slice(0, i),
           selection = new SearchSelection(
@@ -213,7 +213,7 @@ export default function (
 
   const { Head, tail } = parse(
     query,
-    SELECTORS,
+    selectors,
   );
 
   if (
