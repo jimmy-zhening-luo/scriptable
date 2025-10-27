@@ -141,12 +141,12 @@ await new class Event extends DateWidget {
 
     this.url = "https://calendar.google.com/calendar/u/0/r/3day/"
       + (
-          laterToday === undefined
-          && firstTomorrow !== undefined
-            ? tomorrow
-            : now
-        )
-          .print("yyyy/MM/dd");
+        laterToday === undefined
+        && firstTomorrow !== undefined
+          ? tomorrow
+          : now
+      )
+        .print("yyyy/MM/dd");
     void this.text(
       laterToday === undefined
         ? firstTomorrow === undefined

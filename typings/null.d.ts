@@ -7,6 +7,6 @@ declare type falsy
   | false
   // | NaN
   | 0
-  | -0
+
   | 0n
   | "";
