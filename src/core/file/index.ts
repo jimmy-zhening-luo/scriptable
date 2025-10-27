@@ -85,7 +85,7 @@ export default class File<
   public write(
     content:
       | primitive
-      | Table<unknown>
+      | Table
       | Array<primitive | object> = "",
     overwrite:
       | boolean
@@ -121,7 +121,7 @@ export default class File<
       const rows = content.map(
         line => typeof line === "object"
           ? JSON.stringify(line)
-          : String(line)
+          : String(line),
       );
 
       if (
@@ -148,7 +148,7 @@ export default class File<
         typeof content === "object"
           ? JSON.stringify(content)
           : overwrite === true
-          || this.state === State.None
+            || this.state === State.None
             ? String(content)
             : overwrite === "push"
               ? String(content) + "\n" + this.read()!
