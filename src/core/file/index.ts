@@ -4,36 +4,24 @@ const enum State {
   Folder,
 }
 
-export default class File<T extends string> {
+export default class File<
+  Type extends string,
+  Mutable extends boolean,
+> {
   private static readonly manager = FileManager.local();
   private readonly path;
   private readonly parent;
   private readonly mutable;
-  private state;
+  private state: State = State.None;
 
   constructor(
-    type: Literalful<T>,
+    type: Literalful<Type>,
     file: string,
-    folder = "",
-    {
-      mutable = false,
-      hidden = false,
-      temporary = false,
-    } = {},
+    folder: string,
+    mutable: Mutable,
+    hidden: Truth<Mutable> | false = false,
+    temporary: Truth<Mutable> | false = false,
   ) {
-    if (hidden && !mutable)
-      throw TypeError(
-        "Hidden file must be mutable",
-        {
-          cause: [
-            type,
-            folder,
-            file,
-          ]
-            .join("/"),
-        },
-      );
-
     const root = hidden
       ? temporary
         ? File.manager.cacheDirectory()
@@ -41,32 +29,22 @@ export default class File<T extends string> {
       : File.manager.bookmarkedPath("root"),
     subpath = folder
       .split("/")
-      .concat(
-        file.split("/"),
-      )
-      .filter(
-        node => node !== "",
-      ),
+      .concat(file.split("/"))
+      .filter(node => node !== ""),
     leaf = subpath.pop();
 
-    this.parent = [
-      root,
-      type,
-    ]
+    this.parent = [root, type]
       .concat(subpath)
       .join("/");
     this.path = leaf === undefined
       ? this.parent
-      : this.parent.concat(
-          "/",
-          leaf,
-        );
+      : this.parent + "/" + leaf;
     this.mutable = mutable;
-    this.state = File.manager.fileExists(this.path)
-      ? File.manager.isDirectory(this.path)
+
+    if (File.manager.fileExists(this.path))
+      this.state = File.manager.isDirectory(this.path)
         ? State.Folder
-        : State.File
-      : State.None;
+        : State.File;
   }
 
   public read(fail = false) {
@@ -106,15 +84,14 @@ export default class File<T extends string> {
 
   public write(
     content:
-      | string
-      | number
-      | boolean
-      | Record<string, unknown> = "",
+      | primitive
+      | Table<unknown>
+      | Array<primitive | object> = "",
     overwrite:
       | boolean
       | "append"
       | "push" = false,
-  ) {
+  ): Truth<Mutable> extends never  {
     if (!this.mutable)
       throw this.error(
         "write",
@@ -140,22 +117,44 @@ export default class File<T extends string> {
           true,
         );
 
-    File.manager.writeString(
-      this.path,
-      typeof content === "object"
-        ? JSON.stringify(content)
-        : overwrite === true || this.state === State.None
-          ? String(content)
-          : overwrite === "push"
+    if (Array.isArray(content)) {
+      const rows = content.map(
+        line => typeof line === "object"
+          ? JSON.stringify(content)
+          : String(content)
+      );
+
+      if (
+        typeof overwrite === "string"
+        && this.state !== State.None
+      )
+        if (this.overwrite === "push")
+          rows[rows.length] = existing;
+        else {
+          const existing = this.read()!;
+  
+          if (existing !== "")
+            rows.unshift(existing)
+        }
+
+      File.manager.writeString(
+        this.path,
+        rows.join("\n");
+      );
+    }
+    else
+      File.manager.writeString(
+        this.path,
+        typeof content === "object"
+          ? JSON.stringify(content)
+          : overwrite === true
+          || this.state === State.None
             ? String(content)
-                .concat(
-                  "\n",
-                  this.readString(),
-                )
-            : this
-                .readString()
-                .concat(content as string),
-    );
+            : overwrite === "push"
+              ? content + "\n" + this.readString()
+              : this.readString() + content,
+      );
+
     this.state = State.File;
   }
 

@@ -9,6 +9,7 @@ export default {
     dir: "dist/core",
     format: "cjs",
     strict: false,
+    generatedCode: "esnext",
   },
   plugins: [
     nodeResolve({ extensions }),

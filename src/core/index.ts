@@ -1,6 +1,11 @@
 import File from "./file";
 
-type Drive<T extends string> = Table<File<T>>;
+type Drive<
+  Type extends string,
+  Mutable extends boolean = false,
+> = Table<
+  File<Type, Mutable>
+>;
 
 export default abstract class IApp<
   Setting = never,
@@ -9,8 +14,8 @@ export default abstract class IApp<
 > {
   protected readonly app;
   protected readonly context;
-  private readonly pool: Drive<"Cache"> = {};
-  private readonly store: Drive<"Storage"> = {};
+  private readonly pool: Drive<"Cache", true> = {};
+  private readonly store: Drive<"Storage", true> = {};
   private readonly stream: Drive<"Feed"> = {};
 
   constructor(
@@ -40,6 +45,7 @@ export default abstract class IApp<
           "Setting",
           this.app + ".json",
           "",
+          false,
         )
           .readStringful(),
       ) as Setting;
@@ -335,11 +341,9 @@ export default abstract class IApp<
       "Cache",
       key,
       this.app,
-      {
-        mutable: true,
-        hidden: true,
-        temporary: true,
-      },
+      true,
+      true,
+      true,
     );
   }
 
@@ -355,10 +359,8 @@ export default abstract class IApp<
       "Storage",
       record,
       this.app,
-      {
-        mutable: true,
-        hidden: true,
-      },
+      true,
+      true,
     );
   }
 
@@ -374,6 +376,7 @@ export default abstract class IApp<
       "Feed",
       feed,
       this.app,
+      false,
     );
   }
 
