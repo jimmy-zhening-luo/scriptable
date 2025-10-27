@@ -336,8 +336,8 @@ export default abstract class IApp<
       key,
       this.app,
       {
-        hidden: true,
         mutable: true,
+        hidden: true,
         temporary: true,
       },
     );

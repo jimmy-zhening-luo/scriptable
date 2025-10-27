@@ -16,8 +16,8 @@ export default class File<T extends string> {
     file: string,
     folder = "",
     {
-      hidden = false,
       mutable = false,
+      hidden = false,
       temporary = false,
     } = {},
   ) {
