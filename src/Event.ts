@@ -63,10 +63,6 @@ await new class Event extends DateWidget {
                   : ""
                 : icon.full,
             },
-          )
-          .replace(
-            ":",
-
           ),
         separator: width !== Limit.Unlimited
           ? width !== Limit.Compact
