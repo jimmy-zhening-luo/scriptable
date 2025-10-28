@@ -205,6 +205,7 @@ export default class Time {
     {
       icon = "",
       ampm = "\u2005" as string | false,
+      colon = true,
       seconds = false,
       zero = false,
       block = false,
@@ -214,11 +215,14 @@ export default class Time {
     const h = ampm === false ? "HH" : "h",
     s = seconds ? ":ss" : "",
     hms = this.print(h + ":mm" + s),
-    digits = zero
-      ? hms
-          .replace(/:00$/u, "")
-          .replace(/:00$/u, "")
-      : hms;
+    digits = (
+      zero
+        ? hms
+            .replace(/:00$/u, "")
+            .replace(/:00$/u, "")
+        : hms
+    )
+      .replaceAll(":", colon ? ":" : "");
 
     if (ampm === false)
       return icon + digits;
