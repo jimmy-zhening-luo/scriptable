@@ -7,8 +7,8 @@ void new class Timer extends Widget {
       return data === undefined
         ? null
         : new Timer.Time(
-            (JSON.parse(data) as { when: string })
-              .when,
+            (JSON.parse(data) as { start: string })
+              .start,
           );
     }
 
@@ -16,33 +16,33 @@ void new class Timer extends Widget {
       this.read(),
     ),
     feed = extract(
-      this.subscribe("when", "json"),
+      this.subscribe("start", "json"),
     ),
     {
-      when = null,
+      start = null,
       update = false,
     } = store?.today ?? false
       ? {
-          when: store,
+          start: store,
         }
       : feed?.today ?? false
         ? {
-            when: feed,
+            start: feed,
             update: true,
           }
         : {};
 
-    if (when === null)
+    if (start === null)
       this.text("+").centerAlignText();
     else {
       if (update)
         this.write(
           {
-            when: when.print(),
+            start: start.print(),
           },
         );
 
-      const end = when.in(8);
+      const end = start.in(8);
 
       if (new Timer.Time > end)
         this.text("\u2713").centerAlignText();
