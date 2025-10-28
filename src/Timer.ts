@@ -4,28 +4,28 @@ import Widget from "./app/widget";
 void new class Timer extends Widget {
   protected runtime() {
     function extract(data?: string) {
-      return data === undefined
+      if (data === undefined)
+        return null;
+
+      const { start } = JSON.parse(data) as Field<never, "start">;
+
+      return start === undefined
         ? null
-        : new Timer.Time(
-            (JSON.parse(data) as { start: string })
-              .start,
-          );
+        : new Timer.Time(start);
     }
 
-    const store = extract(
-      this.read(),
-    ),
+    const store = extract(this.read()),
     feed = extract(
       this.subscribe("start", "json"),
     ),
     {
       start = null,
       update = false,
-    } = store?.today ?? false
+    } = store?.today === true
       ? {
           start: store,
         }
-      : feed?.today ?? false
+      : feed?.today === true
         ? {
             start: feed,
             update: true,
