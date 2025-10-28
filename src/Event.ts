@@ -97,7 +97,9 @@ await new class Event extends DateWidget {
           : title,
       }
 
-      return start + separator + title;
+      return format.start
+        + format.separator
+        + format.title;
     }
 
     const calendar = await Calendar.defaultForEvents(),
