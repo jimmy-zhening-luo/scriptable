@@ -91,7 +91,7 @@ await new class Event extends DateWidget {
                   : "\u2005",
               )
           : title,
-      }
+      };
 
       return format.start
         + format.separator

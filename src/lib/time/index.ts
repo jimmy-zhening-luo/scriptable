@@ -240,9 +240,9 @@ export default class Time {
         + (
           block
             ? a
-              .replace("A", "\u1D00")
-              .replace("P", "\u1D18")
-              .replace("M", "\u1D0D")
+                .replace("A", "\u1D00")
+                .replace("P", "\u1D18")
+                .replace("M", "\u1D0D")
             : a
         );
     }
