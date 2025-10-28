@@ -1,4 +1,5 @@
-"gray folder-open // share-sheet-inputs: file-url;";
+"gray folder-open";
+"file-url";
 import Share from "./app/share";
 
 void new class FileLink extends Share {
