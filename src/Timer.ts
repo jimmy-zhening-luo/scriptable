@@ -45,7 +45,11 @@ void new class Timer extends Widget {
       const end = start.in(8);
 
       if (new Timer.Time > end)
-        this.text("\u2713").centerAlignText();
+        this
+          .text(
+            end.time({ icon: "\u2713\u2009  " }),
+          )
+          .centerAlignText();
       else {
         this.text("Remaining").centerAlignText();
 

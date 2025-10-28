@@ -201,5 +201,48 @@ export default class Time {
     return this.printer.string(this.date());
   }
 
+  public time(
+    {
+      icon = "",
+      ampm = "\u2005" as string | false,
+      seconds = false,
+      zero = false,
+      block = false,
+      single = false,
+    } = {},
+  ) {
+    const h = ampm === false ? "HH" : "h",
+    s = seconds ? ":ss" : "",
+    hms = this.print(h + ":mm" + s),
+    digits = zero
+      ? hms
+          .replace(/:00$/u, "")
+          .replace(/:00$/u, "")
+      : hms;
+
+    if (ampm === false)
+      return icon + digits;
+    else {
+      const a = this
+        .print("a")
+        .slice(
+          0,
+          single ? 1 : 2,
+        );
+
+      return icon
+        + digits
+        + ampm
+        + (
+          block
+            ? a
+              .replace("A", "\u1D00")
+              .replace("P", "\u1D18")
+              .replace("M", "\u1D0D")
+            : a
+        );
+    }
+  }
+
   private printer?: DateFormatter;
 }

@@ -8,11 +8,11 @@ const ICON = {
 
 const enum Limit {
   Unlimited,
-  Limited = 27,
-  Short = 29,
-  Shorter = 30,
-  Shortest = 32,
-  Truncate = 34,
+  Compact = 28,
+  Short = 30,
+  Shorter = 31,
+  Shortest = 33,
+  Truncate = 35,
 }
 
 await new class Event extends DateWidget {
@@ -25,89 +25,78 @@ await new class Event extends DateWidget {
       event: CalendarEvent,
     ) {
       const { title } = event,
-      start = new Event
-        .Time(event.startDate)
-        .print("h:mm a"),
       length: Limit = icon.full.length
         + start.length
         + title.length,
-      limit = length > Limit.Truncate
-        ? Limit.Truncate
-        : length > Limit.Shortest
-          ? Limit.Shortest
-          : length > Limit.Shorter
-            ? Limit.Shorter
-            : length > Limit.Short
-              ? Limit.Short
-              : length > Limit.Limited
-                ? Limit.Limited
-                : Limit.Unlimited,
-      print = {
-        icon: limit !== Limit.Unlimited
-          ? "short" in icon
-            ? icon.short
-            : ""
-          : icon.full,
-        start: start
-          .replace("A", "\u1D00")
-          .replace("P", "\u1D18")
-          .replace(
-            "M",
-            limit > Limit.Limited
-              ? ""
-              : "\u1D0D",
-          )
-          .replace(
-            ":00",
-            limit !== Limit.Unlimited
-              ? ""
-              : ":00",
-          )
-          .replace(
-            ":",
-            limit > Limit.Limited
-              ? ""
-              : ":",
-          )
-          .replace(
-            " ",
-            limit !== Limit.Unlimited
-              ? ""
-              : "\u200A",
-          ),
-        title: limit !== Limit.Unlimited
-          ? title
-              .replaceAll(/[\-_.,'"]/ug, "")
-              .replaceAll(
-                " ",
-                limit !== Limit.Limited
-                  ? limit !== Limit.Short
-                    ? limit !== Limit.Shorter
-                      ? limit !== Limit.Shortest
-                        ? ""
-                        : "\u200A"
-                      : "\u2009"
-                    : "\u2006"
-                  : "\u2005",
-              )
-          : title,
-        separator: limit !== Limit.Unlimited
-          ? limit !== Limit.Limited
-            ? limit !== Limit.Short
-              ? limit !== Limit.Shorter
-                ? limit !== Limit.Shortest
-                  ? ""
-                  : "\u200A"
-                : "\u2009"
-              : "\u2006"
-            : "\u2005"
-          : "\u2009 ",
-      };
+      width = length < Limit.Compact
+        ? Limit.Unlimited
+        : length < Limit.Short
+          ? Limit.Compact
+          : length < Limit.Shorter
+            ? Limit.Short
+            : length < Limit.Shortest
+              ? Limit.Shorter
+              : length < Limit.Truncate
+                ? Limit.Shortest
+                : Limit.Truncate,
+      start = new Event
+        .Time(event.startDate)
+        .time(
+          {
+            zero: true,
+            block: true,
+            single: width > Limit.Compact,
+            ampm: width !== Limit.Unlimited
+              ? width !== Limit.Compact
+                ? width !== Limit.Short
+                  ? width !== Limit.Shorter
+                    ? ""
+                    : "\u200A"
+                  : "\u2009"
+                : "\u2006"
+              : "\u2005",
+            icon: width !== Limit.Unlimited
+              ? "short" in icon
+                ? icon.short
+                : ""
+              : icon.full,
+          },
+        )
+        .replace(
+          ":",
+          width > Limit.Compact
+            ? ""
+            : ":",
+        ),
+      separator = width !== Limit.Unlimited
+        ? width !== Limit.Compact
+          ? width !== Limit.Short
+            ? width !== Limit.Shorter
+              ? width !== Limit.Shortest
+                ? ""
+                : "\u200A"
+              : "\u2009"
+            : "\u2006"
+          : "\u2005"
+        : "\u2009 ",
+      title = width !== Limit.Unlimited
+        ? title
+            .replaceAll(/[\-_.,'"]/ug, "")
+            .replaceAll(
+              " ",
+              width !== Limit.Compact
+                ? width !== Limit.Short
+                  ? width !== Limit.Shorter
+                    ? width !== Limit.Shortest
+                      ? ""
+                      : "\u200A"
+                    : "\u2009"
+                  : "\u2006"
+                : "\u2005",
+            )
+        : title;
 
-      return print.icon
-        + print.start
-        + print.separator
-        + print.title;
+      return start + separator + title;
     }
 
     const calendar = await Calendar.defaultForEvents(),

@@ -59,7 +59,7 @@ await new class Clock extends Widget<ClockSetting> {
         time: InstanceType<typeof Clock.Time>,
         badge: string,
       ) {
-        return badge + "\u2009" + time.print("h:mm a");
+        return badge + time.time({ ampm: "\u2009" });
       }
 
       void badges.push(
@@ -135,7 +135,7 @@ await new class Clock extends Widget<ClockSetting> {
           "%LONG",
           longitude,
         )
-        + "&date=" + date.print("y-MM-dd"),
+        + date.print("'&date='y-MM-dd"),
     ),
 
     {
