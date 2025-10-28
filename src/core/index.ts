@@ -14,9 +14,9 @@ export default abstract class IApp<
 > {
   protected readonly app;
   protected readonly context;
-  private readonly pool: Drive<"Cache", true> = {};
-  private readonly store: Drive<"Storage", true> = {};
-  private readonly stream: Drive<"Feed"> = {};
+  private readonly temp: Drive<"Cache", true> = {};
+  private readonly drive: Drive<"Storage", true> = {};
+  private readonly external: Drive<"Feed"> = {};
 
   constructor(
     private _input: Unnull<Input>,
@@ -159,7 +159,7 @@ export default abstract class IApp<
   }
 
   protected set(
-    value: Parameters<typeof this.pool[string]["write"]>[0],
+    value: Parameters<typeof this.temp[string]["write"]>[0],
     key?: string,
   ) {
     this
@@ -214,8 +214,8 @@ export default abstract class IApp<
   }
 
   protected write(
-    data: Parameters<typeof this.store[string]["write"]>[0],
-    overwrite: Parameters<typeof this.store[string]["write"]>[1] = true,
+    data: Parameters<typeof this.drive[string]["write"]>[0],
+    overwrite: Parameters<typeof this.drive[string]["write"]>[1] = true,
     file?: string,
     extension?: string,
   ) {
@@ -337,7 +337,7 @@ export default abstract class IApp<
   }
 
   private cache(key = "cache") {
-    return this.pool[key] ??= new File(
+    return this.temp[key] ??= new File(
       "Cache",
       key,
       this.app,
@@ -355,7 +355,7 @@ export default abstract class IApp<
       ? file
       : [file, extension].join(".");
 
-    return this.store[record] ??= new File(
+    return this.drive[record] ??= new File(
       "Storage",
       record,
       this.app,
@@ -372,7 +372,7 @@ export default abstract class IApp<
       ? file
       : [file, extension].join(".");
 
-    return this.stream[feed] ??= new File(
+    return this.external[feed] ??= new File(
       "Feed",
       feed,
       this.app,
