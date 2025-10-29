@@ -90,7 +90,7 @@ export default abstract class IApp<
             trace[0],
             ...trace.slice(2),
           ] as const
-        : trace as const
+        : trace
     )
       .map(
         error => typeof error === "string"
