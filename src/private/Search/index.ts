@@ -12,10 +12,10 @@ export function parser(
   query:
     | string
     | {
-      key: stringful,
-      terms: stringful[],
-      prior: true,
-      engine?: SearchSetting["engines"][stringful],
+      key: stringful;
+      terms: stringful[];
+      prior: true;
+      engine?: SearchSetting["engines"][stringful];
     },
   engines: SearchSetting["engines"],
   alias: SearchSetting["alias"],
@@ -31,7 +31,7 @@ export function parser(
       tail[0] = head;
     else
       tail.unshift(head);
-  
+
     return tail;
   }
 
