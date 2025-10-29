@@ -1,4 +1,6 @@
 {
+  "minified": true,
+  "comments": false,
   "presets": [
     [
       "@babel/preset-env",
@@ -11,6 +13,7 @@
     [
       "@babel/preset-typescript",
       {
+        "allowDeclareFields": true,
         "optimizeConstEnums": true,
         "rewriteImportExtensions": true
       }
