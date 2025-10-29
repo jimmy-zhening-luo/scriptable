@@ -165,7 +165,7 @@ export function parser(
     }
   }
 
-  if (typeof query !== string) {
+  if (typeof query !== "string") {
     const engine = engines[query.key];
 
     if (engine === undefined)
