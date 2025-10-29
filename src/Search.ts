@@ -70,10 +70,10 @@ void new class Search extends Shortcut<
       invalidate = false,
     } = input === ""
       ? history(
-        engines,
-        keys.skip,
-        this.get(),
-      )
+          engines,
+          keys.skip,
+          this.get(),
+        )
       : parser(
         input,
         engines,
