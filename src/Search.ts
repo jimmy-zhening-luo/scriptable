@@ -36,7 +36,7 @@ void new class Search extends Shortcut<
     } = this,
     parsed = input === ""
       ? history(
-          keys.skip,
+          setting.reserved.keys.skip,
           this.get(),
         )
       : parser(
@@ -50,15 +50,14 @@ void new class Search extends Shortcut<
       >,
     fulfiller = resolver(
       setting.engines[key]!,
-      key,
-      terms,
+      parsed,
     );
 
     if (!prior && fulfiller.noSave !== true)
       this.set(
         {
-          key,
-          terms,
+          key: parsed.key,
+          terms: parsed.terms,
           prior: true,
         },
       );

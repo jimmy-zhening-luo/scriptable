@@ -44,30 +44,30 @@ export default function (
     ? engine
     : { url: engine },
   { separator = "+" } = wrapper,
-  termsFinal = wrapper.prepend === undefined
+  terms = wrapper.prepend === undefined
     ? parsed.terms
     : wrapper
         .prepend
         .split(" ")
-        .concat(terms) as stringful[];
+        .concat(parsed.terms) as stringful[];
 
   if ("url" in wrapper)
     return {
       action: encoder(
-        termsFinal,
+        terms,
         separator,
         wrapper,
       ),
     };
   else {
-    const query = termsFinal.length === 0
+    const query = terms.length === 0
       ? null
-      : termsFinal.join(" ") as stringful;
+      : terms.join(" ") as stringful;
 
     return {
-      app: wrapper.shortcut ?? key,
+      app: wrapper.shortcut ?? parsed.key,
       action: wrapper.encode === true
-        ? encoder(termsFinal, separator)
+        ? encoder(terms, separator)
         : query,
       notify: wrapper.notify! || null,
       label: query,
