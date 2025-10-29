@@ -47,9 +47,9 @@ export default function (
   terms = wrapper.prepend === undefined
     ? parsed.terms
     : wrapper
-        .prepend
-        .split(" ")
-        .concat(parsed.terms) as stringful[];
+      .prepend
+      .split(" ")
+      .concat(parsed.terms) as stringful[];
 
   if ("url" in wrapper)
     return {
