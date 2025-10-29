@@ -72,7 +72,7 @@
     "deploy:rr:resolve:export:named": "rr \"^([ \\t]*)export[ \\t]+(const|let|var|class|function)[ \\t]+(\\w+)\" \"€1module.exports.€3 = €2 €3\" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:resolve:export:named:declared": "rr \"^([ \\t]*)export[ \\t]+(\\w+)[ \\t]*;\" \"€1module.exports.€2 = €2;\" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:space": "npm run deploy:rr:space:outdent && npm run deploy:rr:space:sandbox",
-    "deploy:rr:space:outdent": "rr \"    \" \"  \" -L \"packed/{,app/**/,lib/**/,private/**/}*.js\" -BHq",
+    "deploy:rr:space:outdent": "rr \"(?<=^ *)(?<half>  |\\t)\\k<half>\" \"€<half>\" -L \"packed/{,app/**/,lib/**/,private/**/}*.js\" -BHq",
     "deploy:rr:space:sandbox": "rr \"(?<indent>[ \\t]*)async[ \\t]+runtime[ \\t]*\\(\\)[ \\t]*\\{\\s*\\}\" \"€<indent>async runtime() {\\n€<indent>  \\n€<indent>}\" -uI -GMs \"packed/*.js\" -BHq"
   },
   "author": "Jimmy Zhening Luo <jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
