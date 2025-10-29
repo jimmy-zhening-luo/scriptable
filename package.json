@@ -48,7 +48,7 @@
     "clean": "cmd --% /c \"(if exist dist rmdir /s /q dist) & (if exist build rmdir /s /q build) & (if exist .eslintcache del /f /q .eslintcache)\" || rm -rf dist build .eslintcache",
     "prebuild": "npm run clean",
     "build": "tsc && npm run build:hack && rollup --config && ts-add-js-extension --dir=dist --showprogress=false",
-    "build:hack": "cmd --% /c \"for %G in (core lib) do rmdir /s /q dist\\%G\" || rm -rf dist/core dist/lib",
+    "build:hack": "cmd --% /c \"for %G in (core lib private) do rmdir /s /q dist\\%G\" || rm -rf dist/core dist/lib dist/private",
     "postbuild": "npm run lint || echo \"Lint failed. Continuing...\"",
     "lint": "eslint --cache --fix",
     "pretest": "npm run build",
