@@ -6,9 +6,9 @@ import type { SearchSetting } from "./setting";
 
 export type { SearchSetting };
 export type { SearchOutput } from "./output";
-export { Engine } from "./engine";
+export { resolver } from "./resolver";
 
-export function Parser(
+export function parser(
   query: string,
   engines: SearchSetting["engines"],
   alias: SearchSetting["alias"],
@@ -163,61 +163,65 @@ export function Parser(
   if (
     typeof Head !== "string"
     && Head.reserved === true
-  )
+  ) {
+    const key = RESERVED[Head.key];
+
     return {
-      key: RESERVED[Head.key],
+      engine: engines[key];
+      key,
       terms: Head
         .argument
         ?.select(tail)
         ?? tail,
     };
+  }
   else {
-    function dealias(
-      engines: Set<stringful>,
-      aliased?: stringful,
-    ) {
-      return aliased !== undefined
-        && engines.has(aliased)
-        ? aliased
-        : null;
-    }
-
     const head = (
       typeof Head === "string"
         ? Head
         : Head.key
     )
       .toLocaleLowerCase() as stringful,
-    key = engines.has(head)
-      ? head
-      : dealias(
-        engines,
-        alias[head],
-      );
-
-    return key === null
-      ? {
-          key: tail.length === 0
-            ? RESERVED.skip
-            : RESERVED.chat,
-          terms: unshift(
-            typeof Head === "string"
-              ? Head as stringful
-              : Head
-                .argument
-                ?.deselect
-                ?? Head.key,
-            tail,
-          ),
-        }
+    aliased = alias[head],
+    {
+      engine,
+      key = head,
+    } = aliased === undefined
+      ? { engine: engines[head] }
       : {
-          key,
-          terms: typeof Head === "string"
-            ? tail
+          engine: engines[aliased],
+          key: aliased,
+        };
+
+    if (engine === undefined) {
+      const fallback = tail.length === 0
+        ? RESERVED.skip
+        : RESERVED.chat;
+
+      return {
+        key: fallback,
+        terms: unshift(
+          typeof Head === "string"
+            ? Head as stringful
             : Head
               .argument
-              ?.select(tail)
-              ?? tail,
-        };
+              ?.deselect
+              ?? Head.key,
+          tail,
+        ),
+        engine: engines[fallback],
+      };
+    }
+    else
+      return {
+        key,
+        terms: typeof Head === "string"
+          ? tail
+          : Head
+            .argument
+            ?.select(tail)
+            ?? tail,
+        engine,
+      };
   }
 }

@@ -1,9 +1,9 @@
 import type { SearchSetting } from ".";
 
-export function Engine(
+export function resolver(
+  engine: SearchSetting["engines"][stringful],
   key: stringful,
   terms: readonly stringful[],
-  config: SearchSetting["engines"][typeof key],
 ) {
   function encoder(
     terms: readonly stringful[],
@@ -40,41 +40,41 @@ export function Engine(
     }
   }
 
-  const engine = typeof config === "object"
-    && !Array.isArray(config)
-    ? config
-    : { url: config },
-  { separator = "+" } = engine,
-  termsFinal = engine.prepend === undefined
+  const wrapper = typeof engine === "object"
+    && !Array.isArray(engine)
+    ? engine
+    : { url: engine },
+  { separator = "+" } = wrapper,
+  termsFinal = wrapper.prepend === undefined
     ? terms
-    : engine
+    : wrapper
         .prepend
         .split(" ")
         .filter((term): term is stringful => term !== "")
         .concat(terms);
 
-  if ("url" in engine)
-    return {
-      action: encoder(
-        termsFinal,
-        separator,
-        engine,
-      ),
-    };
-  else {
-    const { shortcut = key } = engine,
+  if (wrapper.url === undefined) {
+    const { shortcut = key } = wrapper,
     query = termsFinal.length === 0
       ? null
       : termsFinal.join(" ") as stringful;
 
     return {
       app: shortcut,
-      action: engine.encode === true
+      action: wrapper.encode === true
         ? encoder(termsFinal, separator)
         : query,
-      notify: engine.notify! || null,
+      notify: wrapper.notify! || null,
       label: query,
-      noSave: engine.noSave,
+      noSave: wrapper.noSave,
     };
   }
+  else
+    return {
+      action: encoder(
+        termsFinal,
+        separator,
+        wrapper,
+      ),
+    };
 }

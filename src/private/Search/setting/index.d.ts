@@ -1,21 +1,27 @@
 import type { ISearchEngine } from "./engine";
 
+type SearchEngine
+= | Unflat<string, true>
+  | ISearchEngine<
+    "url",
+    "force",
+    never,
+    Unflat<string, true>
+  >
+  | ISearchEngine<
+    "shortcut",
+    | "encode"
+    | "notify"
+  >;
+
 export interface SearchSetting {
   alias: Tableful<stringful>;
-  engines: Tableful<
-    | Unflat<string, true>
-    | ISearchEngine<
-      "url",
-      "force",
-      never,
-      Unflat<string, true>
+  engines:
+    & Record<
+      keyof SearchSetting["reserved"]["keys"],
+      SearchEngine
     >
-    | ISearchEngine<
-      "shortcut",
-      | "encode"
-      | "notify"
-    >
-  >;
+    & Tableful<SearchEngine>;
   reserved: {
     keys: Fieldful<
       | "chat"

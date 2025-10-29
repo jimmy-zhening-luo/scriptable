@@ -1,8 +1,8 @@
 "blue search";
 import Shortcut from "./app";
 import {
-  Parser,
-  Engine,
+  parser,
+  resolver,
 } from "./private/Search";
 import type {
   SearchSetting,
@@ -37,25 +37,26 @@ void new class Search extends Shortcut<
       input = "",
     } = this,
     {
+      engine,
       key,
       terms,
       prior = false,
     } = input === ""
       ? history(this.get())
-      : Parser(
+      : parser(
         input,
         engines,
         alias,
         keys,
         selectors,
       ) as ReturnType<typeof Parser> & Flag<"prior">,
-    engine = Engine(
+    fulfiller = resolver(
+      engine,
       key,
       terms,
-      engines[key]!,
     );
 
-    if (!prior && engine.noSave !== true)
+    if (!prior && fulfiller.noSave !== true)
       this.set(
         {
           key,
@@ -64,6 +65,6 @@ void new class Search extends Shortcut<
         },
       );
 
-    return engine;
+    return fulfiller;
   }
 }().run();
