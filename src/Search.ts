@@ -49,7 +49,7 @@ void new class Search extends Shortcut<
         alias,
         keys,
         selectors,
-      ) as ReturnType<typeof parser> & Flag<"prior">,
+      ) as ReturnType<typeof history>,
     fulfiller = resolver(
       engine,
       key,
