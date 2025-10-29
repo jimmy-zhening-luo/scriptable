@@ -6,7 +6,7 @@ import type { SearchSetting } from "./setting";
 
 export type { SearchSetting };
 export type { SearchOutput } from "./output";
-export { engine } from "./engine";
+export { Engine } from "./engine";
 
 export function Parser(
   query: string,
@@ -207,7 +207,7 @@ export function Parser(
             : RESERVED.chat,
           terms: unshift(
             typeof Head === "string"
-              ? Head
+              ? Head as stringful
               : Head
                 .argument
                 ?.deselect
