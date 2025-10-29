@@ -66,11 +66,11 @@
     "deploy:rr:header:icon": "rr \"^[ \\t]*\\x22 *(?<color>[-a-z]+) +(?<glyph>[-a-z]+) *\\x22[ \t]*;[ \t]*\\n(?<rest>.+)$\" \"// Variables used by Scriptable.\\n// These must be at the very top of the file. Do not edit.\\n// icon-color: €<color>; icon-glyph: €<glyph>;\\n€<rest>\" -uI -GMs \"packed/*.js\" -BHq",
     "deploy:rr:header:share": "rr \"^(?<header_icon>\\/\\/ Variables used by Scriptable.\\n\\/\\/ These must be at the very top of the file. Do not edit.\\n\\/\\/ icon-color: [-a-z]+; icon-glyph: [-a-z]+;\\n)[ \\t]*\\x22 *(?<share>[-a-z]+(?:, [-a-z]+){0,3}) *\\x22[ \t]*;[ \t]*\\n(?<rest>.+)$\" \"€<header_icon>// share-sheet-inputs: €<share>;\\n€<rest>\" -uI -GMs \"packed/*.js\" -BHq",
     "deploy:rr:header:strict": "rr \"^\\s*(?:\\(?[ \\t]*[`'\\x22] *use +strict *[`'\\x22][ \\t]*\\)?[ \\t]*;[ \\t]*\\n)?\\s*(?<header>(?:\\/\\/ [\\S ]+\\n)*)\\s*(?<rest>.+)$\" \"€<header>\\x22use strict\\x22;\\n€<rest>\" -uI -GMs \"packed/**/*.js\" -BHq",
-    "deploy:rr:resolve": "npm run deploy:rr:resolve:import && npm run deploy:rr:resolve:export && npm run deploy:rr:resolve:export:named && npm run deploy:rr:resolve:export:named:declared",
-    "deploy:rr:resolve:export": "rr \"^([ \\t]*)export[ \\t]+default[ \\t]+\" \"€1module.exports = \" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:resolve:export:named": "rr \"^([ \\t]*)export[ \\t]+(const|let|var|class|function)[ \\t]+(\\w+)\" \"€1module.exports.€3 = €2 €3\" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:resolve:export:named:declared": "rr \"^([ \\t]*)export[ \\t]+(\\w+)[ \\t]*;\" \"€1module.exports.€2 = €2;\" -uI \"packed/**/*.js\" -BHq",
+    "deploy:rr:resolve": "npm run deploy:rr:resolve:import && npm run deploy:rr:resolve:export:default && npm run deploy:rr:resolve:export:named && npm run deploy:rr:resolve:export:named:declared",
     "deploy:rr:resolve:import": "rr \"\\bimport\\s*(?<member>\\b\\w+|\\{\\s*\\w+\\s*(?:,\\s*\\w+\\s*)*,?\\s*\\})\\s*\\bfrom\\s+(?<module>\\S.*\\S)\\s*;\" \"const €<member> = importModule(€<module>);\" -uI \"packed/**/*.js\" -BHq",
+    "deploy:rr:resolve:export:default": "rr \"^(?<indent>[ \\t]*)export[ \\t]+default[ \\t]+\" \"€<indent>module.exports = \" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:space": "npm run deploy:rr:space:outdent && npm run deploy:rr:space:sandbox",
     "deploy:rr:space:outdent": "rr \"(?<=^ *)(?<half>  |\\t)\\k<half>\" \"€<half>\" -L \"packed/{,app/**/,lib/**/,private/**/}*.js\" -BHq",
     "deploy:rr:space:sandbox": "rr \"(?<indent>[ \\t]*)async[ \\t]+runtime[ \\t]*\\(\\)[ \\t]*\\{\\s*\\}\" \"€<indent>async runtime() {\\n€<indent>  \\n€<indent>}\" -uI -GMs \"packed/*.js\" -BHq"
