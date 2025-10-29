@@ -1,6 +1,6 @@
 import type { SearchSetting } from ".";
 
-export function resolver(
+export default function (
   engine: SearchSetting["engines"][stringful],
   key: stringful,
   terms: readonly stringful[],

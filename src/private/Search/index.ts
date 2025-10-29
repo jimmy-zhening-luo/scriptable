@@ -1,14 +1,13 @@
+import type { SearchSetting } from "./setting";
 import {
   SearchKey,
   QueryArgument,
 } from "./token";
-import type { SearchSetting } from "./setting";
 
 export type { SearchSetting };
 export type { SearchOutput } from "./output";
-export { resolver } from "./resolver";
 
-export function parser(
+export default function (
   query:
     | string
     | {
