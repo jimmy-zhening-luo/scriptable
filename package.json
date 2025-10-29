@@ -69,7 +69,7 @@
     "deploy:rr:resolve:export:named": "rr \"^([ \\t]*)export[ \\t]+(const|let|var|class|function)[ \\t]+(\\w+)\" \"€1module.exports.€3 = €2 €3\" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:resolve:export:named:declared": "rr \"^([ \\t]*)export[ \\t]+(\\w+)[ \\t]*;\" \"€1module.exports.€2 = €2;\" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:resolve": "npm run deploy:rr:resolve:import && npm run deploy:rr:resolve:export:default && npm run deploy:rr:resolve:export:named && npm run deploy:rr:resolve:export:named:declared",
-    "deploy:rr:resolve:import": "rr \"\\bimport\\s*(?<member>\\b\\w+|\\{\\s*\\w+\\s*(?:,\\s*\\w+\\s*)*,?\\s*\\})\\s*\\bfrom\\s+(?<module>\\S.*\\S)\\s*;\" \"const €<member> = importModule(€<module>);\" -uI \"packed/**/*.js\" -BHq",
+    "deploy:rr:resolve:import": "rr \"\\bimport\\s*(?<imports>\\b\\w+|\\{\\s*\\w+\\s*(?:,\\s*\\w+\\s*)*,?\\s*\\})\\s*\\bfrom\\s+(?<module>\\S.*\\S)\\s*;\" \"const €<imports> = importModule(€<module>);\" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:resolve:export:default": "rr \"^(?<indent>[ \\t]*)export[ \\t]+default[ \\t]+\" \"€<indent>module.exports = \" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:space": "npm run deploy:rr:space:outdent && npm run deploy:rr:space:sandbox",
     "deploy:rr:space:outdent": "rr \"(?<=^ *)(?<half>  |\\t)\\k<half>\" \"€<half>\" -L \"packed/{,app/**/,lib/**/,private/**/}*.js\" -BHq",
