@@ -23,7 +23,7 @@ void new class Search extends Shortcut<
         ? {
             key: fallback,
             terms: [],
-            prior: true,
+            prior: true as true,
           }
         : JSON.parse(history) as {
           key: stringful,
