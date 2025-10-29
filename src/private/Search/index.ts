@@ -15,7 +15,6 @@ export function parser(
       key: stringful;
       terms: stringful[];
       prior: true;
-      engine?: SearchSetting["engines"][stringful];
     },
   engines: SearchSetting["engines"],
   alias: SearchSetting["alias"],
@@ -167,21 +166,23 @@ export function parser(
   }
 
   if (typeof query !== "string") {
-    const engine = engines[query.key];
+    const { key, terms } = query,
+    engine = engines[key];
 
     if (engine === undefined)
       return {
-        engine: engines[RESERVED.skip],
+        engine: engines[RESERVED.skip]!,
         key: RESERVED.skip,
         terms: [],
         invalidate: true,
       };
-    else {
-      /* eslint-disable no-param-reassign */
-      query.engine = engine;
-
-      return query as typeof query & Record<"engine", typeof engine>;
-    }
+    else
+      return {
+        engine,
+        key,
+        terms,
+        prior: true,
+      };
   }
   else {
     const { Head, tail } = parse(
@@ -190,13 +191,13 @@ export function parser(
     );
 
     if (
-      typeof Head !== "string"
+      typeof Head === "object"
       && Head.reserved === true
     ) {
       const key = RESERVED[Head.key];
 
       return {
-        engine: engines[key],
+        engine: engines[key]!,
         key,
         terms: Head
           .argument
@@ -220,7 +221,7 @@ export function parser(
           : RESERVED.chat;
 
         return {
-          engine: engines[fallback],
+          engine: engines[fallback]!,
           key: fallback,
           terms: unshift(
             typeof Head === "string"

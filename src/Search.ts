@@ -23,12 +23,12 @@ void new class Search extends Shortcut<
         ? {
             key: fallback,
             terms: [],
-            prior: true as true,
+            prior: true as const,
           }
         : JSON.parse(history) as {
-          key: stringful,
-          terms: stringful[],
-          prior: true,
+          key: stringful;
+          terms: stringful[];
+          prior: true;
         };
     }
 
@@ -52,9 +52,9 @@ void new class Search extends Shortcut<
     } = parser(
       input === ""
         ? history(
-          keys.skip,
-          this.get(),
-        )
+            keys.skip,
+            this.get(),
+          )
         : input,
       engines,
       alias,
@@ -70,10 +70,10 @@ void new class Search extends Shortcut<
       terms,
     );
 
-    if (invalidate === true)
+    if (invalidate)
       this.unset();
     else if (
-      prior !== true
+      !prior
       && fulfiller.noSave !== true
     )
       this.set(

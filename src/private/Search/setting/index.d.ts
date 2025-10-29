@@ -16,12 +16,7 @@ type SearchEngine
 
 export interface SearchSetting {
   alias: Tableful<stringful>;
-  engines:
-    & Record<
-      keyof SearchSetting["reserved"]["keys"],
-      SearchEngine
-    >
-    & Tableful<SearchEngine>;
+  engines: Tableful<SearchEngine>;
   reserved: {
     keys: Fieldful<
       | "chat"
