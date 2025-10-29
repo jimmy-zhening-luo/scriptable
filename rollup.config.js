@@ -19,7 +19,7 @@ export default {
       constBindings: true,
       objectShorthand: true,
       symbols: true,
-    }
+    },
   },
   plugins: [
     nodeResolve({ extensions }),
