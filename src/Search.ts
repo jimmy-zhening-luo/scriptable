@@ -53,7 +53,7 @@ void new class Search extends Shortcut<
       parsed,
     );
 
-    if (!prior && fulfiller.noSave !== true)
+    if (parsed.prior !== true && fulfiller.noSave !== true)
       this.set(
         {
           key: parsed.key,
