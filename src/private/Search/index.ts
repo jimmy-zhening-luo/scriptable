@@ -10,15 +10,10 @@ export { Engine } from "./engine";
 
 export function Parser(
   query: string,
-  engines: Set<stringful>,
-  alias: Tableful<stringful>,
-  RESERVED: Fieldful<
-    | "chat"
-    | "math"
-    | "skip"
-    | "translate"
-  >,
-  selectors: string,
+  engines: SearchSetting["engines"],
+  alias: SearchSetting["alias"],
+  RESERVED: SearchSetting["reserved"]["keys"],
+  selectors: SearchSetting["reserved"]["selectors"],
 ) {
   function unshift(
     head: stringful,

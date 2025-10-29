@@ -9,8 +9,7 @@ export default {
     "lib/location": "src/lib/location.ts",
     "lib/time": "src/lib/time/index.ts",
     "lib/ui": "src/lib/ui/index.ts",
-    "private/Search/index": "src/private/Search/index.ts",
-    "private/Search/engine": "src/private/Search/engine.ts",
+    "private/Search": "src/private/Search/index.ts",
   },
   output: {
     dir: "dist",

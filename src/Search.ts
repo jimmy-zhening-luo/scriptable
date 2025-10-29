@@ -44,7 +44,7 @@ void new class Search extends Shortcut<
       ? history(this.get())
       : Parser(
         input,
-        new Set(Object.keys(engines)),
+        engines,
         alias,
         keys,
         selectors,
