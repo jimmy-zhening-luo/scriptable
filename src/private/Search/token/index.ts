@@ -8,7 +8,7 @@ export class SearchKey<
 > {
   constructor(
     public readonly key: Key,
-    public readonly reserved?: Key extends stringful ? false : true,
+    public readonly reserved?: Reserved,
     public readonly argument?: Null<QueryArgument>,
   ) {}
 }
