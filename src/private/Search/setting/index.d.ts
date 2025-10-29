@@ -1,8 +1,8 @@
 import type { ISearchEngine } from "./engine";
 
 export interface SearchSetting {
-  alias: FieldTable;
-  engines: Table<
+  alias: Tableful<stringful>;
+  engines: Tableful<
     | Unflat<string, true>
     | ISearchEngine<
       "url",

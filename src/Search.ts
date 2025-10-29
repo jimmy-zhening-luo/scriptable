@@ -1,7 +1,9 @@
 "blue search";
 import Shortcut from "./app";
-import Parser from "./private/Search";
-import Engine from "./private/Search/engine";
+import {
+  Parser,
+  Engine,
+} from "./private/Search";
 import type {
   SearchSetting,
   SearchOutput,

@@ -1,6 +1,6 @@
 import type { SearchSetting } from ".";
 
-export default function (
+export function Engine(
   key: stringful,
   terms: readonly stringful[],
   config: SearchSetting["engines"][typeof key],

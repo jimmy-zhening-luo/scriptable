@@ -1,66 +1,17 @@
-export type { SearchOutput } from "./output";
+import {
+  SearchKey,
+  QueryArgument,
+} from "./token";
 import type { SearchSetting } from "./setting";
 
-class SearchSelection {
-  public readonly consumes;
-  public readonly selection;
-
-  constructor(
-    {
-      canonical,
-      match,
-    }: Record<
-      | "canonical"
-      | "match",
-      stringful
-    >,
-    selection: string,
-    public readonly deselect: stringful,
-    next = "",
-  ) {
-    this.consumes = selection === ""
-      && match === ".";
-    this.selection = canonical + (
-      this.consumes
-        ? next
-        : selection
-    ) as stringful;
-  }
-
-  public select(tail: stringful[]) {
-    return [
-      this.selection,
-      ...this.consumes
-        ? tail.slice(1)
-        : tail,
-    ];
-  }
-}
-
-class SearchKey {
-  constructor(
-    public readonly key: stringful,
-    public readonly selection?: SearchSelection,
-  ) {}
-}
-
-class ReservedSearchKey extends SearchKey {
-  constructor(
-    public readonly reserved: keyof SearchSetting["reserved"]["keys"],
-    selection?: SearchSelection,
-  ) {
-    super(
-      reserved as stringful,
-      selection,
-    );
-  }
-}
-
 export type { SearchSetting };
-export default function (
+export type { SearchOutput } from "./output";
+export { engine } from "./engine";
+
+export function Parser(
   query: string,
-  engines: Set<string>,
-  alias: FieldTable,
+  engines: Set<stringful>,
+  alias: Tableful<stringful>,
   RESERVED: Fieldful<
     | "chat"
     | "math"
@@ -69,6 +20,15 @@ export default function (
   >,
   selectors: string,
 ) {
+  function unshift(
+    head: stringful,
+    tail: stringful[],
+  ) {
+    tail.unshift(head);
+  
+    return tail;
+  }
+
   function parse(
     query: string,
     selectors: string,
@@ -89,8 +49,8 @@ export default function (
             Head: hotkeys === 0
               ? tail.shift()
               : hotkeys === 1
-                ? new ReservedSearchKey("chat")
-                : new ReservedSearchKey("translate"),
+                ? new SearchKey("chat", true)
+                : new SearchKey("translate", true),
             tail,
           };
         }
@@ -104,8 +64,8 @@ export default function (
           && (Head.length !== 1 || tail.length !== 0)
           && new Set("0123456789+-$€£¥.(").has(Head[0])
           ? {
-              Head: new ReservedSearchKey("math"),
-              tail: [Head].concat(tail),
+              Head: new SearchKey("math", true),
+              tail: unshift(Head, tail),
             }
           : {
               Head,
@@ -127,40 +87,38 @@ export default function (
         const HEAD = new Set(Head),
         selectorful = selectors + "." as stringful,
         SELECTORS = new Set<char>(selectorful satisfies stringful as unknown as char[]),
-        match = SELECTORS
+        selector = SELECTORS
           .values()
           .find(
             selector => HEAD.has(selector),
           );
 
-        if (match === undefined)
+        if (selector === undefined)
           return {
             Head,
             tail,
           };
         else {
-          const canonical = selectorful[0],
-          i = Head.indexOf(match),
-          key = Head.slice(0, i),
-          selection = new SearchSelection(
-            {
-              canonical,
-              match,
-            },
-            Head.slice(i + 1),
+          const boundary = Head.indexOf(selector),
+          argument = new QueryArgument(
+            selectorful[0],
+            selector,
+            Head.slice(boundary + 1),
             Head,
             tail[0],
           );
 
           return {
-            Head: key === ""
-              ? new ReservedSearchKey(
+            Head: boundary === 0
+              ? new SearchKey(
                   "translate",
-                  selection,
+                  true,
+                  argument,
                 )
               : new SearchKey(
-                  key as stringful,
-                  selection,
+                  Head.slice(0, boundary) as stringful,
+                  false,
+                  argument,
                 ),
             tail,
           };
@@ -196,7 +154,7 @@ export default function (
 
         return {
           Head: key,
-          tail: [operand].concat(tail),
+          tail: unshift(operand, tail),
         };
       }
     }
@@ -209,29 +167,24 @@ export default function (
 
   if (
     typeof Head !== "string"
-    && "reserved" in Head
+    && Head.reserved === true
   )
     return {
-      key: RESERVED[Head.reserved],
+      key: RESERVED[Head.key],
       terms: Head
-        .selection
+        .argument
         ?.select(tail)
         ?? tail,
     };
   else {
     function dealias(
-      engines: Set<string>,
-      key = "",
+      engines: Set<stringful>,
+      aliased?: stringful,
     ) {
-      if (key === "")
-        throw TypeError("Aliased engine key is empty");
-      else if (!engines.has(key))
-        throw ReferenceError(
-          "Aliased engine does not exist",
-          { cause: key },
-        );
-
-      return key as stringful;
+      return aliased !== undefined
+        && engines.has(aliased)
+        ? aliased
+        : null;
     }
 
     const head = (
@@ -242,36 +195,34 @@ export default function (
       .toLocaleLowerCase() as stringful,
     key = engines.has(head)
       ? head
-      : head in alias
-        ? dealias(
-            engines,
-            alias[head],
-          )
-        : null;
+      : dealias(
+        engines,
+        alias[head],
+      );
 
     return key === null
       ? {
-          key: RESERVED[
-            tail.length === 0
-              ? "skip"
-              : "chat"
-          ],
-          terms: [
+          key: tail.length === 0
+            ? RESERVED.skip
+            : RESERVED.chat,
+          terms: unshift(
             typeof Head === "string"
               ? Head
               : Head
-                .selection
+                .argument
                 ?.deselect
                 ?? Head.key,
-            ...tail,
-          ],
+            tail,
+          ),
         }
       : {
           key,
           terms: typeof Head === "string"
-            || Head.selection === undefined
             ? tail
-            : Head.selection.select(tail),
+            : Head
+              .argument
+              ?.select(tail)
+              ?? tail,
         };
   }
 }
