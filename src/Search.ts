@@ -24,10 +24,10 @@ void new class Search extends Shortcut<
             prior: true,
           }
         : JSON.parse(history) as {
-            key: stringful;
-            terms: stringful[];
-            prior: boolean;
-          };
+          key: stringful;
+          terms: stringful[];
+          prior: boolean;
+        };
     }
 
     const {
