@@ -14,7 +14,6 @@ void new class Search extends Shortcut<
 > {
   protected runtime() {
     function history(
-      engines: SearchSetting["engines"],
       fallback: stringful,
       history?: string,
     ) {
