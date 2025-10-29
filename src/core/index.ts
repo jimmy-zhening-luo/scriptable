@@ -90,7 +90,7 @@ export default abstract class IApp<
             trace[0],
             ...trace.slice(2),
           ] as const
-        : [...trace] as const
+        : trace as const
     )
       .map(
         error => typeof error === "string"
@@ -353,7 +353,7 @@ export default abstract class IApp<
   ) {
     const record = extension === ""
       ? file
-      : [file, extension].join(".");
+      : file + "." + extension;
 
     return this.drive[record] ??= new File(
       "Storage",
@@ -370,7 +370,7 @@ export default abstract class IApp<
   ) {
     const feed = extension === ""
       ? file
-      : [file, extension].join(".");
+      : file + "." + extension;
 
     return this.external[feed] ??= new File(
       "Feed",

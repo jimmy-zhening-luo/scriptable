@@ -15,7 +15,7 @@ export default abstract class Share<
       | "fileURLs"
       = "plainTexts",
   ) {
-    const { [inputType]: inputs } = args;
+    const inputs = args[inputType];
 
     super(
       inputs.length === 0

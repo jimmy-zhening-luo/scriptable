@@ -23,7 +23,7 @@ export class QueryArgument {
       /* eslint-disable no-param-reassign */
       tail[0] = this.argument;
     else
-      tail.unshift(this.argument);
+      void tail.unshift(this.argument);
 
     return tail;
   }

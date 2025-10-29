@@ -22,7 +22,7 @@ export default function (
       /* eslint-disable no-param-reassign */
       tail[0] = head;
     else
-      tail.unshift(head);
+      void tail.unshift(head);
 
     return tail;
   }

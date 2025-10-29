@@ -31,36 +31,25 @@ void new class Search extends Shortcut<
     }
 
     const {
-      setting: {
-        alias,
-        engines,
-        reserved: {
-          keys,
-          selectors,
-        },
-      },
+      setting,
       input = "",
     } = this,
-    {
-      key,
-      terms,
-      prior = false,
-    } = input === ""
+    parsed = input === ""
       ? history(
           keys.skip,
           this.get(),
         )
       : parser(
         input,
-        new Set(Object.keys(engines)) as Set<stringful>,
-        alias,
-        keys,
-        selectors,
+        new Set(Object.keys(setting.engines)) as Set<stringful>,
+        setting.alias,
+        setting.reserved.keys,
+        setting.reserved.selectors,
       ) as ReturnType<typeof parser> & Flag<
         | "prior"
       >,
     fulfiller = resolver(
-      engines[key]!,
+      setting.engines[key]!,
       key,
       terms,
     );

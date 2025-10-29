@@ -15,12 +15,10 @@ export default abstract class Shortcut<
       | (Input extends ArrayN ? true : never)
       = false,
   ) {
-    const { plainTexts } = args;
-
     super(
       multi
-        ? plainTexts as unknown as Input & readonly string[]
-        : plainTexts[0] as Undefined<Input & string>,
+        ? args.plainTexts as unknown as Input & readonly string[]
+        : args.plainTexts[0] as Undefined<Input & string>,
       config.runsWithSiri,
     );
   }

@@ -134,7 +134,7 @@ export default class File<
           const existing = this.read()!;
 
           if (existing !== "")
-            rows.unshift(existing);
+            void rows.unshift(existing);
         }
 
       File.manager.writeString(

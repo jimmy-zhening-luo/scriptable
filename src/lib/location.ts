@@ -27,14 +27,11 @@ export default async function (
     }`
   ]();
 
-  const {
-    latitude,
-    longitude,
-  } = await Location.current(),
+  const location = await Location.current(),
   digits = Round[accuracy];
 
   return {
-    latitude: latitude.toFixed(digits),
-    longitude: longitude.toFixed(digits),
+    latitude: location.latitude.toFixed(digits),
+    longitude: location.longitude.toFixed(digits),
   };
 }

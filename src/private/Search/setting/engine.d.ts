@@ -2,7 +2,7 @@ export type ISearchEngine<
   Engine extends string,
   Flags extends string = never,
   Fields extends string = never,
-  Action = string,
+  Action = stringful,
 >
 = & Record<Engine, Action>
   & Flag<

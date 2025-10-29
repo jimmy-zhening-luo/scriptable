@@ -2,8 +2,10 @@ import type { SearchSetting } from ".";
 
 export default function (
   engine: SearchSetting["engines"][stringful],
-  key: stringful,
-  terms: readonly stringful[],
+  parsed: {
+    key: stringful;
+    terms: stringful[];
+  },
 ) {
   function encoder(
     terms: readonly stringful[],
@@ -29,14 +31,11 @@ export default function (
       )
         .map(url => url.replace("%s", action));
 
-      if (!queries.every((url): url is stringful => url !== ""))
-        throw URIError("Empty Search URL");
-
       return browser.force === true
         ? queries.map(
             url => `data:text/html,<meta http-equiv=refresh content="0;url=${url}">` as stringful,
           )
-        : queries;
+        : queries as stringful[];
     }
   }
 
@@ -46,12 +45,11 @@ export default function (
     : { url: engine },
   { separator = "+" } = wrapper,
   termsFinal = wrapper.prepend === undefined
-    ? terms
+    ? parsed.terms
     : wrapper
         .prepend
         .split(" ")
-        .filter((term): term is stringful => term !== "")
-        .concat(terms);
+        .concat(terms) as stringful[];
 
   if ("url" in wrapper)
     return {
@@ -62,13 +60,12 @@ export default function (
       ),
     };
   else {
-    const { shortcut = key } = wrapper,
-    query = termsFinal.length === 0
+    const query = termsFinal.length === 0
       ? null
       : termsFinal.join(" ") as stringful;
 
     return {
-      app: shortcut,
+      app: wrapper.shortcut ?? key,
       action: wrapper.encode === true
         ? encoder(termsFinal, separator)
         : query,
