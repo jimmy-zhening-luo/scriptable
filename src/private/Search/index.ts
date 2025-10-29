@@ -9,7 +9,7 @@ export type { SearchOutput } from "./output";
 
 export default function (
   query: string,
-  engines: SearchSetting["engines"],
+  engines: Set<stringful>,
   alias: SearchSetting["alias"],
   RESERVED: SearchSetting["reserved"]["keys"],
   selectors: SearchSetting["reserved"]["selectors"],
@@ -166,18 +166,14 @@ export default function (
   if (
     typeof Head === "object"
     && Head.reserved === true
-  ) {
-    const key = RESERVED[Head.key];
-
+  )
     return {
-      engine: engines[key]!,
-      key,
+      key: RESERVED[Head.key],
       terms: Head
         .argument
         ?.select(tail)
         ?? tail,
     };
-  }
   else {
     const head = (
       typeof Head === "string"
@@ -185,38 +181,33 @@ export default function (
         : Head.key
     )
       .toLocaleLowerCase() as stringful,
-    key = alias[head] ?? head,
-    engine = engines[key];
+    key = engines.has(head)
+      ? head
+      : alias[head];
 
-    if (engine === undefined) {
-      const fallback = tail.length === 0
-        ? RESERVED.skip
-        : RESERVED.chat;
-
-      return {
-        engine: engines[fallback]!,
-        key: fallback,
-        terms: unshift(
-          typeof Head === "string"
-            ? Head
+    return key === undefined
+      ? {
+          key: tail.length === 0
+            ? RESERVED.skip
+            : RESERVED.chat,
+          terms: unshift(
+            typeof Head === "string"
+              ? Head
+              : Head
+                .argument
+                ?.deselect
+                ?? Head.key as stringful,
+            tail,
+          ),
+        }
+      : {
+          key,
+          terms: typeof Head === "string"
+            ? tail
             : Head
               .argument
-              ?.deselect
-              ?? Head.key as stringful,
-          tail,
-        ),
-      };
-    }
-    else
-      return {
-        engine,
-        key,
-        terms: typeof Head === "string"
-          ? tail
-          : Head
-            .argument
-            ?.select(tail)
-            ?? tail,
-      };
+              ?.select(tail)
+              ?? tail,
+        };
   }
 }

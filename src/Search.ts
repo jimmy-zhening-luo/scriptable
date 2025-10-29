@@ -18,25 +18,17 @@ void new class Search extends Shortcut<
       fallback: stringful,
       history?: string,
     ) {
-      if (history === undefined)
-        return {
-          engine: engines[fallback]!,
-          key: fallback,
-          terms: [],
-          prior: true,
-        };
-      else {
-        const parsed = JSON.parse(history) as {
-          engine: SearchSetting["engines"][stringful];
-          key: stringful;
-          terms: stringful[];
-          prior: boolean;
-        };
-
-        parsed.engine = engines[parsed.key]!;
-
-        return parsed;
-      }
+      return history === undefined
+        ? {
+            key: fallback,
+            terms: [],
+            prior: true,
+          }
+        : JSON.parse(history) as {
+            key: stringful;
+            terms: stringful[];
+            prior: boolean;
+          };
     }
 
     const {
@@ -51,19 +43,17 @@ void new class Search extends Shortcut<
       input = "",
     } = this,
     {
-      engine,
       key,
       terms,
       prior = false,
     } = input === ""
       ? history(
-          engines,
           keys.skip,
           this.get(),
         )
       : parser(
         input,
-        engines,
+        new Set<stringful>(Object.keys(engines)),
         alias,
         keys,
         selectors,
@@ -71,7 +61,7 @@ void new class Search extends Shortcut<
         | "prior"
       >,
     fulfiller = resolver(
-      engine,
+      engines[key]!,
       key,
       terms,
     );
