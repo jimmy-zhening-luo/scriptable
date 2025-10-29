@@ -9,6 +9,6 @@ export class SearchKey<
   constructor(
     public readonly key: Key,
     public readonly reserved?: Reserved,
-    public readonly argument?: Null<QueryArgument>,
+    public readonly argument?: QueryArgument,
   ) {}
 }
