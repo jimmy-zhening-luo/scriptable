@@ -49,7 +49,7 @@ void new class Search extends Shortcut<
         | "prior"
       >,
     fulfiller = resolver(
-      setting.engines[key]!,
+      setting.engines[parsed.key]!,
       parsed,
     );
 
