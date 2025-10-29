@@ -15,14 +15,21 @@ void new class Search extends Shortcut<
   string
 > {
   protected runtime() {
-    function history(history?: string) {
+    function history(
+      fallback: stringful,
+      history?: string,
+    ) {
       return history === undefined
         ? {
-            key: "null" as stringful,
+            key: fallback,
             terms: [],
             prior: true,
           }
-        : JSON.parse(history) as Omit<ReturnType<typeof parser>, "engine"> & Flag<"prior">;
+        : JSON.parse(history) as {
+          key: stringful,
+          terms: stringful[],
+          prior: true,
+        };
     }
 
     const {
@@ -41,22 +48,31 @@ void new class Search extends Shortcut<
       key,
       terms,
       prior = false,
-    } = input === ""
-      ? history(this.get())
-      : parser(
-        input,
-        engines,
-        alias,
-        keys,
-        selectors,
-      ) as ReturnType<typeof parser> & ReturnType<typeof history>,
+      invalidate = false,
+    } = parser(
+      input === ""
+        ? history(
+          keys.skip,
+          this.get(),
+        )
+        : input,
+      engines,
+      alias,
+      keys,
+      selectors,
+    ),
     fulfiller = resolver(
       engine,
       key,
       terms,
     );
 
-    if (!prior && fulfiller.noSave !== true)
+    if (invalidate === true)
+      this.unset();
+    else if (
+      prior !== true
+      && fulfiller.noSave !== true
+    )
       this.set(
         {
           key,
