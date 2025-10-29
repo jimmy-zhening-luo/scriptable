@@ -53,7 +53,15 @@ export function resolver(
         .filter((term): term is stringful => term !== "")
         .concat(terms);
 
-  if (wrapper.url === undefined) {
+  if ("url" in wrapper)
+    return {
+      action: encoder(
+        termsFinal,
+        separator,
+        wrapper,
+      ),
+    };
+  else {
     const { shortcut = key } = wrapper,
     query = termsFinal.length === 0
       ? null
@@ -69,12 +77,4 @@ export function resolver(
       noSave: wrapper.noSave,
     };
   }
-  else
-    return {
-      action: encoder(
-        termsFinal,
-        separator,
-        wrapper,
-      ),
-    };
 }
