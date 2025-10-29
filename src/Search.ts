@@ -60,7 +60,10 @@ void new class Search extends Shortcut<
       alias,
       keys,
       selectors,
-    ),
+    ) as ReturnType<typeof parser> & Flag<
+      | "prior"
+      | "invalidate"
+    >,
     fulfiller = resolver(
       engine,
       key,
