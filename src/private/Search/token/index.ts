@@ -4,7 +4,7 @@ export { QueryArgument } from "./argument";
 
 export class SearchKey<
   Key extends string,
-  Reserved extends (Key extends stringful ? true: false),
+  Reserved extends (Key extends stringful ? false: true),
 > {
   constructor(
     public readonly key: Key,
