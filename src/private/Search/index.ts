@@ -61,14 +61,11 @@ export default function (
   query: string,
   engines: Set<string>,
   alias: FieldTable,
-  RESERVED: Record<
-    (
-      | "chat"
-      | "math"
-      | "skip"
-      | "translate"
-    ),
-    stringful
+  RESERVED: Fieldful<
+    | "chat"
+    | "math"
+    | "skip"
+    | "translate"
   >,
   selectors: string,
 ) {
