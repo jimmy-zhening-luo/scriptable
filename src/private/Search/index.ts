@@ -224,11 +224,11 @@ export function parser(
           key: fallback,
           terms: unshift(
             typeof Head === "string"
-              ? Head as stringful
+              ? Head
               : Head
                 .argument
                 ?.deselect
-                ?? Head.key,
+                ?? Head.key as stringful,
             tail,
           ),
         };
