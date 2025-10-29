@@ -8,13 +8,7 @@ export type { SearchSetting };
 export type { SearchOutput } from "./output";
 
 export default function (
-  query:
-    | string
-    | {
-      key: stringful;
-      terms: stringful[];
-      prior: true;
-    },
+  query: string,
   engines: SearchSetting["engines"],
   alias: SearchSetting["alias"],
   RESERVED: SearchSetting["reserved"]["keys"],
@@ -164,86 +158,65 @@ export default function (
     }
   }
 
-  if (typeof query !== "string") {
-    const { key, terms } = query,
+  const { Head, tail } = parse(
+    query,
+    selectors,
+  );
+
+  if (
+    typeof Head === "object"
+    && Head.reserved === true
+  ) {
+    const key = RESERVED[Head.key];
+
+    return {
+      engine: engines[key]!,
+      key,
+      terms: Head
+        .argument
+        ?.select(tail)
+        ?? tail,
+    };
+  }
+  else {
+    const head = (
+      typeof Head === "string"
+        ? Head
+        : Head.key
+    )
+      .toLocaleLowerCase() as stringful,
+    key = alias[head] ?? head,
     engine = engines[key];
 
-    if (engine === undefined)
+    if (engine === undefined) {
+      const fallback = tail.length === 0
+        ? RESERVED.skip
+        : RESERVED.chat;
+
       return {
-        engine: engines[RESERVED.skip]!,
-        key: RESERVED.skip,
-        terms: [],
-        invalidate: true,
+        engine: engines[fallback]!,
+        key: fallback,
+        terms: unshift(
+          typeof Head === "string"
+            ? Head
+            : Head
+              .argument
+              ?.deselect
+              ?? Head.key as stringful,
+          tail,
+        ),
       };
+    }
     else
       return {
         engine,
         key,
-        terms,
-        prior: true,
+        terms: typeof Head === "string"
+          ? tail
+          : Head
+            .argument
+            ?.select(tail)
+            ?? tail,
       };
-  }
-  else {
-    const { Head, tail } = parse(
-      query,
-      selectors,
-    );
-
-    if (
-      typeof Head === "object"
-      && Head.reserved === true
-    ) {
-      const key = RESERVED[Head.key];
-
-      return {
-        engine: engines[key]!,
-        key,
-        terms: Head
-          .argument
-          ?.select(tail)
-          ?? tail,
-      };
-    }
-    else {
-      const head = (
-        typeof Head === "string"
-          ? Head
-          : Head.key
-      )
-        .toLocaleLowerCase() as stringful,
-      key = alias[head] ?? head,
-      engine = engines[key];
-
-      if (engine === undefined) {
-        const fallback = tail.length === 0
-          ? RESERVED.skip
-          : RESERVED.chat;
-
-        return {
-          engine: engines[fallback]!,
-          key: fallback,
-          terms: unshift(
-            typeof Head === "string"
-              ? Head
-              : Head
-                .argument
-                ?.deselect
-                ?? Head.key as stringful,
-            tail,
-          ),
-        };
-      }
-      else
-        return {
-          engine,
-          key,
-          terms: typeof Head === "string"
-            ? tail
-            : Head
-              .argument
-              ?.select(tail)
-              ?? tail,
-        };
-    }
   }
 }

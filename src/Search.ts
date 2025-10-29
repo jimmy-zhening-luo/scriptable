@@ -14,20 +14,41 @@ void new class Search extends Shortcut<
 > {
   protected runtime() {
     function history(
+      engines: SearchSetting["engines"],
       fallback: stringful,
       history?: string,
     ) {
-      return history === undefined
-        ? {
-            key: fallback,
-            terms: [],
-            prior: true as const,
-          }
-        : JSON.parse(history) as {
+      if (history === undefined)
+        return {
+          engine: engines[fallback]!,
+          key: fallback,
+          terms: [],
+          prior: true,
+        };
+      else {
+        const {
+          key,
+          terms,
+        } = JSON.parse(history) as {
           key: stringful;
           terms: stringful[];
-          prior: true;
-        };
+        },
+        engine = engines[key];
+
+        return engine === undefined
+          ? {
+              engine: engines[fallback]!,
+              key: fallback,
+              terms: [],
+              invalidate: true,
+            }
+          : {
+              engine,
+              key,
+              terms,
+              prior: true,
+            };
+      }
     }
 
     const {
@@ -47,21 +68,22 @@ void new class Search extends Shortcut<
       terms,
       prior = false,
       invalidate = false,
-    } = parser(
-      input === ""
-        ? history(
-            keys.skip,
-            this.get(),
-          )
-        : input,
-      engines,
-      alias,
-      keys,
-      selectors,
-    ) as ReturnType<typeof parser> & Flag<
-      | "prior"
-      | "invalidate"
-    >,
+    } = input === ""
+      ? history(
+        engines,
+        keys.skip,
+        this.get(),
+      )
+      : parser(
+        input,
+        engines,
+        alias,
+        keys,
+        selectors,
+      ) as ReturnType<typeof parser> & Flag<
+        | "prior"
+        | "invalidate"
+      >,
     fulfiller = resolver(
       engine,
       key,
@@ -78,7 +100,6 @@ void new class Search extends Shortcut<
         {
           key,
           terms,
-          prior: true,
         },
       );
 
