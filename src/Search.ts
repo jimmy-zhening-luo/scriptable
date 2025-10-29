@@ -22,7 +22,7 @@ void new class Search extends Shortcut<
             terms: [],
             prior: true,
           }
-        : JSON.parse(history) as ReturnType<typeof Parser> & Flag<"prior">;
+        : JSON.parse(history) as ReturnType<typeof parser> & Flag<"prior">;
     }
 
     const {
@@ -49,7 +49,7 @@ void new class Search extends Shortcut<
         alias,
         keys,
         selectors,
-      ) as ReturnType<typeof Parser> & Flag<"prior">,
+      ) as ReturnType<typeof parser> & Flag<"prior">,
     fulfiller = resolver(
       engine,
       key,
