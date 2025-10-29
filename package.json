@@ -71,7 +71,7 @@
     "deploy:rr:resolve:export:default": "rr \"^(?<indent>[ \\t]*)export[ \\t]+default[ \\t]+\" \"€<indent>module.exports = \" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:resolve:export:named": "rr \"^(?<indent>[ \\t]*)export[ \\t]+(?<type_space>(?:(?:const|let|var|class|function)\\s)?)[ \\t]*(?<export>\\w+)\" \"€<indent>module.exports.€<export> = €<type_space>€<export>\" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:space": "npm run deploy:rr:space:outdent && npm run deploy:rr:space:sandbox",
-    "deploy:rr:space:outdent": "rr \"^((?:  )*|(?:\\t)*)\\1\" \"€1\" -L \"packed/{,app/**/,lib/**/,private/**/}*.js\" -BHq",
+    "deploy:rr:space:outdent": "rr \"^(?<half>(?:  )*|(?:\\t)*)\\k<half>\" \"€<half>\" -uI \"packed/{,app/**/,lib/**/,private/**/}*.js\" -BHq",
     "deploy:rr:space:sandbox": "rr \"(?<indent>[ \\t]*)async[ \\t]+runtime[ \\t]*\\(\\)[ \\t]*\\{\\s*\\}\" \"€<indent>async runtime() {\\n€<indent>  \\n€<indent>}\" -uI -GMs \"packed/*.js\" -BHq"
   },
   "author": "Jimmy Zhening Luo <jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
