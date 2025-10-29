@@ -41,7 +41,7 @@
     "noEmitOnError": true,
     "outDir": "dist",
     "removeComments": true,
-    "sourceMap": true,
+    // "sourceMap": true /* @OVERRIDE */,
     // "allowJs": true,
     // "checkJs": true,
     // "isolatedDeclarations": false,

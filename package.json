@@ -61,7 +61,7 @@
     "deploy:copy": "cmd --% /c xcopy /e /k /h /i \"./dist\" \"packed\" || cp -r dist/* packed",
     "deploy:filter": "cmd /c \"(rmdir /s /q packed\\_test) & (del /s /q packed\\*.tsbuildinfo packed\\*.d.ts packed\\*.map packed\\*.spec.js)\" || npm run deploy:filter:default",
     "deploy:filter:default": "rm -rf packed/_test && find packed -type f \\( -name \"*.tsbuildinfo\" -or -name \"*.d.ts\" -or -name \"*.map\" -or -name \"*.spec.js\" \\) -delete",
-    "deploy:rr": "npm run deploy:rr:head && npm run deploy:rr:resolve && npm run deploy:rr:space && npm run deploy:rr:foot",
+    "deploy:rr": "npm run deploy:rr:head && npm run deploy:rr:resolve && npm run deploy:rr:space",
     "deploy:rr:head": "npm run deploy:rr:head:icon && npm run deploy:rr:head:share && npm run deploy:rr:head:strict",
     "deploy:rr:head:icon": "rr \"^[\\t ]*\\x22 *([-a-z]+) +([-a-z]+) *\\x22 *; *\\n(.+)$\" \"// Variables used by Scriptable.\\n// These must be at the very top of the file. Do not edit.\\n// icon-color: €1; icon-glyph: €2;\\n€3\" -uI -GMs \"packed/*.js\" -BHq",
     "deploy:rr:head:share": "rr \"^(\\/\\/ Variables used by Scriptable.\\n\\/\\/ These must be at the very top of the file. Do not edit.\\n\\/\\/ icon-color: [-a-z]+; icon-glyph: [-a-z]+;\\n)[\\t ]*\\x22 *([-a-z]+(?:, [-a-z]+){0,3}) *\\x22 *; *\\n(.+)$\" \"€1// share-sheet-inputs: €2;\\n€3\" -uI -GMs \"packed/*.js\" -BHq",
@@ -73,8 +73,7 @@
     "deploy:rr:resolve:export:named:declared": "rr \"^([ \\t]*)export[ \\t]+(\\w+)[ \\t]*;\" \"€1module.exports.€2 = €2;\" -uI \"packed/**/*.js\" -BHq",
     "deploy:rr:space": "npm run deploy:rr:space:outdent && npm run deploy:rr:space:sandbox",
     "deploy:rr:space:outdent": "rr \"    \" \"  \" -L \"packed/{,app/**/,lib/**/,private/**/}*.js\" -BHq",
-    "deploy:rr:space:sandbox": "rr \"([ \\t]*)async runtime\\(\\) *\\{\\s*\\}\" \"€1async runtime() {\\n€1  \\n€1}\" -uI -GMs \"packed/*.js\" -BHq",
-    "deploy:rr:foot": "rr \"^(.*)\\/\\/# sourceMappingURL=.+\\.map\\s*$\" \"€1\" -uI -GMs \"packed/**/*.js\" -BHq"
+    "deploy:rr:space:sandbox": "rr \"(?<indent>[ \\t]*)async[ \\t]+runtime[ \\t]*\\(\\)[ \\t]*\\{\\s*\\}\" \"€<indent>async runtime() {\\n€<indent>  \\n€<indent>}\" -uI -GMs \"packed/*.js\" -BHq"
   },
   "author": "Jimmy Zhening Luo <jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
 }
