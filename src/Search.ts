@@ -53,7 +53,7 @@ void new class Search extends Shortcut<
         )
       : parser(
         input,
-        new Set<stringful>(Object.keys(engines)),
+        new Set(Object.keys(engines)) as Set<stringful>,
         alias,
         keys,
         selectors,
