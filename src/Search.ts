@@ -30,7 +30,7 @@ void new class Search extends Shortcut<
           engine: SearchSetting["engines"][stringful];
           key: stringful;
           terms: stringful[];
-          prior: boolean,
+          prior: boolean;
         };
 
         parsed.engine = engines[parsed.key]!;
