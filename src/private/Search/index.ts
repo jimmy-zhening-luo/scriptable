@@ -15,6 +15,7 @@ export function parser(
       key: stringful,
       terms: stringful[],
       prior: true,
+      engine?: SearchSetting["engines"][stringful],
     },
   engines: SearchSetting["engines"],
   alias: SearchSetting["alias"],
