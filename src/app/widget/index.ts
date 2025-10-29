@@ -1,5 +1,5 @@
 import IWidget from "../iwidget";
-import Style from "../../lib/ui/typography";
+import Style from "../../lib/ui";
 
 const DEFAULT_WEIGHT = 12;
 

@@ -4,11 +4,22 @@ import { babel } from "@rollup/plugin-babel";
 const extensions = [".ts"];
 
 export default {
-  input: "src/core/index.ts",
+  input: {
+    core: "src/core/index.ts",
+    "lib/location": "src/lib/location.ts",
+    "lib/time": "src/lib/time/index.ts",
+    "lib/ui": "src/lib/ui/index.ts",
+  },
   output: {
-    dir: "dist/core",
+    dir: "dist",
     format: "cjs",
-    strict: false,
+    strict: true,
+    generatedCode: {
+      preset: "es2015",
+      constBindings: true,
+      objectShorthand: true,
+      symbols: true,
+    }
   },
   plugins: [
     nodeResolve({ extensions }),
