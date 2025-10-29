@@ -65,7 +65,7 @@ export default function (
       : terms.join(" ") as stringful;
 
     return {
-      app: wrapper.shortcut ?? parsed.key,
+      app: wrapper.shortcut as Undefined<stringful> ?? parsed.key,
       action: wrapper.encode === true
         ? encoder(terms, separator)
         : query,
