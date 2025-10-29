@@ -26,28 +26,16 @@ void new class Search extends Shortcut<
           prior: true,
         };
       else {
-        const {
-          key,
-          terms,
-        } = JSON.parse(history) as {
+        const parsed = JSON.parse(history) as {
+          engine: SearchSetting["engines"][stringful];
           key: stringful;
           terms: stringful[];
-        },
-        engine = engines[key];
+          prior: boolean,
+        };
 
-        return engine === undefined
-          ? {
-              engine: engines[fallback]!,
-              key: fallback,
-              terms: [],
-              invalidate: true,
-            }
-          : {
-              engine,
-              key,
-              terms,
-              prior: true,
-            };
+        parsed.engine = engines[parsed.key]!;
+
+        return parsed;
       }
     }
 
@@ -67,7 +55,6 @@ void new class Search extends Shortcut<
       key,
       terms,
       prior = false,
-      invalidate = false,
     } = input === ""
       ? history(
         engines,
@@ -82,7 +69,6 @@ void new class Search extends Shortcut<
         selectors,
       ) as ReturnType<typeof parser> & Flag<
         | "prior"
-        | "invalidate"
       >,
     fulfiller = resolver(
       engine,
@@ -90,16 +76,12 @@ void new class Search extends Shortcut<
       terms,
     );
 
-    if (invalidate)
-      this.unset();
-    else if (
-      !prior
-      && fulfiller.noSave !== true
-    )
+    if (!prior && fulfiller.noSave !== true)
       this.set(
         {
           key,
           terms,
+          prior: true,
         },
       );
 
