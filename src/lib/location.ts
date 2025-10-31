@@ -14,7 +14,7 @@ Digits = {
 };
 
 export default async function (
-  accuracy: Numbers<keyof typeof Accuracy> = 0.1,
+  accuracy: keyof typeof Accuracy = 10e-1,
 ) {
   Location[
     `setAccuracyTo${
