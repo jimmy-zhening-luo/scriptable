@@ -212,11 +212,9 @@ export default function (
           key,
           terms: typeof Head === "string"
             ? tail
-            : "argument" in Head
-              ? Head
-                .argument
-                .select(tail)
-              : tail,
+            : Head
+              .argument
+              .select(tail),
         };
   }
 }
