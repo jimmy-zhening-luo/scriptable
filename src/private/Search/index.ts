@@ -169,14 +169,14 @@ export default function (
 
   if (
     typeof Head === "object"
-    && Head.reserved === true
+    && Head.reserved
   )
     return {
       key: RESERVED[Head.key],
       terms: "argument" in Head
         ? Head
-          .argument
-          .select(tail)
+            .argument
+            .select(tail)
         : tail,
     };
   else {
@@ -213,8 +213,8 @@ export default function (
           terms: typeof Head === "string"
             ? tail
             : Head
-              .argument
-              .select(tail),
+                .argument
+                .select(tail),
         };
   }
 }

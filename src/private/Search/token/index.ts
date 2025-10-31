@@ -6,7 +6,7 @@ export interface SearchKey<
   Key extends string,
   Reserved extends (Key extends stringful ? false : true),
 > {
-  readonly key: Key,
-  readonly reserved?: Reserved,
-  readonly argument?: QueryArgument,
+  readonly key: Key;
+  readonly reserved?: Reserved;
+  readonly argument?: QueryArgument;
 }
