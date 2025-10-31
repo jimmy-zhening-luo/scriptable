@@ -173,10 +173,11 @@ export default function (
   )
     return {
       key: RESERVED[Head.key],
-      terms: Head
-        .argument
-        ?.select(tail)
-        ?? tail,
+      terms: "argument" in Head
+        ? Head
+          .argument
+          .select(tail)
+        : tail,
     };
   else {
     const head = (
