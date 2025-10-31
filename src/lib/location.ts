@@ -1,37 +1,43 @@
+enum Accuracy {
+  Best,
+  Kilometer,
+  ThreeKilometers,
+  TenMeters = 10e-2,
+  HundredMeters = 10e-1,
+}
+
 export default async function (
-  accuracy:
-    | 0
-    | 0.01
-    | 0.1
-    | 1
-    | 3 = 0.1,
+  accuracy: Accuracy = 10e-1,
 ) {
-  const LocationAccuracy = {
-    0: "Best",
-    0.01: "TenMeters",
-    0.1: "HundredMeters",
-    1: "Kilometer",
-    3: "ThreeKilometers",
-  } as const,
-  Round = {
-    0: 5,
-    0.01: 4,
-    0.1: 3,
-    1: 2,
-    3: 2,
+  const Round = {
+    0: 10e5,
+    0.01: 10e4,
+    0.1: 10e3,
+    1: 10e2,
+    2: 10e2,
   };
 
   Location[
     `setAccuracyTo${
-      LocationAccuracy[accuracy]
+      Accuracy[accuracy]
     }`
   ]();
 
   const location = await Location.current(),
+  factor = Round[accuracy],
   digits = Round[accuracy];
 
+  function round(
+    accuracy: number,
+    coordinate: number,
+  ) {
+    return Math.round(coordinate * accuracy)
+  }
+
   return {
-    latitude: location.latitude.toFixed(digits),
+    latitude: Math.round(location.latitude * factor) / factor;
+    
+    .toFixed(digits),
     longitude: location.longitude.toFixed(digits),
   };
 }

@@ -41,15 +41,7 @@ export default abstract class IWidget<Setting> extends IApp<
     Script.setWidget(this.widget);
 
     if (this.tapped && this.onTap !== undefined)
-      try {
-        this.onTap();
-      }
-      catch (runtimeActionError) {
-        throw Error(
-          "UI",
-          { cause: runtimeActionError },
-        );
-      }
+      this.onTap();
   }
 
   protected text(text: unknown) {
