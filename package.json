@@ -55,7 +55,7 @@
     "pretest": "npm run build",
     "test": "npm run --if-present test:suite",
     "test:suite": "mocha",
-    "predeploy": "npm run clean && npm test",
+    "predeploy": "npm run clean && npm run --ignore-scripts build && npm test --ignore-scripts",
     "deploy": "npm run deploy:pack && npm run deploy:rebuild && npm run deploy:rr",
     "deploy:pack": "npm run deploy:pack:clean && npm run deploy:pack:make && npm run deploy:pack:copy && npm run deploy:pack:unbuild",
     "deploy:pack:clean": "cmd --% /c if exist packed rmdir /s /q packed || rm -rf packed",
