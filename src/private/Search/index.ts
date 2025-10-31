@@ -44,12 +44,15 @@ export default function (
           return {
             Head: hotkeys === 0
               ? tail.shift()!
-              : {
-                  key: hotkeys === 1
-                    ? "chat"
-                    : "translate",
-                  reserved: true,
-                } as const,
+              : hotkeys === 1
+                ? {
+                    key: "chat" as const,
+                    reserved: true as const,
+                  }
+                : {
+                    key: "translate" as const,
+                    reserved: true as const,
+                  },
             tail,
           };
         }
@@ -61,8 +64,8 @@ export default function (
           && new Set("0123456789+-$€£¥.(").has(Head[0])
           ? {
               Head: {
-                key: "math",
-                reserved: true,
+                key: "math" as const,
+                reserved: true as const,
               } as const,
               tail: unshift(Head, tail),
             }
@@ -110,12 +113,13 @@ export default function (
           return {
             Head: boundary === 0
               ? {
-                  key: "translate",
-                  reserved: true,
+                  key: "translate" as const,
+                  reserved: true as const,
                   argument,
                 } as const
               : {
                   key: Head.slice(0, boundary) as stringful,
+                  reserved: false as const,
                   argument,
                 },
             tail,
