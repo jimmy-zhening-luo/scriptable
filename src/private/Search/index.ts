@@ -45,7 +45,7 @@ export default function (
 
           return {
             Head: hotkeys === 0
-              ? tail.shift()
+              ? tail.shift()!
               : hotkeys === 1
                 ? new SearchKey("chat", true)
                 : new SearchKey("translate", true),
@@ -54,9 +54,6 @@ export default function (
         }
 
         const { Head, tail } = tokenize(query);
-
-        if (Head === undefined)
-          throw RangeError("No search query");
 
         return typeof Head === "string"
           && (Head.length !== 1 || tail.length !== 0)
