@@ -1,7 +1,4 @@
-declare type Numbers<T> = T extends number
-  ? T
-  : T extends string
-    ? T extends `${infer N extends number}`
-      ? N
-      : never
-    : never;
+declare type Numbers<T> = T extends `${infer N extends number}`
+    ? N
+    : never
+  : never;
