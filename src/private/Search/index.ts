@@ -66,7 +66,7 @@ export default function (
               Head: {
                 key: "math" as const,
                 reserved: true as const,
-              } as const,
+              },
               tail: unshift(Head, tail),
             }
           : {
@@ -116,7 +116,7 @@ export default function (
                   key: "translate" as const,
                   reserved: true as const,
                   argument,
-                } as const
+                }
               : {
                   key: Head.slice(0, boundary) as stringful,
                   reserved: false as const,
