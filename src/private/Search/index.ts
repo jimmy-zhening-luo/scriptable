@@ -201,10 +201,11 @@ export default function (
           terms: unshift(
             typeof Head === "string"
               ? Head
-              : Head
-                .argument
-                ?.deselect
-                ?? Head.key as stringful,
+              : "argument" in Head
+                ? Head
+                  .argument
+                  .deselect
+                : Head.key as stringful,
             tail,
           ),
         }
@@ -212,10 +213,11 @@ export default function (
           key,
           terms: typeof Head === "string"
             ? tail
-            : Head
-              .argument
-              ?.select(tail)
-              ?? tail,
+            : "argument" in Head
+              ? Head
+                .argument
+                .select(tail)
+              : tail,
         };
   }
 }
