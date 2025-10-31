@@ -169,7 +169,7 @@ export default function (
 
   if (
     typeof Head === "object"
-    && "reserved" in Head
+    && Head.reserved === true
   )
     return {
       key: RESERVED[Head.key],
