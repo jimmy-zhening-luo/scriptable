@@ -71,12 +71,17 @@ export default class File<
         | "push"
         ),
   ) {
+    const state = this.state;
+
     if (
-      this.state === State.None
-      || this.state === State.File
+      state === State.File
       && overwrite !== false
+      || state === State.None
     ) {
-      if (!File.manager.isDirectory(this.parent))
+      if (
+        state === State.None
+        && !File.manager.isDirectory(this.parent)
+      )
         File.manager.createDirectory(
           this.parent,
           true,
@@ -91,7 +96,7 @@ export default class File<
 
         if (
           typeof overwrite === "string"
-          && this.state === State.File
+          && state === State.File
         )
           if (overwrite === "push")
             rows[rows.length] = this.read()!;
@@ -113,7 +118,7 @@ export default class File<
           typeof content === "object"
             ? JSON.stringify(content)
             : overwrite === true
-              || this.state === State.None
+              || state === State.None
               ? String(content)
               : overwrite === "push"
                 ? String(content) + "\n" + this.read()!
