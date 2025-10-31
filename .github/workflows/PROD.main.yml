@@ -16,7 +16,7 @@ jobs:
       - name: Install Node
         id: node
         uses: actions/setup-node@v4
-        with: {node-version: 22}
+        with: {node-version: 24}
       - name: Install Dependencies
         id: ci
         run: npm ci --loglevel=error --fund=false
