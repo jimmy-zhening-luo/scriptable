@@ -4,7 +4,7 @@ type Drive<
   Type extends string,
   Mutable extends boolean = false,
 > = Table<
-  File<Type, Mutable>
+  File<Mutable, Type>
 >;
 
 export default abstract class IApp<
@@ -22,10 +22,11 @@ export default abstract class IApp<
     private _input: Unnull<Input>,
     production: boolean,
   ) {
-    this.app = this.constructor.name as stringful;
+    const app = this.constructor.name;
 
-    if (this.app === "")
-      throw TypeError("Anonymous app class");
+    this.app = app === ""
+      ? "Scriptable" as stringful
+      : app as stringful;
 
     this.context = {
       production,
@@ -45,9 +46,8 @@ export default abstract class IApp<
           "Setting",
           this.app + ".json",
           "",
-          false,
         )
-          .readStringful(),
+          .read()!,
       ) as Setting;
     }
     catch (e) {
@@ -120,29 +120,14 @@ export default abstract class IApp<
 
       const output = await this.runtime();
 
-      if (this.context.development)
-        try {
-          console.log(output);
+      if (this.context.development) {
+        console.log(output);
 
-          if (this.development !== undefined)
-            this.development(output);
-        }
-        catch (developmentError) {
-          throw EvalError(
-            "Development runtime failure",
-            { cause: developmentError },
-          );
-        }
+        if (this.development !== undefined)
+          this.development(output);
+      }
 
-      try {
-        this.output(output);
-      }
-      catch (errorSystemOutput) {
-        throw TypeError(
-          "Unable to output to iOS",
-          { cause: errorSystemOutput },
-        );
-      }
+      this.output(output);
     }
     catch (error) {
       throw IApp.Error(this.app, error);
@@ -170,7 +155,7 @@ export default abstract class IApp<
   protected unset(key?: string) {
     this
       .cache(key)
-      .delete();
+      .delete(true);
   }
 
   protected clear() {
@@ -201,18 +186,6 @@ export default abstract class IApp<
       .readString();
   }
 
-  protected readStringful(
-    file?: string,
-    extension?: string,
-  ) {
-    return this
-      .storage(
-        file,
-        extension,
-      )
-      .readStringful();
-  }
-
   protected write(
     data: Parameters<typeof this.drive[string]["write"]>[0],
     overwrite: Parameters<typeof this.drive[string]["write"]>[1] = true,
@@ -239,7 +212,7 @@ export default abstract class IApp<
         file,
         extension,
       )
-      .delete();
+      .delete(true);
   }
 
   protected deleteAll() {
@@ -262,86 +235,11 @@ export default abstract class IApp<
       .read();
   }
 
-  protected stringful(
-    string = "",
-    cause?: string,
-  ) {
-    if (string === "")
-      throw TypeError(
-        "Unstringful",
-        { cause },
-      );
-
-    return string as stringful;
-  }
-
-  protected stringfuls<A extends ArrayN>(
-    strings: A,
-    cause?: string,
-  ) {
-    if (strings.length === 0)
-      throw RangeError(
-        "Empty stringful array",
-        { cause },
-      );
-    else if (!strings.every((string): string is stringful => string !== ""))
-      throw TypeError(
-        "Stringful array contains unstringful",
-        { cause },
-      );
-
-    return strings as unknown as (
-      A extends Arrayful
-        ? {
-            readonly [I in keyof A]: Flat<typeof strings>;
-          }
-        : Arrayful<Flat<typeof strings>>
-    );
-  }
-
-  protected char(
-    string = "",
-    cause?: string,
-  ) {
-    if (string.length !== 1)
-      throw TypeError(
-        "Non-char string",
-        { cause },
-      );
-
-    return string as char;
-  }
-
-  protected chars<A extends ArrayN>(
-    strings: A,
-    cause?: string,
-  ) {
-    if (strings.length === 0)
-      throw RangeError(
-        "Empty char array",
-        { cause },
-      );
-    else if (!strings.every((string): string is char => string.length === 1))
-      throw TypeError(
-        "Char array contains non-chars",
-        { cause },
-      );
-
-    return strings as unknown as (
-      A extends Arrayful
-        ? {
-            readonly [I in keyof A]: Flat<typeof strings>;
-          }
-        : Arrayful<Flat<typeof strings>>
-    );
-  }
-
   private cache(key = "cache") {
     return this.temp[key] ??= new File(
       "Cache",
       key,
       this.app,
-      true,
       true,
       true,
     );
@@ -360,7 +258,6 @@ export default abstract class IApp<
       record,
       this.app,
       true,
-      true,
     );
   }
 
@@ -376,7 +273,6 @@ export default abstract class IApp<
       "Feed",
       feed,
       this.app,
-      false,
     );
   }
 

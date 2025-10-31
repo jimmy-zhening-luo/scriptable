@@ -5,20 +5,18 @@ const enum State {
 }
 
 export default class File<
-  Type extends string,
   Mutable extends boolean,
+  Type extends string,
 > {
   private static readonly manager = FileManager.local();
   private readonly path;
   private readonly parent;
-  private readonly mutable;
   private state: State = State.None;
 
   constructor(
     type: Literalful<Type>,
     file: string,
     folder: string,
-    mutable: Mutable,
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
@@ -39,7 +37,6 @@ export default class File<
     this.path = leaf === undefined
       ? this.parent
       : this.parent + "/" + leaf;
-    this.mutable = mutable;
 
     if (File.manager.fileExists(this.path))
       this.state = File.manager.isDirectory(this.path)
@@ -47,142 +44,90 @@ export default class File<
         : State.File;
   }
 
-  public read(fail = false) {
+  public read() {
     if (this.state === State.File)
       return File.manager.readString(this.path);
-
-    if (this.state === State.Folder)
-      throw this.error(
-        "read",
-        "Target is folder",
-      );
-
-    if (fail)
-      throw this.error(
-        "read",
-        "File does not exist",
-      );
 
     return undefined;
   }
 
-  public readString(fail?: boolean) {
-    return this.read(fail) ?? "";
-  }
-
-  public readStringful() {
-    const content = this.readString(true);
-
-    if (content === "")
-      throw this.error(
-        "readStringful",
-        "File is empty",
-      );
-
-    return content as stringful;
+  public readString() {
+    return this.read() ?? "";
   }
 
   public write(
-    content:
-      | primitive
-      | Table
-      | Array<primitive | object> = "",
-    overwrite:
-      | boolean
-      | "append"
-      | "push" = false,
+    content: True<Mutable> extends never
+      ? never
+      : (
+        | primitive
+        | Table
+        | Array<primitive | object>
+        ),
+    overwrite: True<Mutable> extends never
+      ? never
+      : (
+        | boolean
+        | "append"
+        | "push"
+        ),
   ) {
-    if (!this.mutable)
-      throw this.error(
-        "write",
-        "Readonly",
-      );
-
-    if (this.state === State.File) {
-      if (overwrite === false)
-        throw this.error(
-          "write",
-          "File exists, but overwrite mode false",
-        );
-    }
-    else if (this.state === State.Folder)
-      throw this.error(
-        "write",
-        "Target is folder",
-      );
-    else
+    if (
+      this.state === State.None
+      || this.state === State.File
+      && overwrite !== false
+    ) {
       if (!File.manager.isDirectory(this.parent))
         File.manager.createDirectory(
           this.parent,
           true,
         );
 
-    if (Array.isArray(content)) {
-      const rows = content.map(
-        line => typeof line === "object"
-          ? JSON.stringify(line)
-          : String(line),
-      );
+      if (Array.isArray(content)) {
+        const rows = content.map(
+          line => typeof line === "object"
+            ? JSON.stringify(line)
+            : String(line),
+        );
 
-      if (
-        typeof overwrite === "string"
-        && this.state === State.File
-      )
-        if (overwrite === "push")
-          rows[rows.length] = this.read()!;
-        else {
-          const existing = this.read()!;
+        if (
+          typeof overwrite === "string"
+          && this.state === State.File
+        )
+          if (overwrite === "push")
+            rows[rows.length] = this.read()!;
+          else {
+            const existing = this.read()!;
 
-          if (existing !== "")
-            void rows.unshift(existing);
-        }
+            if (existing !== "")
+              void rows.unshift(existing);
+          }
 
-      File.manager.writeString(
-        this.path,
-        rows.join("\n"),
-      );
+        File.manager.writeString(
+          this.path,
+          rows.join("\n"),
+        );
+      }
+      else
+        File.manager.writeString(
+          this.path,
+          typeof content === "object"
+            ? JSON.stringify(content)
+            : overwrite === true
+              || this.state === State.None
+              ? String(content)
+              : overwrite === "push"
+                ? String(content) + "\n" + this.read()!
+                : this.read()! + String(content),
+        );
+
+      this.state = State.File;
     }
-    else
-      File.manager.writeString(
-        this.path,
-        typeof content === "object"
-          ? JSON.stringify(content)
-          : overwrite === true
-            || this.state === State.None
-            ? String(content)
-            : overwrite === "push"
-              ? String(content) + "\n" + this.read()!
-              : this.read()! + String(content),
-      );
-
-    this.state = State.File;
   }
 
-  public delete() {
-    if (!this.mutable)
-      throw this.error(
-        "delete",
-        "Readonly",
-      );
-
-    if (this.state !== State.None) {
+  public delete(process: True<Mutable> | false) {
+    if (this.state !== State.None && process) {
       File.manager.remove(this.path);
       this.state = State.None;
     }
-  }
-
-  private error(
-    verb: string,
-    cause: string | Error,
-  ) {
-    return Error(
-      `Failed to ${verb} file`,
-      {
-        cause: ReferenceError(
-          this.path,
-          { cause },
-        ),
-      },
-    );
   }
 }
