@@ -16,6 +16,7 @@ type SearchEngine
 
 export interface SearchSetting {
   alias: Tableful<stringful>;
+  chars: Tableful<SearchEngine>;
   engines: Tableful<SearchEngine>;
   reserved: {
     keys: Fieldful<
