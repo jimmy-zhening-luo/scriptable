@@ -1,5 +1,5 @@
 import type { SearchSetting } from "./setting";
-import { QueryArgument } from "./token";
+import { QueryArgument } from "./argument";
 
 export type { SearchSetting };
 export type { SearchOutput } from "./output";
