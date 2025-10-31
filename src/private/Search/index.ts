@@ -179,14 +179,13 @@ export default function (
         : Head.key
     )
       .toLocaleLowerCase() as stringful,
-    key = (
-      head.length === 1
-        ? chars
-        : engines
-    )
-      .has(head)
-      ? head
-      : alias[head];
+    key = head.length === 1
+      ? chars.has(head)
+        ? head
+        : undefined
+      : engines.has(head)
+        ? head
+        : alias[head];
 
     return key === undefined
       ? {
