@@ -9,6 +9,7 @@ export type { SearchOutput } from "./output";
 
 export default function (
   query: string,
+  chars: Set<stringful>,
   engines: Set<stringful>,
   alias: SearchSetting["alias"],
   RESERVED: SearchSetting["reserved"]["keys"],
@@ -178,7 +179,12 @@ export default function (
         : Head.key
     )
       .toLocaleLowerCase() as stringful,
-    key = engines.has(head)
+    key = (
+      head.length === 1
+        ? chars
+        : engines
+    )
+      .has(head)
       ? head
       : alias[head];
 

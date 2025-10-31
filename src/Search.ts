@@ -41,6 +41,7 @@ void new class Search extends Shortcut<
         )
       : parser(
         input,
+        new Set(Object.keys(setting.chars)) as Set<stringful>,
         new Set(Object.keys(setting.engines)) as Set<stringful>,
         setting.alias,
         setting.reserved.keys,
@@ -49,7 +50,9 @@ void new class Search extends Shortcut<
         | "prior"
       >,
     fulfiller = resolver(
-      setting.engines[parsed.key]!,
+      parsed.key.length === 1
+        ? setting.chars[parsed.key]!
+        : setting.engines[parsed.key]!,
       parsed,
     );
 
