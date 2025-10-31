@@ -2,7 +2,19 @@
   "display": "tsc@509.3.0",
   "include": [
     "src/**/*.ts",
+    "tests/**/*.ts",
     "typings/**/*.d.ts",
+  ],
+  "references": [
+    {
+      "path": "src/tsconfig.json",
+    },
+    {
+      "path": "tests/tsconfig.json",
+    },
+    {
+      "path": "typings/tsconfig.json",
+    },
   ],
   "compilerOptions": {
     "allowUnreachableCode": false,
@@ -24,7 +36,7 @@
     // "resolvePackageJsonExports": true,
     // "resolvePackageJsonImports": true,
     "rewriteRelativeImportExtensions": true,
-    // "rootDir": "src",
+    "rootDir": "src",
     // "rootDirs": [],
     // "typeRoots": [],
     "types": [
@@ -34,7 +46,7 @@
       "scriptable-ios" /* @OVERRIDE */,
     ],
     "declaration": true,
-    // "declarationDir": "",
+    "declarationDir": "declaration",
     "declarationMap": true,
     // "emitDeclarationOnly": true,
     // "noEmit": true,
@@ -51,7 +63,8 @@
       /* {CONFIGURE} */
     ],
     "target": "esnext",
-    // "composite": true,
+    "composite": true,
+    "tsBuildInfoFile": "declaration/.tsbuild/.tsbuildinfo",
     // "skipLibCheck": true,
   },
 }

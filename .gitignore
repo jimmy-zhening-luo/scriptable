@@ -14,7 +14,9 @@
 /bundled/
 /pack/
 /packed/
+/declaration/
 # Env
+/dist-tests/
 /in/
 /input/
 /out/

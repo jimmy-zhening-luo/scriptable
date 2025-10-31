@@ -6,6 +6,6 @@
 # https://mochajs.org/#configuration-format
 # https://mochajs.org/#command-line-usage
 
-spec: [dist/**/*.spec.js]
+spec: [dist-tests/**/*.spec.js]
 extension: [js]
-require: dist/_test/hooks.js # @OVERRIDE
+require: dist-tests/hooks.js # @OVERRIDE
