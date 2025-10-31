@@ -1,8 +1,5 @@
 import type { SearchSetting } from "./setting";
-import {
-  SearchKey,
-  QueryArgument,
-} from "./token";
+import { QueryArgument } from "./token";
 
 export type { SearchSetting };
 export type { SearchOutput } from "./output";
@@ -47,9 +44,12 @@ export default function (
           return {
             Head: hotkeys === 0
               ? tail.shift()!
-              : hotkeys === 1
-                ? new SearchKey("chat", true)
-                : new SearchKey("translate", true),
+              : {
+                  key: hotkeys === 1
+                    ? "chat"
+                    : "translate",
+                  reserved: true,
+                } as const,
             tail,
           };
         }
@@ -60,7 +60,10 @@ export default function (
           && (Head.length !== 1 || tail.length !== 0)
           && new Set("0123456789+-$€£¥.(").has(Head[0])
           ? {
-              Head: new SearchKey("math", true),
+              Head: {
+                key: "math",
+                reserved: true,
+              } as const,
               tail: unshift(Head, tail),
             }
           : {
@@ -106,16 +109,15 @@ export default function (
 
           return {
             Head: boundary === 0
-              ? new SearchKey(
-                  "translate",
-                  true,
+              ? {
+                  key: "translate",
+                  reserved: true,
                   argument,
-                )
-              : new SearchKey(
-                  Head.slice(0, boundary) as stringful,
-                  false,
+                } as const
+              : {
+                  key: Head.slice(0, boundary) as stringful,
                   argument,
-                ),
+                },
             tail,
           };
         }
