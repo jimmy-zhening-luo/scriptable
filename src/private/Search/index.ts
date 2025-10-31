@@ -202,11 +202,9 @@ export default function (
           terms: unshift(
             typeof Head === "string"
               ? Head
-              : "argument" in Head
-                ? Head
-                  .argument
-                  .deselect
-                : Head.key as stringful,
+              : Head
+                .argument
+                .deselect,
             tail,
           ),
         }
