@@ -1,20 +1,19 @@
-enum Accuracy {
-  Best,
-  Kilometer,
-  ThreeKilometers,
-  TenMeters = 10e-2,
-  HundredMeters = 10e-1,
-}
-
 export default async function (
-  accuracy: Accuracy = 10e-1,
+  accuracy: Numbers<keyof Accuracy> = 10e-1,
 ) {
-  const Round = {
+  const Accuracy = {
+    0: "Best",
+    0.01: "TenMeters",
+    0.1: "HundredMeters",
+    1: "Kilometer",
+    3: "ThreeKilometers",
+  } as const,
+  Digits = {
     0: 5,
     0.01: 4,
     0.1: 3,
     1: 2,
-    2: 2,
+    3: 2,
   };
 
   Location[
@@ -24,7 +23,7 @@ export default async function (
   ]();
 
   const location = await Location.current(),
-  digits = Round[accuracy];
+  digits = Digits[accuracy];
 
   return {
     latitude: location.latitude.toFixed(digits),
