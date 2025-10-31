@@ -13,7 +13,7 @@ export default {
     "private/Search/resolver": "src/private/Search/resolver.ts",
   },
   output: {
-    dir: "dist",
+    dir: "packed",
     format: "cjs",
     strict: true,
     generatedCode: {
