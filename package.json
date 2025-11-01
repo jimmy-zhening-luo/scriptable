@@ -48,7 +48,6 @@
     "clean": "cmd --% /c \"for %G in (types dist dist-tests build packed) do (if exist %G rmdir /s /q %G) & for %G in (.eslintcache) do (if exist %G del /f /q %G)\" || rm -rf types dist dist-tests build packed .eslintcache",
     "build": "npm run build:ts",
     "build:ts": "tsc -b src",
-    "build:svelte": "svelte-kit sync && svelte-check && vite build",
     "postbuild:ts": "npm run --if-present stage && ts-add-js-extension --showprogress=false --dir=dist",
     "postbuild": "npm run lint || exit 0",
     "lint": "eslint --cache --fix",
