@@ -1,6 +1,7 @@
 {
-  "extends": "../tsconfig.json",
-  "include": [
-    "**/*",
-  ],
+  "extends": "../tsconfig-base.json",
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "../types/types.tsbuildinfo",
+  },
 }

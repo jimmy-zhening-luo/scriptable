@@ -1,5 +1,5 @@
 {
-  "display": "tsc@509.4.0",
+  "display": "tsc@509.5.0",
   "$help": "https://aka.ms/tsconfig/#quick-nav-Top%20Level",
   "compilerOptions": {
     "allowUnreachableCode": false,
@@ -17,11 +17,28 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "rewriteRelativeImportExtensions": true,
+    "rootDirs": [
+      "src",
+      "typings",
+      "./",
+    ],
+    "types": [
+      "mocha",
+      "chai",
+      /* {CONFIGURE} */
+      "scriptable-ios" /* @OVERRIDE */,
+    ],
+    "declaration": true,
     "declarationMap": true,
     "noEmitOnError": true,
     "removeComments": true,
-    "sourceMap": true,
+    // "sourceMap": true /* @OVERRIDE */,
+    // "verbatimModuleSyntax": true,
+    "lib": [
+      "esnext",
+      /* {CONFIGURE} */
+    ],
     "target": "esnext",
-    "composite": true,
+    // "skipLibCheck": true,
   },
 }
