@@ -9,11 +9,9 @@ declare type Property<
   | symbol,
   Value,
 >
-= Key extends never
-  ? OptionalKey extends never
-    ? never
-    : PartialRecord<OptionalKey, Value>
-  : OptionalKey extends never
-    ? Record<Key, Value>
-    : & Record<Key, Value>
-      & PartialRecord<OptionalKey, Value>;
+= [Key] extends [never]
+  ? PartialRecord<OptionalKey, Value>
+  : [OptionalKey] extends [never]
+      ? Record<Key, Value>
+      : & Record<Key, Value>
+        & PartialRecord<OptionalKey, Value>;
