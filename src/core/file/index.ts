@@ -33,10 +33,10 @@ export default class File<
 
     this.parent = [root, type]
       .concat(subpath)
-      .join("/");
+      .join("/") as stringful;
     this.path = leaf === undefined
       ? this.parent
-      : this.parent + "/" + leaf;
+      : this.parent + "/" + leaf as stringful;
 
     if (File.manager.fileExists(this.path))
       this.state = File.manager.isDirectory(this.path)
