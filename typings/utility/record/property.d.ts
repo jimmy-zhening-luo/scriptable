@@ -8,8 +8,7 @@ declare type Property<
   | number
   | symbol,
   Value,
->
-= [Key] extends [never]
+> = [Key] extends [never]
   ? PartialRecord<OptionalKey, Value>
   : [OptionalKey] extends [never]
       ? Record<Key, Value>
