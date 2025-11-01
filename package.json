@@ -3,7 +3,7 @@
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "npmpackage",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": "github:jimmy-zhening-luo/REPO",
   "description": "",
   "keywords": [],
