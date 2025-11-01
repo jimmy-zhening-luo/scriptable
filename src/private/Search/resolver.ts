@@ -69,7 +69,7 @@ export default function (
       action: wrapper.encode === true
         ? encoder(terms, separator)
         : query,
-      notify: wrapper.notify! || null,
+      notify: wrapper.notify! || null as Null<true>,
       label: query,
       noSave: wrapper.noSave,
     };
