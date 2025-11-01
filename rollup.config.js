@@ -6,7 +6,7 @@ const extensions = [".ts"];
 export default {
   input: {
     "core/index": "src/core/index.ts",
-    "lib/location": "src/lib/location.ts",
+    "lib/location": "src/lib/location/index.ts",
     "lib/time": "src/lib/time/index.ts",
     "lib/ui": "src/lib/ui/index.ts",
     "private/Search/index": "src/private/Search/index.ts",
