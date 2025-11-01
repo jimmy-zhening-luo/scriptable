@@ -1,5 +1,5 @@
 {
-  "$pkg": "2411.5.0",
+  "$pkg": "2411.6.0",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "npmpackage",
@@ -40,10 +40,9 @@
     "postbuild:ts": "npm run --if-present stage && ts-add-js-extension --showprogress=false --dir=dist",
     "postbuild": "npm run lint || exit 0",
     "lint": "eslint --cache --fix",
-    "pretest": "npm run --ignore-scripts build",
+    "pretest": "npm run build",
     "test": "npm run --if-present test:suite",
     "test:suite": "tsc -b tests && ts-add-js-extension --showprogress=false --dir=dist && mocha",
-    "posttest": "npm run postbuild",
     "predeploy": "npm run clean && npm test",
     "stage": "npm run stage:clean && npm run stage:make && npm run stage:copy",
     "stage:clean": "cmd --% /c if exist packed rmdir /s /q packed || rm -rf packed",
