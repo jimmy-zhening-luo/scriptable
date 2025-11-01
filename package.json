@@ -1,5 +1,5 @@
 {
-  "$pkg": "2411.4.0",
+  "$pkg": "2411.4.1",
   "$schema": "https://json.schemastore.org/package",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "name": "@scoping/scriptable",
@@ -54,7 +54,7 @@
     "lint": "eslint --cache --fix",
     "pretest": "npm run build",
     "test": "npm run --if-present test:suite",
-    "test:suite": "tsc -b tests && ts-add-js-extension --showprogress=false --dir=dist-tests && mocha",
+    "test:suite": "tsc -b tests && ts-add-js-extension --showprogress=false --dir=dist-tests --include=dist && mocha",
     "predeploy": "npm run clean && npm test",
     "stage": "npm run stage:clean && npm run stage:make && npm run stage:copy",
     "stage:clean": "cmd --% /c if exist packed rmdir /s /q packed || rm -rf packed",

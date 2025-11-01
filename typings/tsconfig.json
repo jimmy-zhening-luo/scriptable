@@ -1,6 +1,6 @@
 {
-  "extends": "../tsconfig-project.json",
-  "compilerOptions": {
-    "outDir": "../types",
-  },
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*",
+  ],
 }

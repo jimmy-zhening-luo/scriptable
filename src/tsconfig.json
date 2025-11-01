@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig-project.json",
+  "extends": "../tsconfig.json",
   "include": [
     "../typings/**/*",
     "**/*",
@@ -19,6 +19,7 @@
     },
   ],
   "compilerOptions": {
+    "rootDir": ".",
     "declarationDir": "../types",
     "outDir": "../dist",
     "tsBuildInfoFile": "../types/src.tsbuildinfo",

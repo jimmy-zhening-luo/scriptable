@@ -1,10 +1,6 @@
 {
-  "extends": "./tsconfig-project.json",
-  "include": [
-    "src/**/*",
-    "tests/**/*",
-    "typings/**/*",
-  ],
+  "files": [],
+  "extends": "./tsconfig-base.json",
   "references": [
     {
       "path": "src/tsconfig.json",
@@ -17,9 +13,23 @@
     },
   ],
   "compilerOptions": {
-    "rootDir": "src",
-    "declarationDir": "types",
-    "outDir": "dist",
-    "tsBuildInfoFile": "types/project.tsbuildinfo",
+    // "module": "esnext",
+    // "moduleResolution": "bundler",
+    "types": [
+      "mocha",
+      "chai",
+      /* {CONFIGURE} */
+      "scriptable-ios" /* @OVERRIDE */,
+    ],
+    // "declaration": true,
+    "sourceMap": false /* @OVERRIDE */,
+    // "verbatimModuleSyntax": true,
+    "lib": [
+      "esnext",
+      /* {CONFIGURE} */
+    ],
+    // "target": "esnext",
+    // "composite": false,
+    // "skipLibCheck": true,
   },
 }
