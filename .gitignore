@@ -1,11 +1,11 @@
 ##############################
 ####      .gitignore      ####
-####       v251.0.0       ####
+####       v251.1.0       ####
 ##############################
 
 #DOC: https://git-scm.com/docs/gitignore
 
-#region Folder (Root)
+#region Folder (./)
 # Build
 /dist/
 /build/
@@ -14,8 +14,13 @@
 /bundled/
 /pack/
 /packed/
+# Types
+/d/
+/dts/
+/d.ts/
 /declaration/
-# Env
+/types/
+# Test
 /dist-tests/
 /in/
 /input/
@@ -24,35 +29,29 @@
 #endregion
 
 
-#region Folder
+#region Folder (**)
 # Build
-.svelte-kit/
-# Install
 node_modules/
-# Env
+.svelte-kit/
+# Local
 .vscode/**
 !.vscode/**/*.code-snippets
-# Apple Detritus
+# Trash
 .Trash/
 #endregion
 
 
-#region File (Root)
-#endregion
-
-
-#region File
+#region File (**)
 # Build
-*.tsbuildinfo
-# Install
 .yarn-integrity
-# Env
+*.tsbuildinfo
+# Local
 *.env
 *.env.*
 !*.env.example
 *.eslintcache
 *.log
-# Apple Detritus
+# Trash
 *.DS_Store
 *.icloud
 .blink*

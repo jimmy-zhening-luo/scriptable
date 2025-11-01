@@ -1,11 +1,11 @@
 ####################
 ###   .mocharc   ###
-###   1107.0.0   ###
+###   1107.1.0   ###
 ####################
 
 # https://mochajs.org/#configuration-format
 # https://mochajs.org/#command-line-usage
 
-spec: [dist-tests/**/*.spec.js]
 extension: [js]
-require: dist-tests/hooks.js # @OVERRIDE
+require: dist-tests/index.js
+spec: [dist-tests/**/*.spec.js]

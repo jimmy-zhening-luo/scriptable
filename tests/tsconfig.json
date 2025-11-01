@@ -1,20 +1,16 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig-project.json",
   "include": [
+    "../src/**/*",
+    "../typings/**/*",
     "**/*",
   ],
   "references": [
     {
       "path": "../src/tsconfig.json",
     },
-    {
-      "path": "../typings/tsconfig.json",
-    },
   ],
   "compilerOptions": {
-    "rootDir": ".",
-    "declarationDir": "../dist-tests",
     "outDir": "../dist-tests",
-    "tsBuildInfoFile": "../dist-tests/.tsbuildinfo",
   },
 }

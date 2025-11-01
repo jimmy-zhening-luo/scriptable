@@ -1,15 +1,12 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "../../typings/**/*.d.ts",
+    "../../typings/**/*",
     "../core/**/*",
     "../lib/**/*",
     "**/*",
   ],
   "references": [
-    {
-      "path": "../../typings/tsconfig.json",
-    },
     {
       "path": "../core/tsconfig.json",
     },
@@ -19,8 +16,8 @@
   ],
   "compilerOptions": {
     "rootDir": "..",
-    "declarationDir": "../../declaration",
+    "declarationDir": "../../types",
     "outDir": "../../dist",
-    "tsBuildInfoFile": "../../declaration/.tsbuild/src/app.tsbuildinfo",
+    "tsBuildInfoFile": "../../types/app/.tsbuildinfo",
   },
 }

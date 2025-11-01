@@ -1,12 +1,6 @@
 {
-  "extends": "../tsconfig.json",
-  "include": [
-    "**/*.d.ts",
-  ],
+  "extends": "../tsconfig-project.json",
   "compilerOptions": {
-    "rootDir": "../src",
-    "declarationDir": "../declaration",
-    "outDir": "../dist",
-    "tsBuildInfoFile": "../declaration/.tsbuild/typings.tsbuildinfo",
+    "outDir": "../types",
   },
 }
