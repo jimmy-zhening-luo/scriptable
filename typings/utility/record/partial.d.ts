@@ -5,8 +5,5 @@ declare type PartialRecord<
   | symbol,
   Value,
 > = Partial<
-  Record<
-    Key,
-    Value
-  >
+  Record<Key, Value>
 >;
