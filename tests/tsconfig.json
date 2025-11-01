@@ -12,6 +12,6 @@
   ],
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "../dist-tests",
+    "outDir": "../dist/tests",
   },
 }

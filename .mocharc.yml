@@ -7,5 +7,5 @@
 # https://mochajs.org/#command-line-usage
 
 extension: [js]
-require: dist-tests/index.js
-spec: [dist-tests/**/*.spec.js]
+require: dist/tests/index.js
+spec: [dist/tests/**/*.spec.js]
