@@ -10,10 +10,10 @@ declare type Property<
   Value,
 >
 = Key extends never
-  ? Optional extends never
+  ? OptionalKey extends never
     ? never
     : PartialRecord<OptionalKey, Value>
-  : Optional extends never
+  : OptionalKey extends never
     ? Record<Key, Value>
     : & Record<Key, Value>
       & PartialRecord<OptionalKey, Value>;
