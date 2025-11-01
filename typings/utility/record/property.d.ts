@@ -1,13 +1,7 @@
 declare type Property<
-  Key extends
-  | string
-  | number
-  | symbol,
-  OptionalKey extends
-  | string
-  | number
-  | symbol,
   Value,
+  Key extends RecordKey,
+  OptionalKey extends RecordKey,
 > = [Key] extends [never]
   ? PartialRecord<OptionalKey, Value>
   : [OptionalKey] extends [never]

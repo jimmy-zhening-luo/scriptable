@@ -1,52 +1,49 @@
 declare type Field<
-  Key extends string,
-  Optional extends string = never,
+  Key extends RecordKey,
+  OptionalKey extends RecordKey = never,
 > = Property<
+  string,
   Key,
-  Optional,
-  string
+  OptionalKey
 >;
 declare type Fieldful<
-  Key extends string,
-  Optional extends string = never,
+  Key extends RecordKey,
+  OptionalKey extends RecordKey = never,
 > = Property<
+  stringful,
   Key,
-  Optional,
-  stringful
+  OptionalKey
 >;
 declare type Flag<
-  Optional extends string,
-  Key extends string = never,
+  OptionalKey extends RecordKey,
+  Key extends RecordKey = never,
 > = Property<
+  boolean,
   Key,
-  Optional,
-  boolean
+  OptionalKey
 >;
 declare type List<
-  Key extends string,
-  Optional extends string = never,
+  Key extends RecordKey,
+  OptionalKey extends RecordKey = never,
 > = Property<
+  readonly string[],
   Key,
-  Optional,
-  readonly string[]
+  OptionalKey
 >;
 declare type Listish<
-  Key extends string,
-  Optional extends string = never,
+  Key extends RecordKey,
+  OptionalKey extends RecordKey = never,
   Mutable extends boolean = false,
 > = Property<
+  Unflat<string, Mutable>,
   Key,
-  Optional,
-  Unflat<
-    string,
-    Mutable
-  >
+  OptionalKey
 >;
 declare type Scalar<
-  Key extends string,
-  Optional extends string = never,
+  Key extends RecordKey,
+  OptionalKey extends RecordKey = never,
 > = Property<
+  number,
   Key,
-  Optional,
-  number
+  OptionalKey
 >;

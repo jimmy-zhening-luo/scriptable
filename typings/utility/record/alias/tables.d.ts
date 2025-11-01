@@ -6,8 +6,5 @@ declare type ListTable = Table<readonly string[]>;
 declare type ListishTable<
   Mutable extends boolean = false,
 > = Table<
-  Unflat<
-    string,
-    Mutable
-  >
+  Unflat<string, Mutable>
 >;

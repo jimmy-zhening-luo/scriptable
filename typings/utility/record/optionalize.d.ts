@@ -1,7 +1,7 @@
 declare type Optionalize<
   Record extends object,
-  Optional extends keyof Record,
-> = Omit<Record, Optional>
+  OptionalKey extends keyof Record,
+> = Omit<Record, OptionalKey>
   & Partial<
-    Pick<Record, Optional>
+    Pick<Record, OptionalKey>
   >;
