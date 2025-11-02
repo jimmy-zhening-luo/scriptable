@@ -1,7 +1,9 @@
 import IWidget from "./iwidget";
 import Style from "../../lib/ui";
 
-const DEFAULT_WEIGHT = 12;
+const enum Default {
+  Weight = 12,
+}
 
 export default abstract class<Setting = never> extends IWidget<Setting> {
   protected readonly style;
@@ -12,12 +14,12 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
     title: boolean | string = false,
     {
       background = Color.black(),
-      weight = DEFAULT_WEIGHT,
+      weight = Default.Weight,
       spacing = Math.round(weight / 4),
-      top = DEFAULT_WEIGHT,
-      trailing = DEFAULT_WEIGHT,
-      bottom = DEFAULT_WEIGHT,
-      leading = DEFAULT_WEIGHT,
+      top = Default.Weight,
+      trailing = Default.Weight,
+      bottom = Default.Weight,
+      leading = Default.Weight,
     } = {},
   ) {
     super(url);
