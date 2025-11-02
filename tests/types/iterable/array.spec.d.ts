@@ -15,7 +15,7 @@ declare namespace ArrayN {
         ? [string, string, string, ...string[]] extends ArrayN<3>
             ? ArrayN<3> extends readonly [string, string, string, string, ...readonly string[]]
               ? never
-              : ArrayN<3> extends [string, string, string, ...readonly string[]]
+              : readonly [string, string, string, ...readonly string[]] extends ArrayN<3>
                 ? never
                 : ArrayN<3>
             : never
@@ -24,7 +24,7 @@ declare namespace ArrayN {
         ? [string, ...string[]] extends ArrayN<1>
             ? ArrayN<1> extends readonly [string, string, ...readonly string[]]
               ? never
-              : ArrayN<1> extends [string, ...readonly string[]]
+              : readonly [string, ...readonly string[]] extends ArrayN<1>
                 ? never
                 : ArrayN<1>
             : never
