@@ -34,15 +34,15 @@ export default function (
     if (
       first.length === 1
       && query.length === 1
-    ) {
+    )
       return {
         key: chars.has(first)
           ? first
           : RESERVED.skip,
         terms: [],
-      }
-    }
-    else {
+      };
+
+    else
       if (new Set("0123456789.-+($€£¥").has(first[0]))
         return {
           key: RESERVED.math,
@@ -136,12 +136,11 @@ export default function (
               terms: option === null
                 ? query
                 : option
-                  .argument
-                  .prepend(query),
+                    .argument
+                    .prepend(query),
             };
           }
         }
       }
-    }
   }
 }
