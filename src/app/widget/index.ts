@@ -1,9 +1,9 @@
-import IWidget from "../iwidget";
+import IWidget from "./iwidget";
 import Style from "../../lib/ui";
 
 const DEFAULT_WEIGHT = 12;
 
-export default abstract class Widget<Setting = never> extends IWidget<Setting> {
+export default abstract class<Setting = never> extends IWidget<Setting> {
   protected readonly style;
   private readonly weight;
 
@@ -60,12 +60,12 @@ export default abstract class Widget<Setting = never> extends IWidget<Setting> {
   }
 
   protected clock(
-    timezone: Parameters<typeof Widget.Time.prototype.offset>[0] = null,
+    timezone: Parameters<typeof IWidget.Time.prototype.offset>[0] = null,
     label = "--",
     font = "Menlo",
     ampm = true,
   ) {
-    const now = new Widget.Time,
+    const now = new IWidget.Time,
     destinationMidnight = now
       .midnight
       .in(now.offset(timezone)),
@@ -132,7 +132,7 @@ export default abstract class Widget<Setting = never> extends IWidget<Setting> {
     font = this.style.footnote(),
   ) {
     return this.text(
-      label + new Widget.Time().time(),
+      label + new IWidget.Time().time(),
       font,
     );
   }

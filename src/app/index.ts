@@ -1,6 +1,6 @@
 import IApp from "../core";
 
-export default abstract class Shortcut<
+export default abstract class<
   Setting = never,
   Output = void,
   Input extends Unflat = never,

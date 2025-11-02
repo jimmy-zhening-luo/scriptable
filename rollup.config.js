@@ -3,6 +3,7 @@ import { babel } from "@rollup/plugin-babel";
 
 const extensions = [".ts"];
 
+/** @type {import('rollup').RollupOptions} */
 export default {
   input: {
     "core/index": "src/core/index.ts",

@@ -1,6 +1,6 @@
 import IApp from "../core";
 
-export default abstract class Share<
+export default abstract class<
   Setting = never,
   Output extends Void<string> = string,
 > extends IApp<

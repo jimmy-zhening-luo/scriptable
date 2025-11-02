@@ -1,8 +1,8 @@
-import IApp from "../core";
-import Time from "../lib/time";
-import location from "../lib/location";
+import IApp from "../../../core";
+import Time from "../../../lib/time";
+import location from "../../../lib/location";
 
-export default abstract class IWidget<Setting> extends IApp<
+export default abstract class<Setting> extends IApp<
   Setting,
   void,
   string
