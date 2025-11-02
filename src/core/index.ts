@@ -58,7 +58,7 @@ export default abstract class IApp<
     }
   }
 
-  private static Error(app: stringful, error: unknown) {
+  private static Error(app: string, error: unknown) {
     function cast(error: unknown) {
       return typeof error === "object"
         && error !== null
