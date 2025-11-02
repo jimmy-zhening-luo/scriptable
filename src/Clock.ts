@@ -137,7 +137,6 @@ await new class Clock extends Widget<ClockSetting> {
         )
         + date.print("'&date='y-MM-dd"),
     ),
-
     {
       sunrise,
       sunset,
