@@ -1,5 +1,5 @@
 export class QueryArgument {
-  private readonly argument;
+  public readonly argument;
   private readonly consumes;
 
   constructor(
