@@ -1,4 +1,4 @@
 declare type Arrayful<
   Element = string,
-  Mutable extends boolean = false,
-> = ArrayN<1, Element, Mutable>;
+  Readonly extends boolean = false,
+> = ArrayN<1, Element, Readonly>;

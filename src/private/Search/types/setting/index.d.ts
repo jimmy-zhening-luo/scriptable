@@ -1,12 +1,12 @@
 import type { ISearchEngine } from "./engine";
 
 type SearchEngine
-= | Unflat<stringful, true>
+= | Unflat<stringful>
   | ISearchEngine<
     "url",
     "force",
     never,
-    Unflat<stringful, true>
+    Unflat<stringful>
   >
   | ISearchEngine<
     "shortcut",

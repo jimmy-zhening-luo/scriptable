@@ -3,7 +3,7 @@ import IApp from "../core";
 export default abstract class<
   Setting = never,
   Output = void,
-  Input extends Unflat = never,
+  Input extends Unflat<string, true> = never,
 > extends IApp<
     Setting,
     Void<Output>,
@@ -12,7 +12,7 @@ export default abstract class<
   constructor(
     multi:
       | false
-      | (Input extends ArrayN ? true : never)
+      | (Input extends readonly string[] ? true : never)
       = false,
   ) {
     super(

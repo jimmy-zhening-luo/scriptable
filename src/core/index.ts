@@ -74,7 +74,7 @@ export default abstract class IApp<
           : JSON.stringify(error);
     }
 
-    const trace: Arrayful<string | Error, true> = [cast(error)];
+    const trace: Arrayful<string | Error> = [cast(error)];
 
     while (
       typeof trace[0] !== "string"

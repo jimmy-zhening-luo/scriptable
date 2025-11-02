@@ -6,7 +6,7 @@ export default abstract class<
 > extends IApp<
     Setting,
     Output,
-    ArrayN
+    readonly string[]
   > {
   constructor(
     inputType:

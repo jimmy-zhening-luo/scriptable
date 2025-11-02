@@ -11,7 +11,7 @@ export default function (
     terms: readonly stringful[],
     separator: string,
     browser?: {
-      url: Unflat<string, true>;
+      url: Unflat;
       force?: boolean;
     },
   ) {
