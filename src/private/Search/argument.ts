@@ -1,30 +1,29 @@
 export class QueryArgument {
   private readonly argument;
-  private readonly consume;
+  private readonly consumes;
 
   constructor(
     primarySelector: char,
     selector: char,
-    flag: string,
-    public readonly deselect: stringful,
-    elision?: stringful,
+    option: string,
+    next?: stringful,
   ) {
-    this.consume = flag === ""
+    this.consumes = option === ""
       && selector === ".";
-    this.argument = this.consume
-      ? elision === undefined
+    this.argument = this.consumes
+      ? next === undefined
         ? primarySelector
-        : primarySelector + elision as stringful
-      : primarySelector + flag as stringful;
+        : primarySelector + next as stringful
+      : primarySelector + option as stringful;
   }
 
-  public select(tail: stringful[]) {
-    if (this.consume || tail.length === 0)
+  public prepend(terms: stringful[]) {
+    if (this.consumes || terms.length === 0)
       /* eslint-disable no-param-reassign */
-      tail[0] = this.argument;
+      terms[0] = this.argument;
     else
-      void tail.unshift(this.argument);
+      void terms.unshift(this.argument);
 
-    return tail;
+    return terms;
   }
 }
