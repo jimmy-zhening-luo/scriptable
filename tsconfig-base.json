@@ -1,5 +1,5 @@
 {
-  "display": "tsc@509.5.1",
+  "display": "tsc@509.6.0",
   "$help": "https://aka.ms/tsconfig/#quick-nav-Top%20Level",
   "compilerOptions": {
     "allowUnreachableCode": false,
@@ -17,11 +17,6 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "rewriteRelativeImportExtensions": true,
-    "rootDirs": [
-      "src",
-      "typings",
-      ".",
-    ],
     "types": [
       "mocha",
       "chai",

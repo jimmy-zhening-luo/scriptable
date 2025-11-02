@@ -1,4 +1,4 @@
 declare const Dateful: unique symbol;
-declare type Dateful = Date & {
+export type Dateful = Date & {
   [Dateful]: true;
 };

@@ -1,3 +1,4 @@
+import type { Dateful } from "./dateful";
 import type { Timezone } from "./timezone";
 
 const enum Unit {

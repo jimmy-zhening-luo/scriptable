@@ -1,11 +1,5 @@
 import type { Timezone } from "../../lib/time/timezone";
-
-interface IWeatherApi {
-  api: {
-    userAgent: string;
-    url: string;
-  };
-}
+import type { IWeatherApi } from "./api";
 
 export interface ClockSetting {
   clock: {

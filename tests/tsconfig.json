@@ -13,6 +13,10 @@
     },
   ],
   "compilerOptions": {
+    "rootDirs": [
+      "../src",
+      "..",
+    ],
     "outDir": "../dist/tests",
   },
 }

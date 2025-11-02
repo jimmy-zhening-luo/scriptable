@@ -1,30 +1,24 @@
 {
-  "extends": "../tsconfig-base.json",
+  "extends": "./tsconfig-src-build.json",
   "include": [
     "../typings/**/*",
-    "**/*",
+    "*",
   ],
   "references": [
     {
       "path": "../typings",
     },
     {
-      "path": "app/tsconfig.json",
+      "path": "app",
     },
     {
-      "path": "core/tsconfig.json",
+      "path": "lib",
     },
     {
-      "path": "lib/tsconfig.json",
-    },
-    {
-      "path": "private/tsconfig.json",
+      "path": "private",
     },
   ],
   "compilerOptions": {
-    "declarationDir": "../types",
-    "outDir": "../dist",
-    "composite": true,
-    "tsBuildInfoFile": "../types/src.tsbuildinfo",
+    "tsBuildInfoFile": "../types/.tsbuildinfo",
   },
 }

@@ -1,13 +1,7 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig-src-types.json",
   "include": [
     "../../typings/**/*",
     "**/*",
   ],
-  "compilerOptions": {
-    "rootDir": "..",
-    "declarationDir": "../../types",
-    "outDir": "../../dist",
-    "tsBuildInfoFile": "../../types/private/.tsbuildinfo",
-  },
 }

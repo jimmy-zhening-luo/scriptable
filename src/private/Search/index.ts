@@ -1,8 +1,8 @@
-import type { SearchSetting } from "./setting";
+import type { SearchSetting } from "./types/setting";
 import { QueryArgument } from "./argument";
 
 export type { SearchSetting };
-export type { SearchOutput } from "./output";
+export type { SearchOutput } from "./types/output";
 
 export default function (
   query: string,
