@@ -7,6 +7,7 @@ const enum State {
 export default class File<
   Mutable extends boolean,
   Type extends string,
+  Subpath extends string,
 > {
   private static readonly manager = FileManager.local();
   private readonly path;
@@ -15,8 +16,8 @@ export default class File<
 
   constructor(
     type: Literalful<Type>,
-    file: string,
-    folder: string,
+    file: Subpath,
+    folder: Subpath extends stringful ? string : stringful,
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
