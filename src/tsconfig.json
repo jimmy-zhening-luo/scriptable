@@ -4,6 +4,9 @@
     "../typings/**/*",
     "*",
   ],
+  "exclude": [
+    "Search.ts",
+  ],
   "references": [
     {
       "path": "../typings",
