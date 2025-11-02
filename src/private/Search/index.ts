@@ -51,7 +51,7 @@ export default function (
       else {
         function select(
           first: stringful,
-          query: ArrayN<2, stringful>,
+          query: Arrayful<stringful>,
           selectors: string,
         ) {
           const FIRST = new Set(first),
