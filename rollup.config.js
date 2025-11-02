@@ -17,6 +17,7 @@ export default {
     "app/widget/date": "src/app/widget/date.ts",
     "private/Search/index": "src/private/Search/index.ts",
     "private/Search/resolver": "src/private/Search/resolver.ts",
+    "Search": "src/Search.ts",
   },
   output: {
     dir: "dist",
