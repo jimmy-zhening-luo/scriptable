@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig-src-build.json",
+  "extends": "../tsconfig-src-types.json",
   "include": [
     "../../typings/**/*",
     "**/*",
@@ -12,7 +12,4 @@
       "path": "../lib",
     },
   ],
-  "compilerOptions": {
-    "tsBuildInfoFile": "../../types/app/.tsbuildinfo",
-  },
 }
