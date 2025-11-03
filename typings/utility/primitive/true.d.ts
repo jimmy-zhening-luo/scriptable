@@ -1,7 +1,7 @@
-declare type True<B extends boolean> = Exclude<B, true> extends never
-  ? boolean extends B
+declare type True<Boolean extends boolean> = Exclude<Boolean, true> extends never
+  ? boolean extends Boolean
     ? never
-    : B extends true
-      ? B
+    : Boolean extends true
+      ? Boolean
       : never
   : never;

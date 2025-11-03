@@ -1,5 +1,5 @@
-declare type Literal<S extends string> = Extract<S, object> extends never
-  ? string extends S
+declare type Literal<String extends string> = Extract<String, object> extends never
+  ? string extends String
     ? never
-    : S
+    : String
   : never;

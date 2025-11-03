@@ -1,3 +1,3 @@
-declare type IsArray<A> = [A] extends [readonly unknown[]]
-  ? A
+declare type IsArray<T> = [T] extends [readonly unknown[]]
+  ? T
   : never;

@@ -1,3 +1,3 @@
-declare type Numericful<N extends number> = 0 extends Numeric<N>
+declare type Numericful<Number extends number> = 0 extends Numeric<Number>
   ? never
-  : Numeric<N>;
+  : Numeric<Number>;

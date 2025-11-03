@@ -1,3 +1,3 @@
-declare type Flat<A extends readonly unknown[]> = A extends readonly (infer Element)[]
-  ? Element
+declare type Flat<Array extends readonly unknown[]> = Array extends readonly (infer Member)[]
+  ? Member
   : never;

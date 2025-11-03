@@ -1,5 +1,5 @@
-declare type Numeric<N extends number> = Extract<N, object> extends never
-  ? number extends N
+declare type Numeric<Number extends number> = Extract<Number, object> extends never
+  ? number extends Number
     ? never
-    : N
+    : Number
   : never;

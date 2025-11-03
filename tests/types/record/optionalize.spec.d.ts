@@ -1,4 +1,4 @@
-declare namespace Optionalize {
+declare namespace Optional {
   export type Result = 0 | Test<{
     T: [
       a: AB_C,
@@ -47,7 +47,7 @@ declare namespace Optionalize {
       } extends AB_C ? true : never,
     ];
   }>;
-  export type AB_C = Optionalize<ABC, "C">;
+  export type AB_C = Optional<ABC, "C">;
   export type ABC = Record<
     (
       | "A"

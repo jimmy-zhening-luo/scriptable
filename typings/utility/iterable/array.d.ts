@@ -1,55 +1,55 @@
 declare type ArrayN<
-  N extends number = 0,
-  Element = string,
+  Length extends number = 0,
+  Member = string,
   Readonly extends boolean = false,
-> = [Element] extends [never]
+> = [Member] extends [never]
   ? never
-  : [N] extends [never]
+  : [Length] extends [never]
       ? never
       : True<Readonly> extends never
         ? ArrayN.Construct<
-          Extract<`${N}`, `-${string}` | `${string}.${string}`> extends never
-            ? N
+          Extract<`${Length}`, `-${string}` | `${string}.${string}`> extends never
+            ? Length
             : 0,
-          Element
+          Member
         >
         : ArrayN.ConstructReadonly<
-          Extract<`${N}`, `-${string}` | `${string}.${string}`> extends never
-            ? N
+          Extract<`${Length}`, `-${string}` | `${string}.${string}`> extends never
+            ? Length
             : 0,
-          Element
+          Member
         >;
 
 declare namespace ArrayN {
   export type Construct<
-    N extends number,
-    Element,
-    H extends Element[] = [],
-  > = H["length"] extends N
+    Length extends number,
+    Member,
+    This extends Member[] = [],
+  > = This["length"] extends Length
     ? [
-        ...H,
-        ...Element[],
+        ...This,
+        ...Member[],
       ]
     : Construct<
-      N,
-      Element,
+      Length,
+      Member,
       [
-        ...H,
-        Element,
+        ...This,
+        Member,
       ]
     >;
   export type ConstructReadonly<
-    N extends number,
-    Element,
-    H extends readonly Element[] = readonly [],
-  > = H["length"] extends N
+    Length extends number,
+    Member,
+    This extends readonly Member[] = readonly [],
+  > = This["length"] extends Length
     ? readonly [
-      ...H,
-      ...(readonly Element[]),
+      ...This,
+      ...(readonly Member[]),
     ]
     : ConstructReadonly<
-      N,
-      Element,
-      readonly [...H, Element]
+      Length,
+      Member,
+      readonly [...This, Member]
     >;
 }

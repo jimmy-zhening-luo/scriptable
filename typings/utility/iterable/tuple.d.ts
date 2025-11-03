@@ -1,29 +1,29 @@
 declare type NTuple<
-  N extends number = 2,
-  Element = string,
-> = [Element] extends [never]
+  Length extends number = 2,
+  Member = string,
+> = [Member] extends [never]
   ? never
-  : N extends never
+  : Length extends never
     ? never
-    : number extends N
-      ? readonly Element[]
-      : Extract<`${N}`, `-${string}` | `${string}.${string}`> extends never
-        ? NTuple.Construct<N, Element>
-        : NTuple.Construct<0, Element>;
+    : number extends Length
+      ? readonly Member[]
+      : Extract<`${Length}`, `-${string}` | `${string}.${string}`> extends never
+        ? NTuple.Construct<Length, Member>
+        : NTuple.Construct<0, Member>;
 
 declare namespace NTuple {
   export type Construct<
-    N extends number,
-    Element,
-    H extends readonly Element[] = readonly [],
-  > = H["length"] extends N
-    ? H
+    Length extends number,
+    Member,
+    This extends readonly Member[] = readonly [],
+  > = This["length"] extends Length
+    ? This
     : Construct<
-      N,
-      Element,
+      Length,
+      Member,
       readonly [
-        ...H,
-        Element,
+        ...This,
+        Member,
       ]
     >;
 
