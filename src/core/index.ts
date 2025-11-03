@@ -1,5 +1,8 @@
 import File from "./file";
 
+declare const app: unique symbol;
+export type app = stringful & { [app]: "class" };
+
 type Drive<
   Type extends string,
   Mutable extends boolean = false,
@@ -25,8 +28,8 @@ export default abstract class IApp<
     const app = this.constructor.name;
 
     this.app = app === ""
-      ? "Scriptable" as stringful
-      : app as stringful;
+      ? "Scriptable" as app
+      : app as app;
 
     this.context = {
       production,

@@ -1,3 +1,5 @@
+import type { app } from ".";
+
 const enum State {
   None,
   File,
@@ -17,7 +19,7 @@ export default class File<
   constructor(
     type: Literalful<Type>,
     file: Subpath,
-    folder: Subpath extends stringful ? string : stringful,
+    folder: Subpath extends stringful ? string : app,
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
