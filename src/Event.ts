@@ -130,12 +130,12 @@ await new class Event extends DateWidget {
     [soonest] = laterToday === undefined
       && firstTomorrow === undefined
       ? await CalendarEvent.between(
-        tomorrow.date(),
-        now
-          .in(24 * 31)
-          .date(),
-        [calendar],
-      )
+          tomorrow.date(),
+          now
+            .in(24 * 31)
+            .date(),
+          [calendar],
+        )
       : [undefined],
     future = soonest === undefined
       ? undefined
