@@ -6,7 +6,7 @@ declare interface Global {
   DateFormatter: typeof DateFormatter;
   FileManager: typeof FileManager;
   Image: typeof Image;
+  Location: typeof Location;
   Notification: typeof Notification;
   Size: typeof Size;
-  // #endregion
 }

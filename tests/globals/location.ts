@@ -11,6 +11,7 @@ const MOCK_LOCATION = {
   longitude: -150.2048384,
 };
 
+/* eslint-disable ts/no-extraneous-class */
 export class Location {
   private static accuracy = Accuracy.Best;
 
