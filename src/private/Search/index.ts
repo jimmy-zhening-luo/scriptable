@@ -1,16 +1,14 @@
-import type { SearchSetting } from "./types/setting";
+import type { Setting } from "./types";
 import { QueryArgument } from "./argument";
 
-export type { SearchSetting };
-export type { SearchOutput } from "./types/output";
-
-export default function (
+export { resolver } from "./resolver";
+export function parser(
   input: string,
   chars: Set<stringful>,
   engines: Set<stringful>,
-  alias: SearchSetting["alias"],
-  RESERVED: SearchSetting["reserved"]["keys"],
-  selectors: SearchSetting["reserved"]["selectors"],
+  alias: Setting["alias"],
+  RESERVED: Setting["reserved"]["keys"],
+  selectors: Setting["reserved"]["selectors"],
 ) {
   const _input = input.trimStart(),
   hotkey = input.length - _input.length,

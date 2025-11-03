@@ -1,23 +1,23 @@
-import type { ISearchEngine } from "./engine";
+import type { IEngine } from "./engine";
 
-type SearchEngine
+type Engine
 = | Unflat<stringful>
-  | ISearchEngine<
+  | IEngine<
     "url",
     "force",
     never,
     Unflat<stringful>
   >
-  | ISearchEngine<
+  | IEngine<
     "shortcut",
     | "encode"
     | "notify"
   >;
 
-export interface SearchSetting {
+export interface Setting {
   alias: Tableful<stringful>;
-  chars: Tableful<SearchEngine>;
-  engines: Tableful<SearchEngine>;
+  chars: Tableful<Engine>;
+  engines: Tableful<Engine>;
   reserved: {
     keys: Fieldful<
       | "chat"

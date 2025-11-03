@@ -1,7 +1,7 @@
-import type { SearchSetting } from ".";
+import type { Setting } from "./types";
 
-export default function (
-  engine: SearchSetting["engines"][stringful],
+export function resolver(
+  engine: Setting["engines"][stringful],
   parsed: {
     key: stringful;
     terms: stringful[];

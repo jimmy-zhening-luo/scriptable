@@ -1,15 +1,11 @@
 "blue search";
 import Shortcut from "./app";
-import parser from "./private/Search";
-import resolver from "./private/Search/resolver";
-import type {
-  SearchSetting,
-  SearchOutput,
-} from "./private/Search";
+import * as search from "./private/Search";
+import type { Setting, Output } from "./private/Search/types";
 
 void new class Search extends Shortcut<
-  SearchSetting,
-  SearchOutput,
+  Setting,
+  Output,
   string
 > {
   protected runtime() {
@@ -39,17 +35,17 @@ void new class Search extends Shortcut<
           setting.reserved.keys.skip,
           this.get(),
         )
-      : parser(
+      : search.parser(
         input,
         new Set(Object.keys(setting.chars)) as Set<stringful>,
         new Set(Object.keys(setting.engines)) as Set<stringful>,
         setting.alias,
         setting.reserved.keys,
         setting.reserved.selectors,
-      ) as ReturnType<typeof parser> & Flag<
+      ) as ReturnType<typeof search.parser> & Flag<
         | "prior"
       >,
-    fulfiller = resolver(
+    fulfiller = search.resolver(
       parsed.key.length === 1
         ? setting.chars[parsed.key]!
         : setting.engines[parsed.key]!,
