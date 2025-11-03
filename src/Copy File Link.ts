@@ -1,4 +1,4 @@
-"gray folder-open";
+"light-gray folder-open";
 "file-url";
 import Share from "./app/share";
 
