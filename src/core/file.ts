@@ -20,7 +20,7 @@ export default class File<
   constructor(
     type: Literalful<Type>,
     file: Subpath,
-    folder: Folder extends app ? app : Exclusion<Folder, "/">,
+    folder: Folder extends app ? app : Exclusion<Folder, "/" | " ">,
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
