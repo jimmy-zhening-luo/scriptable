@@ -34,7 +34,7 @@ describe(
         it(
           "an object containing latlong",
           async function () {
-            await location()
+            (await location())
               .should
               .be
               .an("object")
@@ -45,27 +45,39 @@ describe(
         it(
           "strings",
           async function () {
-            for (const coordinate of coordinates)
-              await location()
-                .should
-                .have
-                .own
-                .property(coordinate)
-                .a("string");
+            (await location())
+              .should
+              .have
+              .own
+              .property("latitude")
+              .a("string");
+            (await location())
+              .should
+              .have
+              .own
+              .property("longitude")
+              .a("string");
           },
         );
         it(
           "containing floats",
           async function () {
-            for (const coordinate of coordinates)
-              parseFloat(
-                await location().latitude,
-              )
-                .should
-                .be
-                .a("number")
-                .not
-                .NaN;
+            parseFloat(
+              (await location()).latitude,
+            )
+              .should
+              .be
+              .a("number")
+              .not
+              .NaN;
+            parseFloat(
+              (await location()).longitude,
+            )
+              .should
+              .be
+              .a("number")
+              .not
+              .NaN;
           },
         );
       },
