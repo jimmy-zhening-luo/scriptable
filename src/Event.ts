@@ -127,7 +127,7 @@ await new class Event extends DateWidget {
             [calendar],
           )
         )
-        .filter(event => !event.isAllDay)
+          .filter(event => !event.isAllDay)
       : [undefined],
     [soonest] = laterToday === undefined
       && firstTomorrow === undefined
@@ -140,7 +140,7 @@ await new class Event extends DateWidget {
             [calendar],
           )
         )
-        .filter(event => !event.isAllDay)
+          .filter(event => !event.isAllDay)
       : [undefined],
     future = soonest === undefined
       ? undefined
