@@ -1,4 +1,4 @@
-"teal magic";
+"light-gray file-download";
 "file-url";
 import Share from "./app/share";
 
