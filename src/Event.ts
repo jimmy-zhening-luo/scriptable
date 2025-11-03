@@ -4,6 +4,7 @@ import DateWidget from "./app/widget/date";
 const ICON = {
   none: "\uF8FF",
   tomorrow: "\u203A",
+  future: "\u2192",
 };
 
 const enum Limit {
@@ -120,25 +121,45 @@ await new class Event extends DateWidget {
         .date(),
       [calendar],
     ),
+    future = now.in(24 * 31),
     [laterToday] = eventsLaterToday.filter(
       event => !event.isAllDay,
     ),
     [firstTomorrow] = eventsTomorrow.filter(
       event => !event.isAllDay,
-    );
+    ),
+    [soonest] = laterToday === undefined
+      && firstTomorrow === undefined
+      ? await CalendarEvent.between(
+        tomorrow.date(),
+        now
+          .in(24 * 31)
+          .date(),
+        [calendar],
+      )
+      : [undefined],
+    future = soonest === undefined
+      ? undefined
+      : new Event.Time(soonest.startDate);
 
     this.url = "https://calendar.google.com/calendar/u/0/r/3day/"
       + (
         laterToday === undefined
-        && firstTomorrow !== undefined
-          ? tomorrow
+          ? firstTomorrow === undefined
+            ? future === undefined
+              ? now
+              : future
+            : tomorrow
           : now
       )
         .print("yyyy/MM/dd");
     void this.text(
       laterToday === undefined
         ? firstTomorrow === undefined
-          ? ICON.none
+          ? future === undefined
+            ? ICON.none
+            : ICON.future + " " + future
+              .print("MMM d")
           : print(
               {
                 full: `\u2005${ICON.tomorrow}\u200A`,
