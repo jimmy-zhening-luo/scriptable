@@ -1,4 +1,4 @@
-/* eslint-disable stylistic/type-generic-spacing */
+// eslint-disable stylistic/type-generic-spacing
 export default class <
   Variant extends
   | ""
