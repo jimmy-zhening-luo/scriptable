@@ -9,6 +9,7 @@ export function mochaGlobalSetup() {
     global.DateFormatter = Mock.DateFormatter;
     global.FileManager = Mock.FileManager;
     global.Image = Mock.Image;
+    global.Location = Mock.Location;
     global.Notification = Mock.Notification;
     global.Size = Mock.Size;
     console.log("Mocha hooks: COMPLETED");
