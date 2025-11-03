@@ -101,32 +101,34 @@ await new class Event extends DateWidget {
 
     const calendar = await Calendar.defaultForEvents(),
     now = new Event.Time,
-    eventsLaterToday = await CalendarEvent.between(
-      now
-        .ago(0.5)
-        .date(),
-      now
-        .eod
-        .date(),
-      [calendar],
-    ),
     { tomorrow } = now,
-    eventsTomorrow = await CalendarEvent.between(
-      tomorrow.date(),
-      (
-        now < now.at(22)
-          ? now.in(26)
-          : tomorrow.eod
+    [laterToday] = (
+      await CalendarEvent.between(
+        now
+          .ago(0.5)
+          .date(),
+        now
+          .eod
+          .date(),
+        [calendar],
       )
-        .date(),
-      [calendar],
-    ),
-    [laterToday] = eventsLaterToday.filter(
-      event => !event.isAllDay,
-    ),
-    [firstTomorrow] = eventsTomorrow.filter(
-      event => !event.isAllDay,
-    ),
+    )
+      .filter(event => !event.isAllDay),
+    [firstTomorrow] = laterToday === undefined
+      ? (
+          await CalendarEvent.between(
+            tomorrow.date(),
+            (
+              now < now.at(22)
+                ? now.in(26)
+                : tomorrow.eod
+            )
+              .date(),
+            [calendar],
+          )
+        )
+        .filter(event => !event.isAllDay)
+      : [undefined],
     [soonest] = laterToday === undefined
       && firstTomorrow === undefined
       ? (
