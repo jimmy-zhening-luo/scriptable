@@ -33,7 +33,7 @@ describe(
       function () {
         it(
           "an object containing latlong",
-          async function (done) {
+          async function () {
             await location()
               .should
               .be
@@ -44,7 +44,7 @@ describe(
         );
         it(
           "strings",
-          async function (done) {
+          async function () {
             for (const coordinate of coordinates)
               await location()
                 .should
@@ -56,7 +56,7 @@ describe(
         );
         it(
           "containing floats",
-          async function (done) {
+          async function () {
             for (const coordinate of coordinates)
               parseFloat(
                 await location().latitude,
