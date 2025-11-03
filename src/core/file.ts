@@ -10,6 +10,7 @@ export default class File<
   Mutable extends boolean,
   Type extends string,
   Subpath extends string,
+  Folder extends (Subpath extends stringful ? string : app),
 > {
   private static readonly manager = FileManager.local();
   private readonly path;
@@ -19,7 +20,7 @@ export default class File<
   constructor(
     type: Literalful<Type>,
     file: Subpath,
-    folder: Subpath extends stringful ? string : app,
+    folder: Folder extends app ? app : Exclusion<Folder, "/">,
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {

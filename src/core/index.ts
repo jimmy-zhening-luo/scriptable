@@ -7,7 +7,7 @@ type Drive<
   Type extends string,
   Mutable extends boolean = false,
 > = Table<
-  File<Mutable, Type, string>
+  File<Mutable, Type, string, app>
 >;
 
 export default abstract class IApp<
