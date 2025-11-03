@@ -145,9 +145,7 @@ await new class Event extends DateWidget {
       + (
         laterToday === undefined
           ? firstTomorrow === undefined
-            ? future === undefined
-              ? now
-              : future
+            ? future ?? now
             : tomorrow
           : now
       )
