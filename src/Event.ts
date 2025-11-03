@@ -136,6 +136,7 @@ await new class Event extends DateWidget {
             .date(),
           [calendar],
         )
+        .filter(event => !event.isAllDay),
       : [undefined],
     future = soonest === undefined
       ? undefined
