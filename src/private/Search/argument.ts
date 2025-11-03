@@ -19,7 +19,7 @@ export class QueryArgument {
 
   public prepend(terms: stringful[]) {
     if (this.consumes || terms.length === 0)
-      // eslint-disable no-param-reassign
+      /* eslint-disable no-param-reassign */
       terms[0] = this.argument;
     else
       void terms.unshift(this.argument);
