@@ -121,7 +121,6 @@ await new class Event extends DateWidget {
         .date(),
       [calendar],
     ),
-    future = now.in(24 * 31),
     [laterToday] = eventsLaterToday.filter(
       event => !event.isAllDay,
     ),
