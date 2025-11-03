@@ -3,7 +3,7 @@ declare type Literalful<
   Exclusion extends string = never,
 > = "" extends Literal<String>
   ? never
-  : [Without] extends [never]
+  : [Exclusion] extends [never]
     ? Literal<String>
     : Literal<Exclusion> extends never
       ? never
