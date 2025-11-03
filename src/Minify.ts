@@ -9,11 +9,11 @@ void new class Minify extends Share {
     return file === undefined
       ? ""
       : JSON.stringify(
-        JSON.parse(
-          FileManager
-            .iCloud()
-            .readString(file),
-        ),
-      );
+          JSON.parse(
+            FileManager
+              .iCloud()
+              .readString(file),
+          ),
+        );
   }
 }("fileURLs").run();
