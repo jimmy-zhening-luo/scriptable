@@ -4,7 +4,7 @@ const enum Accuracy {
   HundredMeters,
   TenMeters,
   Best,
-};
+}
 
 const MOCK_LOCATION = {
   latitude: 82.3048478,
