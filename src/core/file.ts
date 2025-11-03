@@ -24,23 +24,32 @@ export default class File<
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
-    const root = hidden
-      ? temporary
-        ? File.manager.cacheDirectory()
-        : File.manager.libraryDirectory()
-      : File.manager.bookmarkedPath("root"),
-    subpath = folder
+    const drive = (
+      hidden
+        ? temporary
+          ? File.manager.cacheDirectory()
+          : File.manager.libraryDirectory()
+        : File.manager.bookmarkedPath("root")
+    ) + "/" + type as stringful,
+    directory = drive + "/" + folder as stringful,
+    subpath = file
       .split("/")
-      .concat(file.split("/"))
-      .filter(node => node !== ""),
-    leaf = subpath.pop();
+      .filter((node): node is stringful => node !== "");
 
-    this.parent = [root, type]
-      .concat(subpath)
-      .join("/") as stringful;
-    this.path = leaf === undefined
-      ? this.parent
-      : this.parent + "/" + leaf as stringful;
+    if (subpath.length === 0) {
+      this.parent = drive;
+      this.path = directory;
+    }
+    else if (subpath.length === 1) {
+      this.parent = directory;
+      this.path = directory + "/" + subpath[0]! as stringful;
+    }
+    else {
+      const leaf = subpath.pop()!;
+
+      this.parent = directory + "/" + subpath.join("/") as stringful;
+      this.path = this.parent + "/" + leaf as stringful;
+    }
 
     if (File.manager.fileExists(this.path))
       this.state = File.manager.isDirectory(this.path)
