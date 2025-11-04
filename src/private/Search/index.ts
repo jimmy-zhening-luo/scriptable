@@ -11,16 +11,9 @@ export function parser(
   selectors: Setting["reserved"]["selectors"],
 ) {
   const _input = input.trimStart(),
-  _input_ = _input.trimEnd();
-
-  if ((/^https?:\/\/\b/ui).test(_input_))
-    return {
-      key: RESERVED.go,
-      terms: [_input_ as stringful],
-    };
-
-  const hotkey = input.length - _input.length,
-  query = _input_
+  hotkey = input.length - _input.length,
+  query = _input
+    .trimEnd()
     .split(" ")
     .filter(
       (token): token is stringful => token !== "",
