@@ -133,19 +133,18 @@ export default class Time {
           this.midnight.epoch - then.midnight.epoch
         ) / Unit.day,
       );
-    else {
-      const delta = this.epoch - then.epoch;
 
-      switch (unit) {
-      case "hour":
-        return delta / Unit.hour;
-      case "minute":
-        return delta / Unit.minute;
-      case "second":
-        return delta / Unit.second;
-      default:
-        return delta;
-      }
+    const delta = this.epoch - then.epoch;
+
+    switch (unit) {
+    case "hour":
+      return delta / Unit.hour;
+    case "minute":
+      return delta / Unit.minute;
+    case "second":
+      return delta / Unit.second;
+    default:
+      return delta;
     }
   }
 
@@ -163,26 +162,25 @@ export default class Time {
 
     if (destination === null)
       return local as finiteful;
-    else {
-      const intl = new Intl.DateTimeFormat(
-        "en-US",
-        {
-          timeZone: destination,
-          timeZoneName: "longOffset",
-        },
-      )
-        .formatToParts()
-        .find(part => part.type === "timeZoneName")!
-        .value,
-      hours = Number(intl.slice(3, 6)),
-      minutes = Number(intl.slice(7, 9)) / 60;
 
-      return local - hours - (
-        hours < 0
-          ? -minutes
-          : minutes
-      ) as finiteful;
-    }
+    const intl = new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone: destination,
+        timeZoneName: "longOffset",
+      },
+    )
+      .formatToParts()
+      .find(part => part.type === "timeZoneName")!
+      .value,
+    hours = Number(intl.slice(3, 6)),
+    minutes = Number(intl.slice(7, 9)) / 60;
+
+    return local - hours - (
+      hours < 0
+        ? -minutes
+        : minutes
+    ) as finiteful;
   }
 
   public date() {
@@ -227,26 +225,25 @@ export default class Time {
 
     if (ampm === false)
       return icon + digits;
-    else {
-      const a = this
-        .print("a")
-        .slice(
-          0,
-          single ? 1 : 2,
-        );
 
-      return icon
-        + digits
-        + ampm
-        + (
-          block
-            ? a
-                .replace("A", "\u1D00")
-                .replace("P", "\u1D18")
-                .replace("M", "\u1D0D")
-            : a
-        );
-    }
+    const a = this
+      .print("a")
+      .slice(
+        0,
+        single ? 1 : 2,
+      );
+
+    return icon
+      + digits
+      + ampm
+      + (
+        block
+          ? a
+              .replace("A", "\u1D00")
+              .replace("P", "\u1D18")
+              .replace("M", "\u1D0D")
+          : a
+      );
   }
 
   private printer?: DateFormatter;

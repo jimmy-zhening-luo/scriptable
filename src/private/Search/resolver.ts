@@ -7,6 +7,18 @@ export function resolver(
     terms: stringful[];
   },
 ) {
+  const wrapper = typeof engine === "object"
+    && !Array.isArray(engine)
+    ? engine
+    : { url: engine },
+  { separator = "+" } = wrapper,
+  terms = wrapper.prepend === undefined
+    ? parsed.terms
+    : wrapper
+      .prepend
+      .split(" ")
+      .concat(parsed.terms) as stringful[];
+
   function encoder(
     terms: readonly stringful[],
     separator: string,
@@ -23,33 +35,20 @@ export function resolver(
       return action === ""
         ? null
         : action as stringful;
-    else {
-      const queries = (
-        typeof browser.url === "string"
-          ? [browser.url]
-          : browser.url
-      )
-        .map(url => url.replace("%s", action));
 
-      return browser.force === true
-        ? queries.map(
-            url => `data:text/html,<meta http-equiv=refresh content="0;url=${url}">` as stringful,
-          )
-        : queries as stringful[];
-    }
+    const queries = (
+      typeof browser.url === "string"
+        ? [browser.url]
+        : browser.url
+    )
+      .map(url => url.replace("%s", action));
+
+    return browser.force === true
+      ? queries.map(
+          url => `data:text/html,<meta http-equiv=refresh content="0;url=${url}">` as stringful,
+        )
+      : queries as stringful[];
   }
-
-  const wrapper = typeof engine === "object"
-    && !Array.isArray(engine)
-    ? engine
-    : { url: engine },
-  { separator = "+" } = wrapper,
-  terms = wrapper.prepend === undefined
-    ? parsed.terms
-    : wrapper
-      .prepend
-      .split(" ")
-      .concat(parsed.terms) as stringful[];
 
   if ("url" in wrapper)
     return {
@@ -59,19 +58,18 @@ export function resolver(
         wrapper,
       ),
     };
-  else {
-    const query = terms.length === 0
-      ? null
-      : terms.join(" ") as stringful;
 
-    return {
-      app: wrapper.shortcut as Undefined<stringful> ?? parsed.key,
-      action: wrapper.encode === true
-        ? encoder(terms, separator)
-        : query,
-      notify: wrapper.notify! || null as Null<true>,
-      label: query,
-      noSave: wrapper.noSave,
-    };
-  }
+  const query = terms.length === 0
+    ? null
+    : terms.join(" ") as stringful;
+
+  return {
+    app: wrapper.shortcut as Undefined<stringful> ?? parsed.key,
+    action: wrapper.encode === true
+      ? encoder(terms, separator)
+      : query,
+    notify: wrapper.notify! || null as Null<true>,
+    label: query,
+    noSave: wrapper.noSave,
+  };
 }

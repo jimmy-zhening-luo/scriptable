@@ -36,15 +36,16 @@ export default class File<
       .split("/")
       .filter((node): node is stringful => node !== "");
 
-    if (subpath.length === 0) {
+    switch (subpath.length) {
+    case 0:
       this.parent = drive;
       this.path = directory;
-    }
-    else if (subpath.length === 1) {
+      break;
+    case 1:
       this.parent = directory;
       this.path = directory + "/" + subpath[0]! as stringful;
-    }
-    else {
+      break;
+    default:
       const leaf = subpath.pop()!;
 
       this.parent = directory + "/" + subpath.join("/") as stringful;
@@ -86,60 +87,62 @@ export default class File<
   ) {
     const state = this.state;
 
-    if (
-      state === State.File
-      && overwrite !== false
-      || state === State.None
-    ) {
-      if (
-        state === State.None
-        && !File.manager.isDirectory(this.parent)
-      )
+    switch (state) {
+    case State.File:
+      if (overwrite === false)
+        return;
+
+      break;
+    case State.None:
+      if (!File.manager.isDirectory(this.parent))
         File.manager.createDirectory(
           this.parent,
           true,
         );
 
-      if (Array.isArray(content)) {
-        const rows = content.map(
-          line => typeof line === "object"
-            ? JSON.stringify(line)
-            : String(line),
-        );
-
-        if (
-          typeof overwrite === "string"
-          && state === State.File
-        )
-          if (overwrite === "push")
-            rows[rows.length] = this.read()!;
-          else {
-            const existing = this.read()!;
-
-            if (existing !== "")
-              void rows.unshift(existing);
-          }
-
-        File.manager.writeString(
-          this.path,
-          rows.join("\n"),
-        );
-      }
-      else
-        File.manager.writeString(
-          this.path,
-          typeof content === "object"
-            ? JSON.stringify(content)
-            : overwrite === true
-              || state === State.None
-              ? String(content)
-              : overwrite === "push"
-                ? String(content) + "\n" + this.read()!
-                : this.read()! + String(content),
-        );
-
-      this.state = State.File;
+      break;
+    default:
+      return;
     }
+
+    if (Array.isArray(content)) {
+      const rows = content.map(
+        line => typeof line === "object"
+          ? JSON.stringify(line)
+          : String(line),
+      );
+
+      if (state === State.File)
+        switch (overwrite) {
+        case "append":
+          void rows.unshift(this.read()!);
+
+          break;
+        case "push":
+          rows[rows.length] = this.read()!;
+
+          break;
+        }
+
+      File.manager.writeString(
+        this.path,
+        rows.join("\n"),
+      );
+    }
+    else
+      File.manager.writeString(
+        this.path,
+        typeof content === "object"
+          ? JSON.stringify(content)
+          : overwrite === true
+            || this.state === State.None
+            ? String(content)
+            : overwrite === "push"
+              ? String(content) + "\n" + this.read()!
+              : this.read()! + String(content),
+      );
+
+    this.state = State.File;
   }
 
   public delete(process: True<Mutable> | false) {
