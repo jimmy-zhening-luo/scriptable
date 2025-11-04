@@ -19,13 +19,20 @@ export function parser(
       (token): token is stringful => token !== "",
     ) as Arrayful<stringful>;
 
-  if (hotkey !== 0)
+  switch (hotkey) {
+  case 0:
+    break;
+  case 1:
     return {
-      key: hotkey === 1
-        ? RESERVED.ask
-        : RESERVED.translate,
+      key: RESERVED.ask,
       terms: query,
     };
+  default:
+    return {
+      key: RESERVED.translate,
+      terms: query,
+    };
+  }
 
   const [first] = query;
 
@@ -84,16 +91,15 @@ export function parser(
     selectors,
   );
 
-  if (option?.key === null) {
+  switch (option?.key) {
+  case null:
     query[0] = option.argument.argument;
 
     return {
       key: RESERVED.translate,
       terms: query,
     };
-  }
-
-  if (option === null) {
+  case undefined:
     const keyterm = (/^(\W+)(\w+)$/u)
       .exec(first) as Null<
       Triple<stringful>
