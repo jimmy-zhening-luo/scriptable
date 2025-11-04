@@ -26,13 +26,15 @@ export default class Time {
     )
       this.epoch = date.epoch;
     else {
-      this.epoch = new Date(date).getTime() as integer & numberful;
+      const epoch = new Date(date).getTime() as integer;
 
       if (Number.isNaN(epoch))
         throw RangeError(
           "Invalid time",
           { cause: date },
         );
+
+      this.epoch = epoch as typeof epoch & numberful;
     }
   }
 
