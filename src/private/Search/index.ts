@@ -109,6 +109,8 @@ export function parser(
       query[0] = keyterm[2];
       void query.unshift(keyterm[1]);
     }
+
+    break;
   }
   default:
     break;
