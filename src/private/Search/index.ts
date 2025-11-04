@@ -99,7 +99,7 @@ export function parser(
       key: RESERVED.translate,
       terms: query,
     };
-  case undefined:
+  case undefined: {
     const keyterm = (/^(\W+)(\w+)$/u)
       .exec(first) as Null<
       Triple<stringful>
@@ -109,6 +109,9 @@ export function parser(
       query[0] = keyterm[2];
       void query.unshift(keyterm[1]);
     }
+  }
+  default:
+    break;
   }
 
   const candidate = (

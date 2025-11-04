@@ -45,11 +45,12 @@ export default class File<
       this.parent = directory;
       this.path = directory + "/" + subpath[0]! as stringful;
       break;
-    default:
+    default: {
       const leaf = subpath.pop()!;
 
       this.parent = directory + "/" + subpath.join("/") as stringful;
       this.path = this.parent + "/" + leaf as stringful;
+    }
     }
 
     if (File.manager.fileExists(this.path))
@@ -121,6 +122,8 @@ export default class File<
         case "push":
           rows[rows.length] = this.read()!;
 
+          break;
+        default:
           break;
         }
 
