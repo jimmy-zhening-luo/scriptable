@@ -20,7 +20,8 @@ export interface Setting {
   engines: Tableful<Engine>;
   reserved: {
     keys: Fieldful<
-      | "chat"
+      | "ask"
+      | "go"
       | "math"
       | "skip"
       | "translate"

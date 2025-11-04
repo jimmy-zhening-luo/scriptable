@@ -22,7 +22,7 @@ export function parser(
   if (hotkey !== 0)
     return {
       key: hotkey === 1
-        ? RESERVED.chat
+        ? RESERVED.ask
         : RESERVED.translate,
       terms: query,
     };
@@ -123,7 +123,7 @@ export function parser(
 
           if (key === undefined)
             return {
-              key: RESERVED.chat,
+              key: RESERVED.ask,
               terms: query,
             };
           else {
