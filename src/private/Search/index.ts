@@ -142,5 +142,4 @@ export function parser(
           .argument
           .prepend(query),
   };
-
 }
