@@ -11,9 +11,16 @@ export function parser(
   selectors: Setting["reserved"]["selectors"],
 ) {
   const _input = input.trimStart(),
-  hotkey = input.length - _input.length,
-  query = _input
-    .trimEnd()
+  _input_ = _input.trimEnd();
+
+  if ((/^https?:\/\/\b/ui).test(_input_))
+    return {
+      key: RESERVED.go,
+      terms: [_input_ as stringful],
+    };
+
+  const hotkey = input.length - _input.length,
+  query = _input_
     .split(" ")
     .filter(
       (token): token is stringful => token !== "",
@@ -26,119 +33,114 @@ export function parser(
         : RESERVED.translate,
       terms: query,
     };
-  else {
-    const [first] = query;
 
-    if (
-      first.length === 1
-      && query.length === 1
-    )
-      return {
-        key: chars.has(first)
-          ? first
-          : RESERVED.skip,
-        terms: [],
-      };
+  const [first] = query;
 
-    else
-      if (new Set("0123456789.-+($€£¥").has(first[0]))
-        return {
-          key: RESERVED.math,
-          terms: query,
-        };
-      else {
-        function select(
-          first: stringful,
-          query: Arrayful<stringful>,
-          selectors: string,
-        ) {
-          const FIRST = new Set(first),
-          selectorful = selectors + "." as stringful,
-          SELECTORS = new Set<char>(selectorful satisfies stringful as unknown as char[]),
-          selector = SELECTORS
-            .values()
-            .find(
-              selector => FIRST.has(selector),
-            );
+  if (
+    first.length === 1
+    && query.length === 1
+  )
+    return {
+      key: chars.has(first)
+        ? first
+        : RESERVED.skip,
+      terms: [],
+    };
 
-          if (selector === undefined)
-            return null;
-          else {
-            const boundary = first.indexOf(selector);
+  if (new Set("0123456789.-+($€£¥").has(first[0]))
+    return {
+      key: RESERVED.math,
+      terms: query,
+    };
 
-            return {
-              key: boundary === 0
-                ? null
-                : first.slice(0, boundary) as stringful,
-              argument: new QueryArgument(
-                selectorful[0],
-                selector,
-                first.slice(boundary + 1),
-                query[1],
-              ),
-            };
-          }
-        }
+  function select(
+    first: stringful,
+    query: Arrayful<stringful>,
+    selectors: string,
+  ) {
+    const FIRST = new Set(first),
+    selectorful = selectors + "." as stringful,
+    SELECTORS = new Set<char>(selectorful satisfies stringful as unknown as char[]),
+    selector = SELECTORS
+      .values()
+      .find(
+        selector => FIRST.has(selector),
+      );
 
-        const option = select(
-          first,
-          query,
-          selectors,
-        );
+    if (selector === undefined)
+      return null;
 
-        if (option?.key === null) {
-          query[0] = option.argument.argument;
+    const boundary = first.indexOf(selector);
 
-          return {
-            key: RESERVED.translate,
-            terms: query,
-          };
-        }
-        else {
-          if (option === null) {
-            const keyterm = (/^(\W+)(\w+)$/u)
-              .exec(first) as Null<
-              Triple<stringful>
-            >;
-
-            if (keyterm !== null) {
-              query[0] = keyterm[2];
-              void query.unshift(keyterm[1]);
-            }
-          }
-
-          const candidate = (
-            option === null
-              ? query[0]
-              : option.key
-          )
-            .toLocaleLowerCase() as stringful,
-          key = candidate.length === 1
-            ? chars.has(candidate)
-              ? candidate
-              : undefined
-            : engines.has(candidate)
-              ? candidate
-              : alias[candidate];
-
-          if (key === undefined)
-            return {
-              key: RESERVED.ask,
-              terms: query,
-            };
-          else {
-            query.shift();
-
-            return {
-              key,
-              terms: option === null
-                ? query
-                : option
-                    .argument
-                    .prepend(query),
-            };
-          }
-        }
-      }
+    return {
+      key: boundary === 0
+        ? null
+        : first.slice(0, boundary) as stringful,
+      argument: new QueryArgument(
+        selectorful[0],
+        selector,
+        first.slice(boundary + 1),
+        query[1],
+      ),
+    };
   }
+
+  const option = select(
+    first,
+    query,
+    selectors,
+  );
+
+  if (option?.key === null) {
+    query[0] = option.argument.argument;
+
+    return {
+      key: RESERVED.translate,
+      terms: query,
+    };
+  }
+
+  if (option === null) {
+    const keyterm = (/^(\W+)(\w+)$/u)
+      .exec(first) as Null<
+      Triple<stringful>
+    >;
+
+    if (keyterm !== null) {
+      query[0] = keyterm[2];
+      void query.unshift(keyterm[1]);
+    }
+  }
+
+  const candidate = (
+    option === null
+      ? query[0]
+      : option.key
+  )
+    .toLocaleLowerCase() as stringful,
+  key = candidate.length === 1
+    ? chars.has(candidate)
+      ? candidate
+      : undefined
+    : engines.has(candidate)
+      ? candidate
+      : alias[candidate];
+
+  if (key === undefined)
+    return {
+      key: RESERVED.ask,
+      terms: query,
+    };
+
+  query.shift();
+
+  return {
+    key,
+    terms: option === null
+      ? query
+      : option
+          .argument
+          .prepend(query),
+  };
+
 }
