@@ -8,14 +8,11 @@
     {
       "path": "../src",
     },
-    {
-      "path": "../typings",
-    },
   ],
   "compilerOptions": {
     "rootDirs": [
-      "../src",
       "..",
+      "../src",
     ],
     "outDir": "../dist/tests",
   },
