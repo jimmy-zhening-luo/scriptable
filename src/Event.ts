@@ -18,6 +18,66 @@ const enum Limit {
 
 await new class Event extends DateWidget {
   protected async runtime() {
+    const calendar = await Calendar.defaultForEvents(),
+    now = new Event.Time,
+    { tomorrow } = now;
+    
+    async function events(
+      calendar: Calendar,
+      range: Tuple<Time>,
+    ) {
+      return (
+        await CalendarEvent.between(
+          range[0].date(),
+          range[1].date(),
+          [calendar],
+        )
+      )
+        .filter(event => !event.isAllDay);
+    }
+
+    const [laterToday] = await events(
+      calendar,
+      [
+        now.ago(0.5),
+        now.eod,
+      ],
+    ),
+    [firstTomorrow] = laterToday === undefined
+      ? await events(
+          calendar,
+          [
+            tomorrow,
+            now < now.at(22)
+              ? now.in(26)
+              : tomorrow.eod,
+          ],
+        )
+      : [undefined],
+    [soonest] = laterToday === undefined
+      && firstTomorrow === undefined
+      ? await events(
+          calendar,
+          [
+            tomorrow,
+            now.in(744),
+          ],
+        )
+      : [undefined],
+    future = soonest === undefined
+      ? undefined
+      : new Event.Time(soonest.startDate);
+
+    this.url = "https://calendar.google.com/calendar/u/0/r/3day/"
+      + (
+        laterToday === undefined
+          ? firstTomorrow === undefined
+            ? future ?? now
+            : tomorrow
+          : now
+      )
+        .print("yyyy/MM/dd");
+
     function print(
       icon: Field<
         "full",
@@ -99,62 +159,6 @@ await new class Event extends DateWidget {
         + format.title;
     }
 
-    const calendar = await Calendar.defaultForEvents(),
-    now = new Event.Time,
-    { tomorrow } = now,
-    [laterToday] = (
-      await CalendarEvent.between(
-        now
-          .ago(0.5)
-          .date(),
-        now
-          .eod
-          .date(),
-        [calendar],
-      )
-    )
-      .filter(event => !event.isAllDay),
-    [firstTomorrow] = laterToday === undefined
-      ? (
-          await CalendarEvent.between(
-            tomorrow.date(),
-            (
-              now < now.at(22)
-                ? now.in(26)
-                : tomorrow.eod
-            )
-              .date(),
-            [calendar],
-          )
-        )
-          .filter(event => !event.isAllDay)
-      : [undefined],
-    [soonest] = laterToday === undefined
-      && firstTomorrow === undefined
-      ? (
-          await CalendarEvent.between(
-            tomorrow.date(),
-            now
-              .in(24 * 31)
-              .date(),
-            [calendar],
-          )
-        )
-          .filter(event => !event.isAllDay)
-      : [undefined],
-    future = soonest === undefined
-      ? undefined
-      : new Event.Time(soonest.startDate);
-
-    this.url = "https://calendar.google.com/calendar/u/0/r/3day/"
-      + (
-        laterToday === undefined
-          ? firstTomorrow === undefined
-            ? future ?? now
-            : tomorrow
-          : now
-      )
-        .print("yyyy/MM/dd");
     void this.text(
       laterToday === undefined
         ? firstTomorrow === undefined
