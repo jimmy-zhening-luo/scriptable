@@ -8,5 +8,8 @@
     {
       "path": "../core",
     },
+    {
+      "path": "widget",
+    },
   ],
 }
