@@ -1,10 +1,11 @@
-import type { app } from ".";
-
 const enum State {
   None,
   File,
   Folder,
 }
+
+declare const app: unique symbol;
+export type app = stringful & { [app]: "class" };
 
 export default class File<
   Mutable extends boolean,

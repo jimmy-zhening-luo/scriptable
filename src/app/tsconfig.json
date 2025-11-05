@@ -1,15 +1,12 @@
 {
-  "extends": "../tsconfig-src-types.json",
-  "include": [
-    "../../typings/**/*",
-    "**/*",
+  "files": [
+    "index.ts",
+    "share.ts",
   ],
+  "extends": "../tsconfig-src-types.json",
   "references": [
     {
       "path": "../core",
-    },
-    {
-      "path": "../lib",
     },
   ],
 }

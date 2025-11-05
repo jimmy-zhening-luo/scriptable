@@ -1,0 +1,17 @@
+{
+  "files": [
+    "index.ts",
+  ],
+  "extends": "../tsconfig.json",
+  "references": [
+    {
+      "path": "../../../core",
+    },
+    {
+      "path": "../../../lib/time",
+    },
+    {
+      "path": "../../../lib/location",
+    },
+  ],
+}

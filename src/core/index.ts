@@ -1,7 +1,5 @@
 import File from "./file";
-
-declare const app: unique symbol;
-export type app = stringful & { [app]: "class" };
+import type { app } from "./file";
 
 type Drive<
   Type extends string,

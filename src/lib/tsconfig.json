@@ -1,7 +1,14 @@
 {
   "extends": "../tsconfig-src-types.json",
-  "include": [
-    "../../typings/**/*",
-    "**/*",
+  "references": [
+    {
+      "path": "time",
+    },
+    {
+      "path": "location",
+    },
+    {
+      "path": "ui",
+    },
   ],
 }

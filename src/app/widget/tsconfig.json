@@ -1,0 +1,15 @@
+{
+  "files": [
+    "index.ts",
+    "date.ts",
+  ],
+  "extends": "../tsconfig.json",
+  "references": [
+    {
+      "path": "iwidget",
+    },
+    {
+      "path": "../../lib/ui",
+    },
+  ],
+}

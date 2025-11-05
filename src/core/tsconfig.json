@@ -4,7 +4,4 @@
     "file.ts",
   ],
   "extends": "../tsconfig-src-types.json",
-  "include": [
-    "../../typings/**/*",
-  ],
 }

@@ -1,0 +1,7 @@
+{
+  "files": [
+    "index.ts",
+    "accuracy.d.ts",
+  ],
+  "extends": "../tsconfig.json",
+}

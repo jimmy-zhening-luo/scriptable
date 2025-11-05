@@ -1,0 +1,8 @@
+{
+  "files": [
+    "index.ts",
+    "typography/index.ts",
+    "typography/font.ts",
+  ],
+  "extends": "../tsconfig.json",
+}

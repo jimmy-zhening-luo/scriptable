@@ -1,0 +1,8 @@
+{
+  "files": [
+    "index.ts",
+    "dateful.d.ts",
+    "timezone.d.ts",
+  ],
+  "extends": "../tsconfig.json",
+}

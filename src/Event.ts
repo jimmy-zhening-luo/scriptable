@@ -1,12 +1,6 @@
 "pink calendar-alt";
 import DateWidget from "./app/widget/date";
 
-const ICON = {
-  none: "\uF8FF",
-  tomorrow: "\u203A",
-  future: "\u2192",
-};
-
 const enum Limit {
   Unlimited,
   Compact = 28,
@@ -158,6 +152,12 @@ await new class Event extends DateWidget {
         + format.separator
         + format.title;
     }
+
+    const ICON = {
+      none: "\uF8FF",
+      tomorrow: "\u203A",
+      future: "\u2192",
+    };
 
     void this.text(
       laterToday === undefined
