@@ -123,10 +123,15 @@ export function parser(
       : alias[candidate];
 
   if (key === undefined)
-    return {
-      key: RESERVED.ask,
-      terms: query,
-    };
+    return query.length === 1
+      ? {
+          key: RESERVED.skip,
+          terms: [],
+        }
+      : {
+          key: RESERVED.ask,
+          terms: query,
+        };
 
   query.shift();
 
