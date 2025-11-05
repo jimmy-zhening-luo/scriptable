@@ -51,7 +51,7 @@ export function parser(
     return {
       key: RESERVED.translate,
       terms: query,
-    }
+    };
 
   if (
     new Set("0123456789.-+($€£¥").has(
