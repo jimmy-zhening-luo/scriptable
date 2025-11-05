@@ -116,8 +116,7 @@ await new class Clock extends Widget<ClockSetting> {
       const {
         sunset,
         sunrise,
-      } = sun
-        .results;
+      } = sun.results;
 
       return {
         sunset,
