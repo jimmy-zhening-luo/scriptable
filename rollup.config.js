@@ -7,14 +7,14 @@ const extensions = [".ts"];
 export default {
   input: {
     "core/index": "src/core/index.ts",
-    "lib/location": "src/lib/location/index.ts",
-    "lib/time": "src/lib/time/index.ts",
-    "lib/ui": "src/lib/ui/index.ts",
     "app/index": "src/app/index.ts",
     "app/share": "src/app/share.ts",
     "app/widget/iwidget": "src/app/widget/iwidget/index.ts",
     "app/widget/index": "src/app/widget/index.ts",
     "app/widget/date": "src/app/widget/date.ts",
+    "lib/time": "src/lib/time/index.ts",
+    "lib/location": "src/lib/location/index.ts",
+    "lib/ui": "src/lib/ui/index.ts",
     "private/Search": "src/private/Search/index.ts",
   },
   output: {
