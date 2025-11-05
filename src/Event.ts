@@ -24,7 +24,7 @@ await new class Event extends DateWidget {
     
     async function events(
       calendar: Calendar,
-      range: Tuple<typeof Event.Time>,
+      range: Tuple<Event.Time>,
     ) {
       return (
         await CalendarEvent.between(
