@@ -21,10 +21,10 @@ await new class Event extends DateWidget {
     const calendar = await Calendar.defaultForEvents(),
     now = new Event.Time,
     { tomorrow } = now;
-    
+
     async function events(
       calendar: Calendar,
-      range: Tuple<Event.Time>,
+      range: Tuple<InstanceType<typeof DateWidget.Time>>,
     ) {
       return (
         await CalendarEvent.between(
