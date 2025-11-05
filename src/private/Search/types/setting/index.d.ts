@@ -26,6 +26,6 @@ export interface Setting {
       | "skip"
       | "translate"
     >;
-    selectors: string;
+    selector: char;
   };
 }

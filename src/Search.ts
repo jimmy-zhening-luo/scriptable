@@ -41,7 +41,7 @@ void new class Search extends Shortcut<
         new Set(Object.keys(setting.engines)) as Set<stringful>,
         setting.alias,
         setting.reserved.keys,
-        setting.reserved.selectors,
+        setting.reserved.selector,
       ) as ReturnType<typeof search.parser> & Flag<
         | "prior"
       >,

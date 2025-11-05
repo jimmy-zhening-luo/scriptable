@@ -4,12 +4,12 @@ export class QueryArgument {
 
   constructor(
     primarySelector: char,
-    selector: char,
+    matchedSelector: char,
     option: string,
     next?: stringful,
   ) {
     this.consumes = option === ""
-      && selector === ".";
+      && matchedSelector === ".";
     this.argument = this.consumes
       ? next === undefined
         ? primarySelector

@@ -8,7 +8,7 @@ export function parser(
   engines: Set<stringful>,
   alias: Setting["alias"],
   RESERVED: Setting["reserved"]["keys"],
-  selectors: Setting["reserved"]["selectors"],
+  selector: Setting["reserved"]["selector"],
 ) {
   const _input = input.trimStart(),
   hotkey = input.length - _input.length,
@@ -47,76 +47,68 @@ export function parser(
       terms: [],
     };
 
-  if (new Set("0123456789.-+($€£¥").has(first[0]))
+  if (first.startsWith(selector))
+    return {
+      key: RESERVED.translate,
+      terms: query,
+    }
+
+  if (
+    new Set("0123456789.-+($€£¥").has(
+      first[0],
+    )
+  )
     return {
       key: RESERVED.math,
       terms: query,
     };
 
+  const keyterm = (/^(\W+)(\w.*)$/u)
+    .exec(first) as Null<
+    Triple<stringful>
+  >;
+
+  if (keyterm !== null) {
+    query[0] = keyterm[2];
+    void query.unshift(keyterm[1]);
+  }
+
   function select(
     first: stringful,
     query: Arrayful<stringful>,
-    selectors: string,
+    selector: char,
   ) {
     const FIRST = new Set(first),
-    selectorful = selectors + "." as stringful,
-    SELECTORS = new Set<char>(selectorful satisfies stringful as unknown as char[]),
-    selector = SELECTORS
-      .values()
-      .find(
-        selector => FIRST.has(selector),
-      );
+    match = FIRST.has(selector)
+      ? selector
+      : FIRST.has(".")
+        ? "." as char
+        : null;
 
-    if (selector === undefined)
+    if (match === null)
       return null;
 
-    const boundary = first.indexOf(selector);
+    const boundary = first.indexOf(match);
 
     return {
-      key: boundary === 0
-        ? null
-        : first.slice(0, boundary) as stringful,
+      key: first.slice(0, boundary) as stringful,
       argument: new QueryArgument(
-        selectorful[0],
         selector,
+        match,
         first.slice(boundary + 1),
         query[1],
       ),
     };
   }
 
-  const option = select(
-    first,
-    query,
-    selectors,
-  );
-
-  switch (option?.key) {
-  case null:
-    query[0] = option.argument.argument;
-
-    return {
-      key: RESERVED.translate,
-      terms: query,
-    };
-  case undefined: {
-    const keyterm = (/^(\W+)(\w.*)$/u)
-      .exec(first) as Null<
-      Triple<stringful>
-    >;
-
-    if (keyterm !== null) {
-      query[0] = keyterm[2];
-      void query.unshift(keyterm[1]);
-    }
-
-    break;
-  }
-  default:
-    break;
-  }
-
-  const candidate = (
+  const option = keyterm === null
+    ? select(
+        first,
+        query,
+        selector,
+      )
+    : null,
+  candidate = (
     option === null
       ? query[0]
       : option.key
