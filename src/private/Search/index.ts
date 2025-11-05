@@ -100,7 +100,7 @@ export function parser(
       terms: query,
     };
   case undefined: {
-    const keyterm = (/^(\W+)(\w+)$/u)
+    const keyterm = (/^(\W+)(\w.*)$/u)
       .exec(first) as Null<
       Triple<stringful>
     >;
