@@ -59,56 +59,59 @@ export default abstract class IApp<
     }
   }
 
-  private static Error(app: string, error: unknown) {
+  private static fail(app: string, error: unknown) {
     function cast(error: unknown) {
-      return typeof error === "object"
-        && error !== null
-        && "message" in error
-        && typeof error.message === "string"
-        ? error as Error
-        : error === null
-          || error === undefined
-          || typeof error === "string"
-          || typeof error === "number"
-          || typeof error === "boolean"
+      return Error.isError(error)
+        ? error
+        : typeof error !== "object"
+          || error === null
           ? String(error)
           : JSON.stringify(error);
     }
 
     const trace: Arrayful<string | Error> = [cast(error)];
 
-    while (
-      typeof trace[0] !== "string"
-      && "cause" in trace[0]
-    )
+    while (Error.isError(trace[0]))
       void trace.unshift(cast(trace[0].cause));
 
-    const [failure = "", ...causes] = (
-      typeof trace[0] === "string"
-      && trace[1] !== undefined
-        ? [
-            trace[1],
-            trace[0],
-            ...trace.slice(2),
-          ] as const
-        : trace
-    )
-      .map(
-        error => typeof error === "string"
-          ? error
-          : error.message,
+    const rootIndex = trace.findIndex(error => Error.isError(error));
+
+    if (rootIndex > 0) {
+      const [root] = trace.splice(rootIndex, 1) as [Error],
+      source = root.stack.split("\n")[1];
+
+      if (source !== undefined)
+        void trace.unshift(source);
+
+      void trace.unshift(root);
+    }
+
+    function print(error: string | Error) {
+      return typeof error === "string"
+        ? error
+        : error.name === "Error"
+          ? error.message
+          : String(error);
+    }
+
+    const failure = trace.shift(),
+    stack = trace
+      .map(print)
+      .reduce(
+        (stack, error) => stack += "\n" + error,
       ),
-    cause = causes.join("\n"),
     notification = new Notification;
 
     notification.title = app;
-    notification.subtitle = failure;
-    notification.body = cause;
+    notification.subtitle = print(failure);
+    notification.body = stack;
     notification.sound = "failure";
     void notification.schedule();
-    console.error(cause);
+    console.error(stack);
 
-    return Error(failure, { cause });
+    if (typeof )
+
+    throw Error(failure, { cause: stack });
   }
 
   public async run(sideload?: Input) {
@@ -131,7 +134,7 @@ export default abstract class IApp<
       this.output(output);
     }
     catch (error) {
-      throw IApp.Error(this.app, error);
+      IApp.fail(this.app, error);
     }
     finally {
       Script.complete();
