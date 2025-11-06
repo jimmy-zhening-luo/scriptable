@@ -18,13 +18,13 @@ export default abstract class<
   constructor(
     source:
       | InputSource.String
-      | (Input extends readonly string[] ? Input.Array : Input extends object ? Input.Object : never)
+      | (Input extends readonly string[] ? InputSource.Array : Input extends object ? InputSource.Object : never)
       = InputSource.String,
   ) {
     super(
-      source === Input.String
+      source === InputSource.String
         ? args.plainTexts[0] as Undefined<Input & string>
-        : source === Input.Array
+        : source === InputSource.Array
           ? args.plainTexts as unknown as Input & readonly string[]
           : args.shortcutParameter as Undefined<Input>,
       config.runsWithSiri,
