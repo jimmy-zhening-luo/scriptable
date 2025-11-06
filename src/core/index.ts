@@ -69,7 +69,7 @@ export default abstract class IApp<
           : JSON.stringify(error);
     }
 
-    const trace: Arrayful<string | Error> = [cast(error)];
+    const trace = [cast(error)];
 
     while (Error.isError(trace[0]))
       void trace.unshift(cast(trace[0].cause));
@@ -86,12 +86,12 @@ export default abstract class IApp<
       void trace.unshift(root);
     }
 
-    function print(error: string | Error) {
-      return typeof error === "string"
-        ? error
-        : error.name === "Error"
+    function print(error: Error | string) {
+      return Error.isError(error)
+        ? error.name === "Error"
           ? error.message
-          : String(error);
+          : String(error)
+        : error;
     }
 
     const failure = trace.shift(),
@@ -109,7 +109,11 @@ export default abstract class IApp<
     void notification.schedule();
     console.error(stack);
 
-    if (typeof )
+    if (Error.isError(failure)) {
+      failure.cause = stack;
+
+      throw failure;
+    }
 
     throw Error(failure, { cause: stack });
   }
