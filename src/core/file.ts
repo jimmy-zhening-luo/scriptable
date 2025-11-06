@@ -4,6 +4,13 @@ const enum State {
   Folder,
 }
 
+const enum Overwrite {
+  No,
+  Yes,
+  Append,
+  Push,
+}
+
 declare const app: unique symbol;
 export type app = stringful & { [app]: "class" };
 
@@ -80,18 +87,14 @@ export default class File<
         | Array<primitive | object>
         ),
     overwrite: True<Mutable> extends never
-      ? never
-      : (
-        | boolean
-        | "append"
-        | "push"
-        ),
+      ? Overwrite.No
+      : Overwrite = Overwrite.No,
   ) {
     const state = this.state;
 
     switch (state) {
     case State.File:
-      if (overwrite === false)
+      if (overwrite === Overwrite.No)
         return;
 
       break;
@@ -116,11 +119,11 @@ export default class File<
 
       if (state === State.File)
         switch (overwrite) {
-        case "append":
+        case Overwrite.Append:
           void rows.unshift(this.read()!);
 
           break;
-        case "push":
+        case Overwrite.Push:
           rows[rows.length] = this.read()!;
 
           break;
@@ -138,10 +141,10 @@ export default class File<
         this.path,
         typeof content === "object"
           ? JSON.stringify(content)
-          : overwrite === true
+          : overwrite === Overwrite.Yes
             || this.state === State.None
             ? String(content)
-            : overwrite === "push"
+            : overwrite === Overwrite.Push
               ? String(content) + "\n" + this.read()!
               : this.read()! + String(content),
       );
