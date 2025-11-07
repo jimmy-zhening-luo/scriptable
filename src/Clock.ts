@@ -56,14 +56,14 @@ await new class Clock extends Widget<ClockSetting> {
               sunrise: now.at(cache.sunrise),
               sunset: now.at(cache.sunset),
             };
-  
+
         function printSun(
           time: InstanceType<typeof Clock.Time>,
           badge: string,
         ) {
           return badge + time.time({ ampm: "\u2009" });
         }
-  
+
         void complications.push(
           now > sunrise.in(3)
           && now < sunset.in(2)
@@ -75,7 +75,7 @@ await new class Clock extends Widget<ClockSetting> {
         console.error("Sun API: " + String(e));
         console.warn("Continuing...");
       }
-  
+
       try {
         const {
           humidity,
@@ -86,7 +86,7 @@ await new class Clock extends Widget<ClockSetting> {
           latitude,
           longitude,
         );
-  
+
         void complications.push(`\u224B\u2006${humidity}% ${dew}\u00B0`);
       }
       catch (e) {
