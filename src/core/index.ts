@@ -41,22 +41,14 @@ export default abstract class IApp<
   }
 
   protected get setting() {
-    try {
-      return this._setting ??= JSON.parse(
-        new File(
-          "Setting",
-          this.app + ".json" as stringful,
-          "",
-        )
-          .read()!,
-      ) as Setting;
-    }
-    catch (e) {
-      throw ReferenceError(
-        "Failed to load app settings",
-        { cause: e },
-      );
-    }
+    return this._setting ??= JSON.parse(
+      new File(
+        "Setting",
+        this.app + ".json" as stringful,
+        "",
+      )
+        .read()!,
+    ) as Setting;
   }
 
   private static fail(app: string, error: unknown) {
