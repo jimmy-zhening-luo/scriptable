@@ -16,7 +16,7 @@ export function resolver(
 
   if (wrapper.prepend !== undefined)
     void terms.unshift(
-      ...wrapper.prepend.split(" "),
+      ...wrapper.prepend.split(" ") as stringful[],
     );
 
   function encoder(
