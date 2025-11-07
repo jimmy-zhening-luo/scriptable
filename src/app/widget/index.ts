@@ -60,7 +60,7 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
     ),
     font = this.style.font();
 
-    for (const column in columns)
+    for (const column of columns)
       column.font = font;
 
     return {
