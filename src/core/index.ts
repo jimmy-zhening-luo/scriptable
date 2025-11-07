@@ -1,5 +1,4 @@
-import File from "./file";
-import { Overwrite } from "./file"
+import { default as File, Overwrite } from "./file";
 import type { app } from "./file";
 
 type Drive<
@@ -99,6 +98,7 @@ export default abstract class IApp<
     stack = trace
       .map(print)
       .reduce(
+        /* eslint-disable no-param-reassign */
         (stack, error) => stack += "\n" + error,
       ),
     notification = new Notification;
