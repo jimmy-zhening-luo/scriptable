@@ -244,6 +244,4 @@ export default class Time {
           : a
       );
   }
-
-  private printer?: DateFormatter;
 }

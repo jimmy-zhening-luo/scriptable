@@ -20,7 +20,7 @@ export default class File<
   Subpath extends string,
   Folder extends (Subpath extends stringful ? string : app),
 > {
-  private static readonly manager = FileManager.local();
+  private static readonly manager?: FileManager;
   private readonly path;
   private readonly parent;
   private state: State = State.None;
@@ -32,12 +32,13 @@ export default class File<
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
-    const drive = (
+    const manager = (File.manager ??= FileManager.local()),
+    drive = (
       hidden
         ? temporary
-          ? File.manager.cacheDirectory()
-          : File.manager.libraryDirectory()
-        : File.manager.bookmarkedPath("root")
+          ? manager.cacheDirectory()
+          : manager.libraryDirectory()
+        : manager.bookmarkedPath("root")
     ) + "/" + type as stringful,
     directory = drive + "/" + folder as stringful,
     subpath = file
@@ -61,8 +62,8 @@ export default class File<
     }
     }
 
-    if (File.manager.fileExists(this.path))
-      this.state = File.manager.isDirectory(this.path)
+    if (manager.fileExists(this.path))
+      this.state = manager.isDirectory(this.path)
         ? State.Folder
         : State.File;
   }
