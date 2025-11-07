@@ -62,7 +62,7 @@ void new class Timer extends Widget {
           end.date(),
         );
 
-        countdown.font = this.style.round.regular(16);
+        countdown.font = this.style.round.regular(4 / 3);
         countdown.centerAlignText();
         countdown.applyTimerStyle();
       }
