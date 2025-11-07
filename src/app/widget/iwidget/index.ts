@@ -3,10 +3,10 @@ import Time from "../../../lib/time";
 import location from "../../../lib/location";
 
 export default abstract class<Setting> extends IApp<
-    Setting,
-    void,
-    string
-  > {
+  Setting,
+  void,
+  string
+> {
   public static readonly Time = Time;
   public static readonly location = location;
   protected readonly widget = new ListWidget;
