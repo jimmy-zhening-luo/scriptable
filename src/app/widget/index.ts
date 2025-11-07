@@ -14,6 +14,7 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
     title: boolean | string = false,
     {
       background = Color.black(),
+      font = null as Null<Font>,
       weight = Default.Weight,
       spacing = Math.round(weight / 4),
       top = Default.Weight,
@@ -22,9 +23,15 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
       leading = Default.Weight,
     } = {},
   ) {
-    super(url);
-    this.weight = Math.round(weight);
-    this.style = new Style(this.weight);
+    const weight = Math.round(weight),
+    style = new Style(weight);
+
+    super(
+      url,
+      font ?? style.body.regular(),
+    );
+    this.weight = weight;
+    this.style = style;
     this.widget.backgroundColor = background;
     this.widget.spacing = spacing;
     this.widget.setPadding(
@@ -49,11 +56,16 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
     void this.widget.presentSmall();
   };
 
-  protected override text(
-    text: unknown,
-    font: Font = this.style.body.regular(),
-  ) {
-    return super.text(text, font);
+  protected row(...texts: unknown[]) {
+    const row = this.widget.addStack(),
+    columns = texts.map(
+      text => row.addText(String(text)),
+    );
+
+    return {
+      row: WidgetStack,
+      columns,
+    };
   }
 
   protected clock(

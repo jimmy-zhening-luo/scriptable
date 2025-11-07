@@ -15,7 +15,10 @@ export default abstract class<
   protected readonly widget = new ListWidget;
   private readonly tapped;
 
-  constructor(url: Null<string> = null) {
+  constructor(
+    url: Null<string> = null,
+    private readonly font?: True<Style> extends never ? never : Font,
+  ) {
     const input = args.widgetParameter as Null<string>,
     tapped = config.runsInApp
       && typeof input === "string";
@@ -55,7 +58,7 @@ export default abstract class<
 
   protected text(
     text: unknown,
-    font?: True<Style> extends never ? never : Font,
+    font: True<Style> extends never ? never : Font = this.font,
   ) {
     const textbox = this.widget.addText(String(text));
 
@@ -63,18 +66,6 @@ export default abstract class<
       textbox.font = font;
 
     return textbox;
-  }
-
-  protected row(...texts: unknown[]) {
-    const row = this.widget.addStack(),
-    columns = texts.map(
-      text => row.addText(String(text)),
-    );
-
-    return {
-      row: WidgetStack,
-      columns,
-    };
   }
 
   protected onTap?: () => void;
