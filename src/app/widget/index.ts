@@ -7,7 +7,6 @@ const enum Default {
 
 export default abstract class<Setting = never> extends IWidget<Setting, true> {
   protected readonly style;
-  private readonly weight;
 
   constructor(
     url: Null<string> = null,
@@ -23,14 +22,12 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
       leading = Default.Weight,
     } = {},
   ) {
-    const weight = Math.round(weight),
-    style = new Style(weight);
+    const style = new Style(weight);
 
     super(
       url,
       font ?? style.body.regular(),
     );
-    this.weight = weight;
     this.style = style;
     this.widget.backgroundColor = background;
     this.widget.spacing = spacing;
@@ -46,9 +43,9 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
         title === true
           ? this.app
           : title,
-        this.style.title(),
+        style.title(),
       );
-      void this.line(Math.round(weight / 6));
+      void this.line(style.size(1 / 6));
     }
   }
 
@@ -110,10 +107,10 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
     clock.centerAlignContent();
     clock.addText(label).font = new Font(
       font,
-      Math.round(this.weight * 1.1),
+      this.style.size(1.1),
     );
     void clock.addSpacer(
-      Math.round(this.weight * 1.25),
+      this.style.size(1.25),
     );
 
     const dial = clock.addDate(zero.date());
@@ -121,18 +118,14 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
     dial.font = this
       .style
       .round
-      .regular(
-        Math.round(this.weight * 1.5),
-      );
+      .regular(1.5);
     dial.applyTimerStyle();
     clock.addText(period).font = this
       .style
       .round
-      .semibold(
-        Math.round(this.weight * 1.2),
-      );
+      .semibold(1.2);
     void clock.addSpacer(
-      Math.round(this.weight * 1.75),
+      this.style.size(1.75),
     );
   }
 

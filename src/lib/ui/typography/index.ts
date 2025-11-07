@@ -4,32 +4,28 @@ export default class {
   public readonly body;
   public readonly round;
 
-  constructor(public readonly weight: number) {
+  constructor(weight: number) {
     this.body = new FontFamily("", weight);
     this.round = new FontFamily("Rounded", weight);
   }
 
+  public size(scale?: number) {
+    return this.body.size(scale);
+  }
+
   public title() {
-    return this.body.semibold(
-      2 * this.weight,
-    );
+    return this.body.semibold(2);
   }
 
   public heading() {
-    return this.body.semibold(
-      Math.round(5 / 3 * this.weight),
-    );
+    return this.body.semibold(5 / 3);
   }
 
   public subheading() {
-    return this.body.semibold(
-      Math.round(3 / 2 * this.weight),
-    );
+    return this.body.semibold(1.5);
   }
 
   public footnote() {
-    return this.body.light(
-      Math.round(5 / 6 * this.weight),
-    );
+    return this.body.light(5 / 6);
   }
 }

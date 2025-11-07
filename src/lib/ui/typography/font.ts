@@ -9,7 +9,15 @@ export default class <
     private readonly weight: number,
   ) {}
 
-  public regular(size = this.weight) {
+  public size(scale?: number) {
+    return scale === undefined
+      ? this.weight
+      : Math.round(scale * this.weight);
+  }
+
+  public regular(scale?: number) {
+    const size = this.size(scale);
+
     return this.variant === ""
       ? Font.systemFont(size)
       : Font[
@@ -17,26 +25,26 @@ export default class <
         ](size);
   }
 
-  public italic(size = this.weight) {
+  public italic(scale?: number) {
     return this.variant === ""
-      ? Font.italicSystemFont(size)
-      : this.regular(size);
+      ? Font.italicSystemFont(this.size(scale))
+      : this.regular(scale);
   }
 
-  public bold(size?: number) {
-    return this.font("bold", size);
+  public bold(scale?: number) {
+    return this.font("bold", scale);
   }
 
-  public semibold(size?: number) {
-    return this.font("semibold", size);
+  public semibold(scale?: number) {
+    return this.font("semibold", scale);
   }
 
-  public medium(size?: number) {
-    return this.font("medium", size);
+  public medium(scale?: number) {
+    return this.font("medium", scale);
   }
 
-  public light(size?: number) {
-    return this.font("light", size);
+  public light(scale?: number) {
+    return this.font("light", scale);
   }
 
   private font(
@@ -45,7 +53,7 @@ export default class <
       | "semibold"
       | "medium"
       | "light",
-    size = this.weight,
+    scale?: number,
   ) {
     return Font[
       `${
@@ -53,6 +61,6 @@ export default class <
       }${
         this.variant
       }SystemFont`
-    ](size);
+    ](this.size(scale));
   }
 }
