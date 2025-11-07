@@ -58,12 +58,14 @@ export default abstract class<
 
   protected text(
     text: unknown,
-    font: True<Style> extends never ? never : Font = this.font,
+    font?: True<Style> extends never ? never : Font,
   ) {
     const textbox = this.widget.addText(String(text));
 
     if (font !== undefined)
       textbox.font = font;
+    else if (this.font !== undefined)
+      textbox.font = this.font;
 
     return textbox;
   }
