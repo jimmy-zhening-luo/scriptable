@@ -45,13 +45,21 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
           : title,
         style.title(),
       );
-      void this.line(style.size(1 / 6));
+      void this.line(1 / 6);
     }
   }
 
   protected override development = () => {
     void this.widget.presentSmall();
   };
+
+  protected line(height = 0) {
+    return this
+      .widget
+      .addSpacer(
+        this.style.size(height),
+      );
+  }
 
   protected row(...texts: unknown[]) {
     const row = this.widget.addStack(),

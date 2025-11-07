@@ -13,19 +13,19 @@ await new class Clock extends Widget<ClockSetting> {
   protected async runtime() {
     const { setting } = this;
 
-    void this.line(4);
+    void this.line(1 / 3);
     this.clock(
       setting.clock.cities[0].timezone,
       setting.clock.cities[0].label,
       setting.clock.font,
     );
-    void this.line(4);
+    void this.line(1 / 3);
     this.clock(
       setting.clock.cities[1].timezone,
       setting.clock.cities[1].label,
       setting.clock.font,
     );
-    void this.line(16);
+    void this.line(4 / 3);
 
     const complications: string[] = [];
 

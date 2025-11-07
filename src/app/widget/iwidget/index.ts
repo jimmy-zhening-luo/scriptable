@@ -50,12 +50,6 @@ export default abstract class<
     Script.setWidget(this.widget);
   }
 
-  protected line(height = 0) {
-    return this
-      .widget
-      .addSpacer(height);
-  }
-
   protected text(
     text: unknown,
     font?: True<Style> extends never ? never : Font,

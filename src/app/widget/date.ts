@@ -4,8 +4,4 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
   protected override development = () => {
     void this.widget.presentAccessoryInline();
   };
-
-  protected override line(): never {
-    throw TypeError("DateWidget must be single-line");
-  }
 }
