@@ -53,10 +53,12 @@ export function parser(
       terms: query,
     };
 
+  const [f0] = first;
+
   if (
-    new Set("0123456789.-+($€£¥").has(
-      first[0],
-    )
+    f0 >= "0"
+    && f0 <= "9"
+    || new Set(".-+($€£¥").has(f0)
   )
     return {
       key: RESERVED.math,
