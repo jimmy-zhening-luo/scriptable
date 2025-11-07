@@ -226,12 +226,9 @@ export default class Time {
     if (ampm === false)
       return icon + digits;
 
-    const a = this
-      .print("a")
-      .slice(
-        0,
-        single ? 1 : 2,
-      );
+    const a = single
+      ? this.print("a").at(0)
+      : this.print("a");
 
     return icon
       + digits

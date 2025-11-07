@@ -9,7 +9,7 @@ export class QueryArgument {
     next?: stringful,
   ) {
     this.consumes = option === ""
-      && matchedSelector === ".";
+      && matchedSelector !== primarySelector
     this.argument = this.consumes
       ? next === undefined
         ? primarySelector
