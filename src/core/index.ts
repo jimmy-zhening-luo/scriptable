@@ -97,10 +97,7 @@ export default abstract class IApp<
     const failure = trace.shift()!,
     stack = trace
       .map(print)
-      .reduce(
-        /* eslint-disable no-param-reassign */
-        (stack, error) => stack += "\n" + error,
-      ),
+      .join("\n"),
     notification = new Notification;
 
     notification.title = app;
