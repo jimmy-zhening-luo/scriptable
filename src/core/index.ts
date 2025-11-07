@@ -94,7 +94,7 @@ export default abstract class IApp<
         : error;
     }
 
-    const failure = trace.shift(),
+    const failure = trace.shift()!,
     stack = trace
       .map(print)
       .reduce(
