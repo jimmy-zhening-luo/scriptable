@@ -25,7 +25,7 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
   ) {
     super(url);
     this.style = new Style(weight);
-    this.font = this.style.font();
+    this.font = font ?? this.style.font();
     this.widget.backgroundColor = background;
     this.widget.spacing = spacing;
     this.widget.setPadding(
@@ -40,7 +40,7 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
         title === true
           ? this.app
           : title,
-        style.title(),
+        this.style.title(),
       );
       void this.line(1 / 6);
     }
