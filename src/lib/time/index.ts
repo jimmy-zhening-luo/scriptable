@@ -227,7 +227,7 @@ export default class Time {
       return icon + digits;
 
     const a = single
-      ? this.print("a").at(0)
+      ? this.print("a").at(0)!
       : this.print("a");
 
     return icon
