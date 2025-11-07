@@ -55,7 +55,7 @@ export default abstract class<
 
   protected text(
     text: unknown,
-    font?: True<style> extends never ? never : Font,
+    font?: True<Style> extends never ? never : Font,
   ) {
     const text = this.widget.addText(String(text));
 
