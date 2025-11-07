@@ -26,7 +26,7 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
 
     super(
       url,
-      font ?? style.body.regular(),
+      font ?? style.font(),
     );
     this.style = style;
     this.widget.backgroundColor = background;
@@ -57,7 +57,11 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
     const row = this.widget.addStack(),
     columns = texts.map(
       text => row.addText(String(text)),
-    );
+    ),
+    font = this.style.font();
+
+    for (const column in columns)
+      column.font = font;
 
     return {
       row: WidgetStack,

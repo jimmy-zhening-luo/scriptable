@@ -13,6 +13,10 @@ export default class {
     return this.body.size(scale);
   }
 
+  public font(scale?: number) {
+    return this.body.regular(scale);
+  }
+
   public title() {
     return this.body.semibold(2);
   }
