@@ -68,7 +68,7 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
 
     if (right !== undefined)
       void columns.push(
-        row.addText(String(right)),
+        row.addText(String(right as unknown)),
       );
 
     const font = this.style.font();
