@@ -55,10 +55,23 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
 
   protected row(...texts: unknown[]) {
     const row = this.widget.addStack(),
+    right = texts.pop(),
     columns = texts.map(
-      text => row.addText(String(text)),
-    ),
-    font = this.style.font();
+      text => {
+        const column = row.addText(String(text));
+
+        void row.addSpacer();
+
+        return column;
+      },
+    );
+
+    if (right !== undefined)
+      void columns.push(
+        row.addText(String(right)),
+      );
+
+    const font = this.style.font();
 
     for (const column of columns)
       column.font = font;
