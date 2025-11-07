@@ -11,7 +11,6 @@ const enum Unit {
 
 export default class Time {
   public readonly epoch: integerful;
-
   private static printer?: DateFormatter;
 
   constructor(
@@ -222,8 +221,8 @@ export default class Time {
   ) {
     const hms = this.print(
       (ampm === false ? "HH" : "h")
-        + ":mm"
-        + (seconds ? ":ss" : ""),
+      + ":mm"
+      + (seconds ? ":ss" : ""),
     ),
     digits = (
       zero

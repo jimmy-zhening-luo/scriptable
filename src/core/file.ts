@@ -32,7 +32,7 @@ export default class File<
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
-    const manager = (File.manager ??= FileManager.local()),
+    const manager = File.manager ??= FileManager.local(),
     drive = (
       hidden
         ? temporary
