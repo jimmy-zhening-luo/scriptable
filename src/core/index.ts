@@ -1,5 +1,6 @@
 import File from "./file";
-import type { app, Overwrite } from "./file";
+import { Overwrite } from "./file"
+import type { app } from "./file";
 
 type Drive<
   Type extends string,
