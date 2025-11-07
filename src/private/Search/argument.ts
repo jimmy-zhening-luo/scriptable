@@ -19,7 +19,6 @@ export class QueryArgument {
 
   public prepend(terms: stringful[]) {
     if (this.consumes || terms.length === 0)
-
       terms[0] = this.argument;
     else
       void terms.unshift(this.argument);

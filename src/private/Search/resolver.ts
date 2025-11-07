@@ -11,13 +11,13 @@ export function resolver(
     && !Array.isArray(engine)
     ? engine
     : { url: engine },
-  { separator = "+" } = wrapper,
-  terms = wrapper.prepend === undefined
-    ? parsed.terms
-    : wrapper
-      .prepend
-      .split(" ")
-      .concat(parsed.terms) as stringful[];
+  separator = wrapper.separator ?? "+",
+  terms = parsed.terms;
+
+  if (wrapper.prepend !== undefined)
+    void terms.unshift(
+      ...wrapper.prepend.split(" "),
+    );
 
   function encoder(
     terms: readonly stringful[],
@@ -36,18 +36,24 @@ export function resolver(
         ? null
         : action as stringful;
 
-    const queries = (
-      typeof browser.url === "string"
-        ? [browser.url]
-        : browser.url
-    )
-      .map(url => url.replace("%s", action));
+    if (Array.isArray(browser.url)) {
+      const queries = browser
+        .url
+        .map(url => url.replace("%s", action) as stringful);
 
-    return browser.force === true
-      ? queries.map(
-          url => `data:text/html,<meta http-equiv=refresh content="0;url=${url}">` as stringful,
-        )
-      : queries as stringful[];
+      return browser.force === true
+        ? queries.map(
+            query => ('data:text/html,<meta http-equiv=refresh content="0;url=' + query + '">') as stringful,
+          )
+        : queries;
+    }
+    else {
+      const query = browser.url.replace("%s", action) as stringful;
+
+      return browser.force === true
+        ? 'data:text/html,<meta http-equiv=refresh content="0;url=' + query + '">' as stringful
+        : query;
+    }
   }
 
   if ("url" in wrapper)
