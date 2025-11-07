@@ -78,7 +78,7 @@ export default abstract class IApp<
 
     if (rootIndex > 0) {
       const [root] = trace.splice(rootIndex, 1) as [Error],
-      source = root.stack.split("\n")[1];
+      source = root.stack?.split("\n")[1];
 
       if (source !== undefined)
         void trace.unshift(source);
