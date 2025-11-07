@@ -17,9 +17,9 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
       weight = Default.Weight,
       spacing = Math.round(weight / 4),
       top = Default.Weight,
-      trailing = top,
-      bottom = top,
-      leading = trailing,
+      trailing = top as number,
+      bottom = top as number,
+      leading = trailing as number,
     } = {},
   ) {
     const style = new Style(weight);
