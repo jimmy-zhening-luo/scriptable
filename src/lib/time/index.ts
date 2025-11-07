@@ -12,6 +12,8 @@ const enum Unit {
 export default class Time {
   public readonly epoch: integerful;
 
+  private static printer?: DateFormatter;
+
   constructor(
     date:
       | number
@@ -194,10 +196,10 @@ export default class Time {
   }
 
   public print(format = "MMM d, y 'at' h:mm:ss a") {
-    (this.printer ??= new DateFormatter)
+    (Time.printer ??= new DateFormatter)
       .dateFormat = format;
 
-    return this.printer.string(this.date());
+    return Time.printer.string(this.date());
   }
 
   public time(
