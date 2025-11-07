@@ -77,7 +77,5 @@ export default abstract class<
     };
   }
 
-  protected push()
-
   protected onTap?: () => void;
 }
