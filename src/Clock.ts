@@ -100,7 +100,7 @@ await new class Clock extends Widget<ClockSetting> {
     }
 
     if (complications.length !== 0)
-      void this.row(complications);
+      void this.row(...complications);
   }
 
   private async sun(
