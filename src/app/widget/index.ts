@@ -64,7 +64,7 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
       column.font = font;
 
     return {
-      row: WidgetStack,
+      row,
       columns,
     };
   }
