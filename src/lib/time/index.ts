@@ -190,9 +190,12 @@ export default class Time {
   }
 
   public [Symbol.toPrimitive](hint: string) {
-    return hint === "string"
-      ? this.print()
-      : this.epoch;
+    switch (hint) {
+    case "string":
+      return this.print();
+    default:
+      return this.epoch;
+    }
   }
 
   public print(format = "MMM d, y 'at' h:mm:ss a") {
