@@ -135,8 +135,11 @@ await new class Clock extends Widget<ClockSetting> {
           longitude,
         )
         + date.print("'&date='y-MM-dd"),
-    ),
-    {
+    );
+
+    sunApi.timeoutInterval = 10;
+
+    const {
       sunrise,
       sunset,
     } = parseSun(
@@ -211,6 +214,7 @@ await new class Clock extends Widget<ClockSetting> {
     weatherApi.headers = {
       "User-Agent": userAgent,
     };
+    weatherApi.timeoutInterval = 10;
 
     const {
       humidity,
