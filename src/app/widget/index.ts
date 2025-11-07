@@ -18,9 +18,9 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
       weight = Default.Weight,
       spacing = Math.round(weight / 4),
       top = Default.Weight,
-      trailing = top,
+      trailing = top as number,
       bottom = top as number,
-      leading = trailing as number,
+      leading = trailing as unknown as number,
     } = {},
   ) {
     super(url);
