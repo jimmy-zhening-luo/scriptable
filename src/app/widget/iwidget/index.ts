@@ -17,7 +17,7 @@ export default abstract class<
 
   constructor(
     url: Null<string> = null,
-    private readonly font?: True<Style> extends never ? never : Font,
+    protected readonly font?: True<Style> extends never ? never : Font,
   ) {
     const input = args.widgetParameter as Null<string>,
     tapped = config.runsInApp

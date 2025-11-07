@@ -17,9 +17,9 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
       weight = Default.Weight,
       spacing = Math.round(weight / 4),
       top = Default.Weight,
-      trailing = Default.Weight,
-      bottom = Default.Weight,
-      leading = Default.Weight,
+      trailing = top,
+      bottom = top,
+      leading = trailing,
     } = {},
   ) {
     const style = new Style(weight);
@@ -79,7 +79,7 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
         row.addText(String(right as unknown)),
       );
 
-    const font = this.style.font();
+    const font = this.font;
 
     for (const column of columns)
       column.font = font;
