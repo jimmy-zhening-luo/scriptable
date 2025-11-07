@@ -20,7 +20,7 @@ export default class File<
   Subpath extends string,
   Folder extends (Subpath extends stringful ? string : app),
 > {
-  private static readonly manager?: FileManager;
+  private static manager?: FileManager;
   private readonly path;
   private readonly parent;
   private state: State = State.None;
