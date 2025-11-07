@@ -57,12 +57,12 @@ export default abstract class<
     text: unknown,
     font?: True<Style> extends never ? never : Font,
   ) {
-    const text = this.widget.addText(String(text));
+    const textbox = this.widget.addText(String(text));
 
     if (font !== undefined)
-      text.font = font;
+      textbox.font = font;
 
-    return text;
+    return textbox;
   }
 
   protected row(...texts: unknown[]) {
