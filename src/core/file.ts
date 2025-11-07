@@ -70,7 +70,7 @@ export default class File<
 
   public read() {
     if (this.state === State.File)
-      return File.manager.readString(this.path);
+      return File.manager!.readString(this.path);
 
     return undefined;
   }
@@ -100,8 +100,8 @@ export default class File<
 
       break;
     case State.None:
-      if (!File.manager.isDirectory(this.parent))
-        File.manager.createDirectory(
+      if (!File.manager!.isDirectory(this.parent))
+        File.manager!.createDirectory(
           this.parent,
           true,
         );
@@ -132,13 +132,13 @@ export default class File<
           break;
         }
 
-      File.manager.writeString(
+      File.manager!.writeString(
         this.path,
         rows.join("\n"),
       );
     }
     else
-      File.manager.writeString(
+      File.manager!.writeString(
         this.path,
         typeof content === "object"
           ? JSON.stringify(content)
@@ -155,7 +155,7 @@ export default class File<
 
   public delete(process: True<Mutable> | false) {
     if (this.state !== State.None && process) {
-      File.manager.remove(this.path);
+      File.manager!.remove(this.path);
       this.state = State.None;
     }
   }
