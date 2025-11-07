@@ -2,10 +2,7 @@ import IApp from "../../../core";
 import Time from "../../../lib/time";
 import location from "../../../lib/location";
 
-export default abstract class<
-  Setting,
-  Style extends boolean = false,
-> extends IApp<
+export default abstract class<Setting> extends IApp<
     Setting,
     void,
     string
@@ -15,10 +12,7 @@ export default abstract class<
   protected readonly widget = new ListWidget;
   private readonly tapped;
 
-  constructor(
-    url: Null<string> = null,
-    protected readonly font?: True<Style> extends never ? never : Font,
-  ) {
+  constructor(url: Null<string> = null) {
     const input = args.widgetParameter as Null<string>,
     tapped = config.runsInApp
       && typeof input === "string";
@@ -50,18 +44,8 @@ export default abstract class<
     Script.setWidget(this.widget);
   }
 
-  protected text(
-    text: unknown,
-    font?: True<Style> extends never ? never : Font,
-  ) {
-    const textbox = this.widget.addText(String(text));
-
-    if (font !== undefined)
-      textbox.font = font;
-    else if (this.font !== undefined)
-      textbox.font = this.font;
-
-    return textbox;
+  protected text(text: unknown) {
+    return this.widget.addText(String(text));
   }
 
   protected onTap?: () => void;

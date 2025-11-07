@@ -5,8 +5,9 @@ const enum Default {
   Weight = 12,
 }
 
-export default abstract class<Setting = never> extends IWidget<Setting, true> {
+export default abstract class<Setting = never> extends IWidget<Setting> {
   protected readonly style;
+  protected readonly font;
 
   constructor(
     url: Null<string> = null,
@@ -22,13 +23,9 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
       leading = trailing as number,
     } = {},
   ) {
-    const style = new Style(weight);
-
-    super(
-      url,
-      font ?? style.font(),
-    );
-    this.style = style;
+    super(url);
+    this.style = new Style(weight);
+    this.font = this.style.font();
     this.widget.backgroundColor = background;
     this.widget.spacing = spacing;
     this.widget.setPadding(
@@ -53,12 +50,15 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
     void this.widget.presentSmall();
   };
 
-  protected line(height = 0) {
-    return this
-      .widget
-      .addSpacer(
-        this.style.size(height),
-      );
+  protected override text(
+    text: unknown,
+    font: Font = this.font,
+  ) {
+    const field = super.text(text);
+
+    field.font = font;
+
+    return field;
   }
 
   protected row(...texts: unknown[]) {
@@ -88,6 +88,14 @@ export default abstract class<Setting = never> extends IWidget<Setting, true> {
       row,
       columns,
     };
+  }
+
+  protected line(height = 0) {
+    return this
+      .widget
+      .addSpacer(
+        this.style.size(height),
+      );
   }
 
   protected clock(
