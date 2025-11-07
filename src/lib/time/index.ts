@@ -213,9 +213,11 @@ export default class Time {
       single = false,
     } = {},
   ) {
-    const h = ampm === false ? "HH" : "h",
-    s = seconds ? ":ss" : "",
-    hms = this.print(h + ":mm" + s),
+    const hms = this.print(
+      (ampm === false ? "HH" : "h")
+        + ":mm"
+        + (seconds ? ":ss" : ""),
+    ),
     digits = (
       zero
         ? hms
