@@ -1,16 +1,17 @@
 declare const app: unique symbol;
 export type app = stringful & { [app]: "class" };
-export const enum Overwrite {
-  No,
-  Yes,
-  Append,
-  Push,
-}
 
 const enum State {
   None,
   File,
   Folder,
+}
+
+const enum Overwrite {
+  No,
+  Yes,
+  Append,
+  Push,
 }
 
 export default class File<

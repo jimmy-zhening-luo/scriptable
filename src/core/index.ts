@@ -1,4 +1,4 @@
-import { default as File, Overwrite } from "./file";
+import File from "./file";
 import type { app } from "./file";
 
 type Drive<
@@ -155,10 +155,7 @@ export default abstract class IApp<
   ) {
     this
       .cache(key)
-      .write(
-        value,
-        Overwrite.Yes,
-      );
+      .write(value, 1);
   }
 
   protected unset(key?: string) {
@@ -197,7 +194,7 @@ export default abstract class IApp<
 
   protected write(
     data: Parameters<typeof this.drive[string]["write"]>[0],
-    overwrite: Parameters<typeof this.drive[string]["write"]>[1] = Overwrite.Yes,
+    overwrite: Parameters<typeof this.drive[string]["write"]>[1] = 1,
     file?: string,
     extension?: string,
   ) {
