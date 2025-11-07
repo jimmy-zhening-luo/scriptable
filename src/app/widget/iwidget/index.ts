@@ -2,7 +2,10 @@ import IApp from "../../../core";
 import Time from "../../../lib/time";
 import location from "../../../lib/location";
 
-export default abstract class<Setting> extends IApp<
+export default abstract class<
+  Setting,
+  Style extends boolean = false,
+> extends IApp<
   Setting,
   void,
   string
@@ -24,7 +27,7 @@ export default abstract class<Setting> extends IApp<
     this.tapped = tapped;
     this.url = url;
     this.widget.refreshAfterDate = new Time()
-      .in(0, 0, 30)
+      .in(0, 1)
       .date();
   }
 
@@ -38,19 +41,43 @@ export default abstract class<Setting> extends IApp<
   }
 
   protected output() {
-    Script.setWidget(this.widget);
-
     if (this.tapped && this.onTap !== undefined)
       this.onTap();
-  }
 
-  protected text(text: unknown) {
-    return this.widget.addText(String(text));
+    Script.setWidget(this.widget);
   }
 
   protected line(height = 0) {
-    return this.widget.addSpacer(height);
+    return this
+      .widget
+      .addSpacer(height);
   }
+
+  protected text(
+    text: unknown,
+    font?: True<style> extends never ? never : Font,
+  ) {
+    const text = this.widget.addText(String(text));
+
+    if (font !== undefined)
+      text.font = font;
+
+    return text;
+  }
+
+  protected row(...texts: unknown[]) {
+    const row = this.widget.addStack(),
+    columns = texts.map(
+      text => row.addText(String(text)),
+    );
+
+    return {
+      row: WidgetStack,
+      columns,
+    };
+  }
+
+  protected push()
 
   protected onTap?: () => void;
 }

@@ -5,7 +5,7 @@ const enum Default {
   Weight = 12,
 }
 
-export default abstract class<Setting = never> extends IWidget<Setting> {
+export default abstract class<Setting = never> extends IWidget<Setting, true> {
   protected readonly style;
   private readonly weight;
 
@@ -51,14 +51,9 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
 
   protected override text(
     text: unknown,
-    font: Null<Font> = this.style.body.regular(),
+    font: Font = this.style.body.regular(),
   ) {
-    const textbox = super.text(text);
-
-    if (font !== null)
-      textbox.font = font;
-
-    return textbox;
+    return super.text(text, font);
   }
 
   protected clock(

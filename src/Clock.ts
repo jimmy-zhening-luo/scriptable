@@ -27,77 +27,80 @@ await new class Clock extends Widget<ClockSetting> {
     );
     void this.line(16);
 
-    const {
-      latitude,
-      longitude,
-    } = await Clock.location(),
-    badges: string[] = [];
-
-    try {
-      const now = new Clock.Time,
-      cacheData = this.get("sun"),
-      cache = cacheData === undefined
-        ? null
-        : JSON.parse(cacheData) as ISunCache,
-      {
-        sunset,
-        sunrise,
-      } = cache === null
-        || now as unknown as number > cache.expiry
-        || now.offset() !== cache.offset
-        ? await this.sun(
-            setting.sun.api.url,
-            latitude,
-            longitude,
-          )
-        : {
-            sunrise: now.at(cache.sunrise),
-            sunset: now.at(cache.sunset),
-          };
-
-      function printSun(
-        time: InstanceType<typeof Clock.Time>,
-        badge: string,
-      ) {
-        return badge + time.time({ ampm: "\u2009" });
-      }
-
-      void badges.push(
-        now > sunrise.in(3)
-        && now < sunset.in(2)
-          ? printSun(sunset, "\u263E")
-          : printSun(sunrise, "\u235C "),
-      );
-    }
-    catch (e) {
-      console.error("Sun API: " + String(e));
-      console.warn("Continuing...");
-    }
+    const complications: string[] = [];
 
     try {
       const {
-        humidity,
-        dew,
-      } = await this.weather(
-        setting.weather.api.userAgent,
-        setting.weather.api.url,
         latitude,
         longitude,
-      );
+      } = await Clock.location();
 
-      void badges.push(`\u224B\u2006${humidity}% ${dew}\u00B0`);
+      try {
+        const now = new Clock.Time,
+        cacheData = this.get("sun"),
+        cache = cacheData === undefined
+          ? null
+          : JSON.parse(cacheData) as ISunCache,
+        {
+          sunset,
+          sunrise,
+        } = cache === null
+          || now.epoch > cache.expiry
+          || now.offset() !== cache.offset
+          ? await this.sun(
+              setting.sun.api.url,
+              latitude,
+              longitude,
+            )
+          : {
+              sunrise: now.at(cache.sunrise),
+              sunset: now.at(cache.sunset),
+            };
+  
+        function printSun(
+          time: InstanceType<typeof Clock.Time>,
+          badge: string,
+        ) {
+          return badge + time.time({ ampm: "\u2009" });
+        }
+  
+        void complications.push(
+          now > sunrise.in(3)
+          && now < sunset.in(2)
+            ? printSun(sunset, "\u263E")
+            : printSun(sunrise, "\u235C "),
+        );
+      }
+      catch (e) {
+        console.error("Sun API: " + String(e));
+        console.warn("Continuing...");
+      }
+  
+      try {
+        const {
+          humidity,
+          dew,
+        } = await this.weather(
+          setting.weather.api.userAgent,
+          setting.weather.api.url,
+          latitude,
+          longitude,
+        );
+  
+        void complications.push(`\u224B\u2006${humidity}% ${dew}\u00B0`);
+      }
+      catch (e) {
+        console.error("Weather API: " + String(e));
+        console.warn("Continuing...");
+      }
     }
     catch (e) {
-      console.error("Weather API: " + String(e));
-      console.warn("Continuing...");
+      console.error("Failed to get current location: " + String(e));
+      console.warn("Skipping weather...");
     }
 
-    if (badges.length !== 0)
-      void this.text(
-        badges.join(
-          " ".repeat(4),
-        ),
-      );
+    if (complications.length !== 0)
+      void this.row(complications);
   }
 
   private async sun(

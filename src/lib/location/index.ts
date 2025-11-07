@@ -1,19 +1,19 @@
 import type { Accuracy } from "./accuracy";
 
 export default async function (
-  accuracy: Accuracy = 10e-1,
+  accuracy: Accuracy = 1e-1,
 ) {
   const Accuracy = {
     0: "Best",
-    0.01: "TenMeters",
-    0.1: "HundredMeters",
+    1e-2: "TenMeters",
+    1e-1: "HundredMeters",
     1: "Kilometer",
     3: "ThreeKilometers",
   } as const,
   Digits = {
     0: 5,
-    0.01: 4,
-    0.1: 3,
+    1e-2: 4,
+    1e-1: 3,
     1: 2,
     3: 2,
   };
