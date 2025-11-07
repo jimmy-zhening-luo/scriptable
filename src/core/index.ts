@@ -1,5 +1,5 @@
 import File from "./file";
-import type { app } from "./file";
+import type { app, Overwrite } from "./file";
 
 type Drive<
   Type extends string,
@@ -157,7 +157,10 @@ export default abstract class IApp<
   ) {
     this
       .cache(key)
-      .write(value, true);
+      .write(
+        value,
+        Overwrite.Yes,
+      );
   }
 
   protected unset(key?: string) {
@@ -196,7 +199,7 @@ export default abstract class IApp<
 
   protected write(
     data: Parameters<typeof this.drive[string]["write"]>[0],
-    overwrite: Parameters<typeof this.drive[string]["write"]>[1] = true,
+    overwrite: Parameters<typeof this.drive[string]["write"]>[1] = Overwrite.Yes,
     file?: string,
     extension?: string,
   ) {
