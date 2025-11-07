@@ -198,6 +198,10 @@ export default class Time {
     }
   }
 
+  public valueOf() {
+    return this.epoch;
+  }
+
   public print(format = "MMM d, y 'at' h:mm:ss a") {
     (Time.printer ??= new DateFormatter)
       .dateFormat = format;
