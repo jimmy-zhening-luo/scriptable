@@ -304,7 +304,7 @@ export default class Time {
 
     const a = single
       ? this.print(Print.Time.AMPM).at(0)!
-      ? this.print(Print.Time.AMPM);
+      : this.print(Print.Time.AMPM);
 
     return icon
       + digits
