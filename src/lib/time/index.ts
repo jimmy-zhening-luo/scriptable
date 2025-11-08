@@ -211,7 +211,7 @@ export default class Time {
     return new Date(this.epoch) as Dateful;
   }
 
-  public [Symbol.toPrimitive](hint: "string" | "number" | "default") {
+  public [Symbol.toPrimitive](hint: toPrimitive) {
     return hint === "string"
       ? this.print()
       : this.epoch;
