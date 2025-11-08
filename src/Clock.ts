@@ -31,7 +31,7 @@ await new class Clock extends Widget<Setting> {
     sunCache = sunCacheData === undefined
       ? null
       : JSON.parse(sunCacheData) as SunCache,
-    sun = sunCache === null
+    sun: Record<"sunrise" | "sunset", Null<Time>> = sunCache === null
       || now.epoch > sunCache.expiry
       || now.offset() !== sunCache.offset
       ? {
@@ -42,10 +42,7 @@ await new class Clock extends Widget<Setting> {
           sunrise: now.at(sunCache.sunrise),
           sunset: now.at(sunCache.sunset),
         },
-    weather: {
-      humidity: Null<string>;
-      dew: Null<string>;
-    } = {
+    weather: Record<"humidity" | "dew", Null<string>> = {
       humidity: null,
       dew: null,
     };
@@ -92,8 +89,8 @@ await new class Clock extends Widget<Setting> {
 
           this.set(
             {
-              sunrise,
-              sunset,
+              sunrise: sunrise.print("h:mm a"),
+              sunset: sunset.print("h:mm a"),
               expiry: now.tomorrow.epoch,
               offset: now.offset(),
             } satisfies SunCache,
