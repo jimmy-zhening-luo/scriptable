@@ -6,7 +6,7 @@ export interface IWeatherApiRequest {
 }
 
 export interface SunApiResponse {
-  api: Field<
+  results: Field<
     | "sunrise"
     | "sunset"
   >;
