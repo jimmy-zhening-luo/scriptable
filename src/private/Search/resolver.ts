@@ -36,24 +36,31 @@ export function resolver(
         ? null
         : action as stringful;
 
-    if (Array.isArray(browser.url)) {
-      const queries = browser
-        .url
-        .map(url => url.replace("%s", action) as stringful);
+    const replace = (url: string) => url.replace(
+      "%s",
+      action,
+    ) as stringful;
 
-      return browser.force === true
-        ? queries.map(
-            query => ('data:text/html,<meta http-equiv=refresh content="0;url=' + query + '">') as stringful,
-          )
-        : queries;
+    function force(url: stringful) {
+      return (
+        'data:text/html,<meta http-equiv=refresh content="0;url='
+        + url
+        + '">'
+      ) as stringful;
     }
-    else {
-      const query = browser.url.replace("%s", action) as stringful;
 
-      return browser.force === true
-        ? 'data:text/html,<meta http-equiv=refresh content="0;url=' + query + '">' as stringful
-        : query;
-    }
+    return Array.isArray(browser.url)
+      ? browser.force === true
+        ? browser
+            .url
+            .map(replace)
+            .map(force)
+        : browser
+            .url
+            .map(replace)
+      : browser.force === true
+        ? force(replace(browser.url))
+        : replace(browser.url);
   }
 
   if ("url" in wrapper)
