@@ -11,7 +11,6 @@ const enum Unit {
 
 export default class Time {
   public readonly epoch: integerful;
-  private static printer?: DateFormatter;
 
   constructor(
     date:
@@ -252,4 +251,6 @@ export default class Time {
           : a
       );
   }
+
+  private static printer?: DateFormatter;
 }
