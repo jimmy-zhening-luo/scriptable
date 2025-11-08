@@ -6,7 +6,7 @@ import type {
   SunCache,
 } from "./private/Clock/interface";
 
-const Break {
+const enum Break {
   Line = 1 / 3,
   Section = Line * 4,
 }

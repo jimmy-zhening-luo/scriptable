@@ -10,6 +10,12 @@ const enum Limit {
   Truncate = Shortest + 2,
 }
 
+const enum Icon {
+  None = "\uF8FF",
+  Tomorrow = "\u203A",
+  Future = "\u2192",
+}
+
 await new class Event extends DateWidget {
   protected async runtime() {
     const calendar = await Calendar.defaultForEvents(),
@@ -153,23 +159,17 @@ await new class Event extends DateWidget {
         + format.title;
     }
 
-    const ICON = {
-      none: "\uF8FF",
-      tomorrow: "\u203A",
-      future: "\u2192",
-    };
-
     void this.text(
       laterToday === undefined
         ? firstTomorrow === undefined
           ? future === undefined
-            ? ICON.none
-            : ICON.future + " " + future
+            ? Icon.None
+            : Icon.Future + " " + future
               .print("MMM d")
           : print(
               {
-                full: `\u2005${ICON.tomorrow}\u200A`,
-                "short": ICON.tomorrow,
+                full: `\u2005${Icon.Tomorrow}\u200A`,
+                "short": Icon.Tomorrow,
               },
               firstTomorrow,
             )
