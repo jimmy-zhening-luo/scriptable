@@ -1,6 +1,11 @@
 import type { Setting } from "./types";
 import { QueryArgument } from "./argument";
 
+const enum Special {
+  Selector = ".",
+  Operators = Selector + "-+($€£¥",
+}
+
 export { resolver } from "./resolver";
 export function parser(
   input: string,
@@ -54,7 +59,7 @@ export function parser(
   if (
     f0 >= "0"
     && f0 <= "9"
-    || ".-+($€£¥".includes(f0)
+    || Special.Operators.includes(f0)
   )
     return {
       key: setting.reserved.keys.math,
@@ -78,8 +83,8 @@ export function parser(
   ) {
     const match = first.includes(selector)
       ? selector
-      : first.includes(".")
-        ? "." as char
+      : first.includes(Special.Selector)
+        ? Special.Selector as char
         : null;
 
     if (match === null)
