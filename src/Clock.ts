@@ -6,23 +6,28 @@ import type {
   SunCache,
 } from "./private/Clock/interface";
 
+const Break {
+  Line = 1 / 3,
+  Section = Line * 4,
+}
+
 await new class Clock extends Widget<Setting> {
   protected async runtime() {
     const { setting } = this;
 
-    void this.line(1 / 3);
+    void this.line(Break.Line);
     this.clock(
       setting.clock.cities[0].timezone,
       setting.clock.cities[0].label,
       setting.clock.font,
     );
-    void this.line(1 / 3);
+    void this.line(Break.Line);
     this.clock(
       setting.clock.cities[1].timezone,
       setting.clock.cities[1].label,
       setting.clock.font,
     );
-    void this.line(4 / 3);
+    void this.line(Break.Section);
 
     const complications: string[] = [],
 
