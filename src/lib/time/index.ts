@@ -33,6 +33,41 @@ const enum In {
   Next,
 }
 
+declare namespace Print {
+  const enum Break {
+    None = "",
+    Space = " ",
+    Time = ":",
+    Date = "," + Space,
+    DateTime = Space + "'at'" + Space,
+  }
+
+  const enum Time {
+    HourLong = "HH",
+    Hour = "h",
+    Minute = "mm",
+    Second = "ss",
+    AMPM = "a",
+    Hm = HourLong + Break.Time + Minute,
+    hm = Hour + Break.Time + Minute,
+    Hms = Hm + Break.Time + Second,
+    hms = hm + Break.Time + Second,
+    hma = hm + Break.Space + AMPM,
+    hmsa = hms + Break.Space + AMPM,
+  }
+
+  const enum Date {
+    Month = "MMM",
+    Day = "d",
+    Year = "y",
+    Date = Month + Break.Space + Day + Break.Date + Year,
+    TimeShort = Time.hms,
+    TimeLong = Time.hmsa,
+    DateTime = Date + Break.DateTime + TimeLong,
+    
+  }
+}
+
 export default class Time {
   public readonly epoch: integerful;
 
@@ -221,7 +256,9 @@ export default class Time {
     return this.epoch;
   }
 
-  public print(format = "MMM d, y 'at' h:mm:ss a") {
+  public print(
+    format: string = Print.Date.DateTime,
+  ) {
     (Time.printer ??= new DateFormatter)
       .dateFormat = format;
 
@@ -240,25 +277,34 @@ export default class Time {
     } = {},
   ) {
     const hms = this.print(
-      (ampm === false ? "HH" : "h")
-      + ":mm"
-      + (seconds ? ":ss" : ""),
+      ampm === false
+        ? seconds
+          ? Print.Time.Hms
+          : Print.Time.Hm
+        : seconds
+          ? Print.Time.hms
+          : Print.Time.hm,
     ),
     digits = (
       zero
         ? hms
-            .replace(/:00$/u, "")
-            .replace(/:00$/u, "")
+            .replace(/:00$/u, Print.Break.None)
+            .replace(/:00$/u, Print.Break.None)
         : hms
     )
-      .replaceAll(":", colon ? ":" : "");
+      .replaceAll(
+        Print.Break.Time,
+        colon
+          ? Print.Break.Time
+          : Print.Break.None,
+      );
 
     if (ampm === false)
       return icon + digits;
 
     const a = single
-      ? this.print("a").at(0)!
-      : this.print("a");
+      ? this.print(Print.Time.AMPM).at(0)!
+      ? this.print(Print.Time.AMPM);
 
     return icon
       + digits
