@@ -137,13 +137,13 @@ await new class Clock extends Widget<Setting> {
 
     if (weather.humidity === null) {
       if (weather.dew !== null)
-        void complications.push(`${dew}\u00B0`);
+        void complications.push(`${weather.dew}\u00B0`);
     }
     else
       if (weather.dew === null)
-        void complications.push(`\u224B\u2006${humidity}%`);
+        void complications.push(`\u224B\u2006${weather.humidity}%`);
       else
-        void complications.push(`\u224B\u2006${humidity}% ${dew}\u00B0`);
+        void complications.push(`\u224B\u2006${weather.humidity}% ${weather.dew}\u00B0`);
 
     if (complications.length !== 0)
       void this.row(...complications);
