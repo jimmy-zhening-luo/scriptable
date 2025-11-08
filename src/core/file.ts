@@ -69,7 +69,7 @@ export default class File<
       this.path = directory
         + Break.Path
         + subpath[0]! as stringful;
-        break;
+      break;
     default: {
       const leaf = subpath.pop()!;
 
@@ -167,8 +167,8 @@ export default class File<
             ? String(content)
             : overwrite === Overwrite.Push
               ? String(content)
-                + Break.Line
-                + this.read()!
+              + Break.Line
+              + this.read()!
               : this.read()!
                 + String(content),
       );
