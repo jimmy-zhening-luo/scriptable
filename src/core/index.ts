@@ -1,6 +1,11 @@
 import File from "./file";
 import type { app } from "./file";
 
+const enum Filename {
+  Ext = ".",
+  Json = Ext + "json",
+}
+
 type Drive<
   Type extends string,
   Mutable extends boolean = false,
@@ -44,7 +49,7 @@ export default abstract class IApp<
     return this._setting ??= JSON.parse(
       new File(
         "Setting",
-        this.app + ".json" as stringful,
+        this.app + Filename.Json as stringful,
         "",
       )
         .read()!,
@@ -249,7 +254,7 @@ export default abstract class IApp<
   ) {
     const record = extension === ""
       ? file
-      : file + "." + extension;
+      : file + Filename.Ext + extension;
 
     return this.drive[record] ??= new File(
       "Storage",
@@ -265,7 +270,7 @@ export default abstract class IApp<
   ) {
     const feed = extension === ""
       ? file
-      : file + "." + extension;
+      : file + Filename.Ext + extension;
 
     return this.external[feed] ??= new File(
       "Feed",
