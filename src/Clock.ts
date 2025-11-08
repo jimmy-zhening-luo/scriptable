@@ -120,19 +120,28 @@ await new class Clock extends Widget<Setting> {
       return badge + time.time({ ampm: "\u2009" });
     }
 
-    if (
-      now < sunrise.in(3)
-      || now > sunset.in(2)
-    ) {
-      if (sunrise !== null)
-        void complications.push(
-          printSun(sunrise, "\u235C "),
-        );
-    }
-    else
+    const {
+      sunrise,
+      sunset,
+    } = sun;
+
+    if (sunrise === null) {
       if (sunset !== null)
         void complications.push(
           printSun(sunset, "\u263E"),
+        );
+    }
+    else
+      if (sunset === null)
+        void complications.push(
+          printSun(sunrise, "\u235C "),
+        );
+      else
+        void complications.push(
+          now < sunrise.in(3)
+            || now > sunset.in(2)
+            ? printSun(sunrise, "\u235C ")
+            : printSun(sunset, "\u263E"),
         );
 
     if (weather.humidity === null) {
@@ -140,10 +149,14 @@ await new class Clock extends Widget<Setting> {
         void complications.push(`${weather.dew}\u00B0`);
     }
     else
-      if (weather.dew === null)
-        void complications.push(`\u224B\u2006${weather.humidity}%`);
-      else
-        void complications.push(`\u224B\u2006${weather.humidity}% ${weather.dew}\u00B0`);
+      void complications.push(
+        `\u224B\u2006${weather.humidity}%`
+        + (
+          weather.dew === null
+            ? ""
+            : ` ${weather.dew}\u00B0`
+        ),
+      );
 
     if (complications.length !== 0)
       void this.row(...complications);
