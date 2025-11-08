@@ -14,6 +14,12 @@ const enum Overwrite {
   Push,
 }
 
+const enum Break {
+  Word = " ",
+  Line = "\n",
+  Path = "/",
+}
+
 export default class File<
   Mutable extends boolean,
   Type extends string,
@@ -27,7 +33,13 @@ export default class File<
   constructor(
     type: Literalful<Type>,
     file: Subpath,
-    folder: Folder extends app ? app : Exclusion<Folder, "/" | " ">,
+    folder: Folder extends app
+      ? app
+      : Exclusion<
+        Folder,
+        | Break.Path
+        | Break.Word
+      >,
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
@@ -39,10 +51,12 @@ export default class File<
           ? File.manager.cacheDirectory()
           : File.manager.libraryDirectory()
         : File.manager.bookmarkedPath("root")
-    ) + "/" + type as stringful,
-    directory = drive + "/" + folder as stringful,
+    ) + Break.Path + type as stringful,
+    directory = drive
+      + Break.Path
+      + folder as stringful,
     subpath = file
-      .split("/")
+      .split(Break.Path)
       .filter((node): node is stringful => node !== "");
 
     switch (subpath.length) {
@@ -52,13 +66,19 @@ export default class File<
       break;
     case 1:
       this.parent = directory;
-      this.path = directory + "/" + subpath[0]! as stringful;
-      break;
+      this.path = directory
+        + Break.Path
+        + subpath[0]! as stringful;
+        break;
     default: {
       const leaf = subpath.pop()!;
 
-      this.parent = directory + "/" + subpath.join("/") as stringful;
-      this.path = this.parent + "/" + leaf as stringful;
+      this.parent = directory
+        + Break.Path
+        + subpath.join(Break.Path) as stringful;
+      this.path = this.parent
+        + Break.Path
+        + leaf as stringful;
     }
     }
 
@@ -134,7 +154,7 @@ export default class File<
 
       File.manager!.writeString(
         this.path,
-        rows.join("\n"),
+        rows.join(Break.Line),
       );
     }
     else
@@ -146,8 +166,11 @@ export default class File<
             || this.state === State.None
             ? String(content)
             : overwrite === Overwrite.Push
-              ? String(content) + "\n" + this.read()!
-              : this.read()! + String(content),
+              ? String(content)
+                + Break.Line
+                + this.read()!
+              : this.read()!
+                + String(content),
       );
 
     this.state = State.File;
