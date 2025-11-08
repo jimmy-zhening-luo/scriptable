@@ -37,11 +37,7 @@ void new class Search extends Shortcut<
         )
       : search.parser(
         input,
-        new Set(Object.keys(setting.chars)) as Set<stringful>,
-        new Set(Object.keys(setting.engines)) as Set<stringful>,
-        setting.alias,
-        setting.reserved.keys,
-        setting.reserved.selector,
+        setting,
       ) as ReturnType<typeof search.parser> & Flag<
         | "prior"
       >,

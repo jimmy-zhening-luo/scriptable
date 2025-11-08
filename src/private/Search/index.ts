@@ -4,11 +4,7 @@ import { QueryArgument } from "./argument";
 export { resolver } from "./resolver";
 export function parser(
   input: string,
-  chars: Set<stringful>,
-  engines: Set<stringful>,
-  alias: Setting["alias"],
-  RESERVED: Setting["reserved"]["keys"],
-  selector: Setting["reserved"]["selector"],
+  setting: Setting,
 ) {
   const _input = input.trimStart(),
   hotkey = input.length - _input.length,
@@ -24,12 +20,12 @@ export function parser(
     break;
   case 1:
     return {
-      key: RESERVED.ask,
+      key: setting.reserved.keys.ask,
       terms: query,
     };
   default:
     return {
-      key: RESERVED.translate,
+      key: setting.reserved.keys.translate,
       terms: query,
     };
   }
@@ -41,15 +37,15 @@ export function parser(
     && query.length === 1
   )
     return {
-      key: chars.has(first)
+      key: first in setting.chars
         ? first
-        : RESERVED.skip,
+        : setting.reserved.keys.skip,
       terms: [],
     };
 
-  if (first.startsWith(selector))
+  if (first.startsWith(setting.reserved.selector))
     return {
-      key: RESERVED.translate,
+      key: setting.reserved.keys.translate,
       terms: query,
     };
 
@@ -58,10 +54,10 @@ export function parser(
   if (
     f0 >= "0"
     && f0 <= "9"
-    || new Set(".-+($€£¥").has(f0)
+    || ".-+($€£¥".includes(f0)
   )
     return {
-      key: RESERVED.math,
+      key: setting.reserved.keys.math,
       terms: query,
     };
 
@@ -80,10 +76,9 @@ export function parser(
     query: Arrayful<stringful>,
     selector: char,
   ) {
-    const FIRST = new Set(first),
-    match = FIRST.has(selector)
+    const match = first.includes(selector)
       ? selector
-      : FIRST.has(".")
+      : first.includes(".")
         ? "." as char
         : null;
 
@@ -107,7 +102,7 @@ export function parser(
     ? select(
         first,
         query,
-        selector,
+        setting.reserved.selector,
       )
     : null,
   candidate = (
@@ -117,21 +112,21 @@ export function parser(
   )
     .toLocaleLowerCase() as stringful,
   key = candidate.length === 1
-    ? chars.has(candidate)
+    ? candidate in setting.chars
       ? candidate
       : undefined
-    : engines.has(candidate)
+    : candidate in setting.engines
       ? candidate
-      : alias[candidate];
+      : setting.alias[candidate];
 
   if (key === undefined)
     return query.length === 1
       ? {
-          key: RESERVED.skip,
+          key: setting.reserved.keys.skip,
           terms: [],
         }
       : {
-          key: RESERVED.ask,
+          key: setting.reserved.keys.ask,
           terms: query,
         };
 
