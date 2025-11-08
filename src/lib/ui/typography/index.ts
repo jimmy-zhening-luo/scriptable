@@ -1,5 +1,22 @@
 import FontFamily from "./font";
 
+const enum em {
+  Footnote = 2,
+  Body,
+  Subheading,
+  Heading,
+  Title,
+}
+
+const enum Scale {
+  N = em.Body,
+  Title = em.Title / N,
+  Heading = em.Heading / N,
+  Subheading = em.Subheading / N,
+  Body = em.Body / N,
+  Footnote = em.Footnote / N,
+}
+
 export default class {
   public readonly body;
   public readonly round;
@@ -18,18 +35,18 @@ export default class {
   }
 
   public title() {
-    return this.body.semibold(2);
+    return this.body.semibold(Scale.Title);
   }
 
   public heading() {
-    return this.body.semibold(5 / 3);
+    return this.body.semibold(Scale.Heading);
   }
 
   public subheading() {
-    return this.body.semibold(1.5);
+    return this.body.semibold(Scale.Subheading);
   }
 
   public footnote() {
-    return this.body.light(5 / 6);
+    return this.body.light(Scale.Footnote);
   }
 }
