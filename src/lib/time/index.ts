@@ -33,39 +33,36 @@ const enum In {
   Next,
 }
 
-declare namespace Print {
-  const enum Break {
-    None = "",
-    Space = " ",
-    Time = ":",
-    Date = "," + Space,
-    DateTime = Space + "'at'" + Space,
-  }
+const enum Break {
+  None = "",
+  Space = " ",
+  Time = ":",
+  Date = "," + Space,
+  DateTime = Space + "'at'" + Space,
+}
 
-  const enum Time {
-    HourLong = "HH",
-    Hour = "h",
-    Minute = "mm",
-    Second = "ss",
-    AMPM = "a",
-    Hm = HourLong + Break.Time + Minute,
-    hm = Hour + Break.Time + Minute,
-    Hms = Hm + Break.Time + Second,
-    hms = hm + Break.Time + Second,
-    hma = hm + Break.Space + AMPM,
-    hmsa = hms + Break.Space + AMPM,
-  }
+const enum TimeFormat {
+  HourLong = "HH",
+  Hour = "h",
+  Minute = "mm",
+  Second = "ss",
+  AMPM = "a",
+  Hm = HourLong + Break.Time + Minute,
+  hm = Hour + Break.Time + Minute,
+  Hms = Hm + Break.Time + Second,
+  hms = hm + Break.Time + Second,
+  hma = hm + Break.Space + AMPM,
+  hmsa = hms + Break.Space + AMPM,
+}
 
-  const enum Date {
-    Month = "MMM",
-    Day = "d",
-    Year = "y",
-    Date = Month + Break.Space + Day + Break.Date + Year,
-    TimeShort = Time.hms,
-    TimeLong = Time.hmsa,
-    DateTime = Date + Break.DateTime + TimeLong,
-
-  }
+const enum DateFormat {
+  Month = "MMM",
+  Day = "d",
+  Year = "y",
+  Date = Month + Break.Space + Day + Break.Date + Year,
+  Time = TimeFormat.hms,
+  TimeLong = TimeFormat.hmsa,
+  DateTime = Date + Break.DateTime + TimeLong,
 }
 
 export default class Time {
@@ -257,7 +254,7 @@ export default class Time {
   }
 
   public print(
-    format: string = Print.Date.DateTime,
+    format: string = DateFormat.DateTime,
   ) {
     (Time.printer ??= new DateFormatter)
       .dateFormat = format;
@@ -279,32 +276,32 @@ export default class Time {
     const hms = this.print(
       ampm === false
         ? seconds
-          ? Print.Time.Hms
-          : Print.Time.Hm
+          ? TimeFormat.Hms
+          : TimeFormat.Hm
         : seconds
-          ? Print.Time.hms
-          : Print.Time.hm,
+          ? TimeFormat.hms
+          : TimeFormat.hm,
     ),
     digits = (
       zero
         ? hms
-            .replace(/:00$/u, Print.Break.None)
-            .replace(/:00$/u, Print.Break.None)
+            .replace(/:00$/u, Break.None)
+            .replace(/:00$/u, Break.None)
         : hms
     )
       .replaceAll(
-        Print.Break.Time,
+        Break.Time,
         colon
-          ? Print.Break.Time
-          : Print.Break.None,
+          ? Break.Time
+          : Break.None,
       );
 
     if (ampm === false)
       return icon + digits;
 
     const a = single
-      ? this.print(Print.Time.AMPM).at(0)!
-      : this.print(Print.Time.AMPM);
+      ? this.print(TimeFormat.AMPM).at(0)!
+      : this.print(TimeFormat.AMPM);
 
     return icon
       + digits
