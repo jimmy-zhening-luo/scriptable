@@ -2,6 +2,7 @@ import type { Setting } from "./types";
 import { QueryArgument } from "./argument";
 
 const enum Special {
+  Delimiter = " ",
   Selector = ".",
   Operators = Selector + "-+($€£¥",
 }
@@ -15,7 +16,7 @@ export function parser(
   hotkey = input.length - _input.length,
   query = _input
     .trimEnd()
-    .split(" ")
+    .split(Special.Delimiter)
     .filter(
       (token): token is stringful => token !== "",
     ) as Arrayful<stringful>;

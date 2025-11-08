@@ -1,5 +1,13 @@
 import type { Setting } from "./types";
 
+const enum Special {
+  Delimiter = " ",
+  Separator = "+",
+  Tag = "%s",
+  WrapStart = 'data:text/html,<meta http-equiv=refresh content="0;url=',
+  WrapEnd = '">',
+}
+
 export function resolver(
   engine: Setting["engines"][stringful],
   parsed: {
@@ -11,12 +19,12 @@ export function resolver(
     && !Array.isArray(engine)
     ? engine
     : { url: engine },
-  separator = wrapper.separator ?? "+",
+  separator = wrapper.separator ?? Special.Separator,
   terms = parsed.terms;
 
   if (wrapper.prepend !== undefined)
     void terms.unshift(
-      ...wrapper.prepend.split(" ") as stringful[],
+      ...wrapper.prepend.split(Special.Delimiter) as stringful[],
     );
 
   function encoder(
@@ -37,15 +45,15 @@ export function resolver(
         : action as stringful;
 
     const replace = (url: string) => url.replace(
-      "%s",
+      Special.Tag,
       action,
     ) as stringful;
 
     function force(url: stringful) {
       return (
-        'data:text/html,<meta http-equiv=refresh content="0;url='
+        Special.WrapStart
         + url
-        + '">'
+        + Special.WrapEnd
       ) as stringful;
     }
 
@@ -74,7 +82,7 @@ export function resolver(
 
   const query = terms.length === 0
     ? null
-    : terms.join(" ") as stringful;
+    : terms.join(Special.Delimiter) as stringful;
 
   return {
     app: wrapper.shortcut as Undefined<stringful> ?? parsed.key,
