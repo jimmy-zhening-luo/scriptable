@@ -64,7 +64,7 @@ declare namespace Print {
     TimeShort = Time.hms,
     TimeLong = Time.hmsa,
     DateTime = Date + Break.DateTime + TimeLong,
-    
+
   }
 }
 
