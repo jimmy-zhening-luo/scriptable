@@ -32,8 +32,8 @@ await new class Clock extends Widget<Setting> {
       ? null
       : JSON.parse(sunCacheData) as SunCache,
     sun = sunCache === null
-      || now.epoch > cache.expiry
-      || now.offset() !== cache.offset
+      || now.epoch > sunCache.expiry
+      || now.offset() !== sunCache.offset
       ? {
           sunrise: null,
           sunset: null,
