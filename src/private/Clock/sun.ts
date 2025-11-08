@@ -25,7 +25,8 @@ export async function sun(
   const {
     sunrise,
     sunset,
-  } = await sunApi.loadJSON() as SunApiResponse;
+  } = (await sunApi.loadJSON() as SunApiResponse)
+    .results;
 
   return {
     sunrise: date.at(sunrise),
