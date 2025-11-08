@@ -104,32 +104,41 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
     font = "Menlo",
     ampm = true,
   ) {
+    const enum Wall {
+      Today,
+      Hour,
+      Midday = 12 * Hour,
+      Afternoon,
+      Tomorrow = 2 * Midday,
+      Yesterday = -Tomorrow,
+    }
+
     const now = new IWidget.Time,
     destinationMidnight = now
       .midnight
       .in(now.offset(timezone)),
     destinationZero = destinationMidnight.in(
       now < destinationMidnight
-        ? -24
-        : now > destinationMidnight.in(24)
-          ? 24
-          : 0,
+        ? Wall.Yesterday
+        : now > destinationMidnight.in(Wall.Tomorrow)
+          ? Wall.Tomorrow
+          : Wall.Today,
     ),
     { zero, period = "" } = ampm
-      ? now < destinationZero.in(12)
+      ? now < destinationZero.in(Wall.Midday)
         ? {
             zero: destinationZero.ago(
-              now < destinationZero.in(1)
-                ? 12
-                : 0,
+              now < destinationZero.in(Wall.Hour)
+                ? Wall.Midday
+                : Wall.Today,
             ),
             period: "AM",
           }
         : {
             zero: destinationZero.in(
-              now < destinationZero.in(13)
-                ? 0
-                : 12,
+              now < destinationZero.in(Wall.Afternoon)
+                ? Wall.Today
+                : Wall.Midday,
             ),
             period: "PM",
           }

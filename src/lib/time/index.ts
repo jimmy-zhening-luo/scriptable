@@ -1,14 +1,38 @@
 import type { Dateful } from "./dateful";
 import type { Timezone } from "./timezone";
 
+const enum Per {
+  day = 24,
+  hour = 60,
+  minute = hour,
+  second = 1e3,
+}
+
+const enum Max {
+  hour = Per.day - 1,
+  minute = Per.hour - 1,
+  second = Per.minute - 1,
+  millisecond = Per.second - 1,
+}
+
 const enum Unit {
   millisecond = 1,
-  second = 1e3,
-  minute = 60 * second,
-  hour = 60 * minute,
-  day = 24 * hour,
+  second = millisecond * Per.second,
+  minute = second * Per.minute,
+  hour = minute * Per.hour,
+  day = hour * Per.day,
 }
-// 86400000
+
+const enum At {
+  Midnight,
+  Noon = 12,
+}
+
+const enum In {
+  Now,
+  Next,
+}
+
 export default class Time {
   public readonly epoch: integerful;
 
@@ -43,19 +67,19 @@ export default class Time {
   }
 
   public get midnight() {
-    return this.at(0);
+    return this.at(At.Midnight);
   }
 
   public get noon() {
-    return this.at(12);
+    return this.at(At.Noon);
   }
 
   public get eod() {
     return this.at(
-      23,
-      59,
-      59,
-      999,
+      Max.hour,
+      Max.minute,
+      Max.second,
+      Max.millisecond,
     );
   }
 
@@ -64,7 +88,7 @@ export default class Time {
 
     return new Time(
       date.setDate(
-        date.getDate() + 1,
+        date.getDate() + In.Next,
       ),
     )
       .midnight;
@@ -158,7 +182,7 @@ export default class Time {
   public offset(destination: Null<Timezone> = null) {
     const local = this
       .date()
-      .getTimezoneOffset() / -60;
+      .getTimezoneOffset() / -Per.hour;
 
     if (destination === null)
       return local as finiteful;
@@ -174,7 +198,7 @@ export default class Time {
       .find(part => part.type === "timeZoneName")!
       .value,
     hours = Number(intl.slice(3, 6)),
-    minutes = Number(intl.slice(7, 9)) / 60;
+    minutes = Number(intl.slice(7, 9)) / Per.hour;
 
     return local - hours - (
       hours < 0
