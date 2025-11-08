@@ -4,10 +4,10 @@ import DateWidget from "./app/widget/date";
 const enum Limit {
   Unlimited,
   Compact = 28,
-  Short = 30,
-  Shorter = 31,
-  Shortest = 33,
-  Truncate = 35,
+  Short = Compact + 2,
+  Shorter,
+  Shortest = Shorter + 2,
+  Truncate = Shortest + 2,
 }
 
 await new class Event extends DateWidget {
