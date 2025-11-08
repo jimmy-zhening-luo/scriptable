@@ -24,9 +24,9 @@ await new class Clock extends Widget<Setting> {
     );
     void this.line(4 / 3);
 
-    const complications: string[] = [];
+    const complications: string[] = [],
 
-    const now = new Clock.Time,
+    now = new Clock.Time,
     sunCacheData = this.get("sun"),
     sunCache = sunCacheData === undefined
       ? null
@@ -136,7 +136,7 @@ await new class Clock extends Widget<Setting> {
       else
         void complications.push(
           now < sunrise.in(3)
-            || now > sunset.in(2)
+          || now > sunset.in(2)
             ? printSun(sunrise, "\u235C ")
             : printSun(sunset, "\u263E"),
         );

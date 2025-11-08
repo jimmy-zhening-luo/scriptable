@@ -1,5 +1,5 @@
 import type Time from "../../lib/time";
-import type { SunApiResponse } from "./interface/api"
+import type { SunApiResponse } from "./interface/api";
 
 export async function sun(
   url: string,

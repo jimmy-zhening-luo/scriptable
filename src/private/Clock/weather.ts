@@ -1,4 +1,4 @@
-import type { WeatherApiResponse } from "./interface/api"
+import type { WeatherApiResponse } from "./interface/api";
 
 export async function weather(
   userAgent: string,
