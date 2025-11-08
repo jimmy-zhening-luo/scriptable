@@ -4,11 +4,11 @@ import type { Timezone } from "./timezone";
 const enum Unit {
   millisecond = 1,
   second = 1e3,
-  minute = 6e4,
-  hour = 36e5,
-  day = 864e5,
+  minute = 60 * second,
+  hour = 60 * minute,
+  day = 24 * hour,
 }
-
+// 86400000
 export default class Time {
   public readonly epoch: integerful;
 
