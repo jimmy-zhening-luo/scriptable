@@ -41,6 +41,7 @@ void new class Search extends Shortcut<
       ) as ReturnType<typeof search.parser> & Flag<
         | "prior"
       >,
+    terms = Array.from(parsed.terms),
     fulfiller = search.resolver(
       parsed.key.length === 1
         ? setting.chars[parsed.key]!
@@ -52,7 +53,7 @@ void new class Search extends Shortcut<
       this.set(
         {
           key: parsed.key,
-          terms: parsed.terms,
+          terms,
           prior: true,
         },
       );
