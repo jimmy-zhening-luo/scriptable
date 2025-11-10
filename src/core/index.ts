@@ -20,10 +20,11 @@ export default abstract class IApp<
   Input = never,
 > {
   protected readonly app;
-  protected readonly context;
+  protected readonly interactive;
   private readonly temp: Drive<"Cache", true> = {};
   private readonly drive: Drive<"Storage", true> = {};
   private readonly external: Drive<"Feed"> = {};
+  protected abstract production: boolean;
 
   constructor(
     private _input: Unnull<Input>,
@@ -34,12 +35,8 @@ export default abstract class IApp<
     this.app = app === ""
       ? "Scriptable" as app
       : app as app;
-
-    this.context = {
-      production,
-      development: !production
-        && config.runsInApp,
-    };
+    this.interactive = !this.production
+      && config.runsInApp;
   }
 
   protected get input() {
@@ -124,11 +121,11 @@ export default abstract class IApp<
 
       const output = await this.runtime();
 
-      if (this.context.development) {
+      if (this.interactive) {
         console.log(output);
 
-        if (this.development !== undefined)
-          this.development(output);
+        if (this.ui !== undefined)
+          this.ui(output);
       }
 
       this.output(output);
@@ -282,6 +279,6 @@ export default abstract class IApp<
 
   protected abstract runtime(): Output | Promise<Output>;
   protected abstract output(output: Output): void;
-  protected development?: (output: Output) => void;
+  protected ui?: (output: Output) => void;
   private _setting?: Setting;
 }

@@ -46,7 +46,7 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
     }
   }
 
-  protected override development = () => {
+  protected override ui = () => {
     void this.widget.presentSmall();
   };
 

@@ -38,8 +38,8 @@ export default abstract class<Setting> extends IApp<
   }
 
   protected output() {
-    if (this.tapped && this.onTap !== undefined)
-      this.onTap();
+    if (this.tapped && this.tap !== undefined)
+      this.tap();
 
     Script.setWidget(this.widget);
   }
@@ -48,5 +48,5 @@ export default abstract class<Setting> extends IApp<
     return this.widget.addText(String(text));
   }
 
-  protected onTap?: () => void;
+  protected tap?: () => void;
 }

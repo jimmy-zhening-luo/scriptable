@@ -15,6 +15,8 @@ export default abstract class<
     Void<Output>,
     Input
   > {
+  protected production = config.runsWithSiri;
+
   constructor(
     source:
       | InputSource.String
