@@ -41,13 +41,16 @@ export function parser(
   if (
     first.length === 1
     && query.length === 1
-  )
+  ) {
+    const candidate = first.toLocaleLowerCase();
+
     return {
-      key: first.toLocaleLowerCase() in setting.chars
-        ? first
+      key: candidate in setting.chars
+        ? candidate
         : setting.reserved.keys.skip,
       terms: [],
     };
+  }
 
   if (first.startsWith(setting.reserved.selector))
     return {
