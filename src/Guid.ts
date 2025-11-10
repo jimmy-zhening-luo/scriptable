@@ -2,12 +2,11 @@
 import Shortcut from "./app";
 
 void new class Guid extends Shortcut<never, string> {
+  protected override development = (guid: string) => {
+    Pasteboard.copy(guid);
+  };
+
   protected runtime() {
-    const guid = UUID.string().toLocaleLowerCase();
-
-    if (!this.context.production)
-      Pasteboard.copy(guid);
-
-    return guid;
+    return UUID.string().toLocaleLowerCase();
   }
 }().run();
