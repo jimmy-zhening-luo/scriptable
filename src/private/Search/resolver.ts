@@ -93,6 +93,6 @@ export function resolver(
     label: wrapper.notify === true
       ? query
       : null,
-    noSave: wrapper.noSave,
+    noSave: wrapper.noSave ?? null,
   };
 }
