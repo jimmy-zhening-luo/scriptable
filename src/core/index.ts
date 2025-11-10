@@ -2,6 +2,7 @@ import File from "./file";
 import type { app } from "./file";
 
 const enum Filename {
+  All = "",
   Ext = ".",
   Json = Ext + "json",
 }
@@ -50,7 +51,7 @@ export default abstract class IApp<
       new File(
         "Setting",
         this.app + Filename.Json as stringful,
-        "",
+        Filename.All,
       )
         .read()!,
     ) as Setting;
@@ -162,7 +163,7 @@ export default abstract class IApp<
   }
 
   protected clear() {
-    this.unset("");
+    this.unset(Filename.All);
   }
 
   protected read(
@@ -220,8 +221,8 @@ export default abstract class IApp<
 
   protected deleteAll() {
     this.delete(
-      "",
-      "",
+      Filename.All,
+      Filename.All,
     );
     this.clear();
   }
@@ -252,7 +253,7 @@ export default abstract class IApp<
     file: string = this.app,
     extension = "txt",
   ) {
-    const record = extension === ""
+    const record = extension === Filename.All
       ? file
       : file + Filename.Ext + extension;
 
@@ -268,7 +269,7 @@ export default abstract class IApp<
     file: string,
     extension = "txt",
   ) {
-    const feed = extension === ""
+    const feed = extension === Filename.All
       ? file
       : file + Filename.Ext + extension;
 
