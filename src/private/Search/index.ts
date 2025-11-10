@@ -42,7 +42,7 @@ export function parser(
     first.length === 1
     && query.length === 1
   ) {
-    const candidate = first.toLocaleLowerCase();
+    const candidate = first.toLocaleLowerCase() as stringful;
 
     return {
       key: candidate in setting.chars
