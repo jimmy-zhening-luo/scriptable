@@ -51,13 +51,13 @@ export default class File<
           ? File.manager.cacheDirectory()
           : File.manager.libraryDirectory()
         : File.manager.bookmarkedPath("root")
-    ) + Break.Path + type as stringful,
+    ) + Break.Path + type,
     directory = drive
       + Break.Path
-      + folder as stringful,
+      + folder,
     subpath = file
       .split(Break.Path)
-      .filter((node): node is stringful => node !== "");
+      .filter(node => node !== "");
 
     switch (subpath.length) {
     case 0:
@@ -68,17 +68,17 @@ export default class File<
       this.parent = directory;
       this.path = directory
         + Break.Path
-        + subpath[0]! as stringful;
+        + subpath[0]!;
       break;
     default: {
       const leaf = subpath.pop()!;
 
       this.parent = directory
         + Break.Path
-        + subpath.join(Break.Path) as stringful;
+        + subpath.join(Break.Path);
       this.path = this.parent
         + Break.Path
-        + leaf as stringful;
+        + leaf;
     }
     }
 
