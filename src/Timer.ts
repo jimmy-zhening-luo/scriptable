@@ -7,11 +7,15 @@ void new class Timer extends Widget {
       if (data === undefined)
         return null;
 
-      const { start } = JSON.parse(data) as Field<never, "start">;
+      const timer = JSON.parse(data) as {
+        start: number | string;
+        modified: number | string;
+      };
 
-      return start === undefined
-        ? null
-        : new Timer.Time(start);
+      return {
+        start: new Timer.Time(timer.start),
+        modified: new Timer.Time(timer.modified),
+      };
     }
 
     const store = extract(this.read()),
@@ -20,14 +24,18 @@ void new class Timer extends Widget {
     ),
     {
       start = null,
+      modified = null,
       update = false,
-    } = store?.today === true
-      ? {
-          start: store,
-        }
-      : feed?.today === true
+    } = store?.start.today === true
+      && (
+        feed === null
+        || store.modified.in(0, 0, 1) >= feed.modified
+      )
+      ? store
+      : feed?.start.today === true
         ? {
-            start: feed,
+            start: feed.start,
+            modified: feed.modified,
             update: true,
           }
         : {};
@@ -38,7 +46,8 @@ void new class Timer extends Widget {
       if (update)
         this.write(
           {
-            start: start.print(),
+            start: start.epoch,
+            modified: modified!.epoch,
           },
         );
 
