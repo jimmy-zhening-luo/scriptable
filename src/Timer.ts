@@ -36,7 +36,7 @@ void new class Timer extends Widget {
         ? {
             start: feed.start,
             modified: feed.modified,
-            update: true,
+            update: true as boolean,
           }
         : {};
 
