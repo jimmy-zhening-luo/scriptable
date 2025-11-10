@@ -15,9 +15,8 @@ const enum Overwrite {
 }
 
 const enum Break {
-  Word = " ",
-  Line = "\n",
   Path = "/",
+  Line = "\n",
 }
 
 export default class File<
@@ -35,11 +34,9 @@ export default class File<
     file: Subpath,
     folder: Folder extends app
       ? app
-      : Exclusion<
-        Folder,
-        | Break.Path
-        | Break.Word
-      >,
+      : Exclusion<Folder, Break.Path> extends ` ${string}`
+        ? never
+        : Exclusion<Folder, Break.Path>,
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
