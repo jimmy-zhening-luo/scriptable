@@ -43,7 +43,7 @@ export function parser(
     && query.length === 1
   )
     return {
-      key: first in setting.chars
+      key: first.toLocaleLowerCase() in setting.chars
         ? first
         : setting.reserved.keys.skip,
       terms: [],
