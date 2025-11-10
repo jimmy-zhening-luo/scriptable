@@ -90,7 +90,9 @@ export function resolver(
       ? encoder(terms, separator)
       : query,
     notify: wrapper.notify! || null as Null<true>,
-    label: query,
+    label: wrapper.notify === true
+      ? query
+      : null,
     noSave: wrapper.noSave,
   };
 }
