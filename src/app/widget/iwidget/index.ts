@@ -11,7 +11,8 @@ export default abstract class<Setting> extends IApp<
   public static readonly location = location;
   protected readonly widget = new ListWidget;
   protected readonly tapped = this.interactive
-    && args.widgetParameter !== null;
+    && args.widgetParameter !== null
+    && args.widgetParameter !== "";
   protected readonly production = config.runsInWidget
     || this.tapped;
 
