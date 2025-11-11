@@ -5,10 +5,10 @@ export default function(
   function cast(error: unknown) {
     return Error.isError(error)
       ? error
-      : typeof error !== "object"
-        || error === null
-        ? String(error)
-        : JSON.stringify(error);
+      : typeof error === "object"
+        && error !== null
+        ? JSON.stringify(error)
+        : String(error);
   }
 
   const trace = [cast(error)];

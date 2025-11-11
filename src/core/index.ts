@@ -75,6 +75,29 @@ export default abstract class IApp<
     }
   }
 
+  protected notify(
+    message: unknown,
+    subtitle?: unknown,
+    title = this.app as string,
+  ) {
+    const notification = new Notification;
+
+    function cast(data: unknown) {
+      return typeof data === "object"
+        && data !== null
+        ? JSON.stringify(data)
+        : String(data);
+    }
+
+    notification.title = title;
+
+    if (subtitle !== undefined)
+      notification.subtitle = cast(subtitle);
+
+    notification.body = cast(body);
+    void notification.schedule();
+  }
+
   protected get(key?: string) {
     return this
       .cache(key)
