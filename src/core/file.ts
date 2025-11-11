@@ -129,7 +129,7 @@ export default class File<
     }
 
     if (Array.isArray(content)) {
-      function stringify(data: unknown) {
+      function stringify(data: primitive | object) {
         return typeof data === "object"
           ? JSON.stringify(data)
           : String(data);
