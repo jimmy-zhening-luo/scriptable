@@ -40,7 +40,7 @@
     "linted": "33.4.15",
     "mocha": "^11.7.5",
     "rexreplace": "^7.1.13",
-    "rollup": "^4.53.1",
+    "rollup": "^4.53.2",
     "ts-add-js-extension": "^1.6.6",
     "typescript": "^5.9.3"
   },
