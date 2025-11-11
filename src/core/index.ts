@@ -90,11 +90,11 @@ export default abstract class IApp<
     }
 
     notification.title = title;
+    notification.body = cast(message);
 
     if (subtitle !== undefined)
       notification.subtitle = cast(subtitle);
 
-    notification.body = cast(message);
     void notification.schedule();
   }
 
