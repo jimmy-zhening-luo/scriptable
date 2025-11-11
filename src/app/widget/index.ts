@@ -76,7 +76,7 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
     default:
       void this.widget.presentLarge();
     }
-  };
+  }
 
   protected row(...texts: unknown[]) {
     const row = this.widget.addStack(),
