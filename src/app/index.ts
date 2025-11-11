@@ -15,7 +15,7 @@ export default abstract class<
     Void<Output>,
     Input
   > {
-  protected production = config.runsWithSiri;
+  protected readonly production = config.runsWithSiri;
 
   constructor(
     source:

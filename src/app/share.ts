@@ -8,6 +8,8 @@ export default abstract class<
     Output,
     readonly string[]
   > {
+  protected readonly production = config.runsInActionExtension;
+
   constructor(
     inputType:
       | "plainTexts"
@@ -17,12 +19,7 @@ export default abstract class<
   ) {
     const inputs = args[inputType];
 
-    super(
-      inputs.length === 0
-        ? null
-        : inputs,
-      config.runsInActionExtension,
-    );
+    super(inputs.length === 0 ? null : inputs);
   }
 
   protected output(output: Output) {
