@@ -29,7 +29,6 @@ export default abstract class<
         : source === InputSource.Array
           ? args.plainTexts as unknown as Input & readonly string[]
           : args.shortcutParameter as Undefined<Input>,
-      config.runsWithSiri,
     );
   }
 
