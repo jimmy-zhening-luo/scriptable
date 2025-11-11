@@ -10,9 +10,7 @@ const enum Filename {
 type Drive<
   Type extends string,
   Mutable extends boolean = false,
-> = Table<
-  File<Mutable, Type, string, app>
->;
+> = Table<File<Mutable, Type, string, app>>;
 
 export default abstract class IApp<
   Setting = never,
@@ -119,7 +117,10 @@ export default abstract class IApp<
       if (this.interactive) {
         console.log(output);
 
-        if (this.ui !== undefined)
+        if (
+          this.ui !== undefined
+          && this.suppress !== true
+        )
           this.ui(output);
       }
 
@@ -275,5 +276,6 @@ export default abstract class IApp<
   protected abstract runtime(): Output | Promise<Output>;
   protected abstract output(output: Output): void;
   protected ui?: (output: Output) => void;
+  protected suppress?: boolean;
   private _setting?: Setting;
 }
