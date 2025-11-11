@@ -129,24 +129,22 @@ export default class File<
     }
 
     if (Array.isArray(content)) {
-      const rows = content.map(
-        line => typeof line === "object"
-          ? JSON.stringify(line)
-          : String(line),
-      );
+      function stringify(data: unknown) {
+        return typeof data === "object"
+          ? JSON.stringify(data)
+          : String(data);
+      }
+
+      const rows = content.map(stringify);
 
       if (state === State.File)
-        switch (overwrite) {
+        switch (overwrite as Exclude<typeof overwrite, Overwrite.No | Overwrite.Yes>) {
         case Overwrite.Append:
           void rows.unshift(this.read()!);
 
           break;
         case Overwrite.Push:
           rows[rows.length] = this.read()!;
-
-          break;
-        default:
-          break;
         }
 
       File.manager!.writeString(
@@ -166,8 +164,7 @@ export default class File<
               ? String(content)
               + Break.Line
               + this.read()!
-              : this.read()!
-                + String(content),
+              : this.read()! + String(content),
       );
 
     this.state = State.File;
