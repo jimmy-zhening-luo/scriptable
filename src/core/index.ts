@@ -1,5 +1,6 @@
-import File from "./file";
 import type { app } from "./file";
+import File from "./file";
+import error from "./error";
 
 const enum Filename {
   All = "",
@@ -47,63 +48,6 @@ export default abstract class IApp<
     ) as Setting;
   }
 
-  private static fail(app: string, error: unknown) {
-    function cast(error: unknown) {
-      return Error.isError(error)
-        ? error
-        : typeof error !== "object"
-          || error === null
-          ? String(error)
-          : JSON.stringify(error);
-    }
-
-    const trace = [cast(error)];
-
-    while (Error.isError(trace[0]))
-      void trace.unshift(cast(trace[0].cause));
-
-    const rootIndex = trace.findIndex(error => Error.isError(error));
-
-    if (rootIndex > 0) {
-      const [root] = trace.splice(rootIndex, 1) as [Error],
-      source = root.stack?.split("\n")[1];
-
-      if (source !== undefined)
-        void trace.unshift(source);
-
-      void trace.unshift(root);
-    }
-
-    function print(error: Error | string) {
-      return Error.isError(error)
-        ? error.name === "Error"
-          ? error.message
-          : String(error)
-        : error;
-    }
-
-    const failure = trace.shift()!,
-    stack = trace
-      .map(print)
-      .join("\n"),
-    notification = new Notification;
-
-    notification.title = app;
-    notification.subtitle = print(failure);
-    notification.body = stack;
-    notification.sound = "failure";
-    void notification.schedule();
-    console.error(stack);
-
-    if (Error.isError(failure)) {
-      failure.cause = stack;
-
-      throw failure;
-    }
-
-    throw Error(failure, { cause: stack });
-  }
-
   public async run(sideload?: Input) {
     try {
       if (
@@ -123,8 +67,8 @@ export default abstract class IApp<
 
       this.output(output);
     }
-    catch (error) {
-      IApp.fail(this.app, error);
+    catch (e) {
+      error(this.app, e);
     }
     finally {
       Script.complete();
