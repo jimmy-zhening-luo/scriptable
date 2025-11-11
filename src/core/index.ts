@@ -117,10 +117,7 @@ export default abstract class IApp<
       if (this.interactive) {
         console.log(output);
 
-        if (
-          this.ui !== undefined
-          && this.suppress !== true
-        )
+        if (this.ui !== undefined)
           this.ui(output);
       }
 
@@ -276,6 +273,5 @@ export default abstract class IApp<
   protected abstract runtime(): Output | Promise<Output>;
   protected abstract output(output: Output): void;
   protected ui?: (output: Output) => void;
-  protected suppress?: boolean;
   private _setting?: Setting;
 }
