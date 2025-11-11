@@ -24,12 +24,9 @@ export default abstract class IApp<
   private readonly temp: Drive<"Cache", true> = {};
   private readonly drive: Drive<"Storage", true> = {};
   private readonly external: Drive<"Feed"> = {};
-  protected abstract production: boolean;
+  protected abstract readonly production: boolean;
 
-  constructor(
-    private _input: Unnull<Input>,
-    production: boolean,
-  ) {
+  constructor(private _input: Unnull<Input>) {
     const app = this.constructor.name;
 
     this.app = app === ""
