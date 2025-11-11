@@ -5,12 +5,18 @@ const enum Default {
   Weight = 12,
 }
 
+const enum Size {
+  Small = "small",
+  Medium = "medium",
+  Large = "large",
+}
+
 export default abstract class<Setting = never> extends IWidget<Setting> {
   protected readonly style;
   protected readonly font;
 
   constructor(
-    url: Null<string> = null,
+    url = "",
     title: boolean | string = false,
     {
       background = Color.black(),
@@ -21,9 +27,11 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
       trailing = top as number,
       bottom = top as number,
       leading = trailing as unknown as number,
+      tapPreview = false,
     } = {},
+    protected readonly size: Size = Size.Small,
   ) {
-    super(url);
+    super(url, tapPreview);
     this.style = new Style(weight);
     this.font = font ?? this.style.font();
     this.widget.backgroundColor = background;
@@ -46,10 +54,6 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
     }
   }
 
-  protected override ui = () => {
-    void this.widget.presentSmall();
-  };
-
   protected override text(
     text: unknown,
     font: Font = this.font,
@@ -60,6 +64,19 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
 
     return field;
   }
+
+  protected preview() {
+    switch (this.size) {
+    case Size.Small:
+      void this.widget.presentSmall();
+      break;
+    case Size.Medium:
+      void this.widget.presentMedium();
+      break;
+    default:
+      void this.widget.presentLarge();
+    }
+  };
 
   protected row(...texts: unknown[]) {
     const row = this.widget.addStack(),

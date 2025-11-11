@@ -15,20 +15,29 @@ export default abstract class<Setting> extends IApp<
   protected readonly production = config.runsInWidget
     || this.tapped;
 
-  constructor(protected url = "") {
+  constructor(
+    protected url = "",
+    protected readonly tapPreview = false,
+  ) {
     super(args.widgetParameter as Null<string>);
     this.widget.refreshAfterDate = new Time()
       .in(0, 1)
       .date();
-
-    if (url !== "")
-      this.widget.url = url;
   }
 
-  protected output() {
-    if (this.tapped && this.tap !== undefined)
-      this.tap();
+  protected override ui = () => {
+    if (this.tapped) {
+      if (this.tap !== undefined)
+        this.tap();
 
+      if (this.tapPreview)
+        this.preview();
+    }
+    else
+      this.preview();
+  };
+
+  protected output() {
     if (this.url !== "")
       this.widget.url = this.url;
 
@@ -39,5 +48,6 @@ export default abstract class<Setting> extends IApp<
     return this.widget.addText(String(text));
   }
 
+  protected abstract preview(): void;
   protected tap?: () => void;
 }
