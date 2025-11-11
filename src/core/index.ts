@@ -243,7 +243,7 @@ export default abstract class IApp<
     file: string = this.app,
     extension = "txt",
   ) {
-    const record = extension === Filename.All
+    const record = extension === ""
       ? file
       : file + Filename.Ext + extension;
 
@@ -259,7 +259,7 @@ export default abstract class IApp<
     file: string,
     extension = "txt",
   ) {
-    const feed = extension === Filename.All
+    const feed = extension === ""
       ? file
       : file + Filename.Ext + extension;
 
