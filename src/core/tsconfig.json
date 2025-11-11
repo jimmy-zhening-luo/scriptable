@@ -2,6 +2,7 @@
   "files": [
     "index.ts",
     "file.ts",
+    "error.ts",
   ],
   "extends": "../tsconfig-src-types.json",
 }
