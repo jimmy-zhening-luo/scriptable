@@ -20,7 +20,7 @@ export default abstract class IApp<
   Input = never,
 > {
   protected readonly app;
-  protected readonly interactive;
+  protected readonly interactive = config.runsInApp;
   private readonly temp: Drive<"Cache", true> = {};
   private readonly drive: Drive<"Storage", true> = {};
   private readonly external: Drive<"Feed"> = {};
@@ -32,8 +32,6 @@ export default abstract class IApp<
     this.app = app === ""
       ? "Scriptable" as app
       : app as app;
-    this.interactive = !this.production
-      && config.runsInApp;
   }
 
   protected get input() {
