@@ -36,7 +36,7 @@ export function resolver(
     },
   ) {
     const action = terms
-      .map(term => encodeURIComponent(term))
+      .map(encodeURIComponent)
       .join(separator);
 
     if (browser === undefined)

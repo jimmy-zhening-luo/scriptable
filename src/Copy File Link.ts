@@ -8,9 +8,8 @@ void new class FileLink extends Share {
       ? ""
       : this
           .input
-          .map(
-            path => "shareddocuments://" + encodeURI(path),
-          )
+          .map(encodeURI)
+          .map(path => "shareddocuments://" + path)
           .join("\n");
   }
 }("fileURLs").run();

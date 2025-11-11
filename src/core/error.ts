@@ -16,7 +16,7 @@ export default function (
   while (Error.isError(trace[0]))
     void trace.unshift(cast(trace[0].cause));
 
-  const rootIndex = trace.findIndex(error => Error.isError(error));
+  const rootIndex = trace.findIndex(Error.isError);
 
   if (rootIndex > 0) {
     const [root] = trace.splice(rootIndex, 1) as [Error],
