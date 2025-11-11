@@ -10,36 +10,28 @@ export default abstract class<Setting> extends IApp<
   public static readonly Time = Time;
   public static readonly location = location;
   protected readonly widget = new ListWidget;
-  private readonly tapped;
+  protected readonly tapped = this.interactive
+    && args.widgetParameter !== null;
+  protected readonly production = config.runsInWidget
+    || this.tapped;
+  protected override suppress = true;
 
-  constructor(url: Null<string> = null) {
-    const input = args.widgetParameter as Null<string>,
-    tapped = config.runsInApp
-      && typeof input === "string";
-
-    super(
-      input,
-      config.runsInWidget || tapped,
-    );
-    this.tapped = tapped;
-    this.url = url;
+  constructor(protected url = "") {
+    super(args.widgetParameter as Null<string>);
     this.widget.refreshAfterDate = new Time()
       .in(0, 1)
       .date();
-  }
 
-  protected get url() {
-    return this.widget.url as Null<string>;
-  }
-
-  protected set url(url: Null<string>) {
-    if (url !== null && url !== "")
+    if (url !== "")
       this.widget.url = url;
   }
 
   protected output() {
     if (this.tapped && this.tap !== undefined)
       this.tap();
+
+    if (this.url !== "")
+      this.widget.url = this.url;
 
     Script.setWidget(this.widget);
   }
