@@ -12,6 +12,7 @@ const enum Size {
 }
 
 export default abstract class<Setting = never> extends IWidget<Setting> {
+  protected readonly size;
   protected readonly style;
   protected readonly font;
 
@@ -20,6 +21,7 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
     title: boolean | string = false,
     {
       background = Color.black(),
+      size = Size.Small as Size,
       font = null as Null<Font>,
       weight = Default.Weight,
       spacing = Math.round(weight / 4),
@@ -27,11 +29,11 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
       trailing = top as number,
       bottom = top as number,
       leading = trailing as unknown as number,
-      tapPreview = false,
     } = {},
-    protected readonly size: Size = Size.Small,
+    tapPreview?: boolean,
   ) {
     super(url, tapPreview);
+    this.size = size;
     this.style = new Style(weight);
     this.font = font ?? this.style.font();
     this.widget.backgroundColor = background;
