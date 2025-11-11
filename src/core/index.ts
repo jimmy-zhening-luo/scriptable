@@ -94,7 +94,7 @@ export default abstract class IApp<
     if (subtitle !== undefined)
       notification.subtitle = cast(subtitle);
 
-    notification.body = cast(body);
+    notification.body = cast(message);
     void notification.schedule();
   }
 
