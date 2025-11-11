@@ -14,7 +14,6 @@ export default abstract class<Setting> extends IApp<
     && args.widgetParameter !== null;
   protected readonly production = config.runsInWidget
     || this.tapped;
-  protected override suppress = true;
 
   constructor(protected url = "") {
     super(args.widgetParameter as Null<string>);
