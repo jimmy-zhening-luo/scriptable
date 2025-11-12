@@ -28,7 +28,7 @@ export default function (
   }
 
   const root = trace.shift()!,
-  subtitle = [print(root)],
+  headers = [print(root)],
   stack = trace.map(print).join("\n");
 
   if (Error.isError(root)) {
@@ -41,13 +41,14 @@ export default function (
       source !== undefined
       && source !== "runtime"
     )
-      void subtitle.unshift(source);
+      void headers.unshift(source);
   }
 
-  const notification = new Notification;
+  const rootTitle = headers.join(": "),
+  notification = new Notification;
 
   notification.title = app;
-  notification.subtitle = subtitle.join(": ");
+  notification.subtitle = rootTitle;
   notification.body = stack;
   notification.sound = "failure";
   void notification.schedule();
@@ -59,5 +60,5 @@ export default function (
     throw root;
   }
 
-  throw Error(root, { cause: stack });
+  throw Error(rootTitle, { cause: stack });
 }
