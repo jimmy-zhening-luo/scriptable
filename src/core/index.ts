@@ -51,7 +51,7 @@ export default abstract class IApp<
         sideload !== undefined
         && this.input === undefined
       )
-        this.input = sideload;
+        this.input = sideload ?? undefined;
 
       const output = await this.runtime();
 
