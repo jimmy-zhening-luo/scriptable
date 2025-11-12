@@ -16,13 +16,21 @@ export default function (
   while (Error.isError(trace[0]))
     void trace.unshift(cast(trace[0].cause));
 
-  const rootIndex = trace.findIndex(error => Error.isError(error));
+  const rootIndex = trace.findIndex(
+    error => Error.isError(error),
+  );
 
   if (rootIndex > 0) {
     const [root] = trace.splice(rootIndex, 1) as [Error],
-    source = root.stack?.split("\n")[1];
+    source = root.stack
+      ?.split("\n")
+      .find(frame => frame.length > 1)
+      ?.slice(0, -1);
 
-    if (source !== undefined)
+    if (
+      source !== undefined
+      && source !== "runtime"
+    )
       void trace.unshift(source);
 
     void trace.unshift(root);
