@@ -9,21 +9,27 @@ export default abstract class<Setting> extends IApp<
 > {
   public static readonly Time = Time;
   public static readonly location = location;
+  protected readonly production = config.runsInWidget;
   protected readonly widget = new ListWidget;
-  protected readonly tapped = this.interactive
-    && args.widgetParameter !== null
-    && args.widgetParameter !== "";
-  protected readonly production = config.runsInWidget
-    || this.tapped;
 
   constructor(
     protected url = "",
     protected readonly tapPreview = false,
   ) {
-    super(args.widgetParameter as Null<string>);
+    const input = args.widgetParameter as Null<string>;
+
+    super(
+      input === ""
+        ? null
+        : input as stringful,
+    );
     this.widget.refreshAfterDate = new Time()
       .in(0, 1)
       .date();
+  }
+
+  protected get tapped() {
+    return this.interactive && this.input !== undefined;
   }
 
   protected override ui = () => {
