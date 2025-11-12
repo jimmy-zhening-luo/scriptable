@@ -20,21 +20,18 @@ export default abstract class IApp<
 > {
   protected readonly app;
   protected readonly interactive = config.runsInApp;
+  protected input;
   private readonly temp: Drive<"Cache", true> = {};
   private readonly drive: Drive<"Storage", true> = {};
   private readonly external: Drive<"Feed"> = {};
   protected abstract readonly production: boolean;
 
-  constructor(private _input: Unnull<Input>) {
+  constructor(_input: Unnull<Input>) {
     const app = this.constructor.name;
-
     this.app = app === ""
       ? "Scriptable" as app
       : app as app;
-  }
-
-  protected get input() {
-    return this._input ?? undefined;
+      this.input = _input ?? undefined;
   }
 
   protected get setting() {
@@ -54,7 +51,7 @@ export default abstract class IApp<
         sideload !== undefined
         && this.input === undefined
       )
-        this._input = sideload;
+        this.input = sideload;
 
       const output = await this.runtime();
 
