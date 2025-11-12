@@ -27,9 +27,8 @@ export default function (
         : String(e);
   }
 
-  const root = trace.shift()!,
-  headers = [print(root)],
-  stack = trace.map(print).join("\n");
+  const root = trace.shift()!;
+  let rootTitle = print(root);
 
   if (Error.isError(root)) {
     const source = root.stack
@@ -41,10 +40,10 @@ export default function (
       source !== undefined
       && source !== "runtime"
     )
-      void headers.unshift(source);
+      rootTitle = source + ": " + rootTitle;
   }
 
-  const rootTitle = headers.join(": "),
+  const stack = trace.map(print).join("\n"),
   notification = new Notification;
 
   notification.title = app;
