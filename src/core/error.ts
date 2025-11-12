@@ -2,27 +2,37 @@ export default function (
   app: string,
   error: unknown,
 ) {
-  function cast(error: unknown) {
-    return Error.isError(error)
-      ? error
-      : typeof error === "object"
-        && error !== null
-        ? JSON.stringify(error)
-        : String(error);
-  }
-
-  const trace = [cast(error)];
+  const trace = [error];
 
   while (Error.isError(trace[0]))
-    void trace.unshift(cast(trace[0].cause));
+    void trace.unshift(trace[0].cause);
 
   const rootIndex = trace.findIndex(
-    error => Error.isError(error),
+    e => Error.isError(e),
   );
 
-  if (rootIndex > 0) {
-    const [root] = trace.splice(rootIndex, 1) as [Error],
-    source = root.stack
+  if (rootIndex > 0)
+    void trace.unshift(
+      (trace.splice(rootIndex, 1) as [Error])[0],
+    );
+
+  function print(e: unknown) {
+    return Error.isError(e)
+      ? e.name === "Error"
+        ? e.message
+        : String(e)
+      : typeof e === "object"
+        && e !== null
+        ? JSON.stringify(e)
+        : String(e);
+  }
+
+  const root = trace.shift()!,
+  subtitle = [print(root)],
+  stack = trace.map(print).join("\n");
+
+  if (Error.isError(root)) {
+    const source = root.stack
       ?.split("\n")
       .find(frame => frame.length > 1)
       ?.slice(0, -1);
@@ -31,37 +41,23 @@ export default function (
       source !== undefined
       && source !== "runtime"
     )
-      void trace.unshift(source);
-
-    void trace.unshift(root);
+      void subtitle.unshift(source);
   }
 
-  function print(error: Error | string) {
-    return Error.isError(error)
-      ? error.name === "Error"
-        ? error.message
-        : String(error)
-      : error;
-  }
-
-  const failure = trace.shift()!,
-  stack = trace
-    .map(print)
-    .join("\n"),
-  notification = new Notification;
+  const notification = new Notification;
 
   notification.title = app;
-  notification.subtitle = print(failure);
+  notification.subtitle = subtitle.join(": ");
   notification.body = stack;
   notification.sound = "failure";
   void notification.schedule();
   console.error(stack);
 
-  if (Error.isError(failure)) {
-    failure.cause = stack;
+  if (Error.isError(root)) {
+    root.cause = stack;
 
-    throw failure;
+    throw root;
   }
 
-  throw Error(failure, { cause: stack });
+  throw Error(root, { cause: stack });
 }
