@@ -31,7 +31,7 @@ export default abstract class IApp<
     this.app = app === ""
       ? "Scriptable" as app
       : app as app;
-      this.input = _input ?? undefined;
+    this.input = _input ?? undefined;
   }
 
   protected get setting() {
