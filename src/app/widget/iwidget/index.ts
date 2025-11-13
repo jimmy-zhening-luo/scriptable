@@ -10,7 +10,7 @@ export default abstract class<Setting> extends IApp<
   public static readonly Time = Time;
   public static readonly location = location;
   protected readonly production = config.runsInWidget;
-  protected readonly emit = 1;
+  protected readonly emit = 0;
   protected readonly widget = new ListWidget;
 
   constructor(
