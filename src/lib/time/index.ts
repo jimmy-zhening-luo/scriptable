@@ -2,25 +2,19 @@ import type { Dateful } from "./dateful";
 import type { Timezone } from "./timezone";
 
 const enum Per {
-  Day = 24,
-  Hour = 60,
-  Minute = Hour,
-  Second = 1e3,
-}
-
-const enum Max {
-  Hour = Per.Day - 1,
-  Minute = Per.Hour - 1,
-  Second = Per.Minute - 1,
-  Millisecond = Per.Second - 1,
+  millisecond = 1,
+  second = 1e3,
+  minute = 60,
+  hour = minute,
+  day = 24,
 }
 
 const enum Unit {
-  millisecond = 1,
-  second = millisecond * Per.Second,
-  minute = second * Per.Minute,
-  hour = minute * Per.Hour,
-  day = hour * Per.Day,
+  millisecond = Per.millisecond,
+  second = millisecond * Per.second,
+  minute = second * Per.minute,
+  hour = minute * Per.hour,
+  day = hour * Per.day,
 }
 
 const enum At {
@@ -107,6 +101,13 @@ export default class Time {
   }
 
   public get eod() {
+    const enum Max {
+      Hour = Per.day - 1,
+      Minute = Per.hour - 1,
+      Second = Per.minute - 1,
+      Millisecond = Per.second - 1,
+    }
+
     return this.at(
       Max.Hour,
       Max.Minute,
@@ -214,7 +215,7 @@ export default class Time {
   public offset(destination: Null<Timezone> = null) {
     const local = this
       .date()
-      .getTimezoneOffset() / -Per.Hour;
+      .getTimezoneOffset() / -Per.hour;
 
     if (destination === null)
       return local as finiteful;
@@ -230,7 +231,7 @@ export default class Time {
       .find(part => part.type === "timeZoneName")!
       .value,
     hours = Number(intl.slice(3, 6)),
-    minutes = Number(intl.slice(7, 9)) / Per.Hour;
+    minutes = Number(intl.slice(7, 9)) / Per.hour;
 
     return local - hours - (
       hours < 0

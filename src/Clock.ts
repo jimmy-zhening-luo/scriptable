@@ -6,14 +6,14 @@ import type {
   SunCache,
 } from "./private/Clock/interface";
 
-const enum Break {
-  Line = 1 / 3,
-  Section = Line * 4,
-}
-
 await new class Clock extends Widget<Setting> {
   protected async runtime() {
     const { setting } = this;
+
+    const enum Break {
+      Line = 1 / 3,
+      Section = Line * 4,
+    }
 
     void this.line(Break.Line);
     this.clock(

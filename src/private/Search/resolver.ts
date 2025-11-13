@@ -1,13 +1,5 @@
 import type { Setting } from "./types";
 
-const enum Special {
-  Delimiter = " ",
-  Separator = "+",
-  Tag = "%s",
-  WrapStart = 'data:text/html,<meta http-equiv=refresh content="0;url=',
-  WrapEnd = '">',
-}
-
 export function resolver(
   engine: Setting["engines"][stringful],
   parsed: {
@@ -15,6 +7,14 @@ export function resolver(
     terms: stringful[];
   },
 ) {
+  const enum Special {
+    Delimiter = " ",
+    Separator = "+",
+    Tag = "%s",
+    WrapStart = 'data:text/html,<meta http-equiv=refresh content="0;url=',
+    WrapEnd = '">',
+  }
+
   const wrapper = typeof engine === "object"
     && !Array.isArray(engine)
     ? engine

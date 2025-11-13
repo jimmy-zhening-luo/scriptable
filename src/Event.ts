@@ -1,21 +1,6 @@
 "pink calendar-alt";
 import DateWidget from "./app/widget/date";
 
-const enum Limit {
-  Unlimited,
-  Compact = 28,
-  Short = Compact + 2,
-  Shorter,
-  Shortest = Shorter + 2,
-  Truncate = Shortest + 2,
-}
-
-const enum Icon {
-  None = "\uF8FF",
-  Tomorrow = "\u203A",
-  Future = "\u2192",
-}
-
 await new class Event extends DateWidget {
   protected async runtime() {
     const calendar = await Calendar.defaultForEvents(),
@@ -85,6 +70,15 @@ await new class Event extends DateWidget {
       >,
       event: CalendarEvent,
     ) {
+      const enum Limit {
+        Unlimited,
+        Compact = 28,
+        Short = Compact + 2,
+        Shorter,
+        Shortest = Shorter + 2,
+        Truncate = Shortest + 2,
+      }
+
       const { title } = event,
       start = new Event.Time(event.startDate),
       length: Limit = icon.full.length
@@ -157,6 +151,12 @@ await new class Event extends DateWidget {
       return format.start
         + format.separator
         + format.title;
+    }
+
+    const enum Icon {
+      None = "\uF8FF",
+      Tomorrow = "\u203A",
+      Future = "\u2192",
     }
 
     void this.text(
