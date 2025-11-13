@@ -10,6 +10,7 @@ export default abstract class<Setting> extends IApp<
   public static readonly Time = Time;
   public static readonly location = location;
   protected readonly production = config.runsInWidget;
+  protected readonly emit = 1;
   protected readonly widget = new ListWidget;
 
   constructor(
@@ -23,9 +24,7 @@ export default abstract class<Setting> extends IApp<
         ? null
         : input as stringful,
     );
-    this.widget.refreshAfterDate = new Time()
-      .in(0, 1)
-      .date();
+    this.widget.refreshAfterDate = new Date(Date.now() + 6e4);
   }
 
   protected get tapped() {

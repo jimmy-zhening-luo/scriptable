@@ -22,6 +22,7 @@ export default abstract class<
       | InputSource.String
       | (Input extends readonly string[] ? InputSource.Array : Input extends object ? InputSource.Object : never)
       = InputSource.String,
+    protected readonly emit = 1,
   ) {
     super(
       source === InputSource.String

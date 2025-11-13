@@ -2,6 +2,11 @@ import type { app } from "./file";
 import File from "./file";
 import error from "./error";
 
+const enum Notify {
+  Never,
+  Interactive,
+  Always,
+}
 const enum Filename {
   All = "",
   Ext = ".",
@@ -25,6 +30,7 @@ export default abstract class IApp<
   private readonly drive: Drive<"Storage", true> = {};
   private readonly external: Drive<"Feed"> = {};
   protected abstract readonly production: boolean;
+  protected abstract readonly emit: Notify;
 
   constructor(_input: Unnull<Input>) {
     const app = this.constructor.name;
@@ -58,9 +64,15 @@ export default abstract class IApp<
       if (this.interactive) {
         console.log(output);
 
+        if (this.emit === Notify.Interactive)
+          this.notify(output);
+
         if (this.ui !== undefined)
           this.ui(output);
       }
+      else
+        if (this.emit === Notify.Always)
+          this.notify(output);
 
       this.output(output);
     }
