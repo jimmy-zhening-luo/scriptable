@@ -57,7 +57,7 @@ export function parser(
       terms: query,
     };
 
-  const [f0] = first;
+  const f0 = first.at(0)!;
 
   if (
     f0 >= "0"
