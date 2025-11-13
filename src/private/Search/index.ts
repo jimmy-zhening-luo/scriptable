@@ -79,7 +79,7 @@ export function parser(
       term,
     ] = keyterm;
 
-    if (term === Special.Selector as char) {
+    if (term === Special.Selector as char)
       if (query.length === 1)
         query[0] = setting.reserved.selector;
       else
@@ -88,7 +88,7 @@ export function parser(
           2,
           setting.reserved.selector + query[1]! as stringful,
         );
-    }
+
     else
       query[0] = term;
 
