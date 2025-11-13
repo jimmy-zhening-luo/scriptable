@@ -1,17 +1,16 @@
 import type { Setting } from "./types";
-import { QueryArgument } from "./argument";
-
-const enum Special {
-  Delimiter = " ",
-  Selector = ".",
-  Operators = Selector + "-+($€£¥",
-}
 
 export { resolver } from "./resolver";
 export function parser(
   input: string,
   setting: Setting,
 ) {
+  const enum Special {
+    Delimiter = " ",
+    Selector = ".",
+    Operators = Selector + "-+($€£¥",
+  }
+
   const _input = input.trimStart(),
   hotkey = input.length - _input.length,
   query = _input
@@ -70,56 +69,33 @@ export function parser(
       terms: query,
     };
 
-  const keyterm = (/^(\W+)(\w.*)$/u)
-    .exec(first) as Null<
-    Triple<stringful>
-  >;
+  const keyterm = (/^(\w+|\W+)\b(.+)$/u)
+    .exec(first) as Null<Triple<stringful>>;
 
   if (keyterm !== null) {
-    query[0] = keyterm[2];
-    void query.unshift(keyterm[1]);
+    const [
+      ,
+      key,
+      term,
+    ] = keyterm;
+
+    if (term === Special.Selector) {
+      if (query.length === 1)
+        query[0] = setting.reserved.selector;
+      else
+        void query.splice(
+          0,
+          2,
+          setting.reserved.selector + query[1]!,
+        );
+    }
+    else
+      query[0] = term;
+
+    void query.unshift(key);
   }
 
-  function select(
-    first: stringful,
-    query: Arrayful<stringful>,
-    selector: char,
-  ) {
-    const match = first.includes(selector)
-      ? selector
-      : first.includes(Special.Selector)
-        ? Special.Selector as char
-        : null;
-
-    if (match === null)
-      return null;
-
-    const boundary = first.indexOf(match);
-
-    return {
-      key: first.slice(0, boundary) as stringful,
-      argument: new QueryArgument(
-        selector,
-        match,
-        first.slice(boundary + 1),
-        query[1],
-      ),
-    };
-  }
-
-  const option = keyterm === null
-    ? select(
-        first,
-        query,
-        setting.reserved.selector,
-      )
-    : null,
-  candidate = (
-    option === null
-      ? query[0]
-      : option.key
-  )
-    .toLocaleLowerCase() as stringful,
+  const candidate = query[0].toLocaleLowerCase() as stringful,
   key = candidate.length === 1
     ? candidate in setting.chars
       ? candidate
@@ -143,10 +119,6 @@ export function parser(
 
   return {
     key,
-    terms: option === null
-      ? query
-      : option
-          .argument
-          .prepend(query),
+    terms: query,
   };
 }
