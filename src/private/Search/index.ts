@@ -86,7 +86,7 @@ export function parser(
         void query.splice(
           0,
           2,
-          setting.reserved.selector + query[1]!,
+          setting.reserved.selector + query[1]! as stringful,
         );
     }
     else
