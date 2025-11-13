@@ -9,7 +9,6 @@ export default abstract class<
     readonly string[]
   > {
   protected readonly production = config.runsInActionExtension;
-  protected readonly emit = 2;
 
   constructor(
     inputType:
