@@ -175,20 +175,20 @@ await new class Clock extends Widget<Setting> {
     )
       void complications.push(
         WeatherIcon.Header
-          + (
-            weather.humidity === null
-              ? weather.dew!
-                + WeatherIcon.Dew
-              : weather.humidity
-                + WeatherIcon.Humidity
-                + (
-                  weather.dew === null
-                    ? Space.None
-                    : Space.Full
-                      + weather.dew
-                      + WeatherIcon.Dew
-                )
-          ),
+        + (
+          weather.humidity === null
+            ? weather.dew!
+            + WeatherIcon.Dew
+            : weather.humidity
+              + WeatherIcon.Humidity
+              + (
+                weather.dew === null
+                  ? Space.None
+                  : Space.Full
+                    + weather.dew
+                    + WeatherIcon.Dew
+              )
+        ),
       );
 
     if (complications.length !== 0)
