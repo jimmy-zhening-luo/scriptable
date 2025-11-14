@@ -47,8 +47,15 @@ export async function weather(
     await weatherApi.loadJSON() as WeatherApiResponse,
   );
 
+  const enum Fahrenheit {
+    Factor = 9 / 5,
+    Offset = 32,
+  }
+
   return {
     humidity: humidity.toFixed(0),
-    dew: (dew * 9 / 5 + 32).toFixed(0),
+    dew: (
+      dew * Fahrenheit.Factor + Fahrenheit.Offset,
+    ).toFixed(0),
   };
 }
