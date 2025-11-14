@@ -164,7 +164,7 @@ await new class Clock extends Widget<Setting> {
         );
 
     const enum WeatherIcon {
-      Moisture = "\u224B"
+      Moisture = "\u224B",
       Header = Moisture + Break.Sixth,
       Dew = "\u00B0",
       Humidity = "%",
