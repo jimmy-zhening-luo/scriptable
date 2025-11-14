@@ -115,7 +115,7 @@ await new class Clock extends Widget<Setting> {
       console.warn("Skipping weather...");
     }
 
-    const enum Break {
+    const enum Space {
       None = "",
       Thin = "\u2009",
       Sixth = "\u2006",
@@ -134,14 +134,14 @@ await new class Clock extends Widget<Setting> {
 
     const enum SunIcon {
       Sunset = "\u263E",
-      Sunrise = "\u235C" + Break.Full,
+      Sunrise = "\u235C" + Space.Full,
     }
 
     function printSun(
       time: InstanceType<typeof Clock.Time>,
       badge: string,
     ) {
-      return badge + time.time({ ampm: Break.Thin as string });
+      return badge + time.time({ ampm: Space.Thin as string });
     }
 
     if (sunrise === null) {
@@ -164,8 +164,7 @@ await new class Clock extends Widget<Setting> {
         );
 
     const enum WeatherIcon {
-      Moisture = "\u224B",
-      Header = Moisture + Break.Sixth,
+      Header = "\u224B" + Space.Sixth,
       Dew = "\u00B0",
       Humidity = "%",
     }
@@ -178,14 +177,14 @@ await new class Clock extends Widget<Setting> {
         WeatherIcon.Header
           + (
             weather.humidity === null
-              ? weather.dew
+              ? weather.dew!
                 + WeatherIcon.Dew
               : weather.humidity
                 + WeatherIcon.Humidity
                 + (
                   weather.dew === null
-                    ? Break.None
-                    : Break.Full
+                    ? Space.None
+                    : Space.Full
                       + weather.dew
                       + WeatherIcon.Dew
                 )
