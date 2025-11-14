@@ -181,7 +181,7 @@ await new class Clock extends Widget<Setting> {
               ? weather.dew
                 + WeatherIcon.Dew
               : weather.humidity
-                + "%"
+                + WeatherIcon.Humidity
                 + (
                   weather.dew === null
                     ? Break.None
