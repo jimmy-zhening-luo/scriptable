@@ -133,7 +133,7 @@ await new class Clock extends Widget<Setting> {
     }
 
     const enum SunIcon {
-      Sunset = "\u263E",
+      Sunset = "\u263E" + Space.Thin,
       Sunrise = "\u235C" + Space.Full,
     }
 
@@ -158,7 +158,7 @@ await new class Clock extends Widget<Setting> {
       else
         void complications.push(
           now > sunrise.in(Day.Sunrise)
-          || now < sunset.in(Day.Sunset)
+          && now < sunset.in(Day.Sunset)
             ? printSun(sunset, SunIcon.Sunset)
             : printSun(sunrise, SunIcon.Sunrise),
         );
