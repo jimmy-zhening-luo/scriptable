@@ -55,7 +55,7 @@ export async function weather(
   return {
     humidity: humidity.toFixed(0),
     dew: (
-      dew * Fahrenheit.Factor + Fahrenheit.Offset,
+      dew * Fahrenheit.Factor + Fahrenheit.Offset
     ).toFixed(0),
   };
 }

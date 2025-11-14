@@ -141,7 +141,7 @@ await new class Clock extends Widget<Setting> {
       time: InstanceType<typeof Clock.Time>,
       badge: string,
     ) {
-      return badge + time.time({ ampm: Break.Thin });
+      return badge + time.time({ ampm: Break.Thin as string });
     }
 
     if (sunrise === null) {
@@ -185,7 +185,7 @@ await new class Clock extends Widget<Setting> {
                 + (
                   weather.dew === null
                     ? Break.None
-                    : Break.Space
+                    : Break.Full
                       + weather.dew
                       + WeatherIcon.Dew
                 )
