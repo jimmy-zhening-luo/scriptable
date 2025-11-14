@@ -115,11 +115,11 @@ await new class Clock extends Widget<Setting> {
       console.warn("Skipping weather...");
     }
 
-    function printSun(
-      time: InstanceType<typeof Clock.Time>,
-      badge: string,
-    ) {
-      return badge + time.time({ ampm: "\u2009" });
+    const enum Break {
+      None = "",
+      Thin = "\u2009",
+      Sixth = "\u2006",
+      Full = " ",
     }
 
     const {
@@ -127,37 +127,69 @@ await new class Clock extends Widget<Setting> {
       sunset,
     } = sun;
 
+    const enum Day {
+      Sunset = 2,
+      Sunrise,
+    }
+
+    const enum SunIcon {
+      Sunset = "\u263E",
+      Sunrise = "\u235C" + Break.Full,
+    }
+
+    function printSun(
+      time: InstanceType<typeof Clock.Time>,
+      badge: string,
+    ) {
+      return badge + time.time({ ampm: Break.Thin });
+    }
+
     if (sunrise === null) {
       if (sunset !== null)
         void complications.push(
-          printSun(sunset, "\u263E"),
+          printSun(sunset, SunIcon.Sunset),
         );
     }
     else
       if (sunset === null)
         void complications.push(
-          printSun(sunrise, "\u235C "),
+          printSun(sunrise, SunIcon.Sunrise),
         );
       else
         void complications.push(
-          now < sunrise.in(3)
-          || now > sunset.in(2)
-            ? printSun(sunrise, "\u235C ")
-            : printSun(sunset, "\u263E"),
+          now > sunrise.in(Day.Sunrise)
+          || now < sunset.in(Day.Sunset)
+            ? printSun(sunset, SunIcon.Sunset)
+            : printSun(sunrise, SunIcon.Sunrise),
         );
 
-    if (weather.humidity === null) {
-      if (weather.dew !== null)
-        void complications.push(`${weather.dew}\u00B0`);
+    const enum WeatherIcon {
+      Moisture = "\u224B"
+      Header = Moisture + Break.Sixth,
+      Dew = "\u00B0",
+      Humidity = "%",
     }
-    else
+
+    if (
+      weather.humidity !== null
+      || weather.dew !== null
+    )
       void complications.push(
-        `\u224B\u2006${weather.humidity}%`
-        + (
-          weather.dew === null
-            ? ""
-            : ` ${weather.dew}\u00B0`
-        ),
+        WeatherIcon.Header
+          + (
+            weather.humidity === null
+              ? weather.dew
+                + WeatherIcon.Dew
+              : weather.humidity
+                + "%"
+                + (
+                  weather.dew === null
+                    ? Break.None
+                    : Break.Space
+                      + weather.dew
+                      + WeatherIcon.Dew
+                )
+          ),
       );
 
     if (complications.length !== 0)
