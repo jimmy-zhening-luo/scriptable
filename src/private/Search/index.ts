@@ -63,7 +63,7 @@ export function parser(
   if (
     f0 >= "0"
     && f0 <= "9"
-    || f0 === Special.Selector
+    || f0 === Special.Selector as char
     && depth !== 1
     || Special.Operators.includes(f0)
   )
