@@ -75,14 +75,14 @@ export function parser(
   if (depth !== 1) {
     const keyterm = (/^(\w+|\W+)\b(.+)/u)
       .exec(first) as Null<Triple<stringful>>;
-  
+
     if (keyterm !== null) {
       const [
         ,
         key,
         term,
       ] = keyterm;
-  
+
       if (term === Special.Selector as char)
         if (query.length === 1)
           query[0] = setting.reserved.selector;
@@ -92,10 +92,10 @@ export function parser(
             2,
             setting.reserved.selector + query[1]! as stringful,
           );
-  
+
       else
         query[0] = term;
-  
+
       void query.unshift(key);
     }
   }
