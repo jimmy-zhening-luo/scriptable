@@ -69,7 +69,7 @@ export function parser(
       terms: query,
     };
 
-  const keyterm = (/^(\w+|\W+)\b(.+)$/u)
+  const keyterm = (/^(\w+|\W+)\b(.+)/u)
     .exec(first) as Null<Triple<stringful>>;
 
   if (keyterm !== null) {
