@@ -72,30 +72,32 @@ export function parser(
       terms: query,
     };
 
-  const keyterm = (/^(\w+|\W+)\b(.+)/u)
-    .exec(first) as Null<Triple<stringful>>;
-
-  if (keyterm !== null) {
-    const [
-      ,
-      key,
-      term,
-    ] = keyterm;
-
-    if (term === Special.Selector as char)
-      if (query.length === 1)
-        query[0] = setting.reserved.selector;
+  if (depth !== 1) {
+    const keyterm = (/^(\w+|\W+)\b(.+)/u)
+      .exec(first) as Null<Triple<stringful>>;
+  
+    if (keyterm !== null) {
+      const [
+        ,
+        key,
+        term,
+      ] = keyterm;
+  
+      if (term === Special.Selector as char)
+        if (query.length === 1)
+          query[0] = setting.reserved.selector;
+        else
+          void query.splice(
+            0,
+            2,
+            setting.reserved.selector + query[1]! as stringful,
+          );
+  
       else
-        void query.splice(
-          0,
-          2,
-          setting.reserved.selector + query[1]! as stringful,
-        );
-
-    else
-      query[0] = term;
-
-    void query.unshift(key);
+        query[0] = term;
+  
+      void query.unshift(key);
+    }
   }
 
   const candidate = query[0].toLocaleLowerCase() as stringful,
