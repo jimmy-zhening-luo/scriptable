@@ -35,10 +35,11 @@ export function parser(
     };
   }
 
-  const [first] = query;
+  const [first] = query,
+  depth = first.length;
 
   if (
-    first.length === 1
+    depth === 1
     && query.length === 1
   ) {
     const candidate = first.toLocaleLowerCase() as stringful;
@@ -59,15 +60,11 @@ export function parser(
 
   const f0 = first.at(0)!;
 
-  function digit(char: string) {
-    return char >= "0" && char <= "9";
-  }
-
   if (
-    digit(f0)
+    f0 >= "0"
+    && f0 <= "9";
     || f0 === Special.Selector
-    && first.length !== 1
-    && digit(first.at(1)!)
+    && depth !== 1
     || Special.Operators.includes(f0)
   )
     return {
