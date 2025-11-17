@@ -8,7 +8,7 @@ export function parser(
   const enum Special {
     Delimiter = " ",
     Selector = ".",
-    Operators = Selector + "-+($€£¥",
+    Operators = "-+($€£¥",
   }
 
   const _input = input.trimStart(),
@@ -59,9 +59,15 @@ export function parser(
 
   const f0 = first.at(0)!;
 
+  function digit(char: string) {
+    return char >= "0" && char <= "9";
+  }
+
   if (
-    f0 >= "0"
-    && f0 <= "9"
+    digit(f0)
+    || f0 === Special.Selector
+    && first.length !== 1
+    && digit(first.at(1)!)
     || Special.Operators.includes(f0)
   )
     return {
