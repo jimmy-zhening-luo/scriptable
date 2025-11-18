@@ -1,7 +1,10 @@
 export interface IWeatherApiRequest {
-  api: Field<
-    | "userAgent"
-    | "url"
+  url: string;
+  headers: FieldTable;
+  query: FieldTable;
+  location: Field<
+    | "latitude"
+    | "longitude"
   >;
 }
 

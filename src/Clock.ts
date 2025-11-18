@@ -63,8 +63,9 @@ await new class Clock extends Widget<Setting> {
           humidity,
           dew,
         } = await ClockApi.weather(
-          setting.weather.api.userAgent,
-          setting.weather.api.url,
+          setting.weather.url,
+          setting.weather.headers,
+          setting.weather.location,
           latitude,
           longitude,
         );
@@ -86,7 +87,9 @@ await new class Clock extends Widget<Setting> {
             sunrise,
             sunset,
           } = await ClockApi.sun(
-            setting.sun.api.url,
+            setting.sun.url,
+            setting.sun.query,
+            setting.sun.location,
             latitude,
             longitude,
             now,

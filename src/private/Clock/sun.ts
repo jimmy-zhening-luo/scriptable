@@ -1,31 +1,29 @@
-import type Time from "../../lib/time";
 import type { SunApiResponse } from "./interface/api";
+import type Time from "../../lib/time";
+import Api from "../../lib/api";
 
 export async function sun(
   url: string,
+  query: FieldTable,
+  location: Field<"latitude" | "longitude">,
   latitude: string,
   longitude: string,
   date: Time,
 ) {
-  const sunApi = new Request(
-    url
-      .replaceAll(
-        "%LAT",
-        latitude,
-      )
-      .replaceAll(
-        "%LONG",
-        longitude,
-      )
-      + date.print("'&date='y-MM-dd"),
+  const sunApi = new Api(
+    url,
+    {
+      ...query,
+      [location.latitude]: latitude,
+      [location.longitude]: longitude,
+      date: date.print("y-MM-dd"),
+    },
   );
-
-  sunApi.timeoutInterval = 10;
 
   const {
     sunrise,
     sunset,
-  } = (await sunApi.loadJSON() as SunApiResponse)
+  } = (await sunApi.request<SunApiResponse>())
     .results;
 
   return {

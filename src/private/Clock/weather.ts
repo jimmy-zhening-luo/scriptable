@@ -1,8 +1,9 @@
 import type { WeatherApiResponse } from "./interface/api";
 
 export async function weather(
-  userAgent: string,
   url: string,
+  headers: FieldTable,
+  location: Field<"latitude" | "longitude">,
   latitude: string,
   longitude: string,
 ) {
@@ -23,28 +24,19 @@ export async function weather(
     };
   }
 
-  const weatherApi = new Request(
-    url
-      .replaceAll(
-        "%LAT",
-        latitude,
-      )
-      .replaceAll(
-        "%LONG",
-        longitude,
-      ),
-  );
-
-  weatherApi.headers = {
-    "User-Agent": userAgent,
-  };
-  weatherApi.timeoutInterval = 10;
-
-  const {
+  const weatherApi = new Api(
+    url,
+    {
+      [location.latitude]: latitude,
+      [location.longitude]: longitude,
+    },
+    headers,
+  ),
+  {
     humidity,
     dew,
   } = parseWeather(
-    await weatherApi.loadJSON() as WeatherApiResponse,
+    await weatherApi.request<WeatherApiResponse>(),
   );
 
   const enum Fahrenheit {
