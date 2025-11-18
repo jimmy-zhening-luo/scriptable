@@ -40,7 +40,7 @@ export default class {
             + "?"
             + Array
               .from(
-                reheaders,
+                requery,
                 [key, value] => encodeURIComponent(key)
                   + "="
                   + encodeURIComponent(value),
