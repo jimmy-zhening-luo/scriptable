@@ -41,7 +41,7 @@ export default class {
             + Array
               .from(
                 requery,
-                [key, value] => encodeURIComponent(key)
+                ([key, value]) => encodeURIComponent(key)
                   + "="
                   + encodeURIComponent(value),
               )
