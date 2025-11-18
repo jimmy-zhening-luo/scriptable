@@ -45,7 +45,7 @@ interface GeocodeSummary {
 
 /* eslint-disable ts/no-extraneous-class */
 export class Location {
-  private static accuracy = Accuracy.Best;
+  protected static accuracy = Accuracy.Best;
 
   public static async current() {
     const {
