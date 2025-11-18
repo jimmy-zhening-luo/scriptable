@@ -18,9 +18,9 @@ export async function sun(
       [location.longitude]: longitude,
       date: date.print("y-MM-dd"),
     },
-  );
+  ),
 
-  const {
+  {
     sunrise,
     sunset,
   } = (await sunApi.request<SunApiResponse>())
