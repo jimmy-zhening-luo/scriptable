@@ -35,18 +35,16 @@ export default class {
     request = new Request(
       requery.size === 0
         ? this.url
-        : (
-          this.url
-            + "?"
-            + Array
-              .from(
-                requery,
-                ([key, value]) => encodeURIComponent(key)
-                  + "="
-                  + encodeURIComponent(value),
-              )
-              .join("&")
-        ),
+        : this.url
+          + "?"
+          + Array
+            .from(
+              requery,
+              ([key, value]) => encodeURIComponent(key)
+                + "="
+                + encodeURIComponent(value),
+            )
+            .join("&"),
     );
 
     request.timeoutInterval = 10;
@@ -68,7 +66,7 @@ export default class {
     if (reheaders.size !== 0)
       request.headers = Object.fromEntries(reheaders);
 
-    return (await request.loadJSON() as Response);
+    return await request.loadJSON() as Response;
   }
 
   public [Symbol.toPrimitive](hint: toPrimitive) {
