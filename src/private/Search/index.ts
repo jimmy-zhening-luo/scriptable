@@ -36,12 +36,10 @@ export function parser(
   }
 
   const [first] = query,
-  depth = first.length;
+  depth = first.length,
+  span = query.length;
 
-  if (
-    depth === 1
-    && query.length === 1
-  ) {
+  if (depth === 1 && span === 1) {
     const candidate = first.toLocaleLowerCase() as stringful;
 
     return {
@@ -84,7 +82,7 @@ export function parser(
       ] = keyterm;
 
       if (term === Special.Selector as char)
-        if (query.length === 1)
+        if (span === 1)
           query[0] = setting.reserved.selector;
         else
           void query.splice(
