@@ -2,6 +2,9 @@
   "extends": "../tsconfig-src-types.json",
   "references": [
     {
+      "path": "api",
+    },
+    {
       "path": "time",
     },
     {

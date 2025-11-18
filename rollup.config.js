@@ -12,6 +12,7 @@ export default {
     "app/widget/iwidget": "src/app/widget/iwidget/index.ts",
     "app/widget/index": "src/app/widget/index.ts",
     "app/widget/date": "src/app/widget/date.ts",
+    "lib/api": "src/lib/api/index.ts",
     "lib/time": "src/lib/time/index.ts",
     "lib/location": "src/lib/location/index.ts",
     "lib/ui": "src/lib/ui/index.ts",
