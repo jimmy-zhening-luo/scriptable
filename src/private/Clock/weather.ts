@@ -1,3 +1,4 @@
+import Api from "../../lib/api";
 import type { WeatherApiResponse } from "./interface/api";
 
 export async function weather(

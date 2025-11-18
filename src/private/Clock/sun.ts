@@ -1,6 +1,6 @@
-import type { SunApiResponse } from "./interface/api";
-import type Time from "../../lib/time";
 import Api from "../../lib/api";
+import type Time from "../../lib/time";
+import type { SunApiResponse } from "./interface/api";
 
 export async function sun(
   url: string,
