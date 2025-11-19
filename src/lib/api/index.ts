@@ -8,6 +8,8 @@ export default class {
     public readonly url: string,
     query?: FieldTable,
     headers?: FieldTable,
+    auth?: string,
+    agent?: string,
   ) {
     this.query = query === undefined
       ? new Map<string, string>
@@ -15,6 +17,12 @@ export default class {
     this.headers = headers === undefined
       ? new Map<string, string>
       : new Map<string, string>(Object.entries(headers));
+
+    if (auth !== undefined)
+      this.headers.set("Authorization", auth);
+
+    if (agent !== undefined)
+      this.headers.set("User-Agent", agent);
   }
 
   public async request<Response = object>(
