@@ -1,6 +1,20 @@
 "pink calendar-alt";
 import DateWidget from "./app/widget/date";
 
+const enum Space {
+  None = "",
+  Hair = "\u200A",
+  Thin = "\u2009",
+  Sixth = "\u2006",
+  Fourth = "\u2005",
+  Full = " ",
+  FullHair = Full + Hair,
+  FullThin = Full + Thin,
+  FullSixth = Full + Sixth,
+  FullFourth = Full + Fourth,
+  Double = Full + Full,
+}
+
 await new class Event extends DateWidget {
   protected async runtime() {
     const calendar = await Calendar.defaultForEvents(),
@@ -61,7 +75,7 @@ await new class Event extends DateWidget {
             : tomorrow
           : now
       )
-        .print("yyyy/MM/dd");
+        .print("y/MM/dd");
 
     function print(
       icon: Field<
@@ -107,15 +121,15 @@ await new class Event extends DateWidget {
                 ? width !== Limit.Compact
                   ? width !== Limit.Short
                     ? width !== Limit.Shorter
-                      ? ""
-                      : "\u200A"
-                    : "\u2009"
-                  : "\u2006"
-                : "\u2005",
+                      ? Space.None
+                      : Space.Hair
+                    : Space.Thin
+                  : Space.Sixth
+                : Space.Fourth,
               icon: width !== Limit.Unlimited
                 ? "short" in icon
                   ? icon.short
-                  : ""
+                  : Space.None
                 : icon.full,
             },
           ),
@@ -124,26 +138,35 @@ await new class Event extends DateWidget {
             ? width !== Limit.Short
               ? width !== Limit.Shorter
                 ? width !== Limit.Shortest
-                  ? ""
-                  : "\u200A"
-                : "\u2009"
-              : "\u2006"
-            : "\u2005"
-          : "\u2009 ",
+                  ? Space.None
+                  : Space.Hair
+                : Space.Thin
+              : Space.Sixth
+            : Space.Fourth
+          : Space.FullThin,
         title: width !== Limit.Unlimited
           ? title
-              .replaceAll(/[\-_.,'"]/ug, "")
               .replaceAll(
-                " ",
+                /[^a-z\d\s]+/ugi,
+                width !== Limit.Compact
+                  ? width !== Limit.Short
+                    ? width !== Limit.Shorter
+                      ? Space.None
+                      : Space.Hair
+                    : Space.Thin
+                  : Space.Sixth,
+              )
+              .replaceAll(
+                /[ \t]+/ug,
                 width !== Limit.Compact
                   ? width !== Limit.Short
                     ? width !== Limit.Shorter
                       ? width !== Limit.Shortest
-                        ? ""
-                        : "\u200A"
-                      : "\u2009"
-                    : "\u2006"
-                  : "\u2005",
+                        ? Space.None
+                        : Space.Hair
+                      : Space.Thin
+                    : Space.Sixth
+                  : Space.Fourth,
               )
           : title,
       };
@@ -164,18 +187,22 @@ await new class Event extends DateWidget {
         ? firstTomorrow === undefined
           ? future === undefined
             ? Icon.None
-            : Icon.Future + "  \u2006" + future
-              .print("M\uFF65d")
+            : Space.FullHair
+              + Icon.Future
+              + Space.FullThin
+              + future.print("M\uFF65d")
           : print(
               {
-                full: `\u2005${Icon.Tomorrow}\u200A`,
+                full: Space.Fourth
+                + Icon.Tomorrow
+                + Space.Hair,
                 "short": Icon.Tomorrow,
               },
               firstTomorrow,
             )
         : print(
             {
-              full: "\u200A",
+              full: Space.Hair,
             },
             laterToday,
           ),
