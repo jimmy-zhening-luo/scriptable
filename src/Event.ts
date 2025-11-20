@@ -194,8 +194,8 @@ await new class Event extends DateWidget {
           : print(
               {
                 full: Space.Fourth
-                + Icon.Tomorrow
-                + Space.Hair,
+                  + Icon.Tomorrow
+                  + Space.Hair,
                 "short": Icon.Tomorrow,
               },
               firstTomorrow,
