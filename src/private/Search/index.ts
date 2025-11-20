@@ -68,12 +68,12 @@ export function parser(
   }
 
   if (
-    f0 >= Digit.Start as string
-    && f0 <= Digit.End as string
+    f0 >= Digit.Start
+    && f0 <= Digit.End
     || f0 === Special.Selector as char
     && depth !== 1
-    && first[1]! >= Digit.Start as string
-    && first[1]! <= Digit.End as string
+    && first[1]! >= Digit.Start
+    && first[1]! <= Digit.End
     || Special.Operators.includes(f0)
   )
     return {
