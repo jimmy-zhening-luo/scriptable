@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig-src-build.json",
+  "extends": "./tsconfig-src.json",
   "include": [
     "../typings/**/*",
     "*",

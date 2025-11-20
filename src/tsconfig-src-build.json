@@ -1,7 +1,0 @@
-{
-  "extends": "./tsconfig-src.json",
-  "compilerOptions": {
-    "declarationDir": "../types",
-    "outDir": "../dist",
-  },
-}
