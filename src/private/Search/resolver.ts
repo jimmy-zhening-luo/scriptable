@@ -7,25 +7,31 @@ export function resolver(
     terms: stringful[];
   },
 ) {
-  const enum Special {
-    Delimiter = " ",
-    Separator = "+",
-    Tag = "%s",
-    WrapStart = 'data:text/html,<meta http-equiv=refresh content="0;url=',
-    WrapEnd = '">',
-  }
-
   const options = typeof engine === "string"
     || Array.isArray(engine)
     ? { url: engine }
     : engine;
 
+  const enum TermSeparator {
+    Print = " ",
+    Url = "+",
+  }
+
   if (options.prepend !== undefined)
     void parsed.terms.unshift(
-      ...options.prepend.split(Special.Delimiter) as stringful[],
+      ...options.prepend.split(TermSeparator.Print) as stringful[],
     );
 
-  function encoder(
+  function join(
+    terms: readonly stringful[],
+    separator: string = TermSeparator.Print,
+  ) {
+    return terms.length === 0
+      ? null
+      : terms.join(separator) as stringful;
+  }
+
+  function encode(
     terms: readonly stringful[],
     options: {
       url?: Unflat;
@@ -33,28 +39,32 @@ export function resolver(
       separator?: string;
     },
   ) {
-    const action = terms
-      .map(encodeURIComponent)
-      .join(
-        options.separator
-        ?? Special.Separator,
-      ) as stringful;
+    const action = join(
+      terms.map(encodeURIComponent) as readonly stringful[],
+      options.separator
+      ?? TermSeparator.Url,
+    );
 
     if (options.url === undefined)
-      return action === ""
-        ? null
-        : action;
+      return action;
 
-    const replace = (url: string) => url.replace(
-      Special.Tag,
-      action,
+    const enum UrlEncode {
+      QueryParam = "%s",
+      SerializeStart = 'data:text/html,<meta http-equiv=refresh content="0;url=',
+      SerializeEnd = '">',
+    }
+
+    const queryParam = action ?? "",
+    replace = (url: string) => url.replace(
+      UrlEncode.QueryParam,
+      queryParam,
     ) as stringful;
 
     function force(url: stringful) {
       return (
-        Special.WrapStart
+        UrlEncode.SerializeStart
         + url
-        + Special.WrapEnd
+        + UrlEncode.SerializeEnd
       ) as stringful;
     }
 
@@ -74,17 +84,15 @@ export function resolver(
 
   if ("url" in options)
     return {
-      action: encoder(parsed.terms, options),
+      action: encode(parsed.terms, options),
     };
 
-  const query = terms.length === 0
-    ? null
-    : parsed.terms.join(Special.Delimiter) as stringful;
+  const query = join(parsed.terms);
 
   return {
     app: options.shortcut as Undefined<stringful> ?? parsed.key,
     action: options.encode === true
-      ? encoder(terms, options)
+      ? encode(terms, options)
       : query,
     notify: options.notify! || null as Null<true>,
     label: options.notify === true
