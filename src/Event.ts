@@ -156,7 +156,7 @@ await new class Event extends DateWidget {
     const enum Icon {
       None = "\uF8FF",
       Tomorrow = "\u203A",
-      Future = "\u2192",
+      Future = "\u2197",
     }
 
     void this.text(
