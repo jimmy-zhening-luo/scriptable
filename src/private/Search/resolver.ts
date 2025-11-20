@@ -15,34 +15,36 @@ export function resolver(
     WrapEnd = '">',
   }
 
-  const wrapper = typeof engine === "object"
+  const options = typeof engine === "object"
     && !Array.isArray(engine)
     ? engine
     : { url: engine },
-  separator = wrapper.separator ?? Special.Separator,
   terms = parsed.terms;
 
-  if (wrapper.prepend !== undefined)
+  if (options.prepend !== undefined)
     void terms.unshift(
-      ...wrapper.prepend.split(Special.Delimiter) as stringful[],
+      ...options.prepend.split(Special.Delimiter) as stringful[],
     );
 
   function encoder(
     terms: readonly stringful[],
-    separator: string,
-    browser?: {
-      url: Unflat;
+    options: {
+      url?: Unflat;
       force?: boolean;
+      separator?: string;
     },
   ) {
     const action = terms
       .map(encodeURIComponent)
-      .join(separator);
+      .join(
+        options.separator
+        ?? Special.Separator,
+      ) as stringful;
 
-    if (browser === undefined)
+    if (options.url === undefined)
       return action === ""
         ? null
-        : action as stringful;
+        : action;
 
     const replace = (url: string) => url.replace(
       Special.Tag,
@@ -57,27 +59,23 @@ export function resolver(
       ) as stringful;
     }
 
-    return Array.isArray(browser.url)
-      ? browser.force === true
-        ? browser
+    return Array.isArray(options.url)
+      ? options.force === true
+        ? options
             .url
             .map(replace)
             .map(force)
-        : browser
+        : options
             .url
             .map(replace)
-      : browser.force === true
-        ? force(replace(browser.url))
-        : replace(browser.url);
+      : options.force === true
+        ? force(replace(options.url))
+        : replace(options.url);
   }
 
-  if ("url" in wrapper)
+  if ("url" in options)
     return {
-      action: encoder(
-        terms,
-        separator,
-        wrapper,
-      ),
+      action: encoder(terms, options),
     };
 
   const query = terms.length === 0
@@ -85,14 +83,14 @@ export function resolver(
     : terms.join(Special.Delimiter) as stringful;
 
   return {
-    app: wrapper.shortcut as Undefined<stringful> ?? parsed.key,
-    action: wrapper.encode === true
-      ? encoder(terms, separator)
+    app: options.shortcut as Undefined<stringful> ?? parsed.key,
+    action: options.encode === true
+      ? encoder(terms, options)
       : query,
-    notify: wrapper.notify! || null as Null<true>,
-    label: wrapper.notify === true
+    notify: options.notify! || null as Null<true>,
+    label: options.notify === true
       ? query
       : null,
-    noSave: wrapper.noSave ?? null,
+    noSave: options.noSave ?? null,
   };
 }
