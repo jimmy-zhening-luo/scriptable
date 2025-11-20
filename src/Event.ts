@@ -164,8 +164,8 @@ await new class Event extends DateWidget {
         ? firstTomorrow === undefined
           ? future === undefined
             ? Icon.None
-            : Icon.Future + " " + future
-              .print("MMM d")
+            : Icon.Future + "  \u2006" + future
+              .print("M\uFF65d")
           : print(
               {
                 full: `\u2005${Icon.Tomorrow}\u200A`,
