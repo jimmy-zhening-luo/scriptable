@@ -40,7 +40,7 @@ export function resolver(
     },
   ) {
     const action = join(
-      terms.map(encodeURIComponent) as readonly stringful[],
+      terms.map(encodeURIComponent) as stringful[],
       options.separator
       ?? TermSeparator.Url,
     );
