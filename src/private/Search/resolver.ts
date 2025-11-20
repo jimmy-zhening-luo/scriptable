@@ -15,14 +15,13 @@ export function resolver(
     WrapEnd = '">',
   }
 
-  const options = typeof engine === "object"
-    && !Array.isArray(engine)
-    ? engine
-    : { url: engine },
-  terms = parsed.terms;
+  const options = typeof engine === "string"
+    || Array.isArray(engine)
+    ? { url: engine }
+    : engine;
 
   if (options.prepend !== undefined)
-    void terms.unshift(
+    void parsed.terms.unshift(
       ...options.prepend.split(Special.Delimiter) as stringful[],
     );
 
@@ -75,12 +74,12 @@ export function resolver(
 
   if ("url" in options)
     return {
-      action: encoder(terms, options),
+      action: encoder(parsed.terms, options),
     };
 
   const query = terms.length === 0
     ? null
-    : terms.join(Special.Delimiter) as stringful;
+    : parsed.terms.join(Special.Delimiter) as stringful;
 
   return {
     app: options.shortcut as Undefined<stringful> ?? parsed.key,
