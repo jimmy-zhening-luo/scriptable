@@ -33,10 +33,8 @@ await new class Clock extends Widget<Setting> {
 
     now = new Clock.Time,
     sunCacheData = this.get("sun"),
-    sunCache = sunCacheData === undefined
-      ? null
-      : JSON.parse(sunCacheData) as SunCache,
-    sun: Record<"sunrise" | "sunset", Null<InstanceType<typeof Clock.Time>>> = sunCache === null
+    sunCache = sunCacheData && JSON.parse(sunCacheData),
+    sun: Record<"sunrise" | "sunset", Null<InstanceType<typeof Clock.Time>>> = !sunCache
       || now.epoch > sunCache.expiry
       || now.offset() !== sunCache.offset
       ? {
@@ -78,10 +76,7 @@ await new class Clock extends Widget<Setting> {
         console.warn("Continuing...");
       }
 
-      if (
-        sun.sunrise === null
-        || sun.sunset === null
-      )
+      if (!sun.sunrise || !sun.sunset)
         try {
           const {
             sunrise,
@@ -144,27 +139,27 @@ await new class Clock extends Widget<Setting> {
       time: InstanceType<typeof Clock.Time>,
       badge: string,
     ) {
-      return badge + time.time({ ampm: Space.Thin as string });
+      return badge + time.time(
+        { ampm: Space.Thin as string },
+      );
     }
 
-    if (sunrise === null) {
-      if (sunset !== null)
-        void complications.push(
-          printSun(sunset, SunIcon.Sunset),
-        );
-    }
-    else
-      if (sunset === null)
-        void complications.push(
-          printSun(sunrise, SunIcon.Sunrise),
-        );
-      else
+    if (sunrise)
+      if (sunset)
         void complications.push(
           now > sunrise.in(Day.Sunrise)
           && now < sunset.in(Day.Sunset)
             ? printSun(sunset, SunIcon.Sunset)
             : printSun(sunrise, SunIcon.Sunrise),
         );
+      else
+        void complications.push(
+          printSun(sunrise, SunIcon.Sunrise),
+        );
+    else if (sunset)
+      void complications.push(
+        printSun(sunset, SunIcon.Sunset),
+      );
 
     const enum WeatherIcon {
       Header = "\u224B" + Space.Sixth,
@@ -172,25 +167,22 @@ await new class Clock extends Widget<Setting> {
       Humidity = "%",
     }
 
-    if (
-      weather.humidity !== null
-      || weather.dew !== null
-    )
+    if (weather.humidity || weather.dew)
       void complications.push(
         WeatherIcon.Header
         + (
-          weather.humidity === null
-            ? weather.dew!
-            + WeatherIcon.Dew
-            : weather.humidity
+          weather.humidity
+            ? weather.humidity
               + WeatherIcon.Humidity
               + (
-                weather.dew === null
-                  ? Space.None
-                  : Space.Full
+                weather.dew
+                  ? Space.Full
                     + weather.dew
                     + WeatherIcon.Dew
+                  : Space.None
               )
+            : weather.dew!
+              + WeatherIcon.Dew
         ),
       );
 
