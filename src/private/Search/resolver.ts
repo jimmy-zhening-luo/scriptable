@@ -46,10 +46,17 @@ export function resolver(
       SerializeEnd = '">',
     }
 
-    const replace = (url: string) => url.replace(
-      UrlEncode.QueryParam,
-      action,
-    ) as stringful;
+    function replace(
+      query: stringful,
+      url: string,
+    ) {
+        return url.replace(
+          UrlEncode.QueryParam,
+          query,
+        ) as stringful;
+    }
+
+    const plug = replace.bind(null, action);
 
     function force(url: stringful) {
       return (
@@ -63,14 +70,14 @@ export function resolver(
       ? options.force
         ? options
             .url
-            .map(replace)
+            .map(plug)
             .map(force)
         : options
             .url
-            .map(replace)
+            .map(plug)
       : options.force
-        ? force(replace(options.url))
-        : replace(options.url);
+        ? force(plug(options.url))
+        : plug(options.url);
   }
 
   if ("url" in options)
