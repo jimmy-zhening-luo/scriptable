@@ -10,9 +10,9 @@ export default class <
   ) {}
 
   public size(scale?: number) {
-    return scale === undefined
-      ? this.weight
-      : Math.round(scale * this.weight);
+    return scale
+      ? Math.round(scale * this.weight)
+      : this.weight;
   }
 
   public regular(scale?: number) {
