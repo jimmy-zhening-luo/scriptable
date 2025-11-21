@@ -54,7 +54,7 @@ export default class File<
       + folder,
     subpath = file
       .split(Break.Path)
-      .filter(node => node !== "");
+      .filter(node => node);
 
     switch (subpath.length) {
     case 0:

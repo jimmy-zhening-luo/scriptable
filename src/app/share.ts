@@ -19,11 +19,11 @@ export default abstract class<
   ) {
     const inputs = args[inputType];
 
-    super(inputs.length === 0 ? null : inputs);
+    super(inputs.length ? inputs : null);
   }
 
   protected output(output: Output) {
-    if (typeof output === "string" && output !== "")
+    if (typeof output === "string" && output)
       Pasteboard.copy(output);
   }
 }

@@ -21,8 +21,7 @@ export default function (
       ? e.name === "Error"
         ? e.message
         : String(e)
-      : typeof e === "object"
-        && e !== null
+      : typeof e === "object" && e
         ? JSON.stringify(e)
         : String(e);
   }
@@ -36,10 +35,7 @@ export default function (
       .find(frame => frame.length > 1)
       ?.slice(0, -1);
 
-    if (
-      source !== undefined
-      && source !== "runtime"
-    )
+    if (source && source !== "runtime")
       rootTitle = source + ": " + rootTitle;
   }
 

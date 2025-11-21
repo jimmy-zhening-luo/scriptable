@@ -217,7 +217,7 @@ export default class Time {
       .date()
       .getTimezoneOffset() / -Per.hour;
 
-    if (destination === null)
+    if (!destination)
       return local as finiteful;
 
     const intl = new Intl.DateTimeFormat(

@@ -42,8 +42,9 @@ await new class Event extends DateWidget {
         now.eod,
       ],
     ),
-    [firstTomorrow] = laterToday === undefined
-      ? await events(
+    [firstTomorrow] = laterToday
+      ? [undefined]
+      : await events(
           calendar,
           [
             tomorrow,
@@ -51,29 +52,25 @@ await new class Event extends DateWidget {
               ? now.in(26)
               : tomorrow.eod,
           ],
-        )
-      : [undefined],
-    [soonest] = laterToday === undefined
-      && firstTomorrow === undefined
-      ? await events(
+        ),
+    [soonest] = laterToday || firstTomorrow
+      ? [undefined]
+      : await events(
           calendar,
           [
             tomorrow,
             now.in(744),
           ],
-        )
-      : [undefined],
-    future = soonest === undefined
-      ? undefined
-      : new Event.Time(soonest.startDate);
+        ),
+    future = soonest && new Event.Time(soonest.startDate);
 
     this.url = "https://calendar.google.com/calendar/u/0/r/3day/"
       + (
-        laterToday === undefined
-          ? firstTomorrow === undefined
-            ? future ?? now
-            : tomorrow
-          : now
+        laterToday
+          ? now
+          : firstTomorrow
+            ? tomorrow
+            : future ?? now
       )
         .print("y/MM/dd");
 
@@ -183,15 +180,15 @@ await new class Event extends DateWidget {
     }
 
     void this.text(
-      laterToday === undefined
-        ? firstTomorrow === undefined
-          ? future === undefined
-            ? Icon.None
-            : Space.FullHair
-              + Icon.Future
-              + Space.FullThin
-              + future.print("M\uFF65d")
-          : print(
+      laterToday
+        ? print(
+            {
+              full: Space.Hair,
+            },
+            laterToday,
+          )
+        : firstTomorrow
+          ? print(
               {
                 full: Space.Fourth
                   + Icon.Tomorrow
@@ -200,12 +197,12 @@ await new class Event extends DateWidget {
               },
               firstTomorrow,
             )
-        : print(
-            {
-              full: Space.Hair,
-            },
-            laterToday,
-          ),
+          : future
+            ? Space.FullHair
+              + Icon.Future
+              + Space.FullThin
+              + future.print("M\uFF65d")
+            : Icon.None,
     );
   }
 }().run();

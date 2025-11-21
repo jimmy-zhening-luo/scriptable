@@ -28,9 +28,8 @@ export default abstract class IApp<
 
   constructor(_input: Nullish<Input>) {
     const app = this.constructor.name;
-    this.app = app === ""
-      ? "Scriptable" as app
-      : app as app;
+    this.app = this.constructor.name as app
+      || "Scriptable" as app;
     this.input = _input ?? undefined;
   }
 
@@ -58,7 +57,7 @@ export default abstract class IApp<
       if (this.interactive) {
         console.log(output);
 
-        if (this.ui !== undefined)
+        if (this.ui)
           this.ui(output);
       }
 
@@ -80,8 +79,7 @@ export default abstract class IApp<
     const notification = new Notification;
 
     function cast(data: unknown) {
-      return typeof data === "object"
-        && data !== null
+      return typeof data === "object" && data
         ? JSON.stringify(data)
         : String(data);
     }
@@ -89,7 +87,7 @@ export default abstract class IApp<
     notification.title = title ?? this.app;
     notification.body = cast(message);
 
-    if (subtitle !== undefined)
+    if (subtitle)
       notification.subtitle = cast(subtitle);
 
     void notification.schedule();
@@ -207,9 +205,9 @@ export default abstract class IApp<
     file: string = this.app,
     extension = "txt",
   ) {
-    const record = extension === ""
-      ? file
-      : file + Filename.Ext + extension;
+    const record = extension
+      ? file + Filename.Ext + extension
+      : file;
 
     return this.drive[record] ??= new File(
       "Storage",
@@ -223,9 +221,9 @@ export default abstract class IApp<
     file: string,
     extension = "txt",
   ) {
-    const feed = extension === ""
-      ? file
-      : file + Filename.Ext + extension;
+    const feed = extension
+      ? file + Filename.Ext + extension
+      : file;
 
     return this.external[feed] ??= new File(
       "Feed",

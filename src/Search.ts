@@ -13,17 +13,17 @@ void new class Search extends Shortcut<
       fallback: stringful,
       history?: string,
     ) {
-      return history === undefined
-        ? {
-            key: fallback,
-            terms: [],
-            prior: true,
-          }
-        : JSON.parse(history) as {
+      return history
+        ? JSON.parse(history) as {
           key: stringful;
           terms: stringful[];
           prior: boolean;
-        };
+        }
+        : {
+            key: fallback,
+            terms: [],
+            prior: true,
+          };
     }
 
     const {
@@ -49,7 +49,7 @@ void new class Search extends Shortcut<
       parsed,
     );
 
-    if (parsed.prior !== true && fulfiller.noSave !== true)
+    if (!parsed.prior && !fulfiller.noSave)
       this.set(
         {
           key: parsed.key,

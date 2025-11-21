@@ -17,7 +17,7 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
   protected readonly font;
 
   constructor(
-    url = "",
+    url?: string,
     title: boolean | string = false,
     {
       background = Color.black(),

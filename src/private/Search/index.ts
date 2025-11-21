@@ -17,7 +17,7 @@ export function parser(
     .trimEnd()
     .split(Special.Delimiter)
     .filter(
-      (token): token is stringful => token !== "",
+      (token): token is stringful => token,
     ) as Arrayful<stringful>;
 
   switch (hotkey) {
@@ -76,7 +76,7 @@ export function parser(
     const keyterm = (/^(\w+|\W+)\b(.+)/u)
       .exec(first) as Null<Triple<stringful>>;
 
-    if (keyterm !== null) {
+    if (keyterm) {
       const [
         ,
         key,
@@ -109,7 +109,7 @@ export function parser(
       ? candidate
       : setting.alias[candidate];
 
-  if (key === undefined)
+  if (!key)
     return query.length === 1
       ? {
           key: setting.reserved.keys.skip,

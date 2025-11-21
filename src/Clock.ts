@@ -186,7 +186,7 @@ await new class Clock extends Widget<Setting> {
         ),
       );
 
-    if (complications.length !== 0)
+    if (complications.length)
       void this.row(...complications);
   }
 }(

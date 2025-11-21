@@ -4,7 +4,7 @@ import Widget from "./app/widget";
 void new class Timer extends Widget {
   protected runtime() {
     function extract(data?: string) {
-      if (data === undefined)
+      if (!data)
         return null;
 
       const timer = JSON.parse(data) as {
@@ -28,7 +28,7 @@ void new class Timer extends Widget {
       update = false,
     } = store?.start.today
       && (
-        feed === null
+        !feed
         || store.modified.in(0, 0, 1) >= feed.modified
       )
       ? store as typeof store & Flag<"update">
@@ -40,9 +40,7 @@ void new class Timer extends Widget {
           }
         : {};
 
-    if (start === null)
-      this.text("+").centerAlignText();
-    else {
+    if (start) {
       if (update)
         this.write(
           {
@@ -76,5 +74,7 @@ void new class Timer extends Widget {
         countdown.applyTimerStyle();
       }
     }
+    else
+      this.text("+").centerAlignText();
   }
 }("things:///show?id=today").run();

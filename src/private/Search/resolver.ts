@@ -17,7 +17,7 @@ export function resolver(
     Url = "+",
   }
 
-  if (options.prepend !== undefined)
+  if (options.prepend)
     void parsed.terms.unshift(
       ...options.prepend.split(TermSeparator.Print) as stringful[],
     );
@@ -37,7 +37,7 @@ export function resolver(
         ?? TermSeparator.Url,
       );
 
-    if (options.url === undefined)
+    if (!options.url)
       return action as stringful || null;
 
     const enum UrlEncode {

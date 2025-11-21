@@ -13,7 +13,7 @@ export default abstract class<Setting> extends IApp<
   protected readonly widget = new ListWidget;
 
   constructor(
-    protected url = "",
+    protected url?: string,
     protected readonly tapPreview = false,
   ) {
     const input = args.widgetParameter as Null<string>;
@@ -30,7 +30,7 @@ export default abstract class<Setting> extends IApp<
 
   protected override ui = () => {
     if (this.tapped) {
-      if (this.tap !== undefined)
+      if (this.tap)
         this.tap();
 
       if (this.tapPreview)
@@ -41,7 +41,7 @@ export default abstract class<Setting> extends IApp<
   };
 
   protected output() {
-    if (this.url !== "")
+    if (this.url)
       this.widget.url = this.url;
 
     Script.setWidget(this.widget);

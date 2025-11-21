@@ -11,17 +11,17 @@ export default class {
     auth?: string,
     agent?: string,
   ) {
-    this.query = query === undefined
-      ? new Map<string, string>
-      : new Map<string, string>(Object.entries(query));
-    this.headers = headers === undefined
-      ? new Map<string, string>
-      : new Map<string, string>(Object.entries(headers));
+    this.query = query
+      ? new Map<string, string>(Object.entries(query))
+      : new Map<string, string>,
+    this.headers = headers
+      ? new Map<string, string>(Object.entries(headers))
+      : new Map<string, string>,
 
-    if (auth !== undefined)
+    if (auth)
       this.headers.set("Authorization", auth);
 
-    if (agent !== undefined)
+    if (agent)
       this.headers.set("User-Agent", agent);
   }
 
@@ -30,20 +30,19 @@ export default class {
     query?: FieldTable,
     headers?: FieldTable,
   ) {
-    const requery = query === undefined
-      ? this.query
-      : new Map(
-          this.query.size === 0
-            ? Object.entries(query)
-            : [
+    const requery = query
+      ? new Map(
+          this.query.size
+            ? [
                 ...this.query,
                 ...Object.entries(query),
-              ],
-        ),
+              ]
+            : Object.entries(query),
+        )
+      : this.query,
     request = new Request(
-      requery.size === 0
+      requery.size
         ? this.url
-        : this.url
           + "?"
           + Array
             .from(
@@ -52,7 +51,8 @@ export default class {
                 + "="
                 + encodeURIComponent(value),
             )
-            .join("&"),
+            .join("&")
+        : this.url,
     );
 
     request.timeoutInterval = 10;
@@ -60,18 +60,18 @@ export default class {
     if (method !== "GET")
       request.method = method;
 
-    const reheaders = headers === undefined
-      ? this.headers
-      : new Map(
-          this.headers.size === 0
-            ? Object.entries(headers)
-            : [
+    const reheaders = headers
+      ? new Map(
+          this.headers.size
+            ? [
                 ...this.headers,
                 ...Object.entries(headers),
               ],
-        );
+            : Object.entries(headers)
+        )
+      : this.headers;
 
-    if (reheaders.size !== 0)
+    if (reheaders.size)
       request.headers = Object.fromEntries(reheaders);
 
     return await request.loadJSON() as Response;
