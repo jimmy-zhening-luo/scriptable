@@ -173,14 +173,14 @@ await new class Clock extends Widget<Setting> {
         + (
           weather.humidity
             ? weather.humidity
-              + WeatherIcon.Humidity
-              + (
-                weather.dew
-                  ? Space.Full
-                    + weather.dew
-                    + WeatherIcon.Dew
-                  : Space.None
-              )
+            + WeatherIcon.Humidity
+            + (
+              weather.dew
+                ? Space.Full
+                + weather.dew
+                + WeatherIcon.Dew
+                : Space.None
+            )
             : weather.dew!
               + WeatherIcon.Dew
         ),
