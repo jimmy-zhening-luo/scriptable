@@ -47,8 +47,8 @@ export function resolver(
     }
 
     function replace(
-      query: stringful,
-      url: string,
+      query: string,
+      url: stringful,
     ) {
         return url.replace(
           UrlEncode.QueryParam,
