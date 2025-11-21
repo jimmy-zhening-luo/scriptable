@@ -58,22 +58,13 @@ export function parser(
 
   const f0 = first.at(0)!;
 
-  const enum DigitN {
-    Start,
-    End = 9,
-  }
-  const enum Digit {
-    Start = `${DigitN.Start}`,
-    End = `${DigitN.End}`,
-  }
-
   if (
-    f0 >= Digit.Start as char
-    && f0 <= Digit.End as char
+    f0 >= "0"
+    && f0 <= "9"
     || f0 === Special.Selector as char
     && depth !== 1
-    && first[1]! >= Digit.Start as char
-    && first[1]! <= Digit.End as char
+    && first[1]! >= "0"
+    && first[1]! <= "9"
     || Special.Operators.includes(f0)
   )
     return {
