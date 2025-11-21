@@ -43,15 +43,15 @@ export default class {
     request = new Request(
       requery.size
         ? this.url
-          + "?"
-          + Array
-            .from(
-              requery,
-              ([key, value]) => encodeURIComponent(key)
-                + "="
-                + encodeURIComponent(value),
-            )
-            .join("&")
+        + "?"
+        + Array
+          .from(
+            requery,
+            ([key, value]) => encodeURIComponent(key)
+              + "="
+              + encodeURIComponent(value),
+          )
+          .join("&")
         : this.url,
     );
 

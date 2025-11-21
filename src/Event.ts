@@ -199,9 +199,9 @@ await new class Event extends DateWidget {
             )
           : future
             ? Space.FullHair
-              + Icon.Future
-              + Space.FullThin
-              + future.print("M\uFF65d")
+            + Icon.Future
+            + Space.FullThin
+            + future.print("M\uFF65d")
             : Icon.None,
     );
   }
