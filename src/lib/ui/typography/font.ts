@@ -18,17 +18,17 @@ export default class <
   public regular(scale?: number) {
     const size = this.size(scale);
 
-    return this.variant === ""
-      ? Font.systemFont(size)
-      : Font[
+    return this.variant
+      ? Font[
           `regular${this.variant}SystemFont`
-        ](size);
+        ](size)
+      : Font.systemFont(size);
   }
 
   public italic(scale?: number) {
-    return this.variant === ""
-      ? Font.italicSystemFont(this.size(scale))
-      : this.regular(scale);
+    return this.variant
+      ? this.regular(scale)
+      : Font.italicSystemFont(this.size(scale));
   }
 
   public bold(scale?: number) {
