@@ -26,13 +26,13 @@ void new class Timer extends Widget {
       start = null,
       modified = null,
       update = false,
-    } = store?.start.today === true
+    } = store?.start.today
       && (
         feed === null
         || store.modified.in(0, 0, 1) >= feed.modified
       )
       ? store as typeof store & Flag<"update">
-      : feed?.start.today === true
+      : feed?.start.today
         ? {
             start: feed.start,
             modified: feed.modified,

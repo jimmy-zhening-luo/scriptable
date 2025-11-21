@@ -30,17 +30,17 @@ void new class Search extends Shortcut<
       setting,
       input = "",
     } = this,
-    parsed = input === ""
-      ? history(
-          setting.reserved.keys.skip,
-          this.get(),
-        )
-      : search.parser(
+    parsed = input
+      ? search.parser(
         input,
         setting,
       ) as ReturnType<typeof search.parser> & Flag<
         | "prior"
-      >,
+      >
+      : history(
+          setting.reserved.keys.skip,
+          this.get(),
+        ),
     terms = Array.from(parsed.terms),
     fulfiller = search.resolver(
       parsed.key.length === 1
