@@ -46,17 +46,12 @@ export function resolver(
       SerializeEnd = '">',
     }
 
-    function replace(
-      query: string,
-      url: string,
-    ) {
-        return url.replace(
-          UrlEncode.QueryParam,
-          query,
-        ) as stringful;
+    function plug(url: string) {
+      return url.replace(
+        UrlEncode.QueryParam,
+        action,
+      ) as stringful;
     }
-
-    const plug = replace.bind(null, action);
 
     function force(url: stringful) {
       return (
