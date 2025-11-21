@@ -18,18 +18,14 @@ export default abstract class<Setting> extends IApp<
   ) {
     const input = args.widgetParameter as Null<string>;
 
-    super(
-      input === ""
-        ? null
-        : input as stringful,
-    );
+    super(input || null);
     this.widget.refreshAfterDate = new Time()
       .in(0, 1)
       .date();
   }
 
   protected get tapped() {
-    return this.interactive && this.input !== undefined;
+    return this.interactive && this.input;
   }
 
   protected override ui = () => {
