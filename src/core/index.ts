@@ -27,7 +27,6 @@ export default abstract class IApp<
   protected abstract readonly production: boolean;
 
   constructor(_input: Nullish<Input>) {
-    const app = this.constructor.name;
     this.app = this.constructor.name as app
       || "Scriptable" as app;
     this.input = _input ?? undefined;
