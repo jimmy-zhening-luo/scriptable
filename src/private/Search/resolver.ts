@@ -78,9 +78,10 @@ export function resolver(
       action: encode(parsed.terms, options),
     };
 
-  const print = parsed.terms.join(
-    TermSeparator.Print,
-  ),
+  const print = parsed
+    .terms
+    .join(TermSeparator.Print)
+    || null,
   notify = options.notify || null;
 
   return {
