@@ -38,7 +38,7 @@ export function resolver(
       );
 
     if (options.url === undefined)
-      return (action || null) as Null<stringful>;
+      return action as stringful || null;
 
     const enum UrlEncode {
       QueryParam = "%s",

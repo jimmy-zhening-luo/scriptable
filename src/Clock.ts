@@ -33,7 +33,7 @@ await new class Clock extends Widget<Setting> {
 
     now = new Clock.Time,
     sunCacheData = this.get("sun"),
-    sunCache = sunCacheData && JSON.parse(sunCacheData),
+    sunCache = sunCacheData && JSON.parse(sunCacheData) as SunCache,
     sun: Record<"sunrise" | "sunset", Null<InstanceType<typeof Clock.Time>>> = !sunCache
       || now.epoch > sunCache.expiry
       || now.offset() !== sunCache.offset

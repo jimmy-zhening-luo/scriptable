@@ -18,7 +18,7 @@ export default abstract class<Setting> extends IApp<
   ) {
     const input = args.widgetParameter as Null<string>;
 
-    super(input || null);
+    super(input as stringful || null);
     this.widget.refreshAfterDate = new Time()
       .in(0, 1)
       .date();
