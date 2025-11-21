@@ -13,10 +13,10 @@ export default class {
   ) {
     this.query = query
       ? new Map<string, string>(Object.entries(query))
-      : new Map<string, string>,
+      : new Map<string, string>;
     this.headers = headers
       ? new Map<string, string>(Object.entries(headers))
-      : new Map<string, string>,
+      : new Map<string, string>;
 
     if (auth)
       this.headers.set("Authorization", auth);
