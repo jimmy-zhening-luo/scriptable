@@ -26,7 +26,7 @@ export default abstract class IApp<
   private readonly external: Drive<"Feed"> = {};
   protected abstract readonly production: boolean;
 
-  constructor(_input: Unnull<Input>) {
+  constructor(_input: Nullish<Input>) {
     const app = this.constructor.name;
     this.app = app === ""
       ? "Scriptable" as app
