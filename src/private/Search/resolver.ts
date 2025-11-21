@@ -78,12 +78,10 @@ export function resolver(
       action: encode(parsed.terms, options),
     };
 
-  const print = (
-    parsed
-      .terms
-      .join(TermSeparator.Print)
-      || null
-  ) as Null<stringful>,
+  const print = parsed
+    .terms
+    .join(TermSeparator.Print) as stringful
+    || null,
   notify = options.notify || null;
 
   return {
