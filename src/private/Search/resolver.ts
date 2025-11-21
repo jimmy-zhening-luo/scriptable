@@ -38,7 +38,7 @@ export function resolver(
       );
 
     if (options.url === undefined)
-      return action as stringful || null;
+      return (action || null) as Null<stringful>;
 
     const enum UrlEncode {
       QueryParam = "%s",
@@ -78,10 +78,12 @@ export function resolver(
       action: encode(parsed.terms, options),
     };
 
-  const print = parsed
-    .terms
-    .join(TermSeparator.Print) as stringful
-    || null,
+  const print = (
+    parsed
+      .terms
+      .join(TermSeparator.Print)
+      || null
+  ) as Null<stringful>,
   notify = options.notify || null;
 
   return {
