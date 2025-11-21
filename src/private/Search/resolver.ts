@@ -46,12 +46,10 @@ export function resolver(
       SerializeEnd = '">',
     }
 
-    function plug(url: string) {
-      return url.replace(
-        UrlEncode.QueryParam,
-        action,
-      ) as stringful;
-    }
+    const plug = (url: string) => url.replace(
+      UrlEncode.QueryParam,
+      action,
+    ) as stringful;
 
     function force(url: stringful) {
       return (
