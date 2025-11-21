@@ -17,7 +17,7 @@ export function parser(
     .trimEnd()
     .split(Special.Delimiter)
     .filter(
-      (token): token is stringful => token,
+      (token): token is stringful => token !== "",
     ) as Arrayful<stringful>;
 
   switch (hotkey) {
