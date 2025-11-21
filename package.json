@@ -37,10 +37,10 @@
     "@types/mocha": "^10.0.10",
     "@types/scriptable-ios": "^1.7.8",
     "chai": "^6.2.1",
-    "linted": "33.6.1",
+    "linted": "33.7.1",
     "mocha": "11.0.0",
-    "rexreplace": "^7.1.13",
-    "rollup": "^4.53.2",
+    "rexreplace": "^7.1.14",
+    "rollup": "^4.53.3",
     "ts-add-js-extension": "^1.6.6",
     "typescript": "^5.9.3"
   },
