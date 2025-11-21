@@ -66,8 +66,8 @@ export default class {
             ? [
                 ...this.headers,
                 ...Object.entries(headers),
-              ],
-            : Object.entries(headers)
+              ]
+            : Object.entries(headers),
         )
       : this.headers;
 
