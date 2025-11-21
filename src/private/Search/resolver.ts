@@ -22,15 +22,6 @@ export function resolver(
       ...options.prepend.split(TermSeparator.Print) as stringful[],
     );
 
-  function join(
-    terms: readonly stringful[],
-    separator: string = TermSeparator.Print,
-  ) {
-    return terms.length === 0
-      ? null
-      : terms.join(separator) as stringful;
-  }
-
   function encode(
     terms: readonly stringful[],
     options: {
@@ -39,14 +30,15 @@ export function resolver(
       separator?: string;
     },
   ) {
-    const action = join(
-      terms.map(encodeURIComponent) as stringful[],
-      options.separator
-      ?? TermSeparator.Url,
-    );
+    const action = terms
+      .map(encodeURIComponent)
+      .join(
+        options.separator
+        ?? TermSeparator.Url,
+      ) as stringful;
 
     if (options.url === undefined)
-      return action;
+      return action || null;
 
     const enum UrlEncode {
       QueryParam = "%s",
@@ -54,10 +46,9 @@ export function resolver(
       SerializeEnd = '">',
     }
 
-    const queryParam = action ?? "",
-    replace = (url: string) => url.replace(
+    const replace = (url: string) => url.replace(
       UrlEncode.QueryParam,
-      queryParam,
+      action,
     ) as stringful;
 
     function force(url: stringful) {
@@ -69,7 +60,7 @@ export function resolver(
     }
 
     return Array.isArray(options.url)
-      ? options.force === true
+      ? options.force
         ? options
             .url
             .map(replace)
@@ -77,7 +68,7 @@ export function resolver(
         : options
             .url
             .map(replace)
-      : options.force === true
+      : options.force
         ? force(replace(options.url))
         : replace(options.url);
   }
@@ -87,17 +78,18 @@ export function resolver(
       action: encode(parsed.terms, options),
     };
 
-  const query = join(parsed.terms);
+  const print = parsed.terms.join(
+    TermSeparator.Print,
+  ),
+  notify = options.notify || null;
 
   return {
     app: options.shortcut as Undefined<stringful> ?? parsed.key,
-    action: options.encode === true
-      ? encode(terms, options)
-      : query,
-    notify: options.notify! || null as Null<true>,
-    label: options.notify === true
-      ? query
-      : null,
+    action: options.encode
+      ? encode(parsed.terms, options)
+      : print,
+    notify,
+    label: notify && print,
     noSave: options.noSave ?? null,
   };
 }
