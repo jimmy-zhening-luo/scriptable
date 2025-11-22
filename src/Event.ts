@@ -31,7 +31,6 @@ await new class Event extends DateWidget {
     )
       .filter(event => !event.isAllDay),
     [laterToday] = await events(
-      calendar,
       [
         now.ago(0.5),
         now.eod,
@@ -40,7 +39,6 @@ await new class Event extends DateWidget {
     [firstTomorrow] = laterToday
       ? [undefined]
       : await events(
-          calendar,
           [
             tomorrow,
             now < now.at(22)
@@ -51,7 +49,6 @@ await new class Event extends DateWidget {
     [soonest] = laterToday || firstTomorrow
       ? [undefined]
       : await events(
-          calendar,
           [
             tomorrow,
             now.in(744),
