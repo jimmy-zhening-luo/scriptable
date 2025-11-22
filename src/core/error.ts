@@ -16,17 +16,16 @@ export default function (
       (trace.splice(rootIndex, 1) as [Error])[0],
     );
 
-  function print(e: unknown) {
-    return Error.isError(e)
-      ? e.name === "Error"
-        ? e.message
-        : String(e)
-      : typeof e === "object" && e
-        ? JSON.stringify(e)
-        : String(e);
-  }
+  const print = (e: unknown) => Error.isError(e)
+    ? e.name === "Error"
+      ? e.message
+      : String(e)
+    : e && typeof e === "object"
+      ? JSON.stringify(e)
+      : String(e),
+  root = trace.shift()!,
+  stack = trace.map(print).join("\n"),
 
-  const root = trace.shift()!;
   let rootTitle = print(root);
 
   if (Error.isError(root)) {
@@ -39,8 +38,7 @@ export default function (
       rootTitle = source + ": " + rootTitle;
   }
 
-  const stack = trace.map(print).join("\n"),
-  notification = new Notification;
+  const notification = new Notification;
 
   notification.title = app;
   notification.subtitle = rootTitle;

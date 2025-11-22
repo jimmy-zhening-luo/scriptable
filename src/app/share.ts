@@ -23,7 +23,7 @@ export default abstract class<
   }
 
   protected output(output: Output) {
-    if (typeof output === "string" && output)
+    if (output && typeof output === "string")
       Pasteboard.copy(output);
   }
 }

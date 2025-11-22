@@ -45,10 +45,7 @@ export default abstract class IApp<
 
   public async run(sideload?: Input) {
     try {
-      if (
-        sideload !== undefined
-        && this.input === undefined
-      )
+      if (sideload && this.input === undefined)
         this.input = sideload ?? undefined;
 
       const output = await this.runtime();
@@ -77,17 +74,17 @@ export default abstract class IApp<
   ) {
     const notification = new Notification;
 
-    function cast(data: unknown) {
-      return typeof data === "object" && data
-        ? JSON.stringify(data)
-        : String(data);
-    }
-
     notification.title = title ?? this.app;
-    notification.body = cast(message);
+
+    const cast = (data: unknown) => data
+      && typeof data === "object"
+      ? JSON.stringify(data)
+      : String(data);
 
     if (subtitle)
       notification.subtitle = cast(subtitle);
+
+    notification.body = cast(message);
 
     void notification.schedule();
   }

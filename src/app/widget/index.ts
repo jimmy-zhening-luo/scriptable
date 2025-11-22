@@ -6,9 +6,9 @@ const enum Default {
 }
 
 const enum Size {
-  Small = "small",
-  Medium = "medium",
-  Large = "large",
+  Small,
+  Medium,
+  Large,
 }
 
 export default abstract class<Setting = never> extends IWidget<Setting> {
@@ -45,7 +45,7 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
       trailing,
     );
 
-    if (title !== false) {
+    if (title) {
       void this.text(
         title === true
           ? this.app
@@ -58,11 +58,11 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
 
   protected override text(
     text: unknown,
-    font: Font = this.font,
+    font?: Font,
   ) {
     const field = super.text(text);
 
-    field.font = font;
+    field.font = font ?? this.font;
 
     return field;
   }
@@ -93,12 +93,12 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
       },
     );
 
-    if (right !== undefined)
+    if (right)
       void columns.push(
         row.addText(String(right as unknown)),
       );
 
-    const font = this.font;
+    const { font } = this;
 
     for (const column of columns)
       column.font = font;

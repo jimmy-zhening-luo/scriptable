@@ -15,27 +15,22 @@ const enum Space {
   Double = Full + Full,
 }
 
+type Time = InstanceType<typeof DateWidget.Time>;
+
 await new class Event extends DateWidget {
   protected async runtime() {
-    const calendar = await Calendar.defaultForEvents(),
-    now = new Event.Time,
-    { tomorrow } = now;
-
-    async function events(
-      calendar: Calendar,
-      range: Tuple<InstanceType<typeof DateWidget.Time>>,
-    ) {
-      return (
-        await CalendarEvent.between(
-          range[0].date(),
-          range[1].date(),
-          [calendar],
-        )
+    const now = new Event.Time,
+    { tomorrow } = now,
+    calendar = await Calendar.defaultForEvents(),
+    events = async (range: Tuple<Time>) => (
+      await CalendarEvent.between(
+        range[0].date(),
+        range[1].date(),
+        [calendar],
       )
-        .filter(event => !event.isAllDay);
-    }
-
-    const [laterToday] = await events(
+    )
+      .filter(event => !event.isAllDay),
+    [laterToday] = await events(
       calendar,
       [
         now.ago(0.5),

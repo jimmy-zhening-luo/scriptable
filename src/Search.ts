@@ -9,55 +9,53 @@ void new class Search extends Shortcut<
   string
 > {
   protected runtime() {
-    function history(
+    const history = (
       fallback: stringful,
       history?: string,
-    ) {
-      return history
-        ? JSON.parse(history) as {
-          key: stringful;
-          terms: stringful[];
-          prior: boolean;
-        }
-        : {
-            key: fallback,
-            terms: [],
-            prior: true,
-          };
-    }
+    ) => history
+      ? JSON.parse(history) as {
+        key: stringful;
+        terms: stringful[];
+        prior: boolean;
+      }
+      : {
+          key: fallback,
+          terms: [],
+          prior: true,
+        };
 
     const {
       setting,
       input = "",
     } = this,
-    parsed = input
+    { skip } = setting.reserved.keys,
+    {
+      key,
+      terms,
+      prior,
+    } = input
       ? search.parser(
         input,
         setting,
+        skip,
       ) as ReturnType<typeof search.parser> & Flag<
         | "prior"
       >
-      : history(
-          setting.reserved.keys.skip,
-          this.get(),
-        ),
-    terms = Array.from(parsed.terms),
-    fulfiller = search.resolver(
-      parsed.key.length === 1
-        ? setting.chars[parsed.key]!
-        : setting.engines[parsed.key]!,
-      parsed,
+      : history(skip, this.get());
+
+    if (!prior && key !== skip)
+      this.set({
+        key,
+        terms,
+        prior: true,
+      });
+
+    return search.resolver(
+      key,
+      terms,
+      key.length === 1
+        ? setting.chars[key]!
+        : setting.engines[key]!,
     );
-
-    if (!parsed.prior && !fulfiller.noSave)
-      this.set(
-        {
-          key: parsed.key,
-          terms,
-          prior: true,
-        },
-      );
-
-    return fulfiller;
   }
 }().run();

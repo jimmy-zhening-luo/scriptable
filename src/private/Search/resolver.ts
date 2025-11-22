@@ -1,11 +1,9 @@
 import type { Setting } from "./types";
 
 export function resolver(
+  key: stringful,
+  terms: stringful[],
   engine: Setting["engines"][stringful],
-  parsed: {
-    key: stringful;
-    terms: stringful[];
-  },
 ) {
   const options = typeof engine === "string"
     || Array.isArray(engine)
@@ -18,7 +16,7 @@ export function resolver(
   }
 
   if (options.prepend)
-    void parsed.terms.unshift(
+    void terms.unshift(
       ...options.prepend.split(TermSeparator.Print) as stringful[],
     );
 
@@ -30,12 +28,10 @@ export function resolver(
       separator?: string;
     },
   ) {
-    const action = terms
+    const { separator = TermSeparator.Url } = options,
+    action = terms
       .map(encodeURIComponent)
-      .join(
-        options.separator
-        ?? TermSeparator.Url,
-      );
+      .join(separator);
 
     if (!options.url)
       return action as stringful || null;
@@ -49,15 +45,12 @@ export function resolver(
     const plug = (url: string) => url.replace(
       UrlEncode.QueryParam,
       action,
+    ) as stringful,
+    force = (url: stringful) => (
+      UrlEncode.SerializeStart
+      + url
+      + UrlEncode.SerializeEnd
     ) as stringful;
-
-    function force(url: stringful) {
-      return (
-        UrlEncode.SerializeStart
-        + url
-        + UrlEncode.SerializeEnd
-      ) as stringful;
-    }
 
     return Array.isArray(options.url)
       ? options.force
@@ -75,22 +68,22 @@ export function resolver(
 
   if ("url" in options)
     return {
-      action: encode(parsed.terms, options),
+      action: encode(terms, options),
     };
 
-  const print = parsed
-    .terms
-    .join(TermSeparator.Print) as stringful
+  const { app = key } = options,
+  print = terms.join(
+    TermSeparator.Print,
+  ) as stringful
     || null,
   notify = options.notify || null;
 
   return {
-    app: options.shortcut as Undefined<stringful> ?? parsed.key,
+    app,
     action: options.encode
-      ? encode(parsed.terms, options)
+      ? encode(terms, options)
       : print,
     notify,
     label: notify && print,
-    noSave: options.noSave ?? null,
   };
 }

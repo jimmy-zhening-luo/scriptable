@@ -40,7 +40,8 @@ export default class File<
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
-    void (File.manager ??= FileManager.local());
+    if (!File.manager)
+      File.manager = FileManager.local();
 
     const drive = (
       hidden
@@ -48,7 +49,9 @@ export default class File<
           ? File.manager.cacheDirectory()
           : File.manager.libraryDirectory()
         : File.manager.bookmarkedPath("root")
-    ) + Break.Path + type,
+    )
+      + Break.Path
+      + type,
     directory = drive
       + Break.Path
       + folder,
@@ -86,10 +89,9 @@ export default class File<
   }
 
   public read() {
-    if (this.state === State.File)
-      return File.manager!.readString(this.path);
-
-    return undefined;
+    return this.state === State.File
+      ? File.manager!.readString(this.path)
+      : undefined;
   }
 
   public readString() {
@@ -108,11 +110,9 @@ export default class File<
       ? Overwrite.No
       : Overwrite = Overwrite.No,
   ) {
-    const state = this.state;
-
-    switch (state) {
+    switch (this.state) {
     case State.File:
-      if (overwrite === Overwrite.No)
+      if (!overwrite)
         return;
 
       break;
@@ -129,15 +129,13 @@ export default class File<
     }
 
     if (Array.isArray(content)) {
-      function stringify(data: primitive | object) {
-        return typeof data === "object"
-          ? JSON.stringify(data)
-          : String(data);
-      }
+      const rows = content.map(
+        row => typeof row === "object"
+          ? JSON.stringify(row)
+          : String(row),
+      );
 
-      const rows = content.map(stringify);
-
-      if (state === State.File)
+      if (this.state)
         switch (overwrite as Exclude<typeof overwrite, Overwrite.No | Overwrite.Yes>) {
         case Overwrite.Append:
           void rows.unshift(this.read()!);
@@ -158,7 +156,7 @@ export default class File<
         typeof content === "object"
           ? JSON.stringify(content)
           : overwrite === Overwrite.Yes
-            || this.state === State.None
+            || !this.state
             ? String(content)
             : overwrite === Overwrite.Push
               ? String(content)

@@ -5,10 +5,7 @@ export type IEngine<
   Action = stringful,
 >
 = & Record<Engine, Action>
-  & Flag<
-    | Flags
-    | "noSave"
-  >
+  & Flag<Flags>
   & Field<
     never,
     | Fields

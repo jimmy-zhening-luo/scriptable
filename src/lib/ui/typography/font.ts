@@ -10,19 +10,17 @@ export default class <
   ) {}
 
   public size(scale?: number) {
-    return scale
-      ? Math.round(scale * this.weight)
-      : this.weight;
+    return scale === undefined
+      ? this.weight
+      : Math.round(scale * this.weight);
   }
 
   public regular(scale?: number) {
-    const size = this.size(scale);
-
     return this.variant
       ? Font[
           `regular${this.variant}SystemFont`
-        ](size)
-      : Font.systemFont(size);
+        ](this.size(scale))
+      : Font.systemFont(this.size(scale));
   }
 
   public italic(scale?: number) {

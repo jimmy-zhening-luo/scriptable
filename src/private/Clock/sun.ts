@@ -10,16 +10,11 @@ export async function sun(
   longitude: string,
   date: Time,
 ) {
-  const sunApi = new Api(
-    url,
-    {
-      ...query,
-      [location.latitude]: latitude,
-      [location.longitude]: longitude,
-      date: date.print("y-MM-dd"),
-    },
-  ),
+  query[location.latitude] = latitude;
+  query[location.longitude] = longitude;
+  query.date = date.print("y-MM-dd"):
 
+  const sunApi = new Api(url, query),
   {
     sunrise,
     sunset,

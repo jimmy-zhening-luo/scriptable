@@ -8,23 +8,6 @@ export async function weather(
   latitude: string,
   longitude: string,
 ) {
-  function parseWeather(weather: WeatherApiResponse) {
-    const {
-      relative_humidity: humidity,
-      dew_point_temperature: dew,
-    } = weather
-      .properties
-      .timeseries[0]
-      .data
-      .instant
-      .details;
-
-    return {
-      humidity,
-      dew,
-    };
-  }
-
   const weatherApi = new Api(
     url,
     {
@@ -34,11 +17,16 @@ export async function weather(
     headers,
   ),
   {
-    humidity,
-    dew,
-  } = parseWeather(
-    await weatherApi.request<WeatherApiResponse>(),
-  );
+    relative_humidity: humidity,
+    dew_point_temperature: dew,
+  } = (
+    await weatherApi.request<WeatherApiResponse>()
+  )
+    .properties
+    .timeseries[0]
+    .data
+    .instant
+    .details;
 
   const enum Fahrenheit {
     Factor = 9 / 5,
@@ -49,6 +37,7 @@ export async function weather(
     humidity: humidity.toFixed(0),
     dew: (
       dew * Fahrenheit.Factor + Fahrenheit.Offset
-    ).toFixed(0),
+    )
+      .toFixed(0),
   };
 }

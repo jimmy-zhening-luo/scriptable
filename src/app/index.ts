@@ -24,11 +24,11 @@ export default abstract class<
       = InputSource.String,
   ) {
     super(
-      source === InputSource.String
-        ? args.plainTexts[0] as Undefined<Input & string>
-        : source === InputSource.Array
+      source
+        ? source === InputSource.Array
           ? args.plainTexts as unknown as Input & readonly string[]
-          : args.shortcutParameter as Undefined<Input>,
+          : args.shortcutParameter as Undefined<Input>
+        : args.plainTexts[0] as Undefined<Input & string>;
     );
   }
 

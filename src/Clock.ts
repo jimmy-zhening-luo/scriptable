@@ -135,14 +135,12 @@ await new class Clock extends Widget<Setting> {
       Sunrise = "\u235C" + Space.Full,
     }
 
-    function printSun(
+    const printSun = (
       time: InstanceType<typeof Clock.Time>,
       badge: string,
-    ) {
-      return badge + time.time(
-        { ampm: Space.Thin as string },
-      );
-    }
+    ) => badge + time.time(
+      { ampm: Space.Thin as string },
+    );
 
     if (sunrise)
       if (sunset)

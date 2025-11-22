@@ -188,7 +188,8 @@ export default class Time {
       return Math.round(
         (
           this.midnight.epoch - then.midnight.epoch
-        ) / Unit.day,
+        )
+          / Unit.day,
       );
 
     const delta = this.epoch - then.epoch;
@@ -230,13 +231,14 @@ export default class Time {
       .formatToParts()
       .find(part => part.type === "timeZoneName")!
       .value,
-    hours = Number(intl.slice(3, 6)),
-    minutes = Number(intl.slice(7, 9)) / Per.hour;
+    sign = intl.at(3),
+    hours = Number(intl.slice(4, 6)),
+    minutes = Number(intl.slice(7, 9))
+      / Per.hour,
+    offset = hours + minutes;
 
-    return local - hours - (
-      hours < 0
-        ? -minutes
-        : minutes
+    return local - offset * (
+      sign === "+" ? 1 : -1
     ) as finiteful;
   }
 

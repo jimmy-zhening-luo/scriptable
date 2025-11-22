@@ -4,6 +4,7 @@ export { resolver } from "./resolver";
 export function parser(
   input: string,
   setting: Setting,
+  skip: stringful,
 ) {
   const enum Special {
     Delimiter = " ",
@@ -17,7 +18,7 @@ export function parser(
     .trimEnd()
     .split(Special.Delimiter)
     .filter(
-      (token): token is stringful => token !== "",
+      (token): token is stringful => token as unknown as boolean,
     ) as Arrayful<stringful>;
 
   switch (hotkey) {
@@ -36,16 +37,16 @@ export function parser(
   }
 
   const [first] = query,
-  depth = first.length,
-  span = query.length;
+  depth = first.length - 1,
+  span = query.length - 1;
 
-  if (depth === 1 && span === 1) {
+  if (!depth && !span) {
     const candidate = first.toLocaleLowerCase() as stringful;
 
     return {
       key: candidate in setting.chars
         ? candidate
-        : setting.reserved.keys.skip,
+        : skip,
       terms: [],
     };
   }
@@ -62,7 +63,7 @@ export function parser(
     f0 >= "0"
     && f0 <= "9"
     || f0 === Special.Selector as char
-    && depth !== 1
+    && depth
     && first[1]! >= "0"
     && first[1]! <= "9"
     || Special.Operators.includes(f0)
@@ -72,7 +73,7 @@ export function parser(
       terms: query,
     };
 
-  if (depth !== 1) {
+  if (depth) {
     const keyterm = (/^(\w+|\W+)\b(.+)/u)
       .exec(first) as Null<Triple<stringful>>;
 
@@ -84,14 +85,14 @@ export function parser(
       ] = keyterm;
 
       if (term === Special.Selector as char)
-        if (span === 1)
-          query[0] = setting.reserved.selector;
-        else
+        if (span)
           void query.splice(
             0,
             2,
             setting.reserved.selector + query[1]! as stringful,
           );
+        else
+          query[0] = setting.reserved.selector;
 
       else
         query[0] = term;
@@ -112,7 +113,7 @@ export function parser(
   if (!key)
     return query.length === 1
       ? {
-          key: setting.reserved.keys.skip,
+          key: skip,
           terms: [],
         }
       : {
