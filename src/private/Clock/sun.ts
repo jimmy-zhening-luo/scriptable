@@ -12,7 +12,7 @@ export async function sun(
 ) {
   query[location.latitude] = latitude;
   query[location.longitude] = longitude;
-  query.date = date.print("y-MM-dd"):
+  query.date = date.print("y-MM-dd");
 
   const sunApi = new Api(url, query),
   {
