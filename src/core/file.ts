@@ -40,8 +40,7 @@ export default class File<
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
-    if (!(File.manager as Undefined<FileManager>))
-      File.manager = FileManager.local();
+    void (File.manager ??= FileManager.local());
 
     const drive = (
       hidden
