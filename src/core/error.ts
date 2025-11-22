@@ -24,24 +24,18 @@ export default function (
       ? JSON.stringify(e)
       : String(e),
   root = trace.shift()!,
-  stack = trace.map(print).join("\n");
-
-  let rootTitle = print(root);
-
-  if (Error.isError(root)) {
-    const source = root.stack
-      ?.split("\n")
-      .find(frame => frame.length > 1)
-      ?.slice(0, -1);
-
-    if (source && source !== "runtime")
-      rootTitle = source + ": " + rootTitle;
-  }
-
-  const notification = new Notification;
+  stack = trace.map(print).join("\n"),
+  source = Error.isError(root) && root.stack
+    ?.split("\n")
+    .find(frame => frame.length > 1)
+    ?.slice(0, -1),
+  header = source && source !== "runtime"
+    ? source + ": " + print(root)
+    : print(root),
+  notification = new Notification;
 
   notification.title = app;
-  notification.subtitle = rootTitle;
+  notification.subtitle = header;
   notification.body = stack;
   notification.sound = "failure";
   void notification.schedule();
@@ -53,5 +47,5 @@ export default function (
     throw root;
   }
 
-  throw Error(rootTitle, { cause: stack });
+  throw Error(header, { cause: stack });
 }

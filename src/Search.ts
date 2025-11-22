@@ -40,11 +40,13 @@ void new class Search extends Shortcut<
       : history(this.get());
 
     if (!prior && key !== skip)
-      this.set({
-        key,
-        terms,
-        prior: true,
-      });
+      this.set(
+        {
+          key,
+          terms,
+          prior: true,
+        } satisfies IParsedQuery,
+      );
 
     return search.resolver(
       key,
