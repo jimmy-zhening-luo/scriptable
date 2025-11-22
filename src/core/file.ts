@@ -45,12 +45,12 @@ export default class File<
     const drive = (
       hidden
         ? temporary
-          ? File.manager!.cacheDirectory()
-          : File.manager!.libraryDirectory()
-        : File.manager!.bookmarkedPath("root")
+          ? File.manager.cacheDirectory()
+          : File.manager.libraryDirectory()
+        : File.manager.bookmarkedPath("root")
     )
-      + Break.Path
-      + type,
+    + Break.Path
+    + type,
     directory = drive
       + Break.Path
       + folder,
@@ -81,8 +81,8 @@ export default class File<
     }
     }
 
-    if (File.manager!.fileExists(this.path))
-      this.state = File.manager!.isDirectory(this.path)
+    if (File.manager.fileExists(this.path))
+      this.state = File.manager.isDirectory(this.path)
         ? State.Folder
         : State.File;
   }

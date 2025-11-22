@@ -75,7 +75,7 @@ export function resolver(
   print = terms.join(
     TermSeparator.Print,
   ) as stringful
-    || null,
+  || null,
   notify = options.notify || null;
 
   return {

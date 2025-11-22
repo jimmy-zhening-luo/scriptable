@@ -189,7 +189,7 @@ export default class Time {
         (
           this.midnight.epoch - then.midnight.epoch
         )
-          / Unit.day,
+        / Unit.day,
       );
 
     const delta = this.epoch - then.epoch;

@@ -22,9 +22,9 @@ void new class Search extends Shortcut<
           key: fallback,
           terms: [],
           prior: true,
-        };
+        },
 
-    const {
+    {
       setting,
       input = "",
     } = this,
