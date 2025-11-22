@@ -24,7 +24,7 @@ export default function (
       ? JSON.stringify(e)
       : String(e),
   root = trace.shift()!,
-  stack = trace.map(print).join("\n"),
+  stack = trace.map(print).join("\n");
 
   let rootTitle = print(root);
 
