@@ -71,7 +71,7 @@ export function resolver(
       action: encode(terms, options),
     };
 
-  const { app = key } = options,
+  const { shortcut = key } = options,
   print = terms.join(
     TermSeparator.Print,
   ) as stringful
@@ -79,7 +79,7 @@ export function resolver(
   notify = options.notify || null;
 
   return {
-    app,
+    app: shortcut,
     action: options.encode
       ? encode(terms, options)
       : print,
