@@ -9,17 +9,19 @@ void new class Search extends Shortcut<
   string
 > {
   protected runtime() {
+    interface IParsedQuery {
+      key: stringful;
+      terms: stringful[];
+      prior?: boolean;
+    }
+
     const {
       setting,
       input = "",
     } = this,
     { skip } = setting.reserved.keys,
     history = (history?: string) => history
-      ? JSON.parse(history) as {
-        key: stringful;
-        terms: stringful[];
-        prior: boolean;
-      }
+      ? JSON.parse(history) as IParsedQuery
       : {
           key: skip,
           terms: [],
@@ -34,9 +36,7 @@ void new class Search extends Shortcut<
         input,
         setting,
         skip,
-      ) as ReturnType<typeof search.parser> & Flag<
-        | "prior"
-      >
+      ) as IParsedQuery & ReturnType<typeof search.parser>
       : history(this.get());
 
     if (!prior && key !== skip)
