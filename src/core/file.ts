@@ -171,7 +171,7 @@ export default class File<
   }
 
   public delete(process: True<Mutable> | false) {
-    if (this.state !== State.None && process) {
+    if (this.state && process) {
       File.manager!.remove(this.path);
       this.state = State.None;
     }
