@@ -9,26 +9,22 @@ void new class Search extends Shortcut<
   string
 > {
   protected runtime() {
-    const history = (
-      fallback: stringful,
-      history?: string,
-    ) => history
+    const {
+      setting,
+      input = "",
+    } = this,
+    { skip } = setting.reserved.keys,
+    history = (history?: string) => history
       ? JSON.parse(history) as {
         key: stringful;
         terms: stringful[];
         prior: boolean;
       }
       : {
-          key: fallback,
+          key: skip,
           terms: [],
           prior: true,
         },
-
-    {
-      setting,
-      input = "",
-    } = this,
-    { skip } = setting.reserved.keys,
     {
       key,
       terms,
@@ -41,7 +37,7 @@ void new class Search extends Shortcut<
       ) as ReturnType<typeof search.parser> & Flag<
         | "prior"
       >
-      : history(skip, this.get());
+      : history(this.get());
 
     if (!prior && key !== skip)
       this.set({
