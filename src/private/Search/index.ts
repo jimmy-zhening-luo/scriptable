@@ -62,11 +62,13 @@ export function parser(
   if (
     f0 >= "0"
     && f0 <= "9"
-    || f0 === Special.Selector as char
-    && depth
-    && first[1]! >= "0"
-    && first[1]! <= "9"
-    || Special.Operators.includes(f0)
+    || depth
+    && (
+      f0 === Special.Selector as char
+      && first[1]! >= "0"
+      && first[1]! <= "9"
+      || Special.Operators.includes(f0)
+    )
   )
     return {
       key: setting.reserved.keys.math,
