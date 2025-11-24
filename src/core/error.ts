@@ -16,5 +16,5 @@ export default function (error: unknown) {
   return {
     root: trace.shift()!,
     trace,
-  }
+  };
 }
