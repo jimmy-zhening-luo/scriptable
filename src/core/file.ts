@@ -87,6 +87,17 @@ export default class File<
         : State.File;
   }
 
+  public static serialize(data: unknown) {
+    switch (typeof data) {
+    case "string":
+      return data;
+    case "object":
+      return JSON.stringify(data);
+    default:
+      return String(data);
+    }
+  }
+
   public read() {
     return this.state === State.File
       ? File.manager!.readString(this.path)
@@ -127,12 +138,8 @@ export default class File<
       return;
     }
 
-    const serialize = (row: unknown) => typeof row === "object"
-      ? JSON.stringify(row)
-      : String(row);
-
     if (Array.isArray(content)) {
-      const rows = content.map(serialize);
+      const rows = content.map(File.serialize);
 
       if (this.state)
         switch (overwrite as Overwrite.Append | Overwrite.Push) {
@@ -154,10 +161,10 @@ export default class File<
         this.path,
         overwrite === Overwrite.Yes
           || !this.state
-          ? serialize(content)
+          ? File.serialize(content)
           : overwrite === Overwrite.Append
             ? this.read()! + String(content)
-            : serialize(content)
+            : File.serialize(content)
               + Break.Line
               + this.read()!
       );

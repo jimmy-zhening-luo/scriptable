@@ -20,26 +20,22 @@ export default function (
     ? e.name === "Error"
       ? e.message
       : String(e)
-    : e && typeof e === "object"
+    : typeof e === "object"
       ? JSON.stringify(e)
       : String(e),
   root = trace.shift()!,
   stack = trace.map(print).join("\n"),
-  source = Error.isError(root) && root.stack
-    ?.split("\n")
-    .find(frame => frame.length > 1)
-    ?.slice(0, -1),
-  header = source && source !== "runtime"
-    ? source + ": " + print(root)
-    : print(root),
-  notification = new Notification;
+  header = print(root);
+
+  console.error(stack);
+
+  const notification = new Notification;
 
   notification.title = app;
   notification.subtitle = header;
   notification.body = stack;
   notification.sound = "failure";
   void notification.schedule();
-  console.error(stack);
 
   if (Error.isError(root)) {
     root.cause = stack;

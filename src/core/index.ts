@@ -75,16 +75,10 @@ export default abstract class IApp<
     const notification = new Notification;
 
     notification.title = title ?? this.app;
-
-    const cast = (data: unknown) => data
-      && typeof data === "object"
-      ? JSON.stringify(data)
-      : String(data);
+    notification.body = File.serialize(message);
 
     if (subtitle)
-      notification.subtitle = cast(subtitle);
-
-    notification.body = cast(message);
+      notification.subtitle = File.serialize(subtitle);
 
     void notification.schedule();
   }
