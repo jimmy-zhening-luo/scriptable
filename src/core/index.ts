@@ -72,12 +72,6 @@ export default abstract class IApp<
       console.error(stack);
       this.notify(stack, header);
 
-      if (Error.isError(root)) {
-        root.cause = stack;
-    
-        throw root;
-      }
-
       throw Error(header, { cause: stack });
     }
     finally {
