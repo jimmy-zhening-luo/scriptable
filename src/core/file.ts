@@ -135,7 +135,7 @@ export default class File<
       const rows = content.map(serialize);
 
       if (this.state)
-        switch (overwrite as Overwrite["Append" | "Push"]) {
+        switch (overwrite as Overwrite.Append | Overwrite.Push) {
         case Overwrite.Append:
           void rows.unshift(this.read()!);
 
