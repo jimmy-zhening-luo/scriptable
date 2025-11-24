@@ -127,15 +127,15 @@ export default class File<
       return;
     }
 
+    const serialize = (row: unknown) => typeof row === "object"
+      ? JSON.stringify(row)
+      : String(row);
+
     if (Array.isArray(content)) {
-      const rows = content.map(
-        row => typeof row === "object"
-          ? JSON.stringify(row)
-          : String(row),
-      );
+      const rows = content.map(serialize);
 
       if (this.state)
-        switch (overwrite as Exclude<typeof overwrite, Overwrite.No | Overwrite.Yes>) {
+        switch (overwrite as Overwrite["Append" | "Push"]) {
         case Overwrite.Append:
           void rows.unshift(this.read()!);
 
@@ -152,16 +152,14 @@ export default class File<
     else
       File.manager!.writeString(
         this.path,
-        typeof content === "object"
-          ? JSON.stringify(content)
-          : overwrite === Overwrite.Yes
-            || !this.state
-            ? String(content)
-            : overwrite === Overwrite.Push
-              ? String(content)
+        overwrite === Overwrite.Yes
+          || !this.state
+          ? serialize(content)
+          : overwrite === Overwrite.Append
+            ? this.read()! + String(content)
+            : serialize(content)
               + Break.Line
               + this.read()!
-              : this.read()! + String(content),
       );
 
     this.state = State.File;

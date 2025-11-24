@@ -19,8 +19,11 @@ void new class Search extends Shortcut<
       setting,
       input = "",
     } = this,
-    { skip } = setting.reserved.keys,
-    history = (history?: string) => history
+    { skip } = setting.reserved.keys;
+
+    let history: IParsedQuery;
+
+    const history = (history?: string) => history
       ? JSON.parse(history) as IParsedQuery
       : {
           key: skip,
