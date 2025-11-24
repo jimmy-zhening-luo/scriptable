@@ -37,7 +37,7 @@
     "@types/mocha": "^10.0.10",
     "@types/scriptable-ios": "^1.7.8",
     "chai": "^6.2.1",
-    "linted": "33.8.2",
+    "linted": "34.0.0",
     "mocha": "11.0.0",
     "rexreplace": "^7.1.14",
     "rollup": "^4.53.3",

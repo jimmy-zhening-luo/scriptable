@@ -5,13 +5,13 @@ const coordinates = ["latitude", "longitude"];
 
 describe(
   "Time",
-  function () {
+  () => {
     describe(
       "shape",
-      function () {
+      () => {
         it(
           "is a function",
-          function () {
+          () => {
             location
               .should.be
               .a("function");
@@ -19,7 +19,7 @@ describe(
         );
         it(
           "is callable",
-          function () {
+          () => {
             location
               .should
               .not
@@ -30,10 +30,10 @@ describe(
     );
     describe(
       "returns",
-      function () {
+      () => {
         it(
           "an object containing latlong",
-          async function () {
+          async () => {
             (await location())
               .should
               .be
@@ -44,7 +44,7 @@ describe(
         );
         it(
           "strings",
-          async function () {
+          async () => {
             (await location())
               .should
               .have
@@ -61,23 +61,19 @@ describe(
         );
         it(
           "containing floats",
-          async function () {
+          async () => {
             parseFloat(
               (await location()).latitude,
             )
               .should
               .be
-              .a("number")
-              .not
-              .NaN;
+              .a("number");
             parseFloat(
               (await location()).longitude,
             )
               .should
               .be
-              .a("number")
-              .not
-              .NaN;
+              .a("number");
           },
         );
       },

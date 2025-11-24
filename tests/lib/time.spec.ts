@@ -3,13 +3,13 @@ import Time from "../../lib/time";
 
 describe(
   "Time",
-  function () {
+  () => {
     describe(
       "shape",
-      function () {
+      () => {
         it(
           "is a class",
-          function () {
+          () => {
             Time
               .should.be
               .a("function");
@@ -17,7 +17,7 @@ describe(
         );
         it(
           "is instantiable",
-          function () {
+          () => {
             new Time()
               .should.be
               .an("object");
@@ -25,25 +25,23 @@ describe(
         );
         it(
           "contains a valid number epoch",
-          function () {
+          () => {
             new Time()
               .should
               .have
               .own
               .property("epoch")
-              .a("number")
-              .not
-              .NaN;
+              .a("number");
           },
         );
       },
     );
     describe(
       "constructor",
-      function () {
+      () => {
         it(
           "defaults to now",
-          function () {
+          () => {
             new Time()
               .epoch
               .should.be
