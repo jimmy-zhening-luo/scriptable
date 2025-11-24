@@ -1,7 +1,4 @@
-export default function (
-  app: string,
-  error: unknown,
-) {
+export default function (error: unknown) {
   const trace = [error];
 
   while (Error.isError(trace[0]))
