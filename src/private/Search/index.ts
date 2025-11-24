@@ -8,6 +8,7 @@ export function parser(
 ) {
   const enum Special {
     Delimiter = " ",
+    History = "/",
     Selector = ".",
     Operators = "-+($€£¥",
   }
@@ -44,7 +45,8 @@ export function parser(
     const candidate = first.toLocaleLowerCase() as stringful;
 
     return {
-      key: candidate in setting.chars
+      key: candidate === Special.History
+        || candidate in setting.chars
         ? candidate
         : skip,
       terms: [],
@@ -105,7 +107,8 @@ export function parser(
 
   const candidate = query[0].toLocaleLowerCase() as stringful,
   key = candidate.length === 1
-    ? candidate in setting.chars
+    ? candidate === Special.History
+      || candidate in setting.chars
       ? candidate
       : undefined
     : candidate in setting.engines

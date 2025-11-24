@@ -37,23 +37,30 @@ void new class Search extends Shortcut<
         setting,
         skip,
       ) as IParsedQuery & ReturnType<typeof search.parser>
-      : history(this.get());
+      : history(this.get()),
+    engine = key === "/"
+      ? history(this.get()).key
+      : key;
 
-    if (!prior && key !== skip)
+    if (
+      !prior
+      && engine !== skip
+      && engine !== "/"
+    )
       this.set(
         {
-          key,
+          key: engine,
           terms,
           prior: true,
         } satisfies IParsedQuery,
       );
 
     return search.resolver(
-      key,
+      engine,
       terms,
-      key.length === 1
-        ? setting.chars[key]!
-        : setting.engines[key]!,
+      engine.length === 1
+        ? setting.chars[engine]!
+        : setting.engines[engine]!,
     );
   }
 }().run();

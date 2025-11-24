@@ -1,23 +1,23 @@
 import type { Setting } from "./types";
 
 export function resolver(
-  key: stringful,
+  engine: stringful,
   terms: stringful[],
-  engine: Setting["engines"][stringful],
+  manifest: Setting["engines"][stringful],
 ) {
-  const options = typeof engine === "string"
-    || Array.isArray(engine)
-    ? { url: engine }
-    : engine;
+  const options = typeof manifest === "string"
+    || Array.isArray(manifest)
+    ? { url: manifest }
+    : manifest;
 
   const enum TermSeparator {
-    Print = " ",
+    Word = " ",
     Url = "+",
   }
 
   if (options.prepend)
     void terms.unshift(
-      ...options.prepend.split(TermSeparator.Print) as stringful[],
+      ...options.prepend.split(TermSeparator.Word) as stringful[],
     );
 
   function encode(
@@ -71,9 +71,9 @@ export function resolver(
       action: encode(terms, options),
     };
 
-  const { shortcut = key } = options,
-  print = terms.join(
-    TermSeparator.Print,
+  const { shortcut = engine } = options,
+  text = terms.join(
+    TermSeparator.Word,
   ) as stringful
   || null,
   notify = options.notify || null;
@@ -82,8 +82,8 @@ export function resolver(
     app: shortcut,
     action: options.encode
       ? encode(terms, options)
-      : print,
+      : text,
     notify,
-    label: notify && print,
+    label: notify && text,
   };
 }

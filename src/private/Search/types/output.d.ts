@@ -1,6 +1,6 @@
 export interface Output {
   action: Null<Unflat<stringful>>;
-  app?: Null<string>;
+  app?: Null<stringful>;
   notify?: Null<true>;
-  label?: Null<string>;
+  label?: Null<stringful>;
 }
