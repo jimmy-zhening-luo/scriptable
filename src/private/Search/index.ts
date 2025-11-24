@@ -108,7 +108,7 @@ export function parser(
   const candidate = query[0].toLocaleLowerCase() as stringful,
   key = candidate.length === 1
     ? candidate === Special.History
-      || candidate in setting.chars
+    || candidate in setting.chars
       ? candidate
       : undefined
     : candidate in setting.engines
