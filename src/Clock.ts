@@ -139,7 +139,7 @@ await new class Clock extends Widget<Setting> {
       time: InstanceType<typeof Clock.Time>,
       badge: string,
     ) => badge + time.time(
-      { ampm: Space.Thin as string },
+      { ampm: Space.Thin },
     );
 
     if (sunrise)

@@ -21,7 +21,7 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
     title: boolean | string = false,
     {
       background = Color.black(),
-      size = Size.Small as Size,
+      size = Size.Small,
       font = null as Null<Font>,
       weight = Default.Weight,
       spacing = Math.round(weight / 4),

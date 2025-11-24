@@ -66,7 +66,7 @@ export function parser(
     && f0 <= "9"
     || depth
     && (
-      f0 === Special.Selector as char
+      f0 === Special.Selector
       && first[1]! >= "0"
       && first[1]! <= "9"
       || Special.Operators.includes(f0)
@@ -88,7 +88,7 @@ export function parser(
         term,
       ] = keyterm;
 
-      if (term === Special.Selector as char)
+      if (term === Special.Selector)
         if (span)
           void query.splice(
             0,
