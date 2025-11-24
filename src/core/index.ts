@@ -72,7 +72,7 @@ export default abstract class IApp<
       console.error(stack);
       this.notify(stack, header);
 
-      throw Error(header, { cause: stack });
+      throw Error(root, { cause: stack });
     }
     finally {
       Script.complete();
