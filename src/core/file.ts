@@ -163,7 +163,7 @@ export default class File<
           || !this.state
           ? File.serialize(content)
           : overwrite === Overwrite.Append
-            ? this.read()! + String(content)
+            ? this.read()! + String(content as primitive)
             : File.serialize(content)
               + Break.Line
               + this.read()!

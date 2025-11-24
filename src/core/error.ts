@@ -22,7 +22,7 @@ export default function (
       : String(e)
     : typeof e === "object"
       ? JSON.stringify(e)
-      : String(e),
+      : String(e as primitive),
   root = trace.shift()!,
   stack = trace.map(print).join("\n"),
   header = print(root);
