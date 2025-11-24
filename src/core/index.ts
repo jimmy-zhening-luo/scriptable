@@ -69,10 +69,11 @@ export default abstract class IApp<
       header = serialize(root),
       stack = trace.map(serialize).join("\n");
 
+      console.error(header);
       console.error(stack);
       this.notify(stack, header);
 
-      throw Error(root, { cause: stack });
+      throw e;
     }
     finally {
       Script.complete();
