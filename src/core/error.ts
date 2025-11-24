@@ -16,32 +16,8 @@ export default function (
       (trace.splice(rootIndex, 1) as [Error])[0],
     );
 
-  const print = (e: unknown) => Error.isError(e)
-    ? e.name === "Error"
-      ? e.message
-      : String(e)
-    : typeof e === "object"
-      ? JSON.stringify(e)
-      : String(e as primitive),
-  root = trace.shift()!,
-  stack = trace.map(print).join("\n"),
-  header = print(root);
-
-  console.error(stack);
-
-  const notification = new Notification;
-
-  notification.title = app;
-  notification.subtitle = header;
-  notification.body = stack;
-  notification.sound = "failure";
-  void notification.schedule();
-
-  if (Error.isError(root)) {
-    root.cause = stack;
-
-    throw root;
+  return {
+    root: trace.shift()!,
+    trace,
   }
-
-  throw Error(header, { cause: stack });
 }

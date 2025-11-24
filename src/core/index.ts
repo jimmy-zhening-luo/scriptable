@@ -60,7 +60,25 @@ export default abstract class IApp<
       this.output(output);
     }
     catch (e) {
-      error(this.app, e);
+      const { root, trace } = error(e),
+      serialize = (frame: unknown) => Error.isError(frame)
+        ? frame.name === "Error"
+          ? frame.message
+          : String(frame)
+        : File.serialize(frame),
+      header = serialize(root),
+      stack = trace.map(serialize).join("\n");
+
+      console.error(stack);
+      this.notify(stack, header);
+
+      if (Error.isError(root)) {
+        root.cause = stack;
+    
+        throw root;
+      }
+
+      throw Error(header, { cause: stack });
     }
     finally {
       Script.complete();
@@ -70,11 +88,11 @@ export default abstract class IApp<
   protected notify(
     message: unknown,
     subtitle?: unknown,
-    title?: string,
+    title: string = this.app,
   ) {
     const notification = new Notification;
 
-    notification.title = title ?? this.app;
+    notification.title = title;
     notification.body = File.serialize(message);
 
     if (subtitle)
