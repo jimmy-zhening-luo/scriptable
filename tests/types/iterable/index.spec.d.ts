@@ -21,10 +21,9 @@ declare namespace IsArray {
         | readonly string[]
       >,
       IsArray<
-        | [0, 1]
+        | readonly [0, 1]
         | [0, "foo"]
-        | string[]
-        | readonly number[]
+        | readonly string[]
       >,
       IsArray<[1?, ...string[]]>,
       IsArray<[1] | [1, 2?]>,
