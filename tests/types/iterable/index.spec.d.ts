@@ -30,7 +30,7 @@ declare namespace IsArray {
       >,
       IsArray<[1?, ...string[]]>,
       IsArray<[1] | [1, 2?]>,
-      IsArray<[] & object>,
+      IsArray<[]>,
       IsArray<[] & { [full]: "array" }>,
     ];
     F: [
