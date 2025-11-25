@@ -11,16 +11,20 @@ declare namespace IsArray {
       IsArray<string[] | integer[]>,
       IsArray<(string | integer)[]>,
       IsArray<
-        | []
         | [0, 1]
         | [0, "foo"]
         | string[]
-        | number[]
-        | (string | number)[]
-        | readonly []
+      >,
+      IsArray<
         | readonly [0, 1]
         | readonly [0, "foo"]
         | readonly string[]
+      >,
+      IsArray<
+        | [0, 1]
+        | [0, "foo"]
+        | string[]
+        | readonly []
         | readonly number[]
         | readonly (string | number)[]
       >,
