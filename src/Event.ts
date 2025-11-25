@@ -73,6 +73,21 @@ await new class Event extends DateWidget {
       >,
       event: CalendarEvent,
     ) {
+      const { title } = event,
+      start = new Event.Time(event.startDate),
+      length = icon.full.length
+        + start.time().length
+        + title.length;
+
+      const enum Width {
+        Unlimited,
+        Compact,
+        Short,
+        Shorter,
+        Shortest,
+        Truncate,
+      }
+
       const enum Limit {
         Unlimited,
         Compact = 28,
@@ -82,82 +97,50 @@ await new class Event extends DateWidget {
         Truncate = Shortest + 2,
       }
 
-      const { title } = event,
-      start = new Event.Time(event.startDate),
-      length: Limit = icon.full.length
-        + start.time().length
-        + title.length,
-      width = length < Limit.Compact
-        ? Limit.Unlimited
-        : length < Limit.Short
-          ? Limit.Compact
-          : length < Limit.Shorter
-            ? Limit.Short
-            : length < Limit.Shortest
-              ? Limit.Shorter
-              : length < Limit.Truncate
-                ? Limit.Shortest
-                : Limit.Truncate,
+      const width = [
+        Limit.Unlimited,
+        Limit.Compact,
+        Limit.Short,
+        Limit.Shorter,
+        Limit.Shortest,
+        Limit.Truncate,
+        Infinity,
+      ]
+        .findIndex(lim => lim > length)
+        - 1 as Width,
+      space = [
+        Space.FullThin,
+        Space.Fourth,
+        Space.Sixth,
+        Space.Thin,
+        Space.Hair,
+        Space.None,
+      ],
       format = {
-        start: start
-          .time(
-            {
-              zero: true,
-              block: true,
-              colon: width < Limit.Short,
-              single: width > Limit.Compact,
-              ampm: width !== Limit.Unlimited
-                ? width !== Limit.Compact
-                  ? width !== Limit.Short
-                    ? width !== Limit.Shorter
-                      ? Space.None
-                      : Space.Hair
-                    : Space.Thin
-                  : Space.Sixth
-                : Space.Fourth,
-              icon: width !== Limit.Unlimited
-                ? "short" in icon
-                  ? icon.short
-                  : Space.None
-                : icon.full,
-            },
-          ),
-        separator: width !== Limit.Unlimited
-          ? width !== Limit.Compact
-            ? width !== Limit.Short
-              ? width !== Limit.Shorter
-                ? width !== Limit.Shortest
-                  ? Space.None
-                  : Space.Hair
-                : Space.Thin
-              : Space.Sixth
-            : Space.Fourth
-          : Space.FullThin,
-        title: width !== Limit.Unlimited
+        start: start.time(
+          {
+            zero: true,
+            block: true,
+            colon: width < Width.Short,
+            single: width > Width.Compact,
+            ampm: space[width + 1] ?? Space.None,
+            icon: width === Width.Unlimited
+              ? icon.full
+              : icon.short ?? Space.None,
+          },
+        ),
+        separator: space[width]!,
+        title: width === Width.Unlimited
           ? title
+          : title
               .replaceAll(
                 /[^a-z\d\s]+/ugi,
-                width !== Limit.Compact
-                  ? width !== Limit.Short
-                    ? width !== Limit.Shorter
-                      ? Space.None
-                      : Space.Hair
-                    : Space.Thin
-                  : Space.Sixth,
+                space[width + 1] ?? Space.None,
               )
               .replaceAll(
                 /[ \t]+/ug,
-                width !== Limit.Compact
-                  ? width !== Limit.Short
-                    ? width !== Limit.Shorter
-                      ? width !== Limit.Shortest
-                        ? Space.None
-                        : Space.Hair
-                      : Space.Thin
-                    : Space.Sixth
-                  : Space.Fourth,
-              )
-          : title,
+                space[width]!,
+              ),
       };
 
       return format.start
