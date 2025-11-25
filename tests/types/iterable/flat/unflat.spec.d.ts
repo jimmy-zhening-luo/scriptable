@@ -5,7 +5,6 @@ declare namespace Unflat {
       Unflat<number>,
       Unflat<string | number>,
       Unflat<never[]>,
-      Unflat<never[] | never[][]>,
     ];
     F: [
       Unflat<never>,
