@@ -2,9 +2,9 @@ declare namespace Optional {
   export type Result = 0 | Test<{
     T: [
       a: AB_C,
-      b: "A" & keyof AB_C,
-      b0: "B" & keyof AB_C,
-      b1: "C" & keyof AB_C,
+      b: Extract<"A", keyof AB_C>,
+      b0: Extract<"B", keyof AB_C>,
+      b1: Extract<"C", keyof AB_C>,
       c: {
         A: number;
         B: number;
