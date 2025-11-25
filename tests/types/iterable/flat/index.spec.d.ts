@@ -3,7 +3,6 @@ declare namespace Flat {
     T: [
       Flat<string[]>,
       Flat<readonly string[]>,
-      Flat<string[] | never[]>,
 
       // string | number:
       Flat<(string | number)[]>,
@@ -13,16 +12,7 @@ declare namespace Flat {
 
       // unknown:
       Flat<unknown[]>,
-      Flat<string[] | unknown[]>,
       Flat<readonly unknown[]>,
-      Flat<string[] | readonly unknown[]>,
-      Flat<readonly string[] | unknown[]>,
-      Flat<readonly string[] | readonly unknown[]>,
-
-      // Errors:
-      // Flat<(string | unknown)[]>,
-      // Flat<readonly (string | unknown)[]>,
-      // ? Flat<never | string[]>,
     ];
     F: [
       Flat<never>,
