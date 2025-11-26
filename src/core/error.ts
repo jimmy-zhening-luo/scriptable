@@ -4,12 +4,16 @@ export default function (error: unknown) {
   while (Error.isError(trace[0]))
     void trace.unshift(trace[0].cause);
 
-  const rootIndex = trace.findIndex(
-    e => Error.isError(e),
-  );
+  if (trace.length !== 1) {
+    const rootIndex = trace.findIndex(
+      e => Error.isError(e),
+    );
 
-  if (rootIndex > 0)
-    [trace[0], trace[rootIndex]] = [trace[rootIndex], trace[0]];
+    if (rootIndex > 0)
+      void trace.unshift(
+        (trace.splice(rootIndex, 1) as [Error])[0],
+      );
+  }
 
   return {
     root: trace.shift()!,
