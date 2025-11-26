@@ -11,7 +11,6 @@ export default function (error: unknown) {
 
     if (rootIndex > 0)
       [trace[0], trace[rootIndex]] = [trace[rootIndex], trace[0]];
-
   }
 
   return {
