@@ -1,1 +1,3 @@
-declare type Instance<Class> = InstanceType<Class>;
+declare type Instance<
+  Class extends abstract new (...arguments: unknown[]) => unknown,
+> = InstanceType<Class>;
