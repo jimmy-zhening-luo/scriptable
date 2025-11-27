@@ -1,14 +1,13 @@
 import IWidget from "./iwidget";
 import Style from "../../lib/ui";
 
-const enum Default {
-  Weight = 12,
-}
-
-const enum Size {
+const enum WidgetSize {
   Small,
   Medium,
   Large,
+}
+const enum Weight {
+  Default = 12,
 }
 
 export default abstract class<Setting = never> extends IWidget<Setting> {
@@ -21,11 +20,11 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
     title: boolean | string = false,
     {
       background = Color.black(),
-      size = Size.Small,
+      size = WidgetSize.Small,
       font = null as Null<Font>,
-      weight = Default.Weight,
+      weight = Weight.Default,
       spacing = Math.round(weight / 4),
-      top = Default.Weight,
+      top = Weight.Default,
       trailing = top as number,
       bottom = top as number,
       leading = trailing as unknown as number,
@@ -69,10 +68,10 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
 
   protected preview() {
     switch (this.size) {
-    case Size.Small:
+    case WidgetSize.Small:
       void this.widget.presentSmall();
       break;
-    case Size.Medium:
+    case WidgetSize.Medium:
       void this.widget.presentMedium();
       break;
     default:
@@ -123,6 +122,11 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
     font = "Menlo",
     ampm = true,
   ) {
+    const now = new IWidget.Time,
+    destinationMidnight = now
+      .midnight
+      .in(now.offset(timezone));
+
     const enum Wall {
       Today,
       Hour,
@@ -131,12 +135,7 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
       Tomorrow = 2 * Midday,
       Yesterday = -Tomorrow,
     }
-
-    const now = new IWidget.Time,
-    destinationMidnight = now
-      .midnight
-      .in(now.offset(timezone)),
-    destinationZero = destinationMidnight.in(
+    const destinationZero = destinationMidnight.in(
       now < destinationMidnight
         ? Wall.Yesterday
         : now > destinationMidnight.in(Wall.Tomorrow)

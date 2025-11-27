@@ -1,20 +1,19 @@
 import FontFamily from "./font";
 
-const enum em {
+const enum Em {
   Footnote = 2,
   Body,
   Subheading,
   Heading,
   Title,
 }
-
 const enum Scale {
-  N = em.Body,
-  Title = em.Title / N,
-  Heading = em.Heading / N,
-  Subheading = em.Subheading / N,
-  Body = em.Body / N,
-  Footnote = em.Footnote / N,
+  Factor = Em.Body,
+  Title = Em.Title / Factor,
+  Heading = Em.Heading / Factor,
+  Subheading = Em.Subheading / Factor,
+  Body = Em.Body / Factor,
+  Footnote = Em.Footnote / Factor,
 }
 
 export default class {

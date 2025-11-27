@@ -10,14 +10,9 @@ export function resolver(
     ? { url: manifest }
     : manifest;
 
-  const enum TermSeparator {
-    Word = " ",
-    Url = "+",
-  }
-
   if (options.prepend)
     void terms.unshift(
-      ...options.prepend.split(TermSeparator.Word) as stringful[],
+      ...options.prepend.split(" ") as stringful[],
     );
 
   function encode(
@@ -28,19 +23,19 @@ export function resolver(
       separator?: string;
     },
   ) {
-    const { separator = TermSeparator.Url } = options,
+    const enum UrlEncode {
+      Separator = "+",
+      QueryParam = "%s",
+      SerializeStart = 'data:text/html,<meta http-equiv=refresh content="0;url=',
+      SerializeEnd = '">',
+    }
+    const { separator = UrlEncode.Separator } = options,
     action = terms
       .map(encodeURIComponent)
       .join(separator);
 
     if (!options.url)
       return action as stringful || null;
-
-    const enum UrlEncode {
-      QueryParam = "%s",
-      SerializeStart = 'data:text/html,<meta http-equiv=refresh content="0;url=',
-      SerializeEnd = '">',
-    }
 
     const plug = (url: string) => url.replace(
       UrlEncode.QueryParam,
@@ -72,10 +67,7 @@ export function resolver(
     };
 
   const { shortcut = engine } = options,
-  text = terms.join(
-    TermSeparator.Word,
-  ) as stringful
-  || null,
+  text = terms.join(" ") as stringful || null,
   notify = options.notify || null;
 
   return {

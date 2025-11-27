@@ -8,55 +8,12 @@ const enum Per {
   hour = minute,
   day = 24,
 }
-
 const enum Unit {
   millisecond = Per.millisecond,
   second = millisecond * Per.second,
   minute = second * Per.minute,
   hour = minute * Per.hour,
   day = hour * Per.day,
-}
-
-const enum At {
-  Midnight,
-  Noon = 12,
-}
-
-const enum In {
-  Now,
-  Next,
-}
-
-const enum Break {
-  None = "",
-  Space = " ",
-  Time = ":",
-  Date = "," + Space,
-  DateTime = Space + "'at'" + Space,
-}
-
-const enum TimeFormat {
-  HourLong = "HH",
-  Hour = "h",
-  Minute = "mm",
-  Second = "ss",
-  AMPM = "a",
-  Hm = HourLong + Break.Time + Minute,
-  hm = Hour + Break.Time + Minute,
-  Hms = Hm + Break.Time + Second,
-  hms = hm + Break.Time + Second,
-  hma = hm + Break.Space + AMPM,
-  hmsa = hms + Break.Space + AMPM,
-}
-
-const enum DateFormat {
-  Month = "MMM",
-  Day = "d",
-  Year = "y",
-  Date = Month + Break.Space + Day + Break.Date + Year,
-  Time = TimeFormat.hms,
-  TimeLong = TimeFormat.hmsa,
-  DateTime = Date + Break.DateTime + TimeLong,
 }
 
 export default class Time {
@@ -93,11 +50,11 @@ export default class Time {
   }
 
   public get midnight() {
-    return this.at(At.Midnight);
+    return this.at(0);
   }
 
   public get noon() {
-    return this.at(At.Noon);
+    return this.at(12);
   }
 
   public get eod() {
@@ -121,7 +78,7 @@ export default class Time {
 
     return new Time(
       date.setDate(
-        date.getDate() + In.Next,
+        date.getDate() + 1,
       ),
     )
       .midnight;
@@ -257,7 +214,7 @@ export default class Time {
   }
 
   public print(
-    format: string = DateFormat.DateTime,
+    format: string = "MMM d, y 'at' h:mm:ss a",
   ) {
     (Time.printer ??= new DateFormatter)
       .dateFormat = format;
@@ -276,6 +233,24 @@ export default class Time {
       single = false,
     } = {},
   ) {
+    const enum Break {
+      None = "",
+      Full = " ",
+      Time = ":",
+    }
+    const enum TimeFormat {
+      HourLong = "HH",
+      Hour = "h",
+      Minute = "mm",
+      Second = "ss",
+      AMPM = "a",
+      Hm = HourLong + Break.Time + Minute,
+      hm = Hour + Break.Time + Minute,
+      Hms = Hm + Break.Time + Second,
+      hms = hm + Break.Time + Second,
+      hma = hm + Break.Full + AMPM,
+      hmsa = hms + Break.Full + AMPM,
+    }
     const hms = this.print(
       ampm === false
         ? seconds

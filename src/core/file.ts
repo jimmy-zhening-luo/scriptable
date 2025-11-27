@@ -1,12 +1,11 @@
-declare const app: unique symbol;
-export type app = stringful & { [app]: "class" };
+declare const id: unique symbol;
+export type AppId = stringful & { [id]: "App" };
 
 const enum State {
   None,
   File,
   Folder,
 }
-
 const enum Overwrite {
   No,
   Yes,
@@ -14,16 +13,11 @@ const enum Overwrite {
   Push,
 }
 
-const enum Break {
-  Path = "/",
-  Line = "\n",
-}
-
 export default class File<
   Mutable extends boolean,
   Type extends string,
   Subpath extends string,
-  Folder extends (Subpath extends stringful ? string : app),
+  Folder extends (Subpath extends stringful ? string : AppId),
 > {
   private readonly path;
   private readonly parent;
@@ -32,16 +26,19 @@ export default class File<
   constructor(
     type: Literalful<Type>,
     file: Subpath,
-    folder: Folder extends app
-      ? app
-      : Exclusion<Folder, Break.Path> extends ` ${string}`
+    folder: Folder extends AppId
+      ? AppId
+      : Exclusion<Folder, Path.Separator> extends ` ${string}`
         ? never
-        : Exclusion<Folder, Break.Path>,
+        : Exclusion<Folder, Path.Separator>,
     hidden: True<Mutable> | false = false,
     temporary: True<Mutable> | false = false,
   ) {
     void (File.manager ??= FileManager.local());
 
+    const enum Path {
+      Separator = "/",
+    }
     const drive = (
       hidden
         ? temporary
@@ -49,13 +46,13 @@ export default class File<
           : File.manager.libraryDirectory()
         : File.manager.bookmarkedPath("root")
     )
-    + Break.Path
+    + Path.Separator
     + type,
     directory = drive
-      + Break.Path
+      + Path.Separator
       + folder,
     subpath = file
-      .split(Break.Path)
+      .split(Path.Separator)
       .filter(node => node);
 
     switch (subpath.length) {
@@ -66,17 +63,17 @@ export default class File<
     case 1:
       this.parent = directory;
       this.path = directory
-        + Break.Path
+        + Path.Separator
         + subpath[0]!;
       break;
     default: {
       const leaf = subpath.pop()!;
 
       this.parent = directory
-        + Break.Path
-        + subpath.join(Break.Path);
+        + Path.Separator
+        + subpath.join(Path.Separator);
       this.path = this.parent
-        + Break.Path
+        + Path.Separator
         + leaf;
     }
     }
@@ -138,6 +135,10 @@ export default class File<
       return;
     }
 
+    const enum Line {
+      Break = "\n",
+    }
+
     if (Array.isArray(content)) {
       const rows = content.map(File.serialize);
 
@@ -153,7 +154,7 @@ export default class File<
 
       File.manager!.writeString(
         this.path,
-        rows.join(Break.Line),
+        rows.join(Line.Break),
       );
     }
     else
@@ -165,7 +166,7 @@ export default class File<
           : overwrite === Overwrite.Append
             ? this.read()! + String(content as primitive)
             : File.serialize(content)
-              + Break.Line
+              + Line.Break
               + this.read()!,
       );
 

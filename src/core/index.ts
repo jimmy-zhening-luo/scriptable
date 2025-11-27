@@ -1,17 +1,19 @@
-import type { app } from "./file";
 import File from "./file";
 import error from "./error";
+import type { AppId } from "./file";
+
+type Drive<
+  Filetype extends string,
+  Mutable extends boolean = false,
+> = Table<
+  File<Mutable, Filetype, string, AppId>
+>;
 
 const enum Filename {
   All = "",
   Ext = ".",
-  Json = Ext + "json",
+  ExtJson = Ext + "json",
 }
-
-type Drive<
-  Type extends string,
-  Mutable extends boolean = false,
-> = Table<File<Mutable, Type, string, app>>;
 
 export default abstract class IApp<
   Setting = never,
@@ -27,8 +29,8 @@ export default abstract class IApp<
   protected abstract readonly production: boolean;
 
   constructor(_input: Nullish<Input>) {
-    this.app = this.constructor.name as app
-      || "Scriptable" as app;
+    this.app = this.constructor.name as AppId
+      || "Scriptable" as AppId;
     this.input = _input ?? undefined;
   }
 
@@ -36,8 +38,8 @@ export default abstract class IApp<
     return this._setting ??= JSON.parse(
       new File(
         "Setting",
-        this.app + Filename.Json as stringful,
-        Filename.All,
+        this.app + Filename.ExtJson as stringful,
+        Filename.Parent,
       )
         .read()!,
     ) as Setting;
@@ -118,7 +120,7 @@ export default abstract class IApp<
   }
 
   protected clear() {
-    this.unset(Filename.All);
+    this.unset(Filename.Parent);
   }
 
   protected read(
@@ -176,8 +178,8 @@ export default abstract class IApp<
 
   protected deleteAll() {
     this.delete(
-      Filename.All,
-      Filename.All,
+      Filename.Parent,
+      Filename.Parent,
     );
     this.clear();
   }
