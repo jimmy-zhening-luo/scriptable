@@ -42,10 +42,10 @@ await new class Event extends DateWidget {
           tomorrow,
           now.in(Window.Future),
         ),
-    start = event && new Event.Time(event.startDate);
+    start = event && new Event.Time(event.startDate) ?? now;
 
     this.url = "https://calendar.google.com/calendar/u/0/r/3day/"
-      + (start ?? now).print("y/MM/dd");
+      + start.print("y/MM/dd");
 
     const enum Badge {
       None = "\uF8FF",
