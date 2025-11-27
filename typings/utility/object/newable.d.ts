@@ -1,4 +1,4 @@
 declare type Newable<Function> = Function extends 
-  abstract new (...arguments: infer Arguments) => infer Instance
-  ? new (...arguments: Arguments) => Instance
+  abstract new (...args: infer Arguments) => infer Instance
+  ? new (...args: Arguments) => Instance
   : never;

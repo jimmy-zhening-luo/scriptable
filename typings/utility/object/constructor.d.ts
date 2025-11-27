@@ -1,1 +1,1 @@
-declare type Constructor<Instance> = new (...arguments: unknown[]) => Instance;
+declare type Constructor<Instance> = new (...args: unknown[]) => Instance;

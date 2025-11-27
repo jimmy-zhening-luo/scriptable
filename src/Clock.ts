@@ -6,7 +6,7 @@ import type {
   SunCache,
 } from "./private/Clock/interface";
 
-type Time = Instance<typeof DateWidget.Time>;
+type Time = Instance<typeof Widget.Time>;
 
 await new class Clock extends Widget<Setting> {
   protected async runtime() {
@@ -122,7 +122,7 @@ await new class Clock extends Widget<Setting> {
     const {
       sunrise,
       sunset,
-    } = sun,
+    } = sun;
 
     const enum Day {
       Sunset = 2,
