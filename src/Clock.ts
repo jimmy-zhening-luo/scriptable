@@ -8,12 +8,11 @@ import type {
 
 await new class Clock extends Widget<Setting> {
   protected async runtime() {
-    const { setting } = this;
-
     const enum Break {
       Line = 1 / 3,
       Section = Line * 4,
     }
+    const { setting } = this;
 
     void this.line(Break.Line);
     this.clock(
@@ -30,7 +29,6 @@ await new class Clock extends Widget<Setting> {
     void this.line(Break.Section);
 
     const complications: string[] = [],
-
     now = new Clock.Time,
     sunCacheData = this.get("sun"),
     sunCache = sunCacheData && JSON.parse(sunCacheData) as SunCache,
@@ -99,7 +97,6 @@ await new class Clock extends Widget<Setting> {
             } satisfies SunCache,
             "sun",
           );
-
           sun.sunrise = sunrise;
           sun.sunset = sunset;
         }
@@ -123,18 +120,16 @@ await new class Clock extends Widget<Setting> {
     const {
       sunrise,
       sunset,
-    } = sun;
+    } = sun,
 
     const enum Day {
       Sunset = 2,
       Sunrise,
     }
-
     const enum SunIcon {
       Sunset = "\u263E" + Space.Thin,
       Sunrise = "\u235C" + Space.Full,
     }
-
     const printSun = (
       time: InstanceType<typeof Clock.Time>,
       badge: string,
@@ -164,7 +159,6 @@ await new class Clock extends Widget<Setting> {
       Dew = "\u00B0",
       Humidity = "%",
     }
-
     if (weather.humidity || weather.dew)
       void complications.push(
         WeatherIcon.Header

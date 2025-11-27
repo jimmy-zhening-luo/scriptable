@@ -1,7 +1,11 @@
 "blue search";
 import Shortcut from "./app";
 import * as search from "./private/Search";
-import type { Setting, Output } from "./private/Search/types";
+import type {
+  Setting,
+  Query,
+  Output,
+} from "./private/Search/types";
 
 void new class Search extends Shortcut<
   Setting,
@@ -9,25 +13,23 @@ void new class Search extends Shortcut<
   string
 > {
   protected runtime() {
-    interface IParsedQuery {
-      key: stringful;
-      terms: stringful[];
-      prior?: boolean;
-    }
-
     const {
       setting,
       input = "",
     } = this,
-    { skip } = setting.reserved.keys,
+    { skip } = setting.reserved,
     history = (history?: string) => history
-      ? JSON.parse(history) as IParsedQuery
+      ? JSON.parse(history) as Query
       : {
           key: skip,
           terms: [],
           prior: true,
-        },
-    {
+        };
+
+    const enum Reserved {
+      Repeat = "/",
+    }
+    const {
       key,
       terms,
       prior,
@@ -36,7 +38,8 @@ void new class Search extends Shortcut<
         input,
         setting,
         skip,
-      ) as IParsedQuery & ReturnType<typeof search.parser>
+        Reserved.Repeat as char,
+      ) as Query & ReturnType<typeof search.parser>
       : history(this.get()),
     engine = key === "/"
       ? history(this.get()).key
@@ -52,7 +55,7 @@ void new class Search extends Shortcut<
           key: engine,
           terms,
           prior: true,
-        } satisfies IParsedQuery,
+        } satisfies Query,
       );
 
     return search.resolver(

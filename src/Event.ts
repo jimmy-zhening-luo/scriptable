@@ -1,20 +1,6 @@
 "pink calendar-alt";
 import DateWidget from "./app/widget/date";
 
-const enum Space {
-  None = "",
-  Hair = "\u200A",
-  Thin = "\u2009",
-  Sixth = "\u2006",
-  Fourth = "\u2005",
-  Full = " ",
-  FullHair = Full + Hair,
-  FullThin = Full + Thin,
-  FullSixth = Full + Sixth,
-  FullFourth = Full + Fourth,
-  Double = Full + Full,
-}
-
 type Time = InstanceType<typeof DateWidget.Time>;
 
 await new class Event extends DateWidget {
@@ -87,7 +73,6 @@ await new class Event extends DateWidget {
         Shortest,
         Truncate,
       }
-
       const enum Limit {
         Unlimited,
         Compact = 28,
@@ -96,7 +81,6 @@ await new class Event extends DateWidget {
         Shortest = Shorter + 2,
         Truncate = Shortest + 2,
       }
-
       const width = [
         Limit.Unlimited,
         Limit.Compact,
@@ -107,8 +91,22 @@ await new class Event extends DateWidget {
         Infinity,
       ]
         .findIndex(lim => lim > length)
-        - 1 as Width,
-      space = [
+        - 1 as Width;
+
+      const enum Space {
+        None = "",
+        Hair = "\u200A",
+        Thin = "\u2009",
+        Sixth = "\u2006",
+        Fourth = "\u2005",
+        Full = " ",
+        FullHair = Full + Hair,
+        FullThin = Full + Thin,
+        FullSixth = Full + Sixth,
+        FullFourth = Full + Fourth,
+        Double = Full + Full,
+      }
+      const space = [
         Space.FullThin,
         Space.Fourth,
         Space.Sixth,
