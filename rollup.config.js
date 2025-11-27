@@ -16,8 +16,9 @@ export default {
     "lib/time": "src/lib/time/index.ts",
     "lib/location": "src/lib/location/index.ts",
     "lib/ui": "src/lib/ui/index.ts",
-    "private/Clock": "src/private/Clock/index.ts",
     "private/Search": "src/private/Search/index.ts",
+    "private/Clock": "src/private/Clock/index.ts",
+    "private/Event": "src/private/Event/index.ts",
   },
   output: {
     dir: "dist",

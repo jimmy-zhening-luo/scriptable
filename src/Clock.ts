@@ -6,6 +6,8 @@ import type {
   SunCache,
 } from "./private/Clock/interface";
 
+type Time = Instance<typeof DateWidget.Time>;
+
 await new class Clock extends Widget<Setting> {
   protected async runtime() {
     const enum Break {
@@ -32,7 +34,7 @@ await new class Clock extends Widget<Setting> {
     now = new Clock.Time,
     sunCacheData = this.get("sun"),
     sunCache = sunCacheData && JSON.parse(sunCacheData) as SunCache,
-    sun: Record<"sunrise" | "sunset", Null<InstanceType<typeof Clock.Time>>> = !sunCache
+    sun: Record<"sunrise" | "sunset", Null<Time>> = !sunCache
       || now.epoch > sunCache.expiry
       || now.offset() !== sunCache.offset
       ? {
@@ -131,7 +133,7 @@ await new class Clock extends Widget<Setting> {
       Sunrise = "\u235C" + Space.Full,
     }
     const printSun = (
-      time: InstanceType<typeof Clock.Time>,
+      time: Time,
       badge: string,
     ) => badge + time.time(
       { ampm: Space.Thin },

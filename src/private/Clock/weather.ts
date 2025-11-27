@@ -1,7 +1,7 @@
 import Api from "../../lib/api";
 import type { WeatherApiResponse } from "./interface/api";
 
-export async function weather(
+export default async function weather(
   url: string,
   headers: FieldTable,
   location: Field<"latitude" | "longitude">,
