@@ -41,14 +41,14 @@ void new class Search extends Shortcut<
         Reserved.Repeat as char,
       ) as Query & ReturnType<typeof search.parser>
       : history(this.get()),
-    engine = key === "/"
+    engine = key === Reserved.Repeat
       ? history(this.get()).key
       : key;
 
     if (
       !prior
       && engine !== skip
-      && engine !== "/"
+      && engine !== Reserved.Repeat
     )
       this.set(
         {

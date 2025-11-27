@@ -21,12 +21,12 @@ export function parser(
     break;
   case 1:
     return {
-      key: setting.reserved.keys.ask,
+      key: setting.reserved.ask,
       terms: query,
     };
   default:
     return {
-      key: setting.reserved.keys.translate,
+      key: setting.reserved.translate,
       terms: query,
     };
   }
@@ -51,60 +51,36 @@ export function parser(
     Primary = "'",
     Backup = ".",
   }
-  const f0 = first.at(0)!;
+  const select = (term: stringful) => {
+    if (term === Selector.Backup)
+      if (span)
+        void query.splice(
+          0,
+          2,
+          Selector.Primary + query[1]! as stringful,
+        );
+      else
+        query[0] = Selector.Primary;
+    
+    else
+      query[0] = term;
+  },
+  f0 = first.at(0)!;
 
   switch (f0) {
   case Selector.Primary:
     return {
-      key: setting.reserved.keys.translate,
+      key: setting.reserved.translate,
       terms: query,
     };
   case repeat: {
-    if (depth) {
-      const term = first.slice(1);
-
-      if (term === Selector.Backup)
-        query[0] = Selector.Primary
-      else if (term.startsWith(Selector.Backup))
-        foo = 30;
-      else
-        query[0] = term;
-
-      if (term.startsWith(Selector.Backup))
-        if (term === Selector.Backup)
-          query[0] = Selector.Primary;
-        else
-          query.unshift(
-            Selector.Primary
-            query.slice(0, 1),
-          );
-
-          query.splice(
-            0,
-            1,
-            Selector.Primary,
-            term.slice(1),
-          );
-
-      query[0] = term.startsWith(.) === Selector.Backup
-        ? Selector.Primary + term
-
-      if (term.at(0) === Selector.Backup) {
-        query.splice(
-          0,
-          1,
-          Selector.Primary,
-          term.slice(1),
-        );
-      }
-      else
-        query[0] = term;
-    }
+    if (depth)
+      select(first.slice(1) as stringful);
     else
       void query.shift();
 
     return {
-      key: repeat as stringful,
+      key: repeat,
       terms: query,
     }
   }
@@ -121,7 +97,7 @@ export function parser(
       )
     )
       return {
-        key: setting.reserved.keys.math,
+        key: setting.reserved.math,
         terms: query,
       };
   }
@@ -137,19 +113,7 @@ export function parser(
         term,
       ] = keyterm;
 
-      if (term === Selector.Backup)
-        if (span)
-          void query.splice(
-            0,
-            2,
-            Selector.Primary + query[1]! as stringful,
-          );
-        else
-          query[0] = Selector.Primary;
-
-      else
-        query[0] = term;
-
+      select(term);
       void query.unshift(key);
     }
   }
@@ -171,7 +135,7 @@ export function parser(
           terms: [],
         }
       : {
-          key: setting.reserved.keys.ask,
+          key: setting.reserved.ask,
           terms: query,
         };
 
