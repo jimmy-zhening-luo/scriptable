@@ -21,15 +21,16 @@ export default function (
     FullSixth = Full + Sixth,
     FullFourth = Full + Fourth,
   }
+  const { badge, format } = display;
 
-  if (badge.format)
+  if (format)
     return Space.FullHair
-      + display.badge!
+      + badge!
       + Space.FullThin
-      + start.print(badge.format);
+      + start.print(format);
 
   const { title } = event,
-  length = display.badge.length
+  length = (badge?.length ?? 0)
     + start.time().length
     + title.length;
 
@@ -88,11 +89,11 @@ export default function (
     ampm: space[width + 1] ?? Space.None,
     badge: !width
       ? (
-          display.badge
-            ? Space.Fourth + display.badge
+          badge
+            ? Space.Fourth + badge
             : Space.None
         ) + Space.Hair
-      : display.badge || Space.None,
+      : badge || Space.None,
   })
     + space[width]!
     + headline;
