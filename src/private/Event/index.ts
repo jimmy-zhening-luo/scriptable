@@ -87,7 +87,7 @@ export default function (
     colon: width < Width.Short,
     single: width > Width.Compact,
     ampm: space[width + 1] ?? Space.None,
-    badge: !width
+    icon: !width
       ? (
           badge
             ? Space.Fourth + badge
