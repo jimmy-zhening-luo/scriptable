@@ -12,6 +12,9 @@ const enum Overwrite {
   Append,
   Push,
 }
+const enum Path {
+  Separator = "/",
+}
 
 export default class File<
   Mutable extends boolean,
@@ -36,9 +39,6 @@ export default class File<
   ) {
     void (File.manager ??= FileManager.local());
 
-    const enum Path {
-      Separator = "/",
-    }
     const drive = (
       hidden
         ? temporary
