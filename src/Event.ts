@@ -2,7 +2,7 @@
 import DateWidget from "./app/widget/date";
 import print from "./private/Event";
 
-type Time = InstanceType<typeof DateWidget.Time>;
+type Time = Instance<typeof DateWidget.Time>;
 
 await new class Event extends DateWidget {
   protected async runtime() {

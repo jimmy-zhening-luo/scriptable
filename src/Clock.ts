@@ -6,7 +6,7 @@ import type {
   SunCache,
 } from "./private/Clock/interface";
 
-type Time = InstanceType<typeof Widget.Time>;
+type Time = Instance<typeof Widget.Time>;
 
 await new class Clock extends Widget<Setting> {
   protected async runtime() {
