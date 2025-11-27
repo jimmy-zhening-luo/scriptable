@@ -16,7 +16,7 @@ await new class Event extends DateWidget {
         calendar,
       )
     )
-      .filter(({ isAllDay }) => !isAllDay)[0];
+      .find(({ isAllDay }) => !isAllDay);
 
     const enum Window {
       Skew = 0.5,
