@@ -5,7 +5,6 @@ export function parser(
   input: string,
   setting: Setting,
   skip: stringful,
-  repeat: char,
 ): Query {
   const _input = input.trimStart(),
   hotkey = input.length - _input.length,
@@ -31,6 +30,9 @@ export function parser(
     };
   }
 
+  const enum Trigger {
+    Repeat = "/",
+  }
   const [first] = query,
   depth = first.length - 1,
   span = query.length - 1;
@@ -39,7 +41,7 @@ export function parser(
     const candidate = first.toLocaleLowerCase() as stringful;
 
     return {
-      key: candidate === repeat
+      key: candidate === Trigger.Repeat
         || candidate in setting.chars
         ? candidate
         : skip,
@@ -73,14 +75,14 @@ export function parser(
       key: setting.reserved.translate,
       terms: query,
     };
-  case repeat: {
+  case Trigger.Repeat: {
     if (depth)
       select(first.slice(1) as stringful);
     else
       void query.shift();
 
     return {
-      key: repeat,
+      key: Trigger.Repeat,
       terms: query,
     };
   }
@@ -120,7 +122,7 @@ export function parser(
 
   const candidate = query[0].toLocaleLowerCase() as stringful,
   key = candidate.length === 1
-    ? candidate === repeat
+    ? candidate === Trigger.Repeat
     || candidate in setting.chars
       ? candidate
       : undefined

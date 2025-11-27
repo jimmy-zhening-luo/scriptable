@@ -24,12 +24,8 @@ void new class Search extends Shortcut<
           key: skip,
           terms: [],
           prior: true,
-        };
-
-    const enum Reserved {
-      Repeat = "/",
-    }
-    const {
+        },
+    {
       key,
       terms,
       prior,
@@ -38,10 +34,13 @@ void new class Search extends Shortcut<
           input,
           setting,
           skip,
-          Reserved.Repeat as char,
         )
-      : history(this.get()),
-    engine = key === Reserved.Repeat
+      : history(this.get());
+
+    const enum Reserved {
+      Repeat = "/",
+    }
+    const engine = key === Reserved.Repeat
       ? history(this.get()).key
       : key;
 
