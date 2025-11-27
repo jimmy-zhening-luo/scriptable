@@ -48,7 +48,7 @@ declare namespace Newable {
       Newable<typeof Prototype<"A"> | typeof Prototype<"B"> | typeof ChildA | typeof ChildB>,
       Newable<typeof Prototype<"A" | "B"> & (typeof ChildA | typeof ChildB)>,
       Newable<typeof Class & (typeof ChildA | typeof ChildB)>,
-      Newable<(typeof Class) | Class> /* expected: new (...args) => Class */
+      Newable<(typeof Class) | Class>, /* expected: new (...args) => Class */
     ];
     F: [
       Newable<Class>,

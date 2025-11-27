@@ -35,11 +35,11 @@ void new class Search extends Shortcut<
       prior,
     } = input
       ? search.parser(
-        input,
-        setting,
-        skip,
-        Reserved.Repeat as char,
-      ) as Query & ReturnType<typeof search.parser>
+          input,
+          setting,
+          skip,
+          Reserved.Repeat as char,
+        )
       : history(this.get()),
     engine = key === Reserved.Repeat
       ? history(this.get()).key

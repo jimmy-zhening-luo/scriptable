@@ -6,9 +6,7 @@ type Time = InstanceType<typeof DateWidget.Time>;
 
 await new class Event extends DateWidget {
   protected async runtime() {
-    const calendar = [
-      await Calendar.defaultForEvents(),
-    ],
+    const calendar = [await Calendar.defaultForEvents()],
     find = async (from: Time, to: Time) => (
       await CalendarEvent.between(
         from.date(),
@@ -32,16 +30,16 @@ await new class Event extends DateWidget {
       now.ago(Window.Skew),
       now.eod,
     )
-      ?? await find(
-          tomorrow,
-          now < now.at(Window.DayMinus)
-            ? now.in(Window.DayPlus)
-            : tomorrow.eod,
-        )
-      ?? await find(
-          tomorrow,
-          now.in(Window.Future),
-        ),
+    ?? await find(
+      tomorrow,
+      now < now.at(Window.DayMinus)
+        ? now.in(Window.DayPlus)
+        : tomorrow.eod,
+    )
+    ?? await find(
+      tomorrow,
+      now.in(Window.Future),
+    ),
     start = event
       ? new Event.Time(event.startDate)
       : now;

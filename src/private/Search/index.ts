@@ -61,7 +61,7 @@ export function parser(
         );
       else
         query[0] = Selector.Primary as stringful;
-    
+
     else
       query[0] = term;
   },
@@ -82,7 +82,7 @@ export function parser(
     return {
       key: repeat,
       terms: query,
-    }
+    };
   }
   default:
     if (

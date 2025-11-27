@@ -95,6 +95,6 @@ export default function (
         ) + Space.Hair
       : badge || Space.None,
   })
-    + space[width]!
-    + headline;
+  + space[width]!
+  + headline;
 }

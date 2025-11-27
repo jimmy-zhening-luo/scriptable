@@ -214,7 +214,7 @@ export default class Time {
   }
 
   public print(
-    format: string = "MMM d, y 'at' h:mm:ss a",
+    format = "MMM d, y 'at' h:mm:ss a",
   ) {
     (Time.printer ??= new DateFormatter)
       .dateFormat = format;
