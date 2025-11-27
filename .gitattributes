@@ -42,3 +42,4 @@ LICENSE text eol=lf
 *.py text eol=lf
 *.jinja text eol=lf
 *.example text eol=lf
+*.code-snippets text eol=lf
