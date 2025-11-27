@@ -1,9 +1,10 @@
 declare namespace Newable {
   export class Class {
-    public letter: string;
+    public char: string;
   }
-  export abstract class Prototype<Letter extends string> {
-    public letter: Letter;
+  export abstract class Prototype<Char extends string> {
+    public char: Char;
+    public charPlus: `${Char}+`;
   }
   export abstract class ChildA extends Prototype<"A"> {}
   export abstract class ChildB extends Prototype<"B"> {}
