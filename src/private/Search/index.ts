@@ -60,7 +60,7 @@ export function parser(
           Selector.Primary + query[1]! as stringful,
         );
       else
-        query[0] = Selector.Primary;
+        query[0] = Selector.Primary as stringful;
     
     else
       query[0] = term;
