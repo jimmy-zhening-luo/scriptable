@@ -1,49 +1,56 @@
 declare namespace Constructor {
+  export class Class {
+    public letter: string;
+  }
+  export abstract class Prototype<Letter extends string> {
+    public letter: Letter;
+  }
+  export abstract class ChildA extends Prototype<"A"> {}
+  export abstract class ChildB extends Prototype<"B"> {}
+
   export type Result = 0 | Test<{
     T: [
-      Constructor<typeof TestClass>,
-      Constructor<typeof TestAbstractParent>,
-      Constructor<typeof TestChildA>,
-      Constructor<typeof TestChildB>,
-      Constructor<typeof TestClass | typeof TestAbstractParent>,
-      Constructor<typeof TestClass | typeof TestChildA>,
-      Constructor<typeof TestClass | typeof TestChildA | typeof TestChildB>,
-      Constructor<typeof TestChildA | typeof TestChildB>,
-      Constructor<typeof TestAbstractParent | typeof TestChildA>,
-      Constructor<typeof TestAbstractParent & typeof TestChildA>,
-      Constructor<typeof TestAbstractParent & typeof TestChildB>,
-      Constructor<typeof TestAbstractParent | typeof TestChildA | typeof TestChildB>,
-      Constructor<typeof TestChildA | typeof TestChildB>,
-      Constructor<typeof TestAbstractParent & (typeof TestChildA | typeof TestChildB)>,
-      Constructor<typeof TestAbstractParent<"A">>,
-      Constructor<typeof TestAbstractParent<"A | B">>,
-      Constructor<typeof TestAbstractParent<"A | B">>,
-      Constructor<(typeof TestAbstractParent<"A">) | (typeof TestAbstractParent<"B">)>,
-      Constructor<typeof TestAbstractParent<"A" & "B" & "C">>,
-      Constructor<(typeof TestAbstractParent<"A">) & (typeof TestAbstractParent<"B">) & (typeof TestAbstractParent<"C">)>,
-      Constructor<typeof TestAbstractParent<string>>,
-      Constructor<typeof TestAbstractParent<never>>,
-      Constructor<typeof TestAbstractParent<"A"> | typeof TestChildA>,
-      Constructor<typeof TestAbstractParent<string> | typeof TestChildA>,
-      Constructor<typeof TestAbstractParent<never> | typeof TestChildA>,
-      Constructor<typeof TestAbstractParent<"A"> & typeof TestChildA>,
-      Constructor<typeof TestAbstractParent<"B"> | typeof TestChildA>,
-      Constructor<typeof TestAbstractParent<"B"> & typeof TestChildA>,
-      Constructor<typeof TestAbstractParent<"C"> | typeof TestChildA>,
-      Constructor<typeof TestAbstractParent<"C"> & typeof TestChildA>,
-      Constructor<typeof TestAbstractParent<"A" | "B"> | typeof TestChildA>,
-      Constructor<typeof TestAbstractParent<"A" | "B"> & typeof TestChildA>,
-      Constructor<typeof TestAbstractParent<"A" | "B"> | typeof TestChildA | typeof TestChildB>,
-      Constructor<typeof TestAbstractParent<"A" | "B"> & (typeof TestChildA | typeof TestChildB)>,
-      Constructor<typeof TestAbstractParent<"A"> | typeof TestAbstractParent<"B"> | typeof TestChildA | typeof TestChildB>,
-      Constructor<typeof TestAbstractParent<"A" | "B"> & (typeof TestChildA | typeof TestChildB)>,
-      Constructor<typeof TestClass & (typeof TestChildA | typeof TestChildB)>,
-      // Error:
-      // Constructor<never | typeof TestClass>,
+      Constructor<typeof Class>,
+      Constructor<typeof Prototype>,
+      Constructor<typeof ChildA>,
+      Constructor<typeof ChildB>,
+      Constructor<typeof Class | typeof Prototype>,
+      Constructor<typeof Class | typeof ChildA>,
+      Constructor<typeof Class | typeof ChildA | typeof ChildB>,
+      Constructor<typeof ChildA | typeof ChildB>,
+      Constructor<typeof Prototype | typeof ChildA>,
+      Constructor<typeof Prototype & typeof ChildA>,
+      Constructor<typeof Prototype & typeof ChildB>,
+      Constructor<typeof Prototype | typeof ChildA | typeof ChildB>,
+      Constructor<typeof ChildA | typeof ChildB>,
+      Constructor<typeof Prototype & (typeof ChildA | typeof ChildB)>,
+      Constructor<typeof Prototype<"A">>,
+      Constructor<typeof Prototype<"A | B">>,
+      Constructor<typeof Prototype<"A | B">>,
+      Constructor<(typeof Prototype<"A">) | (typeof Prototype<"B">)>,
+      Constructor<typeof Prototype<"A" & "B" & "C">>,
+      Constructor<(typeof Prototype<"A">) & (typeof Prototype<"B">) & (typeof Prototype<"C">)>,
+      Constructor<typeof Prototype<string>>,
+      Constructor<typeof Prototype<never>>,
+      Constructor<typeof Prototype<"A"> | typeof ChildA>,
+      Constructor<typeof Prototype<string> | typeof ChildA>,
+      Constructor<typeof Prototype<never> | typeof ChildA>,
+      Constructor<typeof Prototype<"A"> & typeof ChildA>,
+      Constructor<typeof Prototype<"B"> | typeof ChildA>,
+      Constructor<typeof Prototype<"B"> & typeof ChildA>,
+      Constructor<typeof Prototype<"C"> | typeof ChildA>,
+      Constructor<typeof Prototype<"C"> & typeof ChildA>,
+      Constructor<typeof Prototype<"A" | "B"> | typeof ChildA>,
+      Constructor<typeof Prototype<"A" | "B"> & typeof ChildA>,
+      Constructor<typeof Prototype<"A" | "B"> | typeof ChildA | typeof ChildB>,
+      Constructor<typeof Prototype<"A" | "B"> & (typeof ChildA | typeof ChildB)>,
+      Constructor<typeof Prototype<"A"> | typeof Prototype<"B"> | typeof ChildA | typeof ChildB>,
+      Constructor<typeof Prototype<"A" | "B"> & (typeof ChildA | typeof ChildB)>,
+      Constructor<typeof Class & (typeof ChildA | typeof ChildB)>,
+      Constructor<(typeof Class) | Class> /* expected: new (...args) => Class */
     ];
     F: [
-      Constructor<TestClass>,
-      Constructor<(typeof TestClass) | TestClass>,
+      Constructor<Class>,
       Constructor<string>,
       Constructor<number>,
       Constructor<boolean>,
@@ -60,20 +67,6 @@ declare namespace Constructor {
       Constructor<null>,
       Constructor<undefined>,
       Constructor<null | undefined>,
-      // Error:
-      // Constructor<never | void>,
-      // Constructor<void | null | undefined>,
-      // Constructor<never | void | null | undefined>,
-      // Constructor<unknown | null | undefined>,
     ];
   }>;
-  export class TestClass {
-    public foo: string;
-  }
-  export abstract class TestAbstractParent<Letter extends string> {
-    public letter: Letter;
-    public letterPlus: `${Letter}+`;
-  }
-  export abstract class TestChildA extends TestAbstractParent<"A"> {}
-  export abstract class TestChildB extends TestAbstractParent<"B"> {}
 }

@@ -1,5 +1,5 @@
-declare type Constructor<Ctor> = [Ctor] extends [never]
-  ? never
-  : [Ctor] extends [abstract new (...args: infer Args) => infer Instance]
-      ? new (...args: Args) => Instance
-      : never;
+declare type Constructor<Ctor> = [Ctor] extends [
+  abstract new (...arguments: infer Arguments) => infer Instance
+]
+  ? new (...arguments: Arguments) => Instance
+  : never;
