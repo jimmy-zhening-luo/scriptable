@@ -82,7 +82,7 @@ export function parser(
       void query.shift();
 
     return {
-      key: Trigger.Repeat,
+      key: Trigger.Repeat as stringful,
       terms: query,
     };
   }
