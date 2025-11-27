@@ -42,7 +42,9 @@ await new class Event extends DateWidget {
           tomorrow,
           now.in(Window.Future),
         ),
-    start = event && new Event.Time(event.startDate) || now;
+    start = event
+      ? new Event.Time(event.startDate)
+      : now;
 
     this.url = "https://calendar.google.com/calendar/u/0/r/3day/"
       + start.print("y/MM/dd");
