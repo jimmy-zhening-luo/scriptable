@@ -8,6 +8,9 @@
       "path": "time",
     },
     {
+      "path": "calendar",
+    },
+    {
       "path": "location",
     },
     {
