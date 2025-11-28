@@ -1,3 +1,3 @@
 export interface EventSetting {
-  additional?: string;
+  additional?: string[];
 }
