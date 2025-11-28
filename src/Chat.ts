@@ -6,6 +6,6 @@ void new class Chat extends Shortcut {
   protected runtime() {
     const { input = "" } = this;
 
-    return input;
+    console.log(input);
   }
 }().run()
