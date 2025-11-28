@@ -1,3 +1,3 @@
-export default interface {
+export interface EventSetting {
   additional?: string;
 }

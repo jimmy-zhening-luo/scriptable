@@ -1,11 +1,11 @@
 "pink calendar-alt";
 import DateWidget from "./app/widget/date";
 import print from "./private/Event";
-import type Setting from "./private/Event/setting";
+import type { EventSetting } from "./private/Event/setting";
 
 type Time = Instance<typeof DateWidget.Time>;
 
-await new class Event extends DateWidget<Setting> {
+await new class Event extends DateWidget<EventSetting> {
   protected async runtime() {
     const { additional } = this.setting,
     primary = await Calendar.defaultForEvents(),
