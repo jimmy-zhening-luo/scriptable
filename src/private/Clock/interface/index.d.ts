@@ -1,5 +1,5 @@
-import type { Timezone } from "../../../lib/time/timezone";
-import type { IWeatherApiRequest } from "./api";
+import type { Timezone } from "../../../../lib/time/timezone";
+import type { IWeatherApiRequest } from "../api";
 
 export type { SunCache } from "./cache";
 export interface ClockSetting {
