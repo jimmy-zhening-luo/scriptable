@@ -11,8 +11,7 @@ export default class {
     reverse = false,
     allDay = false,
   ) {
-    if (!this.subscription)
-      this.subscription = await this.subscribe();
+    this.subscription ||= await this.subscribe();
 
     const events = await CalendarEvent.between(
       from,
@@ -71,7 +70,7 @@ export default class {
     const calendars = this.calendars.length
       ? await Promise.all(
           this.calendars.map(
-            async (calendar) => await Calendar.forEventsByTitle(calendar),
+            async calendar => Calendar.forEventsByTitle(calendar),
           ),
         )
       : [];
