@@ -1,4 +1,4 @@
-import type { Accuracy } from "./accuracy";
+import type { Accuracy } from "./types";
 
 export default async function (
   accuracy: Accuracy = 1e-1,

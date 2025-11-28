@@ -3,14 +3,13 @@ import Shortcut from "./app";
 import * as search from "./private/Search";
 import type {
   Setting,
-  Query,
   Output,
+  Query,
 } from "./private/Search/types";
 
 void new class Search extends Shortcut<
   Setting,
-  Output,
-  string
+  Output
 > {
   protected runtime() {
     const {

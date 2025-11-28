@@ -1,7 +1,7 @@
 {
   "files": [
     "index.ts",
-    "method.d.ts",
+    "types/index.d.ts",
   ],
   "extends": "../tsconfig.json",
 }

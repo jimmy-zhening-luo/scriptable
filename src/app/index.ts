@@ -9,7 +9,7 @@ const enum InputSource {
 export default abstract class<
   Setting = never,
   Output = void,
-  Input extends object | Unflat<string, true> = never,
+  Input extends object | Unflat<string, true> = string,
 > extends IApp<
     Setting,
     Void<Output>,

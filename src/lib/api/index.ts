@@ -1,4 +1,4 @@
-import type { Method } from "./method";
+import type { Method } from "./types";
 
 export default class {
   public readonly query;
@@ -29,6 +29,7 @@ export default class {
     method: Method = "GET",
     query?: FieldTable,
     headers?: FieldTable,
+    body?: Record<string, unknown>,
   ) {
     const requery = query
       ? new Map(
@@ -59,6 +60,10 @@ export default class {
 
     if (method !== "GET")
       request.method = method;
+    if (
+      body !== undefined
+      && method !== "GET"
+    )
 
     const reheaders = headers
       ? new Map(
