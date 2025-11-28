@@ -11,7 +11,7 @@ export default class {
     reverse = false,
     allDay = false,
   ) {
-    this.subscription ??= await this.subscribe();
+    void (this.subscription ??= await this.subscribe());
 
     const events = await CalendarEvent.between(
       from,
