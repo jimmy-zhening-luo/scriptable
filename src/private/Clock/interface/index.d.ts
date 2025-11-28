@@ -1,4 +1,4 @@
-import type { Timezone } from "../../../lib/time/timezone";
+import type { Timezone } from "../../../lib/time/types";
 import type { IWeatherApiRequest } from "./api";
 
 export type { SunCache } from "./cache";

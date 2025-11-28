@@ -1,5 +1,7 @@
-import type { Dateful } from "./types";
-import type { Timezone } from "./types/timezone";
+import type {
+  Dateful,
+  Timezone,
+} from "./types";
 
 const enum Per {
   millisecond = 1,
