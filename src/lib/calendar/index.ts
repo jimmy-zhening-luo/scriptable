@@ -1,23 +1,10 @@
 import type { Method } from "./method";
 
 export default class {
-  public readonly calendars: Calendar[];
-
   constructor(
-    calendars?: string[],
-    primary = true,
-  ) {
-    this.calendars = calendars
-      ? await Promise.all(
-          calendars.map(
-            async (calendar) => await Calendar.forEventsByTitle(calendar),
-          ),
-        )
-      : [];
-
-    if (primary)
-      this.calendar[this.calendar.length] = await Calendar.defaultForEvents();
-  }
+    public readonly calendars = [] as string[],
+    public readonly primary = true,
+  ) {}
 
   public async events(
     start: Date,
@@ -29,7 +16,7 @@ export default class {
     const events = await CalendarEvent.between(
       from,
       to,
-      this.calendars,
+      (this.subscription ??= this.subscribe),
     ),
     filtered = allDay
       ? events
@@ -79,9 +66,20 @@ export default class {
     )[0];
   }
 
-  public toString() {
-    return this.calendars.map(
-      calendar => calendar.title,
-    );
+  private async subscribe() {
+    const calendars ??= calendars
+      ? await Promise.all(
+          calendars.map(
+            async (calendar) => await Calendar.forEventsByTitle(calendar),
+          ),
+        )
+      : [];
+
+    if (primary)
+      calendars[calendars.length] = await Calendar.defaultForEvents();
+
+    return calendars;
   }
+
+  private subscription?: Calendar[];
 }
