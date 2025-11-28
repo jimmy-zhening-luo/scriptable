@@ -26,10 +26,10 @@ await new class Chat extends Shortcut<
       {
         "OpenAI-Organization": setting.auth.org,
       },
-      setting.auth.agent,
+      setting.auth.token,
     ),
     { prompt = setting.prompt } = input,
-    { latitude, longitude } = await Clock.location(),
+    { latitude, longitude } = await location(),
     now = new Time,
     { text, output } = JSON.parse(
       await api.request(
@@ -64,7 +64,7 @@ await new class Chat extends Shortcut<
         const json = JSON.parse(out) as FieldTable;
 
         return prompt.answer
-          ? json[answer] ?? null
+          ? json[prompt.answer] ?? null
           : json;
       }
 
