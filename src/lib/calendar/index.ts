@@ -14,7 +14,7 @@ export default class {
     const events = await CalendarEvent.between(
       from,
       to,
-      (this.subscription ??= this.subscribe),
+      (this.subscription ??= await this.subscribe),
     ),
     filtered = allDay
       ? events
