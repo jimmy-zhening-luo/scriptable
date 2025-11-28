@@ -64,6 +64,7 @@ export default class {
       body !== undefined
       && method !== "GET"
     )
+      request.body = JSON.stringify(body);
 
     const reheaders = headers
       ? new Map(
