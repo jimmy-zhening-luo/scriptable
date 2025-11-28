@@ -65,7 +65,7 @@ export default class {
   }
 
   private async subscribe() {
-    const calendars ??= this.calendars.length
+    const calendars = this.calendars.length
       ? await Promise.all(
           this.calendars.map(
             async (calendar) => await Calendar.forEventsByTitle(calendar),
