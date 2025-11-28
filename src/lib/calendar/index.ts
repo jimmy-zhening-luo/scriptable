@@ -1,6 +1,6 @@
 export default class {
   constructor(
-    public readonly calendars = [] as string[],
+    public readonly calendars: string[] = [],
     public readonly primary = true,
   ) {}
 
@@ -11,7 +11,7 @@ export default class {
     reverse = false,
     allDay = false,
   ) {
-    this.subscription ||= await this.subscribe();
+    this.subscription ??= await this.subscribe();
 
     const events = await CalendarEvent.between(
       from,
