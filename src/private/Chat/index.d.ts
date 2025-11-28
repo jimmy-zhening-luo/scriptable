@@ -27,6 +27,6 @@ export interface Response {
     {
       content?: [Field<"text">];
       input?: string;
-    }
+    },
   ];
 }

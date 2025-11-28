@@ -73,4 +73,4 @@ await new class Chat extends Shortcut<
 
     return payload.input ?? null;
   }
-}().run()
+}().run();
