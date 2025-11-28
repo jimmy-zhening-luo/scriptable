@@ -60,10 +60,8 @@ export default class {
 
     if (method !== "GET")
       request.method = method;
-    if (
-      body !== undefined
-      && method !== "GET"
-    )
+
+    if (body !== undefined)
       request.body = JSON.stringify(body);
 
     const reheaders = headers
