@@ -21,18 +21,21 @@ await new class Event extends DateWidget<EventSetting> {
     const now = new Event.Time,
     { tomorrow } = now,
     event = await calendar.next(
-      now.ago(Window.Skew),
-      now.eod,
+      now.ago(Window.Skew).date(),
+      now.eod.date(),
     )
     ?? await calendar.next(
-      tomorrow,
-      now < now.at(Window.DayMinus)
-        ? now.in(Window.DayPlus)
-        : tomorrow.eod,
+      tomorrow.date(),
+      (
+        now < now.at(Window.DayMinus)
+          ? now.in(Window.DayPlus)
+          : tomorrow.eod
+      )
+        .date(),
     )
     ?? await calendar.next(
-      tomorrow,
-      now.in(Window.Future),
+      tomorrow.date(),
+      now.in(Window.Future).date(),
     ),
     start = event
       ? new Event.Time(event.startDate)
