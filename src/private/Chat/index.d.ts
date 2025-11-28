@@ -6,6 +6,7 @@ export interface Prompt {
 }
 
 export interface Setting extends Prompt {
+  api: string;
   auth: Field<
     | "token"
     | "org"
@@ -13,6 +14,7 @@ export interface Setting extends Prompt {
 }
 
 export interface Input extends Partial<Prompt> {
+  input: string;
   variables?: FieldTable;
   metadata?: FieldTable;
 }
