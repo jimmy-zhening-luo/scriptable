@@ -5,8 +5,8 @@ export default class {
   ) {}
 
   public async events(
-    start: Date,
-    end: Date,
+    from: Date,
+    to: Date,
     limit?: number,
     reverse = false,
     allDay = false,
@@ -33,14 +33,14 @@ export default class {
   }
 
   public async next(
-    start: Date,
-    end: Date,
+    from: Date,
+    to: Date,
     allDay?: boolean,
   ) {
     return (
       await this.events(
-        start,
-        end,
+        from,
+        to,
         1,
         false,
         allDay,
@@ -49,14 +49,14 @@ export default class {
   }
 
   public async last(
-    start: Date,
-    end: Date,
+    from: Date,
+    to: Date,
     allDay?: boolean,
   ) {
     return (
       await this.events(
-        start,
-        end,
+        from,
+        to,
         1,
         true,
         allDay,
@@ -65,15 +65,15 @@ export default class {
   }
 
   private async subscribe() {
-    const calendars ??= calendars
+    const calendars ??= this.calendars.length
       ? await Promise.all(
-          calendars.map(
+          this.calendars.map(
             async (calendar) => await Calendar.forEventsByTitle(calendar),
           ),
         )
       : [];
 
-    if (primary)
+    if (this.primary)
       calendars[calendars.length] = await Calendar.defaultForEvents();
 
     return calendars;
