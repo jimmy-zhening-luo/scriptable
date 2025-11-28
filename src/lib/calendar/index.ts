@@ -11,10 +11,13 @@ export default class {
     reverse = false,
     allDay = false,
   ) {
+    if (!this.subscription)
+      this.subscription = await this.subscribe();
+
     const events = await CalendarEvent.between(
       from,
       to,
-      (this.subscription ??= (await (this.subscribe))),
+      this.subscription,
     ),
     filtered = allDay
       ? events
