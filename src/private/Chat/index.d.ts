@@ -10,7 +10,7 @@ export interface ChatInput extends Dictionary {
   >;
 }
 
-export interface ChatSetting extends ChatInput {
+export interface ChatSetting extends Required<ChatInput> {
   auth: Field<
     | "token"
     | "org"
