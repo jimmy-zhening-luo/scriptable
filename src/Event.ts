@@ -4,8 +4,6 @@ import Calendar from "./lib/calendar";
 import print from "./private/Event";
 import type { EventSetting } from "./private/Event/setting";
 
-type Time = Instance<typeof DateWidget.Time>;
-
 await new class Event extends DateWidget<EventSetting> {
   protected async runtime() {
     const calendar = new Calendar(this.setting.additional);
