@@ -58,17 +58,17 @@ await new class Chat extends Shortcut<
     payload = output.at(-1)!;
 
     if (payload.content) {
-      const [{ text: out }] = payload.content;
+      const [{ text: answer }] = payload.content;
 
       if (text.format.schema) {
-        const json = JSON.parse(out) as FieldTable;
+        const json = JSON.parse(answer) as FieldTable;
 
         return prompt.answer
           ? json[prompt.answer] ?? null
           : json;
       }
 
-      return out;
+      return answer;
     }
 
     return payload.input ?? null;
