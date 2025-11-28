@@ -1,17 +1,23 @@
 "pink calendar-alt";
 import DateWidget from "./app/widget/date";
 import print from "./private/Event";
+import type Setting from "./private/Event/setting";
 
 type Time = Instance<typeof DateWidget.Time>;
 
-await new class Event extends DateWidget {
+await new class Event extends DateWidget<Setting> {
   protected async runtime() {
-    const calendar = [await Calendar.defaultForEvents()],
+    const { additional } = this.setting,
+    primary = await Calendar.defaultForEvents(),
+    secondary = additional && await Calendar.forEventsByTitle(additional),
+    calendars = secondary
+      ? [primary, secondary]
+      : [primary],
     find = async (from: Time, to: Time) => (
       await CalendarEvent.between(
         from.date(),
         to.date(),
-        calendar,
+        calendars,
       )
     )
       .find(({ isAllDay }) => !isAllDay);
