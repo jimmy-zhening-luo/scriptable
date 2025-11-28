@@ -1,5 +1,6 @@
 "pink calendar-alt";
 import DateWidget from "./app/widget/date";
+import Calendar from "./lib/calendar";
 import print from "./private/Event";
 import type { EventSetting } from "./private/Event/setting";
 
@@ -7,20 +8,7 @@ type Time = Instance<typeof DateWidget.Time>;
 
 await new class Event extends DateWidget<EventSetting> {
   protected async runtime() {
-    const { additional } = this.setting,
-    primary = await Calendar.defaultForEvents(),
-    secondary = additional && await Calendar.forEventsByTitle(additional),
-    calendars = secondary
-      ? [primary, secondary]
-      : [primary],
-    find = async (from: Time, to: Time) => (
-      await CalendarEvent.between(
-        from.date(),
-        to.date(),
-        calendars,
-      )
-    )
-      .find(({ isAllDay }) => !isAllDay);
+    const calendar = new Calendar(this.setting.additional);
 
     const enum Window {
       Skew = 0.5,
@@ -32,17 +20,17 @@ await new class Event extends DateWidget<EventSetting> {
     }
     const now = new Event.Time,
     { tomorrow } = now,
-    event = await find(
+    event = await calendar.next(
       now.ago(Window.Skew),
       now.eod,
     )
-    ?? await find(
+    ?? await calendar.next(
       tomorrow,
       now < now.at(Window.DayMinus)
         ? now.in(Window.DayPlus)
         : tomorrow.eod,
     )
-    ?? await find(
+    ?? await calendar.next(
       tomorrow,
       now.in(Window.Future),
     ),
