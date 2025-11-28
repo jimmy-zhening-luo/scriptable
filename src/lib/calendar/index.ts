@@ -1,5 +1,3 @@
-import type { Method } from "./method";
-
 export default class {
   constructor(
     public readonly calendars = [] as string[],
