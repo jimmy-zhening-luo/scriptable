@@ -32,30 +32,28 @@ await new class Chat extends Shortcut<
     { prompt = setting.prompt } = input,
     { latitude, longitude } = await location(),
     now = new Time,
-    { text, output } = (
-      await api.request(
-        "POST",
-        undefined,
-        undefined,
-        {
-          input: input.input,
-          prompt: {
-            id: prompt.id,
-            variables: {
-              latlong: latitude + "," + longitude,
-              date: now.print("y-MM-dd"),
-              time: now.print("HH:mm:00ZZZZZ"),
-              f_date: now.print("MMMM d, y"),
-              f_time: now.print("h:mm a"),
-              timezone: now.print("VV"),
-              weekday: now.print("EEEE"),
-              ...input.variables ?? {},
-            },
+    { text, output } = await api.request<Response>(
+      "POST",
+      undefined,
+      undefined,
+      {
+        input: input.input,
+        prompt: {
+          id: prompt.id,
+          variables: {
+            latlong: latitude + "," + longitude,
+            date: now.print("y-MM-dd"),
+            time: now.print("HH:mm:00ZZZZZ"),
+            f_date: now.print("MMMM d, y"),
+            f_time: now.print("h:mm a"),
+            timezone: now.print("VV"),
+            weekday: now.print("EEEE"),
+            ...input.variables ?? {},
           },
-          ...setting.options,
         },
-      )
-    ) as Response,
+        ...setting.options,
+      },
+    ),
     payload = output.at(-1)!;
 
     if (payload.content) {
