@@ -14,7 +14,7 @@ export default function (error: unknown) {
   }
 
   const root = trace.shift()!,
-  serialize = (frame: unknown) => typeof frame === "object"
+  serialize = (frame: unknown) => frame & typeof frame === "object"
     ? Error.isError(frame)
       ? frame.name === "Error"
         ? frame.message
