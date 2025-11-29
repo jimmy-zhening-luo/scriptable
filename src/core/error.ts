@@ -19,7 +19,7 @@ export default function (error: unknown) {
       ? frame.name === "Error"
         ? frame.message
         : String(frame)
-      : JSON.serialize(frame)
+      : JSON.stringify(frame)
     : String(frame),
   header = serialize(root),
   stack = trace.map(serialize).join("\n");
