@@ -20,7 +20,7 @@ export default function (error: unknown) {
         ? frame.message
         : String(frame)
       : JSON.stringify(frame)
-    : String(frame as string),
+    : String(frame as primitive),
   header = serialize(root),
   stack = trace.map(serialize).join("\n");
 
