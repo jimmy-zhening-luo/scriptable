@@ -24,6 +24,7 @@ await new class Chat extends Shortcut<
       setting.api,
       undefined,
       {
+        "Content-Type": "application/json",
         "OpenAI-Organization": setting.auth.org,
       },
       setting.auth.token,
