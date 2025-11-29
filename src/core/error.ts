@@ -14,12 +14,12 @@ export default function (error: unknown) {
   }
 
   const root = trace.shift()!,
-  serialize = (frame: unknown) => frame & typeof frame === "object"
+  serialize = (frame: unknown) => typeof frame === "object"
     ? Error.isError(frame)
       ? frame.name === "Error"
         ? frame.message
         : String(frame)
-      : JSON.stringify(frame)
+      : JSON.stringify(frame as unknown)
     : String(frame),
   header = serialize(root),
   stack = trace.map(serialize).join("\n");
