@@ -13,8 +13,22 @@ export default function (error: unknown) {
       [trace[0], trace[rootIndex]] = [trace[rootIndex], trace[0]];
   }
 
+  const root = trace.shift()!,
+  serialize = (frame: unknown) => typeof frame === "object"
+    ? Error.isError(frame)
+      ? frame.name === "Error"
+        ? frame.message
+        : String(frame)
+      : JSON.serialize(frame)
+    : String(frame),
+  header = serialize(root),
+  stack = trace.map(serialize).join("\n");
+
+  console.error(header);
+  console.error(stack);
+
   return {
-    root: trace.shift()!,
-    trace,
+    header,
+    stack,
   };
 }

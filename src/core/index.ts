@@ -62,17 +62,8 @@ export default abstract class IApp<
       this.output(output);
     }
     catch (e) {
-      const { root, trace } = error(e),
-      serialize = (frame: unknown) => Error.isError(frame)
-        ? frame.name === "Error"
-          ? frame.message
-          : String(frame)
-        : File.serialize(frame),
-      header = serialize(root),
-      stack = trace.map(serialize).join("\n");
+      const { header, stack } = error(e);
 
-      console.error(header);
-      console.error(stack);
       this.notify(stack, header);
 
       throw e;
