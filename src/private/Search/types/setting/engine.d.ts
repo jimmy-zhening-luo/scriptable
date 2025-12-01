@@ -1,14 +1,9 @@
+interface IEngineBase {
+  prepend?: string;
+  separator?: string;
+}
+
 export type IEngine<
   Engine extends string,
-  Flags extends string = never,
-  Fields extends string = never,
   Action = stringful,
->
-= & Record<Engine, Action>
-  & Flag<Flags>
-  & Field<
-    never,
-    | Fields
-    | "prepend"
-    | "separator"
-  >;
+> = IEngineBase & Record<Engine, Action>;

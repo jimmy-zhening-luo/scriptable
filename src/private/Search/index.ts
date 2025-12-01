@@ -40,10 +40,10 @@ export function parser(
   }
 
   const [first] = query,
-  depth = first.length - 1,
+  weight = first.length - 1,
   span = query.length - 1;
 
-  if (!depth && !span)
+  if (!weight && !span)
     if (first === Reserved.Repeat)
       return { prior: true };
     else {
@@ -88,7 +88,7 @@ export function parser(
       manifest: setting.engines[Reserved.Translate as stringful]!,
     };
   case Reserved.Repeat: {
-    if (depth)
+    if (weight)
       select(first.slice(1) as stringful);
     else
       void query.shift();
@@ -102,7 +102,7 @@ export function parser(
     if (
       f0 >= "0"
       && f0 <= "9"
-      || depth
+      || weight
       && (
         f0 === Selector.Backup
         && first[1]! >= "0"
@@ -117,7 +117,7 @@ export function parser(
       };
   }
 
-  if (depth) {
+  if (weight) {
     const keyterm = (/^(\w+|\W+)\b(.+)/u)
       .exec(first) as Null<Triple<stringful>>;
 
@@ -136,7 +136,7 @@ export function parser(
   const candidate = query[0].toLocaleLowerCase() as stringful;
 
   if (candidate === Reserved.Repeat) {
-    query.shift();
+    void query.shift();
 
     return {
       terms: query,
@@ -144,33 +144,37 @@ export function parser(
     };
   }
 
-  const key = candidate.length === 1
-    ? candidate in setting.chars
-      ? candidate
-      : null
-    : candidate in setting.engines
-      ? candidate
-      : setting.alias[candidate];
+  const override = setting.alias[candidate],
+  mask = typeof alias === "object",
+  alias = mask ? override.alias : override,
+  key = alias ?? candidate,
+  manifest = key.length === 1
+    ? setting.chars[key]
+    : setting.engines[key];
 
-  if (!key)
-    return query.length === 1
-      ? {
-          key: Reserved.None as stringful,
-          manifest: setting.engines[Reserved.None as stringful]!,
-        }
-      : {
-          key: Reserved.Ask as stringful,
-          terms: query,
-          manifest: setting.engines[Reserved.Ask as stringful]!,
-        };
+  if (manifest) {
+    void query.shift();
 
-  query.shift();
+    return {
+      key,
+      terms: query,
+      manifest: mask && typeof manifest === "object"
+        ? {
+            ...manifest,
+            ...alias as Exclude<typeof alias, string>,
+          }
+        : manifest,
+    };
+  }
 
-  return {
-    key,
-    terms: query,
-    manifest: key.length === 1
-      ? setting.chars[key]!
-      : setting.engines[key]!,
-  };
+  return query.length === 1
+    ? {
+        key: Reserved.None as stringful,
+        manifest: setting.engines[Reserved.None as stringful]!,
+      }
+    : {
+        key: Reserved.Ask as stringful,
+        terms: query,
+        manifest: setting.engines[Reserved.Ask as stringful]!,
+      };
 }
