@@ -159,7 +159,7 @@ export function parser(
           manifest: setting.engines[Reserved.None as stringful]!,
         }
       : {
-          key: Reserved.Ask,
+          key: Reserved.Ask as stringful,
           terms: query,
           manifest: setting.engines[Reserved.Ask as stringful]!,
         };
