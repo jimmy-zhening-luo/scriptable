@@ -161,7 +161,7 @@ export function parser(
       manifest: mask && typeof manifest === "object"
         ? {
             ...manifest,
-            ...alias as Exclude<typeof alias, string>,
+            ...alias as Exclude<typeof alias, Unflat<string, true>>,
           }
         : manifest,
     };
