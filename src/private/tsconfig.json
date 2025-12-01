@@ -1,12 +1,17 @@
 {
-  "extends": "../tsconfig-src-types.json",
-  "include": [
-    "../../typings/**/*",
-    "**/*",
-  ],
+  "extends": "../tsconfig-src-types",
   "references": [
     {
-      "path": "../lib",
+      "path": "Chat",
+    },
+    {
+      "path": "Clock",
+    },
+    {
+      "path": "Event",
+    },
+    {
+      "path": "Search",
     },
   ],
 }

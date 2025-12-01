@@ -1,7 +1,6 @@
 {
   "files": [
-    "index.ts",
-    "types/index.d.ts",
+    "index.d.ts",
   ],
   "extends": "..",
 }

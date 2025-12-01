@@ -1,15 +1,12 @@
 {
   "files": [
     "index.ts",
-    "date.ts",
+    "setting.d.ts",
   ],
   "extends": "..",
   "references": [
     {
-      "path": "iwidget",
-    },
-    {
-      "path": "../../lib/ui",
+      "path": "../../lib/time",
     },
   ],
 }

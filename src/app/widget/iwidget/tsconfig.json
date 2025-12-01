@@ -2,7 +2,7 @@
   "files": [
     "index.ts",
   ],
-  "extends": "../tsconfig.json",
+  "extends": "..",
   "references": [
     {
       "path": "../../../core",

@@ -1,0 +1,15 @@
+{
+  "extends": "..",
+  "include": [
+    "../../../typings/**/*",
+    "**/*",
+  ],
+  "references": [
+    {
+      "path": "../../lib/api",
+    },
+    {
+      "path": "../../lib/time",
+    },
+  ],
+}

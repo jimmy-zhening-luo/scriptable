@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig-src-types.json",
+  "extends": "../tsconfig-src-types",
   "references": [
     {
       "path": "api",
