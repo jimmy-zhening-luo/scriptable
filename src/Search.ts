@@ -24,10 +24,10 @@ void new class Search extends Shortcut<
     type QueryHistory = Required<
       Omit<Query, "manifest">
     >;
-    const history = (history?: string) => history
-      ? JSON.parse(history) as QueryHistory
+    const history = (history?: string): History => history
+      ? JSON.parse(history) as History
       : {
-          key: Reserved.None,
+          key: Reserved.None as stringful,
           prior: true,
         },
     {
