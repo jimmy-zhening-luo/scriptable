@@ -48,7 +48,7 @@ export function parser(
       return { prior: true };
     else {
       const key = first.toLocaleLowerCase() as stringful;
-  
+
       return key in setting.chars
         ? {
             key,
