@@ -12,7 +12,7 @@ interface WebEngine extends IEngine<
   force?: boolean;
 }
 
-interface IAlias extends AppEngine, WebEngine {
+interface Alias extends AppEngine, WebEngine {
   alias: stringful;
 }
 

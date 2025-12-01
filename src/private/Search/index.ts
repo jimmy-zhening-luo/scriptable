@@ -145,7 +145,7 @@ export function parser(
   }
 
   const override = setting.alias[candidate],
-  mask = typeof alias === "object",
+  mask = typeof override === "object",
   alias = mask ? override.alias : override,
   key = alias ?? candidate,
   manifest = key.length === 1
