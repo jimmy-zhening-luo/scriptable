@@ -158,10 +158,10 @@ export function parser(
     return {
       key,
       terms: query,
-      manifest: mask && typeof manifest === "object"
+      manifest: mask && typeof manifest === "object" && !Array.isArray(manifest)
         ? {
             ...manifest,
-            ...alias as Exclude<typeof alias, Unflat<string, true>>,
+            ...override,
           }
         : manifest,
     };
