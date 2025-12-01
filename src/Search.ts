@@ -44,7 +44,7 @@ void new class Search extends Shortcut<
           key,
           terms,
           prior: true,
-        } satisfies Required<Omit<Query, Manifest>>,
+        } satisfies Required<Omit<Query, "manifest">>,
       );
 
     return search.resolver(
