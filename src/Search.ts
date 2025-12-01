@@ -15,53 +15,42 @@ void new class Search extends Shortcut<
     const {
       setting,
       input = "",
-    } = this,
-    { skip } = setting.reserved,
-    history = (history?: string) => history
+    } = this;
+
+    const enum Reserved {
+      None = "none"
+      Repeat = "/",
+    }
+    const history = (history?: string) => history
       ? JSON.parse(history) as Query
       : {
-          key: skip,
-          terms: [],
+          key: Reserved.None,
           prior: true,
         },
     {
-      key,
-      terms,
-      prior,
+      key = history(this.get()).key,
+      manifest = key.length === 1
+        ? setting.chars[key]!
+        : setting.engines[key]!,
+      terms = [],
+      prior = false,
     } = input
-      ? search.parser(
-          input,
-          setting,
-          skip,
-        )
+      ? search.parser(input, setting)
       : history(this.get());
 
-    const enum Reserved {
-      Repeat = "/",
-    }
-    const engine = key === Reserved.Repeat
-      ? history(this.get()).key
-      : key;
-
-    if (
-      !prior
-      && engine !== skip
-      && engine !== Reserved.Repeat
-    )
+    if (!prior && key !== Reserved.None)
       this.set(
         {
-          key: engine,
+          key,
           terms,
           prior: true,
-        } satisfies Query,
+        } satisfies Required<Omit<Query, Manifest>>,
       );
 
     return search.resolver(
-      engine,
+      key,
       terms,
-      engine.length === 1
-        ? setting.chars[engine]!
-        : setting.engines[engine]!,
+      manifest,
     );
   }
 }().run();

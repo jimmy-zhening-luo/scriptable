@@ -18,11 +18,4 @@ export interface Setting {
   alias: Tableful<stringful>;
   chars: Tableful<Engine>;
   engines: Tableful<Engine>;
-  reserved: Fieldful<
-    | "ask"
-    | "go"
-    | "math"
-    | "skip"
-    | "translate"
-  >;
 }

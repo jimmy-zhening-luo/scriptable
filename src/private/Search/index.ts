@@ -4,7 +4,6 @@ export { resolver } from "./resolver";
 export function parser(
   input: string,
   setting: Setting,
-  skip: stringful,
 ): Query {
   const _input = input.trimStart(),
   hotkey = input.length - _input.length,
@@ -15,39 +14,51 @@ export function parser(
       (token): token is stringful => token as unknown as boolean,
     ) as Arrayful<stringful>;
 
+  const enum Reserved {
+    None = "none"
+    Ask = "ask"
+    Math = "math"
+    Translate = "translate"
+    Repeat = "/",
+  }
+
   switch (hotkey) {
   case 0:
     break;
   case 1:
     return {
-      key: setting.reserved.ask,
+      key: Reserved.Ask as stringful,
       terms: query,
+      manifest: setting.engines[Reserved.Ask as stringful]!,
     };
   default:
     return {
-      key: setting.reserved.translate,
+      key: Reserved.Translate as stringful,
       terms: query,
+      manifest: setting.engines[Reserved.Translate as stringful]!,
     };
   }
 
-  const enum Trigger {
-    Repeat = "/",
-  }
   const [first] = query,
   depth = first.length - 1,
   span = query.length - 1;
 
-  if (!depth && !span) {
-    const candidate = first.toLocaleLowerCase() as stringful;
-
-    return {
-      key: candidate === Trigger.Repeat
-        || candidate in setting.chars
-        ? candidate
-        : skip,
-      terms: [],
-    };
-  }
+  if (!depth && !span)
+    if (first === Reserved.Repeat)
+      return { prior: true };
+    else {
+      const key = first.toLocaleLowerCase() as stringful;
+  
+      return key in setting.chars
+        ? {
+            key,
+            manifest: setting.chars[key]!,
+          }
+        : {
+            key: Reserved.None as stringful,
+            manifest: setting.engines[Reserved.None as stringful]!,
+          };
+    }
 
   const enum Selector {
     Primary = "'",
@@ -72,18 +83,19 @@ export function parser(
   switch (f0) {
   case Selector.Primary:
     return {
-      key: setting.reserved.translate,
+      key: Reserved.Translate as stringful,
       terms: query,
+      manifest: setting.engines[Reserved.Translate as stringful]!,
     };
-  case Trigger.Repeat: {
+  case Reserved.Repeat: {
     if (depth)
       select(first.slice(1) as stringful);
     else
       void query.shift();
 
     return {
-      key: Trigger.Repeat as stringful,
       terms: query,
+      prior: true,
     };
   }
   default:
@@ -99,8 +111,9 @@ export function parser(
       )
     )
       return {
-        key: setting.reserved.math,
+        key: Reserved.Math as stringful,
         terms: query,
+        manifest: setting.engines[Reserved.Math as stringful]!,
       };
   }
 
@@ -120,12 +133,21 @@ export function parser(
     }
   }
 
-  const candidate = query[0].toLocaleLowerCase() as stringful,
-  key = candidate.length === 1
-    ? candidate === Trigger.Repeat
-    || candidate in setting.chars
+  const candidate = query[0].toLocaleLowerCase() as stringful;
+
+  if (candidate === Reserved.Repeat) {
+    query.shift();
+
+    return {
+      terms: query,
+      prior: true,
+    };
+  }
+
+  const key = candidate.length === 1
+    ? candidate in setting.chars
       ? candidate
-      : undefined
+      : null
     : candidate in setting.engines
       ? candidate
       : setting.alias[candidate];
@@ -133,12 +155,13 @@ export function parser(
   if (!key)
     return query.length === 1
       ? {
-          key: skip,
-          terms: [],
+          key: Reserved.None as stringful,
+          manifest: setting.engines[Reserved.None as stringful]!,
         }
       : {
-          key: setting.reserved.ask,
+          key: Reserved.Ask,
           terms: query,
+          manifest: setting.engines[Reserved.Ask as stringful]!,
         };
 
   query.shift();
@@ -146,5 +169,8 @@ export function parser(
   return {
     key,
     terms: query,
+    manifest: key.length === 1
+      ? setting.chars[key]!
+      : setting.engines[key]!,
   };
 }

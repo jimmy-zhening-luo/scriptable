@@ -1,7 +1,7 @@
 import type { Setting } from "./types";
 
 export function resolver(
-  engine: stringful,
+  key: stringful,
   terms: stringful[],
   manifest: Setting["engines"][stringful],
 ) {
@@ -66,7 +66,7 @@ export function resolver(
       action: encode(terms, options),
     };
 
-  const { shortcut = engine } = options,
+  const { shortcut = key } = options,
   text = terms.join(" ") as stringful || null,
   notify = options.notify || null;
 
