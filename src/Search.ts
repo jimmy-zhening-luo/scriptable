@@ -21,11 +21,8 @@ void new class Search extends Shortcut<
       None = "none",
       Repeat = "/",
     }
-    type QueryHistory = Required<
-      Omit<Query, "manifest">
-    >;
-    const history = (history?: string): History => history
-      ? JSON.parse(history) as History
+    const history = (history?: string): Query => history
+      ? JSON.parse(history) as Query
       : {
           key: Reserved.None as stringful,
           prior: true,
