@@ -18,7 +18,7 @@ void new class Search extends Shortcut<
     } = this;
 
     const enum Reserved {
-      None = "none"
+      None = "none",
       Repeat = "/",
     }
     const history = (history?: string) => history
