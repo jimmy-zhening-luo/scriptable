@@ -15,10 +15,10 @@ export function parser(
     ) as Arrayful<stringful>;
 
   const enum Reserved {
-    None = "none"
-    Ask = "ask"
-    Math = "math"
-    Translate = "translate"
+    None = "none",
+    Ask = "ask",
+    Math = "math",
+    Translate = "translate",
     Repeat = "/",
   }
 
