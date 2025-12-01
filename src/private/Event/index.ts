@@ -68,7 +68,7 @@ export default function (
     Space.Thin,
     Space.Hair,
     Space.None,
-  ],
+  ] as const,
   headline = !width
     ? title
     : title
@@ -95,6 +95,6 @@ export default function (
         ) + Space.Hair
       : badge || Space.None,
   })
-  + space[width]!
+  + (space[width - 1]! ?? Space.FullThin)
   + headline;
 }
