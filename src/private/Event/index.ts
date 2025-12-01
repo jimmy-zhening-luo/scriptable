@@ -78,7 +78,7 @@ export default function (
         )
         .replaceAll(
           /[ \t]+/ug,
-          space[width]!,
+          space[width],
         );
 
   return start.time({
