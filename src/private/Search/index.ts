@@ -150,7 +150,9 @@ export function parser(
     };
   }
 
-  const override = setting.alias[candidate],
+  const override = candidate.length === 1
+    ? undefined
+    : setting.alias[candidate],
   mask = typeof override === "object",
   alias = mask ? override.alias : override,
   key = alias ?? candidate,
