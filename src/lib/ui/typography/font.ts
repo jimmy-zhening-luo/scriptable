@@ -5,7 +5,7 @@ export default class <
   | "Rounded",
 > {
   private readonly fonts: PartialRecord<
-    keyof typeof this,
+    keyof this,
     (size: number) => Font
   > = {};
 
