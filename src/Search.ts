@@ -47,16 +47,16 @@ void new class Search extends Shortcut<
       this.set(
         override
           ? {
-              key,
-              terms,
-              prior: true,
-            } satisfies History
+            key,
+            terms,
+            prior: true,
+          } satisfies History
           : {
-              key,
-              terms,
-              override,
-              prior: true,
-            } satisfies History,
+            key,
+            terms,
+            override,
+            prior: true,
+          } satisfies History,
       );
 
     return search.resolver(
