@@ -146,7 +146,7 @@ export function parser(
       key,
       terms: query,
       draft,
-      override,
+      override: prepend,
     };
   }
 
