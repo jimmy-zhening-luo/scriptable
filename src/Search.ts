@@ -49,12 +49,12 @@ void new class Search extends Shortcut<
           ? {
             key,
             terms,
+            override,
             prior: true,
           } satisfies History
           : {
             key,
             terms,
-            override,
             prior: true,
           } satisfies History,
       );
