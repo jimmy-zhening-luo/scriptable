@@ -29,13 +29,13 @@ export function parser(
     return {
       key: Reserved.Ask as stringful,
       terms: query,
-      manifest: setting.engines[Reserved.Ask as stringful]!,
+      manifest: setting.engines[Reserved.Ask as stringful] as { shortcut: stringful },
     };
   default:
     return {
       key: Reserved.Translate as stringful,
       terms: query,
-      manifest: setting.engines[Reserved.Translate as stringful]!,
+      manifest: setting.engines[Reserved.Translate as stringful] as { shortcut: stringful },
     };
   }
 
@@ -47,16 +47,22 @@ export function parser(
     if (first === Reserved.Repeat)
       return { prior: true };
     else {
-      const key = first.toLocaleLowerCase() as stringful;
+      const key = first.toLocaleLowerCase() as stringful,
+      draft = setting.chars[key],
+      manifest = draft && (
+        typeof draft === "object"
+          ? draft
+          : { url: draft }
+      );
 
-      return key in setting.chars
+      return manifest
         ? {
             key,
-            manifest: setting.chars[key]!,
+            manifest,
           }
         : {
             key: Reserved.None as stringful,
-            manifest: setting.engines[Reserved.None as stringful]!,
+            manifest: setting.engines[Reserved.None as stringful] as { shortcut: stringful },
           };
     }
 
@@ -85,7 +91,7 @@ export function parser(
     return {
       key: Reserved.Translate as stringful,
       terms: query,
-      manifest: setting.engines[Reserved.Translate as stringful]!,
+      manifest: setting.engines[Reserved.Translate as stringful] as { shortcut: stringful },
     };
   case Reserved.Repeat: {
     if (weight)
@@ -113,7 +119,7 @@ export function parser(
       return {
         key: Reserved.Math as stringful,
         terms: query,
-        manifest: setting.engines[Reserved.Math as stringful]!,
+        manifest: setting.engines[Reserved.Math as stringful] as { shortcut: stringful },
       };
   }
 
@@ -173,11 +179,11 @@ export function parser(
   return query.length === 1
     ? {
         key: Reserved.None as stringful,
-        manifest: setting.engines[Reserved.None as stringful]!,
+        manifest: setting.engines[Reserved.None as stringful] as { shortcut: stringful },
       }
     : {
         key: Reserved.Ask as stringful,
         terms: query,
-        manifest: setting.engines[Reserved.Ask as stringful]!,
+        manifest: setting.engines[Reserved.Ask as stringful] as { shortcut: stringful },
       };
 }

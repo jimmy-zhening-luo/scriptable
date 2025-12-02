@@ -28,7 +28,7 @@ void new class Search extends Shortcut<
       ? JSON.parse(history) as History
       : {
           key: Reserved.None as stringful,
-          manifest: setting.engines[Reserved.None as stringful]!,
+          manifest: setting.engines[Reserved.None as stringful] as { shortcut: stringful },
           prior: true,
         },
     parsed = input
