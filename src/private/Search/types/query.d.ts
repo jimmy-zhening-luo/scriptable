@@ -4,6 +4,6 @@ export interface Query {
   key?: stringful;
   terms?: stringful[];
   draft?: Setting["engines"][stringful];
-  override?: stringful;
+  override?: Undefined<stringful>;
   prior?: boolean;
 }
