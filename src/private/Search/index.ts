@@ -159,7 +159,7 @@ export function parser(
           terms: query,
           draft,
         };
-   }
+  }
 
   return query.length === 1
     ? {
