@@ -1,12 +1,9 @@
-import type { Setting } from "./types";
+import type { Query } from "./types";
 
 export function resolver(
   key: stringful,
   terms: stringful[],
-  manifest: Exclude<
-    Setting["engines"][stringful],
-    string
-  >,
+  manifest: Required<Query>["manifest"],
 ) {
   if (manifest.prepend)
     void terms.unshift(
