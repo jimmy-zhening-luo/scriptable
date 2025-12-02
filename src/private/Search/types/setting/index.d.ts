@@ -16,7 +16,7 @@ interface WebEngine extends IEngine<
 }
 
 interface Alias {
-  alias: stringful;
+  key: stringful;
   prepend: stringful;
 }
 
