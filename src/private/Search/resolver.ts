@@ -1,4 +1,4 @@
-import type { Setting } from "./types/engine";
+import type { Setting } from "./types";
 
 export function resolver(
   key: stringful,
