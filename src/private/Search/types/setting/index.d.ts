@@ -12,27 +12,15 @@ interface WebEngine extends IEngine<
   force?: boolean;
 }
 
+type Engine = AppEngine | WebEngine;
+
 interface Alias {
   alias: stringful;
   prepend?: stringful;
 }
 
-type Alias
-= | stringful
-  | AliasOverride;
-
-type Engine
-= | stringful
-  | AppEngine
-  | WebEngine;
-
-type StringOption<T extends object>
-
 export interface Setting {
-  alias: Tableful<
-    | stringful
-    | Alias
-  >;
-  chars: Tableful<Engine>;
-  engines: Tableful<Engine>;
+  alias: Tableful<Alias | stringful>;
+  chars: Tableful<Engine | stringful>;
+  engines: Tableful<Engine | stringful>;
 }

@@ -1,23 +1,21 @@
-import type { Setting } from "./types";
+import type { Setting } from "./types/engine";
 
 export function resolver(
   key: stringful,
   terms: stringful[],
-  manifest: Setting["engines"][stringful],
+  manifest: Exclude<
+    Setting["engines"][stringful],
+    string
+  >,
 ) {
-  const options = typeof manifest === "string"
-    || Array.isArray(manifest)
-    ? { url: manifest }
-    : manifest;
-
-  if (options.prepend)
+  if (manifest.prepend)
     void terms.unshift(
-      ...options.prepend.split(" ") as stringful[],
+      ...manifest.prepend.split(" ") as stringful[],
     );
 
   function encode(
     terms: readonly stringful[],
-    options: {
+    manifest: {
       url?: Unflat;
       force?: boolean;
       separator?: string;
@@ -29,12 +27,12 @@ export function resolver(
       SerializeStart = 'data:text/html,<meta http-equiv=refresh content="0;url=',
       SerializeEnd = '">',
     }
-    const { separator = UrlEncode.Separator } = options,
+    const { separator = UrlEncode.Separator } = manifest,
     action = terms
       .map(encodeURIComponent)
       .join(separator);
 
-    if (!options.url)
+    if (!manifest.url)
       return action as stringful || null;
 
     const plug = (url: string) => url.replace(
@@ -47,33 +45,33 @@ export function resolver(
       + UrlEncode.SerializeEnd
     ) as stringful;
 
-    return Array.isArray(options.url)
-      ? options.force
-        ? options
+    return Array.isArray(manifest.url)
+      ? manifest.force
+        ? manifest
             .url
             .map(plug)
             .map(force)
-        : options
+        : manifest
             .url
             .map(plug)
-      : options.force
-        ? force(plug(options.url))
-        : plug(options.url);
+      : manifest.force
+        ? force(plug(manifest.url))
+        : plug(manifest.url);
   }
 
-  if ("url" in options)
+  if ("url" in manifest)
     return {
-      action: encode(terms, options),
+      action: encode(terms, manifest),
     };
 
-  const { shortcut = key } = options,
+  const { shortcut = key } = manifest,
   text = terms.join(" ") as stringful || null,
-  notify = options.notify || null;
+  notify = manifest.notify || null;
 
   return {
     app: shortcut,
-    action: options.encode
-      ? encode(terms, options)
+    action: manifest.encode
+      ? encode(terms, manifest)
       : text,
     notify,
     label: notify && text,

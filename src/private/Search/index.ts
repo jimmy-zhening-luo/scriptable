@@ -151,24 +151,22 @@ export function parser(
   draft = key.length === 1
     ? setting.chars[key]
     : setting.engines[key],
-  manifest = draft && (typeof draft === "o"
+  manifest = draft && (
+    typeof draft === "object"
+      ? draft
+      : { url: draft }
+  );
 
-  if (draft) {
+  if (manifest) {
+    if (mask)
+      manifest.prepend = override.prepend;
+
     void query.shift();
-
-    if (mask) {
-      
-    }
 
     return {
       key,
       terms: query,
-      manifest: mask && typeof manifest === "object" && !Array.isArray(manifest)
-        ? {
-            ...manifest,
-            ...override,
-          }
-        : manifest,
+      manifest,
     };
   }
 
