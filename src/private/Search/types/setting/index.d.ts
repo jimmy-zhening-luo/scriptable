@@ -22,13 +22,15 @@ interface Alias {
 
 export interface Setting {
   alias: {
-    [key: stringful]: Alias | stringful;
-  };
-  chars: {
-    [key: stringful]: AppEngine | WebEngine | stringful;
+    [key: stringful]:
+      | Alias
+      | stringful;
   };
   engines: {
-    [key: stringful]: AppEngine | WebEngine | stringful;
+    [key: stringful]:
+      | AppEngine
+      | WebEngine
+      | stringful;
     [key: reserved]: AppEngine;
   };
 }

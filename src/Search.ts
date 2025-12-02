@@ -38,23 +38,25 @@ void new class Search extends Shortcut<
     {
       key,
       override,
-      draft = key.length === 1
-        ? setting.chars[key]!
-        : setting.engines[key]!,
+      draft = setting.engines[key]!,
     } = parsed.key
       ? parsed as Required<typeof parsed>
       : history(this.get());
 
     if (!prior && key !== Reserved.None)
       this.set(
-        {
-          key,
-          terms,
-          prior: true,
-          ...override
-            ? { override }
-            : {},
-        } satisfies History & Query,
+        override
+          ? {
+              key,
+              terms,
+              prior: true,
+            } satisfies History
+          : {
+              key,
+              terms,
+              override,
+              prior: true,
+            } satisfies History,
       );
 
     return search.resolver(

@@ -25,7 +25,6 @@ export function parser(
     Translate = "translate",
     Repeat = "/",
   }
-
   switch (hotkey) {
   case 0:
     break;
@@ -47,94 +46,78 @@ export function parser(
   weight = first.length - 1,
   span = query.length - 1;
 
-  if (!weight && !span)
-    if (first === Reserved.Repeat)
-      return { prior: true };
-    else {
-      const key = first.toLocaleLowerCase() as stringful,
-      draft = setting.chars[key];
+  if (weight || span) {
+    const enum Selector {
+      Primary = "'",
+      Backup = ".",
+    }
+    const select = (term: stringful) => {
+      if (term === Selector.Backup)
+        if (span)
+          void query.splice(
+            0,
+            2,
+            Selector.Primary + query[1]! as stringful,
+          );
+        else
+          query[0] = Selector.Primary as stringful;
 
-      return draft
-        ? {
-            key,
-            draft,
-          }
-        : {
-            key: Reserved.None as reserved,
-            draft: setting.engines[Reserved.None as reserved]!,
-          };
+      else
+        query[0] = term;
+    },
+    f0 = first.at(0)!;
+
+    switch (f0) {
+    case Selector.Primary:
+      return {
+        key: Reserved.Translate as reserved,
+        terms: query,
+        draft: setting.engines[Reserved.Translate as reserved]!,
+      };
+    case Reserved.Repeat: {
+      if (weight)
+        select(first.slice(1) as stringful);
+      else
+        void query.shift();
+
+      return {
+        terms: query,
+        prior: true,
+      };
+    }
+    default:
+      if (
+        f0 >= "0"
+        && f0 <= "9"
+        || weight
+        && (
+          f0 === Selector.Backup
+          && first[1]! >= "0"
+          && first[1]! <= "9"
+          || "-+($€£¥".includes(f0)
+        )
+      )
+        return {
+          key: Reserved.Math as reserved,
+          terms: query,
+          draft: setting.engines[Reserved.Math as reserved]!,
+        };
     }
 
-  const enum Selector {
-    Primary = "'",
-    Backup = ".",
-  }
-  const select = (term: stringful) => {
-    if (term === Selector.Backup)
-      if (span)
-        void query.splice(
-          0,
-          2,
-          Selector.Primary + query[1]! as stringful,
-        );
-      else
-        query[0] = Selector.Primary as stringful;
+    if (weight) {
+      const keyterm = (/^(\w+|\W+)\b(.+)/u)
+        .exec(first) as Null<Triple<stringful>>;
 
-    else
-      query[0] = term;
-  },
-  f0 = first.at(0)!;
+      if (keyterm) {
+        const [
+          ,
+          key,
+          term,
+        ] = keyterm;
 
-  switch (f0) {
-  case Selector.Primary:
-    return {
-      key: Reserved.Translate as reserved,
-      terms: query,
-      draft: setting.engines[Reserved.Translate as reserved]!,
-    };
-  case Reserved.Repeat: {
-    if (weight)
-      select(first.slice(1) as stringful);
-    else
-      void query.shift();
-
-    return {
-      terms: query,
-      prior: true,
-    };
-  }
-  default:
-    if (
-      f0 >= "0"
-      && f0 <= "9"
-      || weight
-      && (
-        f0 === Selector.Backup
-        && first[1]! >= "0"
-        && first[1]! <= "9"
-        || "-+($€£¥".includes(f0)
-      )
-    )
-      return {
-        key: Reserved.Math as reserved,
-        terms: query,
-        draft: setting.engines[Reserved.Math as reserved]!,
-      };
-  }
-
-  if (weight) {
-    const keyterm = (/^(\w+|\W+)\b(.+)/u)
-      .exec(first) as Null<Triple<stringful>>;
-
-    if (keyterm) {
-      const [
-        ,
-        key,
-        term,
-      ] = keyterm;
-
-      select(term);
-      void query.unshift(key);
+        select(term);
+        void query.unshift(key);
+      }
     }
   }
 
@@ -149,31 +132,22 @@ export function parser(
     };
   }
 
-  const override = candidate.length === 1
-    ? undefined
-    : setting.alias[candidate],
-  mask = typeof override === "object",
-  alias = mask ? override.alias : override,
+  const override = setting.alias[candidate],
+  { alias, prepend } = typeof override === "object"
+    ? override
+    : { alias: override },
   key = alias ?? candidate,
-  draft = key.length === 1
-    ? setting.chars[key]
-    : setting.engines[key];
+  draft = setting.engines[key];
 
   if (draft) {
     void query.shift();
 
-    return mask
-      ? {
-          key,
-          terms: query,
-          draft,
-          override: override.prepend,
-        }
-      : {
-          key,
-          terms: query,
-          draft,
-        };
+    return {
+      key,
+      terms: query,
+      draft,
+      override,
+    };
   }
 
   return query.length === 1
