@@ -16,7 +16,7 @@ type Engine = AppEngine | WebEngine;
 
 interface Alias {
   alias: stringful;
-  prepend?: stringful;
+  prepend: stringful;
 }
 
 export interface Setting {
