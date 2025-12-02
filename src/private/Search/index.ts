@@ -148,12 +148,17 @@ export function parser(
   mask = typeof override === "object",
   alias = mask ? override.alias : override,
   key = alias ?? candidate,
-  manifest = key.length === 1
+  draft = key.length === 1
     ? setting.chars[key]
-    : setting.engines[key];
+    : setting.engines[key],
+  manifest = draft && (typeof draft === "o"
 
-  if (manifest) {
+  if (draft) {
     void query.shift();
+
+    if (mask) {
+      
+    }
 
     return {
       key,
