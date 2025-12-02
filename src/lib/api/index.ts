@@ -1,25 +1,29 @@
 import type { Method } from "./types";
 
 export default class {
-  public readonly query;
-  public readonly headers;
+  public readonly query: Map<string, string>;
+  public readonly headers: Map<string, string>;
 
   constructor(
     public readonly url: string,
     query?: FieldTable,
     headers?: FieldTable,
     auth?: string,
+    content?: string,
     agent?: string,
   ) {
     this.query = query
-      ? new Map<string, string>(Object.entries(query))
-      : new Map<string, string>;
+      ? new Map(Object.entries(query) as Tuple[])
+      : new Map;
     this.headers = headers
-      ? new Map<string, string>(Object.entries(headers))
-      : new Map<string, string>;
+      ? new Map(Object.entries(headers) as Tuple[])
+      : new Map;
 
     if (auth)
       this.headers.set("Authorization", auth);
+
+    if (content)
+      this.headers.set("Content-Type", content);
 
     if (agent)
       this.headers.set("User-Agent", agent);
@@ -79,12 +83,6 @@ export default class {
       request.headers = Object.fromEntries(reheaders);
 
     return await request.loadJSON() as Response;
-  }
-
-  public [Symbol.toPrimitive](hint: toPrimitive) {
-    return hint === "number"
-      ? NaN
-      : this.url;
   }
 
   public toString() {

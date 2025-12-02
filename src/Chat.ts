@@ -24,10 +24,10 @@ await new class Chat extends Shortcut<
       setting.api,
       undefined,
       {
-        "Content-Type": "application/json",
         "OpenAI-Organization": setting.auth.org,
       },
       setting.auth.token,
+      "application/json",
     ),
     { prompt = setting.prompt } = input,
     { latitude, longitude } = await location(),
