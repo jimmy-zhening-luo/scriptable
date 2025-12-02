@@ -132,8 +132,10 @@ export function parser(
     };
   }
 
-  const override = setting.alias[candidate],
-  { alias, prepend } = typeof override === "object"
+  const override = candidate in alias
+    ? setting.alias[candidate]!
+    : undefined,
+  { alias, prepend } = override && typeof override === "object"
     ? override
     : { alias: override },
   key = alias ?? candidate,
