@@ -6,7 +6,7 @@ export default class <
 > {
   private fonts: Record<
     keyof typeof this,
-    (size: number) => Font>
+    (size: number) => Font
   > = {};
 
   constructor(
