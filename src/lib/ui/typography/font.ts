@@ -4,6 +4,11 @@ export default class <
   | ""
   | "Rounded",
 > {
+  private fonts: Record<
+    keyof typeof this,
+    (size: number) => Font>
+  > = {};
+
   constructor(
     private readonly variant: Variant,
     private readonly weight: number,
@@ -16,11 +21,11 @@ export default class <
   }
 
   public regular(scale?: number) {
-    return this.variant
-      ? Font[
-          `regular${this.variant}SystemFont`
-        ](this.size(scale))
-      : Font.systemFont(this.size(scale));
+    return (
+      this.fonts.regular ??= this.variant
+        ? Font[`regular${this.variant}SystemFont`]
+        : Font.systemFont
+    )(this.size(scale));
   }
 
   public italic(scale?: number) {
@@ -53,12 +58,14 @@ export default class <
       | "light",
     scale?: number,
   ) {
-    return Font[
-      `${
-        style
-      }${
-        this.variant
-      }SystemFont`
-    ](this.size(scale));
+    return (
+      this.fonts[style] ??= Font[
+        `${
+          style
+        }${
+          this.variant
+        }SystemFont`
+      ]
+    )(this.size(scale));
   }
 }

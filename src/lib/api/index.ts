@@ -1,8 +1,8 @@
 import type { Method } from "./types";
 
 export default class {
-  public readonly query: Map<string, string>;
-  public readonly headers: Map<string, string>;
+  public readonly query;
+  public readonly headers;
 
   constructor(
     public readonly url: string,
@@ -14,10 +14,10 @@ export default class {
   ) {
     this.query = query
       ? new Map(Object.entries(query) as Tuple[])
-      : new Map;
+      : new Map<string, string>;
     this.headers = headers
       ? new Map(Object.entries(headers) as Tuple[])
-      : new Map;
+      : new Map<string, string>;
 
     if (auth)
       this.headers.set("Authorization", auth);
