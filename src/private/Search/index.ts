@@ -1,4 +1,8 @@
-import type { Setting, Query } from "./types";
+import type {
+  Setting,
+  reserved,
+  Query,
+} from "./types";
 
 export { resolver } from "./resolver";
 export function parser(
@@ -27,15 +31,15 @@ export function parser(
     break;
   case 1:
     return {
-      key: Reserved.Ask as stringful,
+      key: Reserved.Ask as reserved,
       terms: query,
-      manifest: setting.engines[Reserved.Ask as stringful] as { shortcut: stringful },
+      draft: setting.engines[Reserved.Ask as reserved]!,
     };
   default:
     return {
-      key: Reserved.Translate as stringful,
+      key: Reserved.Translate as reserved,
       terms: query,
-      manifest: setting.engines[Reserved.Translate as stringful] as { shortcut: stringful },
+      draft: setting.engines[Reserved.Translate as reserved]!,
     };
   }
 
@@ -48,21 +52,16 @@ export function parser(
       return { prior: true };
     else {
       const key = first.toLocaleLowerCase() as stringful,
-      draft = setting.chars[key],
-      manifest = draft && (
-        typeof draft === "object"
-          ? draft
-          : { url: draft }
-      );
+      draft = setting.chars[key];
 
-      return manifest
+      return draft
         ? {
             key,
-            manifest,
+            draft,
           }
         : {
-            key: Reserved.None as stringful,
-            manifest: setting.engines[Reserved.None as stringful] as { shortcut: stringful },
+            key: Reserved.None as reserved,
+            draft: setting.engines[Reserved.None as reserved]!,
           };
     }
 
@@ -89,9 +88,9 @@ export function parser(
   switch (f0) {
   case Selector.Primary:
     return {
-      key: Reserved.Translate as stringful,
+      key: Reserved.Translate as reserved,
       terms: query,
-      manifest: setting.engines[Reserved.Translate as stringful] as { shortcut: stringful },
+      draft: setting.engines[Reserved.Translate as reserved]!,
     };
   case Reserved.Repeat: {
     if (weight)
@@ -117,9 +116,9 @@ export function parser(
       )
     )
       return {
-        key: Reserved.Math as stringful,
+        key: Reserved.Math as reserved,
         terms: query,
-        manifest: setting.engines[Reserved.Math as stringful] as { shortcut: stringful },
+        draft: setting.engines[Reserved.Math as reserved]!,
       };
   }
 
@@ -158,34 +157,33 @@ export function parser(
   key = alias ?? candidate,
   draft = key.length === 1
     ? setting.chars[key]
-    : setting.engines[key],
-  manifest = draft && (
-    typeof draft === "object"
-      ? draft
-      : { url: draft }
-  );
+    : setting.engines[key];
 
-  if (manifest) {
-    if (mask)
-      manifest.prepend = override.prepend;
-
+  if (draft) {
     void query.shift();
 
-    return {
-      key,
-      terms: query,
-      manifest,
-    };
+    return mask
+      ? {
+          key,
+          terms: query,
+          draft,
+          override: override.prepend,
+        }
+      : {
+          key,
+          terms: query,
+          draft,
+        };
   }
 
   return query.length === 1
     ? {
-        key: Reserved.None as stringful,
-        manifest: setting.engines[Reserved.None as stringful] as { shortcut: stringful },
+        key: Reserved.None as reserved,
+        draft: setting.engines[Reserved.None as reserved]!,
       }
     : {
-        key: Reserved.Ask as stringful,
+        key: Reserved.Ask as reserved,
         terms: query,
-        manifest: setting.engines[Reserved.Ask as stringful] as { shortcut: stringful },
+        draft: setting.engines[Reserved.Ask as reserved]!,
       };
 }

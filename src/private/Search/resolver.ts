@@ -3,11 +3,17 @@ import type { Query } from "./types";
 export function resolver(
   key: stringful,
   terms: stringful[],
-  manifest: Required<Query>["manifest"],
+  draft: NonNullable<Query["draft"]>,
+  override?: stringful,
 ) {
-  if (manifest.prepend)
+  const manifest = typeof draft === "string"
+    ? { url: draft }
+    : draft,
+  prepend = override || manifest.prepend;
+
+  if (prepend)
     void terms.unshift(
-      ...manifest.prepend.split(" ") as stringful[],
+      ...prepend.split(" ") as stringful[],
     );
 
   function encode(
