@@ -4,7 +4,7 @@ export default class <
   | ""
   | "Rounded",
 > {
-  private fonts: Record<
+  private fonts: PartialRecord<
     keyof typeof this,
     (size: number) => Font
   > = {};
