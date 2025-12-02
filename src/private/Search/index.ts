@@ -132,25 +132,34 @@ export function parser(
     };
   }
 
-  const override = candidate in alias
+  const override = candidate in setting.alias
     ? setting.alias[candidate]!
-    : undefined,
-  { alias, prepend } = override && typeof override === "object"
-    ? override
-    : { alias: override },
-  key = alias ?? candidate,
-  draft = setting.engines[key];
+    : null,
+  { key, prepend } = override
+    ? typeof override === "string"
+      ? { key: override }
+      : override
+    : { key: candidate },
+  draft = key in setting.engines
+    ? setting.engines[key]
+    : null;
 
   if (draft) {
     void query.shift();
 
-    return {
-      key,
-      terms: query,
-      draft,
-      override: prepend,
-    };
-  }
+    return prepend
+      ? {
+          key,
+          terms: query,
+          draft,
+          override: prepend,
+        }
+      : {
+          key,
+          terms: query,
+          draft,
+        };
+   }
 
   return query.length === 1
     ? {
