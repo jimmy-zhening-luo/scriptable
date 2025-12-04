@@ -70,6 +70,6 @@ await new class Chat extends Shortcut<
       );
     }
 
-    return payload
+    return payload;
   }
 }(2).run();
