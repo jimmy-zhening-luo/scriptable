@@ -70,10 +70,8 @@ await new class Chat extends Shortcut<
       );
     }
 
-    const { type } = payload;
-
-    return type === "custom_tool_call"
-      || type === "function_call"
+    return payload.type === "custom_tool_call"
+      || payload.type === "function_call"
       ? payload
       : null;
   }
