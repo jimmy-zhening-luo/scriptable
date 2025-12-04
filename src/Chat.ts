@@ -6,12 +6,13 @@ import location from "./lib/location";
 import type {
   Setting,
   Input,
+  Output,
   Response,
 } from "./private/Chat";
 
 await new class Chat extends Shortcut<
   Setting,
-  Null<string> | Record<string, unknown>,
+  Output,
   Input
 > {
   protected async runtime() {
@@ -57,21 +58,23 @@ await new class Chat extends Shortcut<
     payload = output.at(-1)!;
 
     if (payload.content) {
-      const [{ text: answer }] = payload.content;
+      const [{ text: message }] = payload.content,
+      answer = text.format.schema
+        ? (JSON.parse(answer) as FieldTable)[prompt.answer!] ?? null
+        : message;
 
-      if (text.format.schema) {
-        const json = JSON.parse(answer) as FieldTable;
-
-        return prompt.answer
-          ? json[prompt.answer] ?? null
-          : json;
-      }
-
-      return answer;
+      return answer && (
+        answer === ""
+          ? null
+          : answer
+      );
     }
 
-    return payload.input
-      ? { tool: payload.input }
+    const { type } = payload;
+
+    return type === "custom_tool_call"
+      || type === "function_call"
+      ? payload
       : null;
   }
 }(2).run();

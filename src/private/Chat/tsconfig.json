@@ -1,6 +1,13 @@
 {
   "files": [
     "index.d.ts",
+    "types/index.d.ts",
+    "types/setting.d.ts",
+    "types/input.d.ts",
+    "types/output.d.ts",
+    "types/prompt/index.d.ts",
+    "types/response/index.d.ts",
+    "types/response/payload.d.ts",
   ],
   "extends": "..",
 }
