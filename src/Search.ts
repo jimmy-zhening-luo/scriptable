@@ -20,17 +20,20 @@ void new class Search extends Shortcut<
     const enum Reserved {
       None = "none",
     }
-
     type History = Require<Query, "key">;
-    const history = (history?: string): History => history
-      ? JSON.parse(history) as History
-      : {
-          key: Reserved.None as stringful,
-          prior: true,
-        },
+    const history = (): History => {
+      const history = this.get();
+
+      return history
+        ? JSON.parse(history) as History
+        : {
+            key: Reserved.None as stringful,
+            prior: true,
+          };
+    },
     parsed = input
       ? search.parser(input, setting)
-      : history(this.get()),
+      : history(),
     {
       terms = [],
       prior,
@@ -41,7 +44,7 @@ void new class Search extends Shortcut<
       draft = setting.engines[key]!,
     } = parsed.key
       ? parsed as Required<typeof parsed>
-      : history(this.get());
+      : history();
 
     if (!prior && key !== Reserved.None)
       this.set(
