@@ -1,3 +1,5 @@
+import serialize from "./serializer";
+
 declare const id: unique symbol;
 export type AppId = stringful & { [id]: "App" };
 
@@ -84,17 +86,6 @@ export default class File<
         : State.File;
   }
 
-  public static serialize(data: unknown) {
-    switch (typeof data) {
-    case "string":
-      return data;
-    case "object":
-      return JSON.stringify(data);
-    default:
-      return String(data);
-    }
-  }
-
   public read() {
     return this.state === State.File
       ? File.manager!.readString(this.path)
@@ -140,7 +131,7 @@ export default class File<
     }
 
     if (Array.isArray(content)) {
-      const rows = content.map(File.serialize);
+      const rows = content.map(serialize);
 
       if (this.state)
         switch (overwrite as Overwrite.Append | Overwrite.Push) {
@@ -162,10 +153,10 @@ export default class File<
         this.path,
         overwrite === Overwrite.Yes
         || !this.state
-          ? File.serialize(content)
+          ? serialize(content)
           : overwrite === Overwrite.Append
             ? this.read()! + String(content as primitive)
-            : File.serialize(content)
+            : serialize(content)
               + Line.Break
               + this.read()!,
       );

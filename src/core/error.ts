@@ -1,3 +1,5 @@
+import serialize from "./serializer";
+
 export default function (error: unknown) {
   const trace = [error];
 
@@ -14,15 +16,13 @@ export default function (error: unknown) {
   }
 
   const root = trace.shift()!,
-  serialize = (frame: unknown) => typeof frame === "object"
-    ? Error.isError(frame)
-      ? frame.name === "Error"
-        ? frame.message
-        : String(frame)
-      : JSON.stringify(frame)
-    : String(frame as primitive),
-  header = serialize(root),
-  stack = trace.map(serialize).join("\n");
+  print = (frame: unknown) => Error.isError(frame)
+    ? frame.name === "Error"
+      ? frame.message
+      : String(frame)
+    : serialize(frame);
+  header = print(root),
+  stack = trace.map(print).join("\n");
 
   console.error(header);
   console.error(stack);

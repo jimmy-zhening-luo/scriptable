@@ -35,7 +35,7 @@ export function resolver(
       .map(encodeURIComponent)
       .join(separator);
 
-    if (!manifest.url)
+    if (!("url" in manifest))
       return action as stringful || null;
 
     const plug = (url: string) => url.replace(

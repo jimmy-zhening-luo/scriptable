@@ -3,6 +3,7 @@
     "index.ts",
     "file.ts",
     "error.ts",
+    "serializer.ts",
   ],
   "extends": "../tsconfig-src-types",
 }

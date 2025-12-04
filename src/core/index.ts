@@ -1,3 +1,4 @@
+import serialize from "./serializer";
 import File from "./file";
 import error from "./error";
 import type { AppId } from "./file";
@@ -81,10 +82,10 @@ export default abstract class IApp<
     const notification = new Notification;
 
     notification.title = title;
-    notification.body = File.serialize(message);
+    notification.body = serialize(message);
 
     if (subtitle)
-      notification.subtitle = File.serialize(subtitle);
+      notification.subtitle = serialize(subtitle);
 
     void notification.schedule();
   }
