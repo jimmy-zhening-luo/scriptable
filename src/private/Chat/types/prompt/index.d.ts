@@ -1,4 +1,4 @@
-export default interface {
+export default interface IPrompt {
   prompt: Field<
     "id",
     "answer"
