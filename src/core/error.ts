@@ -20,7 +20,7 @@ export default function (error: unknown) {
     ? frame.name === "Error"
       ? frame.message
       : String(frame)
-    : serialize(frame);
+    : serialize(frame),
   header = print(root),
   stack = trace.map(print).join("\n");
 
