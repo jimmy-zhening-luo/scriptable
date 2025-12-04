@@ -2,7 +2,7 @@ import type {
   Message,
   CustomToolCall,
   FunctionCall,
-} from "./payload"
+} from "./payload";
 
 export interface Response {
   text: {
@@ -11,6 +11,6 @@ export interface Response {
   output: [
     | Message
     | CustomToolCall
-    | FunctionCall
+    | FunctionCall,
   ];
 }
