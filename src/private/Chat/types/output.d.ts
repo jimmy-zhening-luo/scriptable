@@ -1,4 +1,4 @@
-import type { Response } from "./types";
+import type { Response } from "./response";
 
 export type Output =
   | Null<string>
