@@ -1,4 +1,4 @@
-export default function(data: unknown) {
+export default function (data: unknown) {
   switch (typeof data) {
   case "string":
     return data;
