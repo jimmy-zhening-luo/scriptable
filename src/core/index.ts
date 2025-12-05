@@ -56,8 +56,7 @@ export default abstract class IApp<
       if (this.interactive) {
         console.log(output);
 
-        if (this.ui)
-          this.ui(output);
+        this.ui?.(output);
       }
 
       this.output(output);
