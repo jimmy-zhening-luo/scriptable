@@ -30,7 +30,7 @@ export default abstract class<Setting> extends IApp<
 
   protected override ui = () => {
     switch (this.tapped) {
-    true: {
+    case true: {
       this.tap?.();
 
       if (!this.tapPreview)
