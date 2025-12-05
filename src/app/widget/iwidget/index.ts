@@ -25,7 +25,7 @@ export default abstract class<Setting> extends IApp<
   }
 
   protected get tapped() {
-    return this.interactive && !!this.input;
+    return this.interactive && Boolean(this.input);
   }
 
   protected override ui = () => {
