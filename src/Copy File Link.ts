@@ -5,11 +5,9 @@ import Share from "./app/share";
 void new class FileLink extends Share {
   protected runtime() {
     return this.input
-      ? this
-          .input
-          .map(encodeURI)
-          .map(path => "shareddocuments://" + path)
-          .join("\n")
-      : "";
+      ?.map(encodeURI)
+      ?.map(path => "shareddocuments://" + path)
+      ?.join("\n")
+      ?? "";
   }
 }("fileURLs").run();
