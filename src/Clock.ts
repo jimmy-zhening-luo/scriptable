@@ -51,16 +51,10 @@ await new class Clock extends Widget<Setting> {
     };
 
     try {
-      const {
-        latitude,
-        longitude,
-      } = await Clock.location();
+      const { latitude, longitude } = await Clock.location();
 
       try {
-        const {
-          humidity,
-          dew,
-        } = await ClockApi.weather(
+        const { humidity, dew } = await ClockApi.weather(
           setting.weather.url,
           setting.weather.headers,
           setting.weather.location,
@@ -78,10 +72,7 @@ await new class Clock extends Widget<Setting> {
 
       if (!sun.sunrise || !sun.sunset)
         try {
-          const {
-            sunrise,
-            sunset,
-          } = await ClockApi.sun(
+          const { sunrise, sunset } = await ClockApi.sun(
             setting.sun.url,
             setting.sun.query,
             setting.sun.location,
@@ -119,10 +110,7 @@ await new class Clock extends Widget<Setting> {
       Full = " ",
     }
 
-    const {
-      sunrise,
-      sunset,
-    } = sun;
+    const { sunrise, sunset } = sun;
 
     const enum Day {
       Sunset = 2,
