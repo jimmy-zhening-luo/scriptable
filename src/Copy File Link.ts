@@ -6,8 +6,8 @@ void new class FileLink extends Share {
   protected runtime() {
     return this.input
       ?.map(encodeURI)
-      ?.map(path => "shareddocuments://" + path)
-      ?.join("\n")
+      .map(path => "shareddocuments://" + path)
+      .join("\n")
       ?? "";
   }
 }("fileURLs").run();
