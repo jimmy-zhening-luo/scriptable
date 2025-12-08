@@ -5,8 +5,7 @@ declare type nullish
 declare type falsy
 = | nullish
   | false
-  // | NaN
+  | ""
   | 0
-
-  | 0n
-  | "";
+  | 0n;
+  // ...and NaN
