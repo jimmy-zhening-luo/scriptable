@@ -105,7 +105,7 @@ export function parser(
     }
 
     if (weight) {
-      const keyterm = (/^(\w+|\W+)\b(.+)/u)
+      const keyterm = (/^(\w+|\W+)\b(.+)/v)
         .exec(first) as Null<Triple<stringful>>;
 
       if (keyterm) {
