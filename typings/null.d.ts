@@ -8,4 +8,4 @@ declare type falsy
   | ""
   | 0
   | 0n;
-  // ...and NaN
+// ...and NaN
