@@ -67,6 +67,17 @@ export function parser(
     },
     f0 = first.at(0)!;
 
+    const enum Digit {
+      Zero = `${0}`,
+      Nine = `${9}`,
+      Operator = "-+($€£¥"
+    }
+    const enum Operator {
+      Unary = "-+",
+      Closure = "(",
+      Currency = "$€£¥",
+      Any = Unary + Closure + Currency,
+    }
     switch (f0) {
     case Selector.Primary:
       return {
@@ -87,14 +98,14 @@ export function parser(
     }
     default:
       if (
-        f0 >= "0"
-        && f0 <= "9"
+        f0 >= Digit.Zero
+        && f0 <= Digit.Nine
         || weight
         && (
           f0 === Selector.Backup
-          && first[1]! >= "0"
-          && first[1]! <= "9"
-          || "-+($€£¥".includes(f0)
+          && first[1]! >= Digit.Zero
+          && first[1]! <= Digit.Nine
+          || Operator.Any.includes(f0)
         )
       )
         return {
