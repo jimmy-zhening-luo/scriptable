@@ -68,9 +68,9 @@ export function parser(
     f0 = first.at(0)!;
 
     const enum Digit {
-      Zero = `${0}`,
-      Nine = `${9}`,
-      Operator = "-+($€£¥"
+      Zero = `0`,
+      Nine = `9`,
+      Operator = "-+($€£¥",
     }
     const enum Operator {
       Unary = "-+",
