@@ -1,3 +1,8 @@
+##############################
+####    .gitattributes    ####
+####       v252.0.0       ####
+##############################
+
 * text=auto
 
 *.cmd text eol=crlf
@@ -11,11 +16,10 @@
 *.psm1 text eol=lf
 *.psd1 text eol=lf
 
+LICENSE text eol=lf
 *.gitattributes text eol=lf
 *.gitconfig text eol=lf
 *.gitignore text eol=lf
-
-LICENSE text eol=lf
 *.txt text eol=lf
 *.md text eol=lf
 *.json text eol=lf
@@ -38,6 +42,10 @@ LICENSE text eol=lf
 *.cpp text eol=lf
 *.cxx text eol=lf
 *.cc text eol=lf
+*.cs text eol=lf
+*.csproj text eol=lf
+*.sln text eol=lf
+*.slnx text eol=lf
 *.js text eol=lf
 *.cjs text eol=lf
 *.mjs text eol=lf
