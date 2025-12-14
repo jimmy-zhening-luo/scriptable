@@ -21,7 +21,6 @@ export function parser(
   const enum Reserved {
     None = "none",
     Ask = "ask",
-    Math = "math",
     Translate = "translate",
     Repeat = "/",
   }
@@ -109,9 +108,9 @@ export function parser(
         )
       )
         return {
-          key: Reserved.Math as reserved,
+          key: Reserved.Ask as reserved,
           terms: query,
-          draft: setting.engines[Reserved.Math as reserved]!,
+          draft: setting.engines[Reserved.Ask as reserved]!,
         };
     }
 
