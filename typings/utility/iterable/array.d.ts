@@ -6,19 +6,13 @@ declare type ArrayN<
   ? never
   : [Length] extends [never]
       ? never
-      : True<Readonly> extends never
-        ? ArrayN.Construct<
-          Extract<`${Length}`, `-${string}` | `${string}.${string}`> extends never
-            ? Length
-            : 0,
-          Member
-        >
-        : ArrayN.ConstructReadonly<
-          Extract<`${Length}`, `-${string}` | `${string}.${string}`> extends never
-            ? Length
-            : 0,
-          Member
-        >;
+      : Extract<`${Length}`, `-${string}` | `${string}.${string}`> extends never
+        ? True<Readonly> extends never
+          ? ArrayN.Construct<Length, Member>
+          : ArrayN.ConstructReadonly<Length, Member>
+        : True<Readonly> extends never
+          ? ArrayN.Construct<0, Member>
+          : ArrayN.ConstructReadonly<0, Member>;
 
 declare namespace ArrayN {
   export type Construct<
