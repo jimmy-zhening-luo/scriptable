@@ -1,6 +1,8 @@
 --- # dev.yml
 name: Azure Publish (dev)
-on: {push: {branches: [&branch dev]} }
+on:
+  push:
+    branches: [&branch dev]
 jobs:
   publish-dev:
     name: Build/Publish (dev)

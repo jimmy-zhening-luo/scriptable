@@ -1,6 +1,8 @@
 --- # int.yml
 name: Azure Publish (int)
-on: {push: {branches: [&branch int]} }
+on:
+  push:
+    branches: [&branch int]
 jobs:
   publish-int:
     name: Build/Publish (int)

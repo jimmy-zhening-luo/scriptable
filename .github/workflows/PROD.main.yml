@@ -1,6 +1,8 @@
 --- # PROD.main.yml
 name: Azure Publish (PROD.main)
-on: {push: {branches: [&branch main]} }
+on:
+  push:
+    branches: [&branch main]
 jobs:
   publish-prod-main:
     name: Build/Publish (PROD.main)

@@ -5,6 +5,9 @@
   ],
   "compilerOptions": {
     "rootDir": ".",
+    "types": [
+      "scriptable-ios",
+    ],
     "declarationDir": "../types",
     "outDir": "../dist",
     "composite": true,
