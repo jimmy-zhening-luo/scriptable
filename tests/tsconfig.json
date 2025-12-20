@@ -18,6 +18,7 @@
       "mocha",
       "chai",
       /* {CONFIGURE} */
+      "scriptable-ios",
     ],
     "outDir": "../dist/tests",
   },
