@@ -63,7 +63,7 @@ await new class Chat extends Shortcut<
         ? (JSON.parse(message) as Table<primitive>)[prompt.answer!] ?? null
         : message;
 
-        return answer || null;
+        return answer === 0
           ? answer
           : answer || null;
     }
