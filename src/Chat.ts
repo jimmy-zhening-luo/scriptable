@@ -60,10 +60,10 @@ await new class Chat extends Shortcut<
     if ("content" in payload) {
       const [{ text: message }] = payload.content,
       answer = text.format.schema
-        ? (JSON.parse(message) as FieldTable)[prompt.answer!] ?? null
+        ? (JSON.parse(message) as Table<primitive>)[prompt.answer!] ?? null
         : message;
 
-        return answer === 0
+        return answer || null;
           ? answer
           : answer || null;
     }
