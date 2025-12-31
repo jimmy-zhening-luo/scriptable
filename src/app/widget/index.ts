@@ -142,7 +142,7 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
           ? Wall.Tomorrow
           : Wall.Today,
     ),
-    { zero, period = "" } = ampm
+    { zero, period } = ampm
       ? now < destinationZero.in(Wall.Midday)
         ? {
             zero: destinationZero.ago(
@@ -180,10 +180,13 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
       .round
       .regular(1.5);
     dial.applyTimerStyle();
-    clock.addText(period).font = this
-      .style
-      .round
-      .semibold(1.2);
+
+    if (period)
+      clock.addText(period).font = this
+        .style
+        .round
+        .semibold(1.2);
+
     void clock.addSpacer(
       this.style.size(1.75),
     );

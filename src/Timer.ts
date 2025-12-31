@@ -23,8 +23,8 @@ void new class Timer extends Widget {
       this.subscribe("start", "json"),
     ),
     {
-      start = null,
-      modified = null,
+      start,
+      modified,
       update = false,
     } = store?.start.today
       && (

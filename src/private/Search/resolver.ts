@@ -67,7 +67,7 @@ export function resolver(
       action: encode(terms, manifest),
     };
 
-  const { shortcut = key } = manifest,
+  const { shortcut = key } = manifest as Partial<typeof manifest>,
   text = terms.join(" ") as stringful || null,
   notify = manifest.notify || null;
 
