@@ -1,59 +1,68 @@
 # `type-scriptable`
+
 [![Azure Publish (PROD.main)](https://github.com/jimmy-zhening-luo/scriptable/actions/workflows/PROD.main.yml/badge.svg)](https://github.com/jimmy-zhening-luo/scriptable/actions/workflows/PROD.main.yml)
 
 - [What is `Scriptable`?](#what-is-scriptable)
 - [What is `type-scriptable`?](#what-is-type-scriptable)
 - [How to use](#how-to-use)
-    - [Vocabulary](#vocabulary)
-        - [`App`](#app)
-        - [`Library`](#library)
-    - [EASY: Write `Library` scripts](#easy-write-library-scripts)
-    - [NOT SO EASY: Write `App` scripts](#not-so-easy-write-app-scripts)
-        - [The Header ™](#the-header-)
-        - [Line 1](#line-1)
-        - [Line 2](#line-2)
-        - [Line 3](#line-3)
-        - [Line 4 _(Optional)_](#line-4-optional)
+  - [Vocabulary](#vocabulary)
+    - [`App`](#app)
+    - [`Library`](#library)
+  - [EASY: Write `Library` scripts](#easy-write-library-scripts)
+  - [NOT SO EASY: Write `App` scripts](#not-so-easy-write-app-scripts)
+    - [The Header ™](#the-header-)
+    - [Line 1](#line-1)
+    - [Line 2](#line-2)
+    - [Line 3](#line-3)
+    - [Line 4 _(Optional)_](#line-4-optional)
 
 ## What is `Scriptable`?
+
 `Scriptable` for `iOS` and `iPadOS` lets users author JavaScript procedures invokable by `Apple` `Shortcuts`, `Share Sheet` or `Widgets`, useful for home and device automation.
 
 Besides the aforementioned entry-points, `Scriptable` provides integration points into `iOS`/`iPadOS` filesystem and notifications.
 
 ## What is `type-scriptable`?
+
 Write type-safe, concise, continuously-deployed Scriptable apps.
 
 ## How to use
 
 ### Vocabulary
+
 There are two types of scripts.
 
 #### `App`
+
 Top-level `JavaScript` file in your device's `Scriptable` folder. It is visible in the Scriptable app UI, force push menu, Share Sheet, Shortcuts, etc.
 
 #### `Library`
+
 `JavaScript` file in a subdirectory of your device's `Scriptable` folder. It can not be directly invoked, and can only be used within another script (App or Library) via [`importModule`](https://docs.scriptable.app/importmodule/).
 
 ### EASY: Write `Library` scripts
+
 There are two (2) special requirements for writing a `Library`:
 
 1. `Library` scripts must ___not___ be in the top-level directory of your device's `Scriptable` folder. Instead, they must be in any of the following:
-    - A subdirectory of your device's `Scriptable` folder
-    - Anywhere (top-level or otherwise) in a [place](https://docs.scriptable.app/importmodule/) where Scriptable's `importModule` function will look
+   - A subdirectory of your device's `Scriptable` folder
+   - Anywhere (top-level or otherwise) in a [place](https://docs.scriptable.app/importmodule/) where Scriptable's `importModule` function will look
 1. (Identical to [`App` requirement](#not-so-easy-write-app-scripts)) Your script must only use the following globals:
-    - [`Scriptable` objects](https://docs.scriptable.app/)
-    - Apple [`JavaScriptCore`](https://developer.apple.com/documentation/javascriptcore) native objects
+   - [`Scriptable` objects](https://docs.scriptable.app/)
+   - Apple [`JavaScriptCore`](https://developer.apple.com/documentation/javascriptcore) native objects
 
 ### NOT SO EASY: Write `App` scripts
+
 Conversely, there are three (3) special requirements for writing an `App`:
 
 1. Your script must be in the top-level directory of your device's `Scriptable` folder.
 1. Your script must only use the following globals:
-    - [`Scriptable` objects](https://docs.scriptable.app/)
-    - Apple [`JavaScriptCore`](https://developer.apple.com/documentation/javascriptcore) native objects
+   - [`Scriptable` objects](https://docs.scriptable.app/)
+   - Apple [`JavaScriptCore`](https://developer.apple.com/documentation/javascriptcore) native objects
 1. Your Script must begin with a very specific [header](./.vscode/Header.code-snippets):
 
 #### The Header &trade;
+
 This project has `VSCode` [snippets](./.vscode/Header.code-snippets) to generate Lines 1-3 (and optionally 4) of the Scriptable Header.
 
 Its grammar is implemented from the source of truth below:
@@ -71,6 +80,7 @@ Its grammar is implemented from the source of truth below:
 ```
 
 #### Line 3
+
 Line 3 specifies your `App`'s icon in Scriptable UI.
 
 ```javascript
@@ -931,6 +941,7 @@ yin-yang
 </details>
 
 #### Line 4 _(Optional)_
+
 Line 4 _(optionally)_ specifies what type of input your `App` can receive from the `iOS` or `iPadOS` `Share Sheet`.
 
 ```javascript
@@ -953,7 +964,7 @@ The possible types are:
 // share-sheet-inputs: plain-text;
 ```
 
-... or as a comma-and-space (`, `) separated list:
+... or as a comma-and-space (`,`) separated list:
 
 ```javascript
 // share-sheet-inputs: plain-text, url, file-url, image;
