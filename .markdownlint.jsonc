@@ -1,5 +1,5 @@
 {
-  // #region v38.1.1
+  // #region v40.0.0
   "$schema": "https://gist.githubusercontent.com/jimmy-zhening-luo/e0d6b5715f0df18bc462f752520bd485/raw",
   "$help": {
     "link": "https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md",
@@ -12,14 +12,14 @@
   "ul-style": false /* MD004 */,
   "list-indent": true /* MD005 */,
   "ul-indent": {
-    "indent": 4,
+    "indent": 2,
   } /* MD007 */,
   "no-trailing-spaces": {
     "br_spaces": 0,
     "strict": true,
   } /* MD009 */,
   "no-hard-tabs": {
-    "spaces_per_tab": 4,
+    "spaces_per_tab": 2,
     "ignore_code_languages": [],
   } /* MD010 */,
   "no-reversed-links": true /* MD011 */,
@@ -94,4 +94,8 @@
   "table-column-count": true /* MD056 */,
   "blanks-around-tables": true /* MD058 */,
   "descriptive-link-text": false /* MD059 */,
+  "table-column-style": {
+    "style": "aligned",
+    "aligned_delimiter": true /* implicitly true when style:aligned */,
+  } /* MD060 */,
 }
