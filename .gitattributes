@@ -1,13 +1,15 @@
 ##############################
 ####    .gitattributes    ####
-####       v252.1.0       ####
+####       v252.4.0       ####
 ##############################
 
 * text=auto
 
 *.cmd text eol=crlf
 *.bat text eol=crlf
+*.reg text eol=crlf
 *.ics text eol=crlf
+
 *.sh text eol=lf
 *.bashrc text eol=lf
 *.bash_profile text eol=lf
@@ -15,27 +17,15 @@
 *.ps1 text eol=lf
 *.psm1 text eol=lf
 *.psd1 text eol=lf
+*.ps1xml text eol=lf
 
 LICENSE text eol=lf
 *.gitattributes text eol=lf
 *.gitconfig text eol=lf
 *.gitignore text eol=lf
+
 *.txt text eol=lf
 *.md text eol=lf
-*.json text eol=lf
-*.jsonc text eol=lf
-*.code-snippets text eol=lf
-*.code-workspace text eol=lf
-*.yml text eol=lf
-*.yaml text eol=lf
-*.csv text eol=lf
-*.tsv text eol=lf
-*.svg text eol=lf
-*.xml text eol=lf
-*.plist text eol=lf
-*.tmLanguage text eol=lf
-*.tmPreferences text eol=lf
-*.tmTheme text eol=lf
 *.h text eol=lf
 *.hpp text eol=lf
 *.hxx text eol=lf
@@ -57,12 +47,33 @@ LICENSE text eol=lf
 *.tsx text eol=lf
 *.html text eol=lf
 *.css text eol=lf
+*.scss text eol=lf
+*.less text eol=lf
 *.svelte text eol=lf
 *.py text eol=lf
 *.jinja text eol=lf
-*.npmrc text eol=lf
-*.claspignore text eol=lf
-*.funcignore text eol=lf
-*.example text eol=lf
 *.lark text eol=lf
 *.re text eol=lf
+*.adblock text eol=lf
+*.json text eol=lf
+*.jsonc text eol=lf
+*.jsonl text eol=lf
+*.json5 text eol=lf
+*.JSON-tmLanguage text eol=lf
+*.code-snippets text eol=lf
+*.code-workspace text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.YAML-tmLanguage text eol=lf
+*.xml text eol=lf
+*.svg text eol=lf
+*.plist text eol=lf
+*.tmLanguage text eol=lf
+*.tmPreferences text eol=lf
+*.tmTheme text eol=lf
+*.csv text eol=lf
+*.tsv text eol=lf
+*.npmrc text eol=lf
+*.funcignore text eol=lf
+*.claspignore text eol=lf
+*.example text eol=lf

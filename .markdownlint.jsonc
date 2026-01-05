@@ -1,101 +1,238 @@
 {
-  // #region v40.0.0
+  // #region v40.1.0
   "$schema": "https://gist.githubusercontent.com/jimmy-zhening-luo/e0d6b5715f0df18bc462f752520bd485/raw",
   "$help": {
     "link": "https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md",
   },
   // #endregion
-  "heading-increment": true /* MD001 */,
+  "heading-increment": {
+    "enabled": true,
+  } /* MD001 */,
   "heading-style": {
+    "enabled": true,
     "style": "atx",
   } /* MD003 */,
-  "ul-style": false /* MD004 */,
-  "list-indent": true /* MD005 */,
+  "ul-style": {
+    "enabled": true,
+    "style": "consistent",
+  } /* MD004 */,
+  "list-indent": {
+    "enabled": true,
+  } /* MD005 */,
   "ul-indent": {
+    "enabled": true,
     "indent": 2,
+    "start_indent": 2,
+    "start_indented": false,
   } /* MD007 */,
   "no-trailing-spaces": {
+    "enabled": true,
     "br_spaces": 0,
     "strict": true,
+    "code_blocks": false,
+    "list_item_empty_lines": false,
   } /* MD009 */,
   "no-hard-tabs": {
+    "enabled": true,
     "spaces_per_tab": 2,
+    "code_blocks": true,
     "ignore_code_languages": [],
   } /* MD010 */,
-  "no-reversed-links": true /* MD011 */,
-  "no-multiple-blanks": true /* MD012 */,
-  "line-length": false /* MD013 */,
-  "commands-show-output": true /* MD014 */,
-  "no-missing-space-atx": true /* MD018 */,
-  "no-multiple-space-atx": true /* MD019 */,
-  "no-missing-space-closed-atx": true /* MD020 */,
-  "no-multiple-space-closed-atx": true /* MD021 */,
+  "no-reversed-links": {
+    "enabled": true,
+  } /* MD011 */,
+  "no-multiple-blanks": {
+    "enabled": true,
+    "maximum": 1,
+  } /* MD012 */,
+  "line-length": {
+    "enabled": false,
+    "code_blocks": false,
+    "headings": false,
+    "stern": false,
+    "strict": false,
+    "tables": false,
+    "line_length": 10000,
+    "code_block_line_length": 10000,
+    "heading_line_length": 10000,
+  } /* MD013 */,
+  "commands-show-output": {
+    "enabled": true,
+  } /* MD014 */,
+  "no-missing-space-atx": {
+    "enabled": true,
+  } /* MD018 */,
+  "no-multiple-space-atx": {
+    "enabled": true,
+  } /* MD019 */,
+  "no-missing-space-closed-atx": {
+    "enabled": true,
+  } /* MD020 */,
+  "no-multiple-space-closed-atx": {
+    "enabled": true,
+  } /* MD021 */,
   "blanks-around-headings": {
-    "lines_below": 0,
+    "enabled": true,
+    "lines_above": 1,
+    "lines_below": 1,
   } /* MD022 */,
-  "heading-start-left": true /* MD023 */,
+  "heading-start-left": {
+    "enabled": true,
+  } /* MD023 */,
   "no-duplicate-heading": {
+    "enabled": true,
     "siblings_only": true,
   } /* MD024 */,
-  "single-title": false /* MD025, single-h1 */,
-  "no-trailing-punctuation": false /* MD026 */,
-  "no-multiple-space-blockquote": true /* MD027 */,
-  "no-blanks-blockquote": true /* MD028 */,
+  "single-title": {
+    "enabled": false,
+    "level": 1,
+  } /* MD025 */,
+  "no-trailing-punctuation": {
+    "enabled": false,
+    "punctuation": ".,;:",
+  } /* MD026 */,
+  "no-multiple-space-blockquote": {
+    "enabled": true,
+    "list_items": true,
+  } /* MD027 */,
+  "no-blanks-blockquote": {
+    "enabled": true,
+  } /* MD028 */,
   "ol-prefix": {
+    "enabled": true,
     "style": "one_or_ordered",
   } /* MD029 */,
-  "list-marker-space": true /* MD030 */,
+  "list-marker-space": {
+    "enabled": true,
+    "ol_multi": 1,
+    "ol_single": 1,
+    "ul_multi": 1,
+    "ul_single": 1,
+  } /* MD030 */,
   "blanks-around-fences": {
+    "enabled": true,
     "list_items": false,
   } /* MD031 */,
-  "blanks-around-lists": true /* MD032 */,
+  "blanks-around-lists": {
+    "enabled": true,
+  } /* MD032 */,
   "no-inline-html": {
+    "enabled": true,
     "allowed_elements": [
       "br",
       "details",
       "img",
       "summary",
     ],
+    "table_allowed_elements": [],
   } /* MD033 */,
-  "no-bare-urls": false /* MD034 */,
+  "no-bare-urls": {
+    "enabled": false,
+  } /* MD034 */,
   "hr-style": {
+    "enabled": true,
     "style": "---",
   } /* MD035 */,
-  "no-emphasis-as-heading": false /* MD036 */,
-  "no-space-in-emphasis": true /* MD037 */,
-  "no-space-in-code": false /* MD038 */,
-  "no-space-in-links": true /* MD039 */,
-  "fenced-code-language": false /* MD040 */,
-  "first-line-heading": false /* MD041, first-line-h1 */,
-  "no-empty-links": true /* MD042 */,
-  "required-headings": false /* MD043 */,
-  "proper-names": false /* MD044 */,
-  "no-alt-text": true /* MD045 */,
+  "no-emphasis-as-heading": {
+    "enabled": false,
+    "punctuation": ".,;:",
+  } /* MD036 */,
+  "no-space-in-emphasis": {
+    "enabled": true,
+  } /* MD037 */,
+  "no-space-in-code": {
+    "enabled": false,
+  } /* MD038 */,
+  "no-space-in-links": {
+    "enabled": true,
+  } /* MD039 */,
+  "fenced-code-language": {
+    "enabled": false,
+    "language_only": false,
+  } /* MD040 */,
+  "first-line-heading": {
+    "enabled": false,
+    "allow_preamble": true,
+  } /* MD041 */,
+  "no-empty-links": {
+    "enabled": true,
+  } /* MD042 */,
+  "required-headings": {
+    "enabled": false,
+    "headings": [],
+    "match_case": false,
+  } /* MD043 */,
+  "proper-names": {
+    "enabled": false,
+    "code_blocks": false,
+    "html_elements": false,
+    "names": [],
+  } /* MD044 */,
+  "no-alt-text": {
+    "enabled": true,
+  } /* MD045 */,
   "code-block-style": {
+    "enabled": true,
     "style": "fenced",
   } /* MD046 */,
-  "single-trailing-newline": true /* MD047 */,
+  "single-trailing-newline": {
+    "enabled": true,
+  } /* MD047 */,
   "code-fence-style": {
+    "enabled": true,
     "style": "backtick",
   } /* MD048 */,
   "emphasis-style": {
+    "enabled": true,
     "style": "underscore",
   } /* MD049 */,
   "strong-style": {
+    "enabled": true,
     "style": "underscore",
   } /* MD050 */,
-  "link-fragments": true /* MD051 */,
-  "reference-links-images": true /* MD052 */,
-  "link-image-reference-definitions": true /* MD053 */,
-  "link-image-style": true /* MD054 */,
+  "link-fragments": {
+    "enabled": true,
+    "ignore_case": false,
+  } /* MD051 */,
+  "reference-links-images": {
+    "enabled": true,
+    "ignored_labels": [
+      "x",
+    ],
+    "shortcut_syntax": false,
+  } /* MD052 */,
+  "link-image-reference-definitions": {
+    "enabled": true,
+    "ignored_definitions": [
+      "//",
+    ],
+  } /* MD053 */,
+  "link-image-style": {
+    "enabled": true,
+    "autolink": true,
+    "collapsed": true,
+    "full": true,
+    "inline": true,
+    "shortcut": true,
+    "url_inline": true,
+  } /* MD054 */,
   "table-pipe-style": {
+    "enabled": true,
     "style": "leading_and_trailing",
   } /* MD055 */,
-  "table-column-count": true /* MD056 */,
-  "blanks-around-tables": true /* MD058 */,
-  "descriptive-link-text": false /* MD059 */,
+  "table-column-count": {
+    "enabled": true,
+  } /* MD056 */,
+  "blanks-around-tables": {
+    "enabled": true,
+  } /* MD058 */,
+  "descriptive-link-text": {
+    "enabled": false,
+    "prohibited_texts": [],
+  } /* MD059 */,
   "table-column-style": {
+    "enabled": true,
     "style": "aligned",
-    "aligned_delimiter": true /* implicitly true when style:aligned */,
+    "aligned_delimiter": true,
   } /* MD060 */,
 }
