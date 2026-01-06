@@ -78,5 +78,5 @@
     "deploy:replace:space:outdent": "rr \"^(?<half>(?:  )*|(?:\\t)*)\\k<half>\" \"€<half>\" -uI \"packed/{,app/**/,lib/**/,private/**/}*.js\" -BHq",
     "deploy:replace:space:sandbox": "rr \"(?<indent>[ \\t]*)async[ \\t]+runtime[ \\t]*\\(\\)[ \\t]*\\{\\s*\\}\" \"€<indent>async runtime() {\\n€<indent>  \\n€<indent>}\" -uI -GMs \"packed/*.js\" -BHq"
   },
-  "author": "Jimmy Zhening Luo <jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
+  "author": "Jimmy Zhening Luo <1450044+jimmy-zhening-luo@users.noreply.github.com> (https://jimm.my/)"
 }
