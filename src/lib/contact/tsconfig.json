@@ -1,6 +1,7 @@
 {
   "files": [
     "index.ts",
+    "phone.ts",
     "field.d.ts",
   ],
   "extends": "..",
