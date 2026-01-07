@@ -1,8 +1,19 @@
 import type { SettableContactField } from "./field";
 import Phone from "./phone";
 
-export default class {
+export default class ContactBook {
   public static Phone = Phone;
+
+  public static order(
+    a: Contact,
+    b: Contact,
+  ) {
+    return a.givenName.length === 0
+      ? -1
+      : b.givenName.length === 0
+        ? 1
+        : a.givenName.codePointAt(0)! - b.givenName.codePointAt(0)!;
+  }
 
   public static name(contact: Contact) {
     return contact.givenName + (
@@ -18,7 +29,9 @@ export default class {
   }
 
   public async book() {
-    return Contact.all([await this.container()]);
+    return (
+      await Contact.all([await this.container()])
+    ).sort(ContactBook.order);
   }
 
   public async phonebook() {
