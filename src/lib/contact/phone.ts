@@ -3,7 +3,7 @@ export default class {
   private _value: Null<stringful> = null;
 
   constructor(private readonly phone: Contact.PhoneNumbers) {
-    this.setValue(phone.value);
+    this.set(phone.value);
 
     if (this.value) {
       if (phone.identifier)
@@ -38,11 +38,11 @@ export default class {
   }
 
   public set value(value: Null<string>) {
-    this.setValue(value);
+    this.set(value);
     this._modified = true;
   }
 
-  private setValue(value?: Null<string>) {
+  private set(value?: Null<string>) {
     this._value = value
       ? value as stringful
       : null;
