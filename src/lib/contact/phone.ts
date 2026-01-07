@@ -1,4 +1,4 @@
-export default class {
+export default class Phone {
   private _modified = false;
   private _value: Null<stringful> = null;
 
@@ -42,10 +42,19 @@ export default class {
     this._modified = true;
   }
 
+  public static clean(number?: Null<string>) {
+    return number
+      ?.trim()
+      .replaceAll("(", "")
+      .replaceAll(")", "")
+      .replaceAll("-", "")
+      .replaceAll(".", "")
+      .replaceAll(" ", "") as stringful
+      || null;
+  }
+
   private set(value?: Null<string>) {
-    this._value = value
-      ? value as stringful
-      : null;
+    this._value = Phone.clean(value);
   }
 
   private readonly identifier?: string;
