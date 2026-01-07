@@ -8,7 +8,7 @@ export default class {
   public async phone() {
     return (await this.get())
       .filter(c => c.isPhoneNumbersAvailable)
-      .filter(c => c.phoneNumbers?.length > 0);
+      .filter(c => c.phoneNumbers.length !== 0);
   }
 
   private container?: ContactsContainer;
