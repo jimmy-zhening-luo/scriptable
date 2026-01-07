@@ -1,8 +1,6 @@
 export default class {
   public async get() {
-    void (this.container ??= await ContactsContainer.default());
-
-    return Contact.all([this.container]);
+    return Contact.all([await this.container()]);
   }
 
   public async phone() {
@@ -11,5 +9,9 @@ export default class {
       .filter(c => c.phoneNumbers.length !== 0);
   }
 
-  private container?: ContactsContainer;
+  private async container() {
+    return this._container ??= await ContactsContainer.default();
+  }
+
+  private _container?: ContactsContainer;
 }
