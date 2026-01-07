@@ -1,4 +1,8 @@
+import Phone from "./phone";
+
 export default class {
+  public static Phone = Phone;
+
   public static name(contact: Contact) {
     return contact.givenName + (
       contact.familyName
