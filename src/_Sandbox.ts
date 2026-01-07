@@ -1,12 +1,12 @@
 "deep-green play";
 import Shortcut from "./app";
-import Contact from "./lib/contact";
+import _ from "./lib/contact";
+
+const Book = new _;
 
 await new class Sandbox extends Shortcut {
-  private readonly Contact = new Contact();
-
   protected async runtime() {
-    const phone = await this.Contact.phone();
+    const phone = await Book.phone();
 
     log(phone);
   }
