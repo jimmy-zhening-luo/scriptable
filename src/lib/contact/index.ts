@@ -1,4 +1,12 @@
 export default class {
+  public static name(Contact contact) {
+    return contact.givenName + (
+      contact.familyName
+        ? " " + contact.familyName
+        : ""
+    );
+  }
+
   public async get() {
     return Contact.all([await this.container()]);
   }
