@@ -12,6 +12,11 @@ export default class {
     );
   }
 
+  public static phone(contact: Contact) {
+    return contact.phoneNumbers
+      .map(number => new Phone(number));
+  }
+
   public async book() {
     return Contact.all([await this.container()]);
   }
