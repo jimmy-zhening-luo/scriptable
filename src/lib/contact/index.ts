@@ -21,10 +21,19 @@ export default class {
     return Contact.all([await this.container()]);
   }
 
-  public set(
+  public async phonebook() {
+    return (await this.book())
+      .filter(c => c.isPhoneNumbersAvailable)
+      .filter(c => c.phoneNumbers.length !== 0);
+  }
+
+  public set<
+    F extends SettableContactField | "phoneNumbers",
+    V extends Contact[F],
+  >(
     contact: Contact,
-    field: SettableContactField,
-    value: Null<string>,
+    field: F,
+    value: Null<V>,
   ) {
     Contact.update(contact);
 
@@ -32,10 +41,20 @@ export default class {
       contact[field] = value;
   }
 
-  public async phonebook() {
-    return (await this.book())
-      .filter(c => c.isPhoneNumbersAvailable)
-      .filter(c => c.phoneNumbers.length !== 0);
+  public setPhone(
+    contact: Contact,
+    phones: Phone[],
+  ) {
+    const cards = phones
+      .map(phone => phone.card)
+      .filter(card => card !== null);
+
+    if (cards.length && cards.length === phones.length)
+      this.set(
+        contact,
+        "phoneNumbers",
+        cards,
+      );
   }
 
   public async sync() {
