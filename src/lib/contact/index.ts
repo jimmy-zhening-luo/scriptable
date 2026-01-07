@@ -33,6 +33,10 @@ export default class {
       .filter(c => c.phoneNumbers.length !== 0);
   }
 
+  public async sync() {
+    await Contact.persistChanges();
+  }
+
   private async container() {
     return this._container ??= await ContactsContainer.default();
   }
