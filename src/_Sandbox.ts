@@ -7,10 +7,6 @@ await new class Sandbox extends Shortcut {
     const book = new Book,
     phonebook = await book.phonebook();
 
-    for (const contact of phonebook) {
-      const card = Book.phone(contact);
-
-      log(Book.name(contact) + ": " + card.length);
-    }
+    console.log(phonebook.length);
   }
 }().run();
