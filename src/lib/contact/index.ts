@@ -1,3 +1,4 @@
+import type { SettableContactField } from "./field";
 import Phone from "./phone";
 
 export default class {
@@ -15,8 +16,15 @@ export default class {
     return Contact.all([await this.container()]);
   }
 
-  public set(contact: Contact) {
+  public set(
+    contact: Contact,
+    field: SettableContactField,
+    value: Null<string>,
+  ) {
     Contact.update(contact);
+
+    if (value)
+      contact[field] = value;
   }
 
   public async phone() {
