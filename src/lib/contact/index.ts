@@ -1,5 +1,5 @@
 export default class {
-  public static name(Contact contact) {
+  public static name(contact: Contact) {
     return contact.givenName + (
       contact.familyName
         ? " " + contact.familyName
