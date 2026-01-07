@@ -3,6 +3,10 @@ export default class {
     return Contact.all([await this.container()]);
   }
 
+  public set(contact: Contact) {
+    Contact.update(contact);
+  }
+
   public async phone() {
     return (await this.get())
       .filter(c => c.isPhoneNumbersAvailable)
