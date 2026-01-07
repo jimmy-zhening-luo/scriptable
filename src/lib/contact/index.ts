@@ -12,7 +12,7 @@ export default class {
     );
   }
 
-  public async get() {
+  public async book() {
     return Contact.all([await this.container()]);
   }
 
@@ -27,8 +27,8 @@ export default class {
       contact[field] = value;
   }
 
-  public async phone() {
-    return (await this.get())
+  public async phonebook() {
+    return (await this.book())
       .filter(c => c.isPhoneNumbersAvailable)
       .filter(c => c.phoneNumbers.length !== 0);
   }
