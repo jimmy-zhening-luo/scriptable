@@ -30,8 +30,11 @@ export default class ContactBook {
 
   public async book() {
     return (
-      await Contact.all([await this.container()])
-    ).sort(ContactBook.order);
+      await Contact.all(
+        [await this.container()],
+      )
+    )
+      .sort(ContactBook.order);
   }
 
   public async phonebook() {
