@@ -4,15 +4,9 @@ import Phone from "./phone";
 export default class ContactBook {
   public static Phone = Phone;
 
-  public static order(
-    a: Contact,
-    b: Contact,
-  ) {
-    return a.givenName.length === 0
-      ? -1
-      : b.givenName.length === 0
-        ? 1
-        : a.givenName.codePointAt(0)! - b.givenName.codePointAt(0)!;
+  public static order(a: Contact, b: Contact) {
+    return a.givenName.localeCompare(b.givenName)
+      || a.familyName.localeCompare(b.familyName);
   }
 
   public static name(contact: Contact) {
