@@ -11,6 +11,9 @@
       "path": "calendar",
     },
     {
+      "path": "contact",
+    },
+    {
       "path": "location",
     },
     {

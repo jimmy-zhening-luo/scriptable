@@ -15,6 +15,7 @@ export default {
     "lib/api": "src/lib/api/index.ts",
     "lib/time": "src/lib/time/index.ts",
     "lib/calendar": "src/lib/calendar/index.ts",
+    "lib/contact": "src/lib/contact/index.ts",
     "lib/location": "src/lib/location/index.ts",
     "lib/ui": "src/lib/ui/index.ts",
     "private/Search": "src/private/Search/index.ts",
