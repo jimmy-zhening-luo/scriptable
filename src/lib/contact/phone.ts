@@ -1,13 +1,12 @@
 export default class {
-  public readonly value: Null<stringful>;
+  private _value: Null<stringful> = null;
 
-  constructor(
-    phone: Contact.PhoneNumbers,
-  ) {
-    this.value = (phone.value || null) as Null<stringful>;
+  constructor(phone: Contact.PhoneNumbers) {
+    this.value = phone.value;
 
     if (this.value) {
-      this.identifier = phone.identifier!;
+      if (phone.identifier)
+        this.identifier = phone.identifier;
 
       if (phone.label)
         this.label = {
@@ -20,11 +19,25 @@ export default class {
   }
 
   public get card() {
-    return this.value && {
-      value: this.value,
-      identifier: this.identifier!,
-      ...this.label ?? {},
-    };
+    return this.value
+      ? {
+          value: this.value,
+          ...this.identifier
+            ? { identifier: this.identifier }
+            : {},
+          ...this.label ?? {},
+        }
+      : null;
+  }
+
+  public get value(): Null<stringful> {
+    return this._value;
+  }
+
+  public set value(value: Null<string>) {
+    this._value = value
+      ? value as stringful
+      : null;
   }
 
   private readonly identifier?: string;
