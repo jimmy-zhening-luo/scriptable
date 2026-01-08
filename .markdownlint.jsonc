@@ -1,6 +1,6 @@
 {
-  // #region v40.1.0
-  "$schema": "https://gist.githubusercontent.com/jimmy-zhening-luo/e0d6b5715f0df18bc462f752520bd485/raw",
+  // #region v40.2.0
+  "$schema": "https://raw.githubusercontent.com/jzni/schema/main/app/markdownlint.json",
   "$help": {
     "link": "https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md",
   },
