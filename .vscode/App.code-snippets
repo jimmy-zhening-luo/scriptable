@@ -2,8 +2,7 @@
   "Scriptable App: Shortcut": {
     "scope": "typescript",
     "prefix": [
-      "shortcut",
-      "scriptable-shortcut",
+      "scriptable",
     ],
     "body": [
       "import ${1|Shortcut,Share,Widget,DateWidget|} from \"./app${2|/share,/widget,/widget/date|}\";",
