@@ -3,7 +3,6 @@
   "Scriptable Header": {
     "scope": "typescript",
     "prefix": [
-      "header",
       "scriptable-header",
     ],
     "body": [
@@ -15,12 +14,7 @@
   "Scriptable Header: (Optional) Share Sheet": {
     "scope": "typescript",
     "prefix": [
-      "share",
-      "share-sheet",
-      "header-share",
-      "header-share-sheet",
-      "header-share-sheet-inputs",
-      "optional-header-share-sheet-inputs",
+      "scriptable-header-share-sheet-inputs",
     ],
     "body": [
       "// share-sheet-inputs: ${1|plain-text,url,file-url,image,plain-text\\, url,plain-text\\, file-url,plain-text\\, image,url\\, file-url,url\\, image,file-url\\, image,plain-text\\, url\\, file-url,plain-text\\, url\\, image,plain-text\\, file-url\\, image,url\\, file-url\\, image,plain-text\\, url\\, file-url\\, image|};$0",
