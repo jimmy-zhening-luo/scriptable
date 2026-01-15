@@ -3,9 +3,7 @@
     "scope": "typescript",
     "prefix": [
       "shortcut",
-      "app-shortcut",
       "scriptable-shortcut",
-      "scriptable-app-shortcut",
     ],
     "body": [
       "import ${1|Shortcut,Share,Widget|} from \"./core${2:/${3|share,widget|}}\";",
