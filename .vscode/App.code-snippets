@@ -16,6 +16,6 @@
       "",
       "${7|void,await|} new $4().run();",
     ],
-    "description": "Scriptable Shortcut script.\n\nThe current file name (which also serves as the display name in the Scriptable app UI) is the default class name.\n\nIf using a non-default class name, choose a class name unique from that of any other class with which you don't want this class to share settings and storage.\n\nReminder: Scriptable scripts must be in the top level directory to be visible to Scriptale.",
+    "description": "Scriptable Shortcut script.\n\nAny TypeScript file located in the top-level directory of `./src` is visible in the Scriptable app as a script with the same name as the TypeScript file.\n\nThe class name determines the setting and storage namespace used by the script.",
   },
 }
