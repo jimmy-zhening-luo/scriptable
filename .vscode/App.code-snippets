@@ -7,7 +7,7 @@
     "body": [
       "import ${1|Shortcut,Share,Widget,DateWidget|} from \"./app${2|/share,/widget,/widget/date|}\";",
       "",
-      "${3|await,void|} new class ${4:$TM_FILENAME_BASE} extends $1${5:<${6:Setting}>} {",
+      "${3|await,void|} new class ${4:$TM_FILENAME_BASE} extends $1${5:<$6>} {",
       "  protected ${7:async }runtime() {",
       "    $0",
       "  }",
