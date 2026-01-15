@@ -11,7 +11,7 @@
       "  protected ${7:async }runtime() {",
       "    $0",
       "  }",
-      "}(${8:\"${9:init}\"}).run();",
+      "}($8).run();",
     ],
     "description": "Scriptable Shortcut script.\n\nAny TypeScript file located in the top-level directory of `./src` is visible in the Scriptable app as a script with the same name as the TypeScript file.\n\nThe class name determines the setting and storage namespace used by the script.",
   },
