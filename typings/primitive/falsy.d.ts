@@ -4,6 +4,6 @@ declare type falsy
   | ""
   | 0 /* -0 */
   | 0n;
-//| NaN
+// | NaN
 
 declare type Falsy<T> = T & falsy;

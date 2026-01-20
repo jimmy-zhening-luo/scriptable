@@ -52,8 +52,8 @@ export default class File<
     + type,
     directory = folder
       ? drive
-        + Path.Separator
-        + folder
+      + Path.Separator
+      + folder
       : drive,
     subpath = file
       .split(Path.Separator)
