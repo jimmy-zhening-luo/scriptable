@@ -50,9 +50,11 @@ export default class File<
     )
     + Path.Separator
     + type,
-    directory = drive
-      + Path.Separator
-      + folder,
+    directory = folder
+      ? drive
+        + Path.Separator
+        + folder
+      : drive,
     subpath = file
       .split(Path.Separator)
       .filter(node => node);
