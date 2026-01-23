@@ -25,20 +25,20 @@ export function parser(
     Repeat = "/",
   }
   switch (hotkey) {
-  case 0:
-    break;
-  case 1:
-    return {
-      key: Reserved.Ask as reserved,
-      terms: query,
-      draft: setting.engines[Reserved.Ask as reserved]!,
-    };
-  default:
-    return {
-      key: Reserved.Translate as reserved,
-      terms: query,
-      draft: setting.engines[Reserved.Translate as reserved]!,
-    };
+    case 0:
+      break;
+    case 1:
+      return {
+        key: Reserved.Ask as reserved,
+        terms: query,
+        draft: setting.engines[Reserved.Ask as reserved]!,
+      };
+    default:
+      return {
+        key: Reserved.Translate as reserved,
+        terms: query,
+        draft: setting.engines[Reserved.Translate as reserved]!,
+      };
   }
 
   const [first] = query,
@@ -78,40 +78,40 @@ export function parser(
       Any = Unary + Closure + Currency,
     }
     switch (f0) {
-    case Selector.Primary:
-      return {
-        key: Reserved.Translate as reserved,
-        terms: query,
-        draft: setting.engines[Reserved.Translate as reserved]!,
-      };
-    case Reserved.Repeat: {
-      if (weight)
-        select(first.slice(1) as stringful);
-      else
-        void query.shift();
-
-      return {
-        terms: query,
-        prior: true,
-      };
-    }
-    default:
-      if (
-        f0 >= Digit.Zero
-        && f0 <= Digit.Nine
-        || weight
-        && (
-          f0 === Selector.Backup
-          && first[1]! >= Digit.Zero
-          && first[1]! <= Digit.Nine
-          || Operator.Any.includes(f0)
-        )
-      )
+      case Selector.Primary:
         return {
-          key: Reserved.Ask as reserved,
+          key: Reserved.Translate as reserved,
           terms: query,
-          draft: setting.engines[Reserved.Ask as reserved]!,
+          draft: setting.engines[Reserved.Translate as reserved]!,
         };
+      case Reserved.Repeat: {
+        if (weight)
+          select(first.slice(1) as stringful);
+        else
+          void query.shift();
+
+        return {
+          terms: query,
+          prior: true,
+        };
+      }
+      default:
+        if (
+          f0 >= Digit.Zero
+          && f0 <= Digit.Nine
+          || weight
+          && (
+            f0 === Selector.Backup
+            && first[1]! >= Digit.Zero
+            && first[1]! <= Digit.Nine
+            || Operator.Any.includes(f0)
+          )
+        )
+          return {
+            key: Reserved.Ask as reserved,
+            terms: query,
+            draft: setting.engines[Reserved.Ask as reserved]!,
+          };
     }
 
     if (weight) {

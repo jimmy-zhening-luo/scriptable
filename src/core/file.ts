@@ -60,26 +60,26 @@ export default class File<
       .filter(node => node);
 
     switch (subpath.length) {
-    case 0:
-      this.parent = drive;
-      this.path = directory;
-      break;
-    case 1:
-      this.parent = directory;
-      this.path = directory
-        + Path.Separator
-        + subpath[0]!;
-      break;
-    default: {
-      const leaf = subpath.pop()!;
+      case 0:
+        this.parent = drive;
+        this.path = directory;
+        break;
+      case 1:
+        this.parent = directory;
+        this.path = directory
+          + Path.Separator
+          + subpath[0]!;
+        break;
+      default: {
+        const leaf = subpath.pop()!;
 
-      this.parent = directory
-        + Path.Separator
-        + subpath.join(Path.Separator);
-      this.path = this.parent
-        + Path.Separator
-        + leaf;
-    }
+        this.parent = directory
+          + Path.Separator
+          + subpath.join(Path.Separator);
+        this.path = this.parent
+          + Path.Separator
+          + leaf;
+      }
     }
 
     if (File.manager.fileExists(this.path))
@@ -111,21 +111,21 @@ export default class File<
       : Overwrite = Overwrite.No,
   ) {
     switch (this.state) {
-    case State.File:
-      if (!overwrite)
+      case State.File:
+        if (!overwrite)
+          return;
+
+        break;
+      case State.None:
+        if (!File.manager!.isDirectory(this.parent))
+          File.manager!.createDirectory(
+            this.parent,
+            true,
+          );
+
+        break;
+      default:
         return;
-
-      break;
-    case State.None:
-      if (!File.manager!.isDirectory(this.parent))
-        File.manager!.createDirectory(
-          this.parent,
-          true,
-        );
-
-      break;
-    default:
-      return;
     }
 
     const enum Line {
@@ -137,12 +137,12 @@ export default class File<
 
       if (this.state)
         switch (overwrite as Overwrite.Append | Overwrite.Push) {
-        case Overwrite.Append:
-          void rows.unshift(this.read()!);
+          case Overwrite.Append:
+            void rows.unshift(this.read()!);
 
-          break;
-        case Overwrite.Push:
-          rows[rows.length] = this.read()!;
+            break;
+          case Overwrite.Push:
+            rows[rows.length] = this.read()!;
         }
 
       File.manager!.writeString(

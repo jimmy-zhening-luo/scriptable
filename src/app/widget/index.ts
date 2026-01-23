@@ -68,14 +68,14 @@ export default abstract class<Setting = never> extends IWidget<Setting> {
 
   protected preview() {
     switch (this.size) {
-    case WidgetSize.Small:
-      void this.widget.presentSmall();
-      break;
-    case WidgetSize.Medium:
-      void this.widget.presentMedium();
-      break;
-    default:
-      void this.widget.presentLarge();
+      case WidgetSize.Small:
+        void this.widget.presentSmall();
+        break;
+      case WidgetSize.Medium:
+        void this.widget.presentMedium();
+        break;
+      default:
+        void this.widget.presentLarge();
     }
   }
 
