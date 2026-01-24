@@ -1,9 +1,13 @@
-declare type Table<Value = unknown> = Record<
+declare type Table<
+  V = unknown,
+> = Record<
   string,
-  Value
+  V
 >;
 
-declare type Tableful<Value = unknown> = Record<
+declare type Tableful<
+  V = unknown,
+> = Record<
   stringful,
-  Value
+  V
 >;

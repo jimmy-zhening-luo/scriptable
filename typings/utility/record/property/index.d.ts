@@ -1,10 +1,10 @@
 declare type Property<
-  Value,
-  Key extends RecordKey,
-  Option extends RecordKey,
-> = [Key] extends [never]
-  ? PartialRecord<Option, Value>
+  V,
+  K extends Key,
+  Option extends Key,
+> = [K] extends [never]
+  ? PartialRecord<Option, V>
   : [Option] extends [never]
-      ? Record<Key, Value>
-      : & Record<Key, Value>
-        & PartialRecord<Option, Value>;
+      ? Record<K, V>
+      : & Record<K, V>
+        & PartialRecord<Option, V>;

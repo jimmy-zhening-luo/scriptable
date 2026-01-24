@@ -1,6 +1,9 @@
 declare type ReadonlyRecord<
-  Key extends RecordKey,
-  Value,
+  K extends Key,
+  V,
 > = Readonly<
-  Record<Key, Value>
+  Record<
+    K,
+    V
+  >
 >;

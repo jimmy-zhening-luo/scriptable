@@ -1,1 +1,6 @@
-type Space<Key extends RecordKey> = Record<Key, Key>;
+type Space<
+  K extends Key,
+> = Record<
+  K,
+  K
+>;

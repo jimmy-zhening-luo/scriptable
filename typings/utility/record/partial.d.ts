@@ -1,6 +1,9 @@
 declare type PartialRecord<
-  Key extends RecordKey,
-  Value,
+  K extends Key,
+  V,
 > = Partial<
-  Record<Key, Value>
+  Record<
+    K,
+    V
+  >
 >;

@@ -1,4 +1,4 @@
-declare type RecordKey
+declare type Key
 = | string
   | number
   | symbol;
