@@ -1,7 +1,7 @@
 declare type Require<
   Record extends object,
-  Requirement extends keyof Record,
-> = Omit<Record, Requirement>
+  K extends keyof Record,
+> = Omit<Record, K>
   & Required<
-    Pick<Record, Requirement>
+    Pick<Record, K>
   >;

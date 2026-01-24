@@ -1,10 +1,19 @@
-declare type Single<Member = string> = NTuple<1, Member>;
-declare type Tuple<Member = string> = NTuple<2, Member>;
-declare type Triple<Member = string> = NTuple<3, Member>;
-declare type Quad<Member = string> = NTuple<4, Member>;
-declare type Pentad<Member = string> = NTuple<5, Member>;
-declare type Hexad<Member = string> = NTuple<6, Member>;
-declare type Heptad<Member = string> = NTuple<7, Member>;
-declare type Octad<Member = string> = NTuple<8, Member>;
-declare type Nonad<Member = string> = NTuple<9, Member>;
-declare type Decad<Member = string> = NTuple<10, Member>;
+declare type Single<T = string> = NTuple<1, T>;
+
+declare type Tuple<T = string> = NTuple<2, T>;
+
+declare type Triple<T = string> = NTuple<3, T>;
+
+declare type Quad<T = string> = NTuple<4, T>;
+
+declare type Pentad<T = string> = NTuple<5, T>;
+
+declare type Hexad<T = string> = NTuple<6, T>;
+
+declare type Heptad<T = string> = NTuple<7, T>;
+
+declare type Octad<T = string> = NTuple<8, T>;
+
+declare type Nonad<T = string> = NTuple<9, T>;
+
+declare type Decad<T = string> = NTuple<10, T>;

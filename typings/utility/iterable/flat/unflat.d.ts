@@ -1,9 +1,9 @@
 declare type Unflat<
-  Member = string,
+  T = string,
   Readonly extends boolean = false,
-> = [Member] extends [never]
+> = [T] extends [never]
   ? never
-  : | Member
+  : | T
     | (True<Readonly> extends never
-      ? Member[]
-      : readonly Member[]);
+      ? T[]
+      : readonly T[]);

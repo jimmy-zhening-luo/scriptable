@@ -1,4 +1,8 @@
 declare type Arrayful<
-  Member = string,
+  T = string,
   Readonly extends boolean = false,
-> = ArrayN<1, Member, Readonly>;
+> = ArrayN<
+  1,
+  T,
+  Readonly
+>;
