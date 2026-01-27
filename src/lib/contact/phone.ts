@@ -1,11 +1,9 @@
-type IPhoneNumber = Contact.PhoneNumbers;
-
 export default class PhoneNumber {
   private _modified = false;
   private _value: Null<stringful> = null;
 
   constructor(
-    private readonly phone: IPhoneNumber,
+    private readonly phone: Contact.PhoneNumbers,
   ) {
     this.set(phone.value);
 
