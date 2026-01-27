@@ -1,6 +1,7 @@
 {
   "files": [
     "index.ts",
+    "person.ts",
     "phone.ts",
     "field.d.ts",
   ],
