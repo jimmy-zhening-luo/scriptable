@@ -211,6 +211,7 @@ export default class Time {
         return this.print();
       default:
         return this.epoch;
+    }
   }
 
   public valueOf() {
