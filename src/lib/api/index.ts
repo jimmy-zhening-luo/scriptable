@@ -86,18 +86,7 @@ export default class {
   }
 
   public [Symbol.toPrimitive](hint: toPrimitive) {
-    switch (hint) {
-      case "string":
-        return this.url;
-      default:
-        return valueOf();
-    }
-  }
-
-  public valueOf() {
-    throw TypeError(
-      "API cannot be coerced to number type",
-    );
+    return this.url;
   }
 
   public toString() {
