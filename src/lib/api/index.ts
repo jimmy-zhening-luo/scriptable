@@ -85,7 +85,7 @@ export default class {
     return await request.loadJSON() as Response;
   }
 
-  public [Symbol.toPrimitive](hint: toPrimitive) {
+  public [Symbol.toPrimitive]() {
     return this.url;
   }
 
