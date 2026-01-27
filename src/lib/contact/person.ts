@@ -1,4 +1,5 @@
 import PhoneNumber from "./phone";
+import type { SettableContactField } from "./field";
 
 export default class Person {
   private _modified = false;

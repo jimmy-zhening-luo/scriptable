@@ -1,5 +1,4 @@
 import Person from "./person";
-import type { SettableContactField } from "./field";
 
 export default class ContactBook {
   public static async book() {
