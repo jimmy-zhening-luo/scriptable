@@ -1,8 +1,12 @@
-export default class Phone {
+type IPhoneNumber = Contact.PhoneNumbers;
+
+export default class PhoneNumber {
   private _modified = false;
   private _value: Null<stringful> = null;
 
-  constructor(private readonly phone: Contact.PhoneNumbers) {
+  constructor(
+    private readonly phone: IPhoneNumber,
+  ) {
     this.set(phone.value);
 
     if (this.value) {
@@ -19,6 +23,10 @@ export default class Phone {
     }
   }
 
+  public get modified() {
+    return this._modified;
+  }
+
   public get card() {
     return this._modified
       ? this.value
@@ -33,13 +41,19 @@ export default class Phone {
       : this.phone;
   }
 
+  public get rawValue() {
+    return this.phone.value;
+  }
+
   public get value(): Null<stringful> {
     return this._value;
   }
 
   public set value(value: Null<string>) {
-    this.set(value);
-    this._modified = true;
+    this.set(
+      value,
+      true,
+    );
   }
 
   public static clean(number?: Null<string>) {
@@ -53,8 +67,14 @@ export default class Phone {
       || null;
   }
 
-  private set(value?: Null<string>) {
-    this._value = Phone.clean(value);
+  private set(
+    value?: Null<string>,
+    modified?: boolean,
+  ) {
+    this._value = PhoneNumber.clean(value);
+
+    if (modified)
+      this._modified = true;
   }
 
   private readonly identifier?: string;
