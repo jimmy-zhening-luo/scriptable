@@ -1,7 +1,7 @@
 import PhoneNumber from "./phone";
 import type { SettableContactField } from "./field";
 
-export default class Person {
+export default class {
   private _modified = false;
 
   constructor(private readonly contact: Contact) {}

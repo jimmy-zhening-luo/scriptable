@@ -1,10 +1,10 @@
 import Person from "./person";
 
-export default class ContactBook {
-  public static async book() {
+export default class {
+  public async book() {
     return (
       await Contact.all(
-        [await ContactBook.container()],
+        [await this.container()],
       )
     )
       .map(
@@ -13,23 +13,22 @@ export default class ContactBook {
       .sort();
   }
 
-  public static async phonebook() {
+  public async phonebook() {
     return (
-      await ContactBook.book()
+      await this.book()
     )
       .filter(
         person => person.hasPhone,
       );
   }
 
-  public static async sync() {
+  public async sync() {
     await Contact.persistChanges();
   }
 
-  private static async container() {
-    return ContactBook._container
-      ??= await ContactsContainer.default();
+  private async container() {
+    return this._container ??= await ContactsContainer.default();
   }
 
-  private static _container?: ContactsContainer;
+  private _container?: ContactsContainer;
 }
