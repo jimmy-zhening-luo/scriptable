@@ -20,16 +20,15 @@ export default class {
   }
 
   public get phones() {
-    return this._phones ??= (
-      this.hasPhone
-        ? this
+    return this._phones
+    ??= this.hasPhone
+      ? this
           .contact
           .phoneNumbers
           .map(
             phone => new PhoneNumber(phone),
           )
-        : []
-    );
+      : [];
   }
 
   public set phones(
@@ -81,8 +80,8 @@ export default class {
     return givenName
       ? familyName
         ? givenName
-          + " "
-          + familyName
+        + " "
+        + familyName
         : givenName
       : familyName;
   }
@@ -108,6 +107,5 @@ export default class {
   }
 
   private _name?: string;
-
   private _phones?: PhoneNumber[];
 }
