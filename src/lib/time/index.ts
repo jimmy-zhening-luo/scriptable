@@ -206,13 +206,19 @@ export default class Time {
   }
 
   public [Symbol.toPrimitive](hint: toPrimitive) {
-    return hint === "string"
-      ? this.print()
-      : this.epoch;
+    switch (hint) {
+      case "string":
+        return this.print();
+      default:
+        return this.epoch;
   }
 
   public valueOf() {
     return this.epoch;
+  }
+
+  public toString() {
+    return this.print();
   }
 
   public print(

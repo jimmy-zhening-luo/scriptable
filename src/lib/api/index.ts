@@ -85,6 +85,21 @@ export default class {
     return await request.loadJSON() as Response;
   }
 
+  public [Symbol.toPrimitive](hint: toPrimitive) {
+    switch (hint) {
+      case "string":
+        return this.url;
+      default:
+        return valueOf();
+    }
+  }
+
+  public valueOf() {
+    throw TypeError(
+      "API cannot be coerced to number type",
+    );
+  }
+
   public toString() {
     return this.url;
   }
