@@ -41,7 +41,7 @@ export default class Person {
     if (modified.length) {
       const cards = phones
         .map(phone => phone.card)
-        .filter(card => card);
+        .filter(card => card !== null);
 
       if (phones.length === cards.length)
         this._set(
