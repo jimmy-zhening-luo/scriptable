@@ -18,7 +18,8 @@ export default class ContactBook {
   }
 
   public static phone(contact: Contact) {
-    return contact.phoneNumbers
+    return contact
+      .phoneNumbers
       .map(number => new Phone(number));
   }
 
