@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/jimmy-zhening-luo/dprint/main/schema.json",
   // $help: https://dprint.dev/config/
-  // $version: 0.5101.4
-  "extends": "https://raw.githubusercontent.com/jimmy-zhening-luo/dprint/main/dprint.jsonc",
+  // $version: 0.5101.5
+  "extends": "https://raw.githubusercontent.com/jimmy-zhening-luo/dprint/main/.dprint.jsonc",
 }
