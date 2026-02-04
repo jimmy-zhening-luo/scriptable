@@ -1,6 +1,6 @@
 ##############################
 ####      .gitignore      ####
-####       v252.0.0       ####
+####       v252.2.0       ####
 ##############################
 
 #DOC: https://git-scm.com/docs/gitignore
@@ -21,7 +21,6 @@
 /declaration/
 /types/
 # Test
-/dist-tests/
 /in/
 /input/
 /out/
@@ -35,7 +34,8 @@ node_modules/
 .svelte-kit/
 # Local
 .vscode/**
-!.vscode/.code-workspace
+!.vscode/**/launch.json
+!.vscode/**/.code-workspace
 !.vscode/**/*.code-snippets
 # Trash
 .Trash/
@@ -44,8 +44,10 @@ node_modules/
 
 #region File (**)
 # Build
-.yarn-integrity
+*.dll
+*.exe
 *.tsbuildinfo
+.yarn-integrity
 # Local
 *.env
 *.env.*
