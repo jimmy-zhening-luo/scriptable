@@ -1,13 +1,13 @@
 ##############################
 ####    .gitattributes    ####
-####       v252.4.0       ####
+####       v253.0.0       ####
 ##############################
 
 * text=auto
 
 *.cmd text eol=crlf
 *.bat text eol=crlf
-*.reg text eol=crlf
+*.reg text eol=crlf working-tree-encoding=UTF-8
 *.ics text eol=crlf
 
 *.sh text eol=lf
