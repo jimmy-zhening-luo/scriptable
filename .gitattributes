@@ -1,23 +1,25 @@
 ##############################
 ####    .gitattributes    ####
-####       v253.0.0       ####
+####       v253.1.0       ####
 ##############################
 
 * text=auto
 
+*.ics text eol=crlf
+
 *.cmd text eol=crlf
 *.bat text eol=crlf
 *.reg text eol=crlf working-tree-encoding=UTF-8
-*.ics text eol=crlf
+
+*.ps1 text eol=lf working-tree-encoding=UTF-8
+*.psm1 text eol=lf working-tree-encoding=UTF-8
+*.psd1 text eol=lf working-tree-encoding=UTF-8
+*.ps1xml text eol=lf working-tree-encoding=UTF-8
 
 *.sh text eol=lf
 *.bashrc text eol=lf
 *.bash_profile text eol=lf
 *.bash_aliases text eol=lf
-*.ps1 text eol=lf
-*.psm1 text eol=lf
-*.psd1 text eol=lf
-*.ps1xml text eol=lf
 
 LICENSE text eol=lf
 *.gitattributes text eol=lf
