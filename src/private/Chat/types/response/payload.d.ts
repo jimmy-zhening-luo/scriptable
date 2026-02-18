@@ -8,6 +8,7 @@ export interface CustomToolCall extends IToolCall<"custom_tool"> {
 }
 
 export interface FunctionCall extends IToolCall<"function"> {
+  name: string;
   arguments: Table;
 }
 

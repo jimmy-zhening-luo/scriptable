@@ -69,16 +69,39 @@ await new class Chat extends Shortcut<
     payload = output.at(-1)!;
 
     if ("content" in payload) {
-      const [{ text: message }] = payload.content,
+      const [
+        {
+          text: message,
+        },
+      ] = payload.content,
       answer = text.format.schema
-        ? (JSON.parse(message) as Table<primitive>)[prompt.answer!] ?? null
+        ? (
+            JSON.parse(message) as Table<primitive>
+          )[prompt.answer!]
+          ?? null
         : message;
 
-      return answer === 0
-        ? answer
-        : answer || null;
+      return (answer || answer === 0)
+        ? { answer }
+        : null;
     }
+    else {
+      const { type } = payload;
 
-    return payload;
+      switch (type) {
+        case "custom_tool_call":
+          return {
+            tool: "calculator",
+            task: payload.input,
+          };
+        case "function_call":
+          return {
+            tool: payload.name,
+            task: payload.arguments,
+          };
+        default:
+          return null;
+      }
+    }
   }
 }(2).run();
