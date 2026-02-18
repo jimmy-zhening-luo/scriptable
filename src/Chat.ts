@@ -21,7 +21,10 @@ await new class Chat extends Shortcut<
     if (!input?.input)
       return null;
 
-    const api = new Api(
+    const { prompt = setting.prompt } = input,
+    { latitude, longitude } = await location(),
+    now = new Time,
+    api = new Api(
       setting.api,
       undefined,
       {
@@ -30,9 +33,6 @@ await new class Chat extends Shortcut<
       setting.auth.token,
       "application/json",
     ),
-    { prompt = setting.prompt } = input,
-    { latitude, longitude } = await location(),
-    now = new Time,
     { text, output } = await api.request<Response>(
       "POST",
       undefined,
