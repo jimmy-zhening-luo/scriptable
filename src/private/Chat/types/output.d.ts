@@ -2,6 +2,6 @@ export type Output
 = | null
   | { answer: unknown }
   | {
-      tool: string;
-      task: unknown;
-    };
+    tool: string;
+    task: unknown;
+  };
