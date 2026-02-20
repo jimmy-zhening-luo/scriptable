@@ -22,7 +22,7 @@ void new class Search extends Shortcut<
     }
     type History = Require<Query, "key">;
     const history = (): History => {
-      const history = this.get();
+      const history = this.history();
 
       return history
         ? JSON.parse(history) as History
