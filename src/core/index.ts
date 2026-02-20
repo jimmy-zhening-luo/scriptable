@@ -16,6 +16,12 @@ const enum Filename {
   ExtJson = Ext + "json",
 }
 
+const enum History {
+  Length = 10,
+  Logs = "history/",
+  IndexFile = History + "index",
+}
+
 export default abstract class IApp<
   Setting = never,
   Output = void,
@@ -44,6 +50,33 @@ export default abstract class IApp<
       )
         .read()!,
     ) as Setting;
+  }
+
+  protected get index() {
+    if (this._index === undefined) {
+      const indexString = this.read(History.IndexFile);
+
+      if (!indexString)
+        this.write(
+          "0",
+          History.IndexFile
+        );
+
+      this._index = indexString
+        ? Number(indexString)
+        : 0;
+    }
+
+    return this._index;
+  }
+
+  protected set index(index: number) {
+    this.write(
+      index,
+      History.IndexFile
+    );
+
+    this._index = index;
   }
 
   public async run(sideload?: Input) {
@@ -112,6 +145,39 @@ export default abstract class IApp<
 
   protected clear() {
     this.unset(Filename.Parent);
+  }
+
+  protected history(lookback = 0) {
+    const currentIndex = this.index,
+    indexShift = currentIndex - lookback,
+    boundedIndexShift = indexShift % History.Length;
+
+    return this.read(
+      History.Logs
+      + String(
+        boundedIndexShift < 0
+          ? boundedIndexShift + History.Length
+          : boundedIndexShift,
+      ),
+    );
+  }
+
+  protected addHistory(
+    history: Parameters<typeof this["write"]>[0],
+  ) {
+    const currentIndex = this.index,
+    indexShift = currentIndex + 1,
+    nextIndex = indexShift === History.Length
+      ? 0
+      : indexShift;
+
+    this.write(
+      history,
+      History.Logs
+      + String(nextIndex),
+    );
+
+    this.index = nextIndex;
   }
 
   protected read(
@@ -232,4 +298,5 @@ export default abstract class IApp<
   protected abstract output(output: Output): void;
   protected ui?: (output: Output) => void;
   private _setting?: Setting;
+  private _index?: number;
 }
