@@ -16,6 +16,7 @@ const enum Filename {
   ExtJson = Ext + "json",
 }
 
+/* eslint-disable ts/no-mixed-enums */
 const enum History {
   Length = 10,
   Logs = "history/",
