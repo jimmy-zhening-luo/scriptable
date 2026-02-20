@@ -163,7 +163,7 @@ export default abstract class IApp<
   }
 
   protected addHistory(
-    history: Parameters<typeof this["write"]>[0],
+    history: Parameters<typeof this.write>[0],
   ) {
     const currentIndex = this.index,
     indexShift = currentIndex + 1,
