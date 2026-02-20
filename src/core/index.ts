@@ -19,7 +19,7 @@ const enum Filename {
 const enum History {
   Length = 10,
   Logs = "history/",
-  IndexFile = History + "index",
+  IndexFile = Logs + "index",
 }
 
 export default abstract class IApp<
