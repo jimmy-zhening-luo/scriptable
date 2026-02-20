@@ -47,7 +47,7 @@ void new class Search extends Shortcut<
       : history();
 
     if (!prior && key !== Reserved.None)
-      this.set(
+      this.addHistory(
         override
           ? {
             key,
