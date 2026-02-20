@@ -140,9 +140,9 @@ export default abstract class IApp<
 
   protected write(
     data: Parameters<typeof this.drive[string]["write"]>[0],
-    overwrite: Parameters<typeof this.drive[string]["write"]>[1] = 1,
     file?: string,
     extension?: string,
+    overwrite: Parameters<typeof this.drive[string]["write"]>[1] = 1,
   ) {
     this
       .storage(
