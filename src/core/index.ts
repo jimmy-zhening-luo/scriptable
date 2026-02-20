@@ -59,7 +59,7 @@ export default abstract class IApp<
       if (!indexString)
         this.write(
           "0",
-          History.IndexFile
+          History.IndexFile,
         );
 
       this._index = indexString
@@ -73,7 +73,7 @@ export default abstract class IApp<
   protected set index(index: number) {
     this.write(
       index,
-      History.IndexFile
+      History.IndexFile,
     );
 
     this._index = index;
