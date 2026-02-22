@@ -80,24 +80,22 @@ export default abstract class IApp<
   }
 
   protected set history(
-    history: Undefined<History>,
+    history: History,
   ) {
-    if (history !== undefined) {
-      const currentIndex = this.index,
-      indexShift = currentIndex + 1,
-      nextIndex = indexShift === History.Length
-        ? 0
-        : indexShift;
+    const currentIndex = this.index,
+    indexShift = currentIndex + 1,
+    nextIndex = indexShift === History.Length
+      ? 0
+      : indexShift;
 
-      this.write(
-        history,
-        History.Logs
-        + String(nextIndex),
-      );
+    this.write(
+      history,
+      History.Logs
+      + String(nextIndex),
+    );
 
-      this.index = nextIndex;
-      this._history = history;
-    }
+    this.index = nextIndex;
+    this._history = history;
   }
 
   protected set index(index: number) {
