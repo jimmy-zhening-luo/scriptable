@@ -54,7 +54,7 @@ export default abstract class IApp<
     ) as Setting;
   }
 
-  protected get history() {
+  protected get history(): Undefined<History> {
     if (this._history === undefined)
       this._history = this.readHistory() ?? null;
 
