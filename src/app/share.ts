@@ -3,10 +3,12 @@ import IApp from "../core";
 export default abstract class<
   Setting = never,
   Output extends Void<string> = string,
+  History extends string | Table = never,
 > extends IApp<
     Setting,
     Output,
-    readonly string[]
+    readonly string[],
+    History
   > {
   protected readonly production = config.runsInActionExtension;
 

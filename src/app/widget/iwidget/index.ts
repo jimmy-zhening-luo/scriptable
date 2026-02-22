@@ -2,10 +2,14 @@ import IApp from "../../../core";
 import Time from "../../../lib/time";
 import location from "../../../lib/location";
 
-export default abstract class<Setting> extends IApp<
+export default abstract class<
+  Setting,
+  History extends string | Table,
+> extends IApp<
   Setting,
   void,
-  string
+  string,
+  History
 > {
   public static readonly Time = Time;
   public static readonly location = location;

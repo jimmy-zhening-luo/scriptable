@@ -27,6 +27,7 @@ export default abstract class IApp<
   Setting = never,
   Output = void,
   Input = never,
+  History extends string | Table = never,
 > {
   protected readonly app;
   protected readonly interactive = config.runsInApp;
@@ -51,6 +52,34 @@ export default abstract class IApp<
       )
         .read()!,
     ) as Setting;
+  }
+
+  protected get history() {
+    if (this._history === undefined)
+      this._history = this.readHistory() ?? null;
+
+    return this._history ?? undefined;
+  }
+
+  protected set history(
+    history: Undefined<History>,
+  ) {
+    if (history !== undefined) {
+      const currentIndex = this.index,
+      indexShift = currentIndex + 1,
+      nextIndex = indexShift === History.Length
+        ? 0
+        : indexShift;
+
+      this.write(
+        history,
+        History.Logs
+        + String(nextIndex),
+      );
+
+      this.index = nextIndex;
+      this._history = history;
+    }
   }
 
   protected get index() {
@@ -157,39 +186,6 @@ export default abstract class IApp<
     this.unset(Filename.Parent);
   }
 
-  protected history(lookback = 0) {
-    const currentIndex = this.index,
-    indexShift = currentIndex - lookback,
-    boundedIndexShift = indexShift % History.Length;
-
-    return this.read(
-      History.Logs
-      + String(
-        boundedIndexShift < 0
-          ? boundedIndexShift + History.Length
-          : boundedIndexShift,
-      ),
-    );
-  }
-
-  protected save(
-    history: Parameters<typeof this.write>[0],
-  ) {
-    const currentIndex = this.index,
-    indexShift = currentIndex + 1,
-    nextIndex = indexShift === History.Length
-      ? 0
-      : indexShift;
-
-    this.write(
-      history,
-      History.Logs
-      + String(nextIndex),
-    );
-
-    this.index = nextIndex;
-  }
-
   protected read(
     file?: string,
     extension?: string,
@@ -210,6 +206,21 @@ export default abstract class IApp<
       this.read(
         file,
         extension,
+      ),
+    );
+  }
+
+  protected readHistory(lookback = 0) {
+    const currentIndex = this.index,
+    indexShift = currentIndex - lookback,
+    boundedIndexShift = indexShift % History.Length;
+
+    return this.readRecord<History>(
+      History.Logs
+      + String(
+        boundedIndexShift < 0
+          ? boundedIndexShift + History.Length
+          : boundedIndexShift,
       ),
     );
   }
@@ -326,5 +337,6 @@ export default abstract class IApp<
   protected abstract output(output: Output): void;
   protected ui?: (output: Output) => void;
   private _setting?: Setting;
+  private _history?: Null<History>;
   private _index?: number;
 }

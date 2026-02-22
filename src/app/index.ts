@@ -10,6 +10,7 @@ export default abstract class<
   Setting = never,
   Output = void,
   Input extends object | Unflat<string, true> = string,
+  History extends string | Table = never,
 > extends IApp<
     Setting,
     Void<Output>,

@@ -5,6 +5,7 @@ import type {
   Setting,
   Output,
   Query,
+  Require<Query, "key">
 } from "./private/Search/types";
 
 void new class Search extends Shortcut<
@@ -12,25 +13,18 @@ void new class Search extends Shortcut<
   Output
 > {
   protected runtime() {
-    const {
-      setting,
-      input = "",
-    } = this;
-
     const enum Reserved {
       None = "none",
     }
-    type History = Require<Query, "key">;
-    const history = (): History => {
-      const history = this.history();
 
-      return history
-        ? JSON.parse(history) as History
-        : {
-            key: Reserved.None as stringful,
-            prior: true,
-          };
-    },
+    const {
+      setting,
+      input = "",
+    } = this,
+    history = () => this.history ?? {
+      key: Reserved.None as stringful,
+      prior: true,
+    } as typeof this.history,
     parsed = input
       ? search.parser(input, setting)
       : history(),
@@ -47,20 +41,18 @@ void new class Search extends Shortcut<
       : history();
 
     if (!prior && key !== Reserved.None)
-      this.save(
-        override
-          ? {
-            key,
-            terms,
-            override,
-            prior: true,
-          } satisfies History
-          : {
-            key,
-            terms,
-            prior: true,
-          } satisfies History,
-      );
+      this.history = override
+        ? {
+          key,
+          terms,
+          override,
+          prior: true,
+        }
+        : {
+          key,
+          terms,
+          prior: true,
+        };
 
     return search.resolver(
       key,

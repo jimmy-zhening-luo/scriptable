@@ -10,7 +10,13 @@ const enum Weight {
   Default = 12,
 }
 
-export default abstract class<Setting = never> extends IWidget<Setting> {
+export default abstract class<
+  Setting = never,
+  History extends string | Table = never,
+> extends IWidget<
+  Setting,
+  History
+> {
   protected readonly size;
   protected readonly style;
   protected readonly font;
