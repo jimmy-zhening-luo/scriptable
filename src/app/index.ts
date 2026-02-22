@@ -14,7 +14,8 @@ export default abstract class<
 > extends IApp<
     Setting,
     Void<Output>,
-    Input
+    Input,
+    History
   > {
   protected readonly production = config.runsWithSiri;
 
