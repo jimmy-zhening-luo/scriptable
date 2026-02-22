@@ -19,6 +19,7 @@ const enum Filename {
 /* eslint-disable ts/no-mixed-enums */
 const enum History {
   Length = 10,
+  End = Length - 1,
   Logs = "history/",
   IndexFile = Logs + "index",
 }
@@ -63,17 +64,20 @@ export default abstract class IApp<
 
   protected get index() {
     if (this._index === undefined) {
-      const indexString = this.read(History.IndexFile);
+      const indexString = this.read(
+        History.IndexFile,
+      );
 
-      if (!indexString)
+      if (!indexString) {
         this.write(
           "0",
           History.IndexFile,
         );
 
-      this._index = indexString
-        ? Number(indexString)
-        : 0;
+        this._index = 0;
+      }
+      else
+        this._index = Number(indexString);
     }
 
     return this._index;
@@ -82,19 +86,18 @@ export default abstract class IApp<
   protected set history(
     history: History,
   ) {
-    const currentIndex = this.index,
-    indexShift = currentIndex + 1,
-    nextIndex = indexShift === History.Length
+    const { index } = this,
+    increment = index === History.End
       ? 0
-      : indexShift;
+      : index + 1;
 
     this.write(
       history,
       History.Logs
-      + String(nextIndex),
+      + String(increment),
     );
 
-    this.index = nextIndex;
+    this.index = increment;
     this._history = history;
   }
 
@@ -209,8 +212,8 @@ export default abstract class IApp<
   }
 
   protected readHistory(lookback = 0) {
-    const currentIndex = this.index,
-    indexShift = currentIndex - lookback,
+    const index = this.index,
+    indexShift = index - lookback,
     boundedIndexShift = indexShift % History.Length;
 
     return this.readRecord<History>(
