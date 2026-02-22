@@ -261,7 +261,7 @@ export default abstract class IApp<
   }
 
   protected subscribeRecord<T>(
-    file?: string,
+    file: string,
     extension?: string,
   ) {
     return this.parse<T>(
