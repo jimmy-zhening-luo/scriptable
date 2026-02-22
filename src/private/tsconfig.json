@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig-src-types",
+  "extends": "../tsconfig-types",
   "references": [
     {
       "path": "Chat",

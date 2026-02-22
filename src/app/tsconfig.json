@@ -3,7 +3,7 @@
     "index.ts",
     "share.ts",
   ],
-  "extends": "../tsconfig-src-types",
+  "extends": "../tsconfig-types",
   "references": [
     {
       "path": "../core",

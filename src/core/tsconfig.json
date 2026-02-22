@@ -5,5 +5,5 @@
     "error.ts",
     "serializer.ts",
   ],
-  "extends": "../tsconfig-src-types",
+  "extends": "../tsconfig-types",
 }
