@@ -129,6 +129,17 @@ export default abstract class IApp<
       .read();
   }
 
+  protected getRecord<T>(key?: string) {
+    const string = this.get(
+      file,
+      extension,
+    );
+
+    return string
+      ? undefined
+      : JSON.parse(string) as T;
+  }
+
   protected set(
     value: Parameters<typeof this.temp[string]["write"]>[0],
     key?: string,
@@ -193,16 +204,18 @@ export default abstract class IApp<
       .read();
   }
 
-  protected readString(
+  protected readRecord<T>(
     file?: string,
     extension?: string,
   ) {
-    return this
-      .storage(
-        file,
-        extension,
-      )
-      .readString();
+    const string = this.read(
+      file,
+      extension,
+    );
+
+    return string
+      ? undefined
+      : JSON.parse(string) as T;
   }
 
   protected write(
@@ -252,6 +265,20 @@ export default abstract class IApp<
         extension,
       )
       .read();
+  }
+
+  protected subscribeRecord<T>(
+    file?: string,
+    extension?: string,
+  ) {
+    const string = this.subscribe(
+      file,
+      extension,
+    );
+
+    return string
+      ? undefined
+      : JSON.parse(string) as T;
   }
 
   private cache(key = "cache") {

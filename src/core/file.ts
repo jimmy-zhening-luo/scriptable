@@ -94,10 +94,6 @@ export default class File<
       : undefined;
   }
 
-  public readString() {
-    return this.read() ?? "";
-  }
-
   public write(
     content: True<Mutable> extends never
       ? never
