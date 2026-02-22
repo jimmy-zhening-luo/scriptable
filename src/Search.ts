@@ -44,16 +44,16 @@ void new class Search extends Shortcut<
     if (!prior && key !== Reserved.None)
       this.history = override
         ? {
-          key,
-          terms,
-          override,
-          prior: true,
-        }
+            key,
+            terms,
+            override,
+            prior: true,
+          }
         : {
-          key,
-          terms,
-          prior: true,
-        };
+            key,
+            terms,
+            prior: true,
+          };
 
     return search.resolver(
       key,

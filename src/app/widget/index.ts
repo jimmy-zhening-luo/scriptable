@@ -14,9 +14,9 @@ export default abstract class<
   Setting = never,
   History extends string | Table = never,
 > extends IWidget<
-  Setting,
-  History
-> {
+    Setting,
+    History
+  > {
   protected readonly size;
   protected readonly style;
   protected readonly font;

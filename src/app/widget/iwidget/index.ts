@@ -6,11 +6,11 @@ export default abstract class<
   Setting,
   History extends string | Table,
 > extends IApp<
-  Setting,
-  void,
-  string,
-  History
-> {
+    Setting,
+    void,
+    string,
+    History
+  > {
   public static readonly Time = Time;
   public static readonly location = location;
   protected readonly production = config.runsInWidget;
