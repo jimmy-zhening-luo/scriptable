@@ -5,12 +5,13 @@ import type {
   Setting,
   Output,
   Query,
-  Require<Query, "key">
 } from "./private/Search/types";
 
 void new class Search extends Shortcut<
   Setting,
-  Output
+  Output,
+  string,
+  Require<Query, "key">
 > {
   protected runtime() {
     const enum Reserved {
