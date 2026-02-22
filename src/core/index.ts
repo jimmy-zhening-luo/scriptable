@@ -130,7 +130,7 @@ export default abstract class IApp<
   }
 
   protected getRecord<T>(key?: string) {
-    return parse<T>(
+    return this.parse<T>(
       this.get(key),
     );
   }
@@ -203,7 +203,7 @@ export default abstract class IApp<
     file?: string,
     extension?: string,
   ) {
-    return parse<T>(
+    return this.parse<T>(
       this.read(
         file,
         extension,
@@ -264,7 +264,7 @@ export default abstract class IApp<
     file?: string,
     extension?: string,
   ) {
-    return parse<T>(
+    return this.parse<T>(
       this.subscribe(
         file,
         extension,
