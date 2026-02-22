@@ -45,7 +45,7 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "clean": "cmd --% /c \"for %G in (types dist build packed .svelte-kit) do (if exist %G rmdir /s /q %G) & for %G in (.eslintcache) do (if exist %G del /f /q %G)\" || rm -rf types dist build packed .svelte-kit .eslintcache",
+    "clean": "cmd --% /c for %G in (types dist build packed .svelte-kit) do (if exist %G rmdir /s /q %G) & for %G in (.eslintcache) do (if exist %G del /f /q %G) || rm -rf types dist build packed .svelte-kit .eslintcache",
     "build": "npm run build:ts",
     "build:ts": "tsc -b src && rollup --config",
     "postbuild:ts": "npm run --if-present stage && ts-add-js-extension --showprogress=false --dir=dist",
