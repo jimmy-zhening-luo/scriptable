@@ -25,7 +25,7 @@ void new class Search extends Shortcut<
     history = () => this.history ?? {
       key: Reserved.None as stringful,
       prior: true,
-    } as NonNullable<typeof this.history>,
+    },
     parsed = input
       ? search.parser(input, setting)
       : history(),
