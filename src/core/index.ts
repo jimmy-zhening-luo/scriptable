@@ -130,14 +130,9 @@ export default abstract class IApp<
   }
 
   protected getRecord<T>(key?: string) {
-    const string = this.get(
-      file,
-      extension,
+    return parse<T>(
+      this.get(key),
     );
-
-    return string
-      ? undefined
-      : JSON.parse(string) as T;
   }
 
   protected set(
@@ -208,14 +203,12 @@ export default abstract class IApp<
     file?: string,
     extension?: string,
   ) {
-    const string = this.read(
-      file,
-      extension,
+    return parse<T>(
+      this.read(
+        file,
+        extension,
+      ),
     );
-
-    return string
-      ? undefined
-      : JSON.parse(string) as T;
   }
 
   protected write(
@@ -271,14 +264,12 @@ export default abstract class IApp<
     file?: string,
     extension?: string,
   ) {
-    const string = this.subscribe(
-      file,
-      extension,
+    return parse<T>(
+      this.subscribe(
+        file,
+        extension,
+      ),
     );
-
-    return string
-      ? undefined
-      : JSON.parse(string) as T;
   }
 
   private cache(key = "cache") {
@@ -320,6 +311,12 @@ export default abstract class IApp<
       feed,
       this.app,
     );
+  }
+
+  private parse<T>(string?: string) {
+    return string
+      ? JSON.parse(string) as T
+      : undefined;
   }
 
   protected abstract runtime(): Output | Promise<Output>;
