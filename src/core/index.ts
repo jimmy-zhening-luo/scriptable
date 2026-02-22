@@ -212,16 +212,16 @@ export default abstract class IApp<
   }
 
   protected readHistory(lookback = 0) {
-    const index = this.index,
-    indexShift = index - lookback,
-    boundedIndexShift = indexShift % History.Length;
+    const indexShift = (
+      this.index - lookback
+    ) % History.Length;
 
     return this.readRecord<History>(
       History.Logs
       + String(
-        boundedIndexShift < 0
-          ? boundedIndexShift + History.Length
-          : boundedIndexShift,
+        indexShift < 0
+          ? indexShift + History.Length
+          : indexShift,
       ),
     );
   }
