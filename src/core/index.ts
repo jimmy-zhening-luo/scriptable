@@ -61,6 +61,24 @@ export default abstract class IApp<
     return this._history ?? undefined;
   }
 
+  protected get index() {
+    if (this._index === undefined) {
+      const indexString = this.read(History.IndexFile);
+
+      if (!indexString)
+        this.write(
+          "0",
+          History.IndexFile,
+        );
+
+      this._index = indexString
+        ? Number(indexString)
+        : 0;
+    }
+
+    return this._index;
+  }
+
   protected set history(
     history: Undefined<History>,
   ) {
@@ -80,24 +98,6 @@ export default abstract class IApp<
       this.index = nextIndex;
       this._history = history;
     }
-  }
-
-  protected get index() {
-    if (this._index === undefined) {
-      const indexString = this.read(History.IndexFile);
-
-      if (!indexString)
-        this.write(
-          "0",
-          History.IndexFile,
-        );
-
-      this._index = indexString
-        ? Number(indexString)
-        : 0;
-    }
-
-    return this._index;
   }
 
   protected set index(index: number) {
