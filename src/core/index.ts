@@ -169,7 +169,7 @@ export default abstract class IApp<
     );
   }
 
-  protected addHistory(
+  protected save(
     history: Parameters<typeof this.write>[0],
   ) {
     const currentIndex = this.index,
@@ -248,7 +248,7 @@ export default abstract class IApp<
     this.clear();
   }
 
-  protected subscribe(
+  protected pull(
     file: string,
     extension?: string,
   ) {
@@ -260,12 +260,12 @@ export default abstract class IApp<
       .read();
   }
 
-  protected subscribeRecord<T>(
+  protected pullRecord<T>(
     file: string,
     extension?: string,
   ) {
     return this.parse<T>(
-      this.subscribe(
+      this.pull(
         file,
         extension,
       ),
