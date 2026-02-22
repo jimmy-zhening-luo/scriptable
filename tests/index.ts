@@ -1,1 +1,1 @@
-export { installGlobals as mochaGlobalSetup } from "./globals";
+export { installGlobals as mochaGlobalSetup } from "./global";
