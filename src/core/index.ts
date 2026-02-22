@@ -82,7 +82,10 @@ export default abstract class IApp<
 
   public async run(sideload?: Input) {
     try {
-      if (sideload && this.input === undefined)
+      if (
+        sideload
+        && this.input === undefined
+      )
         this.input = sideload;
 
       const output = await this.runtime();
