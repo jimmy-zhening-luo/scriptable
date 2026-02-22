@@ -161,7 +161,7 @@ export default abstract class IApp<
       .read();
   }
 
-  protected getRecord<T>(key?: string) {
+  protected getRecord<T>(key?: string): T {
     return this.parse<T>(
       this.get(key),
     );
