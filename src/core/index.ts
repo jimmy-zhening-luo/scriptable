@@ -327,7 +327,7 @@ export default abstract class IApp<
     );
   }
 
-  private parse<T>(string?: string) {
+  private parse<T>(string?: string): Undefined<T> {
     return string
       ? JSON.parse(string) as T
       : undefined;
