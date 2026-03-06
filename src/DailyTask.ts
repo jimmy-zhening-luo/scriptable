@@ -66,7 +66,7 @@ void new class DailyTask extends Shortcut<
     for (let i = 0; i < numInclusions; ++i)
       tasks[length + i] = inclusions[i]!;
 
-    base.reverse();
+    tasks.reverse();
 
     return { tasks };
   }
