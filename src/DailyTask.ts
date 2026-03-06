@@ -24,7 +24,9 @@ interface Setting {
 
 void new class DailyTask extends Shortcut<
   Setting,
-  readonly string[],
+  {
+    tasks: readonly string[],
+  },
   {
     weekday: keyof Alternatives;
     parity: Alternation;
@@ -53,19 +55,19 @@ void new class DailyTask extends Shortcut<
       setting.include[weekday],
       parity,
     ),
-    base = setting
+    tasks = setting
       .base
       .filter(task => !exclusions.has(task)),
-    { length } = base,
+    { length } = tasks,
     { length: numInclusions } = inclusions;
 
-    base.length = length + numInclusions;
+    tasks.length = length + numInclusions;
 
     for (let i = 0; i < numInclusions; ++i)
-      base[length + i] = inclusions[i]!;
+      tasks[length + i] = inclusions[i]!;
 
     base.reverse();
 
-    return base;
+    return { tasks };
   }
 }().run();
