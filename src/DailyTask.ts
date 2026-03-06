@@ -25,7 +25,7 @@ interface Setting {
 void new class DailyTask extends Shortcut<
   Setting,
   {
-    tasks: readonly string[],
+    tasks: readonly string[];
   },
   {
     weekday: keyof Alternatives;
