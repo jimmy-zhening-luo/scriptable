@@ -2,7 +2,7 @@
 import Shortcut from "./app";
 
 type Alternation = "$0" | "$1";
-type Alternatives = Record<
+type Alternatives = PartialRecord<
   (
     | "Sunday"
     | "Monday"
@@ -40,20 +40,20 @@ void new class DailyTask extends Shortcut<
 
     const { weekday, parity } = input,
     unpack = (
-      alternatives: Alternatives[keyof Alternatives],
       parity: Alternation,
+      alternatives: Alternatives[keyof Alternatives] = [],
     ) => Array.isArray(alternatives)
       ? alternatives
       : alternatives[parity],
     exclusions = new Set(
       unpack(
-        setting.exclude[weekday],
         parity,
+        setting.exclude[weekday],
       ),
     ),
     inclusions = unpack(
-      setting.include[weekday],
       parity,
+      setting.include[weekday],
     ),
     tasks = setting
       .base
