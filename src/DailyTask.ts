@@ -36,7 +36,7 @@ void new class DailyTask extends Shortcut<
     const { input, setting } = this;
 
     if (!input)
-      return [];
+      return { tasks: [] };
 
     const { weekday, parity } = input,
     unpack = (
