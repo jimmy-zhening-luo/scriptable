@@ -7,7 +7,12 @@ type Drive<
   Filetype extends string,
   Mutable extends boolean = false,
 > = Table<
-  File<Mutable, Filetype, string, AppId>
+  File<
+    Mutable,
+    Filetype,
+    string,
+    AppId
+  >
 >;
 
 const enum Filename {
