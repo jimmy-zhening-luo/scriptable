@@ -19,7 +19,8 @@ await new class Event extends DateWidget<EventSetting> {
     const now = new Event.Time,
     { tomorrow } = now,
     event = await calendar.next(
-      now.ago(Window.Skew).date(),
+      now.ago(Window.Skew)
+        .date(),
       now.eod.date(),
     )
     ?? await calendar.next(
@@ -33,7 +34,8 @@ await new class Event extends DateWidget<EventSetting> {
     )
     ?? await calendar.next(
       tomorrow.date(),
-      now.in(Window.Future).date(),
+      now.in(Window.Future)
+        .date(),
     ),
     start = event
       ? new Event.Time(event.startDate)
@@ -67,4 +69,5 @@ await new class Event extends DateWidget<EventSetting> {
         : Badge.None,
     );
   }
-}().run();
+}()
+  .run();

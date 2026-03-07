@@ -5,4 +5,5 @@ await new class Sandbox extends Shortcut {
   protected async runtime() {
     //
   }
-}().run();
+}()
+  .run();

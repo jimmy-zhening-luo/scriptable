@@ -172,5 +172,7 @@ await new class Clock extends Widget<Setting> {
   }
 }(
   "readdle-spark://",
-  new Widget.Time().print("E d"),
-).run();
+  new Widget.Time()
+    .print("E d"),
+)
+  .run();

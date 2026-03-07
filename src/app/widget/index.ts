@@ -203,7 +203,8 @@ export default abstract class<
     font = this.style.footnote(),
   ) {
     return this.text(
-      label + new IWidget.Time().time(),
+      label + new IWidget.Time()
+        .time(),
       font,
     );
   }

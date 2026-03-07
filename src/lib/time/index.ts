@@ -35,7 +35,8 @@ export default class Time {
     )
       this.epoch = date.epoch;
     else {
-      const epoch = new Date(date).getTime() as integer;
+      const epoch = new Date(date)
+        .getTime() as integer;
 
       if (Number.isNaN(epoch))
         throw RangeError(
@@ -131,7 +132,8 @@ export default class Time {
               second,
               millisecond,
             )
-        : this.date().toDateString()
+        : this.date()
+          .toDateString()
           + " at "
           + time,
     );
@@ -287,7 +289,8 @@ export default class Time {
       return icon + digits;
 
     const a = single
-      ? this.print(TimeFormat.AMPM).at(0)!
+      ? this.print(TimeFormat.AMPM)
+        .at(0)!
       : this.print(TimeFormat.AMPM);
 
     return icon

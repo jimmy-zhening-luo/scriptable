@@ -8,6 +8,8 @@ void new class Guid extends Shortcut<never, string> {
   };
 
   protected runtime() {
-    return UUID.string().toLocaleLowerCase();
+    return UUID.string()
+      .toLocaleLowerCase();
   }
-}().run();
+}()
+  .run();

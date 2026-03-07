@@ -70,4 +70,5 @@ void new class DailyTask extends Shortcut<
 
     return { tasks };
   }
-}(2).run();
+}(2)
+  .run();

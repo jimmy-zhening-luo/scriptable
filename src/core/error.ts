@@ -22,7 +22,8 @@ export default function (error: unknown) {
       : String(frame)
     : serialize(frame),
   header = print(root),
-  stack = trace.map(print).join("\n");
+  stack = trace.map(print)
+    .join("\n");
 
   console.error(header);
   console.error(stack);

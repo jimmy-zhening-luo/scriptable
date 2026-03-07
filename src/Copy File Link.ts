@@ -10,4 +10,5 @@ void new class FileLink extends Share {
       .join("\n")
       ?? "";
   }
-}("fileURLs").run();
+}("fileURLs")
+  .run();

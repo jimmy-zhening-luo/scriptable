@@ -62,4 +62,5 @@ void new class Search extends Shortcut<
       override,
     );
   }
-}().run();
+}()
+  .run();

@@ -5,4 +5,5 @@ await new class Sandtile extends Widget {
   protected async runtime() {
     //
   }
-}().run();
+}()
+  .run();

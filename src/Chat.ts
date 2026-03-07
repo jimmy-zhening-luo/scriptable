@@ -103,4 +103,5 @@ await new class Chat extends Shortcut<
         return null;
     }
   }
-}(2).run();
+}(2)
+  .run();
