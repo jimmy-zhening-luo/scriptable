@@ -1,1 +1,1 @@
-declare type Nullish<T> = undefined | null | T;
+declare type Nullish<T> = Null<Undefined<T>>;
