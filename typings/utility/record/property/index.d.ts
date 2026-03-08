@@ -1,7 +1,7 @@
 declare type Property<
   V,
-  K extends Key,
-  Option extends Key,
+  K extends PropertyKey,
+  Option extends PropertyKey,
 > = [K] extends [never]
   ? PartialRecord<Option, V>
   : [Option] extends [never]

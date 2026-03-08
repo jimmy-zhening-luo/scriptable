@@ -1,5 +1,5 @@
 declare type ReadonlyRecord<
-  K extends Key,
+  K extends PropertyKey,
   V,
 > = Readonly<
   Record<

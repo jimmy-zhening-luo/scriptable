@@ -1,6 +1,6 @@
 declare type Field<
-  K extends Key,
-  Option extends Key = never,
+  K extends PropertyKey,
+  Option extends PropertyKey = never,
 > = Property<
   string,
   K,
@@ -8,8 +8,8 @@ declare type Field<
 >;
 
 declare type Fieldful<
-  K extends Key,
-  Option extends Key = never,
+  K extends PropertyKey,
+  Option extends PropertyKey = never,
 > = Property<
   stringful,
   K,
@@ -17,8 +17,8 @@ declare type Fieldful<
 >;
 
 declare type Flag<
-  Option extends Key,
-  K extends Key = never,
+  Option extends PropertyKey,
+  K extends PropertyKey = never,
 > = Property<
   boolean,
   K,
@@ -26,8 +26,8 @@ declare type Flag<
 >;
 
 declare type List<
-  K extends Key,
-  Option extends Key = never,
+  K extends PropertyKey,
+  Option extends PropertyKey = never,
 > = Property<
   readonly string[],
   K,
@@ -35,8 +35,8 @@ declare type List<
 >;
 
 declare type Listish<
-  K extends Key,
-  Option extends Key = never,
+  K extends PropertyKey,
+  Option extends PropertyKey = never,
   Mutable extends boolean = false,
 > = Property<
   Unflat<string, Mutable>,
@@ -45,8 +45,8 @@ declare type Listish<
 >;
 
 declare type Scalar<
-  K extends Key,
-  Option extends Key = never,
+  K extends PropertyKey,
+  Option extends PropertyKey = never,
 > = Property<
   number,
   K,

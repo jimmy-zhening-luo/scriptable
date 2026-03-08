@@ -1,5 +1,5 @@
 type Space<
-  K extends Key,
+  K extends PropertyKey,
 > = Record<
   K,
   K

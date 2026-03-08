@@ -1,5 +1,5 @@
 declare type PartialRecord<
-  K extends Key,
+  K extends PropertyKey,
   V,
 > = Partial<
   Record<
