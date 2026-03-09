@@ -1,16 +1,24 @@
 ##############################
 ####    .gitattributes    ####
-####       v253.1.0       ####
+####   @version 253.4.0   ####
 ##############################
+
+#@doc https://git-scm.com/docs/gitattributes
+
 
 * text=auto
 
+
+#region CRLF
 *.ics text eol=crlf
 
 *.cmd text eol=crlf
 *.bat text eol=crlf
 *.reg text eol=crlf working-tree-encoding=UTF-8
+#endregion
 
+
+#region LF
 *.ps1 text eol=lf working-tree-encoding=UTF-8
 *.psm1 text eol=lf working-tree-encoding=UTF-8
 *.psd1 text eol=lf working-tree-encoding=UTF-8
@@ -22,23 +30,57 @@
 *.bash_aliases text eol=lf
 
 LICENSE text eol=lf
-*.gitattributes text eol=lf
 *.gitconfig text eol=lf
 *.gitignore text eol=lf
+*.gitattributes text eol=lf
+*.editorconfig text eol=lf
+*.npmrc text eol=lf
+*.claspignore text eol=lf
+*.funcignore text eol=lf
 
 *.txt text eol=lf
 *.md text eol=lf
-*.h text eol=lf
-*.hpp text eol=lf
-*.hxx text eol=lf
-*.c text eol=lf
-*.cpp text eol=lf
-*.cxx text eol=lf
-*.cc text eol=lf
-*.cs text eol=lf
+*.example text eol=lf
+
+*.json text eol=lf
+*.jsonc text eol=lf
+*.jsonl text eol=lf
+*.json5 text eol=lf
+*.JSON-tmLanguage text eol=lf
+*.code-snippets text eol=lf
+*.code-workspace text eol=lf
+
+*.yaml text eol=lf
+*.yml text eol=lf
+*.YAML-tmLanguage text eol=lf
+
+*.xml text eol=lf
+*.xsd text eol=lf
+*.xsl text eol=lf
+*.dtd text eol=lf
+*.svg text eol=lf
+*.plist text eol=lf
+*.tmLanguage text eol=lf
+*.tmPreferences text eol=lf
+*.tmTheme text eol=lf
 *.csproj text eol=lf
 *.sln text eol=lf
 *.slnx text eol=lf
+*.ps1xml text eol=lf
+*.exportedUI text eol=lf
+
+*.csv text eol=lf
+*.tsv text eol=lf
+
+*.c text eol=lf
+*.cc text eol=lf
+*.cpp text eol=lf
+*.cxx text eol=lf
+*.h text eol=lf
+*.hpp text eol=lf
+*.hxx text eol=lf
+*.cs text eol=lf
+
 *.js text eol=lf
 *.cjs text eol=lf
 *.mjs text eol=lf
@@ -47,35 +89,16 @@ LICENSE text eol=lf
 *.cts text eol=lf
 *.mts text eol=lf
 *.tsx text eol=lf
+*.svelte text eol=lf
 *.html text eol=lf
 *.css text eol=lf
 *.scss text eol=lf
 *.less text eol=lf
-*.svelte text eol=lf
+
 *.py text eol=lf
 *.jinja text eol=lf
+
+*.adblock text eol=lf
 *.lark text eol=lf
 *.re text eol=lf
-*.adblock text eol=lf
-*.json text eol=lf
-*.jsonc text eol=lf
-*.jsonl text eol=lf
-*.json5 text eol=lf
-*.JSON-tmLanguage text eol=lf
-*.code-snippets text eol=lf
-*.code-workspace text eol=lf
-*.yml text eol=lf
-*.yaml text eol=lf
-*.YAML-tmLanguage text eol=lf
-*.xml text eol=lf
-*.svg text eol=lf
-*.plist text eol=lf
-*.tmLanguage text eol=lf
-*.tmPreferences text eol=lf
-*.tmTheme text eol=lf
-*.csv text eol=lf
-*.tsv text eol=lf
-*.npmrc text eol=lf
-*.funcignore text eol=lf
-*.claspignore text eol=lf
-*.example text eol=lf
+#endregion

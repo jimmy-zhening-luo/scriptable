@@ -1,6 +1,7 @@
 {
-  "display": "tsc@509.7.1",
+  "display": "@version509.8.0",
   "$help": "https://aka.ms/tsconfig/#quick-nav-Top%20Level",
+  "$schema": "https://www.schemastore.org/tsconfig.json",
   "compilerOptions": {
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
@@ -26,7 +27,7 @@
     // "verbatimModuleSyntax": true,
     "lib": [
       "esnext",
-      /* {CONFIGURE} */
+      /* @configure */
     ],
     "target": "esnext",
     // "skipLibCheck": true,

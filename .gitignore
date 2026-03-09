@@ -1,34 +1,23 @@
 ##############################
 ####      .gitignore      ####
-####       v252.2.0       ####
+####   @version 253.0.0   ####
 ##############################
 
-#DOC: https://git-scm.com/docs/gitignore
+#@doc https://git-scm.com/docs/gitignore
 
 #region Folder (./)
 # Build
 /dist/
 /build/
-/built/
-/bundle/
-/bundled/
-/pack/
 /packed/
-# Types
-/d/
-/dts/
-/d.ts/
-/declaration/
 /types/
-# Test
-/in/
+# Local
 /input/
-/out/
 /output/
 #endregion
 
 
-#region Folder (**)
+#region Folder
 # Build
 node_modules/
 .svelte-kit/
@@ -42,7 +31,7 @@ node_modules/
 #endregion
 
 
-#region File (**)
+#region File
 # Build
 *.dll
 *.exe
@@ -60,5 +49,5 @@ node_modules/
 #endregion
 
 
-#region {CONFIGURE}
+#region @configure
 #endregion

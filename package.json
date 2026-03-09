@@ -1,7 +1,7 @@
 {
-  "$pkg": "2413.0.0",
-  "$schema": "https://json.schemastore.org/package",
+  "$pkg": "2414.0.0",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
+  "$schema": "https://json.schemastore.org/package",
   "name": "@scoping/scriptable",
   "version": "44.1.11",
   "repository": "github:jimmy-zhening-luo/scriptable",
