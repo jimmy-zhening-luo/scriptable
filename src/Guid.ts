@@ -1,7 +1,11 @@
 "gray fingerprint";
 import Shortcut from "./app";
 
-void new class Guid extends Shortcut<never, string> {
+void new class Guid extends Shortcut<
+  never,
+  string,
+  Field<"start">
+> {
   protected override ui = (guid: Void<string>) => {
     Pasteboard.copy(guid!);
     this.notify(guid);
@@ -9,9 +13,9 @@ void new class Guid extends Shortcut<never, string> {
 
   protected runtime() {
     const { input } = this,
-    start = input?
-      .start[0]?
-      .toUpperCase();
+    start = input
+      ?.start[0]
+      ?.toUpperCase();
 
     let guid = UUID.string() as stringful;
 

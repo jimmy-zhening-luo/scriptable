@@ -131,7 +131,7 @@ export function parser(
     }
   }
 
-  const candidate = query[0].toLocaleLowerCase() as stringful;
+  const candidate = query[0].toLowerCase() as stringful;
 
   if (candidate === Reserved.Repeat) {
     void query.shift();
