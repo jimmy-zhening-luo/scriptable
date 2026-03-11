@@ -8,8 +8,29 @@ void new class Guid extends Shortcut<never, string> {
   };
 
   protected runtime() {
-    return UUID.string()
-      .toLocaleLowerCase();
+    const { input } = this,
+    start = input?
+      .start[0]?
+      .toUpperCase();
+
+    let guid = UUID.string() as stringful;
+
+    if (
+      start
+      && (
+        start >= "0"
+        && start <= "9"
+      )
+      || (
+        start >= "A"
+        && start <= "F"
+      )
+    ) {
+      while (guid[0] !== start)
+        guid = UUID.string() as stringful;
+    }
+
+    return guid.toLowerCase();
   }
-}()
+}(true)
   .run();
