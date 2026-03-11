@@ -14,7 +14,8 @@ void new class Guid extends Shortcut<
   protected runtime() {
     const { input } = this,
     start = input
-      ?.start[0]
+      ?.start
+      ?.at(0)
       ?.toUpperCase();
 
     let guid = UUID.string();
