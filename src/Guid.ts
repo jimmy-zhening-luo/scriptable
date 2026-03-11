@@ -24,9 +24,7 @@ void new class Guid extends Shortcut<
       && (
         start >= "0"
         && start <= "9"
-      )
-      || (
-        start >= "A"
+        || start >= "A"
         && start <= "F"
       )
     ) {
