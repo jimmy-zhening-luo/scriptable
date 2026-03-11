@@ -4,7 +4,7 @@ import Shortcut from "./app";
 void new class Guid extends Shortcut<
   never,
   string,
-  Field<"start">
+  Field<never, "start">
 > {
   protected override ui = (guid: Void<string>) => {
     Pasteboard.copy(guid!);
