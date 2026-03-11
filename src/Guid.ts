@@ -17,7 +17,7 @@ void new class Guid extends Shortcut<
       ?.start[0]
       ?.toUpperCase();
 
-    let guid = UUID.string() as stringful;
+    let guid = UUID.string();
 
     if (
       start
@@ -27,10 +27,9 @@ void new class Guid extends Shortcut<
         || start >= "A"
         && start <= "F"
       )
-    ) {
-      while (guid[0] !== start)
-        guid = UUID.string() as stringful;
-    }
+    )
+      while (!guid.startsWith(start))
+        guid = UUID.string();
 
     return guid.toLowerCase();
   }
