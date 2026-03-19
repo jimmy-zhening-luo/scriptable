@@ -1,6 +1,6 @@
 ##############################
 ####    .gitattributes    ####
-####   @version 253.4.0   ####
+####   @version 253.4.1   ####
 ##############################
 
 #@doc https://git-scm.com/docs/gitattributes
@@ -66,6 +66,7 @@ LICENSE text eol=lf
 *.csproj text eol=lf
 *.sln text eol=lf
 *.slnx text eol=lf
+*.props text eol=lf
 *.ps1xml text eol=lf
 *.exportedUI text eol=lf
 
