@@ -3,7 +3,7 @@
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "$schema": "https://json.schemastore.org/package",
   "name": "@scoping/scriptable",
-  "version": "44.2.7",
+  "version": "44.3.0",
   "repository": "github:jimmy-zhening-luo/scriptable",
   "description": "Write type-safe, concise, continuously-deployed Scriptable apps. Scriptable for iOS and iPadOS lets users author JavaScript procedures invokable by Apple Shortcuts, Share Sheet or Widgets, useful for home and device automation.",
   "keywords": [
