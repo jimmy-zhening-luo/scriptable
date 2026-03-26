@@ -33,7 +33,7 @@ void new class Task extends Shortcut<
       .filter(s => s),
     tasks: TaskSpec[] = [];
 
-    for (const record in records) {
+    for (const record of records) {
       const [
         argumentString,
         ...notes
