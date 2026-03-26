@@ -36,7 +36,7 @@ void new class Task extends Shortcut<
     for (const record in records) {
       const [
         argumentString,
-        ...notes,
+        ...notes
       ] = record.split(". ") as Arrayful,
       tokens = argumentString.startsWith("'")
         ? argumentString
