@@ -3,9 +3,9 @@ import Shortcut from "./app";
 
 interface TaskSpec {
   title: string;
-  notes: Null<string>;
-  list: Null<string>;
-  when: Null<string>;
+  notes?: Null<string>;
+  list?: Null<string>;
+  when?: Null<string>;
 }
 
 void new class Task extends Shortcut<
@@ -44,30 +44,42 @@ void new class Task extends Shortcut<
           .split(" ")
           .map(a => a.trim())
           .filter(a => a) as Arrayful
-        : null,
+        : null;
+
+      if (!tokens) {
+        tasks.push(
+          {
+            title: argumentString,
+            notes: notes.join(". ") || null,
+          },
+        );
+
+        continue;
+      }
+
+      const [tag, ...words] = tokens,
+      value = setting[tag],
       {
         title,
         list = null,
         when = null,
-      } = tokens
-        ? tokens[0] in setting
-          ? typeof setting[tokens[0]] === "string"
-            ? {
-                title: tokens
-                  .slice(1)
-                  .join(" "),
-                when: setting[tokens[0]],
-              }
-            : {
-                title: tokens
-                  .slice(1)
-                  .join(" "),
-                list: setting[tokens[0]]!.id,
-              }
-          : {
-              title: tokens.join(" "),
+      } = value
+        ? typeof value === "string"
+          ? {
+              title: tokens
+                .slice(1)
+                .join(" "),
+              when: value,
             }
-        : { title: argumentString };
+          : {
+              title: tokens
+                .slice(1)
+                .join(" "),
+              list: value.id,
+            }
+        : {
+            title: tokens.join(" "),
+          };
 
       tasks.push(
         {
