@@ -58,24 +58,20 @@ void new class Task extends Shortcut<
       }
 
       const [tag, ...words] = tokens,
-      value = setting[tag],
+      attribute = setting[tag],
       {
         title,
         list = null,
         when = null,
-      } = value
-        ? typeof value === "string"
+      } = attribute
+        ? typeof attribute === "string"
           ? {
-              title: tokens
-                .slice(1)
-                .join(" "),
-              when: value,
+              title: words.join(" "),
+              when: attribute,
             }
           : {
-              title: tokens
-                .slice(1)
-                .join(" "),
-              list: value.id,
+              title: words.join(" "),
+              list: attribute.id,
             }
         : {
             title: tokens.join(" "),
