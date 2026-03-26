@@ -76,14 +76,13 @@ void new class Task extends Shortcut<
           },
         );
       }
-      else {
+      else
         tasks.push(
           {
             title: argumentString,
             notes: notes.join(". ") || null,
           },
         );
-      }
     }
 
     return { tasks };
