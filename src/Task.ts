@@ -46,45 +46,44 @@ void new class Task extends Shortcut<
           .filter(a => a) as Arrayful
         : null;
 
-      if (!tokens) {
+      if (tokens) {
+        const [tag, ...words] = tokens,
+        attribute = setting[tag],
+        {
+          title,
+          list = null,
+          when = null,
+        } = attribute
+          ? typeof attribute === "string"
+            ? {
+                title: words.join(" "),
+                when: attribute,
+              }
+            : {
+                title: words.join(" "),
+                list: attribute.id,
+              }
+          : {
+              title: tokens.join(" "),
+            };
+
+        tasks.push(
+          {
+            title,
+            list,
+            when,
+            notes: notes.join(". ") || null,
+          },
+        );
+      }
+      else {
         tasks.push(
           {
             title: argumentString,
             notes: notes.join(". ") || null,
           },
         );
-
-        continue;
       }
-
-      const [tag, ...words] = tokens,
-      attribute = setting[tag],
-      {
-        title,
-        list = null,
-        when = null,
-      } = attribute
-        ? typeof attribute === "string"
-          ? {
-              title: words.join(" "),
-              when: attribute,
-            }
-          : {
-              title: words.join(" "),
-              list: attribute.id,
-            }
-        : {
-            title: tokens.join(" "),
-          };
-
-      tasks.push(
-        {
-          title,
-          list,
-          when,
-          notes: notes.join(". ") || null,
-        },
-      );
     }
 
     return { tasks };
