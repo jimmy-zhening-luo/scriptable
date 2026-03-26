@@ -38,7 +38,7 @@ void new class Task extends Shortcut<
         argumentString,
         ...notes,
       ] = record.split(". ") as Arrayful,
-      arguments = argumentString.startsWith("'")
+      tokens = argumentString.startsWith("'")
         ? argumentString
           .substring(1)
           .split(" ")
@@ -49,23 +49,23 @@ void new class Task extends Shortcut<
         title,
         list = null,
         when = null,
-      } = arguments
-        ? arguments[0] in setting
-          ? typeof setting[arguments[0]] === "string"
+      } = tokens
+        ? tokens[0] in setting
+          ? typeof setting[tokens[0]] === "string"
             ? {
-                title: arguments
+                title: tokens
                   .slice(1)
                   .join(" "),
-                when: setting[arguments[0]],
+                when: setting[tokens[0]],
               }
             : {
-                title: arguments
+                title: tokens
                   .slice(1)
                   .join(" "),
-                list: setting[arguments[0]]!.id,
+                list: setting[tokens[0]]!.id,
               }
           : {
-              title: arguments.join(" "),
+              title: tokens.join(" "),
             }
         : { title: argumentString };
 
