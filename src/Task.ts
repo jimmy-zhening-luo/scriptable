@@ -51,18 +51,18 @@ void new class Task extends Shortcut<
         when = null,
       } = arguments
         ? arguments[0] in setting
-          ? typeof setting[arguments] === "string"
+          ? typeof setting[arguments[0]] === "string"
             ? {
                 title: arguments
                   .slice(1)
                   .join(" "),
-                when: setting[arguments],
+                when: setting[arguments[0]],
               }
             : {
                 title: arguments
                   .slice(1)
                   .join(" "),
-                list: setting[arguments]!.id,
+                list: setting[arguments[0]]!.id,
               }
           : {
               title: arguments.join(" "),
