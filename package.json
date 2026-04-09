@@ -34,7 +34,7 @@
     "@rollup/plugin-babel": "^7.0.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/scriptable-ios": "^1.7.9",
-    "linted": "41.2.1",
+    "linted": "41.2.2",
     "rexreplace": "^7.1.14",
     "rollup": "^4.60.1",
     "ts-add-js-extension": "^1.6.6",
