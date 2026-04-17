@@ -34,11 +34,11 @@
     "@rollup/plugin-babel": "^7.0.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/scriptable-ios": "^1.7.9",
-    "linted": "41.3.0",
+    "linted": "41.3.1",
     "rexreplace": "^7.1.14",
     "rollup": "^4.60.1",
     "ts-add-js-extension": "^1.6.6",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.3"
   },
   "scripts": {
     "clean": "cmd /q /c \"for %G in (types dist build packed .svelte-kit) do (if exist %G rmdir /s /q %G) & for %G in (.eslintcache) do (if exist %G del /f /q %G)\" || rm -rf types dist build packed .svelte-kit .eslintcache",
