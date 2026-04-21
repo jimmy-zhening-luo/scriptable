@@ -32,7 +32,7 @@ jobs:
           ${{vars.PACKAGE}}
       - name: Publish to Azure
         id: publish
-        uses: Azure/cli@v2
+        uses: Azure/cli@v3
         with:
           azcliversion: 2.61.0
           inlineScript: az storage blob upload
