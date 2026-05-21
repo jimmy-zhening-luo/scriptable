@@ -1,6 +1,6 @@
 "orange clock";
 import Widget from "./app/widget";
-import * as ClockApi from "./private/Clock";
+// import * as ClockApi from "./private/Clock";
 import type {
   ClockSetting as Setting,
   // SunCache,
