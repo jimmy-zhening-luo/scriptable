@@ -3,10 +3,10 @@ import Widget from "./app/widget";
 import * as ClockApi from "./private/Clock";
 import type {
   ClockSetting as Setting,
-  SunCache,
+  // SunCache,
 } from "./private/Clock/interface";
 
-type Time = Instance<typeof Widget.Time>;
+// type Time = Instance<typeof Widget.Time>;
 
 await new class Clock extends Widget<Setting> {
   protected async runtime() {
