@@ -30,6 +30,7 @@ await new class Clock extends Widget<Setting> {
     );
     void this.line(Break.Section);
 
+    /*
     const complications: string[] = [],
     now = new Clock.Time,
     sunCache = this.getRecord<SunCache>("sun"),
@@ -169,6 +170,7 @@ await new class Clock extends Widget<Setting> {
 
     if (complications.length)
       void this.row(...complications);
+    */
   }
 }(
   "readdle-spark://",
