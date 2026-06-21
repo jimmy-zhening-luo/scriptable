@@ -11,5 +11,4 @@ export interface ClockSetting {
     }>;
   };
   sun: IWeatherApiRequest;
-  weather: IWeatherApiRequest;
 }

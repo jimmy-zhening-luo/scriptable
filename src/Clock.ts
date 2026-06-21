@@ -43,11 +43,7 @@ await new class Clock extends Widget<Setting> {
       : {
           sunrise: now.at(sunCache.sunrise),
           sunset: now.at(sunCache.sunset),
-        },
-    weather: Record<"humidity" | "dew", Null<string>> = {
-      humidity: null,
-      dew: null,
-    };
+        };
 
     try {
       const { latitude, longitude } = await Clock.location();
@@ -124,30 +120,6 @@ await new class Clock extends Widget<Setting> {
     else if (sunset)
       void complications.push(
         printSun(sunset, SunIcon.Sunset),
-      );
-
-    const enum WeatherIcon {
-      Header = "\u224B" + Space.Sixth,
-      Dew = "\u00B0",
-      Humidity = "%",
-    }
-    if (weather.humidity || weather.dew)
-      void complications.push(
-        WeatherIcon.Header
-        + (
-          weather.humidity
-            ? weather.humidity
-            + WeatherIcon.Humidity
-            + (
-              weather.dew
-                ? Space.Full
-                + weather.dew
-                + WeatherIcon.Dew
-                : Space.None
-            )
-            : weather.dew!
-              + WeatherIcon.Dew
-        ),
       );
 
     if (complications.length)
