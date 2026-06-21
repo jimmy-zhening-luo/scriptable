@@ -8,8 +8,8 @@ import type {
 
 type Time = Instance<typeof Widget.Time>;
 
-void new class Clock extends Widget<Setting> {
-  protected runtime() {
+await new class Clock extends Widget<Setting> {
+  protected async runtime() {
     const enum Break {
       Line = 1 / 3,
       Section = Line * 4,
