@@ -1,12 +1,12 @@
 "orange clock";
 import Widget from "./app/widget";
-// import * as ClockApi from "./private/Clock";
+import * as ClockApi from "./private/Clock";
 import type {
   ClockSetting as Setting,
-  // SunCache,
+  SunCache,
 } from "./private/Clock/interface";
 
-// type Time = Instance<typeof Widget.Time>;
+type Time = Instance<typeof Widget.Time>;
 
 void new class Clock extends Widget<Setting> {
   protected runtime() {
@@ -30,7 +30,6 @@ void new class Clock extends Widget<Setting> {
     );
     void this.line(Break.Section);
 
-    /*
     const complications: string[] = [],
     now = new Clock.Time,
     sunCache = this.getRecord<SunCache>("sun"),
@@ -52,23 +51,6 @@ void new class Clock extends Widget<Setting> {
 
     try {
       const { latitude, longitude } = await Clock.location();
-
-      try {
-        const { humidity, dew } = await ClockApi.weather(
-          setting.weather.url,
-          setting.weather.headers,
-          setting.weather.location,
-          latitude,
-          longitude,
-        );
-
-        weather.humidity = humidity;
-        weather.dew = dew;
-      }
-      catch (e) {
-        console.error("Weather API: " + String(e));
-        console.warn("Continuing...");
-      }
 
       if (!sun.sunrise || !sun.sunset)
         try {
@@ -170,7 +152,6 @@ void new class Clock extends Widget<Setting> {
 
     if (complications.length)
       void this.row(...complications);
-    */
   }
 }(
   "readdle-spark://",
