@@ -1,5 +1,5 @@
 {
-  "$pkg": "2420.0.0",
+  "$pkg": "2420.1.0",
   "$help": "https://docs.npmjs.com/cli/configuring-npm/package-json",
   "$schema": "https://json.schemastore.org/package",
   "name": "@scoping/scriptable",
@@ -34,11 +34,11 @@
     "@rollup/plugin-babel": "^7.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/scriptable-ios": "^1.7.9",
-    "linted": "41.15.0",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "linted": "42.0.0",
     "rexreplace": "^7.1.14",
     "rollup": "^4.62.2",
-    "ts-add-js-extension": "^1.6.6",
-    "typescript": "^6.0.3"
+    "ts-add-js-extension": "^1.6.6"
   },
   "scripts": {
     "clean": "cmd /q /c \"for %G in (types dist build packed .svelte-kit) do (if exist %G rmdir /s /q %G) & for %G in (.eslintcache) do (if exist %G del /f /q %G)\" || rm -rf types dist build packed .svelte-kit .eslintcache",
