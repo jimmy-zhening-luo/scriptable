@@ -35,7 +35,7 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/scriptable-ios": "^1.7.9",
     "@typescript/native": "npm:typescript@^7.0.2",
-    "linted": "42.1.0",
+    "linted": "42.1.1",
     "rexreplace": "^7.1.14",
     "rollup": "^4.62.5",
     "ts-add-js-extension": "^1.6.6"
