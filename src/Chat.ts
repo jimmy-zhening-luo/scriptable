@@ -65,12 +65,8 @@ await new class Chat extends Shortcut<
           },
           ...setting.options,
         },
-      );
-
-    if (!output?.length)
-      throw SyntaxError("OpenAI returned bad output", { cause: output });
-
-    const payload = output.at(-1)!;
+      ),
+    payload = output.at(-1)!;
 
     if ("content" in payload) {
       const [

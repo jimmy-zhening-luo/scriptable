@@ -1,6 +1,6 @@
 export type { Timezone } from "./timezone";
 
-declare const Dateful: unique symbol;
+declare const Date: unique symbol;
 export type Dateful = Date & {
-  [Dateful]: true;
+  [Date]: true;
 };
